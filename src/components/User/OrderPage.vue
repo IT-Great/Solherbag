@@ -609,7 +609,7 @@ onMounted(fetchOrders);
         :key="order.id"
         class="bg-white shadow-sm hover:shadow-md border border-gray-100 rounded-2xl overflow-hidden transition-shadow duration-300 relative"
       >
-        <div
+        <!-- <div
           class="flex md:flex-row flex-col justify-between items-start md:items-center bg-gray-50 px-6 py-4 border-b"
         >
           <div>
@@ -619,6 +619,37 @@ onMounted(fetchOrders);
               Order ID
             </p>
             <p class="font-mono font-bold text-gray-800 text-sm">
+              {{ order.order_id }}
+            </p>
+          </div>
+          <div class="mt-2 md:mt-0 text-right">
+            <span
+              :class="statusClass(order.status)"
+              class="px-4 py-1 rounded-full font-bold text-[10px] uppercase tracking-tighter"
+            >
+              {{ formatStatus(order.status) }}
+            </span>
+          </div>
+        </div> -->
+
+        <div
+          class="flex md:flex-row flex-col justify-between items-start md:items-center bg-gray-50 px-6 py-4 border-b"
+        >
+          <div>
+            <div class="flex items-center gap-3">
+              <p
+                class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em]"
+              >
+                Order ID
+              </p>
+              <span
+                v-if="order.payment_method"
+                class="bg-gray-200 text-gray-600 px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-widest"
+              >
+                {{ order.payment_method.replace("_", " ") }}
+              </span>
+            </div>
+            <p class="font-mono font-bold text-gray-800 text-sm mt-0.5">
               {{ order.order_id }}
             </p>
           </div>
@@ -735,12 +766,28 @@ onMounted(fetchOrders);
                 >
                   Order Received
                 </button>
-                <button
+                <!-- <button
                   v-if="
                     ['processing', 'completed'].includes(order.status) &&
                     order.shipping_method === 'biteship'
                   "
                   @click="$router.push(`/tracking/${order.id}`)"
+                  class="bg-black hover:bg-gray-800 px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition"
+                >
+                  Track Order
+                </button> -->
+
+                <button
+                  v-if="
+                    ['processing', 'completed'].includes(order.status) &&
+                    order.shipping_method === 'biteship'
+                  "
+                  @click="
+                    $router.push({
+                      path: `/tracking/${order.id}`,
+                      state: { paymentMethod: order.payment_method },
+                    })
+                  "
                   class="bg-black hover:bg-gray-800 px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition"
                 >
                   Track Order
