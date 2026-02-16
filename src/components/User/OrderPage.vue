@@ -738,8 +738,7 @@ onMounted(fetchOrders);
                 <button
                   v-if="
                     ['processing', 'completed'].includes(order.status) &&
-                    order.shipping_method === 'biteship' &&
-                    order.tracking_number
+                    order.shipping_method === 'biteship'
                   "
                   @click="$router.push(`/tracking/${order.id}`)"
                   class="bg-black hover:bg-gray-800 px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition"
