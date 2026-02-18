@@ -1425,7 +1425,7 @@ const getPaymentLogo = (methodString) => {
   const channel = methodString.split(' ')[1]?.toLowerCase();
   if(!channel) return null;
   
-  const baseUrl = "../../src/assets/payment_images/"; // Silakan buat folder ini dan isi dengan logo bank
+  const baseUrl = "../../assets/payment_images/"; // Silakan buat folder ini dan isi dengan logo bank
   const map = {
     'bca': 'bca.png', 'bni': 'bni.png', 'bri': 'bri.png', 'mandiri': 'mandiri.png', 'bsi': 'bsi.png', 'permata': 'permata.png',
     'ovo': 'ovo.png', 'dana': 'dana.png', 'linkaja': 'linkaja.png', 'shopeepay': 'shopeepay.png',
