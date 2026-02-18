@@ -1410,7 +1410,7 @@ let timerInterval = null;
 // Helper Logo Kurir
 const getCourierLogo = (company) => {
   if(!company) return null;
-  const baseUrl = "../../src/assets/courier_images/"; // Pastikan file gambar ada
+  const baseUrl = "/courier_images/"; // Pastikan file gambar ada
   const map = {
     'jne': "jne.png", 'sicepat': "sicepat.png", 'jnt': "jnt.png",
     'anteraja': "anteraja.png", 'gojek': "gojek.png", 'grab': "grab.png",
@@ -1425,7 +1425,7 @@ const getPaymentLogo = (methodString) => {
   const channel = methodString.split(' ')[1]?.toLowerCase();
   if(!channel) return null;
   
-  const baseUrl = "../../src/assets/payment_images/"; // Silakan buat folder ini dan isi dengan logo bank
+  const baseUrl = "/payment_images/"; // Silakan buat folder ini dan isi dengan logo bank
   const map = {
     'bca': 'bca.png', 'bni': 'bni.png', 'bri': 'bri.png', 'mandiri': 'mandiri.png', 'bsi': 'bsi.png', 'permata': 'permata.png',
     'ovo': 'ovo.png', 'dana': 'dana.png', 'linkaja': 'linkaja.png', 'shopeepay': 'shopeepay.png',

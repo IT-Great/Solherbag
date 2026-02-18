@@ -1107,7 +1107,7 @@ const handleImageError = (company) => {
 // Helper untuk menampilkan logo kurir
 const getCourierLogo = (company) => {
   // Ganti baseUrl ke folder public/images/couriers/ di project Vue Anda
-  const baseUrl = "../../src/assets/courier_images/";
+  const baseUrl = "/courier_images/";
 
   const map = {
     jne: "jne.png",
