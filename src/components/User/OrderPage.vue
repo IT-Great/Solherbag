@@ -1410,7 +1410,7 @@ let timerInterval = null;
 // Helper Logo Kurir
 const getCourierLogo = (company) => {
   if(!company) return null;
-  const baseUrl = "../../src/assets/courier_images/"; // Pastikan file gambar ada di public/images/couriers/
+  const baseUrl = "../../src/assets/courier_images/"; // Pastikan file gambar ada
   const map = {
     'jne': "jne.png", 'sicepat': "sicepat.png", 'jnt': "jnt.png",
     'anteraja': "anteraja.png", 'gojek': "gojek.png", 'grab': "grab.png",
