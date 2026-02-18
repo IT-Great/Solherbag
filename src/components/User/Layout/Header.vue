@@ -435,7 +435,8 @@ const cartCount = computed(() => {
   return cartItems.value.reduce((acc, item) => acc + item.quantity, 0);
 });
 const isBadgePopping = ref(false);
-let debounceTimer = null;
+// let debounceTimer = null;
+const debounceTimers = new Map();
 
 // const isSearchOpen = ref(false);
 const searchInput = ref("");
@@ -480,7 +481,35 @@ const totalCartAmount = computed(() => {
   }, 0);
 });
 
+// const handleQtyChange = (item, newQty) => {
+//   if (newQty < 1) newQty = 1;
+//   if (newQty > item.product.stock) {
+//     newQty = item.product.stock;
+//     Swal.fire({
+//       toast: true,
+//       position: "top-end",
+//       icon: "warning",
+//       title: `Max stock is ${item.product.stock}`,
+//       showConfirmButton: false,
+//       timer: 2000,
+//     });
+//   }
+
+//   item.isSyncing = true;
+//   item.quantity = newQty;
+//   const unitPrice = parseFloat(
+//     item.product.discount_price ?? item.product.price,
+//   );
+//   item.gross_amount = item.quantity * unitPrice;
+
+//   clearTimeout(debounceTimer);
+//   debounceTimer = setTimeout(() => {
+//     syncQtyToDatabase(item);
+//   }, 500);
+// };
+
 const handleQtyChange = (item, newQty) => {
+  // 1. Validasi Input
   if (newQty < 1) newQty = 1;
   if (newQty > item.product.stock) {
     newQty = item.product.stock;
@@ -494,17 +523,34 @@ const handleQtyChange = (item, newQty) => {
     });
   }
 
-  item.isSyncing = true;
+  // 2. Update Tampilan Secara Langsung (Optimistic UI)
+  // User melihat angka berubah instan, meski API belum dipanggil
   item.quantity = newQty;
+  
+  // Hitung ulang total harga tampilan lokal
   const unitPrice = parseFloat(
     item.product.discount_price ?? item.product.price,
   );
   item.gross_amount = item.quantity * unitPrice;
 
-  clearTimeout(debounceTimer);
-  debounceTimer = setTimeout(() => {
+  // Set status syncing agar UI terlihat sedang "memproses" (blur effect)
+  item.isSyncing = true;
+
+  // 3. LOGIKA DEBOUNCE (PENUNDAAN)
+  // Jika ada timer pending untuk item INI, batalkan timer tersebut
+  if (debounceTimers.has(item.id)) {
+    clearTimeout(debounceTimers.get(item.id));
+  }
+
+  // Buat timer baru selama 2 Detik (2000ms)
+  const timerId = setTimeout(() => {
     syncQtyToDatabase(item);
-  }, 500);
+    // Hapus timer dari Map setelah dieksekusi
+    debounceTimers.delete(item.id);
+  }, 2000); // <--- Waktu tunda 2 detik sesuai permintaan
+
+  // Simpan timer ID ke Map
+  debounceTimers.set(item.id, timerId);
 };
 
 const handleQtyInput = (item) => {
