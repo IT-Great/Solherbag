@@ -1245,6 +1245,12 @@ onUnmounted(() => {
     >
       Track My Orders
     </h1>
+    <router-link
+      to="/shippingmanagement"
+      class="bg-black hover:bg-gray-800 px-6 py-3 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition shadow-md"
+    >
+      Simulate Shipping
+    </router-link>
 
     <div v-if="loading" class="space-y-6">
       <div class="bg-gray-100 h-40 rounded-2xl animate-pulse"></div>

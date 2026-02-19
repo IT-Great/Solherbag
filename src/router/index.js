@@ -174,6 +174,12 @@ const routes = [
         name: "TrackingPage",
         component: TrackingPage,
         meta: { requiresAuth: true, hideHeaderFooter: true }
+    },
+    {
+        path: "/shippingmanagement",
+        name: "ShippingManagementPage",
+        component: ShippingManagementPage,
+        meta: { requiresAuth: true, hideHeaderFooter: false }
     }
 ]
 
