@@ -494,23 +494,211 @@ onMounted(fetchReport);
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from "react"; // Pastikan 'vue' bukan 'react', karena di atas sepertinya typo bawaan jika tidak hati-hati. Import vue yang benar di bawah ini.
-import {
-  ref as vueRef,
-  onMounted as vueOnMounted,
-  watch as vueWatch,
-} from "vue"; // Reset to standard vue imports
+// import { ref, onMounted, watch } from "react"; // Pastikan 'vue' bukan 'react', karena di atas sepertinya typo bawaan jika tidak hati-hati. Import vue yang benar di bawah ini.
+// import {
+//   ref as vueRef,
+//   onMounted as vueOnMounted,
+//   watch as vueWatch,
+// } from "vue"; // Reset to standard vue imports
+// import axios from "axios";
+// import { BASE_URL } from "../../config/api.js";
+
+// // [BARU] Import Library untuk Export
+// import html2pdf from "html2pdf.js";
+// import * as XLSX from "xlsx";
+
+// // Alias agar konsisten dengan Vue
+// const ref = vueRef;
+// const onMounted = vueOnMounted;
+// const watch = vueWatch;
+
+// const reportData = ref([]);
+// const isLoading = ref(false);
+// const currentPage = ref(1);
+// const lastPage = ref(1);
+// const itemsPerPage = ref(10);
+
+// const grandTotalRevenue = ref(0);
+// const totalUnitsSold = ref(0);
+// const bestSellerName = ref("-");
+
+// const currentYear = new Date().getFullYear();
+// const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
+// const months = [
+//   "January",
+//   "February",
+//   "March",
+//   "April",
+//   "May",
+//   "June",
+//   "July",
+//   "August",
+//   "September",
+//   "October",
+//   "November",
+//   "December",
+// ];
+
+// const filters = ref({
+//   year: currentYear,
+//   month: new Date().getMonth() + 1,
+//   search: "",
+// });
+
+// const axiosConfig = {
+//   headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
+// };
+
+// const fetchReport = async (page = 1) => {
+//   isLoading.value = true;
+//   try {
+//     const params = {
+//       month: filters.value.month,
+//       year: filters.value.year,
+//       search: filters.value.search,
+//       per_page: itemsPerPage.value,
+//       page: page,
+//     };
+
+//     const res = await axios.get(`${BASE_URL}/admin/sales-report`, {
+//       ...axiosConfig,
+//       params,
+//     });
+
+//     reportData.value = res.data.data;
+//     currentPage.value = res.data.current_page;
+//     lastPage.value = res.data.last_page;
+
+//     calculateLocalSummary(res.data.data);
+//   } catch (error) {
+//     console.error("Fetch report failed", error);
+//   } finally {
+//     setTimeout(() => (isLoading.value = false), 500);
+//   }
+// };
+
+// const calculateLocalSummary = (data) => {
+//   if (data.length > 0) {
+//     grandTotalRevenue.value = data.reduce(
+//       (acc, item) => acc + parseFloat(item.total_revenue),
+//       0,
+//     );
+//     totalUnitsSold.value = data.reduce(
+//       (acc, item) => acc + parseInt(item.total_sold),
+//       0,
+//     );
+//     bestSellerName.value = data[0].name;
+//   } else {
+//     grandTotalRevenue.value = 0;
+//     totalUnitsSold.value = 0;
+//     bestSellerName.value = "-";
+//   }
+// };
+
+// const changePage = (page) => {
+//   if (page >= 1 && page <= lastPage.value) {
+//     fetchReport(page);
+//   }
+// };
+
+// const formatPrice = (v) =>
+//   new Intl.NumberFormat("id-ID", {
+//     style: "currency",
+//     currency: "IDR",
+//     minimumFractionDigits: 0,
+//   }).format(v);
+
+// let timeout = null;
+// watch(
+//   () => filters.value.search,
+//   () => {
+//     clearTimeout(timeout);
+//     timeout = setTimeout(() => {
+//       currentPage.value = 1;
+//       fetchReport();
+//     }, 600);
+//   },
+// );
+
+// // --- FUNGSI EXPORT PDF ---
+// const exportToPDF = () => {
+//   // Ambil elemen tabel
+//   const element = document.getElementById("exportable-table");
+
+//   // Tampilkan header khusus (Judul dan Tanggal) agar terlihat di PDF
+//   const headers = element.querySelectorAll(".export-header");
+//   headers.forEach((h) => h.classList.remove("hidden"));
+//   headers.forEach((h) => h.classList.add("block"));
+
+//   const monthName = filters.value.month
+//     ? months[filters.value.month - 1]
+//     : "All";
+//   const fileName = `Sales_Report_${filters.value.year}_${monthName}.pdf`;
+
+//   const opt = {
+//     margin: 0.5,
+//     filename: fileName,
+//     image: { type: "jpeg", quality: 0.98 },
+//     html2canvas: { scale: 2, useCORS: true }, // useCORS sangat penting agar gambar dari server/CDN bisa ter-render
+//     jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+//   };
+
+//   html2pdf()
+//     .set(opt)
+//     .from(element)
+//     .save()
+//     .then(() => {
+//       // Sembunyikan kembali header setelah selesai di-export
+//       headers.forEach((h) => h.classList.add("hidden"));
+//       headers.forEach((h) => h.classList.remove("block"));
+//     });
+// };
+
+// // --- FUNGSI EXPORT EXCEL ---
+// const exportToExcel = () => {
+//   // Mapping data dari array reportData ke format yang bersih untuk Excel
+//   const excelData = reportData.value.map((item, index) => ({
+//     No: index + 1,
+//     "Product Code": item.code,
+//     "Product Name": item.name,
+//     Category: item.category_name,
+//     "Units Sold": parseInt(item.total_sold),
+//     "Total Revenue (IDR)": parseFloat(item.total_revenue),
+//   }));
+
+//   // Menambahkan baris total di paling bawah
+//   excelData.push({
+//     No: "",
+//     "Product Code": "",
+//     "Product Name": "",
+//     Category: "GRAND TOTAL",
+//     "Units Sold": totalUnitsSold.value,
+//     "Total Revenue (IDR)": grandTotalRevenue.value,
+//   });
+
+//   const worksheet = XLSX.utils.json_to_sheet(excelData);
+//   const workbook = XLSX.utils.book_new();
+
+//   XLSX.utils.book_append_sheet(workbook, worksheet, "Sales Data");
+
+//   const monthName = filters.value.month
+//     ? months[filters.value.month - 1]
+//     : "All";
+//   const fileName = `Sales_Report_${filters.value.year}_${monthName}.xlsx`;
+
+//   XLSX.writeFile(workbook, fileName);
+// };
+
+// onMounted(fetchReport);
+
+// 1. IMPORT VUE STANDAR (Bersih, tanpa alias atau react)
+import { ref, onMounted, watch, computed } from "vue";
 import axios from "axios";
 import { BASE_URL } from "../../config/api.js";
 
-// [BARU] Import Library untuk Export
+// 2. IMPORT LIBRARY EXPORT
 import html2pdf from "html2pdf.js";
 import * as XLSX from "xlsx";
-
-// Alias agar konsisten dengan Vue
-const ref = vueRef;
-const onMounted = vueOnMounted;
-const watch = vueWatch;
 
 const reportData = ref([]);
 const isLoading = ref(false);
@@ -622,10 +810,8 @@ watch(
 
 // --- FUNGSI EXPORT PDF ---
 const exportToPDF = () => {
-  // Ambil elemen tabel
   const element = document.getElementById("exportable-table");
 
-  // Tampilkan header khusus (Judul dan Tanggal) agar terlihat di PDF
   const headers = element.querySelectorAll(".export-header");
   headers.forEach((h) => h.classList.remove("hidden"));
   headers.forEach((h) => h.classList.add("block"));
@@ -639,7 +825,7 @@ const exportToPDF = () => {
     margin: 0.5,
     filename: fileName,
     image: { type: "jpeg", quality: 0.98 },
-    html2canvas: { scale: 2, useCORS: true }, // useCORS sangat penting agar gambar dari server/CDN bisa ter-render
+    html2canvas: { scale: 2, useCORS: true },
     jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
   };
 
@@ -648,7 +834,6 @@ const exportToPDF = () => {
     .from(element)
     .save()
     .then(() => {
-      // Sembunyikan kembali header setelah selesai di-export
       headers.forEach((h) => h.classList.add("hidden"));
       headers.forEach((h) => h.classList.remove("block"));
     });
@@ -656,7 +841,6 @@ const exportToPDF = () => {
 
 // --- FUNGSI EXPORT EXCEL ---
 const exportToExcel = () => {
-  // Mapping data dari array reportData ke format yang bersih untuk Excel
   const excelData = reportData.value.map((item, index) => ({
     No: index + 1,
     "Product Code": item.code,
@@ -666,7 +850,6 @@ const exportToExcel = () => {
     "Total Revenue (IDR)": parseFloat(item.total_revenue),
   }));
 
-  // Menambahkan baris total di paling bawah
   excelData.push({
     No: "",
     "Product Code": "",
