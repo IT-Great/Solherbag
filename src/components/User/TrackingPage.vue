@@ -1405,7 +1405,7 @@ const activePaymentMethod = computed(() => {
 
 const getCourierLogo = (company) => {
   if (!company) return null;
-  const baseUrl = "../../src/assets/courier_images/"; 
+  const baseUrl = "/courier_images/"; 
   const map = {
     'jne': "jne.png", 'sicepat': "sicepat.png", 'jnt': "jnt.png",
     'anteraja': "anteraja.png", 'gojek': "gojek.png", 'grab': "grab.png",
@@ -1418,7 +1418,7 @@ const getPaymentLogo = (methodString) => {
   if (!methodString) return null;
   const channel = methodString.split(' ')[1]?.toLowerCase();
   if (!channel) return null;
-  const baseUrl = "../../src/assets/payment_images/"; 
+  const baseUrl = "/payment_images/"; 
   const map = {
     'bca': 'bca.png', 'bni': 'bni.png', 'bri': 'bri.png', 'mandiri': 'mandiri.png', 'bsi': 'bsi.png', 'permata': 'permata.png',
     'ovo': 'ovo.png', 'dana': 'dana.png', 'linkaja': 'linkaja.png', 'shopeepay': 'shopeepay.png',
