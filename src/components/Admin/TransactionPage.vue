@@ -1733,6 +1733,12 @@ tr {
           Manage and track all customer orders in real-time.
         </p>
       </div>
+      <router-link
+        to="/shippingmanagement"
+        class="bg-black hover:bg-gray-800 px-6 py-3 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition shadow-md"
+      >
+        Simulate Shipping
+      </router-link>
       <div class="bg-gray-50 px-6 py-3 border border-gray-100 rounded-2xl">
         <span
           class="block font-black text-[10px] text-gray-400 uppercase tracking-widest"
