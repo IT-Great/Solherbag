@@ -1837,7 +1837,7 @@ tr {
 
                 <div
                   v-if="
-                    ['pending', 'awaiting_payment'].includes(trx.status) &&
+                    ['pending'].includes(trx.status) &&
                     countdowns[trx.id] !== 'Expired'
                   "
                   class="mt-2 flex items-center gap-1 text-red-600 bg-red-50 w-fit px-2 py-1 rounded-md"
@@ -2268,7 +2268,7 @@ const startTimers = () => {
 
   timerInterval = setInterval(() => {
     transactions.value.forEach((trx) => {
-      if (["pending", "awaiting_payment"].includes(trx.status)) {
+      if (["pending"].includes(trx.status)) {
         const timeRef = trx.payment?.created_at || trx.created_at;
         countdowns.value[trx.id] = calculateTimeLeft(timeRef);
       }
@@ -2276,7 +2276,7 @@ const startTimers = () => {
   }, 60000);
 
   transactions.value.forEach((trx) => {
-    if (["pending", "awaiting_payment"].includes(trx.status)) {
+    if (["pending"].includes(trx.status)) {
       const timeRef = trx.payment?.created_at || trx.created_at;
       countdowns.value[trx.id] = calculateTimeLeft(timeRef);
     }
