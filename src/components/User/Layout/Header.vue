@@ -526,7 +526,7 @@ const handleQtyChange = (item, newQty) => {
   // 2. Update Tampilan Secara Langsung (Optimistic UI)
   // User melihat angka berubah instan, meski API belum dipanggil
   item.quantity = newQty;
-  
+
   // Hitung ulang total harga tampilan lokal
   const unitPrice = parseFloat(
     item.product.discount_price ?? item.product.price,
@@ -542,12 +542,12 @@ const handleQtyChange = (item, newQty) => {
     clearTimeout(debounceTimers.get(item.id));
   }
 
-  // Buat timer baru selama 2 Detik (2000ms)
+  // Buat timer baru selama 1 Detik (1000ms)
   const timerId = setTimeout(() => {
     syncQtyToDatabase(item);
     // Hapus timer dari Map setelah dieksekusi
     debounceTimers.delete(item.id);
-  }, 2000); // <--- Waktu tunda 2 detik sesuai permintaan
+  }, 1000); // <--- Waktu tunda 1 detik sesuai permintaan
 
   // Simpan timer ID ke Map
   debounceTimers.set(item.id, timerId);
@@ -574,15 +574,53 @@ const syncQtyToDatabase = async (item) => {
   }
 };
 
+// const handleOptimisticDelete = async (id) => {
+//   const backupItems = [...cartItems.value];
+//   cartItems.value = cartItems.value.filter((item) => item.id !== id);
+
+//   try {
+//     await axios.delete(`${BASE_URL}/carts/${id}`, {
+//       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+//     });
+//   } catch (error) {
+//     cartItems.value = backupItems;
+//     Swal.fire({
+//       icon: "error",
+//       title: "Action Failed",
+//       text: "Could not remove item. Please check your connection.",
+//       toast: true,
+//       position: "top-end",
+//       showConfirmButton: false,
+//       timer: 3000,
+//     });
+//   }
+// };
+
 const handleOptimisticDelete = async (id) => {
+  // Simpan data asli untuk berjaga-jaga jika API gagal (rollback)
   const backupItems = [...cartItems.value];
+
+  // Hapus dari tampilan secara instan (Optimistic UI)
   cartItems.value = cartItems.value.filter((item) => item.id !== id);
 
   try {
+    // Panggil API untuk menghapus di database
     await axios.delete(`${BASE_URL}/carts/${id}`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
+
+    // [PERBAIKAN 1] Tampilkan popup modal jika berhasil
+    Swal.fire({
+      icon: "success",
+      title: "Removed",
+      text: "Item has been removed from your bag.",
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 2000,
+    });
   } catch (error) {
+    // Jika API gagal, kembalikan item ke dalam cart (Rollback)
     cartItems.value = backupItems;
     Swal.fire({
       icon: "error",
@@ -768,7 +806,6 @@ const openCart = () => {
     });
     return;
   }
-  fetchCarts();
   isCartOpen.value = true;
 };
 
