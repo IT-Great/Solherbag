@@ -180,7 +180,7 @@ const routes = [
         path: "/shippingmanagement",
         name: "ShippingManagementPage",
         component: ShippingManagementPage,
-        meta: { requiresAuth: true, hideHeaderFooter: false, isAdmin: true }
+        meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true }
     }
 ]
 
