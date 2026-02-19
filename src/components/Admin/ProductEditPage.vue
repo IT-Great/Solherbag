@@ -137,6 +137,109 @@
 </template>
 
 <script setup>
+// import { ref, onMounted } from "vue";
+// import axios from "axios";
+// import { useRouter, useRoute } from "vue-router";
+// import Swal from "sweetalert2";
+// import { BASE_URL } from "../../config/api.js";
+
+// const router = useRouter();
+// const route = useRoute();
+// const productId = route.params.id;
+
+// const categories = ref([]);
+// const currentImage = ref("");
+// const form = ref({
+//   name: "",
+//   code: "",
+//   price: "",
+//   stock: "",
+//   category_id: "",
+//   description: "",
+//   care: "",
+//   design: "",
+//   image: null,
+// });
+
+// const axiosConfig = {
+//   headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
+// };
+
+// const handleFile = (e) => {
+//   form.value.image = e.target.files[0];
+// };
+
+// // Ambil Data Kategori & Detail Produk saat halaman dimuat
+// onMounted(async () => {
+//   try {
+//     // 1. Fetch Categories
+//     const catRes = await axios.get(`${BASE_URL}/categories`, axiosConfig);
+//     categories.value = catRes.data.data;
+
+//     // 2. Fetch Product Detail
+//     const prodRes = await axios.get(
+//       `${BASE_URL}/products/${productId}`,
+//       axiosConfig,
+//     );
+//     const p = prodRes.data;
+
+//     form.value.name = p.name;
+//     form.value.code = p.code;
+//     form.value.price = p.price;
+//     form.value.stock = p.stock;
+//     form.value.category_id = p.category_id;
+//     form.value.description = p.description;
+//     form.value.care = p.care;
+//     form.value.design = p.design;
+//     currentImage.value = p.image;
+//   } catch (error) {
+//     Swal.fire("Error", "Gagal mengambil data produk.", "error");
+//   }
+// });
+
+// const handleSubmit = async () => {
+//   const formData = new FormData();
+
+//   // Trik Laravel: Gunakan POST dengan spoofing _method PUT untuk FormData
+//   formData.append("_method", "PUT");
+
+//   Object.keys(form.value).forEach((key) => {
+//     if (key === "image") {
+//       if (form.value.image instanceof File) {
+//         formData.append("image", form.value.image);
+//       }
+//     } else {
+//       formData.append(key, form.value[key]);
+//     }
+//   });
+
+//   try {
+//     // Tetap menggunakan .post karena menyertakan file, tapi method aslinya PUT (via _method)
+//     await axios.post(`${BASE_URL}/products/${productId}`, formData, {
+//       headers: {
+//         "Content-Type": "multipart/form-data",
+//         ...axiosConfig.headers,
+//       },
+//     });
+
+//     Swal.fire({
+//       icon: "success",
+//       title: "Updated!",
+//       text: "Data produk berhasil diperbarui.",
+//       timer: 2000,
+//       showConfirmButton: false,
+//     });
+//     router.push("/admin/products");
+//   } catch (error) {
+//     console.error(error);
+//     Swal.fire(
+//       "Error",
+//       "Gagal memperbarui produk. Pastikan kode unik tidak duplikat.",
+//       "error",
+//     );
+//   }
+// };
+
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import { useRouter, useRoute } from "vue-router";
@@ -153,6 +256,7 @@ const form = ref({
   name: "",
   code: "",
   price: "",
+  discount_price: "", // Tambahkan ini agar tidak error jika kosong
   stock: "",
   category_id: "",
   description: "",
@@ -169,38 +273,55 @@ const handleFile = (e) => {
   form.value.image = e.target.files[0];
 };
 
-// Ambil Data Kategori & Detail Produk saat halaman dimuat
+// Fungsi helper untuk mengisi form dari data produk
+const fillFormWithData = (p) => {
+  form.value.name = p.name;
+  form.value.code = p.code;
+  form.value.price = p.price;
+  form.value.discount_price = p.discount_price || "";
+  form.value.stock = p.stock;
+  form.value.category_id = p.category_id;
+  form.value.description = p.description;
+  form.value.care = p.care;
+  form.value.design = p.design;
+  currentImage.value = p.image;
+};
+
+// Ambil Data saat halaman dimuat
 onMounted(async () => {
+  // 1. TANGKAP DATA DARI STATE ROUTER (Optimistic Load)
+  const stateData = window.history.state?.productData;
+
+  if (stateData) {
+    // Isi form LANGSUNG tanpa menunggu API
+    fillFormWithData(stateData);
+  }
+
   try {
-    // 1. Fetch Categories
+    // 2. Fetch Categories (Tetap perlu karena dropdown butuh list master kategori)
     const catRes = await axios.get(`${BASE_URL}/categories`, axiosConfig);
     categories.value = catRes.data.data;
 
-    // 2. Fetch Product Detail
+    // 3. Fetch Product Detail (Background Sync)
+    // Walaupun form sudah terisi dari state, kita tetap ambil data terbaru
+    // dari server untuk berjaga-jaga jika ada admin lain yang mengedit stok dll
     const prodRes = await axios.get(
       `${BASE_URL}/products/${productId}`,
       axiosConfig,
     );
-    const p = prodRes.data;
 
-    form.value.name = p.name;
-    form.value.code = p.code;
-    form.value.price = p.price;
-    form.value.stock = p.stock;
-    form.value.category_id = p.category_id;
-    form.value.description = p.description;
-    form.value.care = p.care;
-    form.value.design = p.design;
-    currentImage.value = p.image;
+    // Timpa form dengan data paling fresh dari database
+    fillFormWithData(prodRes.data);
   } catch (error) {
-    Swal.fire("Error", "Gagal mengambil data produk.", "error");
+    // Jika stateData tidak ada dan fetch gagal, baru tampilkan error
+    if (!stateData) {
+      Swal.fire("Error", "Gagal mengambil data produk.", "error");
+    }
   }
 });
 
 const handleSubmit = async () => {
   const formData = new FormData();
-
-  // Trik Laravel: Gunakan POST dengan spoofing _method PUT untuk FormData
   formData.append("_method", "PUT");
 
   Object.keys(form.value).forEach((key) => {
@@ -214,7 +335,6 @@ const handleSubmit = async () => {
   });
 
   try {
-    // Tetap menggunakan .post karena menyertakan file, tapi method aslinya PUT (via _method)
     await axios.post(`${BASE_URL}/products/${productId}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",

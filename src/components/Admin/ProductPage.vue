@@ -398,11 +398,17 @@ onMounted(fetchData);
               </span>
             </td>
             <td class="py-4 text-center">
-              <router-link
+              <!-- <router-link
                 :to="`/admin/products/edit/${p.id}`"
                 class="mr-4 font-medium text-amber-500 hover:text-amber-600"
                 >Edit</router-link
+              > -->
+              <button
+                @click="goToEdit(p)"
+                class="mr-4 font-medium text-amber-500 hover:text-amber-600"
               >
+                Edit
+              </button>
               <button
                 @click="confirmDelete(p.id)"
                 class="font-medium text-red-500 hover:text-red-600"
@@ -462,6 +468,7 @@ onMounted(fetchData);
 
 <script setup>
 import { ref, onMounted, computed, watch } from "vue";
+import { useRouter } from "vue-router";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
@@ -474,6 +481,7 @@ const isLoading = ref(false); // State loading
 
 const currentPage = ref(1);
 const itemsPerPage = ref(5);
+const router = useRouter();
 
 const axiosConfig = {
   headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
@@ -500,6 +508,15 @@ const paginatedProducts = computed(() => {
   const end = start + itemsPerPage.value;
   return filteredProducts.value.slice(start, end);
 });
+
+const goToEdit = (product) => {
+  // Pindah halaman sekaligus membawa 'state' data produk secara utuh
+  router.push({
+    name: "ProductEdit", // Pastikan nama route ini sesuai dengan di router/index.js Anda
+    params: { id: product.id },
+    state: { productData: JSON.parse(JSON.stringify(product)) },
+  });
+};
 
 watch([selectedCategory, searchQuery, itemsPerPage], () => {
   currentPage.value = 1;
