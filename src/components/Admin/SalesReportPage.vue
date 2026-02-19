@@ -416,11 +416,16 @@ onMounted(fetchReport);
             >
               <td class="py-4">
                 <div class="flex items-center gap-4">
-                  <img
+                  <!-- <img
                     :src="item.image"
                     alt="Product"
                     class="bg-gray-100 shadow-sm rounded-lg w-12 h-12 object-cover"
                     crossorigin="anonymous"
+                  /> -->
+                  <img
+                    :src="item.image"
+                    alt="Product"
+                    class="bg-gray-100 shadow-sm rounded-lg w-12 h-12 object-cover"
                   />
                   <div>
                     <p class="font-bold text-gray-900">{{ item.name }}</p>
