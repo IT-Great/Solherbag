@@ -220,6 +220,7 @@ watch(() => filters.value.search, () => {
 onMounted(fetchReport);
 </script> -->
 
+<!-- Update sales report -->
 <template>
   <div class="space-y-8 animate-fade-in">
     <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
