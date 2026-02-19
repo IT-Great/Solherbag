@@ -160,7 +160,8 @@ onMounted(fetchData);
 }
 </style> -->
 
-<template>
+<!-- Update tampilan -->
+<!-- <template>
   <div class="mx-auto px-6 py-12 max-w-6xl min-h-screen">
     <div
       class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-10"
@@ -570,6 +571,603 @@ const isLoading = ref(true);
 const axiosConfig = {
   headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
 };
+
+const fetchData = async () => {
+  const stateData = window.history.state?.transactionData;
+
+  if (stateData) {
+    transaction.value = stateData;
+    isLoading.value = false;
+    try {
+      const res = await axios.get(
+        `${BASE_URL}/admin/transactions/${route.params.id}`,
+        axiosConfig,
+      );
+      transaction.value = res.data;
+    } catch (error) {
+      console.error("Background sync failed", error);
+    }
+  } else {
+    isLoading.value = true;
+    try {
+      const res = await axios.get(
+        `${BASE_URL}/admin/transactions/${route.params.id}`,
+        axiosConfig,
+      );
+      transaction.value = res.data;
+    } catch (error) {
+      console.error("Detail fetch error:", error);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+};
+
+// --- Helper Functions ---
+const getGrandTotal = (trx) => {
+  const subtotal = parseFloat(trx.total_amount) || 0;
+  const shipping = parseFloat(trx.shipping_cost) || 0;
+  return subtotal + shipping;
+};
+
+const getPaymentLogo = (methodString) => {
+  if (!methodString) return null;
+  const channel = methodString.split(" ")[1]?.toLowerCase();
+  if (!channel) return null;
+  const baseUrl = "/payment_images/";
+  const map = {
+    bca: "bca.png",
+    bni: "bni.png",
+    bri: "bri.png",
+    mandiri: "mandiri.png",
+    bsi: "bsi.png",
+    permata: "permata.png",
+    ovo: "ovo.png",
+    dana: "dana.png",
+    linkaja: "linkaja.png",
+    shopeepay: "shopeepay.png",
+    alfamart: "alfamart.png",
+    indomaret: "indomaret.png",
+    qris: "qris.png",
+  };
+  return map[channel] ? baseUrl + map[channel] : null;
+};
+
+const getCourierLogo = (company) => {
+  if (!company) return null;
+  const baseUrl = "/courier_images/";
+  const map = {
+    jne: "jne.png",
+    sicepat: "sicepat.png",
+    jnt: "jnt.png",
+    anteraja: "anteraja.png",
+    gojek: "gojek.png",
+    grab: "grab.png",
+    paxel: "paxel.png",
+    ninja: "ninja.png",
+  };
+  return map[company.toLowerCase()]
+    ? baseUrl + map[company.toLowerCase()]
+    : null;
+};
+
+const getPaymentStatusText = (status) => {
+  if (
+    [
+      "completed",
+      "processing",
+      "refund_requested",
+      "refund_approved",
+      "refund_rejected",
+    ].includes(status)
+  )
+    return "PAID";
+  if (status === "cancelled") return "CANCELLED";
+  if (status === "refunded") return "REFUNDED";
+  return "UNPAID";
+};
+
+const getPaymentStatusColor = (status) => {
+  if (
+    [
+      "completed",
+      "processing",
+      "refund_requested",
+      "refund_approved",
+      "refund_rejected",
+    ].includes(status)
+  )
+    return "text-green-600";
+  if (status === "cancelled") return "text-red-500";
+  if (status === "refunded") return "text-teal-600";
+  return "text-orange-500";
+};
+
+const statusClass = (status) => {
+  if (!status) return "bg-gray-100 text-gray-500";
+  const map = {
+    awaiting_payment: "bg-yellow-100 text-yellow-700",
+    pending: "bg-orange-100 text-orange-700",
+    processing: "bg-blue-100 text-blue-700",
+    completed: "bg-green-100 text-green-700",
+    cancelled: "bg-red-100 text-red-700",
+    refund_requested: "bg-purple-100 text-purple-700",
+    refund_approved: "bg-indigo-100 text-indigo-700",
+    refund_rejected: "bg-gray-200 text-gray-600 line-through",
+    refunded: "bg-teal-100 text-teal-700",
+    refund_manual_required: "bg-pink-100 text-pink-700",
+  };
+  return map[status] || "bg-gray-100 text-gray-500";
+};
+
+const formatStatus = (s) => {
+  if (!s) return "";
+  return s.replace(/_/g, " ");
+};
+
+const formatPrice = (v) =>
+  new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(
+    v,
+  );
+
+const formatDate = (dateString) => {
+  if (!dateString) return "-";
+  const options = {
+    weekday: "long",
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  };
+  return new Date(dateString).toLocaleDateString("en-US", options);
+};
+
+onMounted(fetchData);
+</script>
+
+<style scoped>
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style> -->
+
+<template>
+  <div class="mx-auto px-6 py-12 max-w-6xl min-h-screen">
+    <div
+      class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-10"
+    >
+      <button
+        @click="$router.back()"
+        class="group flex items-center gap-2 text-gray-500 hover:text-black transition-colors w-fit"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-5 h-5 transition-transform group-hover:-translate-x-1"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
+        <span class="font-bold text-sm uppercase tracking-widest"
+          >Back to List</span
+        >
+      </button>
+
+      <div class="flex items-center gap-4">
+        <div class="text-right">
+          <p
+            class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1"
+          >
+            Order Date
+          </p>
+          <p class="text-sm font-bold text-gray-900">
+            {{ formatDate(transaction?.created_at) }}
+          </p>
+        </div>
+        <div class="h-8 w-px bg-gray-200"></div>
+        <span
+          :class="statusClass(transaction?.status)"
+          class="shadow-sm px-6 py-2 rounded-full font-black text-xs uppercase tracking-widest"
+        >
+          {{ formatStatus(transaction?.status) }}
+        </span>
+      </div>
+    </div>
+
+    <div
+      v-if="isLoading"
+      class="py-20 flex flex-col items-center justify-center animate-pulse"
+    >
+      <div
+        class="border-4 border-gray-100 border-t-black rounded-full w-12 h-12 animate-spin mb-4"
+      ></div>
+      <p class="font-serif text-gray-400 text-center italic">
+        Loading transaction details...
+      </p>
+    </div>
+
+    <div
+      v-else-if="transaction"
+      class="gap-8 grid grid-cols-1 lg:grid-cols-3 animate-fade-in"
+    >
+      <div class="space-y-6 lg:col-span-2">
+        <div
+          class="bg-white shadow-sm p-6 sm:p-8 border border-gray-100 rounded-[2rem]"
+        >
+          <div
+            class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4"
+          >
+            <h2 class="font-bold text-gray-800 text-xl tracking-tight">
+              Order Items
+            </h2>
+            <div class="flex items-center gap-2">
+              <span
+                class="text-[10px] font-bold text-gray-400 uppercase tracking-widest"
+                >{{ transaction.details.length }} Variants</span
+              >
+              <span
+                class="text-xs font-bold bg-black text-white px-3 py-1 rounded-full"
+              >
+                {{ totalQuantity }} Total Items
+              </span>
+            </div>
+          </div>
+
+          <div class="divide-y divide-gray-50">
+            <div
+              v-for="item in transaction.details"
+              :key="item.id"
+              class="flex gap-6 py-6 first:pt-0 last:pb-0"
+            >
+              <img
+                :src="item.product.image"
+                class="bg-gray-50 shadow-sm border border-gray-100 rounded-2xl w-24 h-24 object-cover shrink-0"
+              />
+              <div class="flex flex-col flex-grow justify-center">
+                <h3
+                  class="font-bold text-gray-900 text-sm uppercase tracking-wide"
+                >
+                  {{ item.product.name }}
+                </h3>
+                <p class="mt-1 text-gray-400 text-xs font-mono">
+                  SKU: {{ item.product.code }}
+                </p>
+                <div class="flex justify-between items-end mt-4">
+                  <p
+                    class="text-gray-600 text-sm bg-gray-50 px-3 py-1 rounded-lg"
+                  >
+                    {{ item.quantity }} <span class="text-[10px] mx-1">x</span>
+                    {{ formatPrice(item.price) }}
+                  </p>
+                  <p class="font-bold text-black">
+                    {{ formatPrice(item.quantity * item.price) }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div
+            class="bg-white shadow-sm p-6 sm:p-8 border border-gray-100 rounded-[2rem] flex flex-col"
+          >
+            <h2
+              class="font-bold text-gray-800 text-sm tracking-widest uppercase mb-6 border-b border-gray-100 pb-4"
+            >
+              Logistics
+            </h2>
+
+            <div
+              v-if="transaction.shipping_method !== 'free'"
+              class="flex-grow flex flex-col justify-between"
+            >
+              <div class="flex items-center gap-4 mb-4">
+                <div
+                  class="w-16 h-12 bg-white border border-gray-200 rounded-xl flex justify-center items-center p-1 shrink-0"
+                >
+                  <img
+                    v-if="getCourierLogo(transaction.courier_company)"
+                    :src="getCourierLogo(transaction.courier_company)"
+                    class="w-full h-full object-contain"
+                  />
+                  <span v-else class="text-[10px] font-black text-gray-400">{{
+                    transaction.courier_company?.toUpperCase()
+                  }}</span>
+                </div>
+                <div>
+                  <p class="font-bold text-gray-900 text-sm uppercase">
+                    {{ transaction.courier_company }}
+                  </p>
+                  <p class="text-xs text-gray-500 uppercase">
+                    {{ transaction.courier_type }}
+                  </p>
+                </div>
+              </div>
+
+              <div class="bg-gray-50 p-4 rounded-xl space-y-2 mt-auto">
+                <p
+                  class="text-[10px] font-bold text-gray-400 uppercase tracking-widest"
+                >
+                  Tracking Number (Resi)
+                </p>
+                <div class="flex items-center justify-between">
+                  <p class="font-mono font-bold text-black text-sm">
+                    {{ transaction.tracking_number || "Pending Allocation" }}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div
+              v-else
+              class="flex-grow flex flex-col justify-center items-center text-center bg-gray-50 rounded-xl p-6"
+            >
+              <div
+                class="w-12 h-12 bg-black text-white rounded-full flex justify-center items-center mb-3"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-6 h-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
+                  />
+                </svg>
+              </div>
+              <p class="font-bold text-gray-900 text-sm uppercase">
+                Internal Courier
+              </p>
+              <p class="text-xs text-green-600 font-bold mt-1">Free Shipping</p>
+            </div>
+          </div>
+
+          <div
+            class="bg-white shadow-sm p-6 sm:p-8 border border-gray-100 rounded-[2rem] flex flex-col"
+          >
+            <h2
+              class="font-bold text-gray-800 text-sm tracking-widest uppercase mb-6 border-b border-gray-100 pb-4"
+            >
+              Payment Method
+            </h2>
+
+            <div
+              v-if="transaction.payment_method"
+              class="flex-grow flex flex-col justify-center"
+            >
+              <div class="flex items-center gap-4 mb-6">
+                <div
+                  class="w-16 h-12 bg-gray-50 border border-gray-100 rounded-xl flex justify-center items-center p-1 shrink-0"
+                >
+                  <img
+                    v-if="getPaymentLogo(transaction.payment_method)"
+                    :src="getPaymentLogo(transaction.payment_method)"
+                    class="w-full h-full object-contain"
+                  />
+                  <span v-else class="text-[10px] font-black text-gray-400"
+                    >PAY</span
+                  >
+                </div>
+                <div>
+                  <p class="font-bold text-gray-900 text-sm uppercase">
+                    {{ transaction.payment_method.replace("_", " ") }}
+                  </p>
+                  <p
+                    :class="getPaymentStatusColor(transaction.status)"
+                    class="text-[10px] font-bold uppercase tracking-wider mt-1"
+                  >
+                    Status: {{ getPaymentStatusText(transaction.status) }}
+                  </p>
+                </div>
+              </div>
+
+              <div
+                v-if="transaction.payment"
+                class="bg-blue-50/50 border border-blue-100 p-4 rounded-xl mt-auto"
+              >
+                <p
+                  class="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1"
+                >
+                  Xendit Ref ID
+                </p>
+                <p class="font-mono text-blue-900 text-xs truncate">
+                  {{ transaction.payment.external_id }}
+                </p>
+              </div>
+            </div>
+
+            <div v-else class="flex-grow flex justify-center items-center">
+              <p class="text-sm text-gray-400 italic">Method not selected</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-6">
+        <div
+          class="bg-black shadow-xl p-8 rounded-[2rem] text-white relative overflow-hidden"
+        >
+          <div
+            class="absolute -right-6 -top-6 w-32 h-32 bg-white opacity-5 rounded-full blur-2xl pointer-events-none"
+          ></div>
+
+          <h2
+            class="opacity-50 mb-6 font-black text-[10px] uppercase tracking-[0.3em] flex items-center gap-2"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+              />
+            </svg>
+            Customer Details
+          </h2>
+
+          <p class="font-bold text-xl leading-none uppercase">
+            {{ transaction.user.first_name }} {{ transaction.user.last_name }}
+          </p>
+
+          <div class="mt-4 space-y-2 opacity-80">
+            <p class="text-sm flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                />
+              </svg>
+              {{ transaction.user.email }}
+            </p>
+            <p class="text-sm flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                />
+              </svg>
+              {{ transaction.user.phone || "No phone" }}
+            </p>
+          </div>
+
+          <div class="mt-6 pt-6 border-white/10 border-t space-y-4">
+            <div>
+              <p
+                class="text-[10px] text-gray-400 uppercase tracking-widest mb-1"
+              >
+                Order ID
+              </p>
+              <div class="bg-white/10 px-3 py-2 rounded-lg font-mono text-xs">
+                {{ transaction.order_id }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="bg-white shadow-sm p-8 border border-gray-100 rounded-[2rem]"
+        >
+          <h2
+            class="mb-6 font-black text-[10px] text-gray-400 uppercase tracking-[0.2em] border-b border-gray-50 pb-4"
+          >
+            Financial Summary
+          </h2>
+
+          <div class="space-y-4">
+            <div
+              class="flex justify-between items-center text-gray-600 text-sm"
+            >
+              <span>Subtotal ({{ totalQuantity }} items)</span>
+              <span class="font-medium text-gray-900">{{
+                formatPrice(transaction.total_amount)
+              }}</span>
+            </div>
+
+            <div
+              class="flex justify-between items-center text-gray-600 text-sm"
+            >
+              <span>Shipping Fee</span>
+              <span
+                v-if="transaction.shipping_method === 'free'"
+                class="font-bold text-green-600"
+                >Free</span
+              >
+              <span v-else class="font-medium text-gray-900">{{
+                formatPrice(transaction.shipping_cost)
+              }}</span>
+            </div>
+
+            <div
+              class="flex justify-between items-end pt-4 border-gray-100 border-t border-dashed"
+            >
+              <div>
+                <span
+                  class="block font-bold text-gray-900 text-xs uppercase tracking-widest"
+                  >Grand Total</span
+                >
+                <span class="text-[10px] text-gray-400 italic"
+                  >Paid by customer</span
+                >
+              </div>
+              <span class="font-bold text-black text-2xl">{{
+                formatPrice(getGrandTotal(transaction))
+              }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, computed } from "vue";
+import { useRoute } from "vue-router";
+import axios from "axios";
+import { BASE_URL } from "../../config/api.js";
+
+const route = useRoute();
+const transaction = ref(null);
+const isLoading = ref(true);
+
+const axiosConfig = {
+  headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
+};
+
+// [BARU] Computed Property untuk menjumlahkan semua kuantitas barang
+const totalQuantity = computed(() => {
+  if (!transaction.value || !transaction.value.details) return 0;
+  return transaction.value.details.reduce(
+    (sum, item) => sum + parseInt(item.quantity),
+    0,
+  );
+});
 
 const fetchData = async () => {
   const stateData = window.history.state?.transactionData;
