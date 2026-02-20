@@ -2920,15 +2920,42 @@ const fetchData = async () => {
 };
 
 // [BARU] Fungsi Download Label
+// const downloadLabel = () => {
+//   if (!transaction.value?.biteship_order_id) return;
+
+//   // Konversi setting boolean (true/false) menjadi flag string ("true"/"false") untuk URL
+//   const params = new URLSearchParams({
+//     insurance_shown: printSettings.value.insurance_shown.toString(),
+//     shipping_fee_shown: printSettings.value.shipping_fee_shown.toString(),
+//     item_description_shown:
+//       printSettings.value.item_description_shown.toString(),
+//     item_sku_shown: printSettings.value.item_sku_shown.toString(),
+//     origin_phone_shown: printSettings.value.origin_phone_shown.toString(),
+//     origin_address_shown: printSettings.value.origin_address_shown.toString(),
+//     receiver_phone_shown: printSettings.value.receiver_phone_shown.toString(),
+//     censor_receiver_name: printSettings.value.censor_receiver_name.toString(),
+//     paper_size: printSettings.value.paper_size,
+//   });
+
+//   // URL ini mengarah langsung ke server Biteship untuk merender PDF
+//   const labelUrl = `https://biteship.com/v1/orders/${transaction.value.biteship_order_id}/labels?${params.toString()}`;
+
+//   // Buka resi di tab baru
+//   window.open(labelUrl, "_blank");
+
+//   // Tutup modal
+//   showPrintModal.value = false;
+// };
+
+// [PERBAIKAN] Fungsi Download Label
 const downloadLabel = () => {
   if (!transaction.value?.biteship_order_id) return;
 
-  // Konversi setting boolean (true/false) menjadi flag string ("true"/"false") untuk URL
+  // Konversi setting boolean
   const params = new URLSearchParams({
     insurance_shown: printSettings.value.insurance_shown.toString(),
     shipping_fee_shown: printSettings.value.shipping_fee_shown.toString(),
-    item_description_shown:
-      printSettings.value.item_description_shown.toString(),
+    item_description_shown: printSettings.value.item_description_shown.toString(),
     item_sku_shown: printSettings.value.item_sku_shown.toString(),
     origin_phone_shown: printSettings.value.origin_phone_shown.toString(),
     origin_address_shown: printSettings.value.origin_address_shown.toString(),
@@ -2937,14 +2964,40 @@ const downloadLabel = () => {
     paper_size: printSettings.value.paper_size,
   });
 
-  // URL ini mengarah langsung ke server Biteship untuk merender PDF
-  const labelUrl = `https://biteship.com/v1/orders/${transaction.value.biteship_order_id}/labels?${params.toString()}`;
+  // KITA TEMBAK BACKEND LARAVEL KITA SENDIRI
+  // URL ini juga harus menyertakan token admin untuk lolos middleware Laravel
+  const adminToken = localStorage.getItem("admin_token");
 
-  // Buka resi di tab baru
-  window.open(labelUrl, "_blank");
+  const labelUrl = `${BASE_URL}/admin/transactions/${transaction.value.id}/print-label?${params.toString()}`;
 
-  // Tutup modal
+  // Cara terbaik (Tanpa window.open, 100% aman dengan Header Token):
+  downloadPDFSecured(labelUrl, `Resi-${transaction.value.order_id}.pdf`);
   showPrintModal.value = false;
+};
+
+// [BARU] Helper untuk mengunduh PDF menggunakan Axios agar Header Token tetap terkirim
+const downloadPDFSecured = async (url, filename) => {
+    // Tampilkan loading state jika perlu (bisa pakai Swal)
+    Swal.fire({ title: 'Menyiapkan PDF...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
+    
+    try {
+        const response = await axios.get(url, {
+            headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
+            responseType: 'blob' // SANGAT PENTING untuk file PDF/Binary
+        });
+
+        // Buat objek URL dari Blob
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const objectUrl = window.URL.createObjectURL(blob);
+
+        // Buka di tab baru (Browser akan merender PDF)
+        window.open(objectUrl, '_blank');
+        Swal.close();
+
+    } catch (error) {
+        console.error("Gagal cetak resi", error);
+        Swal.fire('Error', 'Gagal memuat PDF Resi. Coba lagi.', 'error');
+    }
 };
 
 // --- Helper Functions ---
