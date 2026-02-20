@@ -2116,20 +2116,18 @@ onMounted(fetchData);
 
 <!-- Tambahan Tombol Cetak Resi -->
 <template>
-  <div
-    class="mx-auto px-6 py-12 max-w-6xl min-h-screen relative overflow-hidden"
-  >
+  <div class="mx-auto px-6 py-12 max-w-6xl min-h-screen">
     <div
       id="print-label-template"
       style="
-        display: none;
         position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 99999;
+        top: -9999px;
+        left: -9999px;
         width: 800px;
         background-color: white;
         padding: 20px;
+        z-index: -1;
+        color: black;
       "
     >
       <div
@@ -3121,10 +3119,15 @@ const generateAndDownloadPDF = () => {
 
   const element = document.getElementById("print-label-template");
 
-  // 1. Ubah styling agar elemen BENAR-BENAR terlihat oleh browser
-  element.style.display = "block";
+  // [KUNCI 1] Setel ke atas layar sebelum foto di ambil
+  const originalScroll = window.scrollY;
+  window.scrollTo(0, 0);
 
-  // 2. KUNCI UTAMA: Wajib menggunakan setTimeout!
+  // [KUNCI 2] Tampilkan Elemen dan pastikan ukurannya nyata di mata browser (zIndex menjamin di atas semuanya)
+  element.style.top = "0px";
+  element.style.left = "0px";
+  element.style.zIndex = "999999";
+
   setTimeout(() => {
     let formatSetting = "a4";
     if (printSettings.value.paper_size === "thermal")
@@ -3139,8 +3142,9 @@ const generateAndDownloadPDF = () => {
       html2canvas: {
         scale: 2,
         useCORS: true,
-        scrollY: 0, // [PENTING] Memastikan render tidak terpotong saat di-scroll
-        windowWidth: 800,
+        allowTaint: true, // [PENTING] Untuk Barcode eksternal
+        scrollY: 0,
+        scrollX: 0,
       },
       jsPDF: { unit: "in", format: formatSetting, orientation: "portrait" },
     };
@@ -3150,16 +3154,22 @@ const generateAndDownloadPDF = () => {
       .from(element)
       .save()
       .then(() => {
-        // 3. Kembalikan ke tidak terlihat setelah selesai
-        element.style.display = "none";
+        // [KUNCI 3] Sembunyikan elemen dan kembalikan scroll
+        element.style.top = "-9999px";
+        element.style.left = "-9999px";
+        element.style.zIndex = "-1";
+        window.scrollTo(0, originalScroll);
         Swal.close();
       })
       .catch((err) => {
         console.error("Error generating PDF:", err);
-        element.style.display = "none";
+        element.style.top = "-9999px";
+        element.style.left = "-9999px";
+        element.style.zIndex = "-1";
+        window.scrollTo(0, originalScroll);
         Swal.fire("Error", "Gagal memproses PDF", "error");
       });
-  }, 1500);
+  }, 1500); // Waktu yang cukup untuk render Barcode
 };
 
 const getGrandTotal = (trx) =>
