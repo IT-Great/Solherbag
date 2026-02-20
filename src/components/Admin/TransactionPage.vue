@@ -3192,7 +3192,7 @@ const fetchBulkTracking = async (orders) => {
 
   try {
     const res = await axios.post(
-      `${BASE_URL}/transactions/tracking/bulk`,
+      `${BASE_URL}/admin/transactions/tracking/bulk`,
       {
         transaction_ids: idsToTrack,
       },
