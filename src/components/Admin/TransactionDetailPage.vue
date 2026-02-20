@@ -2121,7 +2121,16 @@ onMounted(fetchData);
   >
     <div
       id="print-label-template"
-      class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] bg-white text-black p-4 z-[-1] opacity-0 pointer-events-none transition-opacity duration-300 shadow-2xl"
+      style="
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 99999;
+        width: 800px;
+        background-color: white;
+        padding: 20px;
+      "
     >
       <div
         v-if="transaction"
@@ -3113,13 +3122,9 @@ const generateAndDownloadPDF = () => {
   const element = document.getElementById("print-label-template");
 
   // 1. Ubah styling agar elemen BENAR-BENAR terlihat oleh browser
-  element.style.opacity = "1";
-  element.style.zIndex = "9999";
+  element.style.display = "block";
 
   // 2. KUNCI UTAMA: Wajib menggunakan setTimeout!
-  // html2canvas butuh browser untuk melakukan "repaint" layar terlebih dahulu.
-  // Jika dipanggil tanpa delay, html2canvas akan menangkap layar saat opacity masih 0 (Blank PDF).
-  // Delay 800ms juga memberi waktu bagi Barcode (bwipjs) untuk loading.
   setTimeout(() => {
     let formatSetting = "a4";
     if (printSettings.value.paper_size === "thermal")
@@ -3131,7 +3136,12 @@ const generateAndDownloadPDF = () => {
       margin: 0.1,
       filename: `Resi-${transaction.value.order_id}.pdf`,
       image: { type: "jpeg", quality: 1 },
-      html2canvas: { scale: 2, useCORS: true },
+      html2canvas: {
+        scale: 2,
+        useCORS: true,
+        scrollY: 0, // [PENTING] Memastikan render tidak terpotong saat di-scroll
+        windowWidth: 800,
+      },
       jsPDF: { unit: "in", format: formatSetting, orientation: "portrait" },
     };
 
@@ -3141,11 +3151,15 @@ const generateAndDownloadPDF = () => {
       .save()
       .then(() => {
         // 3. Kembalikan ke tidak terlihat setelah selesai
-        element.style.opacity = "0";
-        element.style.zIndex = "-1";
+        element.style.display = "none";
         Swal.close();
+      })
+      .catch((err) => {
+        console.error("Error generating PDF:", err);
+        element.style.display = "none";
+        Swal.fire("Error", "Gagal memproses PDF", "error");
       });
-  }, 800);
+  }, 1500);
 };
 
 const getGrandTotal = (trx) =>
