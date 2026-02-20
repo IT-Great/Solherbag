@@ -605,7 +605,7 @@ onMounted(fetchData);
                     Free Shipping
                   </p>
                   <p class="text-green-600 font-bold text-xs mt-1">
-                    Ships next day (Internal Courier)
+                    In-Store Pickup (Ambil barang di toko)
                   </p>
                 </div>
                 <p class="font-black text-black">Rp 0</p>
