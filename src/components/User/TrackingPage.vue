@@ -1998,7 +1998,7 @@ const fetchAllData = async () => {
 
     try {
       const trackingRes = await axios.get(
-        `${BASE_URL}/transactions/${route.params.id}/tracking`,
+        `${BASE_URL }/transactions/${route.params.id}/tracking`,
         config,
       );
       trackingData.value = trackingRes.data;

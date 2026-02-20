@@ -1342,7 +1342,7 @@ onMounted(fetchData);
 </style> -->
 
 <!-- Dengan Visualisasi Timeline -->
-<template>
+<!-- <template>
   <div class="mx-auto px-6 py-12 max-w-6xl min-h-screen">
     <div
       class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-10"
@@ -2111,5 +2111,970 @@ onMounted(fetchData);
     opacity: 1;
     transform: translateY(0);
   }
+}
+</style> -->
+
+<!-- Tambahan Tombol Cetak Resi -->
+<template>
+  <div class="mx-auto px-6 py-12 max-w-6xl min-h-screen">
+    <div
+      class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-10"
+    >
+      <button
+        @click="$router.back()"
+        class="group flex items-center gap-2 text-gray-500 hover:text-black transition-colors w-fit"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-5 h-5 transition-transform group-hover:-translate-x-1"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
+        <span class="font-bold text-sm uppercase tracking-widest"
+          >Back to List</span
+        >
+      </button>
+
+      <div class="flex items-center gap-4">
+        <button
+          v-if="
+            transaction?.shipping_method === 'biteship' &&
+            transaction?.biteship_order_id
+          "
+          @click="showPrintModal = true"
+          class="bg-[#4a148c] hover:bg-[#380e6b] text-white px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 transition shadow-sm"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-4 h-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
+            />
+          </svg>
+          Cetak Resi
+        </button>
+
+        <div class="h-8 w-px bg-gray-200"></div>
+
+        <div class="text-right">
+          <p
+            class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1"
+          >
+            Order Date
+          </p>
+          <p class="text-sm font-bold text-gray-900">
+            {{ formatDate(transaction?.created_at) }}
+          </p>
+        </div>
+        <div class="h-8 w-px bg-gray-200"></div>
+        <span
+          :class="statusClass(transaction?.status)"
+          class="shadow-sm px-6 py-2 rounded-full font-black text-xs uppercase tracking-widest"
+        >
+          {{ formatStatus(transaction?.status) }}
+        </span>
+      </div>
+    </div>
+
+    <div
+      v-if="showPrintModal"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm animate-fade-in px-4"
+    >
+      <div
+        class="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col"
+      >
+        <div
+          class="flex justify-between items-center px-6 py-4 border-b border-gray-100"
+        >
+          <h3 class="font-bold text-lg text-gray-800">Print Label</h3>
+          <button
+            @click="showPrintModal = false"
+            class="text-gray-400 hover:text-red-500 transition"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-6 h-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <div class="p-6 space-y-6 flex-grow overflow-y-auto max-h-[70vh]">
+          <div>
+            <h4 class="font-bold text-gray-800 mb-4">Isi Detail Resi</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="space-y-3">
+                <label class="flex items-center gap-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    v-model="printSettings.insurance_shown"
+                    class="w-5 h-5 text-[#4a148c] border-gray-300 rounded focus:ring-[#4a148c] cursor-pointer"
+                  />
+                  <span class="text-sm text-gray-600 group-hover:text-black"
+                    >Nilai Asuransi</span
+                  >
+                </label>
+                <label class="flex items-center gap-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    v-model="printSettings.shipping_fee_shown"
+                    class="w-5 h-5 text-[#4a148c] border-gray-300 rounded focus:ring-[#4a148c] cursor-pointer"
+                  />
+                  <span class="text-sm text-gray-600 group-hover:text-black"
+                    >Ongkos Kirim</span
+                  >
+                </label>
+                <label class="flex items-center gap-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    v-model="printSettings.item_description_shown"
+                    class="w-5 h-5 text-[#4a148c] border-gray-300 rounded focus:ring-[#4a148c] cursor-pointer"
+                  />
+                  <span class="text-sm text-gray-600 group-hover:text-black"
+                    >Deskripsi Barang</span
+                  >
+                </label>
+                <label class="flex items-center gap-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    v-model="printSettings.item_sku_shown"
+                    class="w-5 h-5 text-[#4a148c] border-gray-300 rounded focus:ring-[#4a148c] cursor-pointer"
+                  />
+                  <span class="text-sm text-gray-600 group-hover:text-black"
+                    >SKU Barang</span
+                  >
+                </label>
+              </div>
+              <div class="space-y-3">
+                <label class="flex items-center gap-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    v-model="printSettings.origin_phone_shown"
+                    class="w-5 h-5 text-[#4a148c] border-gray-300 rounded focus:ring-[#4a148c] cursor-pointer"
+                  />
+                  <span class="text-sm text-gray-600 group-hover:text-black"
+                    >No. Telp Pengirim</span
+                  >
+                </label>
+                <label class="flex items-center gap-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    v-model="printSettings.origin_address_shown"
+                    class="w-5 h-5 text-[#4a148c] border-gray-300 rounded focus:ring-[#4a148c] cursor-pointer"
+                  />
+                  <span class="text-sm text-gray-600 group-hover:text-black"
+                    >Alamat Pengirim</span
+                  >
+                </label>
+                <label class="flex items-center gap-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    v-model="printSettings.receiver_phone_shown"
+                    class="w-5 h-5 text-[#4a148c] border-gray-300 rounded focus:ring-[#4a148c] cursor-pointer"
+                  />
+                  <span class="text-sm text-gray-600 group-hover:text-black"
+                    >No. Telp Penerima</span
+                  >
+                </label>
+                <label class="flex items-center gap-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    v-model="printSettings.censor_receiver_name"
+                    class="w-5 h-5 text-[#4a148c] border-gray-300 rounded focus:ring-[#4a148c] cursor-pointer"
+                  />
+                  <span class="text-sm text-gray-600 group-hover:text-black"
+                    >Sensor Nama Penerima</span
+                  >
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h4 class="font-bold text-gray-800 mb-3">Tipe Label</h4>
+            <select
+              v-model="printSettings.paper_size"
+              class="w-full bg-white border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-[#4a148c] focus:border-[#4a148c] block p-3 outline-none cursor-pointer"
+            >
+              <option value="a4">Default Biteship (A4)</option>
+              <option value="thermal">Thermal 1 (8 x 10 cm)</option>
+              <option value="thermal2">Thermal 2 (10 x 15 cm)</option>
+            </select>
+          </div>
+
+          <div
+            class="flex items-center gap-2 text-sm text-[#4a148c] font-medium cursor-pointer hover:underline pt-2"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            Atur dan Simpan Konfigurasi Label
+          </div>
+        </div>
+
+        <div class="p-6 border-t border-gray-100 bg-gray-50">
+          <button
+            @click="downloadLabel"
+            class="w-full bg-[#4a148c] hover:bg-[#380e6b] text-white font-bold py-3 px-4 rounded-lg transition shadow-md"
+          >
+            Download Label
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      v-if="isLoading"
+      class="py-20 flex flex-col items-center justify-center animate-pulse"
+    >
+      <div
+        class="border-4 border-gray-100 border-t-black rounded-full w-12 h-12 animate-spin mb-4"
+      ></div>
+      <p class="font-serif text-gray-400 text-center italic">
+        Loading transaction details...
+      </p>
+    </div>
+
+    <div
+      v-else-if="transaction"
+      class="gap-8 grid grid-cols-1 lg:grid-cols-3 animate-fade-in"
+    >
+      <div class="space-y-6 lg:col-span-2">
+        <div
+          class="bg-white shadow-sm p-6 sm:p-8 border border-gray-100 rounded-[2rem]"
+        >
+          <div
+            class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4"
+          >
+            <h2 class="font-bold text-gray-800 text-xl tracking-tight">
+              Order Items
+            </h2>
+            <div class="flex items-center gap-2">
+              <span
+                class="text-[10px] font-bold text-gray-400 uppercase tracking-widest"
+                >{{ transaction.details.length }} Variants</span
+              >
+              <span
+                class="text-xs font-bold bg-black text-white px-3 py-1 rounded-full"
+                >{{ totalQuantity }} Total Items</span
+              >
+            </div>
+          </div>
+
+          <div class="divide-y divide-gray-50">
+            <div
+              v-for="item in transaction.details"
+              :key="item.id"
+              class="flex gap-6 py-6 first:pt-0 last:pb-0"
+            >
+              <img
+                :src="item.product.image"
+                class="bg-gray-50 shadow-sm border border-gray-100 rounded-2xl w-24 h-24 object-cover shrink-0"
+              />
+              <div class="flex flex-col flex-grow justify-center">
+                <h3
+                  class="font-bold text-gray-900 text-sm uppercase tracking-wide"
+                >
+                  {{ item.product.name }}
+                </h3>
+                <p class="mt-1 text-gray-400 text-xs font-mono">
+                  SKU: {{ item.product.code }}
+                </p>
+                <div class="flex justify-between items-end mt-4">
+                  <p
+                    class="text-gray-600 text-sm bg-gray-50 px-3 py-1 rounded-lg"
+                  >
+                    {{ item.quantity }} <span class="text-[10px] mx-1">x</span>
+                    {{ formatPrice(item.price) }}
+                  </p>
+                  <p class="font-bold text-black">
+                    {{ formatPrice(item.quantity * item.price) }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div
+            class="bg-white shadow-sm p-6 sm:p-8 border border-gray-100 rounded-[2rem] flex flex-col relative overflow-hidden"
+          >
+            <h2
+              class="font-bold text-gray-800 text-sm tracking-widest uppercase mb-6 border-b border-gray-100 pb-4"
+            >
+              Logistics
+            </h2>
+
+            <div
+              v-if="trackingLoading"
+              class="absolute inset-0 bg-white/80 backdrop-blur-sm z-10 flex flex-col justify-center items-center"
+            >
+              <div
+                class="border-2 border-gray-200 border-t-black rounded-full w-8 h-8 animate-spin"
+              ></div>
+              <p
+                class="text-[10px] uppercase tracking-widest text-gray-500 mt-2 font-bold"
+              >
+                Syncing Biteship...
+              </p>
+            </div>
+
+            <div
+              v-if="transaction.shipping_method !== 'free'"
+              class="flex-grow flex flex-col justify-between"
+            >
+              <div class="flex items-center gap-4 mb-4">
+                <div
+                  class="w-16 h-12 bg-white border border-gray-200 rounded-xl flex justify-center items-center p-1 shrink-0"
+                >
+                  <img
+                    v-if="getCourierLogo(transaction.courier_company)"
+                    :src="getCourierLogo(transaction.courier_company)"
+                    class="w-full h-full object-contain"
+                  />
+                  <span v-else class="text-[10px] font-black text-gray-400">{{
+                    transaction.courier_company?.toUpperCase()
+                  }}</span>
+                </div>
+                <div>
+                  <p class="font-bold text-gray-900 text-sm uppercase">
+                    {{ transaction.courier_company }}
+                  </p>
+                  <p class="text-xs text-gray-500 uppercase">
+                    {{ transaction.courier_type }}
+                  </p>
+                </div>
+              </div>
+
+              <div class="bg-gray-50 p-4 rounded-xl space-y-2 mt-auto">
+                <p
+                  class="text-[10px] font-bold text-gray-400 uppercase tracking-widest"
+                >
+                  Tracking Number (Resi)
+                </p>
+                <div class="flex items-center justify-between">
+                  <p class="font-mono font-bold text-black text-sm">
+                    {{
+                      biteshipData?.courier?.waybill_id ||
+                      transaction.tracking_number ||
+                      "Pending Allocation"
+                    }}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div
+              v-else
+              class="flex-grow flex flex-col justify-center items-center text-center bg-gray-50 rounded-xl p-6"
+            >
+              <div
+                class="w-12 h-12 bg-black text-white rounded-full flex justify-center items-center mb-3"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-6 h-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                  />
+                </svg>
+              </div>
+              <p class="font-bold text-gray-900 text-sm uppercase">
+                No Courier
+              </p>
+              <p class="text-xs text-gray-500 font-bold mt-1">
+                In-Store Pickup
+              </p>
+            </div>
+          </div>
+
+          <div
+            class="bg-white shadow-sm p-6 sm:p-8 border border-gray-100 rounded-[2rem] flex flex-col"
+          >
+            <h2
+              class="font-bold text-gray-800 text-sm tracking-widest uppercase mb-6 border-b border-gray-100 pb-4"
+            >
+              Payment Method
+            </h2>
+            <div
+              v-if="transaction.payment_method"
+              class="flex-grow flex flex-col justify-center"
+            >
+              <div class="flex items-center gap-4 mb-6">
+                <div
+                  class="w-16 h-12 bg-gray-50 border border-gray-100 rounded-xl flex justify-center items-center p-1 shrink-0"
+                >
+                  <img
+                    v-if="getPaymentLogo(transaction.payment_method)"
+                    :src="getPaymentLogo(transaction.payment_method)"
+                    class="w-full h-full object-contain"
+                  />
+                  <span v-else class="text-[10px] font-black text-gray-400"
+                    >PAY</span
+                  >
+                </div>
+                <div>
+                  <p class="font-bold text-gray-900 text-sm uppercase">
+                    {{ transaction.payment_method.replace("_", " ") }}
+                  </p>
+                  <p
+                    :class="getPaymentStatusColor(transaction.status)"
+                    class="text-[10px] font-bold uppercase tracking-wider mt-1"
+                  >
+                    Status: {{ getPaymentStatusText(transaction.status) }}
+                  </p>
+                </div>
+              </div>
+              <div
+                v-if="transaction.payment"
+                class="bg-blue-50/50 border border-blue-100 p-4 rounded-xl mt-auto"
+              >
+                <p
+                  class="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1"
+                >
+                  Xendit Ref ID
+                </p>
+                <p class="font-mono text-blue-900 text-xs truncate">
+                  {{ transaction.payment.external_id }}
+                </p>
+              </div>
+            </div>
+            <div v-else class="flex-grow flex justify-center items-center">
+              <p class="text-sm text-gray-400 italic">Method not selected</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-6">
+        <div
+          class="bg-black shadow-xl p-8 rounded-[2rem] text-white relative overflow-hidden"
+        >
+          <div
+            class="absolute -right-6 -top-6 w-32 h-32 bg-white opacity-5 rounded-full blur-2xl pointer-events-none"
+          ></div>
+          <h2
+            class="opacity-50 mb-6 font-black text-[10px] uppercase tracking-[0.3em] flex items-center gap-2"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+              />
+            </svg>
+            Customer Details
+          </h2>
+          <p class="font-bold text-xl leading-none uppercase">
+            {{ transaction.user.first_name }} {{ transaction.user.last_name }}
+          </p>
+          <div class="mt-4 space-y-2 opacity-80">
+            <p class="text-sm flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                />
+              </svg>
+              {{ transaction.user.email }}
+            </p>
+            <p class="text-sm flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                />
+              </svg>
+              {{ transaction.user.phone || "No phone" }}
+            </p>
+          </div>
+          <div class="mt-6 pt-6 border-white/10 border-t space-y-4">
+            <div>
+              <p
+                class="text-[10px] text-gray-400 uppercase tracking-widest mb-1"
+              >
+                Order ID
+              </p>
+              <div class="bg-white/10 px-3 py-2 rounded-lg font-mono text-xs">
+                {{ transaction.order_id }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="bg-white shadow-sm p-8 border border-gray-100 rounded-[2rem]"
+        >
+          <h2
+            class="mb-6 font-black text-[10px] text-gray-400 uppercase tracking-[0.2em] border-b border-gray-50 pb-4"
+          >
+            Financial Summary
+          </h2>
+          <div class="space-y-4">
+            <div
+              class="flex justify-between items-center text-gray-600 text-sm"
+            >
+              <span>Subtotal ({{ totalQuantity }} items)</span
+              ><span class="font-medium text-gray-900">{{
+                formatPrice(transaction.total_amount)
+              }}</span>
+            </div>
+            <div
+              class="flex justify-between items-center text-gray-600 text-sm"
+            >
+              <span>Shipping Fee</span>
+              <span
+                v-if="transaction.shipping_method === 'free'"
+                class="font-bold text-green-600"
+                >Free</span
+              >
+              <span v-else class="font-medium text-gray-900">{{
+                formatPrice(transaction.shipping_cost)
+              }}</span>
+            </div>
+            <div
+              class="flex justify-between items-end pt-4 border-gray-100 border-t border-dashed"
+            >
+              <div>
+                <span
+                  class="block font-bold text-gray-900 text-xs uppercase tracking-widest"
+                  >Grand Total</span
+                ><span class="text-[10px] text-gray-400 italic"
+                  >Paid by customer</span
+                >
+              </div>
+              <span class="font-bold text-black text-2xl">{{
+                formatPrice(getGrandTotal(transaction))
+              }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="bg-white shadow-sm p-6 sm:p-8 border border-gray-100 rounded-[2rem]"
+        >
+          <h2
+            class="mb-6 font-black text-[10px] text-gray-400 uppercase tracking-[0.2em] border-b border-gray-50 pb-4 flex justify-between items-center"
+          >
+            <span>Tracking Timeline</span>
+            <span
+              v-if="biteshipData && transaction.shipping_method === 'biteship'"
+              class="flex items-center gap-1 text-[8px] text-green-600 bg-green-50 px-2 py-1 rounded"
+            >
+              <span
+                class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"
+              ></span>
+              Live
+            </span>
+          </h2>
+
+          <div
+            v-if="transaction.shipping_method === 'free'"
+            class="text-center py-6"
+          >
+            <p class="text-xs text-gray-500 italic mb-2">
+              No physical shipping required.
+            </p>
+            <p class="text-sm font-bold text-black uppercase">
+              In-Store Pickup
+            </p>
+          </div>
+
+          <div v-else-if="trackingLoading" class="flex justify-center py-6">
+            <div
+              class="border-2 border-gray-200 border-t-black rounded-full w-6 h-6 animate-spin"
+            ></div>
+          </div>
+
+          <div
+            v-else
+            class="relative border-l-2 border-gray-100 ml-2 space-y-6"
+          >
+            <div
+              v-for="(history, index) in timelineHistory"
+              :key="index"
+              class="relative pl-6"
+            >
+              <span
+                :class="
+                  index === 0 ? 'bg-black ring-4 ring-gray-50' : 'bg-gray-300'
+                "
+                class="absolute -left-[9px] top-1 w-4 h-4 rounded-full transition-all"
+              ></span>
+              <div :class="index === 0 ? 'opacity-100' : 'opacity-50'">
+                <p
+                  class="font-bold text-gray-900 text-xs uppercase tracking-wide mb-1"
+                >
+                  {{ formatStatusTitle(history.status) }}
+                </p>
+                <p class="text-gray-600 text-[11px] mb-1.5 leading-tight">
+                  {{ history.note }}
+                </p>
+                <p class="text-[9px] text-gray-400 font-medium font-mono">
+                  {{ formatDateTime(history.updated_at) }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, computed } from "vue";
+import { useRoute } from "vue-router";
+import axios from "axios";
+import { BASE_URL } from "../../config/api.js";
+
+const route = useRoute();
+const transaction = ref(null);
+const isLoading = ref(true);
+
+const biteshipData = ref(null);
+const trackingLoading = ref(false);
+
+// [BARU] State untuk Modal Cetak Resi
+const showPrintModal = ref(false);
+
+// [BARU] State Pengaturan Print Label sesuai default Biteship
+const printSettings = ref({
+  insurance_shown: true,
+  shipping_fee_shown: true,
+  item_description_shown: true,
+  item_sku_shown: true,
+  origin_phone_shown: true,
+  origin_address_shown: true,
+  receiver_phone_shown: true,
+  censor_receiver_name: true,
+  paper_size: "a4",
+});
+
+const axiosConfig = {
+  headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
+};
+
+const totalQuantity = computed(() => {
+  if (!transaction.value || !transaction.value.details) return 0;
+  return transaction.value.details.reduce(
+    (sum, item) => sum + parseInt(item.quantity),
+    0,
+  );
+});
+
+const timelineHistory = computed(() => {
+  const apiHistory = biteshipData.value?.courier?.history || [];
+  if (apiHistory.length > 0) return [...apiHistory].reverse();
+  return [
+    {
+      status:
+        biteshipData.value?.status || transaction.value?.status || "Processing",
+      note: getNoteFromStatus(
+        biteshipData.value?.status || transaction.value?.status,
+      ),
+      updated_at:
+        biteshipData.value?.delivery?.datetime ||
+        transaction.value?.created_at ||
+        new Date().toISOString(),
+    },
+  ];
+});
+
+const formatStatusTitle = (status) => {
+  if (!status) return "Processing";
+  const formatted = status.replace(/_/g, " ");
+  return formatted.charAt(0).toUpperCase() + formatted.slice(1);
+};
+
+const getNoteFromStatus = (status) => {
+  const map = {
+    pending: "Waiting for payment.",
+    placed:
+      "Your order has been recorded and is waiting for courier allocation.",
+    allocated: "Courier has been allocated to pick up your package.",
+    picking_up: "Courier is on the way to pick up the package from the origin.",
+    picked: "Package has been picked up by the courier.",
+    dropping_off: "Package is on the way to the destination.",
+    delivered: "Package has been delivered to the recipient.",
+    rejected: "Delivery was rejected.",
+    cancelled: "Delivery was cancelled.",
+  };
+  return map[status] || "Order is currently being processed by the system.";
+};
+
+const fetchTrackingData = async (trxId) => {
+  if (
+    transaction.value.shipping_method !== "biteship" ||
+    !transaction.value.biteship_order_id
+  )
+    return;
+  trackingLoading.value = true;
+  try {
+    const res = await axios.get(
+      `${BASE_URL}/admin/transactions/${trxId}/tracking`,
+      axiosConfig,
+    );
+    biteshipData.value = res.data;
+  } catch (error) {
+    console.error("Failed to fetch biteship data:", error);
+  } finally {
+    trackingLoading.value = false;
+  }
+};
+
+const fetchData = async () => {
+  const stateData = window.history.state?.transactionData;
+  if (stateData) {
+    transaction.value = stateData;
+    isLoading.value = false;
+    fetchTrackingData(stateData.id);
+    try {
+      const res = await axios.get(
+        `${BASE_URL}/admin/transactions/${route.params.id}`,
+        axiosConfig,
+      );
+      transaction.value = res.data;
+    } catch (error) {
+      console.error("Background sync failed", error);
+    }
+  } else {
+    isLoading.value = true;
+    try {
+      const res = await axios.get(
+        `${BASE_URL}/admin/transactions/${route.params.id}`,
+        axiosConfig,
+      );
+      transaction.value = res.data;
+      fetchTrackingData(res.data.id);
+    } catch (error) {
+      console.error("Detail fetch error:", error);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+};
+
+// [BARU] Fungsi Download Label
+const downloadLabel = () => {
+  if (!transaction.value?.biteship_order_id) return;
+
+  // Konversi setting boolean (true/false) menjadi flag string ("true"/"false") untuk URL
+  const params = new URLSearchParams({
+    insurance_shown: printSettings.value.insurance_shown.toString(),
+    shipping_fee_shown: printSettings.value.shipping_fee_shown.toString(),
+    item_description_shown:
+      printSettings.value.item_description_shown.toString(),
+    item_sku_shown: printSettings.value.item_sku_shown.toString(),
+    origin_phone_shown: printSettings.value.origin_phone_shown.toString(),
+    origin_address_shown: printSettings.value.origin_address_shown.toString(),
+    receiver_phone_shown: printSettings.value.receiver_phone_shown.toString(),
+    censor_receiver_name: printSettings.value.censor_receiver_name.toString(),
+    paper_size: printSettings.value.paper_size,
+  });
+
+  // URL ini mengarah langsung ke server Biteship untuk merender PDF
+  const labelUrl = `https://biteship.com/v1/orders/${transaction.value.biteship_order_id}/labels?${params.toString()}`;
+
+  // Buka resi di tab baru
+  window.open(labelUrl, "_blank");
+
+  // Tutup modal
+  showPrintModal.value = false;
+};
+
+// --- Helper Functions ---
+const getGrandTotal = (trx) =>
+  parseFloat(trx.total_amount) + parseFloat(trx.shipping_cost);
+const getPaymentLogo = (methodString) => {
+  if (!methodString) return null;
+  const channel = methodString.split(" ")[1]?.toLowerCase();
+  const map = {
+    bca: "bca.png",
+    bni: "bni.png",
+    bri: "bri.png",
+    mandiri: "mandiri.png",
+    bsi: "bsi.png",
+    permata: "permata.png",
+    ovo: "ovo.png",
+    dana: "dana.png",
+    linkaja: "linkaja.png",
+    shopeepay: "shopeepay.png",
+    alfamart: "alfamart.png",
+    indomaret: "indomaret.png",
+    qris: "qris.png",
+  };
+  return map[channel] ? "/payment_images/" + map[channel] : null;
+};
+const getCourierLogo = (company) => {
+  if (!company) return null;
+  const map = {
+    jne: "jne.png",
+    sicepat: "sicepat.png",
+    jnt: "jnt.png",
+    anteraja: "anteraja.png",
+    gojek: "gojek.png",
+    grab: "grab.png",
+    paxel: "paxel.png",
+    ninja: "ninja.png",
+  };
+  return map[company.toLowerCase()]
+    ? "/courier_images/" + map[company.toLowerCase()]
+    : null;
+};
+const getPaymentStatusText = (status) =>
+  [
+    "completed",
+    "processing",
+    "refund_requested",
+    "refund_approved",
+    "refund_rejected",
+  ].includes(status)
+    ? "PAID"
+    : status === "cancelled"
+      ? "CANCELLED"
+      : status === "refunded"
+        ? "REFUNDED"
+        : "UNPAID";
+const getPaymentStatusColor = (status) =>
+  [
+    "completed",
+    "processing",
+    "refund_requested",
+    "refund_approved",
+    "refund_rejected",
+  ].includes(status)
+    ? "text-green-600"
+    : status === "cancelled"
+      ? "text-red-500"
+      : status === "refunded"
+        ? "text-teal-600"
+        : "text-orange-500";
+const statusClass = (status) => {
+  const map = {
+    awaiting_payment: "bg-yellow-100 text-yellow-700",
+    pending: "bg-orange-100 text-orange-700",
+    processing: "bg-blue-100 text-blue-700",
+    completed: "bg-green-100 text-green-700",
+    cancelled: "bg-red-100 text-red-700",
+    refund_requested: "bg-purple-100 text-purple-700",
+    refund_approved: "bg-indigo-100 text-indigo-700",
+    refund_rejected: "bg-gray-200 text-gray-600 line-through",
+    refunded: "bg-teal-100 text-teal-700",
+    refund_manual_required: "bg-pink-100 text-pink-700",
+  };
+  return map[status] || "bg-gray-100 text-gray-500";
+};
+const formatStatus = (s) => (s ? s.replace(/_/g, " ") : "");
+const formatPrice = (v) =>
+  new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(
+    v,
+  );
+const formatDate = (dateString) =>
+  dateString
+    ? new Date(dateString).toLocaleDateString("en-US", {
+        weekday: "long",
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      })
+    : "-";
+const formatDateTime = (dateString) =>
+  dateString
+    ? new Date(dateString).toLocaleDateString("en-US", {
+        weekday: "short",
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+    : "-";
+
+onMounted(fetchData);
+</script>
+
+<style scoped>
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Custom Checkbox Styling */
+input[type="checkbox"] {
+  accent-color: #4a148c;
 }
 </style>
