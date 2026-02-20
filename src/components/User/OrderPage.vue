@@ -2482,7 +2482,7 @@ onUnmounted(() => {
 </script> -->
 
 <!-- Perbaikan -->
-<template>
+<!-- <template>
   <div class="mx-auto px-6 py-20 max-w-5xl min-h-screen">
     <div class="flex justify-between items-center mb-10">
       <h1 class="font-serif text-gray-900 text-4xl uppercase tracking-tighter">
@@ -2772,11 +2772,6 @@ onUnmounted(() => {
                 </div>
                 <p v-else class="text-[10px] text-gray-500 mt-0.5">
                   Resi:
-                  <!-- <span class="font-mono font-bold text-black">{{
-                    order.biteshipData?.courier?.waybill_id ||
-                    order.tracking_number ||
-                    "Waiting..."
-                  }}</span> -->
                   <span class="font-mono font-bold text-black">{{
                     order.biteshipData?.courier?.waybill_id || "Waiting..."
                   }}</span>
@@ -3723,4 +3718,487 @@ onMounted(fetchOrders);
 onUnmounted(() => {
   if (timerInterval) clearInterval(timerInterval);
 });
+</script> -->
+
+<!-- Dengan Badge Count -->
+<template>
+  <div class="mx-auto px-6 py-20 max-w-5xl min-h-screen">
+    <div class="flex justify-between items-center mb-10">
+      <h1 class="font-serif text-gray-900 text-4xl uppercase tracking-tighter">
+        Track My Orders
+      </h1>
+      <router-link
+        to="/shippingmanagement"
+        class="bg-black hover:bg-gray-800 px-6 py-3 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition shadow-md"
+      >
+        Simulate Shipping
+      </router-link>
+    </div>
+
+    <div class="mb-8 space-y-4">
+      <div class="flex items-center gap-4 overflow-x-auto pb-2 border-b border-gray-100">
+        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap">Transaction:</span>
+        <button
+          v-for="tab in transactionTabs"
+          :key="tab.value"
+          @click="activeTransactionTab = tab.value"
+          :class="[
+            'px-4 py-2 rounded-t-lg font-bold text-xs uppercase tracking-widest transition-colors whitespace-nowrap border-b-2 flex items-center gap-2',
+            activeTransactionTab === tab.value
+              ? 'border-black text-black bg-gray-50'
+              : 'border-transparent text-gray-400 hover:text-gray-700 hover:bg-gray-50',
+          ]"
+        >
+          {{ tab.label }}
+          <span v-if="getTransactionTabCount(tab.value) > 0" 
+                :class="activeTransactionTab === tab.value ? 'bg-black text-white' : 'bg-gray-200 text-gray-600'" 
+                class="px-1.5 py-0.5 rounded-md text-[9px] font-black">
+            {{ getTransactionTabCount(tab.value) }}
+          </span>
+        </button>
+      </div>
+
+      <div class="flex items-center gap-4 overflow-x-auto pb-2 border-b border-gray-100">
+        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap">Shipping:</span>
+        <button
+          v-for="tab in shippingTabs"
+          :key="tab.value"
+          @click="activeShippingTab = tab.value"
+          :class="[
+            'px-4 py-2 rounded-t-lg font-bold text-xs uppercase tracking-widest transition-colors whitespace-nowrap border-b-2 flex items-center gap-2',
+            activeShippingTab === tab.value
+              ? 'border-blue-600 text-blue-600 bg-blue-50/50'
+              : 'border-transparent text-gray-400 hover:text-gray-700 hover:bg-gray-50',
+          ]"
+        >
+          {{ tab.label }}
+          <span v-if="getShippingTabCount(tab.value) > 0" 
+                :class="activeShippingTab === tab.value ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'" 
+                class="px-1.5 py-0.5 rounded-md text-[9px] font-black">
+            {{ getShippingTabCount(tab.value) }}
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <div v-if="loading" class="space-y-6">
+      <div class="bg-gray-100 h-40 rounded-2xl animate-pulse"></div>
+      <div class="bg-gray-100 h-40 rounded-2xl animate-pulse"></div>
+    </div>
+
+    <div
+      v-else-if="filteredTransactions.length === 0"
+      class="bg-white p-12 border border-gray-100 rounded-2xl text-center animate-fade-in"
+    >
+      <p class="text-gray-400 italic">
+        No orders found matching the selected filters.
+      </p>
+      <button
+        @click="resetFilters"
+        class="inline-block mt-6 font-bold text-black underline uppercase tracking-widest text-xs"
+      >
+        Clear Filters
+      </button>
+    </div>
+
+    <div v-else class="space-y-8 animate-fade-in">
+      <div
+        v-for="order in filteredTransactions"
+        :key="order.id"
+        class="bg-white shadow-sm hover:shadow-md border border-gray-100 rounded-2xl overflow-hidden transition-shadow duration-300 relative"
+      >
+        <div class="flex md:flex-row flex-col justify-between items-start md:items-center bg-gray-50 px-6 py-4 border-b border-gray-100 gap-4">
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
+            <div>
+              <p class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-1">Order ID</p>
+              <p class="font-mono font-bold text-gray-800 text-sm">{{ order.order_id }}</p>
+            </div>
+            <div>
+              <p class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-1">Date</p>
+              <p class="font-bold text-gray-800 text-xs">{{ formatDateTime(order.created_at) }}</p>
+            </div>
+          </div>
+
+          <div class="flex flex-col items-end gap-2 w-full md:w-auto">
+            <div class="flex items-center justify-between md:justify-end w-full md:w-auto gap-3">
+              <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Transaction:</span>
+              <span :class="statusClass(order.status)" class="px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-tighter">
+                {{ formatStatus(order.status) }}
+              </span>
+            </div>
+
+            <div v-if="order.shipping_method === 'biteship'" class="flex items-center justify-between md:justify-end w-full md:w-auto gap-3">
+              <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Shipping:</span>
+              <span v-if="order.biteshipDataLoading" class="text-[10px] text-gray-400 italic animate-pulse">Loading...</span>
+              <span v-else :class="shippingStatusClass(order.biteshipData?.status)" class="px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-tighter border">
+                {{ formatStatus(order.biteshipData?.status || "Pending") }}
+              </span>
+            </div>
+            <div v-else-if="order.shipping_method === 'free'" class="flex items-center justify-between md:justify-end w-full md:w-auto gap-3">
+              <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Shipping:</span>
+              <span class="px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-tighter border bg-gray-100 text-gray-600">
+                In-Store Pickup
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white px-6 py-4 border-b border-gray-100 flex flex-col md:flex-row gap-6 md:gap-12">
+          <div class="flex-1">
+            <p class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-3">Payment Info</p>
+            <div v-if="order.payment_method" class="flex items-center gap-3">
+              <div class="w-12 h-8 bg-gray-50 border border-gray-100 rounded flex justify-center items-center overflow-hidden shrink-0">
+                <img v-if="getPaymentLogo(order.payment_method)" :src="getPaymentLogo(order.payment_method)" class="w-full h-full object-contain p-1" />
+                <span v-else class="font-black text-gray-300 text-[8px]">{{ order.payment_method.split(" ")[1] || "PAY" }}</span>
+              </div>
+              <div>
+                <p class="font-bold text-gray-800 text-xs uppercase">{{ order.payment_method.replace("_", " ") }}</p>
+                <p class="text-[10px] text-teal-600 font-bold mt-0.5" v-if="order.status === 'refunded'">REFUNDED</p>
+                <p class="text-[10px] text-red-600 font-bold mt-0.5" v-else-if="order.status === 'cancelled'">EXPIRED / CANCELLED</p>
+                <p class="text-[10px] text-orange-500 font-bold mt-0.5" v-else-if="canPay(order.status)">UNPAID</p>
+                <p class="text-[10px] text-green-600 font-bold mt-0.5" v-else>PAID</p>
+              </div>
+            </div>
+            <p v-else class="text-xs text-gray-400 italic">Waiting for payment selection...</p>
+          </div>
+
+          <div class="flex-1">
+            <p class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-3">Shipping Info</p>
+            <div v-if="order.shipping_method === 'free'" class="flex items-center gap-3">
+              <div class="w-12 h-12 bg-gray-100 text-gray-400 rounded-lg flex justify-center items-center shrink-0 border border-gray-200">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+              </div>
+              <div>
+                <p class="font-bold text-gray-800 text-xs uppercase">No Courier</p>
+                <p class="text-[10px] text-gray-500 mt-0.5 font-medium">In-store Payment / Pickup</p>
+              </div>
+            </div>
+
+            <div v-else-if="order.shipping_method === 'biteship' && order.courier_company" class="flex items-center gap-3">
+              <div class="w-12 h-12 bg-white border border-gray-100 rounded-lg flex justify-center items-center overflow-hidden shrink-0">
+                <img v-if="getCourierLogo(order.courier_company)" :src="getCourierLogo(order.courier_company)" class="w-full h-full object-contain p-1" />
+                <span v-else class="font-black text-gray-300 text-xs">{{ order.courier_company.toUpperCase() }}</span>
+              </div>
+              <div>
+                <p class="font-bold text-gray-800 text-xs uppercase">{{ order.courier_company }} - {{ order.courier_type }}</p>
+                <div v-if="order.biteshipDataLoading" class="text-[10px] text-gray-400 italic mt-0.5">Fetching Waybill...</div>
+                <p v-else class="text-[10px] text-gray-500 mt-0.5">
+                  Resi: <span class="font-mono font-bold text-black">{{ order.biteshipData?.courier?.waybill_id || "Waiting..." }}</span>
+                </p>
+              </div>
+            </div>
+
+            <div v-else class="text-xs text-gray-400 italic">Setup shipping at checkout</div>
+          </div>
+        </div>
+
+        <div @click="handleOrderClick(order)" :class="['px-6 py-2', canPay(order.status) && countdowns[order.id] !== 'Expired' ? 'cursor-pointer hover:bg-blue-50/30 transition-colors' : '']">
+          <div v-if="canPay(order.status) && countdowns[order.id] !== 'Expired'" class="my-3 text-blue-600 text-[10px] text-center uppercase tracking-widest animate-pulse font-bold bg-blue-50 py-2 rounded-lg">
+            Tap anywhere here to complete payment
+          </div>
+
+          <div v-for="detail in order.details" :key="detail.id" class="flex items-center gap-4 py-4 border-gray-50 last:border-0 border-b">
+            <img :src="detail.product.image" class="bg-gray-100 shadow-sm border border-gray-100 rounded-lg w-16 h-16 object-cover" />
+            <div class="flex-grow">
+              <h4 class="font-bold text-gray-900 text-sm uppercase">{{ detail.product.name }}</h4>
+              <p class="text-gray-400 text-xs">{{ detail.quantity }} x {{ formatPrice(detail.price) }}</p>
+            </div>
+            <p class="font-bold text-gray-900 text-sm">{{ formatPrice(detail.quantity * detail.price) }}</p>
+          </div>
+        </div>
+
+        <div class="bg-gray-50/50 px-6 py-4 border-t border-gray-100">
+          <div class="flex flex-col mb-4 space-y-1 pb-4 border-b border-gray-200">
+            <div class="flex justify-between text-xs text-gray-500">
+              <span>Subtotal for Products</span><span>{{ formatPrice(getSubtotal(order)) }}</span>
+            </div>
+            <div class="flex justify-between text-xs text-gray-500">
+              <span>Shipping Subtotal ({{ order.shipping_cost > 0 ? formatPrice(order.shipping_cost / getOrderQuantity(order)) + " x " + getOrderQuantity(order) : "Free" }})</span>
+              <span>{{ formatPrice(order.shipping_cost) }}</span>
+            </div>
+            <div class="flex justify-between text-sm font-bold text-gray-900 mt-2 pt-2 border-t border-gray-200 border-dashed">
+              <span class="uppercase tracking-widest text-[10px] mt-1">Final Amount</span>
+              <span class="text-lg">{{ formatPrice(getGrandTotal(order)) }}</span>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="w-full md:w-auto text-left">
+              <div v-if="canPay(order.status) && order.payment" class="flex items-center gap-2 justify-center md:justify-start">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-500 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="font-mono font-bold text-red-500 text-sm">{{ countdowns[order.id] }}</span>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap justify-center md:justify-end gap-3 w-full md:w-auto">
+              <button v-if="canPay(order.status)" @click="cancelOrder(order.id)" class="hover:bg-red-50 px-6 py-2 border border-red-200 rounded-xl font-bold text-red-600 text-xs uppercase tracking-widest transition w-full md:w-auto">Cancel</button>
+              <button v-if="canPay(order.status)" @click="redirectToPayment(order)" :disabled="countdowns[order.id] === 'Expired'" class="bg-black hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition w-full md:w-auto">Pay Now</button>
+              <button v-if="order.status === 'processing'" @click="confirmReceived(order.id)" class="bg-green-600 hover:bg-green-700 px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition shadow-sm w-full md:w-auto">Order Received</button>
+              <button v-if="['processing', 'completed'].includes(order.status) && order.shipping_method === 'biteship'" @click="$router.push({ path: `/tracking/${order.id}`, state: { paymentMethod: order.payment_method } })" class="bg-black hover:bg-gray-800 px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition shadow-sm w-full md:w-auto">Track Order</button>
+              <button v-if="['completed', 'processing'].includes(order.status)" @click="requestRefund(order.id)" class="hover:bg-gray-100 px-6 py-2 border border-gray-300 rounded-xl font-bold text-gray-600 text-xs uppercase tracking-widest transition w-full md:w-auto">Refund</button>
+              <div v-if="order.status === 'refund_requested'" class="bg-amber-100 px-4 py-2 rounded-xl text-amber-700 text-xs font-bold w-full md:w-auto text-center">Waiting Admin</div>
+              <div v-if="order.status === 'refund_manual_required'" class="bg-pink-100 px-4 py-2 rounded-xl text-pink-700 text-xs font-bold w-full md:w-auto text-center">Manual Refund</div>
+              <button v-if="order.status === 'refund_approved'" @click="processRefund(order.id)" class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition shadow-sm w-full md:w-auto">Refund Now</button>
+              <div v-if="order.status === 'refund_rejected'" class="text-red-500 text-xs font-bold italic w-full md:w-auto text-center">Refund Rejected</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, onUnmounted, computed } from "vue";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { BASE_URL } from "../../config/api";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+const transactions = ref([]);
+const loading = ref(true);
+
+const countdowns = ref({});
+let timerInterval = null;
+
+const activeTransactionTab = ref("all");
+const activeShippingTab = ref("all");
+
+const transactionTabs = [
+  { label: "All", value: "all" },
+  { label: "Pending / Unpaid", value: "pending" },
+  { label: "Processing", value: "processing" },
+  { label: "Completed", value: "completed" },
+  { label: "Cancelled", value: "cancelled" },
+  { label: "Refund Issues", value: "refund" },
+];
+
+const shippingTabs = [
+  { label: "All", value: "all" },
+  { label: "Placed / Pending", value: "placed" },
+  { label: "Allocated", value: "allocated" },
+  { label: "Picking Up", value: "picking_up" },
+  { label: "In Transit", value: "dropping_off" },
+  { label: "Delivered", value: "delivered" },
+  { label: "No Shipping", value: "no_shipping" },
+];
+
+// --- FUNGSI PENGHITUNG BADGE ---
+const getTransactionTabCount = (tabValue) => {
+  return transactions.value.filter((order) => {
+    if (tabValue === "all") return true;
+    if (tabValue === "pending") return ["pending", "awaiting_payment"].includes(order.status);
+    if (tabValue === "refund") return order.status.includes("refund");
+    return order.status === tabValue;
+  }).length;
+};
+
+const getShippingTabCount = (tabValue) => {
+  return transactions.value.filter((order) => {
+    if (tabValue === "all") return true;
+    if (tabValue === "no_shipping") return order.shipping_method === "free";
+    if (order.shipping_method === "free") return false;
+    
+    const shipStatus = order.biteshipData?.status || "pending";
+    if (tabValue === "placed") return ["pending", "placed"].includes(shipStatus);
+    if (tabValue === "dropping_off") return ["picked", "dropping_off"].includes(shipStatus);
+    return shipStatus === tabValue;
+  }).length;
+};
+
+const filteredTransactions = computed(() => {
+  return transactions.value.filter((order) => {
+    let matchTransaction = false;
+    if (activeTransactionTab.value === "all") matchTransaction = true;
+    else if (activeTransactionTab.value === "pending") matchTransaction = ["pending", "awaiting_payment"].includes(order.status);
+    else if (activeTransactionTab.value === "refund") matchTransaction = order.status.includes("refund");
+    else matchTransaction = order.status === activeTransactionTab.value;
+
+    let matchShipping = false;
+    if (activeShippingTab.value === "all") {
+      matchShipping = true;
+    } else if (activeShippingTab.value === "no_shipping") {
+      matchShipping = order.shipping_method === "free";
+    } else {
+      if (order.shipping_method === "free") {
+        matchShipping = false;
+      } else {
+        const shipStatus = order.biteshipData?.status || "pending";
+        if (activeShippingTab.value === "placed") matchShipping = ["pending", "placed"].includes(shipStatus);
+        else if (activeShippingTab.value === "dropping_off") matchShipping = ["picked", "dropping_off"].includes(shipStatus);
+        else matchShipping = shipStatus === activeShippingTab.value;
+      }
+    }
+    return matchTransaction && matchShipping;
+  });
+});
+
+const resetFilters = () => {
+  activeTransactionTab.value = "all";
+  activeShippingTab.value = "all";
+};
+
+const getCourierLogo = (company) => {
+  if (!company) return null;
+  const baseUrl = "/courier_images/";
+  const map = { jne: "jne.png", sicepat: "sicepat.png", jnt: "jnt.png", anteraja: "anteraja.png", gojek: "gojek.png", grab: "grab.png", paxel: "paxel.png", ninja: "ninja.png" };
+  return map[company.toLowerCase()] ? baseUrl + map[company.toLowerCase()] : null;
+};
+
+const getPaymentLogo = (methodString) => {
+  if (!methodString) return null;
+  const channel = methodString.split(" ")[1]?.toLowerCase();
+  if (!channel) return null;
+  const baseUrl = "/payment_images/";
+  const map = { bca: "bca.png", bni: "bni.png", bri: "bri.png", mandiri: "mandiri.png", bsi: "bsi.png", permata: "permata.png", ovo: "ovo.png", dana: "dana.png", linkaja: "linkaja.png", shopeepay: "shopeepay.png", alfamart: "alfamart.png", indomaret: "indomaret.png", qris: "qris.png" };
+  return map[channel] ? baseUrl + map[channel] : null;
+};
+
+const getSubtotal = (order) => order.total_amount;
+const getGrandTotal = (order) => parseFloat(order.total_amount || 0) + parseFloat(order.shipping_cost || 0);
+const getOrderQuantity = (order) => order.details.reduce((sum, item) => sum + item.quantity, 0);
+
+const calculateTimeLeft = (createdAt) => {
+  const expiryTime = new Date(createdAt).getTime() + 86400000;
+  const now = new Date().getTime();
+  const diff = expiryTime - now;
+  if (diff <= 0) return "Expired";
+  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+  return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+};
+
+const startTimers = () => {
+  timerInterval = setInterval(() => {
+    transactions.value.forEach((order) => {
+      if (canPay(order.status)) {
+        const timeReference = order.payment?.created_at || order.created_at;
+        countdowns.value[order.id] = calculateTimeLeft(timeReference);
+      }
+    });
+  }, 1000);
+};
+
+const fetchBulkTracking = async (orders) => {
+  const biteshipOrders = orders.filter((o) => o.shipping_method === "biteship" && o.biteship_order_id);
+  const idsToTrack = biteshipOrders.map((o) => o.id);
+  if (idsToTrack.length === 0) return;
+  biteshipOrders.forEach((o) => (o.biteshipDataLoading = true));
+
+  try {
+    const config = { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } };
+    const res = await axios.post(`${BASE_URL}/transactions/tracking/bulk`, { transaction_ids: idsToTrack }, config);
+    const bulkData = res.data;
+    transactions.value.forEach((order) => {
+      if (bulkData[order.id]) order.biteshipData = bulkData[order.id];
+    });
+  } catch (error) {
+    biteshipOrders.forEach((o) => (o.biteshipData = { status: "Pending Data" }));
+  } finally {
+    biteshipOrders.forEach((o) => (o.biteshipDataLoading = false));
+  }
+};
+
+const fetchOrders = async () => {
+  loading.value = true;
+  try {
+    const res = await axios.get(`${BASE_URL}/transactions`, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
+    transactions.value = res.data.map((order) => ({ ...order, biteshipData: null, biteshipDataLoading: false }));
+    startTimers();
+    fetchBulkTracking(transactions.value);
+  } catch (err) {
+    console.error(err);
+  } finally {
+    setTimeout(() => { loading.value = false; }, 600);
+  }
+};
+
+const canPay = (status) => ["awaiting_payment", "pending"].includes(status);
+
+const handleOrderClick = (order) => {
+  if (canPay(order.status) && countdowns[order.id] !== "Expired") redirectToPayment(order);
+};
+
+const redirectToPayment = (order) => {
+  if (order.status === "awaiting_payment") router.push(`/payment/${order.id}`);
+  else if (order.status === "pending" && order.payment?.checkout_url) window.location.href = order.payment.checkout_url;
+  else Swal.fire("Error", "Payment URL not found or invalid status", "error");
+};
+
+const cancelOrder = async (id) => {
+  const result = await Swal.fire({ title: "Cancel Order?", text: "You won't be able to revert this!", icon: "warning", showCancelButton: true, confirmButtonColor: "#000", cancelButtonColor: "#d33", confirmButtonText: "Yes, cancel it!" });
+  if (result.isConfirmed) {
+    try {
+      await axios.post(`${BASE_URL}/transactions/${id}/cancel`, {}, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
+      Swal.fire("Cancelled!", "Your order has been cancelled.", "success");
+      fetchOrders();
+    } catch (err) { Swal.fire("Error", "Failed to cancel order", "error"); }
+  }
+};
+
+const confirmReceived = async (id) => {
+  const result = await Swal.fire({ title: "Confirm Receipt", text: "Have you received your items?", icon: "question", showCancelButton: true, confirmButtonColor: "#000", confirmButtonText: "Yes, I have!" });
+  if (result.isConfirmed) {
+    try {
+      await axios.post(`${BASE_URL}/transactions/${id}/confirm`, {}, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
+      fetchOrders();
+      Swal.fire("Completed!", "Thank you for shopping with us.", "success");
+    } catch (err) { Swal.fire("Error", err.response?.data?.message, "error"); }
+  }
+};
+
+const requestRefund = async (id) => {
+  const { value: text } = await Swal.fire({ title: "Request Refund", input: "textarea", inputLabel: "Reason for refund", inputPlaceholder: "Type your reason here...", showCancelButton: true, confirmButtonColor: "#000" });
+  if (text) {
+    try {
+      await axios.post(`${BASE_URL}/transactions/${id}/refund-request`, { reason: text }, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
+      fetchOrders();
+      Swal.fire("Requested", "Refund request sent to admin.", "success");
+    } catch (err) { Swal.fire("Error", "Failed to request refund", "error"); }
+  }
+};
+
+const processRefund = async (id) => {
+  try {
+    const res = await axios.post(`${BASE_URL}/transactions/${id}/refund-process`, {}, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
+    fetchOrders();
+    Swal.fire("Refunded", res.data.message, "success");
+  } catch (err) { Swal.fire("Error", "Refund process failed", "error"); }
+};
+
+const formatStatus = (status) => {
+  if (!status) return "";
+  return status.replace(/_/g, " ");
+};
+
+const statusClass = (status) => {
+  const map = {
+    awaiting_payment: "bg-yellow-100 text-yellow-700", pending: "bg-orange-100 text-orange-700", processing: "bg-blue-100 text-blue-700",
+    completed: "bg-green-100 text-green-700", cancelled: "bg-red-100 text-red-700", refund_requested: "bg-purple-100 text-purple-700",
+    refund_approved: "bg-indigo-100 text-indigo-700", refund_rejected: "bg-gray-200 text-gray-600 line-through", refunded: "bg-teal-100 text-teal-700",
+    refund_manual_required: "bg-pink-100 text-pink-700",
+  };
+  return map[status] || "bg-gray-100 text-gray-500";
+};
+
+const shippingStatusClass = (status) => {
+  if (!status) return "bg-gray-50 border-gray-200 text-gray-500";
+  const str = status.toLowerCase();
+  if (["delivered"].includes(str)) return "bg-green-50 border-green-200 text-green-700";
+  if (["cancelled", "rejected"].includes(str)) return "bg-red-50 border-red-200 text-red-700";
+  if (["picking_up", "picked", "dropping_off", "allocated"].includes(str)) return "bg-blue-50 border-blue-200 text-blue-700";
+  return "bg-gray-50 border-gray-200 text-gray-600";
+};
+
+const formatPrice = (v) => new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(v);
+const formatDateTime = (date) => new Date(date).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
+
+onMounted(fetchOrders);
+onUnmounted(() => { if (timerInterval) clearInterval(timerInterval); });
 </script>
