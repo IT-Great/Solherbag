@@ -2778,8 +2778,7 @@ onUnmounted(() => {
                     "Waiting..."
                   }}</span> -->
                   <span class="font-mono font-bold text-black">{{
-                    order.biteshipData?.courier?.waybill_id ||
-                    "Waiting..."
+                    order.biteshipData?.courier?.waybill_id || "Waiting..."
                   }}</span>
                 </p>
               </div>
@@ -2977,6 +2976,381 @@ onUnmounted(() => {
 </template>
 
 <script setup>
+// import { ref, onMounted, onUnmounted, computed } from "vue";
+// import axios from "axios";
+// import Swal from "sweetalert2";
+// import { BASE_URL } from "../../config/api";
+// import { useRouter } from "vue-router";
+
+// const router = useRouter();
+// const transactions = ref([]);
+// const loading = ref(true);
+
+// const countdowns = ref({});
+// let timerInterval = null;
+
+// // --- STATE FILTER TABS ---
+// const activeTransactionTab = ref("all");
+// const activeShippingTab = ref("all");
+
+// const transactionTabs = [
+//   { label: "All", value: "all" },
+//   { label: "Pending / Unpaid", value: "pending" },
+//   { label: "Processing", value: "processing" },
+//   { label: "Completed", value: "completed" },
+//   { label: "Cancelled", value: "cancelled" },
+//   { label: "Refund Issues", value: "refund" },
+// ];
+
+// // [PERBAIKAN] Menambahkan opsi tab 'No Shipping'
+// const shippingTabs = [
+//   { label: "All", value: "all" },
+//   { label: "Placed / Pending", value: "placed" },
+//   { label: "Allocated", value: "allocated" },
+//   { label: "Picking Up", value: "picking_up" },
+//   { label: "In Transit", value: "dropping_off" },
+//   { label: "Delivered", value: "delivered" },
+//   { label: "No Shipping", value: "no_shipping" }, // Tab baru
+// ];
+
+// // --- FILTERING LOGIC ---
+// const filteredTransactions = computed(() => {
+//   return transactions.value.filter((order) => {
+//     // 1. Transaction Status Match
+//     let matchTransaction = false;
+//     if (activeTransactionTab.value === "all") {
+//       matchTransaction = true;
+//     } else if (activeTransactionTab.value === "pending") {
+//       matchTransaction = ["pending", "awaiting_payment"].includes(order.status);
+//     } else if (activeTransactionTab.value === "refund") {
+//       matchTransaction = order.status.includes("refund");
+//     } else {
+//       matchTransaction = order.status === activeTransactionTab.value;
+//     }
+
+//     // 2. Shipping Status Match
+//     let matchShipping = false;
+
+//     if (activeShippingTab.value === "all") {
+//       matchShipping = true; // Tab 'All' menampilkan semua (biteship maupun free)
+//     } else if (activeShippingTab.value === "no_shipping") {
+//       // Tab 'No Shipping' HANYA menampilkan yang shipping_method-nya 'free'
+//       matchShipping = order.shipping_method === "free";
+//     } else {
+//       // Untuk tab selain 'All' dan 'No Shipping', JANGAN tampilkan order 'free'
+//       if (order.shipping_method === "free") {
+//         matchShipping = false;
+//       } else {
+//         // Logika status Biteship normal
+//         const shipStatus = order.biteshipData?.status || "pending";
+//         if (activeShippingTab.value === "placed") {
+//           matchShipping = ["pending", "placed"].includes(shipStatus);
+//         } else if (activeShippingTab.value === "dropping_off") {
+//           matchShipping = ["picked", "dropping_off"].includes(shipStatus);
+//         } else {
+//           matchShipping = shipStatus === activeShippingTab.value;
+//         }
+//       }
+//     }
+
+//     return matchTransaction && matchShipping;
+//   });
+// });
+
+// const resetFilters = () => {
+//   activeTransactionTab.value = "all";
+//   activeShippingTab.value = "all";
+// };
+
+// // Helper Logo Kurir & Bank
+// const getCourierLogo = (company) => {
+//   if (!company) return null;
+//   const baseUrl = "/courier_images/";
+//   const map = {
+//     jne: "jne.png",
+//     sicepat: "sicepat.png",
+//     jnt: "jnt.png",
+//     anteraja: "anteraja.png",
+//     gojek: "gojek.png",
+//     grab: "grab.png",
+//     paxel: "paxel.png",
+//     ninja: "ninja.png",
+//   };
+//   return map[company.toLowerCase()]
+//     ? baseUrl + map[company.toLowerCase()]
+//     : null;
+// };
+
+// const getPaymentLogo = (methodString) => {
+//   if (!methodString) return null;
+//   const channel = methodString.split(" ")[1]?.toLowerCase();
+//   if (!channel) return null;
+//   const baseUrl = "/payment_images/";
+//   const map = {
+//     bca: "bca.png",
+//     bni: "bni.png",
+//     bri: "bri.png",
+//     mandiri: "mandiri.png",
+//     bsi: "bsi.png",
+//     permata: "permata.png",
+//     ovo: "ovo.png",
+//     dana: "dana.png",
+//     linkaja: "linkaja.png",
+//     shopeepay: "shopeepay.png",
+//     alfamart: "alfamart.png",
+//     indomaret: "indomaret.png",
+//     qris: "qris.png",
+//   };
+//   return map[channel] ? baseUrl + map[channel] : null;
+// };
+
+// const getSubtotal = (order) => order.total_amount;
+// const getGrandTotal = (order) =>
+//   parseFloat(order.total_amount || 0) + parseFloat(order.shipping_cost || 0);
+// const getOrderQuantity = (order) =>
+//   order.details.reduce((sum, item) => sum + item.quantity, 0);
+
+// const calculateTimeLeft = (createdAt) => {
+//   const expiryTime = new Date(createdAt).getTime() + 86400000;
+//   const now = new Date().getTime();
+//   const diff = expiryTime - now;
+//   if (diff <= 0) return "Expired";
+//   const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+//   const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+//   const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+//   return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+// };
+
+// const startTimers = () => {
+//   timerInterval = setInterval(() => {
+//     transactions.value.forEach((order) => {
+//       if (canPay(order.status)) {
+//         const timeReference = order.payment?.created_at || order.created_at;
+//         countdowns.value[order.id] = calculateTimeLeft(timeReference);
+//       }
+//     });
+//   }, 1000);
+// };
+
+// // [FITUR BARU] Fetch detail tracking langsung dari Biteship per Order
+// const fetchBiteshipTrackingForOrder = async (order) => {
+//   if (order.shipping_method !== "biteship" || !order.biteship_order_id) return;
+
+//   order.biteshipDataLoading = true;
+//   try {
+//     const config = {
+//       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+//     };
+//     const res = await axios.get(
+//       `${BASE_URL}/transactions/${order.id}/tracking`,
+//       config,
+//     );
+//     order.biteshipData = res.data;
+//   } catch (error) {
+//     console.error(
+//       `Failed to fetch tracking for order ${order.order_id}`,
+//       error,
+//     );
+//     // Jika gagal (misal API Biteship down), fallback ke data statis dari tabel transactions
+//     order.biteshipData = { status: "Pending Data" };
+//   } finally {
+//     order.biteshipDataLoading = false;
+//   }
+// };
+
+// const fetchOrders = async () => {
+//   loading.value = true;
+//   try {
+//     const res = await axios.get(`${BASE_URL}/transactions`, {
+//       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+//     });
+
+//     // Inisialisasi properti untuk tracking dinamis
+//     transactions.value = res.data.map((order) => ({
+//       ...order,
+//       biteshipData: null,
+//       biteshipDataLoading: false,
+//     }));
+
+//     startTimers();
+
+//     // Jalankan fetch tracking Biteship di background secara paralel untuk setiap pesanan yang menggunakan Biteship
+//     transactions.value.forEach((order) => {
+//       fetchBiteshipTrackingForOrder(order);
+//     });
+//   } catch (err) {
+//     console.error(err);
+//   } finally {
+//     setTimeout(() => {
+//       loading.value = false;
+//     }, 600);
+//   }
+// };
+
+// const canPay = (status) => ["awaiting_payment", "pending"].includes(status);
+
+// const handleOrderClick = (order) => {
+//   if (canPay(order.status) && countdowns[order.id] !== "Expired") {
+//     redirectToPayment(order);
+//   }
+// };
+
+// const redirectToPayment = (order) => {
+//   if (order.status === "awaiting_payment") {
+//     router.push(`/payment/${order.id}`);
+//   } else if (order.status === "pending" && order.payment?.checkout_url) {
+//     window.location.href = order.payment.checkout_url;
+//   } else {
+//     Swal.fire("Error", "Payment URL not found or invalid status", "error");
+//   }
+// };
+
+// const cancelOrder = async (id) => {
+//   const result = await Swal.fire({
+//     title: "Cancel Order?",
+//     text: "You won't be able to revert this!",
+//     icon: "warning",
+//     showCancelButton: true,
+//     confirmButtonColor: "#000",
+//     cancelButtonColor: "#d33",
+//     confirmButtonText: "Yes, cancel it!",
+//   });
+//   if (result.isConfirmed) {
+//     try {
+//       await axios.post(
+//         `${BASE_URL}/transactions/${id}/cancel`,
+//         {},
+//         {
+//           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+//         },
+//       );
+//       Swal.fire("Cancelled!", "Your order has been cancelled.", "success");
+//       fetchOrders();
+//     } catch (err) {
+//       Swal.fire("Error", "Failed to cancel order", "error");
+//     }
+//   }
+// };
+
+// const confirmReceived = async (id) => {
+//   const result = await Swal.fire({
+//     title: "Confirm Receipt",
+//     text: "Have you received your items?",
+//     icon: "question",
+//     showCancelButton: true,
+//     confirmButtonColor: "#000",
+//     confirmButtonText: "Yes, I have!",
+//   });
+//   if (result.isConfirmed) {
+//     try {
+//       await axios.post(
+//         `${BASE_URL}/transactions/${id}/confirm`,
+//         {},
+//         {
+//           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+//         },
+//       );
+//       fetchOrders();
+//       Swal.fire("Completed!", "Thank you for shopping with us.", "success");
+//     } catch (err) {
+//       Swal.fire("Error", err.response?.data?.message, "error");
+//     }
+//   }
+// };
+
+// const requestRefund = async (id) => {
+//   const { value: text } = await Swal.fire({
+//     title: "Request Refund",
+//     input: "textarea",
+//     inputLabel: "Reason for refund",
+//     inputPlaceholder: "Type your reason here...",
+//     showCancelButton: true,
+//     confirmButtonColor: "#000",
+//   });
+//   if (text) {
+//     try {
+//       await axios.post(
+//         `${BASE_URL}/transactions/${id}/refund-request`,
+//         { reason: text },
+//         {
+//           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+//         },
+//       );
+//       fetchOrders();
+//       Swal.fire("Requested", "Refund request sent to admin.", "success");
+//     } catch (err) {
+//       Swal.fire("Error", "Failed to request refund", "error");
+//     }
+//   }
+// };
+
+// const processRefund = async (id) => {
+//   try {
+//     const res = await axios.post(
+//       `${BASE_URL}/transactions/${id}/refund-process`,
+//       {},
+//       { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } },
+//     );
+//     fetchOrders();
+//     Swal.fire("Refunded", res.data.message, "success");
+//   } catch (err) {
+//     Swal.fire("Error", "Refund process failed", "error");
+//   }
+// };
+
+// const formatStatus = (status) => {
+//   if (!status) return "";
+//   return status.replace(/_/g, " ");
+// };
+
+// const statusClass = (status) => {
+//   const map = {
+//     awaiting_payment: "bg-yellow-100 text-yellow-700",
+//     pending: "bg-orange-100 text-orange-700",
+//     processing: "bg-blue-100 text-blue-700",
+//     completed: "bg-green-100 text-green-700",
+//     cancelled: "bg-red-100 text-red-700",
+//     refund_requested: "bg-purple-100 text-purple-700",
+//     refund_approved: "bg-indigo-100 text-indigo-700",
+//     refund_rejected: "bg-gray-200 text-gray-600 line-through",
+//     refunded: "bg-teal-100 text-teal-700",
+//     refund_manual_required: "bg-pink-100 text-pink-700",
+//   };
+//   return map[status] || "bg-gray-100 text-gray-500";
+// };
+
+// // Style khusus untuk Status Shipping Biteship
+// const shippingStatusClass = (status) => {
+//   if (!status) return "bg-gray-50 border-gray-200 text-gray-500";
+//   const str = status.toLowerCase();
+//   if (["delivered"].includes(str))
+//     return "bg-green-50 border-green-200 text-green-700";
+//   if (["cancelled", "rejected"].includes(str))
+//     return "bg-red-50 border-red-200 text-red-700";
+//   if (["picking_up", "picked", "dropping_off", "allocated"].includes(str))
+//     return "bg-blue-50 border-blue-200 text-blue-700";
+//   return "bg-gray-50 border-gray-200 text-gray-600"; // Placed / Pending
+// };
+
+// const formatPrice = (v) =>
+//   new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(
+//     v,
+//   );
+// const formatDateTime = (date) =>
+//   new Date(date).toLocaleDateString("en-GB", {
+//     day: "numeric",
+//     month: "short",
+//     year: "numeric",
+//     hour: "2-digit",
+//     minute: "2-digit",
+//   });
+
+// onMounted(fetchOrders);
+
+// onUnmounted(() => {
+//   if (timerInterval) clearInterval(timerInterval);
+// });
+
 import { ref, onMounted, onUnmounted, computed } from "vue";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -3003,7 +3377,6 @@ const transactionTabs = [
   { label: "Refund Issues", value: "refund" },
 ];
 
-// [PERBAIKAN] Menambahkan opsi tab 'No Shipping'
 const shippingTabs = [
   { label: "All", value: "all" },
   { label: "Placed / Pending", value: "placed" },
@@ -3011,49 +3384,37 @@ const shippingTabs = [
   { label: "Picking Up", value: "picking_up" },
   { label: "In Transit", value: "dropping_off" },
   { label: "Delivered", value: "delivered" },
-  { label: "No Shipping", value: "no_shipping" }, // Tab baru
+  { label: "No Shipping", value: "no_shipping" },
 ];
 
 // --- FILTERING LOGIC ---
 const filteredTransactions = computed(() => {
   return transactions.value.filter((order) => {
-    // 1. Transaction Status Match
     let matchTransaction = false;
-    if (activeTransactionTab.value === "all") {
-      matchTransaction = true;
-    } else if (activeTransactionTab.value === "pending") {
+    if (activeTransactionTab.value === "all") matchTransaction = true;
+    else if (activeTransactionTab.value === "pending")
       matchTransaction = ["pending", "awaiting_payment"].includes(order.status);
-    } else if (activeTransactionTab.value === "refund") {
+    else if (activeTransactionTab.value === "refund")
       matchTransaction = order.status.includes("refund");
-    } else {
-      matchTransaction = order.status === activeTransactionTab.value;
-    }
+    else matchTransaction = order.status === activeTransactionTab.value;
 
-    // 2. Shipping Status Match
     let matchShipping = false;
-
     if (activeShippingTab.value === "all") {
-      matchShipping = true; // Tab 'All' menampilkan semua (biteship maupun free)
+      matchShipping = true;
     } else if (activeShippingTab.value === "no_shipping") {
-      // Tab 'No Shipping' HANYA menampilkan yang shipping_method-nya 'free'
       matchShipping = order.shipping_method === "free";
     } else {
-      // Untuk tab selain 'All' dan 'No Shipping', JANGAN tampilkan order 'free'
       if (order.shipping_method === "free") {
         matchShipping = false;
       } else {
-        // Logika status Biteship normal
         const shipStatus = order.biteshipData?.status || "pending";
-        if (activeShippingTab.value === "placed") {
+        if (activeShippingTab.value === "placed")
           matchShipping = ["pending", "placed"].includes(shipStatus);
-        } else if (activeShippingTab.value === "dropping_off") {
+        else if (activeShippingTab.value === "dropping_off")
           matchShipping = ["picked", "dropping_off"].includes(shipStatus);
-        } else {
-          matchShipping = shipStatus === activeShippingTab.value;
-        }
+        else matchShipping = shipStatus === activeShippingTab.value;
       }
     }
-
     return matchTransaction && matchShipping;
   });
 });
@@ -3133,29 +3494,48 @@ const startTimers = () => {
   }, 1000);
 };
 
-// [FITUR BARU] Fetch detail tracking langsung dari Biteship per Order
-const fetchBiteshipTrackingForOrder = async (order) => {
-  if (order.shipping_method !== "biteship" || !order.biteship_order_id) return;
+// [PERBAIKAN BESAR] Panggil API Bulk Tracking 1 Kali Saja
+const fetchBulkTracking = async (orders) => {
+  // Saring hanya pesanan Biteship yang memiliki biteship_order_id valid
+  const biteshipOrders = orders.filter(
+    (o) => o.shipping_method === "biteship" && o.biteship_order_id,
+  );
+  const idsToTrack = biteshipOrders.map((o) => o.id);
 
-  order.biteshipDataLoading = true;
+  if (idsToTrack.length === 0) return; // Keluar jika tidak ada pesanan Biteship
+
+  // Tampilkan animasi loading
+  biteshipOrders.forEach((o) => (o.biteshipDataLoading = true));
+
   try {
     const config = {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     };
-    const res = await axios.get(
-      `${BASE_URL}/transactions/${order.id}/tracking`,
+
+    // Tembak endpoint BULK
+    const res = await axios.post(
+      `${BASE_URL}/transactions/tracking/bulk`,
+      {
+        transaction_ids: idsToTrack,
+      },
       config,
     );
-    order.biteshipData = res.data;
+
+    const bulkData = res.data; // Mengembalikan object { id_1: { data... }, id_2: { data... } }
+
+    // Memetakan data yang didapat ke dalam State Vue
+    transactions.value.forEach((order) => {
+      if (bulkData[order.id]) {
+        order.biteshipData = bulkData[order.id];
+      }
+    });
   } catch (error) {
-    console.error(
-      `Failed to fetch tracking for order ${order.order_id}`,
-      error,
+    console.error("Failed to fetch bulk tracking from server", error);
+    biteshipOrders.forEach(
+      (o) => (o.biteshipData = { status: "Pending Data" }),
     );
-    // Jika gagal (misal API Biteship down), fallback ke data statis dari tabel transactions
-    order.biteshipData = { status: "Pending Data" };
   } finally {
-    order.biteshipDataLoading = false;
+    biteshipOrders.forEach((o) => (o.biteshipDataLoading = false));
   }
 };
 
@@ -3166,7 +3546,6 @@ const fetchOrders = async () => {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
 
-    // Inisialisasi properti untuk tracking dinamis
     transactions.value = res.data.map((order) => ({
       ...order,
       biteshipData: null,
@@ -3175,10 +3554,8 @@ const fetchOrders = async () => {
 
     startTimers();
 
-    // Jalankan fetch tracking Biteship di background secara paralel untuk setiap pesanan yang menggunakan Biteship
-    transactions.value.forEach((order) => {
-      fetchBiteshipTrackingForOrder(order);
-    });
+    // Jalankan Bulk Tracking SATU KALI SAJA untuk menghemat koneksi DB Vercel
+    fetchBulkTracking(transactions.value);
   } catch (err) {
     console.error(err);
   } finally {
@@ -3191,19 +3568,15 @@ const fetchOrders = async () => {
 const canPay = (status) => ["awaiting_payment", "pending"].includes(status);
 
 const handleOrderClick = (order) => {
-  if (canPay(order.status) && countdowns[order.id] !== "Expired") {
+  if (canPay(order.status) && countdowns[order.id] !== "Expired")
     redirectToPayment(order);
-  }
 };
 
 const redirectToPayment = (order) => {
-  if (order.status === "awaiting_payment") {
-    router.push(`/payment/${order.id}`);
-  } else if (order.status === "pending" && order.payment?.checkout_url) {
+  if (order.status === "awaiting_payment") router.push(`/payment/${order.id}`);
+  else if (order.status === "pending" && order.payment?.checkout_url)
     window.location.href = order.payment.checkout_url;
-  } else {
-    Swal.fire("Error", "Payment URL not found or invalid status", "error");
-  }
+  else Swal.fire("Error", "Payment URL not found or invalid status", "error");
 };
 
 const cancelOrder = async (id) => {
@@ -3320,7 +3693,6 @@ const statusClass = (status) => {
   return map[status] || "bg-gray-100 text-gray-500";
 };
 
-// Style khusus untuk Status Shipping Biteship
 const shippingStatusClass = (status) => {
   if (!status) return "bg-gray-50 border-gray-200 text-gray-500";
   const str = status.toLowerCase();
@@ -3330,7 +3702,7 @@ const shippingStatusClass = (status) => {
     return "bg-red-50 border-red-200 text-red-700";
   if (["picking_up", "picked", "dropping_off", "allocated"].includes(str))
     return "bg-blue-50 border-blue-200 text-blue-700";
-  return "bg-gray-50 border-gray-200 text-gray-600"; // Placed / Pending
+  return "bg-gray-50 border-gray-200 text-gray-600";
 };
 
 const formatPrice = (v) =>
