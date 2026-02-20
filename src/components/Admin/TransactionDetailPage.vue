@@ -2120,8 +2120,8 @@ onMounted(fetchData);
     class="mx-auto px-6 py-12 max-w-6xl min-h-screen relative overflow-hidden"
   >
     <div
-      class="absolute top-0 left-0 w-[800px] bg-white text-black p-4 z-[-1] opacity-0 pointer-events-none"
       id="print-label-template"
+      class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] bg-white text-black p-4 z-[-1] opacity-0 pointer-events-none transition-opacity duration-300 shadow-2xl"
     >
       <div
         v-if="transaction"
@@ -3112,34 +3112,40 @@ const generateAndDownloadPDF = () => {
 
   const element = document.getElementById("print-label-template");
 
-  // Ubah opacity sementara menjadi 1 saat digambar
+  // 1. Ubah styling agar elemen BENAR-BENAR terlihat oleh browser
   element.style.opacity = "1";
-  element.style.zIndex = "1000"; // Bawa ke depan sementara
+  element.style.zIndex = "9999";
 
-  let formatSetting = "a4";
-  if (printSettings.value.paper_size === "thermal")
-    formatSetting = [3.15, 3.93];
-  if (printSettings.value.paper_size === "thermal2")
-    formatSetting = [3.93, 5.9];
+  // 2. KUNCI UTAMA: Wajib menggunakan setTimeout!
+  // html2canvas butuh browser untuk melakukan "repaint" layar terlebih dahulu.
+  // Jika dipanggil tanpa delay, html2canvas akan menangkap layar saat opacity masih 0 (Blank PDF).
+  // Delay 800ms juga memberi waktu bagi Barcode (bwipjs) untuk loading.
+  setTimeout(() => {
+    let formatSetting = "a4";
+    if (printSettings.value.paper_size === "thermal")
+      formatSetting = [3.15, 3.93];
+    if (printSettings.value.paper_size === "thermal2")
+      formatSetting = [3.93, 5.9];
 
-  const opt = {
-    margin: 0.1,
-    filename: `Resi-${transaction.value.order_id}.pdf`,
-    image: { type: "jpeg", quality: 1 },
-    html2canvas: { scale: 2, useCORS: true },
-    jsPDF: { unit: "in", format: formatSetting, orientation: "portrait" },
-  };
+    const opt = {
+      margin: 0.1,
+      filename: `Resi-${transaction.value.order_id}.pdf`,
+      image: { type: "jpeg", quality: 1 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: "in", format: formatSetting, orientation: "portrait" },
+    };
 
-  html2pdf()
-    .set(opt)
-    .from(element)
-    .save()
-    .then(() => {
-      // Kembalikan ke tidak terlihat setelah selesai
-      element.style.opacity = "0";
-      element.style.zIndex = "-1";
-      Swal.close();
-    });
+    html2pdf()
+      .set(opt)
+      .from(element)
+      .save()
+      .then(() => {
+        // 3. Kembalikan ke tidak terlihat setelah selesai
+        element.style.opacity = "0";
+        element.style.zIndex = "-1";
+        Swal.close();
+      });
+  }, 800);
 };
 
 const getGrandTotal = (trx) =>
