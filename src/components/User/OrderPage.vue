@@ -2772,9 +2772,13 @@ onUnmounted(() => {
                 </div>
                 <p v-else class="text-[10px] text-gray-500 mt-0.5">
                   Resi:
-                  <span class="font-mono font-bold text-black">{{
+                  <!-- <span class="font-mono font-bold text-black">{{
                     order.biteshipData?.courier?.waybill_id ||
                     order.tracking_number ||
+                    "Waiting..."
+                  }}</span> -->
+                  <span class="font-mono font-bold text-black">{{
+                    order.biteshipData?.courier?.waybill_id ||
                     "Waiting..."
                   }}</span>
                 </p>
