@@ -2114,7 +2114,7 @@ onMounted(fetchData);
 }
 </style> -->
 
-<!-- Tambahan Tombol Cetak Resi -->
+<!-- Tambahan Tombol untuk Cetak Resi -->
 <template>
   <div class="mx-auto px-6 py-12 max-w-6xl min-h-screen relative">
     <div
