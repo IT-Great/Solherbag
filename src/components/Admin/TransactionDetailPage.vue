@@ -2116,14 +2116,16 @@ onMounted(fetchData);
 
 <!-- Tambahan Tombol Cetak Resi -->
 <template>
-  <div class="mx-auto px-6 py-12 max-w-6xl min-h-screen relative">
+  <div
+    class="mx-auto px-6 py-12 max-w-6xl min-h-screen relative overflow-hidden"
+  >
     <div
-      class="fixed top-0 left-[-9999px] w-[800px] bg-white text-black p-4"
+      class="absolute top-0 left-0 w-[800px] bg-white text-black p-4 z-[-1] opacity-0 pointer-events-none"
       id="print-label-template"
     >
       <div
         v-if="transaction"
-        class="border-[3px] border-black p-6 flex flex-col gap-4"
+        class="border-[3px] border-black p-6 flex flex-col gap-4 bg-white"
       >
         <div
           class="flex justify-between items-center border-b-2 border-black pb-4"
@@ -2140,13 +2142,15 @@ onMounted(fetchData);
             }}</span>
           </div>
           <div class="w-1/3 text-center">
-            <h1 class="font-black text-3xl tracking-widest uppercase">
+            <h1
+              class="font-black text-3xl tracking-widest uppercase text-black"
+            >
               SOLHER BAG
             </h1>
-            <p class="text-[10px] font-bold mt-1">solherbag.com</p>
+            <p class="text-[10px] font-bold mt-1 text-black">solherbag.com</p>
           </div>
           <div class="w-1/3 text-right">
-            <p class="font-black text-xl uppercase">
+            <p class="font-black text-xl uppercase text-black">
               {{ transaction.courier_type }}
             </p>
           </div>
@@ -2160,7 +2164,7 @@ onMounted(fetchData);
             class="h-24 object-contain mb-3"
             crossorigin="anonymous"
           />
-          <p class="font-black text-2xl tracking-widest">
+          <p class="font-black text-2xl tracking-widest text-black">
             Nomor Resi -
             {{
               biteshipData?.courier?.waybill_id ||
@@ -2174,25 +2178,29 @@ onMounted(fetchData);
           v-if="printSettings.shipping_fee_shown"
           class="text-center pb-4 border-b-2 border-black"
         >
-          <p class="font-black text-2xl">
+          <p class="font-black text-2xl text-black">
             Ongkos Kirim: {{ formatPrice(transaction.shipping_cost) }}
           </p>
-          <p class="font-bold text-lg mt-1">
+          <p class="font-bold text-lg mt-1 text-black">
             Jenis Layanan - {{ transaction.courier_type }}
           </p>
         </div>
 
         <div class="flex border-b-2 border-black pb-4 gap-6">
           <div class="w-1/2 flex flex-col border-r-2 border-black pr-6">
-            <p class="text-sm font-bold mb-2">Reference Number:</p>
+            <p class="text-sm font-bold mb-2 text-black">Reference Number:</p>
             <img
               :src="`https://bwipjs-api.metafloor.com/?bcid=code128&text=${transaction.order_id}&scale=3&includetext=false`"
               class="h-16 object-contain self-start"
               crossorigin="anonymous"
             />
-            <p class="text-sm font-bold mt-2">{{ transaction.order_id }}</p>
+            <p class="text-sm font-bold mt-2 text-black">
+              {{ transaction.order_id }}
+            </p>
           </div>
-          <div class="w-1/2 flex flex-col justify-center text-xl space-y-3">
+          <div
+            class="w-1/2 flex flex-col justify-center text-xl space-y-3 text-black"
+          >
             <p>
               Quantity <span class="mx-2">:</span>
               <span class="font-black">{{ totalQuantity }} Pcs</span>
@@ -2205,7 +2213,7 @@ onMounted(fetchData);
         </div>
 
         <div class="flex border-b-2 border-black pb-4 gap-6">
-          <div class="w-1/2 border-r-2 border-black pr-6">
+          <div class="w-1/2 border-r-2 border-black pr-6 text-black">
             <p class="font-black text-sm mb-3 uppercase">Alamat Penerima:</p>
             <p class="font-black text-xl leading-tight">
               {{ getCensoredName() }}
@@ -2223,7 +2231,7 @@ onMounted(fetchData);
               }}, {{ transaction.address?.postal_code || "" }}
             </p>
           </div>
-          <div class="w-1/2 pr-6">
+          <div class="w-1/2 pr-6 text-black">
             <p class="font-black text-sm mb-3 uppercase">Alamat Pengirim:</p>
             <p class="font-black text-xl leading-tight">Solher Store</p>
             <p
@@ -2244,7 +2252,7 @@ onMounted(fetchData);
 
         <div
           v-if="printSettings.item_description_shown"
-          class="pb-4 border-b-2 border-black text-lg leading-relaxed"
+          class="pb-4 border-b-2 border-black text-lg leading-relaxed text-black"
         >
           <div class="flex">
             <span class="font-black uppercase w-40 shrink-0"
@@ -2254,18 +2262,18 @@ onMounted(fetchData);
           </div>
         </div>
 
-        <div class="text-lg flex pb-2 border-b-2 border-black">
+        <div class="text-lg flex pb-2 border-b-2 border-black text-black">
           <span class="font-black uppercase w-40 shrink-0">Catatan: </span>
           <span class="font-bold">Tidak Ada</span>
         </div>
 
-        <div class="text-center pt-2 text-sm font-bold">
+        <div class="text-center pt-2 text-sm font-bold text-black">
           Pengiriman melalui platform Solher Bag
         </div>
       </div>
     </div>
     <div
-      class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-10"
+      class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-10 relative z-10"
     >
       <button
         @click="$router.back()"
@@ -2489,7 +2497,7 @@ onMounted(fetchData);
     </div>
     <div
       v-if="isLoading"
-      class="py-20 flex flex-col items-center justify-center animate-pulse"
+      class="py-20 flex flex-col items-center justify-center animate-pulse relative z-10"
     >
       <div
         class="border-4 border-gray-100 border-t-black rounded-full w-12 h-12 animate-spin mb-4"
@@ -2501,7 +2509,7 @@ onMounted(fetchData);
 
     <div
       v-else-if="transaction"
-      class="gap-8 grid grid-cols-1 lg:grid-cols-3 animate-fade-in"
+      class="gap-8 grid grid-cols-1 lg:grid-cols-3 animate-fade-in relative z-10"
     >
       <div class="space-y-6 lg:col-span-2">
         <div
@@ -2718,7 +2726,7 @@ onMounted(fetchData);
         </div>
       </div>
 
-      <div class="space-y-6">
+      <div class="space-y-6 lg:col-span-1">
         <div
           class="bg-black shadow-xl p-8 rounded-[2rem] text-white relative overflow-hidden"
         >
@@ -2924,7 +2932,6 @@ import axios from "axios";
 import { BASE_URL } from "../../config/api.js";
 import Swal from "sweetalert2";
 
-// [BARU] Import Library Pembuat PDF
 import html2pdf from "html2pdf.js";
 
 const route = useRoute();
@@ -3054,7 +3061,6 @@ const fetchData = async () => {
 
 // --- LOGIKA GENERATOR RESI (MANDIRI) ---
 
-// Fungsi Sensor Nama
 const getCensoredName = () => {
   let name =
     transaction.value?.address?.first_name_address +
@@ -3078,7 +3084,6 @@ const getCensoredName = () => {
     .join(" ");
 };
 
-// Fungsi Deskripsi Barang
 const getItemsDescription = () => {
   if (!transaction.value?.details) return "-";
   return transaction.value.details
@@ -3092,9 +3097,9 @@ const getItemsDescription = () => {
     .join(", ");
 };
 
-// Fungsi Download PDF Utama
+// [PERBAIKAN] Fungsi Download PDF
 const generateAndDownloadPDF = () => {
-  showPrintModal.value = false; // Tutup modal
+  showPrintModal.value = false;
 
   Swal.fire({
     title: "Mempersiapkan Resi...",
@@ -3107,12 +3112,15 @@ const generateAndDownloadPDF = () => {
 
   const element = document.getElementById("print-label-template");
 
-  // Penentuan Ukuran Kertas
+  // Ubah opacity sementara menjadi 1 saat digambar
+  element.style.opacity = "1";
+  element.style.zIndex = "1000"; // Bawa ke depan sementara
+
   let formatSetting = "a4";
   if (printSettings.value.paper_size === "thermal")
-    formatSetting = [3.15, 3.93]; // 8x10 inci
+    formatSetting = [3.15, 3.93];
   if (printSettings.value.paper_size === "thermal2")
-    formatSetting = [3.93, 5.9]; // 10x15 inci
+    formatSetting = [3.93, 5.9];
 
   const opt = {
     margin: 0.1,
@@ -3127,11 +3135,13 @@ const generateAndDownloadPDF = () => {
     .from(element)
     .save()
     .then(() => {
+      // Kembalikan ke tidak terlihat setelah selesai
+      element.style.opacity = "0";
+      element.style.zIndex = "-1";
       Swal.close();
     });
 };
 
-// --- Helper Functions Standar ---
 const getGrandTotal = (trx) =>
   parseFloat(trx.total_amount) + parseFloat(trx.shipping_cost);
 const getPaymentLogo = (methodString) => {
@@ -3256,7 +3266,6 @@ onMounted(fetchData);
     transform: translateY(0);
   }
 }
-
 input[type="checkbox"] {
   accent-color: #4a148c;
 }
