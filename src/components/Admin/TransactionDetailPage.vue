@@ -2791,6 +2791,7 @@ import { ref, onMounted, computed } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
 import { BASE_URL } from "../../config/api.js";
+import Swal from "sweetalert2";
 
 const route = useRoute();
 const transaction = ref(null);
