@@ -3722,17 +3722,11 @@ onUnmounted(() => {
 
 <!-- Dengan Badge Count -->
 <template>
-  <div class="mx-auto px-6 py-20 max-w-5xl min-h-screen">
+  <div class="mx-auto px-6 py-20 max-w-7xl min-h-screen">
     <div class="flex justify-between items-center mb-10">
       <h1 class="font-serif text-gray-900 text-4xl uppercase tracking-tighter">
         Track My Orders
       </h1>
-      <router-link
-        to="/shippingmanagement"
-        class="bg-black hover:bg-gray-800 px-6 py-3 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition shadow-md"
-      >
-        Simulate Shipping
-      </router-link>
     </div>
 
     <div class="mb-8 space-y-4">
