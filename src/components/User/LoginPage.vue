@@ -107,8 +107,8 @@ const handleLogin = async () => {
       showConfirmButton: false,
     });
 
-    // Arahkan ke halaman profile
-    router.push("/profilepage");
+    // Arahkan ke halaman home
+    router.push("/");
   } catch (error) {
     let message = "Terjadi kesalahan pada server.";
     if (error.response && error.response.status === 401) {
