@@ -4238,6 +4238,7 @@ const transactionTabs = [
   { label: "Completed", value: "completed" },
   { label: "Cancelled", value: "cancelled" },
   { label: "Refund Issues", value: "refund" },
+  { label: "Returned/Failed", value: "failed_returned" },
 ];
 
 const shippingTabs = [
@@ -4246,7 +4247,10 @@ const shippingTabs = [
   { label: "Allocated", value: "allocated" },
   { label: "Picking Up", value: "picking_up" },
   { label: "In Transit", value: "dropping_off" },
+  { label: "On Hold", value: "on_hold" },
   { label: "Delivered", value: "delivered" },
+  { label: "Returning", value: "returning" },
+  { label: "Issues / Cancelled", value: "issues" },
   { label: "No Shipping", value: "no_shipping" },
 ];
 
@@ -4257,6 +4261,10 @@ const getTransactionTabCount = (tabValue) => {
     if (tabValue === "pending")
       return ["pending", "awaiting_payment"].includes(order.status);
     if (tabValue === "refund") return order.status.includes("refund");
+
+    if (tabValue === "failed_returned")
+      return ["returned", "shipping_failed"].includes(order.status);
+
     return order.status === tabValue;
   }).length;
 };
@@ -4267,11 +4275,20 @@ const getShippingTabCount = (tabValue) => {
     if (tabValue === "no_shipping") return order.shipping_method === "free";
     if (order.shipping_method === "free") return false;
 
-    const shipStatus = order.biteshipData?.status || "pending";
+    const shipStatus = order.biteshipData?.status
+      ? order.biteshipData.status.toLowerCase()
+      : "pending";
+
     if (tabValue === "placed")
       return ["pending", "placed"].includes(shipStatus);
     if (tabValue === "dropping_off")
       return ["picked", "dropping_off"].includes(shipStatus);
+
+    if (tabValue === "returning")
+      return ["return_in_transit", "returned"].includes(shipStatus);
+    if (tabValue === "issues")
+      return ["cancelled", "rejected", "disposed"].includes(shipStatus);
+
     return shipStatus === tabValue;
   }).length;
 };
@@ -4284,6 +4301,8 @@ const filteredTransactions = computed(() => {
       matchTransaction = ["pending", "awaiting_payment"].includes(order.status);
     else if (activeTransactionTab.value === "refund")
       matchTransaction = order.status.includes("refund");
+    else if (activeTransactionTab.value === "failed_returned")
+      matchTransaction = ["returned", "shipping_failed"].includes(order.status);
     else matchTransaction = order.status === activeTransactionTab.value;
 
     let matchShipping = false;
@@ -4295,11 +4314,21 @@ const filteredTransactions = computed(() => {
       if (order.shipping_method === "free") {
         matchShipping = false;
       } else {
-        const shipStatus = order.biteshipData?.status || "pending";
+        const shipStatus = order.biteshipData?.status
+          ? order.biteshipData.status.toLowerCase()
+          : "pending";
         if (activeShippingTab.value === "placed")
           matchShipping = ["pending", "placed"].includes(shipStatus);
         else if (activeShippingTab.value === "dropping_off")
           matchShipping = ["picked", "dropping_off"].includes(shipStatus);
+        else if (activeShippingTab.value === "returning")
+          matchShipping = ["return_in_transit", "returned"].includes(
+            shipStatus,
+          );
+        else if (activeShippingTab.value === "issues")
+          matchShipping = ["cancelled", "rejected", "disposed"].includes(
+            shipStatus,
+          );
         else matchShipping = shipStatus === activeShippingTab.value;
       }
     }
@@ -4488,7 +4517,7 @@ const cancelOrder = async (id) => {
 // [BARU] Logika cerdas untuk memvalidasi apakah user boleh meminta Refund
 const canRequestRefund = (order) => {
   // Hanya bisa minta refund jika status transaksi adalah processing atau completed
-  if (!["processing", "completed"].includes(order.status)) return false;
+  if (!["processing", "completed", "shipping_failed", "returned"].includes(order.status)) return false;
 
   // Jika Free Shipping (In-Store Pickup), user boleh minta refund kapan saja sebelum mereka ambil barangnya
   // (Di dunia nyata, staff toko akan memvalidasi apakah barang sudah diambil atau belum)
@@ -4578,6 +4607,8 @@ const statusClass = (status) => {
     refund_rejected: "bg-gray-200 text-gray-600 line-through",
     refunded: "bg-teal-100 text-teal-700",
     refund_manual_required: "bg-pink-100 text-pink-700",
+    returned: "bg-gray-800 text-white",
+    shipping_failed: "bg-red-800 text-white",
   };
   return map[status] || "bg-gray-100 text-gray-500";
 };
@@ -4585,12 +4616,11 @@ const statusClass = (status) => {
 const shippingStatusClass = (status) => {
   if (!status) return "bg-gray-50 border-gray-200 text-gray-500";
   const str = status.toLowerCase();
-  if (["delivered"].includes(str))
-    return "bg-green-50 border-green-200 text-green-700";
-  if (["cancelled", "rejected"].includes(str))
-    return "bg-red-50 border-red-200 text-red-700";
-  if (["picking_up", "picked", "dropping_off", "allocated"].includes(str))
-    return "bg-blue-50 border-blue-200 text-blue-700";
+  if (["delivered"].includes(str)) return "bg-green-50 border-green-200 text-green-700";
+  if (["cancelled", "rejected", "disposed"].includes(str)) return "bg-red-50 border-red-200 text-red-700";
+  if (["on_hold", "return_in_transit", "returned"].includes(str)) return "bg-amber-50 border-amber-200 text-amber-700";
+  if (["picking_up", "picked", "dropping_off", "allocated"].includes(str)) return "bg-blue-50 border-blue-200 text-blue-700";
+  
   return "bg-gray-50 border-gray-200 text-gray-600";
 };
 
