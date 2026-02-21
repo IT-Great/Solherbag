@@ -2781,7 +2781,7 @@ const handleLogout = () => {
     if (result.isConfirmed) {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
-      router.push("/login");
+      router.push("/");
     }
   });
 };
