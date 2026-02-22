@@ -4462,7 +4462,7 @@ const fetchOrders = async () => {
   }
 };
 
-const canPay = (status) => ["awaiting_payment", "pending", "processing"].includes(status);
+const canPay = (status) => ["awaiting_payment", "pending"].includes(status);
 
 const handleOrderClick = (order) => {
   if (canPay(order.status) && countdowns[order.id] !== "Expired")
