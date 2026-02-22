@@ -4549,7 +4549,7 @@ const cancelOrder = async (id) => {
 // [BARU] Logika cerdas untuk memvalidasi apakah user boleh meminta Refund
 const canRequestRefund = (order) => {
   // Hanya bisa minta refund jika status transaksi adalah ini
-  if (!["completed", "shipping_failed", "returned"].includes(order.status)) return false;
+  if (!["completed", "shipping_failed"].includes(order.status)) return false;
 
   if (["shipping_failed", "returned"].includes(order.status)) {
      return true;
