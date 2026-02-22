@@ -4143,7 +4143,7 @@ onUnmounted(() => {
               class="flex flex-wrap justify-center md:justify-end gap-3 w-full md:w-auto"
             >
               <button
-                v-if="canPay(order.status)"
+                v-if="canCancel(order.status)"
                 @click="cancelOrder(order.id)"
                 class="hover:bg-red-50 px-6 py-2 border border-red-200 rounded-xl font-bold text-red-600 text-xs uppercase tracking-widest transition w-full md:w-auto"
               >
@@ -4463,6 +4463,7 @@ const fetchOrders = async () => {
 };
 
 const canPay = (status) => ["awaiting_payment", "pending"].includes(status);
+const canCancel = (status) => ["awaiting_payment", "pending", "processing"].includes(status);
 
 const handleOrderClick = (order) => {
   if (canPay(order.status) && countdowns[order.id] !== "Expired")
