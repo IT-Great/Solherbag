@@ -4548,7 +4548,7 @@ const cancelOrder = async (id) => {
 
 // [BARU] Logika cerdas untuk memvalidasi apakah user boleh meminta Refund
 const canRequestRefund = (order) => {
-  // Hanya bisa minta refund jika status transaksi adalah processing atau completed
+  // Hanya bisa minta refund jika status transaksi adalah ini
   if (!["completed", "shipping_failed"].includes(order.status)) return false;
 
   // Jika Free Shipping (In-Store Pickup), user boleh minta refund kapan saja sebelum mereka ambil barangnya
@@ -4567,7 +4567,7 @@ const canRequestRefund = (order) => {
     const unRefundableLogistics = [
       "picked",
       "dropping_off",
-      // "delivered",
+      "delivered",
       "return_in_transit",
     ];
 
