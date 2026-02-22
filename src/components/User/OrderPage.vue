@@ -4160,7 +4160,18 @@ onUnmounted(() => {
               <!-- <button v-if="order.status === 'processing'" @click="confirmReceived(order.id)" class="bg-green-600 hover:bg-green-700 px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition shadow-sm w-full md:w-auto">Order Received</button> -->
               <button
                 v-if="
-                  ['processing','completed','cancelled','refund_requested','refund_approved','refunded','refund_rejected','refund_manual_required','shipping_failed','returned'].includes(order.status) &&
+                  [
+                    'processing',
+                    'completed',
+                    'cancelled',
+                    'refund_requested',
+                    'refund_approved',
+                    'refunded',
+                    'refund_rejected',
+                    'refund_manual_required',
+                    'shipping_failed',
+                    'returned',
+                  ].includes(order.status) &&
                   order.shipping_method === 'biteship'
                 "
                 @click="
@@ -4410,26 +4421,75 @@ const startTimers = () => {
   }, 1000);
 };
 
+// const fetchBulkTracking = async (orders) => {
+//   const biteshipOrders = orders.filter(
+//     (o) => o.shipping_method === "biteship" && o.biteship_order_id,
+//   );
+//   const idsToTrack = biteshipOrders.map((o) => o.id);
+//   if (idsToTrack.length === 0) return;
+//   biteshipOrders.forEach((o) => (o.biteshipDataLoading = true));
+
+//   try {
+//     const config = {
+//       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+//     };
+//     const res = await axios.post(
+//       `${BASE_URL}/transactions/tracking/bulk`,
+//       { transaction_ids: idsToTrack },
+//       config,
+//     );
+//     const bulkData = res.data;
+//     transactions.value.forEach((order) => {
+//       if (bulkData[order.id]) order.biteshipData = bulkData[order.id];
+//     });
+//   } catch (error) {
+//     biteshipOrders.forEach(
+//       (o) => (o.biteshipData = { status: "Pending Data" }),
+//     );
+//   } finally {
+//     biteshipOrders.forEach((o) => (o.biteshipDataLoading = false));
+//   }
+// };
+
 const fetchBulkTracking = async (orders) => {
+  // [PERBAIKAN] Jangan track order yang status transaksinya sudah final/mati
+  const inactiveStatuses = [
+    "completed",
+    "cancelled",
+    "refunded",
+    "refund_rejected",
+    "shipping_failed",
+    "returned",
+  ];
+
   const biteshipOrders = orders.filter(
-    (o) => o.shipping_method === "biteship" && o.biteship_order_id,
+    (o) =>
+      o.shipping_method === "biteship" &&
+      o.biteship_order_id &&
+      !inactiveStatuses.includes(o.status), // Skip jika transaksi sudah final
   );
+
   const idsToTrack = biteshipOrders.map((o) => o.id);
   if (idsToTrack.length === 0) return;
+
   biteshipOrders.forEach((o) => (o.biteshipDataLoading = true));
 
   try {
     const config = {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }, // Ganti "admin_token" untuk TransactionPage
     };
     const res = await axios.post(
-      `${BASE_URL}/transactions/tracking/bulk`,
+      `${BASE_URL}/transactions/tracking/bulk`, // Tambahkan '/admin/' untuk TransactionPage
       { transaction_ids: idsToTrack },
       config,
     );
     const bulkData = res.data;
+
+    // Kita paksakan memasukkan biteshipData HANYA ke order yang sedang aktif di-track
     transactions.value.forEach((order) => {
-      if (bulkData[order.id]) order.biteshipData = bulkData[order.id];
+      if (bulkData[order.id]) {
+        order.biteshipData = bulkData[order.id];
+      }
     });
   } catch (error) {
     biteshipOrders.forEach(
@@ -4463,7 +4523,8 @@ const fetchOrders = async () => {
 };
 
 const canPay = (status) => ["awaiting_payment", "pending"].includes(status);
-const canCancel = (status) => ["awaiting_payment", "pending", "processing"].includes(status);
+const canCancel = (status) =>
+  ["awaiting_payment", "pending", "processing"].includes(status);
 
 const handleOrderClick = (order) => {
   if (canPay(order.status) && countdowns[order.id] !== "Expired")
@@ -4528,8 +4589,9 @@ const cancelOrder = async (id) => {
       fetchOrders();
     } catch (err) {
       // Perbaikan di sini: Gunakan optional chaining atau cek response
-      const errorMessage = err.response?.data?.message || "Something went wrong";
-      
+      const errorMessage =
+        err.response?.data?.message || "Something went wrong";
+
       Swal.fire("Error", `Failed to cancel order: ${errorMessage}`, "error");
     }
   }
@@ -4549,7 +4611,8 @@ const cancelOrder = async (id) => {
 // [BARU] Logika cerdas untuk memvalidasi apakah user boleh meminta Refund
 const canRequestRefund = (order) => {
   // Hanya bisa minta refund jika status transaksi adalah processing atau completed
-  if (!["completed", "shipping_failed", "returned"].includes(order.status)) return false;
+  if (!["completed", "shipping_failed", "returned"].includes(order.status))
+    return false;
 
   // Jika Free Shipping (In-Store Pickup), user boleh minta refund kapan saja sebelum mereka ambil barangnya
   // (Di dunia nyata, staff toko akan memvalidasi apakah barang sudah diambil atau belum)
@@ -4648,11 +4711,15 @@ const statusClass = (status) => {
 const shippingStatusClass = (status) => {
   if (!status) return "bg-gray-50 border-gray-200 text-gray-500";
   const str = status.toLowerCase();
-  if (["delivered"].includes(str)) return "bg-green-50 border-green-200 text-green-700";
-  if (["cancelled", "rejected", "disposed"].includes(str)) return "bg-red-50 border-red-200 text-red-700";
-  if (["on_hold", "return_in_transit", "returned"].includes(str)) return "bg-amber-50 border-amber-200 text-amber-700";
-  if (["picking_up", "picked", "dropping_off", "allocated"].includes(str)) return "bg-blue-50 border-blue-200 text-blue-700";
-  
+  if (["delivered"].includes(str))
+    return "bg-green-50 border-green-200 text-green-700";
+  if (["cancelled", "rejected", "disposed"].includes(str))
+    return "bg-red-50 border-red-200 text-red-700";
+  if (["on_hold", "return_in_transit", "returned"].includes(str))
+    return "bg-amber-50 border-amber-200 text-amber-700";
+  if (["picking_up", "picked", "dropping_off", "allocated"].includes(str))
+    return "bg-blue-50 border-blue-200 text-blue-700";
+
   return "bg-gray-50 border-gray-200 text-gray-600";
 };
 

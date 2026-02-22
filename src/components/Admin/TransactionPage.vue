@@ -4775,23 +4775,72 @@ const startTimers = () => {
   updateTimers();
 };
 
+// const fetchBulkTracking = async (orders) => {
+//   const biteshipOrders = orders.filter(
+//     (o) => o.shipping_method === "biteship" && o.biteship_order_id,
+//   );
+//   const idsToTrack = biteshipOrders.map((o) => o.id);
+//   if (idsToTrack.length === 0) return;
+//   biteshipOrders.forEach((o) => (o.biteshipDataLoading = true));
+
+//   try {
+//     const res = await axios.post(
+//       `${BASE_URL}/admin/transactions/tracking/bulk`,
+//       { transaction_ids: idsToTrack },
+//       axiosConfig,
+//     );
+//     const bulkData = res.data;
+//     transactions.value.forEach((order) => {
+//       if (bulkData[order.id]) order.biteshipData = bulkData[order.id];
+//     });
+//   } catch (error) {
+//     biteshipOrders.forEach(
+//       (o) => (o.biteshipData = { status: "Pending Data" }),
+//     );
+//   } finally {
+//     biteshipOrders.forEach((o) => (o.biteshipDataLoading = false));
+//   }
+// };
+
 const fetchBulkTracking = async (orders) => {
+  // [PERBAIKAN] Jangan track order yang status transaksinya sudah final/mati
+  const inactiveStatuses = [
+    "completed",
+    "cancelled",
+    "refunded",
+    "refund_rejected",
+    "shipping_failed",
+    "returned",
+  ];
+
   const biteshipOrders = orders.filter(
-    (o) => o.shipping_method === "biteship" && o.biteship_order_id,
+    (o) =>
+      o.shipping_method === "biteship" &&
+      o.biteship_order_id &&
+      !inactiveStatuses.includes(o.status), // Skip jika transaksi sudah final
   );
+
   const idsToTrack = biteshipOrders.map((o) => o.id);
   if (idsToTrack.length === 0) return;
+
   biteshipOrders.forEach((o) => (o.biteshipDataLoading = true));
 
   try {
+    const config = {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }, // Ganti "admin_token" untuk TransactionPage
+    };
     const res = await axios.post(
-      `${BASE_URL}/admin/transactions/tracking/bulk`,
+      `${BASE_URL}/transactions/tracking/bulk`, // Tambahkan '/admin/' untuk TransactionPage
       { transaction_ids: idsToTrack },
-      axiosConfig,
+      config,
     );
     const bulkData = res.data;
+
+    // Kita paksakan memasukkan biteshipData HANYA ke order yang sedang aktif di-track
     transactions.value.forEach((order) => {
-      if (bulkData[order.id]) order.biteshipData = bulkData[order.id];
+      if (bulkData[order.id]) {
+        order.biteshipData = bulkData[order.id];
+      }
     });
   } catch (error) {
     biteshipOrders.forEach(
