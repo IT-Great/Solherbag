@@ -4160,7 +4160,7 @@ onUnmounted(() => {
               <!-- <button v-if="order.status === 'processing'" @click="confirmReceived(order.id)" class="bg-green-600 hover:bg-green-700 px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition shadow-sm w-full md:w-auto">Order Received</button> -->
               <button
                 v-if="
-                  ['processing', 'completed'].includes(order.status) &&
+                  ['processing','completed','cancelled','refund_requested','refund_approved','refunded','refund_rejected','refund_manual_required','shipping_failed','returned'].includes(order.status) &&
                   order.shipping_method === 'biteship'
                 "
                 @click="
