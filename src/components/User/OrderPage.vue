@@ -4477,6 +4477,33 @@ const redirectToPayment = (order) => {
   else Swal.fire("Error", "Payment URL not found or invalid status", "error");
 };
 
+// const cancelOrder = async (id) => {
+//   const result = await Swal.fire({
+//     title: "Cancel Order?",
+//     text: "You won't be able to revert this!",
+//     icon: "warning",
+//     showCancelButton: true,
+//     confirmButtonColor: "#000",
+//     cancelButtonColor: "#d33",
+//     confirmButtonText: "Yes, cancel it!",
+//   });
+//   if (result.isConfirmed) {
+//     try {
+//       await axios.post(
+//         `${BASE_URL}/transactions/${id}/cancel`,
+//         {},
+//         {
+//           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+//         },
+//       );
+//       Swal.fire("Cancelled!", "Your order has been cancelled.", "success");
+//       fetchOrders();
+//     } catch (err) {
+//       Swal.fire("Error", `Failed to cancel order, ${err.data.message}`, "error");
+//     }
+//   }
+// };
+
 const cancelOrder = async (id) => {
   const result = await Swal.fire({
     title: "Cancel Order?",
@@ -4487,6 +4514,7 @@ const cancelOrder = async (id) => {
     cancelButtonColor: "#d33",
     confirmButtonText: "Yes, cancel it!",
   });
+
   if (result.isConfirmed) {
     try {
       await axios.post(
@@ -4499,7 +4527,10 @@ const cancelOrder = async (id) => {
       Swal.fire("Cancelled!", "Your order has been cancelled.", "success");
       fetchOrders();
     } catch (err) {
-      Swal.fire("Error", `Failed to cancel order, ${err.data.message}`, "error");
+      // Perbaikan di sini: Gunakan optional chaining atau cek response
+      const errorMessage = err.response?.data?.message || "Something went wrong";
+      
+      Swal.fire("Error", `Failed to cancel order: ${errorMessage}`, "error");
     }
   }
 };
