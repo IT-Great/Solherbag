@@ -4518,7 +4518,7 @@ const cancelOrder = async (id) => {
 // [BARU] Logika cerdas untuk memvalidasi apakah user boleh meminta Refund
 const canRequestRefund = (order) => {
   // Hanya bisa minta refund jika status transaksi adalah processing atau completed
-  if (!["processing", "completed", "shipping_failed", "returned"].includes(order.status)) return false;
+  if (!["completed", "shipping_failed", "returned"].includes(order.status)) return false;
 
   // Jika Free Shipping (In-Store Pickup), user boleh minta refund kapan saja sebelum mereka ambil barangnya
   // (Di dunia nyata, staff toko akan memvalidasi apakah barang sudah diambil atau belum)
