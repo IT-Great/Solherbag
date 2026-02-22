@@ -4567,7 +4567,7 @@ const canRequestRefund = (order) => {
     const unRefundableLogistics = [
       "picked",
       "dropping_off",
-      "delivered",
+      // "delivered",
       "return_in_transit",
     ];
 
