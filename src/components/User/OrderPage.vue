@@ -4499,7 +4499,7 @@ const cancelOrder = async (id) => {
       Swal.fire("Cancelled!", "Your order has been cancelled.", "success");
       fetchOrders();
     } catch (err) {
-      Swal.fire("Error", "Failed to cancel order", "error");
+      Swal.fire("Error", `Failed to cancel order, ${err.message}`, "error");
     }
   }
 };
