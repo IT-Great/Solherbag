@@ -2866,8 +2866,21 @@ const fetchUserProfile = async () => {
   }
 };
 
+// const updateUserData = (user) => {
+//   if (!user) return;
+//   userData.value = Object.assign({}, userData.value, user);
+//   localStorage.setItem("user", JSON.stringify(userData.value));
+// };
+
 const updateUserData = (user) => {
   if (!user) return;
+  
+  // [PERBAIKAN] Paksa konversi is_membership menjadi Boolean asli
+  // Menggunakan !! akan mengubah 1 menjadi true, dan 0 menjadi false.
+  if (user.hasOwnProperty('is_membership')) {
+    user.is_membership = !!user.is_membership; 
+  }
+
   userData.value = Object.assign({}, userData.value, user);
   localStorage.setItem("user", JSON.stringify(userData.value));
 };
