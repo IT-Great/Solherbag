@@ -2141,6 +2141,75 @@ onMounted(() => {
               </svg>
             </button>
           </div>
+          <div class="pt-6 border-gray-50 border-t mt-6">
+            <div
+              class="bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden"
+            >
+              <svg
+                class="absolute -right-4 -top-4 w-24 h-24 text-yellow-500 opacity-20"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                />
+              </svg>
+
+              <div class="flex justify-between items-center relative z-10">
+                <div>
+                  <h3
+                    class="font-bold text-lg text-yellow-400 tracking-wide uppercase"
+                  >
+                    Solher Club Member
+                  </h3>
+                  <p class="text-xs text-gray-300 mt-1">
+                    Earn points on every purchase!
+                  </p>
+
+                  <div v-if="userData.is_membership" class="mt-4">
+                    <p
+                      class="text-[10px] text-gray-400 uppercase tracking-widest"
+                    >
+                      Total Points
+                    </p>
+                    <p class="text-3xl font-black text-white">
+                      {{ userData.point || 0 }}
+                      <span class="text-sm font-normal text-yellow-500"
+                        >Pts</span
+                      >
+                    </p>
+                  </div>
+                </div>
+
+                <div class="flex flex-col items-end">
+                  <label
+                    class="relative inline-flex items-center cursor-pointer"
+                  >
+                    <input
+                      type="checkbox"
+                      v-model="userData.is_membership"
+                      @change="toggleMembership"
+                      class="sr-only peer"
+                    />
+                    <div
+                      class="w-11 h-6 bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-yellow-500"
+                    ></div>
+                  </label>
+                  <span
+                    class="text-[10px] font-bold mt-2 uppercase tracking-widest"
+                    :class="
+                      userData.is_membership
+                        ? 'text-yellow-400'
+                        : 'text-gray-500'
+                    "
+                  >
+                    {{ userData.is_membership ? "Active" : "Inactive" }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -2842,6 +2911,29 @@ const submitPasswordUpdate = async () => {
     Swal.fire("Success", "Password updated!", "success");
   } catch (err) {
     Swal.fire("Error", err.response.data.message, "error");
+  }
+};
+
+const toggleMembership = async () => {
+  try {
+    const res = await axios.post(
+      `${BASE_URL}/user/toggle-membership`,
+      { is_membership: userData.value.is_membership },
+      { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+    );
+    updateUserData(res.data.user);
+    Swal.fire({
+      toast: true,
+      position: "top-end",
+      icon: "success",
+      title: userData.value.is_membership ? "Membership Activated!" : "Membership Deactivated",
+      showConfirmButton: false,
+      timer: 3000,
+    });
+  } catch (err) {
+    // Revert jika gagal
+    userData.value.is_membership = !userData.value.is_membership;
+    Swal.fire("Error", "Failed to update membership status", "error");
   }
 };
 

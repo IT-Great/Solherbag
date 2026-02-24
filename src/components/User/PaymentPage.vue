@@ -942,7 +942,7 @@ onMounted(fetchData);
             </div>
           </div> -->
 
-          <div class="space-y-3 pt-4 border-t border-gray-50 text-sm">
+          <!-- <div class="space-y-3 pt-4 border-t border-gray-50 text-sm">
             <div class="flex justify-between text-gray-500">
               <span>Total Items</span>
               <span class="font-bold text-gray-900"
@@ -985,6 +985,80 @@ onMounted(fetchData);
                 >Grand Total</span
               >
               <span class="text-xl">{{ formatPrice(grandTotal) }}</span>
+            </div>
+          </div> -->
+
+          <div class="space-y-3 pt-4 border-t border-gray-50 text-sm">
+            <div class="flex justify-between text-gray-500">
+              <span>Total Items</span>
+              <span class="font-bold text-gray-900"
+                >{{ totalQuantity }} items</span
+              >
+            </div>
+            <div class="flex justify-between text-gray-500">
+              <span>Subtotal</span>
+              <span>{{ formatPrice(transactionData?.total_amount) }}</span>
+            </div>
+
+            <div class="flex justify-between text-gray-500 items-start">
+              <span>Shipping</span>
+              <span
+                v-if="shippingMethod === 'free'"
+                class="font-bold text-green-600"
+                >Free</span
+              >
+              <div
+                v-else-if="shippingMethod === 'biteship' && selectedRate"
+                class="text-right"
+              >
+                <span class="font-medium text-gray-900 block">{{
+                  formatPrice(selectedRate.price * totalQuantity)
+                }}</span>
+                <p class="text-[10px] text-gray-400 mt-1">
+                  {{ formatPrice(selectedRate.price) }} x
+                  {{ totalQuantity }} items
+                </p>
+              </div>
+              <span v-else class="italic text-[10px]">Select method</span>
+            </div>
+
+            <div
+              class="flex justify-between pt-4 font-bold text-gray-900 border-t border-gray-100"
+            >
+              <span class="uppercase tracking-widest text-xs mt-1"
+                >Grand Total</span
+              >
+              <span class="text-xl">{{ formatPrice(grandTotal) }}</span>
+            </div>
+
+            <div
+              v-if="userData?.is_membership"
+              class="mt-4 p-3 bg-yellow-50 border border-yellow-100 rounded-xl flex items-center gap-3"
+            >
+              <div
+                class="w-8 h-8 bg-yellow-400 text-white rounded-full flex justify-center items-center shrink-0"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-4 h-4"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  />
+                </svg>
+              </div>
+              <div>
+                <p
+                  class="text-[10px] font-bold text-yellow-800 uppercase tracking-widest"
+                >
+                  Points to earn
+                </p>
+                <p class="text-sm font-black text-yellow-600">
+                  +{{ calculateEarnedPoints }} Pts
+                </p>
+              </div>
             </div>
           </div>
 
@@ -1258,6 +1332,12 @@ const handlePayment = async () => {
     isProcessing.value = false;
   }
 };
+
+// Hitung calon poin: Rp 10.000 = 1 Poin (diambil dari subtotal produk saja)
+const calculateEarnedPoints = computed(() => {
+  if (!transactionData.value || !transactionData.value.total_amount) return 0;
+  return Math.floor(parseFloat(transactionData.value.total_amount) / 10000);
+});
 
 const formatPrice = (v) =>
   new Intl.NumberFormat("id-ID", {
