@@ -4930,8 +4930,7 @@ onUnmounted(() => {
           class="bg-white px-6 py-4 border-b border-gray-100 flex flex-col md:flex-row gap-6 md:gap-12 relative"
         >
           <div
-            v-if="userData?.is_membership && order.point > 0"
-            class="absolute top-4 right-6 bg-gradient-to-r from-yellow-100 to-yellow-50 border border-yellow-200 px-3 py-1.5 rounded-lg flex items-center gap-2 shadow-sm"
+            v-if="userData?.is_membership && order.point > 0 && order.status === 'completed'" class="absolute top-4 right-6 bg-gradient-to-r from-yellow-100 to-yellow-50 border border-yellow-200 px-3 py-1.5 rounded-lg flex items-center gap-2 shadow-sm"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

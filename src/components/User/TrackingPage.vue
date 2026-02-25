@@ -1903,10 +1903,7 @@ onMounted(fetchAllData);
             </div>
           </div>
 
-          <div
-            v-if="userData?.is_membership && orderData.point > 0"
-            class="mt-6 p-4 bg-gradient-to-r from-yellow-50 to-white border border-yellow-100 rounded-xl flex items-center justify-between"
-          >
+          <div v-if="userData?.is_membership && orderData.point > 0 && orderData.status === 'completed'" class="mt-6 p-4 bg-gradient-to-r from-yellow-50 to-white border border-yellow-100 rounded-xl flex items-center justify-between">
             <div class="flex items-center gap-3">
               <div
                 class="w-10 h-10 bg-yellow-400 text-white rounded-full flex justify-center items-center shadow-sm"
