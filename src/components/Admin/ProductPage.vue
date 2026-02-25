@@ -398,11 +398,12 @@ onMounted(fetchData);
               </span>
             </td>
             <td class="py-4 text-center">
-              <!-- <router-link
-                :to="`/admin/products/edit/${p.id}`"
-                class="mr-4 font-medium text-amber-500 hover:text-amber-600"
-                >Edit</router-link
-              > -->
+              <router-link
+                :to="`/admin/products/view/${p.id}`"
+                class="mr-4 font-medium text-blue-500 hover:text-blue-600"
+              >
+                View
+              </router-link>
               <button
                 @click="goToEdit(p)"
                 class="mr-4 font-medium text-amber-500 hover:text-amber-600"

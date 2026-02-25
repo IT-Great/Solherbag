@@ -89,11 +89,51 @@
           <label class="block mb-1 font-bold text-sm"
             >Product Image (Leave blank to keep current)</label
           >
-          <input
+          <!-- <input
             type="file"
             @change="handleFile"
             class="hover:file:bg-blue-100 file:bg-blue-50 file:mr-4 file:px-4 file:py-2 file:border-0 file:rounded-full w-full file:font-semibold text-gray-500 file:text-blue-700 text-sm file:text-sm"
-          />
+          /> -->
+          <div>
+            <label class="block mb-1 font-bold text-sm"
+              >Main Image (Required)</label
+            >
+            <input
+              type="file"
+              @change="handleFile"
+              accept="image/*"
+              class="w-full text-sm"
+              required
+            />
+          </div>
+
+          <div>
+            <label class="block mb-1 font-bold text-sm"
+              >Variant Images (Max 5, 2MB each)</label
+            >
+            <input
+              type="file"
+              @change="handleVariantImages"
+              accept="image/*"
+              multiple
+              class="w-full text-sm"
+            />
+            <p class="text-[10px] text-gray-500 mt-1">
+              Select multiple files at once.
+            </p>
+          </div>
+
+          <div>
+            <label class="block mb-1 font-bold text-sm"
+              >Product Video (Max 5MB)</label
+            >
+            <input
+              type="file"
+              @change="handleVideo"
+              accept="video/mp4,video/quicktime"
+              class="w-full text-sm"
+            />
+          </div>
           <p v-if="currentImage" class="mt-2 text-gray-400 text-xs">
             Current: {{ currentImage }}
           </p>
@@ -137,109 +177,6 @@
 </template>
 
 <script setup>
-// import { ref, onMounted } from "vue";
-// import axios from "axios";
-// import { useRouter, useRoute } from "vue-router";
-// import Swal from "sweetalert2";
-// import { BASE_URL } from "../../config/api.js";
-
-// const router = useRouter();
-// const route = useRoute();
-// const productId = route.params.id;
-
-// const categories = ref([]);
-// const currentImage = ref("");
-// const form = ref({
-//   name: "",
-//   code: "",
-//   price: "",
-//   stock: "",
-//   category_id: "",
-//   description: "",
-//   care: "",
-//   design: "",
-//   image: null,
-// });
-
-// const axiosConfig = {
-//   headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
-// };
-
-// const handleFile = (e) => {
-//   form.value.image = e.target.files[0];
-// };
-
-// // Ambil Data Kategori & Detail Produk saat halaman dimuat
-// onMounted(async () => {
-//   try {
-//     // 1. Fetch Categories
-//     const catRes = await axios.get(`${BASE_URL}/categories`, axiosConfig);
-//     categories.value = catRes.data.data;
-
-//     // 2. Fetch Product Detail
-//     const prodRes = await axios.get(
-//       `${BASE_URL}/products/${productId}`,
-//       axiosConfig,
-//     );
-//     const p = prodRes.data;
-
-//     form.value.name = p.name;
-//     form.value.code = p.code;
-//     form.value.price = p.price;
-//     form.value.stock = p.stock;
-//     form.value.category_id = p.category_id;
-//     form.value.description = p.description;
-//     form.value.care = p.care;
-//     form.value.design = p.design;
-//     currentImage.value = p.image;
-//   } catch (error) {
-//     Swal.fire("Error", "Gagal mengambil data produk.", "error");
-//   }
-// });
-
-// const handleSubmit = async () => {
-//   const formData = new FormData();
-
-//   // Trik Laravel: Gunakan POST dengan spoofing _method PUT untuk FormData
-//   formData.append("_method", "PUT");
-
-//   Object.keys(form.value).forEach((key) => {
-//     if (key === "image") {
-//       if (form.value.image instanceof File) {
-//         formData.append("image", form.value.image);
-//       }
-//     } else {
-//       formData.append(key, form.value[key]);
-//     }
-//   });
-
-//   try {
-//     // Tetap menggunakan .post karena menyertakan file, tapi method aslinya PUT (via _method)
-//     await axios.post(`${BASE_URL}/products/${productId}`, formData, {
-//       headers: {
-//         "Content-Type": "multipart/form-data",
-//         ...axiosConfig.headers,
-//       },
-//     });
-
-//     Swal.fire({
-//       icon: "success",
-//       title: "Updated!",
-//       text: "Data produk berhasil diperbarui.",
-//       timer: 2000,
-//       showConfirmButton: false,
-//     });
-//     router.push("/admin/products");
-//   } catch (error) {
-//     console.error(error);
-//     Swal.fire(
-//       "Error",
-//       "Gagal memperbarui produk. Pastikan kode unik tidak duplikat.",
-//       "error",
-//     );
-//   }
-// };
-
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import { useRouter, useRoute } from "vue-router";
@@ -263,6 +200,8 @@ const form = ref({
   care: "",
   design: "",
   image: null,
+  variant_images: [],
+  variant_video: null,
 });
 
 const axiosConfig = {
@@ -271,6 +210,26 @@ const axiosConfig = {
 
 const handleFile = (e) => {
   form.value.image = e.target.files[0];
+};
+
+const handleVariantImages = (e) => {
+  const files = Array.from(e.target.files);
+  if (files.length > 5) {
+    Swal.fire("Warning", "Maximum 5 variant images allowed", "warning");
+    e.target.value = "";
+    return;
+  }
+  form.value.variant_images = files;
+};
+
+const handleVideo = (e) => {
+  const file = e.target.files[0];
+  if (file && file.size > 5 * 1024 * 1024) {
+    Swal.fire("Warning", "Video must be less than 5MB", "warning");
+    e.target.value = "";
+    return;
+  }
+  form.value.variant_video = file;
 };
 
 // Fungsi helper untuk mengisi form dari data produk
@@ -325,11 +284,15 @@ const handleSubmit = async () => {
   formData.append("_method", "PUT");
 
   Object.keys(form.value).forEach((key) => {
-    if (key === "image") {
-      if (form.value.image instanceof File) {
-        formData.append("image", form.value.image);
+    if (key === "variant_images") {
+      form.value.variant_images.forEach((file) =>
+        formData.append("variant_images[]", file),
+      );
+    } else if (key === "variant_video") {
+      if (form.value[key]) {
+        formData.append(key, form.value[key]);
       }
-    } else {
+    } else if (form.value[key] !== null) {
       formData.append(key, form.value[key]);
     }
   });

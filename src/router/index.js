@@ -351,6 +351,16 @@ const routes = [
         }
     },
     {
+        path: '/admin/products/view/:id',
+        name: 'ProductView',
+        component: () => import('../components/Admin/ProductViewPage.vue'),
+        meta: {
+            requiresAuth: true,
+            hideHeaderFooter: true,
+            isAdmin: true
+        }
+    },
+    {
         path: '/admin/products/inactive', name: 'InactiveProduct', component: InactiveProductPage,
         meta: {
             requiresAuth: true,

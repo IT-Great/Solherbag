@@ -64,7 +64,47 @@
             {{ cat.category_name }}
           </option>
         </select>
-        <input type="file" @change="handleFile" class="w-full" />
+        <!-- <input type="file" @change="handleFile" class="w-full" /> -->
+        <div>
+          <label class="block mb-1 font-bold text-sm"
+            >Main Image (Required)</label
+          >
+          <input
+            type="file"
+            @change="handleFile"
+            accept="image/*"
+            class="w-full text-sm"
+            required
+          />
+        </div>
+
+        <div>
+          <label class="block mb-1 font-bold text-sm"
+            >Variant Images (Max 5, 2MB each)</label
+          >
+          <input
+            type="file"
+            @change="handleVariantImages"
+            accept="image/*"
+            multiple
+            class="w-full text-sm"
+          />
+          <p class="text-[10px] text-gray-500 mt-1">
+            Select multiple files at once.
+          </p>
+        </div>
+
+        <div>
+          <label class="block mb-1 font-bold text-sm"
+            >Product Video (Max 5MB)</label
+          >
+          <input
+            type="file"
+            @change="handleVideo"
+            accept="video/mp4,video/quicktime"
+            class="w-full text-sm"
+          />
+        </div>
       </div>
       <div class="space-y-4">
         <textarea
@@ -114,15 +154,48 @@ const form = ref({
   care: "",
   design: "",
   image: null,
+  variant_images: [],
+  variant_video: null,
 });
 
 const handleFile = (e) => (form.value.image = e.target.files[0]);
 
+const handleVariantImages = (e) => {
+  const files = Array.from(e.target.files);
+  if (files.length > 5) {
+    Swal.fire("Warning", "Maximum 5 variant images allowed", "warning");
+    e.target.value = "";
+    return;
+  }
+  form.value.variant_images = files;
+};
+
+const handleVideo = (e) => {
+  const file = e.target.files[0];
+  if (file && file.size > 5 * 1024 * 1024) {
+    Swal.fire("Warning", "Video must be less than 5MB", "warning");
+    e.target.value = "";
+    return;
+  }
+  form.value.variant_video = file;
+};
+
 const handleSubmit = async () => {
   const formData = new FormData();
-  Object.keys(form.value).forEach((key) =>
-    formData.append(key, form.value[key]),
-  );
+  Object.keys(form.value).forEach((key) => {
+    // formData.append(key, form.value[key]),
+    if (key === "variant_images") {
+      form.value.variant_images.forEach((file) =>
+        formData.append("variant_images[]", file),
+      );
+    } else if (key === "variant_video") {
+      if (form.value[key]) {
+        formData.append(key, form.value[key]);
+      }
+    } else if (form.value[key] !== null) {
+      formData.append(key, form.value[key]);
+    }
+  });
 
   try {
     await axios.post(`${BASE_URL}/products`, formData, {
