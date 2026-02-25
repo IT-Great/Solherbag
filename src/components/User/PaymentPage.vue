@@ -989,7 +989,7 @@ onMounted(fetchData);
           </div> -->
 
           <div class="space-y-3 pt-4 border-t border-gray-50 text-sm">
-            <div class="flex justify-between text-gray-500">
+            <!-- <div class="flex justify-between text-gray-500">
               <span>Total Items</span>
               <span class="font-bold text-gray-900"
                 >{{ totalQuantity }} items</span
@@ -1029,6 +1029,100 @@ onMounted(fetchData);
                 >Grand Total</span
               >
               <span class="text-xl">{{ formatPrice(grandTotal) }}</span>
+            </div> -->
+
+            <div class="flex justify-between text-gray-500">
+              <span>Total Items</span>
+              <span class="font-bold text-gray-900"
+                >{{ totalQuantity }} items</span
+              >
+            </div>
+            <div class="flex justify-between text-gray-500">
+              <span>Subtotal</span>
+              <span>{{ formatPrice(transactionData?.total_amount) }}</span>
+            </div>
+
+            <div
+              v-if="userData?.is_membership && userData?.point > 0"
+              class="pt-4 mt-2 border-t border-dashed border-gray-200"
+            >
+              <div class="flex justify-between items-center mb-2">
+                <span
+                  class="text-[10px] font-bold text-yellow-800 uppercase tracking-widest flex items-center gap-1"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-3 h-3 text-yellow-500"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                    />
+                  </svg>
+                  Redeem Points
+                </span>
+                <span class="text-xs text-gray-500"
+                  >Bal: {{ userData.point }} Pts</span
+                >
+              </div>
+
+              <div class="flex gap-2">
+                <input
+                  type="number"
+                  v-model="pointsToUse"
+                  :max="maxUsablePoints"
+                  min="0"
+                  class="flex-1 bg-white border border-yellow-300 rounded-lg px-3 py-1.5 text-sm focus:ring-yellow-500 outline-none"
+                  placeholder="0"
+                />
+                <button
+                  @click="useAllPoints"
+                  class="bg-yellow-100 text-yellow-800 text-[10px] font-bold uppercase px-3 rounded-lg hover:bg-yellow-200 transition"
+                >
+                  Use All
+                </button>
+              </div>
+              <p
+                v-if="pointsToUse > 0"
+                class="text-[10px] text-green-600 mt-1 font-medium text-right"
+              >
+                - {{ formatPrice(pointDiscountAmount) }}
+              </p>
+            </div>
+            <div class="flex justify-between text-gray-500 items-start">
+              <span>Shipping</span>
+              <span
+                v-if="shippingMethod === 'free'"
+                class="font-bold text-green-600"
+                >Free</span
+              >
+
+              <div
+                v-else-if="shippingMethod === 'biteship' && selectedRate"
+                class="text-right"
+              >
+                <span class="font-medium text-gray-900 block">{{
+                  formatPrice(selectedRate.price * totalQuantity)
+                }}</span>
+                <p class="text-[10px] text-gray-400 mt-1">
+                  {{ formatPrice(selectedRate.price) }} x
+                  {{ totalQuantity }} items
+                </p>
+              </div>
+
+              <span v-else class="italic text-[10px]">Select method</span>
+            </div>
+
+            <div
+              class="flex justify-between pt-4 font-bold text-gray-900 border-t border-gray-100"
+            >
+              <span class="uppercase tracking-widest text-xs mt-1"
+                >Grand Total</span
+              >
+              <span class="text-xl">{{
+                formatPrice(grandTotalWithDiscount)
+              }}</span>
             </div>
 
             <div
@@ -1119,6 +1213,10 @@ const isLoadingRates = ref(false);
 const deliveryType = ref("later"); // 'later' atau 'scheduled'
 const deliveryDate = ref("");
 const deliveryTime = ref("");
+
+// [BARU] STATE UNTUK PENGGUNAAN POIN
+const pointsToUse = ref(0);
+const pointConversionRate = 1000; // 1 Poin = Rp 1.000
 
 const axiosConfig = {
   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -1289,6 +1387,41 @@ const fetchData = async () => {
   }
 };
 
+// Maksimal poin yang bisa digunakan (tidak boleh melebihi saldo ATAU total harga produk)
+const maxUsablePoints = computed(() => {
+  if (!userData.value || !transactionData.value) return 0;
+  const userBalance = userData.value.point || 0;
+  const maxPointsForPrice = Math.floor(
+    parseFloat(transactionData.value.total_amount) / pointConversionRate,
+  );
+  return Math.min(userBalance, maxPointsForPrice);
+});
+
+// Nominal Rupiah dari poin yang digunakan
+const pointDiscountAmount = computed(() => {
+  return (pointsToUse.value || 0) * pointConversionRate;
+});
+
+// Fungsi tombol "Use All"
+const useAllPoints = () => {
+  pointsToUse.value = maxUsablePoints.value;
+};
+
+// Pastikan user tidak mengetik poin melebihi batas manual
+watch(pointsToUse, (newVal) => {
+  if (newVal < 0) pointsToUse.value = 0;
+  if (newVal > maxUsablePoints.value) pointsToUse.value = maxUsablePoints.value;
+});
+
+// [PERBAIKAN] Grand total yang sudah dikurangi diskon poin
+const grandTotalWithDiscount = computed(() => {
+  let total = parseFloat(transactionData.value?.total_amount) || 0;
+  if (shippingMethod.value === "biteship" && selectedRate.value) {
+    total += parseFloat(selectedRate.value.price) * totalQuantity.value;
+  }
+  return total - pointDiscountAmount.value;
+});
+
 const handlePayment = async () => {
   isProcessing.value = true;
   try {
@@ -1296,6 +1429,9 @@ const handlePayment = async () => {
       transaction_id: transactionData.value.id,
       address_id: selectedAddressId.value,
       shipping_method: shippingMethod.value,
+
+      // Kirim data penggunaan poin ke backend
+      use_points: pointsToUse.value,
 
       // Data Kurir
       courier_company:
@@ -1333,10 +1469,10 @@ const handlePayment = async () => {
   }
 };
 
-// Hitung calon poin: Rp 10.000 = 1 Poin (diambil dari subtotal produk saja)
+// Hitung calon poin: Rp 100.000 = 1 Poin (diambil dari subtotal produk saja)
 const calculateEarnedPoints = computed(() => {
   if (!transactionData.value || !transactionData.value.total_amount) return 0;
-  return Math.floor(parseFloat(transactionData.value.total_amount) / 10000);
+  return Math.floor(parseFloat(transactionData.value.total_amount) / 100000);
 });
 
 const formatPrice = (v) =>
