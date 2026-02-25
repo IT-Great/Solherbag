@@ -4780,6 +4780,79 @@ onUnmounted(() => {
         :key="order.id"
         class="bg-white shadow-sm hover:shadow-md border border-gray-100 rounded-2xl overflow-hidden transition-shadow duration-300 relative"
       >
+        <!-- <div
+          class="flex md:flex-row flex-col justify-between items-start md:items-center bg-gray-50 px-6 py-4 border-b border-gray-100 gap-4"
+        >
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
+            <div>
+              <p
+                class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-1"
+              >
+                Order ID
+              </p>
+              <p class="font-mono font-bold text-gray-800 text-sm">
+                {{ order.order_id }}
+              </p>
+            </div>
+            <div>
+              <p
+                class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-1"
+              >
+                Date
+              </p>
+              <p class="font-bold text-gray-800 text-xs">
+                {{ formatDateTime(order.created_at) }}
+              </p>
+            </div>
+          </div>
+
+          <div class="flex flex-col items-end gap-2 w-full md:w-auto">
+            <div
+              class="flex items-center justify-between md:justify-end w-full md:w-auto gap-3"
+            >
+              <span
+                class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
+                >Transaction:</span
+              >
+              <span
+                :class="statusClass(order.status)"
+                class="px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-tighter"
+              >
+                {{ formatStatus(order.status) }}
+              </span>
+            </div>
+
+            <div
+              v-if="order.shipping_method === 'biteship'"
+              class="flex items-center justify-between md:justify-end w-full md:w-auto gap-3"
+            >
+              <span
+                class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
+                >Shipping:</span
+              >
+              <span
+                :class="shippingStatusClass(order.shipping_status)"
+                class="px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-tighter border"
+              >
+                {{ formatStatus(order.shipping_status || "Pending") }}
+              </span>
+            </div>
+            <div
+              v-else-if="order.shipping_method === 'free'"
+              class="flex items-center justify-between md:justify-end w-full md:w-auto gap-3"
+            >
+              <span
+                class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
+                >Shipping:</span
+              >
+              <span
+                class="px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-tighter border bg-gray-100 text-gray-600"
+                >In-Store Pickup</span
+              >
+            </div>
+          </div>
+        </div> -->
+
         <div
           class="flex md:flex-row flex-col justify-between items-start md:items-center bg-gray-50 px-6 py-4 border-b border-gray-100 gap-4"
         >
@@ -4851,6 +4924,40 @@ onUnmounted(() => {
               >
             </div>
           </div>
+        </div>
+
+        <div
+          class="bg-white px-6 py-4 border-b border-gray-100 flex flex-col md:flex-row gap-6 md:gap-12 relative"
+        >
+          <div
+            v-if="userData?.is_membership && order.point > 0"
+            class="absolute top-4 right-6 bg-gradient-to-r from-yellow-100 to-yellow-50 border border-yellow-200 px-3 py-1.5 rounded-lg flex items-center gap-2 shadow-sm"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-4 h-4 text-yellow-500"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+              />
+            </svg>
+            <div>
+              <p
+                class="text-[8px] font-bold text-yellow-800 uppercase tracking-widest leading-none"
+              >
+                Points Earned
+              </p>
+              <p class="text-sm font-black text-yellow-600 leading-tight">
+                +{{ order.point }} Pts
+              </p>
+            </div>
+          </div>
+
+          <div class="flex-1 mt-4 md:mt-0"></div>
+
+          <div class="flex-1 mt-4 md:mt-0"></div>
         </div>
 
         <div
@@ -5173,6 +5280,8 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api";
 import { useRouter } from "vue-router";
+
+const userData = ref(null);
 
 const router = useRouter();
 const transactions = ref([]);
@@ -5541,7 +5650,13 @@ const formatDateTime = (date) =>
     minute: "2-digit",
   });
 
-onMounted(fetchOrders);
+onMounted(() => {
+  const user = localStorage.getItem("user");
+  if (user) {
+    userData.value = JSON.parse(user);
+  }
+  fetchOrders();
+});
 onUnmounted(() => {
   if (timerInterval) clearInterval(timerInterval);
 });
