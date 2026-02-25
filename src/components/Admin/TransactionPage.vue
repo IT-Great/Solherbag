@@ -5271,7 +5271,6 @@ onUnmounted(() => {
                     :key="idx"
                     :src="detail.product.image"
                     class="inline-block h-10 w-10 rounded-full border-2 border-white object-cover bg-gray-100 shadow-sm"
-                    crossorigin="anonymous"
                   />
                   <div
                     v-if="trx.details.length > 3"
