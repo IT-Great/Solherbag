@@ -2905,7 +2905,7 @@ onMounted(fetchData);
             </div>
 
             <div
-              v-if="transaction.point > 0"
+              v-if="transaction.point > 0 && transaction.status === 'completed'"
               class="mt-4 p-4 bg-gradient-to-r from-yellow-50 to-white border border-yellow-100 rounded-xl flex items-center justify-between"
             >
               <div class="flex items-center gap-3">

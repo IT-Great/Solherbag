@@ -5418,7 +5418,7 @@ onUnmounted(() => {
                 </div>
 
                 <div
-                  v-if="trx.point > 0"
+                  v-if="trx.point > 0 && trx.status === 'completed'"
                   class="flex justify-between items-center text-[10px] text-yellow-600 font-bold bg-yellow-50 px-2 py-1 rounded border border-yellow-100 mt-1"
                 >
                   <span class="flex items-center gap-1">
@@ -5984,7 +5984,7 @@ const exportToExcel = () => {
     "Subtotal (IDR)": parseFloat(item.total_amount),
     "Shipping Cost (IDR)": parseFloat(item.shipping_cost),
     "Grand Total (IDR)": getGrandTotal(item),
-    "Points Earned": item.point || 0, // [TAMBAHAN]
+    "Points Earned": item.status === 'completed' ? (item.point || 0) : 0, // [TAMBAHAN]
     "Transaction Status": item.status.replace(/_/g, " ").toUpperCase(),
     "Shipping Status":
       item.shipping_method === "free"
