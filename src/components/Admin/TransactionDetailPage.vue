@@ -2810,7 +2810,7 @@ onMounted(fetchData);
           </div>
         </div>
 
-        <div
+        <!-- <div
           class="bg-white shadow-sm p-8 border border-gray-100 rounded-[2rem]"
         >
           <h2
@@ -2853,6 +2853,93 @@ onMounted(fetchData);
               <span class="font-bold text-black text-2xl">{{
                 formatPrice(getGrandTotal(transaction))
               }}</span>
+            </div>
+          </div>
+        </div> -->
+
+        <div
+          class="bg-white shadow-sm p-8 border border-gray-100 rounded-[2rem]"
+        >
+          <h2
+            class="mb-6 font-black text-[10px] text-gray-400 uppercase tracking-[0.2em] border-b border-gray-50 pb-4"
+          >
+            Financial Summary
+          </h2>
+          <div class="space-y-4">
+            <div
+              class="flex justify-between items-center text-gray-600 text-sm"
+            >
+              <span>Subtotal ({{ totalQuantity }} items)</span>
+              <span class="font-medium text-gray-900">{{
+                formatPrice(transaction.total_amount)
+              }}</span>
+            </div>
+            <div
+              class="flex justify-between items-center text-gray-600 text-sm"
+            >
+              <span>Shipping Fee</span>
+              <span
+                v-if="transaction.shipping_method === 'free'"
+                class="font-bold text-green-600"
+                >Free</span
+              >
+              <span v-else class="font-medium text-gray-900">{{
+                formatPrice(transaction.shipping_cost)
+              }}</span>
+            </div>
+            <div
+              class="flex justify-between items-end pt-4 border-gray-100 border-t border-dashed"
+            >
+              <div>
+                <span
+                  class="block font-bold text-gray-900 text-xs uppercase tracking-widest"
+                  >Grand Total</span
+                >
+                <span class="text-[10px] text-gray-400 italic"
+                  >Paid by customer</span
+                >
+              </div>
+              <span class="font-bold text-black text-2xl">{{
+                formatPrice(getGrandTotal(transaction))
+              }}</span>
+            </div>
+
+            <div
+              v-if="transaction.point > 0"
+              class="mt-4 p-4 bg-gradient-to-r from-yellow-50 to-white border border-yellow-100 rounded-xl flex items-center justify-between"
+            >
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-10 h-10 bg-yellow-400 text-white rounded-full flex justify-center items-center shadow-sm"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-6 h-6"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <p
+                    class="text-[10px] font-bold text-yellow-800 uppercase tracking-widest"
+                  >
+                    Loyalty Reward
+                  </p>
+                  <p class="text-xs text-gray-500 mt-0.5">
+                    Points awarded to user
+                  </p>
+                </div>
+              </div>
+              <div class="text-right">
+                <span class="text-2xl font-black text-yellow-600"
+                  >+{{ transaction.point }}</span
+                >
+                <span class="text-xs font-bold text-yellow-800 ml-1">Pts</span>
+              </div>
             </div>
           </div>
         </div>
