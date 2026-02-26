@@ -279,6 +279,8 @@ import TransactionDetailPage from '../components/Admin/TransactionDetailPage.vue
 import PaymentPage from '../components/User/PaymentPage.vue'
 import PaymentSuccessPage from '../components/User/PaymentSuccessPage.vue'
 import TrackingPage from '../components/User/TrackingPage.vue'
+import CategoryCoaPage from '../components/Admin/CategoryCoaPage.vue'
+import CoaPage from '../components/Admin/CoaPage.vue'
 
 const routes = [
     { path: '/', name: 'Home', component: HomePage },
