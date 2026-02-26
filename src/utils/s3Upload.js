@@ -4,7 +4,7 @@ import { BASE_URL } from "../config/api";
 export const uploadToS3 = async (file, folder) => {
 
     const presign = await axios.post(
-        `${BASE_URL}/s3/presign`,
+        `${BASE_URL}/admin/s3/presign`,
         {
             filename: file.name,
             folder,
