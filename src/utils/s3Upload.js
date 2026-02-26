@@ -8,6 +8,11 @@ export const uploadToS3 = async (file, folder) => {
         {
             filename: file.name,
             folder,
+        },
+        {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("admin_token")}`
+            }
         }
     );
 
