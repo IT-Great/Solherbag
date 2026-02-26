@@ -309,6 +309,7 @@ onMounted(fetchData);
             v-model="itemsPerPage"
             class="bg-transparent outline-none font-bold text-gray-700 text-sm cursor-pointer"
           >
+            <option :value="1">1</option>
             <option :value="5">5</option>
             <option :value="10">10</option>
             <option :value="20">20</option>
@@ -432,7 +433,7 @@ onMounted(fetchData);
         of {{ filteredProducts.length }} products
       </p>
 
-      <div class="flex gap-2">
+      <!-- <div class="flex gap-2">
         <button
           @click="currentPage--"
           :disabled="currentPage === 1"
@@ -455,6 +456,40 @@ onMounted(fetchData);
           @click="currentPage++"
           :disabled="currentPage === totalPages"
           class="hover:bg-gray-50 disabled:opacity-30 px-4 py-2 border rounded-xl transition"
+        >
+          Next
+        </button>
+      </div> -->
+
+      <div class="flex gap-2">
+        <button
+          @click="currentPage--"
+          :disabled="currentPage === 1"
+          class="hover:bg-gray-50 disabled:opacity-30 px-4 py-2 border rounded-xl transition disabled:cursor-not-allowed text-sm font-medium"
+        >
+          Previous
+        </button>
+
+        <button
+          v-for="(page, index) in visiblePages"
+          :key="index"
+          @click="typeof page === 'number' ? (currentPage = page) : null"
+          :disabled="page === '...'"
+          :class="[
+            page === currentPage ? 'bg-black text-white' : 'hover:bg-gray-50',
+            page === '...'
+              ? 'cursor-default border-transparent hover:bg-transparent'
+              : 'border',
+          ]"
+          class="rounded-xl w-10 h-10 font-medium transition"
+        >
+          {{ page }}
+        </button>
+
+        <button
+          @click="currentPage++"
+          :disabled="currentPage === totalPages"
+          class="hover:bg-gray-50 disabled:opacity-30 px-4 py-2 border rounded-xl transition disabled:cursor-not-allowed text-sm font-medium"
         >
           Next
         </button>
@@ -503,6 +538,33 @@ const filteredProducts = computed(() => {
 const totalPages = computed(() =>
   Math.ceil(filteredProducts.value.length / itemsPerPage.value),
 );
+
+const visiblePages = computed(() => {
+  const current = currentPage.value;
+  const total = totalPages.value;
+  const maxVisible = 7;
+
+  if (total <= maxVisible) {
+    // Jika total halaman 7 atau kurang, tampilkan semua angka (misal: 1 2 3 4 5 6 7)
+    return Array.from({ length: total }, (_, i) => i + 1);
+  }
+
+  // Jika user berada di 4 halaman pertama
+  // Format: 1, 2, 3, 4, 5, ..., {total}
+  if (current <= 4) {
+    return [1, 2, 3, 4, 5, "...", total];
+  }
+
+  // Jika user berada di 4 halaman terakhir
+  // Format: 1, ..., {total-4}, {total-3}, {total-2}, {total-1}, {total}
+  if (current >= total - 3) {
+    return [1, "...", total - 4, total - 3, total - 2, total - 1, total];
+  }
+
+  // Jika user berada di tengah-tengah
+  // Format: 1, ..., {current-1}, {current}, {current+1}, ..., {total}
+  return [1, "...", current - 1, current, current + 1, "...", total];
+});
 
 const paginatedProducts = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage.value;
