@@ -423,6 +423,19 @@ const routes = [
         component: MessageViewPage,
         meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true }
     },
+    // --- [BARU] ROUTE UNTUK MODUL ACCOUNTING (ADMIN) ---
+    {
+        path: '/admin/category-coas',
+        name: 'CategoryCoa',
+        component: CategoryCoaPage,
+        meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true }
+    },
+    {
+        path: '/admin/coas',
+        name: 'CoaPage',
+        component: CoaPage,
+        meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true }
+    },
     {
         path: '/payment/:id',
         name: 'PaymentPage',
