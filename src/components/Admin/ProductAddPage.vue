@@ -245,6 +245,7 @@ const handleSubmit = async () => {
       },
       {
         headers: {
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
           Accept: "application/json",
         },
