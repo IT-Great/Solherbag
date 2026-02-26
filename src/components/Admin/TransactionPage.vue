@@ -5551,7 +5551,7 @@ onUnmounted(() => {
         }}</span>
         orders
       </p>
-      <div class="flex gap-2">
+      <!-- <div class="flex gap-2">
         <button
           @click="currentPage--"
           :disabled="currentPage === 1"
@@ -5572,6 +5572,41 @@ onUnmounted(() => {
         >
           {{ page }}
         </button>
+        <button
+          @click="currentPage++"
+          :disabled="currentPage === totalPages"
+          class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+        >
+          Next
+        </button>
+      </div> -->
+      <div class="flex gap-2">
+        <button
+          @click="currentPage--"
+          :disabled="currentPage === 1"
+          class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+        >
+          Previous
+        </button>
+
+        <button
+          v-for="(page, index) in visiblePages"
+          :key="index"
+          @click="typeof page === 'number' ? (currentPage = page) : null"
+          :disabled="page === '...'"
+          :class="[
+            currentPage === page
+              ? 'bg-black text-white border-black'
+              : 'hover:bg-gray-50 border-gray-200',
+            page === '...'
+              ? 'cursor-default border-transparent hover:bg-transparent'
+              : 'border',
+          ]"
+          class="w-10 h-10 rounded-xl font-medium transition flex items-center justify-center text-sm"
+        >
+          {{ page }}
+        </button>
+
         <button
           @click="currentPage++"
           :disabled="currentPage === totalPages"
@@ -5753,18 +5788,39 @@ const showingEnd = computed(() =>
     filteredTransactions.value.length,
   ),
 );
-const displayedPages = computed(() => {
-  const total = totalPages.value;
+
+// const displayedPages = computed(() => {
+//   const total = totalPages.value;
+//   const current = currentPage.value;
+//   const delta = 2;
+//   let range = [];
+//   for (
+//     let i = Math.max(1, current - delta);
+//     i <= Math.min(total, current + delta);
+//     i++
+//   )
+//     range.push(i);
+//   return range;
+// });
+
+const visiblePages = computed(() => {
   const current = currentPage.value;
-  const delta = 2;
-  let range = [];
-  for (
-    let i = Math.max(1, current - delta);
-    i <= Math.min(total, current + delta);
-    i++
-  )
-    range.push(i);
-  return range;
+  const total = totalPages.value;
+  const maxVisible = 7;
+
+  if (total <= maxVisible) {
+    return Array.from({ length: total }, (_, i) => i + 1);
+  }
+
+  if (current <= 4) {
+    return [1, 2, 3, 4, 5, '...', total];
+  }
+
+  if (current >= total - 3) {
+    return [1, '...', total - 4, total - 3, total - 2, total - 1, total];
+  }
+
+  return [1, '...', current - 1, current, current + 1, '...', total];
 });
 
 watch(
@@ -5983,7 +6039,7 @@ const exportToExcel = () => {
     "Subtotal (IDR)": parseFloat(item.total_amount),
     "Shipping Cost (IDR)": parseFloat(item.shipping_cost),
     "Grand Total (IDR)": getGrandTotal(item),
-    "Points Earned": item.status === 'completed' ? (item.point || 0) : 0, // [TAMBAHAN]
+    "Points Earned": item.status === "completed" ? item.point || 0 : 0, // [TAMBAHAN]
     "Transaction Status": item.status.replace(/_/g, " ").toUpperCase(),
     "Shipping Status":
       item.shipping_method === "free"

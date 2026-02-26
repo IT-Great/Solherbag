@@ -306,7 +306,7 @@ onMounted(fetchUsers);
         users
       </p>
 
-      <div class="flex gap-2">
+      <!-- <div class="flex gap-2">
         <button
           @click="currentPage--"
           :disabled="currentPage === 1"
@@ -326,6 +326,43 @@ onMounted(fetchUsers);
                 : 'hover:bg-gray-50 border-gray-200'
             "
             class="w-10 h-10 border rounded-xl font-medium transition flex items-center justify-center text-sm"
+          >
+            {{ page }}
+          </button>
+        </div>
+
+        <button
+          @click="currentPage++"
+          :disabled="currentPage === totalPages"
+          class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+        >
+          Next
+        </button>
+      </div> -->
+      <div class="flex gap-2">
+        <button
+          @click="currentPage--"
+          :disabled="currentPage === 1"
+          class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+        >
+          Previous
+        </button>
+
+        <div class="flex gap-1">
+          <button
+            v-for="(page, index) in visiblePages"
+            :key="index"
+            @click="typeof page === 'number' ? (currentPage = page) : null"
+            :disabled="page === '...'"
+            :class="[
+              currentPage === page
+                ? 'bg-blue-600 text-white border-blue-600'
+                : 'hover:bg-gray-50 border-gray-200',
+              page === '...'
+                ? 'cursor-default border-transparent hover:bg-transparent'
+                : 'border',
+            ]"
+            class="w-10 h-10 rounded-xl font-medium transition flex items-center justify-center text-sm"
           >
             {{ page }}
           </button>
@@ -398,19 +435,39 @@ const showingEnd = computed(() =>
 );
 
 // 5. Logic Tombol Halaman (Agar tidak terlalu panjang jika halaman banyak)
-const displayedPages = computed(() => {
-  const total = totalPages.value;
+// const displayedPages = computed(() => {
+//   const total = totalPages.value;
+//   const current = currentPage.value;
+//   const delta = 2;
+//   let range = [];
+//   for (
+//     let i = Math.max(1, current - delta);
+//     i <= Math.min(total, current + delta);
+//     i++
+//   ) {
+//     range.push(i);
+//   }
+//   return range;
+// });
+
+const visiblePages = computed(() => {
   const current = currentPage.value;
-  const delta = 2;
-  let range = [];
-  for (
-    let i = Math.max(1, current - delta);
-    i <= Math.min(total, current + delta);
-    i++
-  ) {
-    range.push(i);
+  const total = totalPages.value;
+  const maxVisible = 7;
+
+  if (total <= maxVisible) {
+    return Array.from({ length: total }, (_, i) => i + 1);
   }
-  return range;
+
+  if (current <= 4) {
+    return [1, 2, 3, 4, 5, '...', total];
+  }
+
+  if (current >= total - 3) {
+    return [1, '...', total - 4, total - 3, total - 2, total - 1, total];
+  }
+
+  return [1, '...', current - 1, current, current + 1, '...', total];
 });
 
 // --- Watchers ---
