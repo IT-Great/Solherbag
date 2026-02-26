@@ -235,12 +235,21 @@ const handleSubmit = async () => {
       videoUrl = await uploadToS3(form.value.variant_video, "products/videos");
     }
 
-    await axios.post(`${BASE_URL}/products`, {
-      ...form.value,
-      image: imageUrl,
-      variant_images: variantUrls,
-      variant_video: videoUrl,
-    });
+    await axios.post(
+      `${BASE_URL}/products`,
+      {
+        ...form.value,
+        image: imageUrl,
+        variant_images: variantUrls,
+        variant_video: videoUrl,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json",
+        },
+      },
+    );
 
     Swal.fire("Success", "Product Added", "success");
   } catch (e) {
