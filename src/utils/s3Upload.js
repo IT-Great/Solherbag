@@ -16,6 +16,7 @@ export const uploadToS3 = async (file, folder) => {
     await axios.put(upload_url, file, {
         headers: {
             "Content-Type": file.type,
+            "x-amz-acl": "public-read",
         },
     });
 
