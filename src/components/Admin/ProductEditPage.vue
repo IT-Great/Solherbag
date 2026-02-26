@@ -599,11 +599,11 @@ const handleVariantImages = (e) => {
 
 const handleVideo = (e) => {
   const file = e.target.files[0];
-  if (file && file.size > 5 * 1024 * 1024) {
-    Swal.fire("Warning", "Video must be less than 5MB", "warning");
-    e.target.value = "";
-    return;
-  }
+  // if (file && file.size > 5 * 1024 * 1024) {
+  //   Swal.fire("Warning", "Video must be less than 5MB", "warning");
+  //   e.target.value = "";
+  //   return;
+  // }
   form.value.variant_video = file;
 };
 
