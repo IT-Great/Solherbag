@@ -327,6 +327,16 @@ const routes = [
         }
     },
     {
+        path: '/admin/categories/:id',
+        name: 'CategoryDetail',
+        component: () => import('../components/Admin/CategoryDetailPage.vue'), // Sesuaikan path jika perlu
+        meta: {
+            requiresAuth: true,
+            hideHeaderFooter: true,
+            isAdmin: true
+        }
+    },
+    {
         path: '/admin/products', name: 'Product', component: ProductPage,
         meta: {
             requiresAuth: true,
