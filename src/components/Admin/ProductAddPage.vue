@@ -141,6 +141,7 @@ import axios from "axios";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
+import { uploadToS3 } from "../../utils/s3Upload.js";
 
 const router = useRouter();
 const categories = ref([]);
@@ -180,34 +181,70 @@ const handleVideo = (e) => {
   form.value.variant_video = file;
 };
 
+// const handleSubmit = async () => {
+//   const formData = new FormData();
+//   Object.keys(form.value).forEach((key) => {
+//     // formData.append(key, form.value[key]),
+//     if (key === "variant_images") {
+//       form.value.variant_images.forEach((file) =>
+//         formData.append("variant_images[]", file),
+//       );
+//     } else if (key === "variant_video") {
+//       if (form.value[key]) {
+//         formData.append(key, form.value[key]);
+//       }
+//     } else if (form.value[key] !== null) {
+//       formData.append(key, form.value[key]);
+//     }
+//   });
+
+//   try {
+//     await axios.post(`${BASE_URL}/products`, formData, {
+//       headers: {
+//         "Content-Type": "multipart/form-data",
+//         Authorization: `Bearer ${localStorage.getItem("token")}`,
+//       },
+//     });
+//     Swal.fire("Success", "Product Added", "success");
+//     router.push("/admin/products");
+//   } catch (e) {
+//     Swal.fire("Error", "Check Duplicate Code", "error");
+//   }
+// };
+
 const handleSubmit = async () => {
-  const formData = new FormData();
-  Object.keys(form.value).forEach((key) => {
-    // formData.append(key, form.value[key]),
-    if (key === "variant_images") {
-      form.value.variant_images.forEach((file) =>
-        formData.append("variant_images[]", file),
-      );
-    } else if (key === "variant_video") {
-      if (form.value[key]) {
-        formData.append(key, form.value[key]);
-      }
-    } else if (form.value[key] !== null) {
-      formData.append(key, form.value[key]);
-    }
-  });
+  Swal.fire({ title: "Uploading...", allowOutsideClick: false });
+  Swal.showLoading();
 
   try {
-    await axios.post(`${BASE_URL}/products`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
+    // upload main image
+    const imageUrl = await uploadToS3(form.value.image, "products");
+
+    // variant images
+    let variantUrls = [];
+
+    for (const file of form.value.variant_images) {
+      const url = await uploadToS3(file, "products/variants");
+      variantUrls.push(url);
+    }
+
+    // video
+    let videoUrl = null;
+
+    if (form.value.variant_video) {
+      videoUrl = await uploadToS3(form.value.variant_video, "products/videos");
+    }
+
+    await axios.post(`${BASE_URL}/products`, {
+      ...form.value,
+      image: imageUrl,
+      variant_images: variantUrls,
+      variant_video: videoUrl,
     });
+
     Swal.fire("Success", "Product Added", "success");
-    router.push("/admin/products");
   } catch (e) {
-    Swal.fire("Error", "Check Duplicate Code", "error");
+    Swal.fire("Upload Failed", "", "error");
   }
 };
 
