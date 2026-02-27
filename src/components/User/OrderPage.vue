@@ -4754,6 +4754,52 @@ onUnmounted(() => {
       </div>
     </div>
 
+    <div
+      class="flex flex-col md:flex-row justify-between items-center gap-4 mb-8"
+    >
+      <div class="relative w-full md:w-80">
+        <span
+          class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+        </span>
+        <input
+          v-model="searchQuery"
+          type="text"
+          placeholder="Search Order ID, Courier, or Resi..."
+          class="bg-gray-50 pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none w-full text-sm transition"
+        />
+      </div>
+
+      <div class="flex items-center gap-2 w-full md:w-auto">
+        <span class="text-xs font-bold text-gray-400 uppercase tracking-wide"
+          >Show:</span
+        >
+        <select
+          v-model="itemsPerPage"
+          class="bg-gray-50 px-3 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none text-sm font-bold cursor-pointer"
+        >
+          <option :value="5">5</option>
+          <option :value="10">10</option>
+          <option :value="20">20</option>
+          <option :value="50">50</option>
+        </select>
+      </div>
+    </div>
+
     <div v-if="loading" class="space-y-6">
       <div class="bg-gray-100 h-40 rounded-2xl animate-pulse"></div>
       <div class="bg-gray-100 h-40 rounded-2xl animate-pulse"></div>
@@ -4930,7 +4976,12 @@ onUnmounted(() => {
           class="bg-white px-6 py-4 border-b border-gray-100 flex flex-col md:flex-row gap-6 md:gap-12 relative"
         >
           <div
-            v-if="userData?.is_membership && order.point > 0 && order.status === 'completed'" class="absolute top-4 right-6 bg-gradient-to-r from-yellow-100 to-yellow-50 border border-yellow-200 px-3 py-1.5 rounded-lg flex items-center gap-2 shadow-sm"
+            v-if="
+              userData?.is_membership &&
+              order.point > 0 &&
+              order.status === 'completed'
+            "
+            class="absolute top-4 right-6 bg-gradient-to-r from-yellow-100 to-yellow-50 border border-yellow-200 px-3 py-1.5 rounded-lg flex items-center gap-2 shadow-sm"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -5269,12 +5320,64 @@ onUnmounted(() => {
           </div>
         </div>
       </div>
+      <div
+        v-if="!loading && filteredTransactions.length > 0"
+        class="flex flex-col md:flex-row justify-between items-center gap-4 mt-8 pt-6 border-t border-gray-100"
+      >
+        <p class="text-sm text-gray-400">
+          Showing
+          <span class="font-bold text-black">{{ showingStart }}</span> to
+          <span class="font-bold text-black">{{ showingEnd }}</span> of
+          <span class="font-bold text-black">{{
+            filteredTransactions.length
+          }}</span>
+          orders
+        </p>
+
+        <div class="flex gap-2">
+          <button
+            @click="currentPage--"
+            :disabled="currentPage === 1"
+            class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+          >
+            Previous
+          </button>
+
+          <div class="flex gap-1">
+            <button
+              v-for="(page, index) in visiblePages"
+              :key="index"
+              @click="typeof page === 'number' ? (currentPage = page) : null"
+              :disabled="page === '...'"
+              :class="[
+                currentPage === page
+                  ? 'bg-black text-white border-black'
+                  : 'hover:bg-gray-50 border-gray-200',
+                page === '...'
+                  ? 'cursor-default border-transparent hover:bg-transparent'
+                  : 'border',
+              ]"
+              class="w-10 h-10 rounded-xl font-medium transition flex items-center justify-center text-sm"
+            >
+              {{ page }}
+            </button>
+          </div>
+
+          <button
+            @click="currentPage++"
+            :disabled="currentPage === totalPages || totalPages === 0"
+            class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+          >
+            Next
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, computed } from "vue";
+import { ref, onMounted, onUnmounted, computed, watch } from "vue";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api";
@@ -5287,6 +5390,11 @@ const transactions = ref([]);
 const loading = ref(true);
 const countdowns = ref({});
 let timerInterval = null;
+
+// Search & Pagination States
+const searchQuery = ref("");
+const currentPage = ref(1);
+const itemsPerPage = ref(10);
 
 const activeTransactionTab = ref("all");
 const activeShippingTab = ref("all");
@@ -5352,8 +5460,66 @@ const getShippingTabCount = (tabValue) => {
 };
 
 // [PERBAIKAN] Menggunakan order.shipping_status
+// const filteredTransactions = computed(() => {
+//   return transactions.value.filter((order) => {
+//     let matchTransaction = false;
+//     if (activeTransactionTab.value === "all") matchTransaction = true;
+//     else if (activeTransactionTab.value === "pending")
+//       matchTransaction = ["pending", "awaiting_payment"].includes(order.status);
+//     else if (activeTransactionTab.value === "refund")
+//       matchTransaction = order.status.includes("refund");
+//     else if (activeTransactionTab.value === "failed_returned")
+//       matchTransaction = ["returned", "shipping_failed"].includes(order.status);
+//     else matchTransaction = order.status === activeTransactionTab.value;
+
+//     let matchShipping = false;
+//     if (activeShippingTab.value === "all") {
+//       matchShipping = true;
+//     } else if (activeShippingTab.value === "no_shipping") {
+//       matchShipping = order.shipping_method === "free";
+//     } else {
+//       if (order.shipping_method === "free") {
+//         matchShipping = false;
+//       } else {
+//         const shipStatus = order.shipping_status
+//           ? order.shipping_status.toLowerCase()
+//           : "pending";
+//         if (activeShippingTab.value === "placed")
+//           matchShipping = ["pending", "placed"].includes(shipStatus);
+//         else if (activeShippingTab.value === "dropping_off")
+//           matchShipping = ["picked", "dropping_off"].includes(shipStatus);
+//         else if (activeShippingTab.value === "returning")
+//           matchShipping = ["return_in_transit", "returned"].includes(
+//             shipStatus,
+//           );
+//         else if (activeShippingTab.value === "issues")
+//           matchShipping = ["cancelled", "rejected", "disposed"].includes(
+//             shipStatus,
+//           );
+//         else matchShipping = shipStatus === activeShippingTab.value;
+//       }
+//     }
+//     return matchTransaction && matchShipping;
+//   });
+// });
+
+// [PERBAIKAN] Menambahkan filter Search ke computed filteredTransactions
 const filteredTransactions = computed(() => {
+  const query = searchQuery.value.toLowerCase();
+
   return transactions.value.filter((order) => {
+    // 1. Filter Search
+    let matchSearch = true;
+    if (query) {
+      matchSearch =
+        order.order_id.toLowerCase().includes(query) ||
+        (order.tracking_number &&
+          order.tracking_number.toLowerCase().includes(query)) ||
+        (order.courier_company &&
+          order.courier_company.toLowerCase().includes(query));
+    }
+
+    // 2. Filter Tab Transaksi
     let matchTransaction = false;
     if (activeTransactionTab.value === "all") matchTransaction = true;
     else if (activeTransactionTab.value === "pending")
@@ -5364,6 +5530,7 @@ const filteredTransactions = computed(() => {
       matchTransaction = ["returned", "shipping_failed"].includes(order.status);
     else matchTransaction = order.status === activeTransactionTab.value;
 
+    // 3. Filter Tab Shipping
     let matchShipping = false;
     if (activeShippingTab.value === "all") {
       matchShipping = true;
@@ -5391,13 +5558,61 @@ const filteredTransactions = computed(() => {
         else matchShipping = shipStatus === activeShippingTab.value;
       }
     }
-    return matchTransaction && matchShipping;
+    return matchSearch && matchTransaction && matchShipping;
   });
 });
+
+// [BARU] Computed Properties untuk Pagination & Tampilan Slice
+const totalPages = computed(() =>
+  Math.ceil(filteredTransactions.value.length / itemsPerPage.value),
+);
+
+const paginatedTransactions = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value;
+  return filteredTransactions.value.slice(start, start + itemsPerPage.value);
+});
+
+const showingStart = computed(() =>
+  filteredTransactions.value.length === 0
+    ? 0
+    : (currentPage.value - 1) * itemsPerPage.value + 1,
+);
+const showingEnd = computed(() =>
+  Math.min(
+    currentPage.value * itemsPerPage.value,
+    filteredTransactions.value.length,
+  ),
+);
+
+const visiblePages = computed(() => {
+  const current = currentPage.value;
+  const total = totalPages.value;
+  const maxVisible = 7;
+
+  if (total <= maxVisible) {
+    return Array.from({ length: total }, (_, i) => i + 1);
+  }
+  if (current <= 4) {
+    return [1, 2, 3, 4, 5, "...", total];
+  }
+  if (current >= total - 3) {
+    return [1, "...", total - 4, total - 3, total - 2, total - 1, total];
+  }
+  return [1, "...", current - 1, current, current + 1, "...", total];
+});
+
+// Reset ke halaman 1 jika filter berubah
+watch(
+  [searchQuery, itemsPerPage, activeTransactionTab, activeShippingTab],
+  () => {
+    currentPage.value = 1;
+  },
+);
 
 const resetFilters = () => {
   activeTransactionTab.value = "all";
   activeShippingTab.value = "all";
+  searchQuery.value = "";
 };
 
 const getCourierLogo = (company) => {
