@@ -5377,91 +5377,156 @@ onUnmounted(() => {
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, computed, watch } from "vue";
-import axios from "axios";
-import Swal from "sweetalert2";
-import { BASE_URL } from "../../config/api";
-import { useRouter } from "vue-router";
+// import { ref, onMounted, onUnmounted, computed, watch } from "vue";
+// import axios from "axios";
+// import Swal from "sweetalert2";
+// import { BASE_URL } from "../../config/api";
+// import { useRouter } from "vue-router";
 
-const userData = ref(null);
+// const userData = ref(null);
 
-const router = useRouter();
-const transactions = ref([]);
-const loading = ref(true);
-const countdowns = ref({});
-let timerInterval = null;
+// const router = useRouter();
+// const transactions = ref([]);
+// const loading = ref(true);
+// const countdowns = ref({});
+// let timerInterval = null;
 
-// Search & Pagination States
-const searchQuery = ref("");
-const currentPage = ref(1);
-const itemsPerPage = ref(10);
+// // Search & Pagination States
+// const searchQuery = ref("");
+// const currentPage = ref(1);
+// const itemsPerPage = ref(10);
 
-const activeTransactionTab = ref("all");
-const activeShippingTab = ref("all");
+// const activeTransactionTab = ref("all");
+// const activeShippingTab = ref("all");
 
-const transactionTabs = [
-  { label: "All", value: "all" },
-  { label: "Pending / Unpaid", value: "pending" },
-  { label: "Processing", value: "processing" },
-  { label: "Completed", value: "completed" },
-  { label: "Cancelled", value: "cancelled" },
-  { label: "Refund Issues", value: "refund" },
-  { label: "Returned/Failed", value: "failed_returned" },
-];
+// const transactionTabs = [
+//   { label: "All", value: "all" },
+//   { label: "Pending / Unpaid", value: "pending" },
+//   { label: "Processing", value: "processing" },
+//   { label: "Completed", value: "completed" },
+//   { label: "Cancelled", value: "cancelled" },
+//   { label: "Refund Issues", value: "refund" },
+//   { label: "Returned/Failed", value: "failed_returned" },
+// ];
 
-const shippingTabs = [
-  { label: "All", value: "all" },
-  { label: "Placed / Pending", value: "placed" },
-  { label: "Allocated", value: "allocated" },
-  { label: "Picking Up", value: "picking_up" },
-  { label: "In Transit", value: "dropping_off" },
-  { label: "On Hold", value: "on_hold" },
-  { label: "Delivered", value: "delivered" },
-  { label: "Returning", value: "returning" },
-  { label: "Issues / Cancelled", value: "issues" },
-  { label: "No Shipping", value: "no_shipping" },
-];
+// const shippingTabs = [
+//   { label: "All", value: "all" },
+//   { label: "Placed / Pending", value: "placed" },
+//   { label: "Allocated", value: "allocated" },
+//   { label: "Picking Up", value: "picking_up" },
+//   { label: "In Transit", value: "dropping_off" },
+//   { label: "On Hold", value: "on_hold" },
+//   { label: "Delivered", value: "delivered" },
+//   { label: "Returning", value: "returning" },
+//   { label: "Issues / Cancelled", value: "issues" },
+//   { label: "No Shipping", value: "no_shipping" },
+// ];
 
-// --- FUNGSI PENGHITUNG BADGE ---
-const getTransactionTabCount = (tabValue) => {
-  return transactions.value.filter((order) => {
-    if (tabValue === "all") return true;
-    if (tabValue === "pending")
-      return ["pending", "awaiting_payment"].includes(order.status);
-    if (tabValue === "refund") return order.status.includes("refund");
-    if (tabValue === "failed_returned")
-      return ["returned", "shipping_failed"].includes(order.status);
-    return order.status === tabValue;
-  }).length;
-};
-
-// [PERBAIKAN] Menggunakan order.shipping_status (dari database)
-const getShippingTabCount = (tabValue) => {
-  return transactions.value.filter((order) => {
-    if (tabValue === "all") return true;
-    if (tabValue === "no_shipping") return order.shipping_method === "free";
-    if (order.shipping_method === "free") return false;
-
-    const shipStatus = order.shipping_status
-      ? order.shipping_status.toLowerCase()
-      : "pending";
-
-    if (tabValue === "placed")
-      return ["pending", "placed"].includes(shipStatus);
-    if (tabValue === "dropping_off")
-      return ["picked", "dropping_off"].includes(shipStatus);
-    if (tabValue === "returning")
-      return ["return_in_transit", "returned"].includes(shipStatus);
-    if (tabValue === "issues")
-      return ["cancelled", "rejected", "disposed"].includes(shipStatus);
-
-    return shipStatus === tabValue;
-  }).length;
-};
-
-// [PERBAIKAN] Menggunakan order.shipping_status
-// const filteredTransactions = computed(() => {
+// // --- FUNGSI PENGHITUNG BADGE ---
+// const getTransactionTabCount = (tabValue) => {
 //   return transactions.value.filter((order) => {
+//     if (tabValue === "all") return true;
+//     if (tabValue === "pending")
+//       return ["pending", "awaiting_payment"].includes(order.status);
+//     if (tabValue === "refund") return order.status.includes("refund");
+//     if (tabValue === "failed_returned")
+//       return ["returned", "shipping_failed"].includes(order.status);
+//     return order.status === tabValue;
+//   }).length;
+// };
+
+// // [PERBAIKAN] Menggunakan order.shipping_status (dari database)
+// const getShippingTabCount = (tabValue) => {
+//   return transactions.value.filter((order) => {
+//     if (tabValue === "all") return true;
+//     if (tabValue === "no_shipping") return order.shipping_method === "free";
+//     if (order.shipping_method === "free") return false;
+
+//     const shipStatus = order.shipping_status
+//       ? order.shipping_status.toLowerCase()
+//       : "pending";
+
+//     if (tabValue === "placed")
+//       return ["pending", "placed"].includes(shipStatus);
+//     if (tabValue === "dropping_off")
+//       return ["picked", "dropping_off"].includes(shipStatus);
+//     if (tabValue === "returning")
+//       return ["return_in_transit", "returned"].includes(shipStatus);
+//     if (tabValue === "issues")
+//       return ["cancelled", "rejected", "disposed"].includes(shipStatus);
+
+//     return shipStatus === tabValue;
+//   }).length;
+// };
+
+// // [PERBAIKAN] Menggunakan order.shipping_status
+// // const filteredTransactions = computed(() => {
+// //   return transactions.value.filter((order) => {
+// //     let matchTransaction = false;
+// //     if (activeTransactionTab.value === "all") matchTransaction = true;
+// //     else if (activeTransactionTab.value === "pending")
+// //       matchTransaction = ["pending", "awaiting_payment"].includes(order.status);
+// //     else if (activeTransactionTab.value === "refund")
+// //       matchTransaction = order.status.includes("refund");
+// //     else if (activeTransactionTab.value === "failed_returned")
+// //       matchTransaction = ["returned", "shipping_failed"].includes(order.status);
+// //     else matchTransaction = order.status === activeTransactionTab.value;
+
+// //     let matchShipping = false;
+// //     if (activeShippingTab.value === "all") {
+// //       matchShipping = true;
+// //     } else if (activeShippingTab.value === "no_shipping") {
+// //       matchShipping = order.shipping_method === "free";
+// //     } else {
+// //       if (order.shipping_method === "free") {
+// //         matchShipping = false;
+// //       } else {
+// //         const shipStatus = order.shipping_status
+// //           ? order.shipping_status.toLowerCase()
+// //           : "pending";
+// //         if (activeShippingTab.value === "placed")
+// //           matchShipping = ["pending", "placed"].includes(shipStatus);
+// //         else if (activeShippingTab.value === "dropping_off")
+// //           matchShipping = ["picked", "dropping_off"].includes(shipStatus);
+// //         else if (activeShippingTab.value === "returning")
+// //           matchShipping = ["return_in_transit", "returned"].includes(
+// //             shipStatus,
+// //           );
+// //         else if (activeShippingTab.value === "issues")
+// //           matchShipping = ["cancelled", "rejected", "disposed"].includes(
+// //             shipStatus,
+// //           );
+// //         else matchShipping = shipStatus === activeShippingTab.value;
+// //       }
+// //     }
+// //     return matchTransaction && matchShipping;
+// //   });
+// // });
+
+// // [PERBAIKAN] Menambahkan filter Search ke computed filteredTransactions
+// const filteredTransactions = computed(() => {
+//   const query = searchQuery.value.toLowerCase();
+
+//   return transactions.value.filter((order) => {
+//     // 1. Filter Search
+//     let matchSearch = true;
+//     if (query) {
+//       matchSearch =
+//         order.order_id.toLowerCase().includes(query) ||
+//         (order.total_amount && order.total_amount.toString().includes(query)) ||
+//         (order.shipping_cost &&
+//           order.shipping_cost.toString().includes(query)) ||
+//         (order.payment_method &&
+//           order.payment_method.toLowerCase().includes(query)) ||
+//         (order.tracking_number &&
+//           order.tracking_number.toLowerCase().includes(query)) ||
+//         (order.delivery_type &&
+//           order.delivery_type.toLowerCase().includes(query)) ||
+//         (order.courier_company &&
+//           order.courier_company.toLowerCase().includes(query));
+//     }
+
+//     // 2. Filter Tab Transaksi
 //     let matchTransaction = false;
 //     if (activeTransactionTab.value === "all") matchTransaction = true;
 //     else if (activeTransactionTab.value === "pending")
@@ -5472,6 +5537,7 @@ const getShippingTabCount = (tabValue) => {
 //       matchTransaction = ["returned", "shipping_failed"].includes(order.status);
 //     else matchTransaction = order.status === activeTransactionTab.value;
 
+//     // 3. Filter Tab Shipping
 //     let matchShipping = false;
 //     if (activeShippingTab.value === "all") {
 //       matchShipping = true;
@@ -5499,16 +5565,414 @@ const getShippingTabCount = (tabValue) => {
 //         else matchShipping = shipStatus === activeShippingTab.value;
 //       }
 //     }
-//     return matchTransaction && matchShipping;
+//     return matchSearch && matchTransaction && matchShipping;
 //   });
 // });
 
-// [PERBAIKAN] Menambahkan filter Search ke computed filteredTransactions
+// // [BARU] Computed Properties untuk Pagination & Tampilan Slice
+// const totalPages = computed(() =>
+//   Math.ceil(filteredTransactions.value.length / itemsPerPage.value),
+// );
+
+// const paginatedTransactions = computed(() => {
+//   const start = (currentPage.value - 1) * itemsPerPage.value;
+//   return filteredTransactions.value.slice(start, start + itemsPerPage.value);
+// });
+
+// const showingStart = computed(() =>
+//   filteredTransactions.value.length === 0
+//     ? 0
+//     : (currentPage.value - 1) * itemsPerPage.value + 1,
+// );
+// const showingEnd = computed(() =>
+//   Math.min(
+//     currentPage.value * itemsPerPage.value,
+//     filteredTransactions.value.length,
+//   ),
+// );
+
+// const visiblePages = computed(() => {
+//   const current = currentPage.value;
+//   const total = totalPages.value;
+//   const maxVisible = 7;
+
+//   if (total <= maxVisible) {
+//     return Array.from({ length: total }, (_, i) => i + 1);
+//   }
+//   if (current <= 4) {
+//     return [1, 2, 3, 4, 5, "...", total];
+//   }
+//   if (current >= total - 3) {
+//     return [1, "...", total - 4, total - 3, total - 2, total - 1, total];
+//   }
+//   return [1, "...", current - 1, current, current + 1, "...", total];
+// });
+
+// // Reset ke halaman 1 jika filter berubah
+// watch(
+//   [searchQuery, itemsPerPage, activeTransactionTab, activeShippingTab],
+//   () => {
+//     currentPage.value = 1;
+//   },
+// );
+
+// const resetFilters = () => {
+//   activeTransactionTab.value = "all";
+//   activeShippingTab.value = "all";
+//   searchQuery.value = "";
+// };
+
+// const getCourierLogo = (company) => {
+//   if (!company) return null;
+//   const baseUrl = "/courier_images/";
+//   const map = {
+//     jne: "jne.png",
+//     sicepat: "sicepat.png",
+//     jnt: "jnt.png",
+//     anteraja: "anteraja.png",
+//     gojek: "gojek.png",
+//     grab: "grab.png",
+//     paxel: "paxel.png",
+//     ninja: "ninja.png",
+//   };
+//   return map[company.toLowerCase()]
+//     ? baseUrl + map[company.toLowerCase()]
+//     : null;
+// };
+
+// const getPaymentLogo = (methodString) => {
+//   if (!methodString) return null;
+//   const channel = methodString.split(" ")[1]?.toLowerCase();
+//   if (!channel) return null;
+//   const baseUrl = "/payment_images/";
+//   const map = {
+//     bca: "bca.png",
+//     bni: "bni.png",
+//     bri: "bri.png",
+//     mandiri: "mandiri.png",
+//     bsi: "bsi.png",
+//     permata: "permata.png",
+//     ovo: "ovo.png",
+//     dana: "dana.png",
+//     linkaja: "linkaja.png",
+//     shopeepay: "shopeepay.png",
+//     alfamart: "alfamart.png",
+//     indomaret: "indomaret.png",
+//     qris: "qris.png",
+//   };
+//   return map[channel] ? baseUrl + map[channel] : null;
+// };
+
+// const getSubtotal = (order) => order.total_amount;
+// const getGrandTotal = (order) =>
+//   parseFloat(order.total_amount || 0) + parseFloat(order.shipping_cost || 0);
+// const getOrderQuantity = (order) =>
+//   order.details.reduce((sum, item) => sum + item.quantity, 0);
+
+// const calculateTimeLeft = (createdAt) => {
+//   const expiryTime = new Date(createdAt).getTime() + 86400000;
+//   const now = new Date().getTime();
+//   const diff = expiryTime - now;
+//   if (diff <= 0) return "Expired";
+//   const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+//   const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+//   const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+//   return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+// };
+
+// const startTimers = () => {
+//   timerInterval = setInterval(() => {
+//     transactions.value.forEach((order) => {
+//       if (canPay(order.status)) {
+//         const timeReference = order.payment?.created_at || order.created_at;
+//         countdowns.value[order.id] = calculateTimeLeft(timeReference);
+//       }
+//     });
+//   }, 1000);
+// };
+
+// const fetchOrders = async () => {
+//   loading.value = true;
+//   try {
+//     const res = await axios.get(`${BASE_URL}/transactions`, {
+//       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+//     });
+//     // Menghapus inisialisasi biteshipDataLoading karena tidak digunakan lagi
+//     transactions.value = res.data;
+//     startTimers();
+//   } catch (err) {
+//     console.error(err);
+//   } finally {
+//     setTimeout(() => {
+//       loading.value = false;
+//     }, 600);
+//   }
+// };
+
+// const canPay = (status) => ["awaiting_payment", "pending"].includes(status);
+// const canCancel = (status) =>
+//   ["awaiting_payment", "pending", "processing"].includes(status);
+
+// const handleOrderClick = (order) => {
+//   if (canPay(order.status) && countdowns[order.id] !== "Expired")
+//     redirectToPayment(order);
+// };
+
+// const redirectToPayment = (order) => {
+//   if (order.status === "awaiting_payment") router.push(`/payment/${order.id}`);
+//   else if (order.status === "pending" && order.payment?.checkout_url)
+//     window.location.href = order.payment.checkout_url;
+//   else Swal.fire("Error", "Payment URL not found or invalid status", "error");
+// };
+
+// const cancelOrder = async (id) => {
+//   const result = await Swal.fire({
+//     title: "Cancel Order?",
+//     text: "You won't be able to revert this!",
+//     icon: "warning",
+//     showCancelButton: true,
+//     confirmButtonColor: "#000",
+//     cancelButtonColor: "#d33",
+//     confirmButtonText: "Yes, cancel it!",
+//   });
+//   if (result.isConfirmed) {
+//     try {
+//       await axios.post(
+//         `${BASE_URL}/transactions/${id}/cancel`,
+//         {},
+//         {
+//           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+//         },
+//       );
+//       Swal.fire("Cancelled!", "Your order has been cancelled.", "success");
+//       fetchOrders();
+//     } catch (err) {
+//       const errorMessage =
+//         err.response?.data?.message || "Something went wrong";
+//       Swal.fire("Error", `Failed to cancel order: ${errorMessage}`, "error");
+//     }
+//   }
+// };
+
+// // [PERBAIKAN] Logika validasi menggunakan order.shipping_status
+// const canRequestRefund = (order) => {
+//   if (!["completed", "shipping_failed", "returned"].includes(order.status))
+//     return false;
+//   if (["shipping_failed", "returned"].includes(order.status)) return true;
+//   if (order.shipping_method === "free") return true;
+
+//   if (order.shipping_method === "biteship") {
+//     const shipStatus = order.shipping_status
+//       ? order.shipping_status.toLowerCase()
+//       : "pending";
+//     const unRefundableLogistics = [
+//       "picked",
+//       "dropping_off",
+//       "delivered",
+//       "return_in_transit",
+//     ];
+
+//     if (unRefundableLogistics.includes(shipStatus)) {
+//       return false;
+//     }
+//     return true;
+//   }
+//   return false;
+// };
+
+// const requestRefund = async (id) => {
+//   const { value: text } = await Swal.fire({
+//     title: "Request Refund",
+//     input: "textarea",
+//     inputLabel: "Reason for refund",
+//     inputPlaceholder: "Type your reason here...",
+//     showCancelButton: true,
+//     confirmButtonColor: "#000",
+//   });
+//   if (text) {
+//     try {
+//       await axios.post(
+//         `${BASE_URL}/transactions/${id}/refund-request`,
+//         { reason: text },
+//         {
+//           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+//         },
+//       );
+//       fetchOrders();
+//       Swal.fire("Requested", "Refund request sent to admin.", "success");
+//     } catch (err) {
+//       Swal.fire("Error", "Failed to request refund", "error");
+//     }
+//   }
+// };
+
+// const processRefund = async (id) => {
+//   try {
+//     const res = await axios.post(
+//       `${BASE_URL}/transactions/${id}/refund-process`,
+//       {},
+//       { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } },
+//     );
+//     fetchOrders();
+//     Swal.fire("Refunded", res.data.message, "success");
+//   } catch (err) {
+//     Swal.fire("Error", "Refund process failed", "error");
+//   }
+// };
+
+// const formatStatus = (status) => {
+//   if (!status) return "";
+//   return status.replace(/_/g, " ");
+// };
+
+// const statusClass = (status) => {
+//   const map = {
+//     awaiting_payment: "bg-yellow-100 text-yellow-700",
+//     pending: "bg-orange-100 text-orange-700",
+//     processing: "bg-blue-100 text-blue-700",
+//     completed: "bg-green-100 text-green-700",
+//     cancelled: "bg-red-100 text-red-700",
+//     refund_requested: "bg-purple-100 text-purple-700",
+//     refund_approved: "bg-indigo-100 text-indigo-700",
+//     refund_rejected: "bg-gray-200 text-gray-600 line-through",
+//     refunded: "bg-teal-100 text-teal-700",
+//     refund_manual_required: "bg-pink-100 text-pink-700",
+//     returned: "bg-gray-800 text-white",
+//     shipping_failed: "bg-red-800 text-white",
+//   };
+//   return map[status] || "bg-gray-100 text-gray-500";
+// };
+
+// const shippingStatusClass = (status) => {
+//   if (!status) return "bg-gray-50 border-gray-200 text-gray-500";
+//   const str = status.toLowerCase();
+//   if (["delivered"].includes(str))
+//     return "bg-green-50 border-green-200 text-green-700";
+//   if (["cancelled", "rejected", "disposed"].includes(str))
+//     return "bg-red-50 border-red-200 text-red-700";
+//   if (["on_hold", "return_in_transit", "returned"].includes(str))
+//     return "bg-amber-50 border-amber-200 text-amber-700";
+//   if (["picking_up", "picked", "dropping_off", "allocated"].includes(str))
+//     return "bg-blue-50 border-blue-200 text-blue-700";
+
+//   return "bg-gray-50 border-gray-200 text-gray-600";
+// };
+
+// const formatPrice = (v) =>
+//   new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(
+//     v,
+//   );
+// const formatDateTime = (date) =>
+//   new Date(date).toLocaleDateString("en-GB", {
+//     day: "numeric",
+//     month: "short",
+//     year: "numeric",
+//     hour: "2-digit",
+//     minute: "2-digit",
+//   });
+
+// onMounted(() => {
+//   const user = localStorage.getItem("user");
+//   if (user) {
+//     userData.value = JSON.parse(user);
+//   }
+//   fetchOrders();
+// });
+// onUnmounted(() => {
+//   if (timerInterval) clearInterval(timerInterval);
+// });
+
+import { ref, onMounted, onUnmounted, computed, watch } from "vue";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { BASE_URL } from "../../config/api";
+import { useRouter } from "vue-router";
+
+const userData = ref(null);
+const router = useRouter();
+const transactions = ref([]);
+const loading = ref(true);
+const countdowns = ref({});
+let timerInterval = null;
+
+// Search & Pagination States
+const searchQuery = ref("");
+const currentPage = ref(1);
+const itemsPerPage = ref(10);
+
+const activeTransactionTab = ref("all");
+const activeShippingTab = ref("all");
+
+const transactionTabs = [
+  { label: "All", value: "all" },
+  { label: "Pending / Unpaid", value: "pending" },
+  { label: "Processing", value: "processing" },
+  { label: "Completed", value: "completed" },
+  { label: "Cancelled", value: "cancelled" },
+  { label: "Refund Issues", value: "refund" },
+  { label: "Returned/Failed", value: "failed_returned" },
+];
+
+const shippingTabs = [
+  { label: "All", value: "all" },
+  { label: "Placed / Pending / Confirmed", value: "placed" }, // [PERBAIKAN] Nama Tab
+  { label: "Allocated", value: "allocated" },
+  { label: "Picking Up", value: "picking_up" },
+  { label: "In Transit", value: "dropping_off" },
+  { label: "On Hold", value: "on_hold" },
+  { label: "Delivered", value: "delivered" },
+  { label: "Returning", value: "returning" },
+  { label: "Issues / Cancelled", value: "issues" },
+  { label: "No Shipping", value: "no_shipping" },
+];
+
+const getTransactionTabCount = (tabValue) => {
+  return transactions.value.filter((order) => {
+    if (tabValue === "all") return true;
+    if (tabValue === "pending")
+      return ["pending", "awaiting_payment"].includes(order.status);
+    if (tabValue === "refund") return order.status.includes("refund");
+    if (tabValue === "failed_returned")
+      return ["returned", "shipping_failed"].includes(order.status);
+    return order.status === tabValue;
+  }).length;
+};
+
+const getShippingTabCount = (tabValue) => {
+  return transactions.value.filter((order) => {
+    if (tabValue === "all") return true;
+    if (tabValue === "no_shipping") return order.shipping_method === "free";
+    if (order.shipping_method === "free") return false;
+
+    const shipStatus = order.shipping_status
+      ? order.shipping_status.toLowerCase()
+      : "pending";
+
+    // [PERBAIKAN] Menambahkan 'confirmed' ke dalam tab 'placed'
+    if (tabValue === "placed")
+      return ["pending", "placed", "confirmed"].includes(shipStatus);
+    if (tabValue === "dropping_off")
+      return ["picked", "dropping_off"].includes(shipStatus);
+    if (tabValue === "returning")
+      return ["return_in_transit", "returned"].includes(shipStatus);
+
+    // [PERBAIKAN] Menambahkan 'courier_not_found' ke dalam tab 'issues'
+    if (tabValue === "issues")
+      return [
+        "cancelled",
+        "rejected",
+        "disposed",
+        "courier_not_found",
+      ].includes(shipStatus);
+
+    return shipStatus === tabValue;
+  }).length;
+};
+
 const filteredTransactions = computed(() => {
   const query = searchQuery.value.toLowerCase();
 
   return transactions.value.filter((order) => {
-    // 1. Filter Search
     let matchSearch = true;
     if (query) {
       matchSearch =
@@ -5526,7 +5990,6 @@ const filteredTransactions = computed(() => {
           order.courier_company.toLowerCase().includes(query));
     }
 
-    // 2. Filter Tab Transaksi
     let matchTransaction = false;
     if (activeTransactionTab.value === "all") matchTransaction = true;
     else if (activeTransactionTab.value === "pending")
@@ -5537,7 +6000,6 @@ const filteredTransactions = computed(() => {
       matchTransaction = ["returned", "shipping_failed"].includes(order.status);
     else matchTransaction = order.status === activeTransactionTab.value;
 
-    // 3. Filter Tab Shipping
     let matchShipping = false;
     if (activeShippingTab.value === "all") {
       matchShipping = true;
@@ -5551,7 +6013,9 @@ const filteredTransactions = computed(() => {
           ? order.shipping_status.toLowerCase()
           : "pending";
         if (activeShippingTab.value === "placed")
-          matchShipping = ["pending", "placed"].includes(shipStatus);
+          matchShipping = ["pending", "placed", "confirmed"].includes(
+            shipStatus,
+          );
         else if (activeShippingTab.value === "dropping_off")
           matchShipping = ["picked", "dropping_off"].includes(shipStatus);
         else if (activeShippingTab.value === "returning")
@@ -5559,9 +6023,12 @@ const filteredTransactions = computed(() => {
             shipStatus,
           );
         else if (activeShippingTab.value === "issues")
-          matchShipping = ["cancelled", "rejected", "disposed"].includes(
-            shipStatus,
-          );
+          matchShipping = [
+            "cancelled",
+            "rejected",
+            "disposed",
+            "courier_not_found",
+          ].includes(shipStatus);
         else matchShipping = shipStatus === activeShippingTab.value;
       }
     }
@@ -5569,7 +6036,6 @@ const filteredTransactions = computed(() => {
   });
 });
 
-// [BARU] Computed Properties untuk Pagination & Tampilan Slice
 const totalPages = computed(() =>
   Math.ceil(filteredTransactions.value.length / itemsPerPage.value),
 );
@@ -5596,19 +6062,14 @@ const visiblePages = computed(() => {
   const total = totalPages.value;
   const maxVisible = 7;
 
-  if (total <= maxVisible) {
+  if (total <= maxVisible)
     return Array.from({ length: total }, (_, i) => i + 1);
-  }
-  if (current <= 4) {
-    return [1, 2, 3, 4, 5, "...", total];
-  }
-  if (current >= total - 3) {
+  if (current <= 4) return [1, 2, 3, 4, 5, "...", total];
+  if (current >= total - 3)
     return [1, "...", total - 4, total - 3, total - 2, total - 1, total];
-  }
   return [1, "...", current - 1, current, current + 1, "...", total];
 });
 
-// Reset ke halaman 1 jika filter berubah
 watch(
   [searchQuery, itemsPerPage, activeTransactionTab, activeShippingTab],
   () => {
@@ -5624,7 +6085,6 @@ const resetFilters = () => {
 
 const getCourierLogo = (company) => {
   if (!company) return null;
-  const baseUrl = "/courier_images/";
   const map = {
     jne: "jne.png",
     sicepat: "sicepat.png",
@@ -5636,15 +6096,13 @@ const getCourierLogo = (company) => {
     ninja: "ninja.png",
   };
   return map[company.toLowerCase()]
-    ? baseUrl + map[company.toLowerCase()]
+    ? "/courier_images/" + map[company.toLowerCase()]
     : null;
 };
 
 const getPaymentLogo = (methodString) => {
   if (!methodString) return null;
   const channel = methodString.split(" ")[1]?.toLowerCase();
-  if (!channel) return null;
-  const baseUrl = "/payment_images/";
   const map = {
     bca: "bca.png",
     bni: "bni.png",
@@ -5660,7 +6118,7 @@ const getPaymentLogo = (methodString) => {
     indomaret: "indomaret.png",
     qris: "qris.png",
   };
-  return map[channel] ? baseUrl + map[channel] : null;
+  return map[channel] ? "/payment_images/" + map[channel] : null;
 };
 
 const getSubtotal = (order) => order.total_amount;
@@ -5669,23 +6127,56 @@ const getGrandTotal = (order) =>
 const getOrderQuantity = (order) =>
   order.details.reduce((sum, item) => sum + item.quantity, 0);
 
-const calculateTimeLeft = (createdAt) => {
-  const expiryTime = new Date(createdAt).getTime() + 86400000;
+// [PERBAIKAN] Logika Penghitungan Mundur 24 Jam
+const calculateTimeLeft = (referenceDate) => {
+  if (!referenceDate) return "Expired";
+  const expiryTime = new Date(referenceDate).getTime() + 86400000; // +24 Jam
   const now = new Date().getTime();
   const diff = expiryTime - now;
+
   if (diff <= 0) return "Expired";
+
   const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
   const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((diff % (1000 * 60)) / 1000);
   return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 };
 
+// [BARU] Fungsi Silent Cancel jika expired
+const autoCancelSilent = async (id) => {
+  try {
+    await axios.post(
+      `${BASE_URL}/transactions/${id}/cancel`,
+      {},
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      },
+    );
+    fetchOrders(); // Segarkan data
+  } catch (e) {
+    console.error("Auto cancel failed", e);
+  }
+};
+
 const startTimers = () => {
+  if (timerInterval) clearInterval(timerInterval);
   timerInterval = setInterval(() => {
     transactions.value.forEach((order) => {
       if (canPay(order.status)) {
-        const timeReference = order.payment?.created_at || order.created_at;
-        countdowns.value[order.id] = calculateTimeLeft(timeReference);
+        // [PERBAIKAN] Penentuan Waktu Acuan sesuai Status
+        const timeReference =
+          order.status === "pending" && order.payment?.created_at
+            ? order.payment.created_at
+            : order.created_at;
+
+        const timeLeft = calculateTimeLeft(timeReference);
+        countdowns.value[order.id] = timeLeft;
+
+        // Auto cancel jika sudah expired dan belum di-flag cancelling
+        if (timeLeft === "Expired" && !order.isCancelling) {
+          order.isCancelling = true;
+          autoCancelSilent(order.id);
+        }
       }
     });
   }, 1000);
@@ -5697,8 +6188,7 @@ const fetchOrders = async () => {
     const res = await axios.get(`${BASE_URL}/transactions`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
-    // Menghapus inisialisasi biteshipDataLoading karena tidak digunakan lagi
-    transactions.value = res.data;
+    transactions.value = res.data.map((o) => ({ ...o, isCancelling: false }));
     startTimers();
   } catch (err) {
     console.error(err);
@@ -5714,8 +6204,10 @@ const canCancel = (status) =>
   ["awaiting_payment", "pending", "processing"].includes(status);
 
 const handleOrderClick = (order) => {
-  if (canPay(order.status) && countdowns[order.id] !== "Expired")
+  // [PERBAIKAN] Tidak akan melakukan apapun (redirect diblokir) jika statusnya "Expired"
+  if (canPay(order.status) && countdowns.value[order.id] !== "Expired") {
     redirectToPayment(order);
+  }
 };
 
 const redirectToPayment = (order) => {
@@ -5747,14 +6239,15 @@ const cancelOrder = async (id) => {
       Swal.fire("Cancelled!", "Your order has been cancelled.", "success");
       fetchOrders();
     } catch (err) {
-      const errorMessage =
-        err.response?.data?.message || "Something went wrong";
-      Swal.fire("Error", `Failed to cancel order: ${errorMessage}`, "error");
+      Swal.fire(
+        "Error",
+        `Failed to cancel order: ${err.response?.data?.message || "Something went wrong"}`,
+        "error",
+      );
     }
   }
 };
 
-// [PERBAIKAN] Logika validasi menggunakan order.shipping_status
 const canRequestRefund = (order) => {
   if (!["completed", "shipping_failed", "returned"].includes(order.status))
     return false;
@@ -5771,10 +6264,7 @@ const canRequestRefund = (order) => {
       "delivered",
       "return_in_transit",
     ];
-
-    if (unRefundableLogistics.includes(shipStatus)) {
-      return false;
-    }
+    if (unRefundableLogistics.includes(shipStatus)) return false;
     return true;
   }
   return false;
@@ -5820,10 +6310,7 @@ const processRefund = async (id) => {
   }
 };
 
-const formatStatus = (status) => {
-  if (!status) return "";
-  return status.replace(/_/g, " ");
-};
+const formatStatus = (status) => (status ? status.replace(/_/g, " ") : "");
 
 const statusClass = (status) => {
   const map = {
@@ -5848,11 +6335,19 @@ const shippingStatusClass = (status) => {
   const str = status.toLowerCase();
   if (["delivered"].includes(str))
     return "bg-green-50 border-green-200 text-green-700";
-  if (["cancelled", "rejected", "disposed"].includes(str))
+
+  // [PERBAIKAN] Menambahkan 'courier_not_found' dengan warna merah
+  if (["cancelled", "rejected", "disposed", "courier_not_found"].includes(str))
     return "bg-red-50 border-red-200 text-red-700";
   if (["on_hold", "return_in_transit", "returned"].includes(str))
     return "bg-amber-50 border-amber-200 text-amber-700";
-  if (["picking_up", "picked", "dropping_off", "allocated"].includes(str))
+
+  // [PERBAIKAN] Menambahkan 'confirmed' dengan warna biru
+  if (
+    ["picking_up", "picked", "dropping_off", "allocated", "confirmed"].includes(
+      str,
+    )
+  )
     return "bg-blue-50 border-blue-200 text-blue-700";
 
   return "bg-gray-50 border-gray-200 text-gray-600";
@@ -5873,11 +6368,10 @@ const formatDateTime = (date) =>
 
 onMounted(() => {
   const user = localStorage.getItem("user");
-  if (user) {
-    userData.value = JSON.parse(user);
-  }
+  if (user) userData.value = JSON.parse(user);
   fetchOrders();
 });
+
 onUnmounted(() => {
   if (timerInterval) clearInterval(timerInterval);
 });

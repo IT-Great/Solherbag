@@ -5237,7 +5237,7 @@ onUnmounted(() => {
                 </div>
                 <div
                   v-if="
-                    ['pending'].includes(trx.status) &&
+                    ['pending', 'awaiting_payment'].includes(trx.status) &&
                     countdowns[trx.id] !== 'Expired'
                   "
                   class="no-export mt-2 flex items-center gap-1 text-red-600 bg-red-50 w-fit px-2 py-1 rounded-md"
@@ -5620,6 +5620,521 @@ onUnmounted(() => {
 </template>
 
 <script setup>
+// import { ref, onMounted, computed, watch, onUnmounted } from "vue";
+// import axios from "axios";
+// import Swal from "sweetalert2";
+// import { BASE_URL } from "../../config/api.js";
+// import { useRouter } from "vue-router";
+// import html2pdf from "html2pdf.js";
+// import * as XLSX from "xlsx";
+
+// const transactions = ref([]);
+// const isLoading = ref(false);
+// const router = useRouter();
+
+// const searchQuery = ref("");
+// const currentPage = ref(1);
+// const itemsPerPage = ref(10);
+
+// const countdowns = ref({});
+// let timerInterval = null;
+
+// const axiosConfig = {
+//   headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
+// };
+
+// // --- STATE FILTER TABS ---
+// const activeTransactionTab = ref("all");
+// const activeShippingTab = ref("all");
+
+// const transactionTabs = [
+//   { label: "All", value: "all" },
+//   { label: "Pending / Unpaid", value: "pending" },
+//   { label: "Processing", value: "processing" },
+//   { label: "Completed", value: "completed" },
+//   { label: "Cancelled", value: "cancelled" },
+//   { label: "Refund Issues", value: "refund" },
+//   { label: "Returned/Failed", value: "failed_returned" },
+// ];
+
+// const shippingTabs = [
+//   { label: "All", value: "all" },
+//   { label: "Placed / Pending", value: "placed" },
+//   { label: "Allocated", value: "allocated" },
+//   { label: "Picking Up", value: "picking_up" },
+//   { label: "In Transit", value: "dropping_off" },
+//   { label: "On Hold", value: "on_hold" },
+//   { label: "Delivered", value: "delivered" },
+//   { label: "Returning", value: "returning" },
+//   { label: "Issues / Cancelled", value: "issues" },
+//   { label: "No Shipping", value: "no_shipping" },
+// ];
+
+// // --- FUNGSI PENGHITUNG BADGE ---
+// const getTransactionTabCount = (tabValue) => {
+//   return transactions.value.filter((order) => {
+//     if (tabValue === "all") return true;
+//     if (tabValue === "pending")
+//       return ["pending", "awaiting_payment"].includes(order.status);
+//     if (tabValue === "refund") return order.status.includes("refund");
+//     if (tabValue === "failed_returned")
+//       return ["returned", "shipping_failed"].includes(order.status);
+//     return order.status === tabValue;
+//   }).length;
+// };
+
+// // [PERBAIKAN] Menghitung dari order.shipping_status bukan dari API Biteship
+// const getShippingTabCount = (tabValue) => {
+//   return transactions.value.filter((order) => {
+//     if (tabValue === "all") return true;
+//     if (tabValue === "no_shipping") return order.shipping_method === "free";
+//     if (order.shipping_method === "free") return false;
+
+//     const shipStatus = order.shipping_status
+//       ? order.shipping_status.toLowerCase()
+//       : "pending";
+//     if (tabValue === "placed")
+//       return ["pending", "placed"].includes(shipStatus);
+//     if (tabValue === "dropping_off")
+//       return ["picked", "dropping_off"].includes(shipStatus);
+//     if (tabValue === "returning")
+//       return ["return_in_transit", "returned"].includes(shipStatus);
+//     if (tabValue === "issues")
+//       return ["cancelled", "rejected", "disposed"].includes(shipStatus);
+
+//     return shipStatus === tabValue;
+//   }).length;
+// };
+
+// // [PERBAIKAN] Memfilter dari order.shipping_status
+// const filteredTransactions = computed(() => {
+//   const query = searchQuery.value.toLowerCase();
+//   return transactions.value.filter((order) => {
+//     // 1. Search Query Match
+//     let matchSearch = true;
+//     if (query) {
+//       matchSearch =
+//         order.order_id.toLowerCase().includes(query) ||
+//         order.user.first_name.toLowerCase().includes(query) ||
+//         order.user.email.toLowerCase().includes(query) ||
+//         (order.tracking_number &&
+//           order.tracking_number.toLowerCase().includes(query));
+//     }
+
+//     // 2. Transaction Tab Match
+//     let matchTransaction = false;
+//     if (activeTransactionTab.value === "all") matchTransaction = true;
+//     else if (activeTransactionTab.value === "pending")
+//       matchTransaction = ["pending", "awaiting_payment"].includes(order.status);
+//     else if (activeTransactionTab.value === "refund")
+//       matchTransaction = order.status.includes("refund");
+//     else if (activeTransactionTab.value === "failed_returned")
+//       matchTransaction = ["returned", "shipping_failed"].includes(order.status);
+//     else matchTransaction = order.status === activeTransactionTab.value;
+
+//     // 3. Shipping Tab Match
+//     let matchShipping = false;
+//     if (activeShippingTab.value === "all") matchShipping = true;
+//     else if (activeShippingTab.value === "no_shipping")
+//       matchShipping = order.shipping_method === "free";
+//     else {
+//       if (order.shipping_method === "free") {
+//         matchShipping = false;
+//       } else {
+//         const shipStatus = order.shipping_status
+//           ? order.shipping_status.toLowerCase()
+//           : "pending";
+//         if (activeShippingTab.value === "placed")
+//           matchShipping = ["pending", "placed"].includes(shipStatus);
+//         else if (activeShippingTab.value === "dropping_off")
+//           matchShipping = ["picked", "dropping_off"].includes(shipStatus);
+//         else if (activeShippingTab.value === "returning")
+//           matchShipping = ["return_in_transit", "returned"].includes(
+//             shipStatus,
+//           );
+//         else if (activeShippingTab.value === "issues")
+//           matchShipping = ["cancelled", "rejected", "disposed"].includes(
+//             shipStatus,
+//           );
+//         else matchShipping = shipStatus === activeShippingTab.value;
+//       }
+//     }
+
+//     return matchSearch && matchTransaction && matchShipping;
+//   });
+// });
+
+// const resetFilters = () => {
+//   activeTransactionTab.value = "all";
+//   activeShippingTab.value = "all";
+//   searchQuery.value = "";
+// };
+
+// const totalPages = computed(() =>
+//   Math.ceil(filteredTransactions.value.length / itemsPerPage.value),
+// );
+// const paginatedTransactions = computed(() => {
+//   const start = (currentPage.value - 1) * itemsPerPage.value;
+//   return filteredTransactions.value.slice(start, start + itemsPerPage.value);
+// });
+// const showingStart = computed(() =>
+//   filteredTransactions.value.length === 0
+//     ? 0
+//     : (currentPage.value - 1) * itemsPerPage.value + 1,
+// );
+// const showingEnd = computed(() =>
+//   Math.min(
+//     currentPage.value * itemsPerPage.value,
+//     filteredTransactions.value.length,
+//   ),
+// );
+
+// // const displayedPages = computed(() => {
+// //   const total = totalPages.value;
+// //   const current = currentPage.value;
+// //   const delta = 2;
+// //   let range = [];
+// //   for (
+// //     let i = Math.max(1, current - delta);
+// //     i <= Math.min(total, current + delta);
+// //     i++
+// //   )
+// //     range.push(i);
+// //   return range;
+// // });
+
+// const visiblePages = computed(() => {
+//   const current = currentPage.value;
+//   const total = totalPages.value;
+//   const maxVisible = 7;
+
+//   if (total <= maxVisible) {
+//     return Array.from({ length: total }, (_, i) => i + 1);
+//   }
+
+//   if (current <= 4) {
+//     return [1, 2, 3, 4, 5, '...', total];
+//   }
+
+//   if (current >= total - 3) {
+//     return [1, '...', total - 4, total - 3, total - 2, total - 1, total];
+//   }
+
+//   return [1, '...', current - 1, current, current + 1, '...', total];
+// });
+
+// watch(
+//   [searchQuery, itemsPerPage, activeTransactionTab, activeShippingTab],
+//   () => {
+//     currentPage.value = 1;
+//   },
+// );
+
+// const goToDetail = (trx) => {
+//   router.push({
+//     name: "TransactionDetail",
+//     params: { id: trx.id },
+//     state: { transactionData: JSON.parse(JSON.stringify(trx)) },
+//   });
+// };
+
+// const getGrandTotal = (trx) =>
+//   parseFloat(trx.total_amount) || 0 + parseFloat(trx.shipping_cost) || 0;
+
+// const totalRevenue = computed(() => {
+//   return transactions.value
+//     .filter((t) => t.status === "completed")
+//     .reduce((acc, curr) => acc + getGrandTotal(curr), 0);
+// });
+
+// const getPaymentLogo = (methodString) => {
+//   if (!methodString) return null;
+//   const channel = methodString.split(" ")[1]?.toLowerCase();
+//   const map = {
+//     bca: "bca.png",
+//     bni: "bni.png",
+//     bri: "bri.png",
+//     mandiri: "mandiri.png",
+//     bsi: "bsi.png",
+//     permata: "permata.png",
+//     ovo: "ovo.png",
+//     dana: "dana.png",
+//     linkaja: "linkaja.png",
+//     shopeepay: "shopeepay.png",
+//     alfamart: "alfamart.png",
+//     indomaret: "indomaret.png",
+//     qris: "qris.png",
+//   };
+//   return map[channel] ? "/payment_images/" + map[channel] : null;
+// };
+
+// const getPaymentStatusText = (status) =>
+//   [
+//     "completed",
+//     "processing",
+//     "refund_requested",
+//     "refund_approved",
+//     "refund_rejected",
+//   ].includes(status)
+//     ? "PAID"
+//     : status === "cancelled"
+//       ? "CANCELLED"
+//       : status === "refunded"
+//         ? "REFUNDED"
+//         : "UNPAID";
+// const getPaymentStatusColor = (status) =>
+//   [
+//     "completed",
+//     "processing",
+//     "refund_requested",
+//     "refund_approved",
+//     "refund_rejected",
+//   ].includes(status)
+//     ? "text-green-600"
+//     : status === "cancelled"
+//       ? "text-red-500"
+//       : status === "refunded"
+//         ? "text-teal-600"
+//         : "text-orange-500";
+// const getCourierLogo = (company) => {
+//   if (!company) return null;
+//   const map = {
+//     jne: "jne.png",
+//     sicepat: "sicepat.png",
+//     jnt: "jnt.png",
+//     anteraja: "anteraja.png",
+//     gojek: "gojek.png",
+//     grab: "grab.png",
+//     paxel: "paxel.png",
+//     ninja: "ninja.png",
+//   };
+//   return map[company.toLowerCase()]
+//     ? "/courier_images/" + map[company.toLowerCase()]
+//     : null;
+// };
+
+// const calculateTimeLeft = (createdAt) => {
+//   const expiryTime = new Date(createdAt).getTime() + 86400000;
+//   const now = new Date().getTime();
+//   const diff = expiryTime - now;
+//   if (diff <= 0) return "Expired";
+//   const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+//   const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+//   return `${hours}h ${minutes}m`;
+// };
+
+// const startTimers = () => {
+//   if (timerInterval) clearInterval(timerInterval);
+//   const updateTimers = () => {
+//     transactions.value.forEach((trx) => {
+//       if (["pending"].includes(trx.status)) {
+//         const timeRef = trx.payment?.created_at || trx.created_at;
+//         countdowns.value[trx.id] = calculateTimeLeft(timeRef);
+//       }
+//     });
+//   };
+//   timerInterval = setInterval(updateTimers, 60000);
+//   updateTimers();
+// };
+
+// const fetchTransactions = async () => {
+//   isLoading.value = true;
+//   try {
+//     const res = await axios.get(`${BASE_URL}/admin/transactions`, axiosConfig);
+//     // [PERBAIKAN] Tidak ada lagi inisiasi biteshipData Loading dan tidak memanggil API Bulk Tracking
+//     transactions.value = res.data;
+//     startTimers();
+//   } catch (error) {
+//     Swal.fire("Error", "Failed to fetch transactions", "error");
+//   } finally {
+//     setTimeout(() => (isLoading.value = false), 500);
+//   }
+// };
+
+// const exportToPDF = () => {
+//   const element = document.getElementById("exportable-table");
+//   const noExportElements = element.querySelectorAll(".no-export");
+//   noExportElements.forEach((el) => el.classList.add("hidden"));
+//   const headers = element.querySelectorAll(".export-header");
+//   headers.forEach((h) => {
+//     h.classList.remove("hidden");
+//     h.classList.add("block");
+//   });
+
+//   const opt = {
+//     margin: 0.3,
+//     filename: `Transaction_Report_${new Date().toISOString().split("T")[0]}.pdf`,
+//     image: { type: "jpeg", quality: 0.98 },
+//     html2canvas: { scale: 2, useCORS: true },
+//     jsPDF: { unit: "in", format: "letter", orientation: "landscape" },
+//   };
+
+//   html2pdf()
+//     .set(opt)
+//     .from(element)
+//     .save()
+//     .then(() => {
+//       headers.forEach((h) => {
+//         h.classList.add("hidden");
+//         h.classList.remove("block");
+//       });
+//       noExportElements.forEach((el) => el.classList.remove("hidden"));
+//     });
+// };
+
+// // const exportToExcel = () => {
+// //   const excelData = paginatedTransactions.value.map((item, index) => ({
+// //     No: index + 1,
+// //     "Order ID": item.order_id,
+// //     Date: formatDate(item.created_at),
+// //     "Customer Name": `${item.user.first_name} ${item.user.last_name}`,
+// //     Email: item.user.email,
+// //     "Total Items": item.details.length,
+// //     "Payment Method": item.payment_method
+// //       ? item.payment_method.replace(/_/g, " ").toUpperCase()
+// //       : "-",
+// //     "Payment Status": getPaymentStatusText(item.status),
+// //     "Shipping Method":
+// //       item.shipping_method === "free"
+// //         ? "In-Store Pickup"
+// //         : `${item.courier_company} - ${item.courier_type}`,
+// //     // [PERBAIKAN] Menggunakan tracking_number & shipping_status langsung dari database
+// //     "Tracking Number": item.tracking_number || "-",
+// //     "Subtotal (IDR)": parseFloat(item.total_amount),
+// //     "Shipping Cost (IDR)": parseFloat(item.shipping_cost),
+// //     "Grand Total (IDR)": getGrandTotal(item),
+// //     "Transaction Status": item.status.replace(/_/g, " ").toUpperCase(),
+// //     "Shipping Status":
+// //       item.shipping_method === "free"
+// //         ? "IN-STORE"
+// //         : (item.shipping_status || "PENDING").toUpperCase(),
+// //   }));
+
+// //   const worksheet = XLSX.utils.json_to_sheet(excelData);
+// //   const workbook = XLSX.utils.book_new();
+// //   XLSX.utils.book_append_sheet(workbook, worksheet, "Transactions");
+// //   XLSX.writeFile(
+// //     workbook,
+// //     `Transaction_Data_${new Date().toISOString().split("T")[0]}.xlsx`,
+// //   );
+// // };
+
+// const exportToExcel = () => {
+//   const excelData = paginatedTransactions.value.map((item, index) => ({
+//     No: index + 1,
+//     "Order ID": item.order_id,
+//     Date: formatDate(item.created_at),
+//     "Customer Name": `${item.user.first_name} ${item.user.last_name}`,
+//     Email: item.user.email,
+//     "Total Items": item.details.length,
+//     "Payment Method": item.payment_method
+//       ? item.payment_method.replace(/_/g, " ").toUpperCase()
+//       : "-",
+//     "Payment Status": getPaymentStatusText(item.status),
+//     "Shipping Method":
+//       item.shipping_method === "free"
+//         ? "In-Store Pickup"
+//         : `${item.courier_company} - ${item.courier_type}`,
+//     "Tracking Number": item.tracking_number || "-",
+//     "Subtotal (IDR)": parseFloat(item.total_amount),
+//     "Shipping Cost (IDR)": parseFloat(item.shipping_cost),
+//     "Grand Total (IDR)": getGrandTotal(item),
+//     "Points Earned": item.status === "completed" ? item.point || 0 : 0, // [TAMBAHAN]
+//     "Transaction Status": item.status.replace(/_/g, " ").toUpperCase(),
+//     "Shipping Status":
+//       item.shipping_method === "free"
+//         ? "IN-STORE"
+//         : (item.shipping_status || "PENDING").toUpperCase(),
+//   }));
+//   const worksheet = XLSX.utils.json_to_sheet(excelData);
+//   const workbook = XLSX.utils.book_new();
+//   XLSX.utils.book_append_sheet(workbook, worksheet, "Transactions");
+//   XLSX.writeFile(
+//     workbook,
+//     `Transaction_Data_${new Date().toISOString().split("T")[0]}.xlsx`,
+//   );
+// };
+
+// const statusClass = (status) => {
+//   const map = {
+//     awaiting_payment: "bg-yellow-100 text-yellow-700",
+//     pending: "bg-orange-100 text-orange-700",
+//     processing: "bg-blue-100 text-blue-700",
+//     completed: "bg-green-100 text-green-700",
+//     cancelled: "bg-red-100 text-red-700",
+//     refund_requested: "bg-purple-100 text-purple-700",
+//     refund_approved: "bg-indigo-100 text-indigo-700",
+//     refund_rejected: "bg-gray-200 text-gray-600 line-through",
+//     refunded: "bg-teal-100 text-teal-700",
+//     refund_manual_required: "bg-pink-100 text-pink-700",
+//     returned: "bg-gray-800 text-white",
+//     shipping_failed: "bg-red-800 text-white",
+//   };
+//   return map[status] || "bg-gray-100 text-gray-500";
+// };
+
+// const shippingStatusClass = (status) => {
+//   if (!status) return "bg-gray-50 border-gray-200 text-gray-500";
+//   const str = status.toLowerCase();
+//   if (["delivered"].includes(str))
+//     return "bg-green-50 border-green-200 text-green-700";
+//   if (["cancelled", "rejected", "disposed"].includes(str))
+//     return "bg-red-50 border-red-200 text-red-700";
+//   if (["on_hold", "return_in_transit", "returned"].includes(str))
+//     return "bg-amber-50 border-amber-200 text-amber-700";
+//   if (["picking_up", "picked", "dropping_off", "allocated"].includes(str))
+//     return "bg-blue-50 border-blue-200 text-blue-700";
+//   return "bg-gray-50 border-gray-200 text-gray-600";
+// };
+
+// const formatPrice = (v) =>
+//   new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(
+//     v,
+//   );
+// const formatDate = (date) =>
+//   new Date(date).toLocaleDateString("id-ID", {
+//     day: "2-digit",
+//     month: "short",
+//     year: "numeric",
+//     hour: "2-digit",
+//     minute: "2-digit",
+//   });
+// const formatStatus = (s) => s.replace(/_/g, " ");
+
+// const handleRefundAction = async (id, action) => {
+//   const endpoint = action === "approve" ? "refund-approve" : "refund-reject";
+//   const confirmText =
+//     action === "approve"
+//       ? "Approve this refund request?"
+//       : "Reject this refund request?";
+//   const result = await Swal.fire({
+//     title: "Confirm Action",
+//     text: confirmText,
+//     icon: "warning",
+//     showCancelButton: true,
+//     confirmButtonColor: "#000",
+//     confirmButtonText: "Yes, proceed!",
+//   });
+//   if (result.isConfirmed) {
+//     try {
+//       await axios.post(
+//         `${BASE_URL}/admin/transactions/${id}/${endpoint}`,
+//         {},
+//         axiosConfig,
+//       );
+//       Swal.fire("Success", `Refund ${action}d successfully`, "success");
+//       fetchTransactions();
+//     } catch (err) {
+//       Swal.fire("Error", "Action failed", "error");
+//     }
+//   }
+// };
+
+// onMounted(fetchTransactions);
+// onUnmounted(() => {
+//   if (timerInterval) clearInterval(timerInterval);
+// });
+
 import { ref, onMounted, computed, watch, onUnmounted } from "vue";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -5659,7 +6174,8 @@ const transactionTabs = [
 
 const shippingTabs = [
   { label: "All", value: "all" },
-  { label: "Placed / Pending", value: "placed" },
+  // [PERBAIKAN 1] Nama Tab Shipping Diperbarui
+  { label: "Placed / Pending / Confirmed", value: "placed" },
   { label: "Allocated", value: "allocated" },
   { label: "Picking Up", value: "picking_up" },
   { label: "In Transit", value: "dropping_off" },
@@ -5683,7 +6199,6 @@ const getTransactionTabCount = (tabValue) => {
   }).length;
 };
 
-// [PERBAIKAN] Menghitung dari order.shipping_status bukan dari API Biteship
 const getShippingTabCount = (tabValue) => {
   return transactions.value.filter((order) => {
     if (tabValue === "all") return true;
@@ -5693,20 +6208,26 @@ const getShippingTabCount = (tabValue) => {
     const shipStatus = order.shipping_status
       ? order.shipping_status.toLowerCase()
       : "pending";
+
+    // [PERBAIKAN 2] Penyesuaian klasifikasi status shipping
     if (tabValue === "placed")
-      return ["pending", "placed"].includes(shipStatus);
+      return ["pending", "placed", "confirmed"].includes(shipStatus);
     if (tabValue === "dropping_off")
       return ["picked", "dropping_off"].includes(shipStatus);
     if (tabValue === "returning")
       return ["return_in_transit", "returned"].includes(shipStatus);
     if (tabValue === "issues")
-      return ["cancelled", "rejected", "disposed"].includes(shipStatus);
+      return [
+        "cancelled",
+        "rejected",
+        "disposed",
+        "courier_not_found",
+      ].includes(shipStatus);
 
     return shipStatus === tabValue;
   }).length;
 };
 
-// [PERBAIKAN] Memfilter dari order.shipping_status
 const filteredTransactions = computed(() => {
   const query = searchQuery.value.toLowerCase();
   return transactions.value.filter((order) => {
@@ -5744,8 +6265,12 @@ const filteredTransactions = computed(() => {
         const shipStatus = order.shipping_status
           ? order.shipping_status.toLowerCase()
           : "pending";
+
+        // [PERBAIKAN 3] Penyesuaian klasifikasi filter
         if (activeShippingTab.value === "placed")
-          matchShipping = ["pending", "placed"].includes(shipStatus);
+          matchShipping = ["pending", "placed", "confirmed"].includes(
+            shipStatus,
+          );
         else if (activeShippingTab.value === "dropping_off")
           matchShipping = ["picked", "dropping_off"].includes(shipStatus);
         else if (activeShippingTab.value === "returning")
@@ -5753,9 +6278,12 @@ const filteredTransactions = computed(() => {
             shipStatus,
           );
         else if (activeShippingTab.value === "issues")
-          matchShipping = ["cancelled", "rejected", "disposed"].includes(
-            shipStatus,
-          );
+          matchShipping = [
+            "cancelled",
+            "rejected",
+            "disposed",
+            "courier_not_found",
+          ].includes(shipStatus);
         else matchShipping = shipStatus === activeShippingTab.value;
       }
     }
@@ -5773,10 +6301,12 @@ const resetFilters = () => {
 const totalPages = computed(() =>
   Math.ceil(filteredTransactions.value.length / itemsPerPage.value),
 );
+
 const paginatedTransactions = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage.value;
   return filteredTransactions.value.slice(start, start + itemsPerPage.value);
 });
+
 const showingStart = computed(() =>
   filteredTransactions.value.length === 0
     ? 0
@@ -5789,38 +6319,18 @@ const showingEnd = computed(() =>
   ),
 );
 
-// const displayedPages = computed(() => {
-//   const total = totalPages.value;
-//   const current = currentPage.value;
-//   const delta = 2;
-//   let range = [];
-//   for (
-//     let i = Math.max(1, current - delta);
-//     i <= Math.min(total, current + delta);
-//     i++
-//   )
-//     range.push(i);
-//   return range;
-// });
-
+// Pagination Visual (Max 7 box)
 const visiblePages = computed(() => {
   const current = currentPage.value;
   const total = totalPages.value;
   const maxVisible = 7;
 
-  if (total <= maxVisible) {
+  if (total <= maxVisible)
     return Array.from({ length: total }, (_, i) => i + 1);
-  }
-
-  if (current <= 4) {
-    return [1, 2, 3, 4, 5, '...', total];
-  }
-
-  if (current >= total - 3) {
-    return [1, '...', total - 4, total - 3, total - 2, total - 1, total];
-  }
-
-  return [1, '...', current - 1, current, current + 1, '...', total];
+  if (current <= 4) return [1, 2, 3, 4, 5, "...", total];
+  if (current >= total - 3)
+    return [1, "...", total - 4, total - 3, total - 2, total - 1, total];
+  return [1, "...", current - 1, current, current + 1, "...", total];
 });
 
 watch(
@@ -5882,6 +6392,7 @@ const getPaymentStatusText = (status) =>
       : status === "refunded"
         ? "REFUNDED"
         : "UNPAID";
+
 const getPaymentStatusColor = (status) =>
   [
     "completed",
@@ -5896,6 +6407,7 @@ const getPaymentStatusColor = (status) =>
       : status === "refunded"
         ? "text-teal-600"
         : "text-orange-500";
+
 const getCourierLogo = (company) => {
   if (!company) return null;
   const map = {
@@ -5913,36 +6425,64 @@ const getCourierLogo = (company) => {
     : null;
 };
 
-const calculateTimeLeft = (createdAt) => {
-  const expiryTime = new Date(createdAt).getTime() + 86400000;
+// [PERBAIKAN 4] Logika Penghitungan Mundur 24 Jam dengan format HH:MM:SS
+const calculateTimeLeft = (referenceDate) => {
+  if (!referenceDate) return "Expired";
+  const expiryTime = new Date(referenceDate).getTime() + 86400000; // +24 Jam
   const now = new Date().getTime();
   const diff = expiryTime - now;
+
   if (diff <= 0) return "Expired";
+
   const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
   const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-  return `${hours}h ${minutes}m`;
+  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+  return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+};
+
+// [BARU] Fungsi auto cancel (Admin side fallback)
+const autoCancelSilent = async (id) => {
+  try {
+    await axios.post(
+      `${BASE_URL}/admin/transactions/${id}/cancel`,
+      {},
+      axiosConfig,
+    ); // Pastikan rute admin cancel ada jika diperlukan, atau andalkan backend
+    fetchTransactions();
+  } catch (e) {
+    console.error("Auto cancel failed", e);
+  }
 };
 
 const startTimers = () => {
   if (timerInterval) clearInterval(timerInterval);
-  const updateTimers = () => {
+  timerInterval = setInterval(() => {
     transactions.value.forEach((trx) => {
-      if (["pending"].includes(trx.status)) {
-        const timeRef = trx.payment?.created_at || trx.created_at;
-        countdowns.value[trx.id] = calculateTimeLeft(timeRef);
+      if (["awaiting_payment", "pending"].includes(trx.status)) {
+        // [PERBAIKAN 5] Penentuan Waktu Acuan sesuai Status
+        const timeReference =
+          trx.status === "pending" && trx.payment?.created_at
+            ? trx.payment.created_at
+            : trx.created_at;
+
+        const timeLeft = calculateTimeLeft(timeReference);
+        countdowns.value[trx.id] = timeLeft;
+
+        if (timeLeft === "Expired" && !trx.isCancelling) {
+          trx.isCancelling = true;
+          // Anda dapat memanggil autoCancelSilent di sini jika ingin Admin Panel juga mentrigger pembatalan
+          // Namun idealnya ini sudah ditangani otomatis oleh Backend (Controller) saat fetch
+        }
       }
     });
-  };
-  timerInterval = setInterval(updateTimers, 60000);
-  updateTimers();
+  }, 1000);
 };
 
 const fetchTransactions = async () => {
   isLoading.value = true;
   try {
     const res = await axios.get(`${BASE_URL}/admin/transactions`, axiosConfig);
-    // [PERBAIKAN] Tidak ada lagi inisiasi biteshipData Loading dan tidak memanggil API Bulk Tracking
-    transactions.value = res.data;
+    transactions.value = res.data.map((o) => ({ ...o, isCancelling: false }));
     startTimers();
   } catch (error) {
     Swal.fire("Error", "Failed to fetch transactions", "error");
@@ -5951,6 +6491,7 @@ const fetchTransactions = async () => {
   }
 };
 
+// ... (exportToPDF dan exportToExcel tetap sama) ...
 const exportToPDF = () => {
   const element = document.getElementById("exportable-table");
   const noExportElements = element.querySelectorAll(".no-export");
@@ -5982,43 +6523,6 @@ const exportToPDF = () => {
     });
 };
 
-// const exportToExcel = () => {
-//   const excelData = paginatedTransactions.value.map((item, index) => ({
-//     No: index + 1,
-//     "Order ID": item.order_id,
-//     Date: formatDate(item.created_at),
-//     "Customer Name": `${item.user.first_name} ${item.user.last_name}`,
-//     Email: item.user.email,
-//     "Total Items": item.details.length,
-//     "Payment Method": item.payment_method
-//       ? item.payment_method.replace(/_/g, " ").toUpperCase()
-//       : "-",
-//     "Payment Status": getPaymentStatusText(item.status),
-//     "Shipping Method":
-//       item.shipping_method === "free"
-//         ? "In-Store Pickup"
-//         : `${item.courier_company} - ${item.courier_type}`,
-//     // [PERBAIKAN] Menggunakan tracking_number & shipping_status langsung dari database
-//     "Tracking Number": item.tracking_number || "-",
-//     "Subtotal (IDR)": parseFloat(item.total_amount),
-//     "Shipping Cost (IDR)": parseFloat(item.shipping_cost),
-//     "Grand Total (IDR)": getGrandTotal(item),
-//     "Transaction Status": item.status.replace(/_/g, " ").toUpperCase(),
-//     "Shipping Status":
-//       item.shipping_method === "free"
-//         ? "IN-STORE"
-//         : (item.shipping_status || "PENDING").toUpperCase(),
-//   }));
-
-//   const worksheet = XLSX.utils.json_to_sheet(excelData);
-//   const workbook = XLSX.utils.book_new();
-//   XLSX.utils.book_append_sheet(workbook, worksheet, "Transactions");
-//   XLSX.writeFile(
-//     workbook,
-//     `Transaction_Data_${new Date().toISOString().split("T")[0]}.xlsx`,
-//   );
-// };
-
 const exportToExcel = () => {
   const excelData = paginatedTransactions.value.map((item, index) => ({
     No: index + 1,
@@ -6039,7 +6543,7 @@ const exportToExcel = () => {
     "Subtotal (IDR)": parseFloat(item.total_amount),
     "Shipping Cost (IDR)": parseFloat(item.shipping_cost),
     "Grand Total (IDR)": getGrandTotal(item),
-    "Points Earned": item.status === "completed" ? item.point || 0 : 0, // [TAMBAHAN]
+    "Points Earned": item.status === "completed" ? item.point || 0 : 0,
     "Transaction Status": item.status.replace(/_/g, " ").toUpperCase(),
     "Shipping Status":
       item.shipping_method === "free"
@@ -6078,12 +6582,19 @@ const shippingStatusClass = (status) => {
   const str = status.toLowerCase();
   if (["delivered"].includes(str))
     return "bg-green-50 border-green-200 text-green-700";
-  if (["cancelled", "rejected", "disposed"].includes(str))
+
+  // [PERBAIKAN 6] Penyesuaian warna class
+  if (["cancelled", "rejected", "disposed", "courier_not_found"].includes(str))
     return "bg-red-50 border-red-200 text-red-700";
   if (["on_hold", "return_in_transit", "returned"].includes(str))
     return "bg-amber-50 border-amber-200 text-amber-700";
-  if (["picking_up", "picked", "dropping_off", "allocated"].includes(str))
+  if (
+    ["picking_up", "picked", "dropping_off", "allocated", "confirmed"].includes(
+      str,
+    )
+  )
     return "bg-blue-50 border-blue-200 text-blue-700";
+
   return "bg-gray-50 border-gray-200 text-gray-600";
 };
 
