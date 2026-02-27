@@ -4779,7 +4779,7 @@ onUnmounted(() => {
         <input
           v-model="searchQuery"
           type="text"
-          placeholder="Search Order ID, Courier, or Resi..."
+          placeholder="Search Order ID, Courier, Payment Method, and more"
           class="bg-gray-50 pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none w-full text-sm transition"
         />
       </div>
@@ -5513,8 +5513,15 @@ const filteredTransactions = computed(() => {
     if (query) {
       matchSearch =
         order.order_id.toLowerCase().includes(query) ||
+        (order.total_amount && order.total_amount.toString().includes(query)) ||
+        (order.shipping_cost &&
+          order.shipping_cost.toString().includes(query)) ||
+        (order.payment_method &&
+          order.payment_method.toLowerCase().includes(query)) ||
         (order.tracking_number &&
           order.tracking_number.toLowerCase().includes(query)) ||
+        (order.delivery_type &&
+          order.delivery_type.toLowerCase().includes(query)) ||
         (order.courier_company &&
           order.courier_company.toLowerCase().includes(query));
     }
