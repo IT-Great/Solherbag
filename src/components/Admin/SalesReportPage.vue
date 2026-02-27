@@ -508,7 +508,7 @@ onMounted(fetchReport);
           </button>
         </div>
       </div> -->
-      <div
+      <!-- <div
         v-if="lastPage > 1 || reportData.length > 0"
         class="flex flex-col md:flex-row justify-between items-center gap-4 mt-6 pt-4 border-t"
       >
@@ -551,6 +551,55 @@ onMounted(fetchReport);
           <button
             @click="changePage(currentPage + 1)"
             :disabled="currentPage === lastPage"
+            class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+          >
+            Next
+          </button>
+        </div>
+      </div> -->
+      <div
+        v-if="lastPage > 0 || reportData.length > 0"
+        class="flex flex-col md:flex-row justify-between items-center gap-4 mt-6 pt-4 border-t"
+      >
+        <p class="text-sm text-gray-400">
+          Showing
+          <span class="font-bold text-gray-800">{{ showingStart }}</span> to
+          <span class="font-bold text-gray-800">{{ showingEnd }}</span> of
+          <span class="font-bold text-gray-800">{{ totalItems }}</span> products
+        </p>
+
+        <div class="flex gap-2">
+          <button
+            @click="changePage(currentPage - 1)"
+            :disabled="currentPage === 1"
+            class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+          >
+            Prev
+          </button>
+
+          <div class="flex gap-1">
+            <button
+              v-for="(page, index) in visiblePages"
+              :key="index"
+              @click="typeof page === 'number' ? changePage(page) : null"
+              :disabled="page === '...'"
+              :class="[
+                currentPage === page
+                  ? 'bg-black text-white border-black'
+                  : 'hover:bg-gray-50 border-gray-200',
+                page === '...'
+                  ? 'cursor-default border-transparent hover:bg-transparent'
+                  : 'border',
+              ]"
+              class="w-10 h-10 rounded-xl font-medium transition flex items-center justify-center text-sm"
+            >
+              {{ page }}
+            </button>
+          </div>
+
+          <button
+            @click="changePage(currentPage + 1)"
+            :disabled="currentPage === lastPage || lastPage === 0"
             class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
           >
             Next
@@ -666,12 +715,8 @@ const fetchReport = async (page = 1) => {
   } catch (error) {
     console.error("Fetch report failed", error);
   } finally {
-    // setTimeout(() => (isLoading.value = false), 500);
-    // Hilangkan kedua loading state
-    setTimeout(() => {
-      isLoading.value = false;
-      isInitialLoading.value = false;
-    }, 500);
+    isLoading.value = false;
+    isInitialLoading.value = false;
   }
 };
 
