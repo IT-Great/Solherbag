@@ -282,6 +282,8 @@ import TrackingPage from '../components/User/TrackingPage.vue'
 import CategoryCoaPage from '../components/Admin/CategoryCoaPage.vue'
 import CoaPage from '../components/Admin/CoaPage.vue'
 import TransferReceivePage from '../components/Admin/TransferReceivePage.vue'
+import SupplierPage from '../components/Admin/SupplierPage.vue'
+import InvoicePage from '../components/Admin/InvoicePage.vue'
 
 const routes = [
     { path: '/', name: 'Home', component: HomePage },
@@ -443,6 +445,18 @@ const routes = [
         path: '/admin/payments',
         name: 'TransferReceivePayment',
         component: TransferReceivePage,
+        meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true }
+    },
+    {
+        path: '/admin/suppliers',
+        name: 'SupplierPage',
+        component: SupplierPage,
+        meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true }
+    },
+    {
+        path: '/admin/invoices',
+        name: 'InvoicePage',
+        component: InvoicePage,
         meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true }
     },
     {
