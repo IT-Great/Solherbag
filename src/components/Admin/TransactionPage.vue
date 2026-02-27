@@ -5460,7 +5460,7 @@ onUnmounted(() => {
               >
             </td>
 
-            <!-- <td class="py-6 text-center w-[10%] no-export" @click.stop>
+            <td class="py-6 text-center w-[10%] no-export" @click.stop>
               <div
                 v-if="trx.status === 'refund_requested'"
                 class="flex justify-center gap-2"
@@ -5520,112 +5520,6 @@ onUnmounted(() => {
               <span v-else class="text-gray-300 text-[10px] italic"
                 >No Action</span
               >
-            </td> -->
-
-            <td class="py-6 w-[10%] align-middle no-export" @click.stop>
-              <div
-                class="flex flex-col gap-2 justify-center items-center h-full"
-              >
-                <template
-                  v-if="
-                    trx.status === 'processing' &&
-                    trx.shipping_method === 'biteship'
-                  "
-                >
-                  <div
-                    v-if="
-                      ['pending', 'placed'].includes(
-                        trx.shipping_status || 'pending',
-                      )
-                    "
-                    class="flex flex-col gap-1.5 w-full"
-                  >
-                    <button
-                      @click="updateShipping(trx.id, 'confirm')"
-                      class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-2 rounded-lg text-[9px] font-bold uppercase tracking-widest shadow-sm transition w-full"
-                    >
-                      Konfirmasi
-                    </button>
-                    <button
-                      @click="updateShipping(trx.id, 'cancel')"
-                      class="bg-red-50 hover:bg-red-100 text-red-600 py-2 px-2 rounded-lg text-[9px] font-bold uppercase tracking-widest shadow-sm transition w-full border border-red-100"
-                    >
-                      Batalkan
-                    </button>
-                  </div>
-
-                  <div
-                    v-else-if="trx.shipping_status === 'confirmed'"
-                    class="flex flex-col gap-1.5 w-full"
-                  >
-                    <button
-                      @click="updateShipping(trx.id, 'allocate')"
-                      class="bg-green-600 hover:bg-green-700 text-white py-2 px-2 rounded-lg text-[9px] font-bold uppercase tracking-widest shadow-sm transition w-full"
-                    >
-                      Alokasi Kurir
-                    </button>
-                    <button
-                      @click="updateShipping(trx.id, 'cancel')"
-                      class="bg-red-50 hover:bg-red-100 text-red-600 py-2 px-2 rounded-lg text-[9px] font-bold uppercase tracking-widest shadow-sm transition w-full border border-red-100"
-                    >
-                      Batalkan
-                    </button>
-                  </div>
-                </template>
-
-                <div
-                  v-if="trx.status === 'refund_requested'"
-                  class="flex justify-center gap-2 mt-2"
-                >
-                  <button
-                    @click="handleRefundAction(trx.id, 'approve')"
-                    class="bg-green-100 hover:bg-green-200 p-2 rounded-lg text-green-600 transition shadow-sm"
-                    title="Approve Refund"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="w-4 h-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  </button>
-                  <button
-                    @click="handleRefundAction(trx.id, 'reject')"
-                    class="bg-red-100 hover:bg-red-200 p-2 rounded-lg text-red-600 transition shadow-sm"
-                    title="Reject Refund"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="w-4 h-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
-                  </button>
-                </div>
-
-                <button
-                  @click="goToDetail(trx)"
-                  class="text-[10px] font-bold text-gray-500 hover:text-black underline w-full text-center mt-1"
-                >
-                  View Detail
-                </button>
-              </div>
             </td>
           </tr>
 
@@ -6743,58 +6637,6 @@ const handleRefundAction = async (id, action) => {
       fetchTransactions();
     } catch (err) {
       Swal.fire("Error", "Action failed", "error");
-    }
-  }
-};
-
-// --- [BARU] FUNGSI AKSI ADMIN ---
-const updateShipping = async (id, action) => {
-  let title = "";
-  let text = "";
-  let confirmBtn = "";
-  let color = "#000";
-
-  if (action === "confirm") {
-    title = "Konfirmasi Pesanan?";
-    text =
-      "Pesanan akan diverifikasi. Anda dapat mengalokasikan kurir setelahnya.";
-    confirmBtn = "Ya, Konfirmasi";
-  } else if (action === "allocate") {
-    title = "Panggil Kurir Sekarang?";
-    text = "Biteship akan menugaskan kurir untuk mengambil paket ke toko Anda.";
-    confirmBtn = "Ya, Alokasikan";
-    color = "#16a34a"; // Hijau
-  } else if (action === "cancel") {
-    title = "Batalkan Pesanan?";
-    text = "Pesanan akan dibatalkan secara sistem dan uang dikembalikan.";
-    confirmBtn = "Ya, Batalkan";
-    color = "#d33"; // Merah
-  }
-
-  const result = await Swal.fire({
-    title: title,
-    text: text,
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: color,
-    confirmButtonText: confirmBtn,
-  });
-
-  if (result.isConfirmed) {
-    try {
-      await axios.post(
-        `${BASE_URL}/admin/transactions/${id}/shipping-action`,
-        { action },
-        axiosConfig,
-      );
-      Swal.fire("Berhasil", "Status pesanan berhasil diperbarui.", "success");
-      fetchTransactions(); // Segarkan tabel
-    } catch (err) {
-      Swal.fire(
-        "Error",
-        err.response?.data?.message || "Gagal memperbarui status.",
-        "error",
-      );
     }
   }
 };
