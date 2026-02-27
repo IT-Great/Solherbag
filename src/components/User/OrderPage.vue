@@ -4822,7 +4822,7 @@ onUnmounted(() => {
 
     <div v-else class="space-y-8 animate-fade-in">
       <div
-        v-for="order in filteredTransactions"
+        v-for="order in paginatedTransactions"
         :key="order.id"
         class="bg-white shadow-sm hover:shadow-md border border-gray-100 rounded-2xl overflow-hidden transition-shadow duration-300 relative"
       >
