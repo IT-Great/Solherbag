@@ -3146,17 +3146,51 @@ const fetchData = async () => {
   }
 };
 
+// const getCensoredName = () => {
+//   let name =
+//     transaction.value?.address?.first_name_address +
+//     " " +
+//     transaction.value?.address?.last_name_address;
+//   if (name.trim() === "undefined undefined" || name.trim() === "")
+//     name =
+//       transaction.value?.user?.first_name +
+//       " " +
+//       transaction.value?.user?.last_name;
+//   if (!printSettings.value.censor_receiver_name) return name;
+//   return name
+//     .split(" ")
+//     .map((word) => {
+//       if (word.length <= 1) return word;
+//       return word.charAt(0) + "*".repeat(word.length - 1);
+//     })
+//     .join(" ");
+// };
+
 const getCensoredName = () => {
-  let name =
-    transaction.value?.address?.first_name_address +
-    " " +
-    transaction.value?.address?.last_name_address;
-  if (name.trim() === "undefined undefined" || name.trim() === "")
+  const addr = transaction.value?.address;
+  let name = "";
+
+  // Gunakan alamat secara aman
+  if (addr && addr.first_name_address) {
+    name = `${addr.first_name_address} ${addr.last_name_address || ""}`.trim();
+  }
+  // Jika alamat kosong, Fallback ke nama User
+  else if (transaction.value?.user) {
     name =
-      transaction.value?.user?.first_name +
-      " " +
-      transaction.value?.user?.last_name;
-  if (!printSettings.value.censor_receiver_name) return name;
+      `${transaction.value.user.first_name || ""} ${transaction.value.user.last_name || ""}`.trim();
+  }
+
+  // Fallback terakhir jika kedua data entah bagaimana corrupt
+  if (!name) {
+    name = "Customer";
+  }
+
+  // Jika opsi sensor mati, kembalikan nama utuh
+  if (!printSettings.value.censor_receiver_name) {
+    return name;
+  }
+
+  // Eksekusi Sensor Nama (Bintang *)
   return name
     .split(" ")
     .map((word) => {
