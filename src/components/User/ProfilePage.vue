@@ -2398,7 +2398,7 @@ onMounted(() => {
       </div>
     </div>
 
-    <div
+    <!-- <div
       v-if="showModal"
       class="z-50 fixed inset-0 flex justify-center items-center bg-black/40 backdrop-blur-sm p-4 overflow-y-auto"
     >
@@ -2414,172 +2414,7 @@ onMounted(() => {
         <h3 class="mb-6 font-bold text-2xl">
           {{ isEdit ? "Edit address" : "Add address" }}
         </h3>
-
-        <!-- <form @submit.prevent="saveAddress" class="space-y-4">
-          <div class="flex items-center gap-2 mb-4">
-            <input type="checkbox" v-model="form.is_default" id="def" />
-            <label for="def" class="text-sm">This is my default address</label>
-          </div>
-
-          <div class="gap-4 grid grid-cols-2">
-            <input
-              v-model="form.first_name_address"
-              placeholder="First name"
-              class="bg-gray-50 p-3 border rounded-xl outline-none"
-              required
-            />
-            <input
-              v-model="form.last_name_address"
-              placeholder="Last name"
-              class="bg-gray-50 p-3 border rounded-xl outline-none"
-              required
-            />
-          </div>
-
-          <div class="gap-4 grid grid-cols-2">
-            <select
-              v-model="form.province"
-              class="bg-gray-50 p-3 border rounded-xl outline-none"
-              required
-            >
-              <option value="" disabled>Select Province</option>
-              <option v-for="p in filteredProvinces" :key="p" :value="p">
-                {{ p }}
-              </option>
-            </select>
-            <input
-              v-model="form.city"
-              placeholder="City"
-              class="bg-gray-50 p-3 border rounded-xl outline-none"
-              required
-            />
-          </div>
-
-          <div
-            class="border border-gray-200 rounded-xl overflow-hidden mt-4 relative"
-          >
-            <div
-              class="bg-gray-50 p-3 border-b border-gray-200 flex justify-between items-center gap-2"
-            >
-              <div class="relative flex-1">
-                <input
-                  type="text"
-                  v-model="searchQuery"
-                  @input="handleSearchInput"
-                  placeholder="Search address (e.g. Tunjungan Plaza)"
-                  class="w-full text-sm px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                />
-                <div
-                  v-if="searchResults.length > 0"
-                  class="absolute z-[999] mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-40 overflow-y-auto"
-                >
-                  <div
-                    v-for="(result, idx) in searchResults"
-                    :key="idx"
-                    @click="selectSearchResult(result)"
-                    class="px-3 py-2 text-xs hover:bg-blue-50 cursor-pointer border-b last:border-0 text-gray-700"
-                  >
-                    {{ result.display_name }}
-                  </div>
-                </div>
-              </div>
-
-              <button
-                type="button"
-                @click="getCurrentLocation"
-                class="text-[10px] bg-blue-100 text-blue-700 px-3 py-1.5 rounded font-bold hover:bg-blue-200 transition whitespace-nowrap"
-              >
-                Current Loc
-              </button>
-            </div>
-
-            <div class="h-64 w-full relative z-0">
-              <l-map
-                ref="map"
-                v-model:zoom="zoom"
-                :center="center"
-                :use-global-leaflet="false"
-                @click="onMapClick"
-              >
-                <l-tile-layer
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  layer-type="base"
-                  name="OpenStreetMap"
-                ></l-tile-layer>
-
-                <l-marker
-                  :lat-lng="markerLatLng"
-                  draggable
-                  @update:latLng="onMarkerDrag"
-                ></l-marker>
-              </l-map>
-
-              <div
-                class="absolute bottom-2 right-2 z-[400] bg-white/90 backdrop-blur px-3 py-1.5 rounded-lg shadow text-[10px] font-mono text-gray-600 pointer-events-none"
-              >
-                {{
-                  form.latitude ? parseFloat(form.latitude).toFixed(5) : "-"
-                }},
-                {{
-                  form.longitude ? parseFloat(form.longitude).toFixed(5) : "-"
-                }}
-              </div>
-            </div>
-          </div>
-
-          <div class="relative">
-            <textarea
-              v-model="form.address_location"
-              rows="2"
-              placeholder="Full street address (auto-filled from map)"
-              class="bg-gray-50 p-3 border rounded-xl outline-none w-full resize-none"
-              required
-            ></textarea>
-            <p class="text-[10px] text-gray-400 mt-1">
-              *Drag the blue pin or search to auto-fill address.
-            </p>
-          </div>
-
-          <div class="gap-4 grid grid-cols-2">
-            <input
-              v-model="form.location_type"
-              placeholder="Apartment, suite (optional)"
-              class="bg-gray-50 p-3 border rounded-xl outline-none"
-            />
-            <input
-              v-model="form.postal_code"
-              placeholder="Postal code"
-              class="bg-gray-50 p-3 border rounded-xl outline-none"
-              required
-            />
-          </div>
-
-          <div class="flex justify-between items-center pt-6">
-            <button
-              v-if="isEdit"
-              type="button"
-              @click="deleteAddress"
-              class="text-red-500 hover:underline"
-            >
-              Delete
-            </button>
-            <div class="flex gap-4 ml-auto">
-              <button
-                type="button"
-                @click="showModal = false"
-                class="text-blue-600"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                class="bg-blue-600 px-8 py-3 rounded-xl font-bold text-white shadow-md shadow-blue-500/30"
-              >
-                Save Address
-              </button>
-            </div>
-          </div>
-        </form> -->
+        
         <form @submit.prevent="saveAddress" class="space-y-4">
           <div class="flex items-center gap-2 mb-4">
             <input type="checkbox" v-model="form.is_default" id="def" />
@@ -2775,6 +2610,226 @@ onMounted(() => {
               <button
                 type="submit"
                 class="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-xl font-bold text-white shadow-md shadow-blue-500/30 transition-colors"
+              >
+                Save Address
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div> -->
+    <div
+      v-if="showModal"
+      class="z-50 fixed inset-0 flex justify-center items-center bg-black/40 backdrop-blur-sm p-4 overflow-y-auto"
+    >
+      <div
+        class="relative bg-white shadow-2xl p-6 rounded-2xl w-full max-w-2xl my-4"
+      >
+        <button
+          @click="showModal = false"
+          class="top-4 right-5 absolute text-gray-400 hover:text-black text-xl"
+        >
+          ✕
+        </button>
+        <h3 class="mb-4 font-bold text-xl">
+          {{ isEdit ? "Edit address" : "Add address" }}
+        </h3>
+
+        <form @submit.prevent="saveAddress" class="space-y-3">
+          <div class="flex items-center gap-2 mb-2">
+            <input type="checkbox" v-model="form.is_default" id="def" />
+            <label for="def" class="text-sm">This is my default address</label>
+          </div>
+
+          <div class="gap-3 grid grid-cols-2">
+            <input
+              v-model="form.first_name_address"
+              placeholder="First name"
+              class="bg-gray-50 py-2 px-3 border rounded-xl outline-none text-sm"
+              required
+            />
+            <input
+              v-model="form.last_name_address"
+              placeholder="Last name"
+              class="bg-gray-50 py-2 px-3 border rounded-xl outline-none text-sm"
+              required
+            />
+          </div>
+
+          <div class="gap-3 grid grid-cols-2">
+            <select
+              v-model="form.province"
+              class="bg-gray-50 py-2 px-3 border rounded-xl outline-none text-sm"
+              required
+            >
+              <option value="" disabled>Select Province</option>
+              <option v-for="p in filteredProvinces" :key="p" :value="p">
+                {{ p }}
+              </option>
+            </select>
+            <input
+              v-model="form.city"
+              placeholder="City"
+              class="bg-gray-50 py-2 px-3 border rounded-xl outline-none text-sm"
+              required
+            />
+          </div>
+
+          <div
+            class="border border-gray-200 rounded-xl overflow-hidden mt-2 relative"
+          >
+            <div
+              class="bg-amber-50 border-b border-amber-100 py-1.5 px-3 flex items-start gap-2"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4 text-amber-500 shrink-0 mt-0.5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
+              </svg>
+              <p class="text-[10px] text-amber-700 leading-tight">
+                <span class="font-bold">Important:</span> Ensure the blue pin on
+                the map is accurately placed exactly at your location to prevent
+                delivery failures.
+              </p>
+            </div>
+
+            <div
+              class="bg-gray-50 p-2 border-b border-gray-200 flex justify-between items-center gap-2"
+            >
+              <div class="relative flex-1">
+                <input
+                  type="text"
+                  v-model="searchQuery"
+                  @input="handleSearchInput"
+                  placeholder="Search area (e.g. Tunjungan Plaza)"
+                  class="w-full text-xs px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                />
+                <div
+                  v-if="searchResults.length > 0"
+                  class="absolute z-[999] mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-32 overflow-y-auto"
+                >
+                  <div
+                    v-for="(result, idx) in searchResults"
+                    :key="idx"
+                    @click="selectSearchResult(result)"
+                    class="px-3 py-2 text-xs hover:bg-blue-50 cursor-pointer border-b last:border-0 text-gray-700"
+                  >
+                    {{ result.display_name }}
+                  </div>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                @click="getCurrentLocation"
+                class="text-[10px] bg-blue-100 text-blue-700 px-3 py-1.5 rounded-lg font-bold hover:bg-blue-200 transition whitespace-nowrap"
+              >
+                Current Loc
+              </button>
+            </div>
+
+            <div class="h-40 sm:h-48 w-full relative z-0">
+              <l-map
+                ref="map"
+                v-model:zoom="zoom"
+                :center="center"
+                :use-global-leaflet="false"
+                @click="onMapClick"
+              >
+                <l-tile-layer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  layer-type="base"
+                  name="OpenStreetMap"
+                ></l-tile-layer>
+
+                <l-marker
+                  :lat-lng="markerLatLng"
+                  draggable
+                  @update:latLng="onMarkerDrag"
+                ></l-marker>
+              </l-map>
+
+              <div
+                class="absolute bottom-2 right-2 z-[400] bg-white/90 backdrop-blur px-2 py-1 rounded shadow text-[9px] font-mono text-gray-600 pointer-events-none"
+              >
+                {{
+                  form.latitude ? parseFloat(form.latitude).toFixed(5) : "-"
+                }},
+                {{
+                  form.longitude ? parseFloat(form.longitude).toFixed(5) : "-"
+                }}
+              </div>
+            </div>
+          </div>
+
+          <div class="relative pt-1">
+            <div class="flex justify-between items-end mb-1">
+              <label
+                class="font-bold text-gray-700 text-[10px] uppercase tracking-widest"
+                >Detail Address</label
+              >
+              <span
+                class="text-[9px] text-blue-600 bg-blue-50 px-2 py-0.5 rounded font-medium"
+                >Editable</span
+              >
+            </div>
+            <p class="text-[9px] text-gray-500 mb-1.5 leading-tight">
+              Auto-filled from map, but you can edit this text to add specific
+              details (e.g., Block B No. 15).
+            </p>
+
+            <textarea
+              v-model="form.address_location"
+              rows="2"
+              placeholder="Enter full street address and specific details..."
+              class="bg-gray-50 py-2 px-3 border rounded-xl outline-none w-full resize-none focus:ring-2 focus:ring-blue-500 text-sm"
+              required
+            ></textarea>
+          </div>
+
+          <div class="gap-3 grid grid-cols-2 pt-1">
+            <input
+              v-model="form.location_type"
+              placeholder="Apartment, suite (optional)"
+              class="bg-gray-50 py-2 px-3 border rounded-xl outline-none text-sm"
+            />
+            <input
+              v-model="form.postal_code"
+              placeholder="Postal code"
+              class="bg-gray-50 py-2 px-3 border rounded-xl outline-none text-sm"
+              required
+            />
+          </div>
+
+          <div class="flex justify-between items-center pt-4">
+            <button
+              v-if="isEdit"
+              type="button"
+              @click="deleteAddress"
+              class="text-red-500 hover:underline font-bold text-xs"
+            >
+              Delete
+            </button>
+            <div class="flex gap-3 ml-auto">
+              <button
+                type="button"
+                @click="showModal = false"
+                class="text-gray-500 hover:text-gray-800 font-bold px-3 text-sm"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-xl font-bold text-white shadow-md shadow-blue-500/30 transition-colors text-sm"
               >
                 Save Address
               </button>
