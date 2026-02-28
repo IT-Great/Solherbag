@@ -568,7 +568,7 @@ onMounted(fetchProductDetail);
   >
     <div class="flex md:flex-row flex-col gap-12 lg:gap-24">
       <div class="w-full md:w-1/2 flex flex-col gap-4 select-none">
-        <div class="relative bg-gray-100 aspect-[4/5] overflow-hidden group">
+        <!-- <div class="relative bg-gray-100 aspect-[4/5] overflow-hidden group">
           <img
             v-if="currentMediaType === 'image'"
             :src="currentMediaUrl"
@@ -631,6 +631,75 @@ onMounted(fetchProductDetail);
                 stroke-width="2"
                 d="M9 5l7 7-7 7"
               />
+            </svg>
+          </button>
+
+          <div
+            class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-10"
+            v-if="allMedia.length > 1"
+          >
+            <button
+              v-for="(m, idx) in allMedia"
+              :key="idx"
+              @click="activeSlide = idx"
+              :class="activeSlide === idx ? 'w-6 bg-black' : 'w-2 bg-white/80'"
+              class="h-2 rounded-full transition-all duration-300 shadow-sm"
+            ></button>
+          </div>
+        </div> -->
+
+        <div class="relative bg-gray-100 aspect-[4/5] overflow-hidden group">
+          
+          <div 
+            class="flex w-full h-full transition-transform duration-500 ease-in-out"
+            :style="{ transform: `translateX(-${activeSlide * 100}%)` }"
+          >
+            <template v-for="(media, index) in allMedia" :key="index">
+              <div class="w-full h-full flex-shrink-0 relative">
+                <img
+                  v-if="media.type === 'image'"
+                  :src="media.url"
+                  class="w-full h-full object-cover main-product-image"
+                  alt="Product Image"
+                />
+                <video
+                  v-else-if="media.type === 'video'"
+                  :src="media.url"
+                  class="w-full h-full object-cover bg-black main-product-image"
+                  autoplay
+                  loop
+                  muted
+                  playsinline
+                  controls
+                ></video>
+              </div>
+            </template>
+          </div>
+
+          <div
+            v-if="product.discount_price"
+            class="absolute top-4 left-4 bg-red-600 text-white px-3 py-1 font-bold text-[10px] uppercase tracking-widest shadow-md z-10"
+          >
+            SALE
+          </div>
+
+          <button
+            v-if="allMedia.length > 1"
+            @click="prevSlide"
+            class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white flex justify-center items-center rounded-full opacity-0 group-hover:opacity-100 transition shadow-lg text-black z-10"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          
+          <button
+            v-if="allMedia.length > 1"
+            @click="nextSlide"
+            class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white flex justify-center items-center rounded-full opacity-0 group-hover:opacity-100 transition shadow-lg text-black z-10"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
           </button>
 
@@ -862,7 +931,8 @@ const handleAction = async (type) => {
   // --- START FLY ANIMATION LOGIC ---
   if (type === "cart") {
     // Cari elemen dengan class .main-product-image (bisa img atau video)
-    const productImage = document.querySelector(".main-product-image");
+    const productImages = document.querySelectorAll(".main-product-image");
+    const productImage = productImages[activeSlide.value]; // Ambil gambar yang sedang dilihat
     const cartIcon = document.querySelector(".cart-icon-header");
 
     if (productImage && cartIcon) {
