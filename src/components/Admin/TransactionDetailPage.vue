@@ -2254,14 +2254,13 @@ onMounted(fetchData);
                   v-if="printSettings.origin_phone_shown"
                   class="text-xl mt-1 font-mono font-bold"
                 >
-                  08123456789
+                  08883888585
                 </p>
                 <p
                   v-if="printSettings.origin_address_shown"
                   class="text-lg mt-3 leading-snug"
                 >
-                  Gudang Solher, Jl. Utama No. 1, Genteng, Surabaya, Jawa Timur,
-                  60272
+                  Jalan Kecilung N0. 8A, Kota Surabaya, Jawa Timur 60275, Indonesia
                 </p>
               </div>
             </div>
