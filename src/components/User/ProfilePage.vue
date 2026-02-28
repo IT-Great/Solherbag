@@ -2055,9 +2055,16 @@ onMounted(() => {
       <div v-if="userData" class="flex md:flex-row flex-col gap-10">
         <div class="flex flex-col items-center gap-4">
           <div class="group relative">
-            <img
+            <!-- <img
               :key="userData.profile_image"
               :src="userData.profile_image"
+              class="shadow-sm border-4 border-gray-50 rounded-full w-32 h-32 object-cover"
+              alt="Profile Avatar"
+              @error="handleImageError"
+            /> -->
+            <img
+              :key="userData.profile_image || 'default'"
+              :src="userData.profile_image || defaultProfile"
               class="shadow-sm border-4 border-gray-50 rounded-full w-32 h-32 object-cover"
               alt="Profile Avatar"
               @error="handleImageError"
@@ -2849,6 +2856,8 @@ import Swal from "sweetalert2";
 import { Country, State } from "country-state-city";
 import { BASE_URL } from "../../config/api.js";
 
+import defaultProfile from "../../../src/assets/profile.png";
+
 // Import Leaflet
 import "leaflet/dist/leaflet.css";
 import { LMap, LTileLayer, LMarker } from "@vue-leaflet/vue-leaflet";
@@ -3253,10 +3262,75 @@ const passForm = ref({
 });
 
 const handleImageUpdate = async (e) => {
-  // ... (Kode upload gambar sama persis)
+  const file = e.target.files[0];
+  if (!file) return;
+
+  // 1. OPTIMISTIC UPDATE (Tampilkan gambar lokal secara instan)
+  // Membuat URL sementara dari file yang dipilih
+  const objectUrl = URL.createObjectURL(file);
+
+  // Simpan URL gambar lama untuk rollback jika upload gagal
+  const oldImage = userData.value.profile_image;
+
+  // Update state gambar secara lokal
+  userData.value.profile_image = objectUrl;
+
+  // 2. PROSES UPLOAD KE SERVER (Background Process)
+  const formData = new FormData();
+  formData.append("image", file);
+
+  try {
+    const res = await axios.post(`${BASE_URL}/user/update-image`, formData, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    if (res.data.user) {
+      // 3. SYNC DENGAN DATA SERVER (Setelah sukses)
+      const newUser = res.data.user;
+
+      // Tambahkan timestamp agar browser tidak mengambil cache lama
+      if (newUser.profile_image) {
+        const separator = newUser.profile_image.includes("?") ? "&" : "?";
+        newUser.profile_image = `${newUser.profile_image}${separator}t=${new Date().getTime()}`;
+      }
+
+      updateUserData(newUser);
+
+      // Hapus URL object sementara dari memori browser
+      URL.revokeObjectURL(objectUrl);
+
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "success",
+        title: "Foto profil diperbarui!",
+        showConfirmButton: false,
+        timer: 3000,
+      });
+    }
+  } catch (err) {
+    // 4. ROLLBACK (Jika gagal)
+    console.error("Upload failed", err);
+    userData.value.profile_image = oldImage; // Kembalikan ke gambar lama
+    URL.revokeObjectURL(objectUrl); // Bersihkan memori
+
+    Swal.fire(
+      "Gagal",
+      "Tidak dapat mengunggah foto. Silakan coba lagi.",
+      "error",
+    );
+  }
 };
+
+// [PERBAIKAN] Ubah Fallback Error ke Gambar Default Lokal
 const handleImageError = (e) => {
-  e.target.src = `https://ui-avatars.com/api/?name=${userData.value.first_name}+${userData.value.last_name}&background=random`;
+  // Mencegah infinite loop jika defaultProfile juga gagal dimuat
+  if (e.target.src !== new URL(defaultProfile, import.meta.url).href) {
+    e.target.src = defaultProfile;
+  }
 };
 
 onMounted(() => {
