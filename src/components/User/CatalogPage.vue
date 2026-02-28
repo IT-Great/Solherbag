@@ -657,7 +657,7 @@ onMounted(initCatalog);
           class="group cursor-pointer"
           @click="$router.push(`/product/${product.id}`)"
         >
-          <div
+          <!-- <div
             class="relative bg-white shadow-sm mb-4 rounded-sm aspect-[4/5] overflow-hidden group/slider"
           >
             <template
@@ -705,6 +705,117 @@ onMounted(initCatalog);
                 />
               </svg>
             </button>
+            <button
+              v-if="getMediaArray(product).length > 1"
+              @click.stop="
+                nextSlide(product.id, getMediaArray(product).length - 1)
+              "
+              class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-1.5 rounded-full opacity-0 group-hover/slider:opacity-100 transition z-10 shadow-sm text-black"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+
+            <div
+              class="absolute bottom-2 left-0 right-0 flex justify-center gap-1 z-10"
+              v-if="getMediaArray(product).length > 1"
+            >
+              <div
+                v-for="(m, idx) in getMediaArray(product)"
+                :key="idx"
+                :class="
+                  (activeSlides[product.id] || 0) === idx
+                    ? 'w-3 bg-black'
+                    : 'w-1 bg-white/80'
+                "
+                class="h-1 rounded-full transition-all duration-300 shadow-sm"
+              ></div>
+            </div>
+
+            <div
+              v-if="product.discount_price"
+              class="top-2 right-2 absolute bg-red-600 px-2 py-1 rounded-sm font-bold text-[8px] text-white uppercase tracking-tighter z-20"
+            >
+              -{{ calculateDiscount(product.price, product.discount_price) }}%
+            </div>
+            <div
+              v-if="product.stock <= 3 && product.stock > 0"
+              class="top-2 left-2 absolute bg-amber-500 px-2 py-1 rounded-sm font-bold text-[8px] text-white uppercase z-20"
+            >
+              Low Stock
+            </div>
+          </div> -->
+
+          <div
+            class="relative bg-white shadow-sm mb-4 rounded-sm aspect-[4/5] overflow-hidden group/slider"
+          >
+            <div
+              class="flex w-full h-full transition-transform duration-500 ease-in-out"
+              :style="{
+                transform: `translateX(-${(activeSlides[product.id] || 0) * 100}%)`,
+              }"
+            >
+              <template
+                v-for="(media, index) in getMediaArray(product)"
+                :key="index"
+              >
+                <div
+                  class="w-full h-full flex-shrink-0 relative overflow-hidden"
+                >
+                  <img
+                    v-if="media.type === 'image'"
+                    :src="media.url"
+                    class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    alt="Product Image"
+                  />
+                  <video
+                    v-else-if="media.type === 'video'"
+                    :src="media.url"
+                    class="absolute inset-0 w-full h-full object-cover bg-black"
+                    autoplay
+                    loop
+                    muted
+                    playsinline
+                  ></video>
+                </div>
+              </template>
+            </div>
+
+            <button
+              v-if="getMediaArray(product).length > 1"
+              @click.stop="
+                prevSlide(product.id, getMediaArray(product).length - 1)
+              "
+              class="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-1.5 rounded-full opacity-0 group-hover/slider:opacity-100 transition z-10 shadow-sm text-black"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+
             <button
               v-if="getMediaArray(product).length > 1"
               @click.stop="

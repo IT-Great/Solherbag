@@ -253,6 +253,7 @@ const handleSubmit = async () => {
     );
 
     Swal.fire("Success", "Product Added", "success");
+    router.push("/admin/products");
   } catch (e) {
     Swal.fire("Upload Failed", "", "error");
   }

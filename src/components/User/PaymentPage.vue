@@ -1225,9 +1225,9 @@ const axiosConfig = {
 // Data Statis Shipper
 const shipperInfo = {
   name: "Solher Store",
-  phone: "08123456789",
-  address: "Gudang Solher, Jl. Utama No. 1",
-  postal_code: "60111",
+  phone: "08883888585",
+  address: "Jalan Kecilung N0. 8A, Kota Surabaya, Jawa Timur 60275, Indonesia",
+  postal_code: "60275",
 };
 
 // Auto-fill Date Time ketika halaman dimuat / method diubah ke later
