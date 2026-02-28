@@ -2236,13 +2236,13 @@ onMounted(fetchData);
                   v-if="printSettings.receiver_phone_shown"
                   class="text-xl mt-1 font-mono font-bold"
                 >
-                  {{ transaction.user.phone || "-" }}
+                  {{ transaction.value?.user?.phone || "-" }}
                 </p>
                 <p class="text-lg mt-3 leading-snug">
                   {{
-                    transaction.address?.address_location ||
+                    transaction.value?.address?.address_location ||
                     "Alamat tidak tersedia"
-                  }}, {{ transaction.address?.postal_code || "" }}
+                  }}, {{ transaction.value?.address?.postal_code || "" }}
                 </p>
               </div>
               <div class="w-1/2 pr-6 text-black">
