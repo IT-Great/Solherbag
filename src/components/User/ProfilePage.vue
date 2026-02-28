@@ -2636,6 +2636,8 @@ const form = ref({
   is_default: false,
 });
 
+const map = ref(null);
+
 // --- LEAFLET MAP STATE & LOGIC ---
 const zoom = ref(13);
 const center = ref([-7.250445, 112.768845]); // Default Surabaya
@@ -2690,9 +2692,18 @@ const selectSearchResult = (result) => {
   const lng = parseFloat(result.lon);
 
   // Pindahkan peta & marker
-  center.value = [lat, lng];
+  // center.value = [lat, lng];
+  // markerLatLng.value = [lat, lng];
+  // zoom.value = 16;
+
+  if (map.value && map.value.leafletObject) {
+    map.value.leafletObject.flyTo([lat, lng], 16);
+  } else {
+    center.value = [lat, lng];
+    zoom.value = 16;
+  }
+  
   markerLatLng.value = [lat, lng];
-  zoom.value = 16;
 
   // Update Form
   form.value.latitude = lat.toString();
@@ -2723,19 +2734,42 @@ const updateLocation = (lat, lng) => {
   reverseGeocode(lat, lng);
 };
 
+// const getCurrentLocation = () => {
+//   if (navigator.geolocation) {
+//     navigator.geolocation.getCurrentPosition(
+//       (position) => {
+//         const lat = position.coords.latitude;
+//         const lng = position.coords.longitude;
+//         center.value = [lat, lng];
+//         updateLocation(lat, lng);
+//         zoom.value = 16;
+//       },
+//       () => {
+//         Swal.fire("Error", "Please allow location access.", "error");
+//       },
+//     );
+//   }
+// };
+
 const getCurrentLocation = () => {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
-        center.value = [lat, lng];
+        
+        if (map.value && map.value.leafletObject) {
+          map.value.leafletObject.flyTo([lat, lng], 16);
+        } else {
+          center.value = [lat, lng];
+          zoom.value = 16;
+        }
+
         updateLocation(lat, lng);
-        zoom.value = 16;
       },
       () => {
         Swal.fire("Error", "Please allow location access.", "error");
-      },
+      }
     );
   }
 };
