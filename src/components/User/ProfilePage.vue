@@ -2415,7 +2415,7 @@ onMounted(() => {
           {{ isEdit ? "Edit address" : "Add address" }}
         </h3>
 
-        <form @submit.prevent="saveAddress" class="space-y-4">
+        <!-- <form @submit.prevent="saveAddress" class="space-y-4">
           <div class="flex items-center gap-2 mb-4">
             <input type="checkbox" v-model="form.is_default" id="def" />
             <label for="def" class="text-sm">This is my default address</label>
@@ -2579,6 +2579,207 @@ onMounted(() => {
               </button>
             </div>
           </div>
+        </form> -->
+        <form @submit.prevent="saveAddress" class="space-y-4">
+          <div class="flex items-center gap-2 mb-4">
+            <input type="checkbox" v-model="form.is_default" id="def" />
+            <label for="def" class="text-sm">This is my default address</label>
+          </div>
+
+          <div class="gap-4 grid grid-cols-2">
+            <input
+              v-model="form.first_name_address"
+              placeholder="First name"
+              class="bg-gray-50 p-3 border rounded-xl outline-none"
+              required
+            />
+            <input
+              v-model="form.last_name_address"
+              placeholder="Last name"
+              class="bg-gray-50 p-3 border rounded-xl outline-none"
+              required
+            />
+          </div>
+
+          <div class="gap-4 grid grid-cols-2">
+            <select
+              v-model="form.province"
+              class="bg-gray-50 p-3 border rounded-xl outline-none"
+              required
+            >
+              <option value="" disabled>Select Province</option>
+              <option v-for="p in filteredProvinces" :key="p" :value="p">
+                {{ p }}
+              </option>
+            </select>
+            <input
+              v-model="form.city"
+              placeholder="City"
+              class="bg-gray-50 p-3 border rounded-xl outline-none"
+              required
+            />
+          </div>
+
+          <div
+            class="border border-gray-200 rounded-xl overflow-hidden mt-4 relative"
+          >
+            <div
+              class="bg-amber-50 border-b border-amber-100 p-2 flex items-start gap-2"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4 text-amber-500 shrink-0 mt-0.5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
+              </svg>
+              <p class="text-[11px] text-amber-700 leading-tight">
+                <span class="font-bold">Important:</span> Ensure the blue pin on
+                the map is accurately placed exactly at your location to prevent
+                delivery failures.
+              </p>
+            </div>
+
+            <div
+              class="bg-gray-50 p-3 border-b border-gray-200 flex justify-between items-center gap-2"
+            >
+              <div class="relative flex-1">
+                <input
+                  type="text"
+                  v-model="searchQuery"
+                  @input="handleSearchInput"
+                  placeholder="Search area (e.g. Tunjungan Plaza)"
+                  class="w-full text-sm px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                />
+                <div
+                  v-if="searchResults.length > 0"
+                  class="absolute z-[999] mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-40 overflow-y-auto"
+                >
+                  <div
+                    v-for="(result, idx) in searchResults"
+                    :key="idx"
+                    @click="selectSearchResult(result)"
+                    class="px-3 py-2 text-xs hover:bg-blue-50 cursor-pointer border-b last:border-0 text-gray-700"
+                  >
+                    {{ result.display_name }}
+                  </div>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                @click="getCurrentLocation"
+                class="text-[10px] bg-blue-100 text-blue-700 px-3 py-1.5 rounded font-bold hover:bg-blue-200 transition whitespace-nowrap"
+              >
+                Current Loc
+              </button>
+            </div>
+
+            <div class="h-64 w-full relative z-0">
+              <l-map
+                ref="map"
+                v-model:zoom="zoom"
+                :center="center"
+                :use-global-leaflet="false"
+                @click="onMapClick"
+              >
+                <l-tile-layer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  layer-type="base"
+                  name="OpenStreetMap"
+                ></l-tile-layer>
+
+                <l-marker
+                  :lat-lng="markerLatLng"
+                  draggable
+                  @update:latLng="onMarkerDrag"
+                ></l-marker>
+              </l-map>
+
+              <div
+                class="absolute bottom-2 right-2 z-[400] bg-white/90 backdrop-blur px-3 py-1.5 rounded-lg shadow text-[10px] font-mono text-gray-600 pointer-events-none"
+              >
+                {{
+                  form.latitude ? parseFloat(form.latitude).toFixed(5) : "-"
+                }},
+                {{
+                  form.longitude ? parseFloat(form.longitude).toFixed(5) : "-"
+                }}
+              </div>
+            </div>
+          </div>
+
+          <div class="relative pt-2">
+            <div class="flex justify-between items-end mb-1">
+              <label
+                class="font-bold text-gray-700 text-xs uppercase tracking-widest"
+                >Detail Address</label
+              >
+              <span
+                class="text-[9px] text-blue-600 bg-blue-50 px-2 py-0.5 rounded font-medium"
+                >Editable</span
+              >
+            </div>
+            <p class="text-[10px] text-gray-500 mb-2 leading-tight">
+              Auto-filled from map, but you can edit this text to add specific
+              details (e.g., Block B No. 15, Near the red gate).
+            </p>
+
+            <textarea
+              v-model="form.address_location"
+              rows="3"
+              placeholder="Enter full street address and specific details..."
+              class="bg-gray-50 p-3 border rounded-xl outline-none w-full resize-none focus:ring-2 focus:ring-blue-500"
+              required
+            ></textarea>
+          </div>
+
+          <div class="gap-4 grid grid-cols-2 pt-2">
+            <input
+              v-model="form.location_type"
+              placeholder="Apartment, suite (optional)"
+              class="bg-gray-50 p-3 border rounded-xl outline-none"
+            />
+            <input
+              v-model="form.postal_code"
+              placeholder="Postal code"
+              class="bg-gray-50 p-3 border rounded-xl outline-none"
+              required
+            />
+          </div>
+
+          <div class="flex justify-between items-center pt-6">
+            <button
+              v-if="isEdit"
+              type="button"
+              @click="deleteAddress"
+              class="text-red-500 hover:underline font-bold text-sm"
+            >
+              Delete
+            </button>
+            <div class="flex gap-4 ml-auto">
+              <button
+                type="button"
+                @click="showModal = false"
+                class="text-gray-500 hover:text-gray-800 font-bold px-4"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                class="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-xl font-bold text-white shadow-md shadow-blue-500/30 transition-colors"
+              >
+                Save Address
+              </button>
+            </div>
+          </div>
         </form>
       </div>
     </div>
@@ -2636,6 +2837,7 @@ const form = ref({
   is_default: false,
 });
 
+// Deklarasikan ref untuk elemen l-map
 const map = ref(null);
 
 // --- LEAFLET MAP STATE & LOGIC ---
@@ -2696,13 +2898,14 @@ const selectSearchResult = (result) => {
   // markerLatLng.value = [lat, lng];
   // zoom.value = 16;
 
+  // Paksa Leaflet untuk memindahkan view kamera
   if (map.value && map.value.leafletObject) {
     map.value.leafletObject.flyTo([lat, lng], 16);
   } else {
     center.value = [lat, lng];
     zoom.value = 16;
   }
-  
+
   markerLatLng.value = [lat, lng];
 
   // Update Form
@@ -2757,7 +2960,8 @@ const getCurrentLocation = () => {
       (position) => {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
-        
+
+        // Paksa Leaflet untuk memindahkan view kamera ke lokasi user
         if (map.value && map.value.leafletObject) {
           map.value.leafletObject.flyTo([lat, lng], 16);
         } else {
@@ -2769,7 +2973,7 @@ const getCurrentLocation = () => {
       },
       () => {
         Swal.fire("Error", "Please allow location access.", "error");
-      }
+      },
     );
   }
 };
@@ -2908,11 +3112,11 @@ const fetchUserProfile = async () => {
 
 const updateUserData = (user) => {
   if (!user) return;
-  
+
   // [PERBAIKAN] Paksa konversi is_membership menjadi Boolean asli
   // Menggunakan !! akan mengubah 1 menjadi true, dan 0 menjadi false.
-  if (user.hasOwnProperty('is_membership')) {
-    user.is_membership = !!user.is_membership; 
+  if (user.hasOwnProperty("is_membership")) {
+    user.is_membership = !!user.is_membership;
   }
 
   userData.value = Object.assign({}, userData.value, user);
@@ -2966,14 +3170,16 @@ const toggleMembership = async () => {
     const res = await axios.post(
       `${BASE_URL}/user/toggle-membership`,
       { is_membership: userData.value.is_membership },
-      { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } },
     );
     updateUserData(res.data.user);
     Swal.fire({
       toast: true,
       position: "top-end",
       icon: "success",
-      title: userData.value.is_membership ? "Membership Activated!" : "Membership Deactivated",
+      title: userData.value.is_membership
+        ? "Membership Activated!"
+        : "Membership Deactivated",
       showConfirmButton: false,
       timer: 3000,
     });
