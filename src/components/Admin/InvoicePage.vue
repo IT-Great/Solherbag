@@ -118,7 +118,7 @@
             <td class="p-4 text-center space-x-3">
               <a
                 v-if="inv.image_invoice"
-                :href="BASE_URL_ASSET + inv.image_invoice"
+                :href="inv.image_invoice"
                 target="_blank"
                 class="text-blue-500 hover:underline font-bold text-xs uppercase"
                 >Doc</a
