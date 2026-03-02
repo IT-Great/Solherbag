@@ -1363,6 +1363,30 @@ watch(deliveryType, (newVal) => {
   if (newVal === "later") initDateTime();
 });
 
+// const fetchData = async () => {
+//   try {
+//     const user = localStorage.getItem("user");
+//     if (user) userData.value = JSON.parse(user);
+
+//     const transactionId = route.params.id;
+//     const resTrx = await axios.get(
+//       `${BASE_URL}/transactions/${transactionId}`,
+//       axiosConfig,
+//     );
+//     transactionData.value = resTrx.data;
+
+//     const resAddr = await axios.get(`${BASE_URL}/addresses`, axiosConfig);
+//     addresses.value = resAddr.data.data;
+
+//     const defaultAddr = addresses.value.find((a) => a.is_default);
+//     if (defaultAddr) selectedAddressId.value = defaultAddr.id;
+
+//     initDateTime(); // Setup awal waktu
+//   } catch (error) {
+//     Swal.fire("Error", "Failed to load checkout data", "error");
+//   }
+// };
+
 const fetchData = async () => {
   try {
     const user = localStorage.getItem("user");
@@ -1378,8 +1402,33 @@ const fetchData = async () => {
     const resAddr = await axios.get(`${BASE_URL}/addresses`, axiosConfig);
     addresses.value = resAddr.data.data;
 
-    const defaultAddr = addresses.value.find((a) => a.is_default);
-    if (defaultAddr) selectedAddressId.value = defaultAddr.id;
+    // [PERBAIKAN] Logika pengecekan alamat kosong
+    if (addresses.value.length === 0) {
+      Swal.fire({
+        title: "Address Required",
+        text: "You must add a shipping address before you can proceed with the payment.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Add Address Now",
+        cancelButtonText: "Later",
+        confirmButtonColor: "#000",
+        allowOutsideClick: false, // Memaksa user untuk memilih
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Arahkan ke Profile Page jika user memilih Add Address
+          router.push("/profilepage");
+        }
+      });
+    } else {
+      // Jika alamat ada, pilih yang default
+      const defaultAddr = addresses.value.find((a) => a.is_default);
+      if (defaultAddr) {
+        selectedAddressId.value = defaultAddr.id;
+      } else {
+        // Jika tidak ada yang default tapi ada alamat, pilih yang pertama
+        selectedAddressId.value = addresses.value[0].id;
+      }
+    }
 
     initDateTime(); // Setup awal waktu
   } catch (error) {
