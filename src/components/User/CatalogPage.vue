@@ -861,6 +861,38 @@ onMounted(initCatalog);
             >
               -{{ calculateDiscount(product.price, product.discount_price) }}%
             </div>
+            <button
+              @click.stop="toggleWishlist(product.id)"
+              class="absolute top-2 left-2 z-20 p-1.5 bg-white/80 hover:bg-white rounded-full shadow-sm transition-transform hover:scale-110"
+            >
+              <svg
+                v-if="isFavorited(product.id)"
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4 text-red-500"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                stroke="none"
+              >
+                <path
+                  d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z"
+                />
+              </svg>
+              <svg
+                v-else
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4 text-gray-400 hover:text-red-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+                />
+              </svg>
+            </button>
             <div
               v-if="product.stock <= 3 && product.stock > 0"
               class="top-2 left-2 absolute bg-amber-500 px-2 py-1 rounded-sm font-bold text-[8px] text-white uppercase z-20"
@@ -959,7 +991,8 @@ onMounted(initCatalog);
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch } from "vue";
+import { ref, onMounted, computed, watch, onUnmounted } from "vue";
+import Swal from "sweetalert2"; // Pastikan Swal diimport
 import { useProductStore } from "../../composables/useProductStore";
 import axios from "axios";
 import { BASE_URL } from "../../config/api.js";
@@ -973,6 +1006,12 @@ const selectedCategory = ref("");
 const showOnlySale = ref(false);
 const currentPage = ref(1);
 const itemsPerPage = 12;
+
+// [BARU] WISHLIST LOGIC
+const userWishlists = ref([]);
+const isAuthenticated = !!localStorage.getItem("token");
+
+const isFavorited = (id) => userWishlists.value.includes(id);
 
 // [BARU] State untuk menyimpan index slide per produk
 const activeSlides = ref({});
@@ -1002,6 +1041,40 @@ const prevSlide = (prodId, max) => {
   if (activeSlides.value[prodId] === undefined) activeSlides.value[prodId] = 0;
   activeSlides.value[prodId] =
     activeSlides.value[prodId] <= 0 ? max : activeSlides.value[prodId] - 1;
+};
+
+const fetchWishlists = async () => {
+  if (!isAuthenticated) return;
+  try {
+    const res = await axios.get(`${BASE_URL}/wishlists`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    userWishlists.value = res.data.map((w) => w.product_id);
+  } catch (error) {
+    console.error("Failed to fetch wishlists");
+  }
+};
+
+const toggleWishlist = async (productId) => {
+  if (!isAuthenticated) {
+    Swal.fire({ icon: "info", title: "Login Required", text: "Please login to add favorites." });
+    return;
+  }
+  
+  // Optimistic UI Update
+  if (isFavorited(productId)) {
+    userWishlists.value = userWishlists.value.filter(id => id !== productId);
+  } else {
+    userWishlists.value.push(productId);
+  }
+
+  try {
+    await axios.post(`${BASE_URL}/wishlists/toggle`, { product_id: productId }, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    });
+  } catch (error) {
+    fetchWishlists(); // Rollback jika API gagal
+  }
 };
 
 const initCatalog = async () => {
@@ -1070,5 +1143,15 @@ const formatPrice = (value) =>
     minimumFractionDigits: 0,
   }).format(value);
 
-onMounted(initCatalog);
+// onMounted(initCatalog);
+
+onMounted(async () => {
+  initCatalog();
+  fetchWishlists();
+  window.addEventListener("wishlist-updated", fetchWishlists);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("wishlist-updated", fetchWishlists);
+});
 </script>

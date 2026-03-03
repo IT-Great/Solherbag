@@ -307,6 +307,9 @@ const routes = [
     { path: '/customer-care', name: 'CustomerCare', component: CustomerCarePage },
     { path: '/faq', name: 'Faq', component: FaqPage },
     { path: '/about-us', name: 'AboutUs', component: AboutUsPage },
+    { path: '/favorites', name: 'Favorites', component: () => import('../components/User/FavoritePage.vue') },
+
+    // ADMIN ROUTES
     {
         path: '/admin/dashboard', name: 'Dashboard', component: DashboardPage,
         meta: {

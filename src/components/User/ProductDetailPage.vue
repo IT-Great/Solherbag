@@ -649,8 +649,7 @@ onMounted(fetchProductDetail);
         </div> -->
 
         <div class="relative bg-gray-100 aspect-[4/5] overflow-hidden group">
-          
-          <div 
+          <div
             class="flex w-full h-full transition-transform duration-500 ease-in-out"
             :style="{ transform: `translateX(-${activeSlide * 100}%)` }"
           >
@@ -688,18 +687,40 @@ onMounted(fetchProductDetail);
             @click="prevSlide"
             class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white flex justify-center items-center rounded-full opacity-0 group-hover:opacity-100 transition shadow-lg text-black z-10"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 19l-7-7 7-7"
+              />
             </svg>
           </button>
-          
+
           <button
             v-if="allMedia.length > 1"
             @click="nextSlide"
             class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white flex justify-center items-center rounded-full opacity-0 group-hover:opacity-100 transition shadow-lg text-black z-10"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              />
             </svg>
           </button>
 
@@ -773,6 +794,38 @@ onMounted(fetchProductDetail);
           >
             {{ product.name }}
           </h1>
+          <button
+            @click="toggleWishlist(product.id)"
+            class="p-3 bg-gray-50 hover:bg-red-50 rounded-full transition-colors flex-shrink-0"
+          >
+            <svg
+              v-if="isFavorited"
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-6 h-6 text-red-500 transform hover:scale-110 transition-transform"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              stroke="none"
+            >
+              <path
+                d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z"
+              />
+            </svg>
+            <svg
+              v-else
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-6 h-6 text-gray-400 hover:text-red-500 transform hover:scale-110 transition-transform"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+              />
+            </svg>
+          </button>
           <div class="flex justify-center md:justify-start items-center gap-4">
             <template v-if="product.discount_price">
               <p class="font-bold text-red-600 text-2xl">
@@ -845,7 +898,7 @@ onMounted(fetchProductDetail);
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, onUnmounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -856,6 +909,9 @@ const router = useRouter();
 const product = ref(null);
 const activeSection = ref("Description");
 const isLoading = ref(true);
+
+const userWishlists = ref([]);
+const isAuthenticated = !!localStorage.getItem("token");
 
 // [BARU] Slider State
 const activeSlide = ref(0);
@@ -898,11 +954,58 @@ const prevSlide = () => {
     activeSlide.value === 0 ? allMedia.value.length - 1 : activeSlide.value - 1;
 };
 
+const fetchWishlists = async () => {
+  if (!isAuthenticated) return;
+  try {
+    const res = await axios.get(`${BASE_URL}/wishlists`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    userWishlists.value = res.data.map((w) => w.product_id);
+  } catch (error) {}
+};
+
+const isFavorited = computed(() => {
+  if (!product.value) return false;
+  return userWishlists.value.includes(product.value.id);
+});
+
+const toggleWishlist = async (productId) => {
+  if (!isAuthenticated) {
+    Swal.fire({
+      icon: "info",
+      title: "Login Required",
+      confirmButtonColor: "#000",
+    });
+    return;
+  }
+
+  if (isFavorited.value) {
+    userWishlists.value = userWishlists.value.filter((id) => id !== productId);
+  } else {
+    userWishlists.value.push(productId);
+  }
+
+  try {
+    await axios.post(
+      `${BASE_URL}/wishlists/toggle`,
+      { product_id: productId },
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      },
+    );
+    window.dispatchEvent(new Event("wishlist-updated"));
+  } catch (error) {
+    fetchWishlists();
+  }
+};
+
 const fetchProductDetail = async () => {
   isLoading.value = true;
   try {
     const res = await axios.get(`${BASE_URL}/products/${route.params.id}`);
     product.value = res.data;
+
+    fetchWishlists(); // Fetch status favorit
 
     // TRIGGER TRACKING VIEW
     const event = new CustomEvent("track-view", { detail: res.data });
