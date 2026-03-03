@@ -67,7 +67,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
-import { BASE_URL } from "../../../config/api";
+import { BASE_URL } from "../../config/api.js";
 
 const wishlists = ref([]);
 const isLoading = ref(true);
