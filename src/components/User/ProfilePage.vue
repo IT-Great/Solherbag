@@ -2233,6 +2233,59 @@ onMounted(() => {
                 />
               </svg>
 
+              <div class="mt-8 pt-8 border-gray-100 border-t">
+                <router-link
+                  to="/favorites"
+                  class="group flex justify-between items-center bg-gray-50 hover:bg-red-50 p-6 rounded-3xl border border-gray-100 hover:border-red-100 transition-all cursor-pointer"
+                >
+                  <div class="flex items-center gap-5">
+                    <div
+                      class="w-12 h-12 bg-white group-hover:bg-red-100 text-red-500 rounded-full flex justify-center items-center shadow-sm transition-colors"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="w-6 h-6"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                        stroke="none"
+                      >
+                        <path
+                          d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z"
+                        />
+                      </svg>
+                    </div>
+                    <div>
+                      <h2
+                        class="font-bold text-xl text-gray-900 group-hover:text-red-600 transition-colors"
+                      >
+                        My Favorites
+                      </h2>
+                      <p class="text-xs text-gray-500 mt-1">
+                        View and manage your wishlist items
+                      </p>
+                    </div>
+                  </div>
+                  <div
+                    class="text-gray-400 group-hover:text-red-500 group-hover:translate-x-2 transition-all"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-6 h-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </div>
+                </router-link>
+              </div>
+
               <div class="flex justify-between items-center relative z-10">
                 <div>
                   <h3
@@ -2286,58 +2339,6 @@ onMounted(() => {
                 </div>
               </div>
             </div>
-          </div>
-          <div class="mt-8 pt-8 border-gray-100 border-t">
-            <router-link
-              to="/favorites"
-              class="group flex justify-between items-center bg-gray-50 hover:bg-red-50 p-6 rounded-3xl border border-gray-100 hover:border-red-100 transition-all cursor-pointer"
-            >
-              <div class="flex items-center gap-5">
-                <div
-                  class="w-12 h-12 bg-white group-hover:bg-red-100 text-red-500 rounded-full flex justify-center items-center shadow-sm transition-colors"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="w-6 h-6"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                    stroke="none"
-                  >
-                    <path
-                      d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <h2
-                    class="font-bold text-xl text-gray-900 group-hover:text-red-600 transition-colors"
-                  >
-                    My Favorites
-                  </h2>
-                  <p class="text-xs text-gray-500 mt-1">
-                    View and manage your wishlist items
-                  </p>
-                </div>
-              </div>
-              <div
-                class="text-gray-400 group-hover:text-red-500 group-hover:translate-x-2 transition-all"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="w-6 h-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </div>
-            </router-link>
           </div>
         </div>
       </div>
