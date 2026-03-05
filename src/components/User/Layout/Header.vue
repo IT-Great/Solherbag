@@ -258,7 +258,7 @@
           </h2>
           <button
             @click="isCartOpen = false"
-            class="focus:outline-none text-3xl hover:rotate-90 transition-transform duration-300"
+            class="focus:outline-none text-3xl text-gray-400 hover:text-black transition-colors"
           >
             &times;
           </button>
@@ -596,31 +596,70 @@ const syncQtyToDatabase = async (item) => {
 //   }
 // };
 
+// const handleOptimisticDelete = async (id) => {
+//   // Simpan data asli untuk berjaga-jaga jika API gagal (rollback)
+//   const backupItems = [...cartItems.value];
+
+//   // Hapus dari tampilan secara instan (Optimistic UI)
+//   cartItems.value = cartItems.value.filter((item) => item.id !== id);
+
+//   try {
+//     // Panggil API untuk menghapus di database
+//     await axios.delete(`${BASE_URL}/carts/${id}`, {
+//       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+//     });
+
+//     // [PERBAIKAN 1] Tampilkan popup modal jika berhasil
+//     Swal.fire({
+//       icon: "success",
+//       title: "Removed",
+//       text: "Item has been removed from your bag.",
+//       toast: true,
+//       position: "top-end",
+//       showConfirmButton: false,
+//       timer: 2000,
+//     });
+//   } catch (error) {
+//     // Jika API gagal, kembalikan item ke dalam cart (Rollback)
+//     cartItems.value = backupItems;
+//     Swal.fire({
+//       icon: "error",
+//       title: "Action Failed",
+//       text: "Could not remove item. Please check your connection.",
+//       toast: true,
+//       position: "top-end",
+//       showConfirmButton: false,
+//       timer: 3000,
+//     });
+//   }
+// };
+
 const handleOptimisticDelete = async (id) => {
-  // Simpan data asli untuk berjaga-jaga jika API gagal (rollback)
+  // 1. Simpan data asli untuk berjaga-jaga jika API gagal (rollback)
   const backupItems = [...cartItems.value];
 
-  // Hapus dari tampilan secara instan (Optimistic UI)
+  // 2. Hapus dari tampilan secara instan (Optimistic UI)
   cartItems.value = cartItems.value.filter((item) => item.id !== id);
 
+  // 3. [PERBAIKAN] Tampilkan popup modal "Removed" SEGERA (Instant Feedback)
+  Swal.fire({
+    icon: "success",
+    title: "Removed",
+    text: "Item has been removed from your bag.",
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 2000,
+  });
+
   try {
-    // Panggil API untuk menghapus di database
+    // 4. Panggil API untuk menghapus di database (Berjalan secara background/silent)
     await axios.delete(`${BASE_URL}/carts/${id}`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
-
-    // [PERBAIKAN 1] Tampilkan popup modal jika berhasil
-    Swal.fire({
-      icon: "success",
-      title: "Removed",
-      text: "Item has been removed from your bag.",
-      toast: true,
-      position: "top-end",
-      showConfirmButton: false,
-      timer: 2000,
-    });
+    // Jika sukses, tidak perlu melakukan apa-apa karena UI sudah terupdate di langkah 2
   } catch (error) {
-    // Jika API gagal, kembalikan item ke dalam cart (Rollback)
+    // 5. Jika API gagal, kembalikan item ke dalam cart (Rollback) dan beritahu user
     cartItems.value = backupItems;
     Swal.fire({
       icon: "error",
