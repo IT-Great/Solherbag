@@ -1020,6 +1020,113 @@ const fetchProductDetail = async () => {
   }
 };
 
+// const handleAction = async (type) => {
+//   const token = localStorage.getItem("token");
+//   if (!token) {
+//     Swal.fire({
+//       icon: "info",
+//       title: "Login Required",
+//       confirmButtonColor: "#000",
+//     }).then(() => router.push("/login"));
+//     return;
+//   }
+
+//   // --- START FLY ANIMATION LOGIC ---
+//   if (type === "cart") {
+//     // Cari elemen dengan class .main-product-image (bisa img atau video)
+//     const productImages = document.querySelectorAll(".main-product-image");
+//     const productImage = productImages[activeSlide.value]; // Ambil gambar yang sedang dilihat
+//     const cartIcon = document.querySelector(".cart-icon-header");
+
+//     if (productImage && cartIcon) {
+//       const imgRect = productImage.getBoundingClientRect();
+//       const cartRect = cartIcon.getBoundingClientRect();
+
+//       const flyer = productImage.cloneNode(true);
+//       flyer.classList.add("fly-item");
+
+//       Object.assign(flyer.style, {
+//         position: "fixed",
+//         top: `${imgRect.top}px`,
+//         left: `${imgRect.left}px`,
+//         width: `${imgRect.width}px`,
+//         height: `${imgRect.height}px`,
+//         zIndex: "1000",
+//         transition: "all 0.8s cubic-bezier(0.42, 0, 0.58, 1)",
+//         pointerEvents: "none",
+//       });
+
+//       document.body.appendChild(flyer);
+
+//       setTimeout(() => {
+//         Object.assign(flyer.style, {
+//           top: `${cartRect.top}px`,
+//           left: `${cartRect.left}px`,
+//           width: "20px",
+//           height: "20px",
+//           opacity: "0.4",
+//           transform: "rotate(720deg)",
+//         });
+//       }, 10);
+
+//       flyer.addEventListener(
+//         "transitionend",
+//         () => {
+//           flyer.remove();
+//           const event = new CustomEvent("optimistic-add-to-cart", {
+//             detail: product.value,
+//           });
+//           window.dispatchEvent(event);
+//         },
+//         { once: true },
+//       );
+//     }
+//   }
+//   // --- END FLY ANIMATION LOGIC ---
+
+//   try {
+//     await axios.post(
+//       `${BASE_URL}/carts`,
+//       { product_id: product.value.id, quantity: 1 },
+//       { headers: { Authorization: `Bearer ${token}` } },
+//     );
+//     if (type === "buy") {
+//       Swal.fire({
+//         title: "Preparing Order...",
+//         allowOutsideClick: false,
+//         didOpen: () => {
+//           Swal.showLoading();
+//         },
+//       });
+//       const checkoutRes = await axios.post(
+//         `${BASE_URL}/checkout`,
+//         {},
+//         { headers: { Authorization: `Bearer ${token}` } },
+//       );
+//       Swal.close();
+//       router.push(`/payment/${checkoutRes.data.transaction_id}`);
+//     } else {
+//       Swal.fire({
+//         title: "Added to Bag",
+//         icon: "success",
+//         toast: true,
+//         position: "top-center",
+//         showConfirmButton: false,
+//         timer: 2000,
+//       });
+//       window.dispatchEvent(new Event("refresh-cart"));
+//     }
+//   } catch (error) {
+//     Swal.close();
+//     Swal.fire(
+//       "Error",
+//       error.response?.data?.message || "Action failed",
+//       "error",
+//     );
+//     window.dispatchEvent(new Event("refresh-cart"));
+//   }
+// };
+
 const handleAction = async (type) => {
   const token = localStorage.getItem("token");
   if (!token) {
@@ -1031,11 +1138,20 @@ const handleAction = async (type) => {
     return;
   }
 
-  // --- START FLY ANIMATION LOGIC ---
+  // --- START FLY ANIMATION & OPTIMISTIC UI LOGIC ---
   if (type === "cart") {
-    // Cari elemen dengan class .main-product-image (bisa img atau video)
+    // 1. Instan Munculkan Notifikasi
+    Swal.fire({
+      title: "Added to Bag",
+      icon: "success",
+      toast: true,
+      position: "top-center",
+      showConfirmButton: false,
+      timer: 2000,
+    });
+
     const productImages = document.querySelectorAll(".main-product-image");
-    const productImage = productImages[activeSlide.value]; // Ambil gambar yang sedang dilihat
+    const productImage = productImages[activeSlide.value]; 
     const cartIcon = document.querySelector(".cart-icon-header");
 
     if (productImage && cartIcon) {
@@ -1073,23 +1189,26 @@ const handleAction = async (type) => {
         "transitionend",
         () => {
           flyer.remove();
+          // 2. Dispatch event ini sudah cukup untuk mengupdate UI Header
+          // tanpa perlu memanggil API cart lagi.
           const event = new CustomEvent("optimistic-add-to-cart", {
             detail: product.value,
           });
           window.dispatchEvent(event);
         },
-        { once: true },
+        { once: true }
       );
+    } else {
+      // Jika animasi gagal/elemen tidak ditemukan, pastikan UI keranjang tetap terupdate
+      const event = new CustomEvent("optimistic-add-to-cart", {
+        detail: product.value,
+      });
+      window.dispatchEvent(event);
     }
   }
   // --- END FLY ANIMATION LOGIC ---
 
   try {
-    await axios.post(
-      `${BASE_URL}/carts`,
-      { product_id: product.value.id, quantity: 1 },
-      { headers: { Authorization: `Bearer ${token}` } },
-    );
     if (type === "buy") {
       Swal.fire({
         title: "Preparing Order...",
@@ -1098,31 +1217,42 @@ const handleAction = async (type) => {
           Swal.showLoading();
         },
       });
+      
+      // Tambahkan ke keranjang dahulu
+      await axios.post(
+        `${BASE_URL}/carts`,
+        { product_id: product.value.id, quantity: 1 },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      // Lalu langsung tembak checkout
       const checkoutRes = await axios.post(
         `${BASE_URL}/checkout`,
         {},
-        { headers: { Authorization: `Bearer ${token}` } },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
+      
       Swal.close();
       router.push(`/payment/${checkoutRes.data.transaction_id}`);
     } else {
-      Swal.fire({
-        title: "Added to Bag",
-        icon: "success",
-        toast: true,
-        position: "top-center",
-        showConfirmButton: false,
-        timer: 2000,
-      });
-      window.dispatchEvent(new Event("refresh-cart"));
+      // Jika type "cart", kita hanya POST API di background (Silent API Call)
+      // Tidak ada sweetalert success disini karena sudah dimunculkan secara instan di awal
+      await axios.post(
+        `${BASE_URL}/carts`,
+        { product_id: product.value.id, quantity: 1 },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
     }
   } catch (error) {
-    Swal.close();
+    if (type === "buy") Swal.close();
+    
     Swal.fire(
       "Error",
       error.response?.data?.message || "Action failed",
-      "error",
+      "error"
     );
+    
+    // Jika API add to cart gagal, kita paksa refresh cart untuk mengembalikan ke state asli (Rollback)
     window.dispatchEvent(new Event("refresh-cart"));
   }
 };
