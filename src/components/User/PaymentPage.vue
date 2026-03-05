@@ -499,7 +499,7 @@ onMounted(fetchData);
               Shipping Address
             </h2>
           </div>
-          <div
+          <!-- <div
             v-if="addresses.length === 0"
             class="text-center py-10 bg-gray-50 rounded-2xl border border-dashed border-gray-300"
           >
@@ -509,6 +509,18 @@ onMounted(fetchData);
               class="text-blue-600 text-xs font-bold underline"
               >+ Add New Address</router-link
             >
+          </div> -->
+          <div
+            v-if="addresses.length === 0"
+            class="text-center py-10 bg-gray-50 rounded-2xl border border-dashed border-gray-300"
+          >
+            <p class="text-gray-500 text-sm italic">No address found.</p>
+            <button
+              @click="openModal()"
+              class="text-blue-600 text-xs font-bold underline"
+            >
+              + Add New Address
+            </button>
           </div>
           <div v-else class="space-y-4">
             <label
@@ -1186,6 +1198,206 @@ onMounted(fetchData);
       </div>
     </div>
   </div>
+  ]
+  <!-- MODAL TAMBAH ADDRESS -->
+  <div
+    v-if="showModal"
+    class="z-50 fixed inset-0 flex justify-center items-center bg-black/40 backdrop-blur-sm p-4 overflow-y-auto"
+  >
+    <div
+      class="relative bg-white shadow-2xl p-6 rounded-2xl w-full max-w-2xl my-4"
+    >
+      <button
+        @click="showModal = false"
+        class="top-4 right-5 absolute text-gray-400 hover:text-black text-xl"
+      >
+        ✕
+      </button>
+      <h3 class="mb-4 font-bold text-xl">Add New Address</h3>
+
+      <form @submit.prevent="saveAddress" class="space-y-3">
+        <div class="flex items-center gap-2 mb-2">
+          <input type="checkbox" v-model="form.is_default" id="def" />
+          <label for="def" class="text-sm">Set as my default address</label>
+        </div>
+
+        <div class="gap-3 grid grid-cols-2">
+          <input
+            v-model="form.first_name_address"
+            placeholder="First name"
+            class="bg-gray-50 py-2 px-3 border rounded-xl outline-none text-sm"
+            required
+          />
+          <input
+            v-model="form.last_name_address"
+            placeholder="Last name"
+            class="bg-gray-50 py-2 px-3 border rounded-xl outline-none text-sm"
+            required
+          />
+        </div>
+
+        <div class="gap-3 grid grid-cols-2">
+          <select
+            v-model="form.province"
+            class="bg-gray-50 py-2 px-3 border rounded-xl outline-none text-sm"
+            required
+          >
+            <option value="" disabled>Select Province</option>
+            <option v-for="p in filteredProvinces" :key="p" :value="p">
+              {{ p }}
+            </option>
+          </select>
+          <input
+            v-model="form.city"
+            placeholder="City"
+            class="bg-gray-50 py-2 px-3 border rounded-xl outline-none text-sm"
+            required
+          />
+        </div>
+
+        <div
+          class="border border-gray-200 rounded-xl overflow-hidden mt-2 relative"
+        >
+          <div
+            class="bg-amber-50 border-b border-amber-100 py-1.5 px-3 flex items-start gap-2"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-4 h-4 text-amber-500 shrink-0 mt-0.5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+              />
+            </svg>
+            <p class="text-[10px] text-amber-700 leading-tight">
+              <span class="font-bold">Important:</span> Ensure the blue pin on
+              the map is accurately placed exactly at your location to prevent
+              delivery failures.
+            </p>
+          </div>
+
+          <div
+            class="bg-gray-50 p-2 border-b border-gray-200 flex justify-between items-center gap-2"
+          >
+            <div class="relative flex-1">
+              <input
+                type="text"
+                v-model="searchQuery"
+                @input="handleSearchInput"
+                placeholder="Search area (e.g. Tunjungan Plaza)"
+                class="w-full text-xs px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+              />
+              <div
+                v-if="searchResults.length > 0"
+                class="absolute z-[999] mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-32 overflow-y-auto"
+              >
+                <div
+                  v-for="(result, idx) in searchResults"
+                  :key="idx"
+                  @click="selectSearchResult(result)"
+                  class="px-3 py-2 text-xs hover:bg-blue-50 cursor-pointer border-b last:border-0 text-gray-700"
+                >
+                  {{ result.display_name }}
+                </div>
+              </div>
+            </div>
+            <button
+              type="button"
+              @click="getCurrentLocation"
+              class="text-[10px] bg-blue-100 text-blue-700 px-3 py-1.5 rounded-lg font-bold hover:bg-blue-200 transition whitespace-nowrap"
+            >
+              Current Loc
+            </button>
+          </div>
+
+          <div class="h-40 sm:h-48 w-full relative z-0">
+            <l-map
+              ref="map"
+              v-model:zoom="zoom"
+              :center="center"
+              :use-global-leaflet="false"
+              @click="onMapClick"
+            >
+              <l-tile-layer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                layer-type="base"
+                name="OpenStreetMap"
+              ></l-tile-layer>
+              <l-marker
+                :lat-lng="markerLatLng"
+                draggable
+                @update:latLng="onMarkerDrag"
+              ></l-marker>
+            </l-map>
+            <div
+              class="absolute bottom-2 right-2 z-[400] bg-white/90 backdrop-blur px-2 py-1 rounded shadow text-[9px] font-mono text-gray-600 pointer-events-none"
+            >
+              {{ form.latitude ? parseFloat(form.latitude).toFixed(5) : "-" }},
+              {{ form.longitude ? parseFloat(form.longitude).toFixed(5) : "-" }}
+            </div>
+          </div>
+        </div>
+
+        <div class="relative pt-1">
+          <div class="flex justify-between items-end mb-1">
+            <label
+              class="font-bold text-gray-700 text-[10px] uppercase tracking-widest"
+              >Detail Address</label
+            >
+            <span
+              class="text-[9px] text-blue-600 bg-blue-50 px-2 py-0.5 rounded font-medium"
+              >Editable</span
+            >
+          </div>
+          <textarea
+            v-model="form.address_location"
+            rows="2"
+            placeholder="Enter full street address and specific details..."
+            class="bg-gray-50 py-2 px-3 border rounded-xl outline-none w-full resize-none focus:ring-2 focus:ring-blue-500 text-sm"
+            required
+          ></textarea>
+        </div>
+
+        <div class="gap-3 grid grid-cols-2 pt-1">
+          <input
+            v-model="form.location_type"
+            placeholder="Apartment, suite (optional)"
+            class="bg-gray-50 py-2 px-3 border rounded-xl outline-none text-sm"
+          />
+          <input
+            v-model="form.postal_code"
+            placeholder="Postal code"
+            class="bg-gray-50 py-2 px-3 border rounded-xl outline-none text-sm"
+            required
+          />
+        </div>
+
+        <div class="flex justify-end pt-4">
+          <div class="flex gap-3">
+            <button
+              type="button"
+              @click="showModal = false"
+              class="text-gray-500 hover:text-gray-800 font-bold px-3 text-sm"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-xl font-bold text-white shadow-md shadow-blue-500/30 transition-colors text-sm"
+            >
+              Save Address
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -1194,6 +1406,24 @@ import { useRoute, useRouter } from "vue-router";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
+import { Country, State } from "country-state-city";
+
+// Import Leaflet (Wajib untuk Peta)
+import "leaflet/dist/leaflet.css";
+import { LMap, LTileLayer, LMarker } from "@vue-leaflet/vue-leaflet";
+import L from "leaflet";
+
+delete L.Icon.Default.prototype._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: new URL(
+    "leaflet/dist/images/marker-icon-2x.png",
+    import.meta.url,
+  ).href,
+  iconUrl: new URL("leaflet/dist/images/marker-icon.png", import.meta.url).href,
+  shadowUrl: new URL("leaflet/dist/images/marker-shadow.png", import.meta.url)
+    .href,
+});
 
 const route = useRoute();
 const router = useRouter();
@@ -1387,6 +1617,197 @@ watch(deliveryType, (newVal) => {
 //   }
 // };
 
+// ==========================================
+// [BARU] STATE & LOGIKA UNTUK MODAL ADDRESS
+// ==========================================
+const showModal = ref(false);
+const countries = ref(Country.getAllCountries());
+const filteredProvinces = ref([]);
+
+const form = ref({
+  id: null,
+  region: "Indonesia",
+  first_name_address: "",
+  last_name_address: "",
+  address_location: "",
+  location_type: "",
+  city: "",
+  province: "",
+  postal_code: "",
+  latitude: null,
+  longitude: null,
+  is_default: true, // Default true agar mempermudah user yang baru pertama kali tambah
+});
+
+const map = ref(null);
+const zoom = ref(13);
+const center = ref([-7.250445, 112.768845]); // Default Surabaya
+const markerLatLng = ref([-7.250445, 112.768845]);
+const searchQuery = ref("");
+const searchResults = ref([]);
+let debounceTimeout = null;
+
+// Fungsi Navigasi & Map
+const fetchProvinces = () => {
+  const selectedCountry = countries.value.find(
+    (c) => c.name === form.value.region,
+  );
+  if (selectedCountry) {
+    filteredProvinces.value = State.getStatesOfCountry(
+      selectedCountry.isoCode,
+    ).map((s) => s.name);
+  }
+};
+
+const openModal = () => {
+  form.value = {
+    region: "Indonesia",
+    is_default: true,
+    first_name_address: userData.value?.first_name || "",
+    last_name_address: userData.value?.last_name || "",
+    address_location: "",
+    location_type: "",
+    city: "",
+    province: "",
+    postal_code: "",
+    latitude: null,
+    longitude: null,
+  };
+  center.value = [-7.250445, 112.768845];
+  markerLatLng.value = [-7.250445, 112.768845];
+  fetchProvinces();
+  showModal.value = true;
+};
+
+const reverseGeocode = async (lat, lng) => {
+  try {
+    const res = await axios.get(
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`,
+    );
+    if (res.data && res.data.display_name) {
+      form.value.address_location = res.data.display_name;
+      if (res.data.address && res.data.address.postcode) {
+        form.value.postal_code = res.data.address.postcode;
+      }
+    }
+  } catch (error) {
+    console.error("Reverse Geocode Error", error);
+  }
+};
+
+const handleSearchInput = () => {
+  if (debounceTimeout) clearTimeout(debounceTimeout);
+  if (searchQuery.value.length < 3) {
+    searchResults.value = [];
+    return;
+  }
+  debounceTimeout = setTimeout(async () => {
+    try {
+      const res = await axios.get(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${searchQuery.value}&countrycodes=id&limit=5`,
+      );
+      searchResults.value = res.data;
+    } catch (error) {
+      console.error("Search Error", error);
+    }
+  }, 500);
+};
+
+const selectSearchResult = (result) => {
+  const lat = parseFloat(result.lat);
+  const lng = parseFloat(result.lon);
+
+  if (map.value && map.value.leafletObject) {
+    map.value.leafletObject.flyTo([lat, lng], 16);
+  } else {
+    center.value = [lat, lng];
+    zoom.value = 16;
+  }
+  markerLatLng.value = [lat, lng];
+  form.value.latitude = lat.toString();
+  form.value.longitude = lng.toString();
+  form.value.address_location = result.display_name;
+  searchResults.value = [];
+  searchQuery.value = "";
+};
+
+const onMapClick = (event) => {
+  const { lat, lng } = event.latlng;
+  updateLocation(lat, lng);
+};
+
+const onMarkerDrag = (event) => {
+  const { lat, lng } = event.target.getLatLng();
+  updateLocation(lat, lng);
+};
+
+const updateLocation = (lat, lng) => {
+  markerLatLng.value = [lat, lng];
+  form.value.latitude = lat.toString();
+  form.value.longitude = lng.toString();
+  reverseGeocode(lat, lng);
+};
+
+const getCurrentLocation = () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        if (map.value && map.value.leafletObject) {
+          map.value.leafletObject.flyTo([lat, lng], 16);
+        } else {
+          center.value = [lat, lng];
+          zoom.value = 16;
+        }
+        updateLocation(lat, lng);
+      },
+      () => {
+        Swal.fire("Error", "Please allow location access.", "error");
+      },
+    );
+  }
+};
+
+const saveAddress = async () => {
+  try {
+    const res = await axios.post(
+      `${BASE_URL}/addresses`,
+      form.value,
+      axiosConfig,
+    );
+    showModal.value = false;
+
+    // Fetch ulang data alamat di halaman Checkout
+    const resAddr = await axios.get(`${BASE_URL}/addresses`, axiosConfig);
+    addresses.value = resAddr.data.data;
+
+    // Otomatis pilih alamat yang baru saja dibuat
+    const newAddressId = res.data.id || res.data.data?.id;
+    if (newAddressId) {
+      selectedAddressId.value = newAddressId;
+    } else {
+      // Fallback jika response tidak standar
+      selectedAddressId.value = addresses.value[addresses.value.length - 1].id;
+    }
+
+    Swal.fire({
+      toast: true,
+      position: "top-end",
+      icon: "success",
+      title: "Address Added!",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  } catch (e) {
+    Swal.fire("Error", "Failed to save address", "error");
+  }
+};
+
+// ==========================================
+// [AKHIR] LOGIKA MODAL ADDRESS
+// ==========================================
+
 const fetchData = async () => {
   try {
     const user = localStorage.getItem("user");
@@ -1403,6 +1824,24 @@ const fetchData = async () => {
     addresses.value = resAddr.data.data;
 
     // [PERBAIKAN] Logika pengecekan alamat kosong
+    // if (addresses.value.length === 0) {
+    //   Swal.fire({
+    //     title: "Address Required",
+    //     text: "You must add a shipping address before you can proceed with the payment.",
+    //     icon: "warning",
+    //     showCancelButton: true,
+    //     confirmButtonText: "Add Address Now",
+    //     cancelButtonText: "Later",
+    //     confirmButtonColor: "#000",
+    //     allowOutsideClick: false, // Memaksa user untuk memilih
+    //   }).then((result) => {
+    //     if (result.isConfirmed) {
+    //       // Arahkan ke Profile Page jika user memilih Add Address
+    //       router.push("/profilepage");
+    //     }
+    //   });
+    // }
+
     if (addresses.value.length === 0) {
       Swal.fire({
         title: "Address Required",
@@ -1415,8 +1854,8 @@ const fetchData = async () => {
         allowOutsideClick: false, // Memaksa user untuk memilih
       }).then((result) => {
         if (result.isConfirmed) {
-          // Arahkan ke Profile Page jika user memilih Add Address
-          router.push("/profilepage");
+          // [PERBAIKAN] Langsung buka modal di halaman ini, bukan dialihkan
+          openModal();
         }
       });
     } else {
