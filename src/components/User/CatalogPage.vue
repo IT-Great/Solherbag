@@ -992,10 +992,13 @@ onMounted(initCatalog);
 
 <script setup>
 import { ref, onMounted, computed, watch, onUnmounted } from "vue";
+import { useRoute } from "vue-router"; // [BARU] Import useRoute
 import Swal from "sweetalert2"; // Pastikan Swal diimport
 import { useProductStore } from "../../composables/useProductStore";
 import axios from "axios";
 import { BASE_URL } from "../../config/api.js";
+
+const route = useRoute(); // [BARU] Inisialisasi route
 
 const { state, fetchCatalogData } = useProductStore();
 const categories = computed(() => state.categories);
@@ -1145,11 +1148,33 @@ const formatPrice = (value) =>
 
 // onMounted(initCatalog);
 
+// onMounted(async () => {
+//   initCatalog();
+//   fetchWishlists();
+//   window.addEventListener("wishlist-updated", fetchWishlists);
+// });
+
+// [PERBAIKAN] Ubah blok onMounted untuk menangkap query param
 onMounted(async () => {
+  // Cek apakah ada query parameter 'search' saat halaman dimuat
+  if (route.query.search) {
+    searchQuery.value = route.query.search;
+  }
+
   initCatalog();
   fetchWishlists();
   window.addEventListener("wishlist-updated", fetchWishlists);
 });
+
+// [BARU] Tambahkan watcher agar jika query url berubah (meski sudah di halaman catalog), search box ikut update
+watch(
+  () => route.query.search,
+  (newSearch) => {
+    if (newSearch !== undefined) {
+      searchQuery.value = newSearch;
+    }
+  }
+);
 
 onUnmounted(() => {
   window.removeEventListener("wishlist-updated", fetchWishlists);
