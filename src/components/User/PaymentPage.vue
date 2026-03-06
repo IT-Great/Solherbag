@@ -2790,7 +2790,7 @@ onMounted(fetchData);
                 Shipping Address
               </h2>
             </div>
-
+            
             <div
               v-if="addresses.length === 0"
               class="text-center py-10 bg-gray-50 rounded-2xl border border-dashed border-gray-300"
@@ -2932,9 +2932,7 @@ onMounted(fetchData);
                     >
                       Standard / Express
                     </p>
-                    <p class="text-gray-500 text-xs mt-1">
-                      Powered by Biteship
-                    </p>
+                    <p class="text-gray-500 text-xs mt-1">Powered by Biteship</p>
                   </div>
                 </div>
               </label>
@@ -3538,7 +3536,7 @@ onMounted(fetchData);
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, watch, computed, nextTick } from "vue";
+import { ref, onMounted, watch, computed, nextTick } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -4047,52 +4045,6 @@ const grandTotalWithDiscount = computed(
 //   }
 // };
 
-// const handlePayment = async () => {
-//   isProcessing.value = true;
-//   try {
-//     const payload = {
-//       address_id: selectedAddressId.value,
-//       shipping_method: shippingMethod.value,
-//       use_points: pointsToUse.value,
-//       courier_company:
-//         shippingMethod.value === "biteship"
-//           ? selectedRate.value?.company
-//           : null,
-//       courier_type:
-//         shippingMethod.value === "biteship" ? selectedRate.value?.type : null,
-//       shipping_cost:
-//         shippingMethod.value === "biteship" ? selectedRate.value?.price : null,
-//       delivery_type:
-//         shippingMethod.value === "biteship" ? deliveryType.value : null,
-//       delivery_date:
-//         shippingMethod.value === "biteship" ? deliveryDate.value : null,
-//       delivery_time:
-//         shippingMethod.value === "biteship" ? deliveryTime.value : null,
-//     };
-
-//     // Tembak API /checkout (yang sekarang membuat Transaksi sekaligus Invoice Xendit)
-//     const res = await axios.post(`${BASE_URL}/checkout`, payload, axiosConfig);
-
-//     // Xendit Checkout URL didapat dari response
-//     if (res.data.checkout_url) {
-
-//       // [PERBAIKAN] KOSONGKAN KERANJANG DI MEMORI FRONTEND
-//       clearCart();
-
-//       // Redirect ke Xendit
-//       window.location.href = res.data.checkout_url;
-//     }
-//   } catch (error) {
-//     Swal.fire(
-//       "Payment Error",
-//       error.response?.data?.message || "Failed to create invoice",
-//       "error",
-//     );
-//   } finally {
-//     isProcessing.value = false;
-//   }
-// };
-
 const handlePayment = async () => {
   isProcessing.value = true;
   try {
@@ -4116,14 +4068,16 @@ const handlePayment = async () => {
         shippingMethod.value === "biteship" ? deliveryTime.value : null,
     };
 
+    // Tembak API /checkout (yang sekarang membuat Transaksi sekaligus Invoice Xendit)
     const res = await axios.post(`${BASE_URL}/checkout`, payload, axiosConfig);
 
+    // Xendit Checkout URL didapat dari response
     if (res.data.checkout_url) {
+      
+      // [PERBAIKAN] KOSONGKAN KERANJANG DI MEMORI FRONTEND
       clearCart();
-
-      // [PENTING] Set bendera bahwa kita telah pergi ke Xendit
-      sessionStorage.setItem("went_to_payment", "true");
-
+      
+      // Redirect ke Xendit
       window.location.href = res.data.checkout_url;
     }
   } catch (error) {
@@ -4134,23 +4088,6 @@ const handlePayment = async () => {
     );
   } finally {
     isProcessing.value = false;
-  }
-};
-
-// ==========================================
-// [BARU] LOGIKA HARD REFRESH KETIKA BACK
-// ==========================================
-const handleVisibilityChange = () => {
-  // Jika tab kembali terlihat (user pencet Back dari Xendit) DAN ada bendera
-  if (
-    document.visibilityState === "visible" &&
-    sessionStorage.getItem("went_to_payment") === "true"
-  ) {
-    // 1. Hapus bendera agar tidak refresh berulang-ulang
-    sessionStorage.removeItem("went_to_payment");
-
-    // 2. Paksa browser untuk melakukan HARD RELOAD (bypass cache)
-    window.location.reload(true);
   }
 };
 
@@ -4166,29 +4103,7 @@ const formatPrice = (v) =>
     minimumFractionDigits: 0,
   }).format(v);
 
-onMounted(() => {
-  fetchData();
-
-  // Daftarkan event listener
-  document.addEventListener("visibilitychange", handleVisibilityChange);
-
-  // [FALLBACK] Jika browser mematikan visibility API, kita cek event pageshow (BFCache)
-  window.addEventListener("pageshow", (event) => {
-    if (
-      event.persisted &&
-      sessionStorage.getItem("went_to_payment") === "true"
-    ) {
-      sessionStorage.removeItem("went_to_payment");
-      window.location.reload(true);
-    }
-  });
-});
-
-onUnmounted(() => {
-  // Bersihkan event listener saat komponen dihancurkan
-  document.removeEventListener('visibilitychange', handleVisibilityChange);
-  // (Pembersihan pageshow tidak selalu bisa dilakukan karena terkait window, tapi aman dibiarkan)
-});
+onMounted(fetchData);
 
 // (Pastikan Anda menyalin sisa function `openModal`, `saveAddress`, dll di bagian bawah script ini)
 </script>
