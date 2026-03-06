@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <header
     class="top-0 left-0 z-50 fixed bg-white px-6 py-4 border-gray-200 border-b w-full"
   >
@@ -1053,4 +1053,340 @@ watch(
   opacity: 0;
   transform: translateX(-20px);
 }
-</style>
+</style> -->
+
+<script setup>
+import { ref, onMounted, onUnmounted, watch, computed } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { BASE_URL } from "../../../config/api";
+import SearchModal from "../../User/Layout/SearchModal.vue";
+
+const isSearchOpen = ref(false);
+
+const openSearch = () => {
+  isSearchOpen.value = true;
+};
+
+const closeSearch = () => {
+  isSearchOpen.value = false;
+};
+
+const isDropdownOpen = ref(false);
+const isAuthenticated = ref(false);
+const userData = ref(null);
+const route = useRoute();
+const router = useRouter();
+
+const isCartOpen = ref(false);
+const cartItems = ref([]);
+
+const cartCount = computed(() => {
+  return cartItems.value.reduce((acc, item) => acc + item.quantity, 0);
+});
+
+const isBadgePopping = ref(false);
+const debounceTimers = new Map();
+
+const searchInput = ref("");
+const searchInputRef = ref(null);
+const recentlyViewed = ref([]);
+const randomProducts = ref([]);
+const allProducts = ref([]); 
+const isMobileMenuOpen = ref(false);
+
+const loadRecentlyViewed = () => {
+  const data = localStorage.getItem("recently_viewed");
+  recentlyViewed.value = data ? JSON.parse(data) : [];
+};
+
+const clearRecentlyViewed = () => {
+  localStorage.removeItem("recently_viewed");
+  recentlyViewed.value = [];
+};
+
+const fetchAllProducts = async () => {
+  try {
+    const res = await axios.get(`${BASE_URL}/products`);
+    allProducts.value = res.data;
+  } catch (err) {
+    console.error("Search fetch failed", err);
+  }
+};
+
+const getRandomProducts = () => {
+  if (allProducts.value.length === 0) return;
+  const shuffled = [...allProducts.value].sort(() => 0.5 - Math.random());
+  randomProducts.value = shuffled.slice(0, 6);
+};
+
+const totalCartAmount = computed(() => {
+  if (!cartItems.value || cartItems.value.length === 0) return 0;
+  return cartItems.value.reduce((acc, item) => {
+    const amount = parseFloat(item.gross_amount) || 0;
+    return acc + amount;
+  }, 0);
+});
+
+// [PERBAIKAN 1] Logika Tambah/Kurang Kuantitas Tanpa Lag
+const handleQtyChange = (item, newQty) => {
+  if (newQty < 1) newQty = 1;
+  if (newQty > item.product.stock) {
+    newQty = item.product.stock;
+    Swal.fire({
+      toast: true,
+      position: "top-end",
+      icon: "warning",
+      title: `Max stock is ${item.product.stock}`,
+      showConfirmButton: false,
+      timer: 2000,
+    });
+  }
+
+  // 1. UPDATE STATE LOKAL SECARA INSTAN
+  item.quantity = newQty;
+  const unitPrice = parseFloat(item.product.discount_price ?? item.product.price);
+  item.gross_amount = item.quantity * unitPrice;
+  item.isSyncing = true;
+
+  // 2. ANTRIKAN KE DATABASE (DEBOUNCE 500ms)
+  if (debounceTimers.has(item.id)) {
+    clearTimeout(debounceTimers.get(item.id));
+  }
+
+  const timerId = setTimeout(() => {
+    syncQtyToDatabase(item);
+    debounceTimers.delete(item.id);
+  }, 500); 
+
+  debounceTimers.set(item.id, timerId);
+};
+
+const handleQtyInput = (item) => {
+  if (item.quantity === null || item.quantity === "") return;
+  handleQtyChange(item, item.quantity);
+};
+
+// [PERBAIKAN 2] Penanganan ID Sementara (Temp ID)
+const syncQtyToDatabase = async (item) => {
+  // Jika ID masih 'temp_', berarti API ADD TO CART di background belum selesai.
+  // Kita antrikan ulang agar tidak menembak endpoint PUT /carts/temp_... yang pasti 404
+  if (String(item.id).startsWith("temp_")) {
+    setTimeout(() => syncQtyToDatabase(item), 500);
+    return;
+  }
+
+  try {
+    const res = await axios.put(
+      `${BASE_URL}/carts/${item.id}`,
+      { quantity: item.quantity },
+      { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } },
+    );
+    item.gross_amount = res.data.gross_amount;
+  } catch (error) {
+    console.error("Sync failed:", error);
+    fetchCarts(); // Jika benar-benar gagal, baru reset dari server
+  } finally {
+    item.isSyncing = false;
+  }
+};
+
+// [PERBAIKAN 3] Logika Hapus Instan yang Kuat
+const handleOptimisticDelete = async (id) => {
+  const backupItems = [...cartItems.value];
+  
+  // 1. HAPUS DARI UI SEKETIKA
+  cartItems.value = cartItems.value.filter((item) => item.id !== id);
+
+  // 2. TAMPILKAN POPUP SEKETIKA
+  Swal.fire({
+    icon: "success",
+    title: "Removed",
+    text: "Item has been removed from your bag.",
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 2000,
+  });
+
+  // 3. ABAIKAN JIKA INI BARANG SEMENTARA (Belum Terekam di DB)
+  if (String(id).startsWith("temp_")) return;
+
+  try {
+    // 4. HAPUS DI DATABASE SECARA BACKGROUND
+    await axios.delete(`${BASE_URL}/carts/${id}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+  } catch (error) {
+    // 5. ROLLBACK JIKA GAGAL
+    cartItems.value = backupItems;
+    Swal.fire({
+      icon: "error",
+      title: "Action Failed",
+      text: "Could not remove item. Please check your connection.",
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 3000,
+    });
+  }
+};
+
+// [PERBAIKAN 4] Logika Add To Cart Berbasis Event + Background API
+const handleOptimisticAdd = async (event) => {
+  const newProduct = event.detail;
+  const existingItem = cartItems.value.find((item) => item.product_id === newProduct.id);
+
+  if (existingItem) {
+    // Jika barang sudah ada, panggil handleQtyChange agar diurus debouncenya
+    handleQtyChange(existingItem, existingItem.quantity + 1);
+  } else {
+    // Jika barang BARU, buat ID SEMENTARA
+    const tempId = "temp_" + Date.now();
+    const newItem = {
+      id: tempId,
+      product_id: newProduct.id,
+      quantity: 1,
+      gross_amount: parseFloat(newProduct.discount_price ?? newProduct.price),
+      isSyncing: true, // Berikan efek blur selama memproses di background
+      product: newProduct,
+    };
+    
+    // MASUKKAN KE KERANJANG SECARA INSTAN
+    cartItems.value.unshift(newItem); // Pakai unshift agar barang baru muncul paling atas
+    
+    isBadgePopping.value = true;
+    setTimeout(() => (isBadgePopping.value = false), 300);
+
+    // EKSEKUSI API DI LATAR BELAKANG
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.post(
+        `${BASE_URL}/carts`,
+        { product_id: newProduct.id, quantity: 1 },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      
+      // SETELAH API BERHASIL, GANTI ID SEMENTARA DENGAN ID ASLI DARI DATABASE
+      const realId = res.data.id || res.data.cart_id || res.data.data?.id;
+      const index = cartItems.value.findIndex(i => i.id === tempId);
+      if(index !== -1) {
+        cartItems.value[index].id = realId;
+        cartItems.value[index].isSyncing = false; // Matikan efek blur
+      }
+    } catch (error) {
+      // ROLLBACK JIKA GAGAL ADD TO CART
+      cartItems.value = cartItems.value.filter((i) => i.id !== tempId);
+      Swal.fire("Error", "Could not add item to bag. Check connection.", "error");
+    }
+  }
+};
+
+const handleCheckout = async () => {
+  try {
+    const res = await axios.post(
+      `${BASE_URL}/checkout`,
+      {},
+      { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } },
+    );
+
+    const transactionId = res.data.transaction_id || res.data.data?.transaction_id || res.data.id;
+    if (!transactionId) throw new Error("Transaction ID not found in response");
+
+    watch(() => route.path, () => { isCartOpen.value = false; });
+    isBadgePopping.value = false;
+
+    setTimeout(() => {
+      router.push(`/payment/${transactionId}`);
+    }, 300); 
+  } catch (err) {
+    Swal.fire({
+      icon: "error",
+      title: "Checkout Failed",
+      text: "Unable to proceed to payment.",
+    });
+  }
+};
+
+const fetchCarts = async () => {
+  try {
+    const res = await axios.get(`${BASE_URL}/carts`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    cartItems.value = res.data.map((item) => ({ ...item, isSyncing: false }));
+  } catch (err) {
+    console.error("Failed to load bag", err);
+  }
+};
+
+const openCart = () => {
+  if (!isAuthenticated.value) {
+    Swal.fire({
+      icon: "info",
+      title: "Sign In Required",
+      text: "Please login to see your shopping bag.",
+      confirmButtonColor: "#000",
+    });
+    return;
+  }
+  isCartOpen.value = true;
+};
+
+const checkAuth = () => {
+  const token = localStorage.getItem("token");
+  const user = localStorage.getItem("user");
+  if (token && user) {
+    isAuthenticated.value = true;
+    userData.value = JSON.parse(user);
+  } else {
+    isAuthenticated.value = false;
+    userData.value = null;
+  }
+};
+
+const formatPrice = (v) => new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(v);
+
+const toggleDropdown = () => {
+  checkAuth();
+  isDropdownOpen.value = !isDropdownOpen.value;
+};
+
+onMounted(() => {
+  checkAuth();
+  fetchAllProducts();
+  if (isAuthenticated.value) fetchCarts();
+  window.addEventListener("optimistic-add-to-cart", handleOptimisticAdd);
+
+  window.addEventListener("click", (e) => {
+    if (!e.target.closest(".relative")) isDropdownOpen.value = false;
+  });
+
+  window.addEventListener("refresh-cart", fetchCarts);
+});
+
+onMounted(() => {
+  window.addEventListener("track-view", (e) => {
+    const product = e.detail;
+    let list = JSON.parse(localStorage.getItem("recently_viewed") || "[]");
+    list = list.filter((item) => item.id !== product.id);
+    list.unshift(product);
+    list = list.slice(0, 6);
+    localStorage.setItem("recently_viewed", JSON.stringify(list));
+  });
+});
+
+onUnmounted(() => {
+  window.removeEventListener("optimistic-add-to-cart", handleOptimisticAdd);
+});
+
+watch(
+  () => route.path,
+  () => {
+    isDropdownOpen.value = false;
+    isMobileMenuOpen.value = false;
+    checkAuth();
+    if (isAuthenticated.value) fetchCarts();
+  },
+);
+</script>
