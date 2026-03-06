@@ -285,6 +285,7 @@ import TransferReceivePage from '../components/Admin/TransferReceivePage.vue'
 import SupplierPage from '../components/Admin/SupplierPage.vue'
 import InvoicePage from '../components/Admin/InvoicePage.vue'
 import CartPage from '../components/User/CartPage.vue'
+import DetailMessageViewPage from '../components/Admin/DetailMessageViewPage.vue'
 
 const routes = [
     { path: '/', name: 'Home', component: HomePage },
@@ -436,6 +437,12 @@ const routes = [
         path: '/admin/messages',
         name: 'MessageView',
         component: MessageViewPage,
+        meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true }
+    },
+    {
+        path: '/admin/messages/:id',
+        name: 'DetailMessage',
+        component: DetailMessageViewPage,
         meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true }
     },
     // --- [BARU] ROUTE UNTUK MODUL ACCOUNTING (ADMIN) ---
