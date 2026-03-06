@@ -284,6 +284,7 @@ import CoaPage from '../components/Admin/CoaPage.vue'
 import TransferReceivePage from '../components/Admin/TransferReceivePage.vue'
 import SupplierPage from '../components/Admin/SupplierPage.vue'
 import InvoicePage from '../components/Admin/InvoicePage.vue'
+import CartPage from '../components/User/CartPage.vue'
 
 const routes = [
     { path: '/', name: 'Home', component: HomePage },
@@ -308,6 +309,12 @@ const routes = [
     { path: '/faq', name: 'Faq', component: FaqPage },
     { path: '/about-us', name: 'AboutUs', component: AboutUsPage },
     { path: '/favorites', name: 'Favorites', component: () => import('../components/User/FavoritePage.vue') },
+    {
+        path: '/cart',
+        name: 'Cart',
+        component: CartPage,
+        meta: { requiresAuth: true }
+    },
 
     // ADMIN ROUTES
     {
