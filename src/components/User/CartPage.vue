@@ -558,10 +558,10 @@ import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { BASE_URL } from "../../../config/api.js";
+import { BASE_URL } from "../../config/api.js";
 
 // Mengambil fungsi dan state langsung dari memori Global
-import { useCart } from "../../../composables/useCart";
+import { useCart } from "../../composables/useCart";
 
 const router = useRouter();
 const isProcessingCheckout = ref(false);
