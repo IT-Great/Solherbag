@@ -407,7 +407,95 @@ onMounted(() => {
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
+// import { ref, onMounted, computed } from "vue";
+// import { useRouter } from "vue-router";
+// import axios from "axios";
+// import { BASE_URL } from "../../../config/api";
+
+// const emit = defineEmits(["close"]);
+// const router = useRouter();
+
+// const searchInput = ref("");
+// const searchInputRef = ref(null);
+
+// const recentlyViewed = ref([]);
+// const randomProducts = ref([]);
+// const allProducts = ref([]); 
+
+// // Logika Pencarian Lokal (Real-time)
+// const filteredSearchResults = computed(() => {
+//   if (!searchInput.value) return [];
+//   const query = searchInput.value.toLowerCase();
+//   return allProducts.value.filter(
+//     (product) => 
+//       product.name.toLowerCase().includes(query) || 
+//       product.category?.name.toLowerCase().includes(query)
+//   );
+// });
+
+// const loadCachedRandomProducts = () => {
+//   const cached = localStorage.getItem("random_products");
+//   randomProducts.value = cached ? JSON.parse(cached) : [];
+// };
+
+// const loadRecentlyViewed = () => {
+//   const data = localStorage.getItem("recently_viewed");
+//   recentlyViewed.value = data ? JSON.parse(data) : [];
+// };
+
+// const clearRecentlyViewed = () => {
+//   localStorage.removeItem("recently_viewed");
+//   recentlyViewed.value = [];
+// };
+
+// const navigateToProduct = (id) => {
+//   emit("close");
+//   router.push(`/product/${id}`);
+// };
+
+// // [BARU] Fungsi Lempar Hasil Pencarian ke Katalog
+// const viewAllResults = () => {
+//   emit("close");
+//   // Navigasi ke katalog dengan membawa query parameter 'search'
+//   router.push({ path: '/catalog', query: { search: searchInput.value } });
+// };
+
+// const formatPrice = (v) =>
+//   new Intl.NumberFormat("id-ID", {
+//     style: "currency",
+//     currency: "IDR",
+//     minimumFractionDigits: 0
+//   }).format(v);
+
+// const fetchAllProducts = async () => {
+//   try {
+//     const res = await axios.get(`${BASE_URL}/products`);
+//     const products = res.data?.data?.data || res.data?.data || res.data || [];
+//     allProducts.value = Array.isArray(products) ? products : [];
+//     getRandomProducts();
+//   } catch (err) {
+//     allProducts.value = [];
+//   }
+// };
+
+// const getRandomProducts = () => {
+//   if (!Array.isArray(allProducts.value) || allProducts.value.length === 0) return;
+//   const shuffled = [...allProducts.value].sort(() => 0.5 - Math.random());
+//   randomProducts.value = shuffled.slice(0, 6);
+//   localStorage.setItem("random_products", JSON.stringify(randomProducts.value));
+// };
+
+// onMounted(() => {
+//   loadRecentlyViewed();
+//   loadCachedRandomProducts();
+//   fetchAllProducts();
+//   // Tambahkan sedikit timeout agar focus bekerja setelah animasi slide-down selesai
+//   setTimeout(() => {
+//     searchInputRef.value?.focus();
+//   }, 100);
+// });
+
+import { ref, onMounted, onUnmounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
 import { BASE_URL } from "../../../config/api";
@@ -433,9 +521,22 @@ const filteredSearchResults = computed(() => {
   );
 });
 
-const loadCachedRandomProducts = () => {
-  const cached = localStorage.getItem("random_products");
-  randomProducts.value = cached ? JSON.parse(cached) : [];
+// [PERBAIKAN] Langsung load dan ACAK dari cache saat dibuka
+const loadAndShuffleCachedProducts = () => {
+  const cachedAllProducts = localStorage.getItem("all_products_cache");
+  if (cachedAllProducts) {
+    const parsedProducts = JSON.parse(cachedAllProducts);
+    if (Array.isArray(parsedProducts) && parsedProducts.length > 0) {
+      // Langsung acak dari cache agar instan tanpa nunggu API
+      const shuffled = [...parsedProducts].sort(() => 0.5 - Math.random());
+      randomProducts.value = shuffled.slice(0, 6);
+      return; // Berhenti jika cache sukses
+    }
+  }
+  
+  // Fallback: Jika ini kunjungan pertama kali ke web dan cache kosong
+  const fallbackRandom = localStorage.getItem("random_products");
+  randomProducts.value = fallbackRandom ? JSON.parse(fallbackRandom) : [];
 };
 
 const loadRecentlyViewed = () => {
@@ -453,10 +554,8 @@ const navigateToProduct = (id) => {
   router.push(`/product/${id}`);
 };
 
-// [BARU] Fungsi Lempar Hasil Pencarian ke Katalog
 const viewAllResults = () => {
   emit("close");
-  // Navigasi ke katalog dengan membawa query parameter 'search'
   router.push({ path: '/catalog', query: { search: searchInput.value } });
 };
 
@@ -471,25 +570,37 @@ const fetchAllProducts = async () => {
   try {
     const res = await axios.get(`${BASE_URL}/products`);
     const products = res.data?.data?.data || res.data?.data || res.data || [];
-    allProducts.value = Array.isArray(products) ? products : [];
-    getRandomProducts();
+    const validProducts = Array.isArray(products) ? products : [];
+    
+    allProducts.value = validProducts;
+    
+    // [PERBAIKAN] Simpan seluruh produk ke cache untuk modal berikutnya
+    localStorage.setItem("all_products_cache", JSON.stringify(validProducts));
+
+    // CATATAN PENTING: KITA TIDAK MEMANGGIL getRandomProducts() DI SINI!
+    // Agar gambar yang sudah tampil dari cache (saat dibuka) tidak berkedip/ganti tiba-tiba.
+    
+    // Namun, jika ternyata array randomProducts masih KOSONG (misal kunjungan pertama banget),
+    // barulah kita panggil fungsi acak.
+    if (randomProducts.value.length === 0) {
+       const shuffled = [...validProducts].sort(() => 0.5 - Math.random());
+       randomProducts.value = shuffled.slice(0, 6);
+    }
+
   } catch (err) {
     allProducts.value = [];
   }
 };
 
-const getRandomProducts = () => {
-  if (!Array.isArray(allProducts.value) || allProducts.value.length === 0) return;
-  const shuffled = [...allProducts.value].sort(() => 0.5 - Math.random());
-  randomProducts.value = shuffled.slice(0, 6);
-  localStorage.setItem("random_products", JSON.stringify(randomProducts.value));
-};
-
 onMounted(() => {
   loadRecentlyViewed();
-  loadCachedRandomProducts();
+  
+  // 1. Eksekusi ini dulu agar UI Instan merender dari memori lokal (0 delay)
+  loadAndShuffleCachedProducts();
+  
+  // 2. Tembak API di background hanya untuk menyiapkan search dan cache masa depan
   fetchAllProducts();
-  // Tambahkan sedikit timeout agar focus bekerja setelah animasi slide-down selesai
+  
   setTimeout(() => {
     searchInputRef.value?.focus();
   }, 100);
