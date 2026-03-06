@@ -2248,15 +2248,45 @@ const onAddToCartEvent = (e) => {
   });
 };
 
+// onMounted(() => {
+//   checkAuth();
+//   if (isAuthenticated.value) fetchCarts(); // Ambil data diam-diam di background!
+
+//   window.addEventListener("optimistic-add-to-cart", onAddToCartEvent);
+//   window.addEventListener("click", (e) => {
+//     if (!e.target.closest(".relative")) isDropdownOpen.value = false;
+//   });
+//   window.addEventListener("refresh-cart", fetchCarts);
+// });
+
 onMounted(() => {
   checkAuth();
-  if (isAuthenticated.value) fetchCarts(); // Ambil data diam-diam di background!
-
+  fetchAllProducts();
+  if (isAuthenticated.value) fetchCarts(); 
   window.addEventListener("optimistic-add-to-cart", onAddToCartEvent);
+
   window.addEventListener("click", (e) => {
     if (!e.target.closest(".relative")) isDropdownOpen.value = false;
   });
+
   window.addEventListener("refresh-cart", fetchCarts);
+
+  // ==============================================================
+  // [BARU] BFCache Handler (Menangkap User Saat Tekan Tombol Back)
+  // ==============================================================
+  window.addEventListener("pageshow", (event) => {
+    // Event.persisted bernilai TRUE jika browser me-load halaman dari BFCache (Tombol Back)
+    if (event.persisted || sessionStorage.getItem('checkout_completed') === 'true') {
+      
+      // Hapus bendera karena kita sudah tahu
+      sessionStorage.removeItem('checkout_completed');
+      
+      // Paksa fetch ulang dari database untuk memastikan sinkronisasi sempurna!
+      if (isAuthenticated.value) {
+        fetchCarts();
+      }
+    }
+  });
 });
 
 onUnmounted(() => {
