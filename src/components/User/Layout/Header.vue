@@ -1536,158 +1536,307 @@ const totalCartAmount = computed(() => {
 });
 
 // [PERBAIKAN 1] Logika Tambah/Kurang Kuantitas Tanpa Lag
-const handleQtyChange = (item, newQty) => {
-  if (newQty < 1) newQty = 1;
-  if (newQty > item.product.stock) {
-    newQty = item.product.stock;
-    Swal.fire({
-      toast: true,
-      position: "top-end",
-      icon: "warning",
-      title: `Max stock is ${item.product.stock}`,
-      showConfirmButton: false,
-      timer: 2000,
-    });
-  }
+// const handleQtyChange = (item, newQty) => {
+//   if (newQty < 1) newQty = 1;
+//   if (newQty > item.product.stock) {
+//     newQty = item.product.stock;
+//     Swal.fire({
+//       toast: true,
+//       position: "top-end",
+//       icon: "warning",
+//       title: `Max stock is ${item.product.stock}`,
+//       showConfirmButton: false,
+//       timer: 2000,
+//     });
+//   }
 
-  // 1. UPDATE STATE LOKAL SECARA INSTAN
-  item.quantity = newQty;
-  const unitPrice = parseFloat(item.product.discount_price ?? item.product.price);
-  item.gross_amount = item.quantity * unitPrice;
-  item.isSyncing = true;
+//   // 1. UPDATE STATE LOKAL SECARA INSTAN
+//   item.quantity = newQty;
+//   const unitPrice = parseFloat(item.product.discount_price ?? item.product.price);
+//   item.gross_amount = item.quantity * unitPrice;
+//   item.isSyncing = true;
 
-  // 2. ANTRIKAN KE DATABASE (DEBOUNCE 500ms)
-  if (debounceTimers.has(item.id)) {
-    clearTimeout(debounceTimers.get(item.id));
-  }
+//   // 2. ANTRIKAN KE DATABASE (DEBOUNCE 500ms)
+//   if (debounceTimers.has(item.id)) {
+//     clearTimeout(debounceTimers.get(item.id));
+//   }
 
-  const timerId = setTimeout(() => {
-    syncQtyToDatabase(item);
-    debounceTimers.delete(item.id);
-  }, 500); 
+//   const timerId = setTimeout(() => {
+//     syncQtyToDatabase(item);
+//     debounceTimers.delete(item.id);
+//   }, 500); 
 
-  debounceTimers.set(item.id, timerId);
-};
+//   debounceTimers.set(item.id, timerId);
+// };
 
 const handleQtyInput = (item) => {
   if (item.quantity === null || item.quantity === "") return;
   handleQtyChange(item, item.quantity);
 };
 
-// [PERBAIKAN 2] Penanganan ID Sementara (Temp ID)
-const syncQtyToDatabase = async (item) => {
-  // Jika ID masih 'temp_', berarti API ADD TO CART di background belum selesai.
-  // Kita antrikan ulang agar tidak menembak endpoint PUT /carts/temp_... yang pasti 404
-  if (String(item.id).startsWith("temp_")) {
-    setTimeout(() => syncQtyToDatabase(item), 500);
-    return;
-  }
+// // [PERBAIKAN 2] Penanganan ID Sementara (Temp ID)
+// const syncQtyToDatabase = async (item) => {
+//   // Jika ID masih 'temp_', berarti API ADD TO CART di background belum selesai.
+//   // Kita antrikan ulang agar tidak menembak endpoint PUT /carts/temp_... yang pasti 404
+//   if (String(item.id).startsWith("temp_")) {
+//     setTimeout(() => syncQtyToDatabase(item), 500);
+//     return;
+//   }
 
-  try {
-    const res = await axios.put(
-      `${BASE_URL}/carts/${item.id}`,
-      { quantity: item.quantity },
-      { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } },
-    );
-    item.gross_amount = res.data.gross_amount;
-  } catch (error) {
-    console.error("Sync failed:", error);
-    fetchCarts(); // Jika benar-benar gagal, baru reset dari server
-  } finally {
-    item.isSyncing = false;
-  }
-};
+//   try {
+//     const res = await axios.put(
+//       `${BASE_URL}/carts/${item.id}`,
+//       { quantity: item.quantity },
+//       { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } },
+//     );
+//     item.gross_amount = res.data.gross_amount;
+//   } catch (error) {
+//     console.error("Sync failed:", error);
+//     fetchCarts(); // Jika benar-benar gagal, baru reset dari server
+//   } finally {
+//     item.isSyncing = false;
+//   }
+// };
 
-// [PERBAIKAN 3] Logika Hapus Instan yang Kuat
-const handleOptimisticDelete = async (id) => {
-  const backupItems = [...cartItems.value];
+// // [PERBAIKAN 3] Logika Hapus Instan yang Kuat
+// const handleOptimisticDelete = async (id) => {
+//   const backupItems = [...cartItems.value];
   
-  // 1. HAPUS DARI UI SEKETIKA
-  cartItems.value = cartItems.value.filter((item) => item.id !== id);
+//   // 1. HAPUS DARI UI SEKETIKA
+//   cartItems.value = cartItems.value.filter((item) => item.id !== id);
 
-  // 2. TAMPILKAN POPUP SEKETIKA
-  Swal.fire({
-    icon: "success",
-    title: "Removed",
-    text: "Item has been removed from your bag.",
-    toast: true,
-    position: "top-end",
-    showConfirmButton: false,
-    timer: 2000,
-  });
+//   // 2. TAMPILKAN POPUP SEKETIKA
+//   Swal.fire({
+//     icon: "success",
+//     title: "Removed",
+//     text: "Item has been removed from your bag.",
+//     toast: true,
+//     position: "top-end",
+//     showConfirmButton: false,
+//     timer: 2000,
+//   });
 
-  // 3. ABAIKAN JIKA INI BARANG SEMENTARA (Belum Terekam di DB)
-  if (String(id).startsWith("temp_")) return;
+//   // 3. ABAIKAN JIKA INI BARANG SEMENTARA (Belum Terekam di DB)
+//   if (String(id).startsWith("temp_")) return;
 
-  try {
-    // 4. HAPUS DI DATABASE SECARA BACKGROUND
-    await axios.delete(`${BASE_URL}/carts/${id}`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    });
-  } catch (error) {
-    // 5. ROLLBACK JIKA GAGAL
-    cartItems.value = backupItems;
-    Swal.fire({
-      icon: "error",
-      title: "Action Failed",
-      text: "Could not remove item. Please check your connection.",
-      toast: true,
-      position: "top-end",
-      showConfirmButton: false,
-      timer: 3000,
-    });
-  }
-};
+//   try {
+//     // 4. HAPUS DI DATABASE SECARA BACKGROUND
+//     await axios.delete(`${BASE_URL}/carts/${id}`, {
+//       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+//     });
+//   } catch (error) {
+//     // 5. ROLLBACK JIKA GAGAL
+//     cartItems.value = backupItems;
+//     Swal.fire({
+//       icon: "error",
+//       title: "Action Failed",
+//       text: "Could not remove item. Please check your connection.",
+//       toast: true,
+//       position: "top-end",
+//       showConfirmButton: false,
+//       timer: 3000,
+//     });
+//   }
+// };
 
-// [PERBAIKAN 4] Logika Add To Cart Berbasis Event + Background API
+// // [PERBAIKAN 4] Logika Add To Cart Berbasis Event + Background API
+// const handleOptimisticAdd = async (event) => {
+//   const newProduct = event.detail;
+//   const existingItem = cartItems.value.find((item) => item.product_id === newProduct.id);
+
+//   if (existingItem) {
+//     // Jika barang sudah ada, panggil handleQtyChange agar diurus debouncenya
+//     handleQtyChange(existingItem, existingItem.quantity + 1);
+//   } else {
+//     // Jika barang BARU, buat ID SEMENTARA
+//     const tempId = "temp_" + Date.now();
+//     const newItem = {
+//       id: tempId,
+//       product_id: newProduct.id,
+//       quantity: 1,
+//       gross_amount: parseFloat(newProduct.discount_price ?? newProduct.price),
+//       isSyncing: true, // Berikan efek blur selama memproses di background
+//       product: newProduct,
+//     };
+    
+//     // MASUKKAN KE KERANJANG SECARA INSTAN
+//     cartItems.value.unshift(newItem); // Pakai unshift agar barang baru muncul paling atas
+    
+//     isBadgePopping.value = true;
+//     setTimeout(() => (isBadgePopping.value = false), 300);
+
+//     // EKSEKUSI API DI LATAR BELAKANG
+//     try {
+//       const token = localStorage.getItem("token");
+//       const res = await axios.post(
+//         `${BASE_URL}/carts`,
+//         { product_id: newProduct.id, quantity: 1 },
+//         { headers: { Authorization: `Bearer ${token}` } }
+//       );
+      
+//       // SETELAH API BERHASIL, GANTI ID SEMENTARA DENGAN ID ASLI DARI DATABASE
+//       const realId = res.data.id || res.data.cart_id || res.data.data?.id;
+//       const index = cartItems.value.findIndex(i => i.id === tempId);
+//       if(index !== -1) {
+//         cartItems.value[index].id = realId;
+//         cartItems.value[index].isSyncing = false; // Matikan efek blur
+//       }
+//     } catch (error) {
+//       // ROLLBACK JIKA GAGAL ADD TO CART
+//       cartItems.value = cartItems.value.filter((i) => i.id !== tempId);
+//       Swal.fire("Error", "Could not add item to bag. Check connection.", "error");
+//     }
+//   }
+// };
+
+// =========================================================
+// THE SENIOR DEV LOGIC: RACE CONDITION HANDLERS
+// =========================================================
+
 const handleOptimisticAdd = async (event) => {
   const newProduct = event.detail;
   const existingItem = cartItems.value.find((item) => item.product_id === newProduct.id);
 
   if (existingItem) {
-    // Jika barang sudah ada, panggil handleQtyChange agar diurus debouncenya
+    // Jika barang sudah ada di keranjang, tambah qty saja
     handleQtyChange(existingItem, existingItem.quantity + 1);
-  } else {
-    // Jika barang BARU, buat ID SEMENTARA
-    const tempId = "temp_" + Date.now();
-    const newItem = {
-      id: tempId,
-      product_id: newProduct.id,
-      quantity: 1,
-      gross_amount: parseFloat(newProduct.discount_price ?? newProduct.price),
-      isSyncing: true, // Berikan efek blur selama memproses di background
-      product: newProduct,
-    };
-    
-    // MASUKKAN KE KERANJANG SECARA INSTAN
-    cartItems.value.unshift(newItem); // Pakai unshift agar barang baru muncul paling atas
-    
-    isBadgePopping.value = true;
-    setTimeout(() => (isBadgePopping.value = false), 300);
+    triggerCartBounce();
+    return;
+  }
 
-    // EKSEKUSI API DI LATAR BELAKANG
-    try {
-      const token = localStorage.getItem("token");
-      const res = await axios.post(
-        `${BASE_URL}/carts`,
-        { product_id: newProduct.id, quantity: 1 },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      
-      // SETELAH API BERHASIL, GANTI ID SEMENTARA DENGAN ID ASLI DARI DATABASE
-      const realId = res.data.id || res.data.cart_id || res.data.data?.id;
-      const index = cartItems.value.findIndex(i => i.id === tempId);
-      if(index !== -1) {
-        cartItems.value[index].id = realId;
-        cartItems.value[index].isSyncing = false; // Matikan efek blur
+  // 1. Buat Barang dengan ID Sementara (Fake ID)
+  const tempId = "temp_" + Date.now();
+  const unitPrice = parseFloat(newProduct.discount_price ?? newProduct.price);
+  
+  const newItem = {
+    id: tempId,
+    product_id: newProduct.id,
+    quantity: 1,
+    gross_amount: unitPrice,
+    isSyncing: true, // Blur effect menyala
+    isCreating: true, // KUNCI UTAMA: Sedang diproses database
+    product: newProduct,
+  };
+
+  // 2. Masukkan ke UI Seketika (Unshift agar muncul paling atas)
+  cartItems.value.unshift(newItem);
+  triggerCartBounce();
+
+  // 3. Eksekusi API di Latar Belakang secara diam-diam
+  try {
+    const res = await axios.post(
+      `${BASE_URL}/carts`,
+      { product_id: newProduct.id, quantity: 1 },
+      { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+    );
+
+    // Ambil ID Asli
+    const realId = res.data.id || res.data.cart_id || res.data.data?.id;
+    
+    // Cari barang tadi di memori UI (karena bisa saja user sedang iseng mengubah QTY-nya)
+    const itemInCart = cartItems.value.find((i) => i.id === tempId);
+
+    if (itemInCart) {
+      // Ganti ID Palsu dengan ID Asli, buka kunci.
+      itemInCart.id = realId;
+      itemInCart.isCreating = false;
+
+      // CEK APAKAH USER MENEKAN TOMBOL '+' SAAT API SEDANG LOADING TADI?
+      if (itemInCart.quantity !== 1) {
+        // Jika ya, user sangat cepat! Langsung tembak API Update sekarang.
+        syncQtyToDatabase(itemInCart);
+      } else {
+        // Jika tidak, proses selesai. Matikan blur.
+        itemInCart.isSyncing = false;
       }
-    } catch (error) {
-      // ROLLBACK JIKA GAGAL ADD TO CART
-      cartItems.value = cartItems.value.filter((i) => i.id !== tempId);
-      Swal.fire("Error", "Could not add item to bag. Check connection.", "error");
+    } else {
+      // EDGE CASE DEWA: User klik 'Add to Cart', lalu sepersekian detik dia buka cart dan klik 'Remove'
+      // padahal API POST belum selesai!
+      // Karena POST sukses, barang ada di database. Kita harus menghapusnya diam-diam.
+      axios.delete(`${BASE_URL}/carts/${realId}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      });
     }
+
+  } catch (error) {
+    // Rollback jika server error
+    cartItems.value = cartItems.value.filter((i) => i.id !== tempId);
+    Swal.fire("Error", "Gagal menambahkan ke keranjang.", "error");
   }
 };
+
+const handleQtyChange = (item, newQty) => {
+  // 1. Validasi Batas
+  if (newQty < 1) newQty = 1;
+  if (newQty > item.product.stock) {
+    newQty = item.product.stock;
+    Swal.fire({ toast: true, position: "top-end", icon: "warning", title: `Max stock is ${item.product.stock}`, showConfirmButton: false, timer: 2000 });
+  }
+
+  // 2. Update UI Seketika
+  item.quantity = newQty;
+  item.gross_amount = item.quantity * parseFloat(item.product.discount_price ?? item.product.price);
+  item.isSyncing = true;
+
+  // 3. JIKA BARANG MASIH STATUS "isCreating" (POST API BELUM SELESAI), JANGAN TEMBAK PUT API!
+  // Biarkan block `handleOptimisticAdd` yang akan mengeksekusi PUT saat POST selesai.
+  if (item.isCreating) return;
+
+  // 4. Debounce Normal (Beri waktu user klik berkali-kali)
+  if (debounceTimers.has(item.id)) clearTimeout(debounceTimers.get(item.id));
+
+  const timerId = setTimeout(() => {
+    syncQtyToDatabase(item);
+    debounceTimers.delete(item.id);
+  }, 600); 
+
+  debounceTimers.set(item.id, timerId);
+};
+
+const syncQtyToDatabase = async (item) => {
+  try {
+    const res = await axios.put(
+      `${BASE_URL}/carts/${item.id}`,
+      { quantity: item.quantity },
+      { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+    );
+    item.gross_amount = res.data.gross_amount;
+  } catch (error) {
+    console.error("Sync failed:", error);
+    fetchCarts(); // Hanya refresh jika ada error koneksi sungguhan
+  } finally {
+    item.isSyncing = false;
+  }
+};
+
+const handleOptimisticDelete = async (id) => {
+  const backupItems = [...cartItems.value];
+  
+  // 1. HAPUS DARI UI INSTAN & MUNCULKAN POPUP INSTAN
+  cartItems.value = cartItems.value.filter((item) => item.id !== id);
+  Swal.fire({ toast: true, position: "top-end", icon: "success", title: "Item Removed", showConfirmButton: false, timer: 2000 });
+
+  // 2. Jika ID adalah Temp ID (Barang sedang di-POST), biarkan edge case di atas yang menghapusnya.
+  if (String(id).startsWith("temp_")) return;
+
+  try {
+    // 3. Hapus di database secara background
+    await axios.delete(`${BASE_URL}/carts/${id}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+  } catch (error) {
+    // Rollback
+    cartItems.value = backupItems;
+    Swal.fire({ toast: true, position: "top-end", icon: "error", title: "Failed to remove item", showConfirmButton: false, timer: 3000 });
+  }
+};
+
+const triggerCartBounce = () => {
+  isBadgePopping.value = true;
+  setTimeout(() => (isBadgePopping.value = false), 300);
+};
+
+// =========================================================
 
 const handleCheckout = async () => {
   try {
