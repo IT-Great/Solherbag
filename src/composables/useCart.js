@@ -88,8 +88,81 @@ export function useCart() {
     //     }
     // };
 
-    const handleOptimisticAdd = async (newProduct, onBounceCallback) => {
-        const existingItem = cartItems.value.find((item) => item.product_id === newProduct.id);
+    // const handleOptimisticAdd = async (newProduct, onBounceCallback) => {
+    //     const existingItem = cartItems.value.find((item) => item.product_id === newProduct.id);
+
+    //     if (existingItem) {
+    //         handleQtyChange(existingItem, existingItem.quantity + 1);
+    //         if (onBounceCallback) onBounceCallback();
+    //         return;
+    //     }
+
+    //     const tempId = "temp_" + Date.now();
+    //     const unitPrice = parseFloat(newProduct.discount_price ?? newProduct.price);
+
+    //     const newItem = {
+    //         id: tempId,
+    //         product_id: newProduct.id,
+    //         quantity: 1,
+    //         gross_amount: unitPrice,
+    //         isSyncing: true,
+    //         isCreating: true,
+    //         product: newProduct,
+    //     };
+
+    //     cartItems.value.unshift(newItem);
+    //     if (onBounceCallback) onBounceCallback();
+
+    //     try {
+    //         const token = localStorage.getItem("token");
+    //         const res = await axios.post(
+    //             `${BASE_URL}/carts`,
+    //             { product_id: newProduct.id, quantity: 1 },
+    //             { headers: { Authorization: `Bearer ${token}` } }
+    //         );
+
+    //         // 1. Ambil ID asli (Sekarang backend sudah mengirimkan cart_id)
+    //         const realId = res.data.cart_id || res.data.id || res.data.data?.id;
+
+    //         const itemInCart = cartItems.value.find((i) => i.id === tempId);
+
+    //         if (itemInCart) {
+    //             // 2. SAFETY CHECK: Pastikan realId benar-benar ada dan BUKAN undefined
+    //             if (realId) {
+    //                 itemInCart.id = realId;
+    //                 itemInCart.isCreating = false;
+
+    //                 // Eksekusi antrean PUT API jika user sudah mengubah qty sebelum POST selesai
+    //                 if (itemInCart.quantity !== 1) {
+    //                     syncQtyToDatabase(itemInCart);
+    //                 } else {
+    //                     itemInCart.isSyncing = false;
+    //                 }
+    //             } else {
+    //                 // Jika entah bagaimana backend gagal kirim ID, lempar ke Error
+    //                 throw new Error("Missing Cart ID from Server!");
+    //             }
+    //         } else {
+    //             // Jika user menghapus barang SEBELUM POST selesai, hapus dari database
+    //             if (realId) {
+    //                 axios.delete(`${BASE_URL}/carts/${realId}`, {
+    //                     headers: { Authorization: `Bearer ${token}` }
+    //                 }).catch(() => { }); // silent catch
+    //             }
+    //         }
+    //     } catch (error) {
+    //         // ROLLBACK: Tarik ulang data asli dari server jika terjadi kepanikan error
+    //         console.error("Optimistic Add Error:", error);
+    //         fetchCarts();
+    //     }
+    // };
+
+    // Buka src/composables/useCart.js
+
+    // [PERBAIKAN] Gunakan destructuring object { product, cartId } tepat pada parameter
+    const handleOptimisticAdd = async ({ product, cartId }, onBounceCallback) => {
+        // Cari apakah produk sudah ada di keranjang
+        const existingItem = cartItems.value.find((item) => item.product_id === product.id);
 
         if (existingItem) {
             handleQtyChange(existingItem, existingItem.quantity + 1);
@@ -97,63 +170,64 @@ export function useCart() {
             return;
         }
 
-        const tempId = "temp_" + Date.now();
-        const unitPrice = parseFloat(newProduct.discount_price ?? newProduct.price);
+        // Tentukan ID sementara jika tidak ada cartId yang dioper (kasus dari CartPage.vue)
+        const tempId = cartId || ("temp_" + Date.now());
+        const unitPrice = parseFloat(product.discount_price ?? product.price);
 
         const newItem = {
             id: tempId,
-            product_id: newProduct.id,
+            product_id: product.id,
             quantity: 1,
             gross_amount: unitPrice,
-            isSyncing: true,
-            isCreating: true,
-            product: newProduct,
+            // Jika tidak ada cartId (berarti ditambah dari CartPage), nyalakan efek Blur (isSyncing)
+            isSyncing: !cartId,
+            isCreating: !cartId,
+            product: product,
         };
 
         cartItems.value.unshift(newItem);
         if (onBounceCallback) onBounceCallback();
 
+        // Jika cartId ADA (artinya dikirim dari ProductDetailPage via Header),
+        // KITA TIDAK PERLU HIT API POST LAGI karena API sudah ditembak di ProductDetailPage.
+        if (cartId) {
+            return; // Berhenti di sini untuk kasus Add to Cart dari halaman produk
+        }
+
+        // [BARU] JIKA cartId TIDAK ADA (Add to Cart dari Suggested Product di CartPage),
+        // MAKA KITA HARUS TEMBAK API POST DI SINI!
         try {
             const token = localStorage.getItem("token");
             const res = await axios.post(
                 `${BASE_URL}/carts`,
-                { product_id: newProduct.id, quantity: 1 },
+                { product_id: product.id, quantity: 1 },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 
-            // 1. Ambil ID asli (Sekarang backend sudah mengirimkan cart_id)
-            const realId = res.data.cart_id || res.data.id || res.data.data?.id;
-
+            // Ambil ID Asli dari database
+            const realId = res.data.id || res.data.cart_id || res.data.data?.id;
             const itemInCart = cartItems.value.find((i) => i.id === tempId);
 
             if (itemInCart) {
-                // 2. SAFETY CHECK: Pastikan realId benar-benar ada dan BUKAN undefined
-                if (realId) {
-                    itemInCart.id = realId;
-                    itemInCart.isCreating = false;
+                itemInCart.id = realId;
+                itemInCart.isCreating = false;
 
-                    // Eksekusi antrean PUT API jika user sudah mengubah qty sebelum POST selesai
-                    if (itemInCart.quantity !== 1) {
-                        syncQtyToDatabase(itemInCart);
-                    } else {
-                        itemInCart.isSyncing = false;
-                    }
+                // Jika user "gercep" menekan (+) sebelum API selesai
+                if (itemInCart.quantity !== 1) {
+                    syncQtyToDatabase(itemInCart);
                 } else {
-                    // Jika entah bagaimana backend gagal kirim ID, lempar ke Error
-                    throw new Error("Missing Cart ID from Server!");
+                    itemInCart.isSyncing = false;
                 }
             } else {
-                // Jika user menghapus barang SEBELUM POST selesai, hapus dari database
-                if (realId) {
-                    axios.delete(`${BASE_URL}/carts/${realId}`, {
-                        headers: { Authorization: `Bearer ${token}` }
-                    }).catch(() => { }); // silent catch
-                }
+                // Jika user menghapus item sebelum API POST selesai
+                axios.delete(`${BASE_URL}/carts/${realId}`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
             }
         } catch (error) {
-            // ROLLBACK: Tarik ulang data asli dari server jika terjadi kepanikan error
-            console.error("Optimistic Add Error:", error);
-            fetchCarts();
+            // Rollback jika server error
+            cartItems.value = cartItems.value.filter((i) => i.id !== tempId);
+            Swal.fire("Error", "Gagal menambahkan ke keranjang.", "error");
         }
     };
 
