@@ -929,7 +929,7 @@ onMounted(fetchProductDetail);
             >
               {{ product.name }}
             </h1>
-            
+
             <button
               @click="toggleWishlist(product.id)"
               class="p-3 bg-gray-50 hover:bg-red-50 rounded-full transition-colors flex-shrink-0"
@@ -1127,6 +1127,26 @@ const toggleWishlist = async (productId) => {
   }
 };
 
+// const fetchProductDetail = async () => {
+//   isLoading.value = true;
+//   try {
+//     const res = await axios.get(`${BASE_URL}/products/${route.params.id}`);
+//     product.value = res.data;
+
+//     fetchWishlists();
+
+//     const event = new CustomEvent("track-view", { detail: res.data });
+//     window.dispatchEvent(event);
+//   } catch (error) {
+//     console.error("Error fetching detail:", error);
+//     router.push("/catalog");
+//   } finally {
+//     setTimeout(() => {
+//       isLoading.value = false;
+//     }, 600);
+//   }
+// };
+
 const fetchProductDetail = async () => {
   isLoading.value = true;
   try {
@@ -1135,8 +1155,23 @@ const fetchProductDetail = async () => {
 
     fetchWishlists();
 
-    const event = new CustomEvent("track-view", { detail: res.data });
-    window.dispatchEvent(event);
+    // =======================================================
+    // [PERBAIKAN] SIMPAN RECENTLY VIEWED LANGSUNG DI SINI
+    // Tidak perlu lagi melempar window.dispatchEvent('track-view')
+    // =======================================================
+    let list = JSON.parse(localStorage.getItem("recently_viewed") || "[]");
+
+    // Hapus jika produk sudah ada di list (agar tidak duplikat)
+    list = list.filter((item) => item.id !== product.value.id);
+
+    // Tambahkan produk ini ke urutan teratas
+    list.unshift(product.value);
+
+    // Batasi maksimal 6 item sejarah
+    list = list.slice(0, 6);
+
+    // Simpan kembali ke localStorage
+    localStorage.setItem("recently_viewed", JSON.stringify(list));
   } catch (error) {
     console.error("Error fetching detail:", error);
     router.push("/catalog");
@@ -1172,7 +1207,7 @@ const fetchProductDetail = async () => {
 
 //     // 2. INSTANT ANIMATION
 //     const productImages = document.querySelectorAll(".main-product-image");
-//     const productImage = productImages[activeSlide.value]; 
+//     const productImage = productImages[activeSlide.value];
 //     const cartIcon = document.querySelector(".cart-icon-header");
 
 //     if (productImage && cartIcon) {
@@ -1240,7 +1275,7 @@ const fetchProductDetail = async () => {
 //         allowOutsideClick: false,
 //         didOpen: () => Swal.showLoading(),
 //       });
-      
+
 //       await axios.post(
 //         `${BASE_URL}/carts`,
 //         { product_id: product.value.id, quantity: 1 },
@@ -1252,7 +1287,7 @@ const fetchProductDetail = async () => {
 //         {},
 //         { headers: { Authorization: `Bearer ${token}` } }
 //       );
-      
+
 //       Swal.close();
 //       router.push(`/payment/${checkoutRes.data.transaction_id}`);
 //     }
@@ -1289,12 +1324,12 @@ const handleAction = async (type) => {
     window.dispatchEvent(
       new CustomEvent("optimistic-add-to-cart", {
         detail: product.value,
-      })
+      }),
     );
 
     // 3. Jalankan Animasi Terbang tanpa mengganggu proses data
     const productImages = document.querySelectorAll(".main-product-image");
-    const productImage = productImages[activeSlide.value]; 
+    const productImage = productImages[activeSlide.value];
     const cartIcon = document.querySelector(".cart-icon-header");
 
     if (productImage && cartIcon) {
@@ -1332,7 +1367,9 @@ const handleAction = async (type) => {
         });
       });
 
-      flyer.addEventListener("transitionend", () => flyer.remove(), { once: true });
+      flyer.addEventListener("transitionend", () => flyer.remove(), {
+        once: true,
+      });
     }
     return; // STOP! Biarkan Header yang urus database.
   }
@@ -1345,25 +1382,29 @@ const handleAction = async (type) => {
         allowOutsideClick: false,
         didOpen: () => Swal.showLoading(),
       });
-      
+
       await axios.post(
         `${BASE_URL}/carts`,
         { product_id: product.value.id, quantity: 1 },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
 
       const checkoutRes = await axios.post(
         `${BASE_URL}/checkout`,
         {},
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
-      
+
       Swal.close();
       router.push(`/payment/${checkoutRes.data.transaction_id}`);
     }
   } catch (error) {
     Swal.close();
-    Swal.fire("Error", error.response?.data?.message || "Action failed", "error");
+    Swal.fire(
+      "Error",
+      error.response?.data?.message || "Action failed",
+      "error",
+    );
   }
 };
 
