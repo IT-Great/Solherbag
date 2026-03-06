@@ -32,6 +32,62 @@ export function useCart() {
         }
     };
 
+    // const handleOptimisticAdd = async (newProduct, onBounceCallback) => {
+    //     const existingItem = cartItems.value.find((item) => item.product_id === newProduct.id);
+
+    //     if (existingItem) {
+    //         handleQtyChange(existingItem, existingItem.quantity + 1);
+    //         if (onBounceCallback) onBounceCallback();
+    //         return;
+    //     }
+
+    //     const tempId = "temp_" + Date.now();
+    //     const unitPrice = parseFloat(newProduct.discount_price ?? newProduct.price);
+
+    //     const newItem = {
+    //         id: tempId,
+    //         product_id: newProduct.id,
+    //         quantity: 1,
+    //         gross_amount: unitPrice,
+    //         isSyncing: true,
+    //         isCreating: true,
+    //         product: newProduct,
+    //     };
+
+    //     cartItems.value.unshift(newItem);
+    //     if (onBounceCallback) onBounceCallback();
+
+    //     try {
+    //         const token = localStorage.getItem("token");
+    //         const res = await axios.post(
+    //             `${BASE_URL}/carts`,
+    //             { product_id: newProduct.id, quantity: 1 },
+    //             { headers: { Authorization: `Bearer ${token}` } }
+    //         );
+
+    //         const realId = res.data.id || res.data.cart_id || res.data.data?.id;
+    //         const itemInCart = cartItems.value.find((i) => i.id === tempId);
+
+    //         if (itemInCart) {
+    //             itemInCart.id = realId;
+    //             itemInCart.isCreating = false;
+
+    //             if (itemInCart.quantity !== 1) {
+    //                 syncQtyToDatabase(itemInCart);
+    //             } else {
+    //                 itemInCart.isSyncing = false;
+    //             }
+    //         } else {
+    //             axios.delete(`${BASE_URL}/carts/${realId}`, {
+    //                 headers: { Authorization: `Bearer ${token}` }
+    //             });
+    //         }
+    //     } catch (error) {
+    //         cartItems.value = cartItems.value.filter((i) => i.id !== tempId);
+    //         Swal.fire("Error", "Gagal menambahkan ke keranjang.", "error");
+    //     }
+    // };
+
     const handleOptimisticAdd = async (newProduct, onBounceCallback) => {
         const existingItem = cartItems.value.find((item) => item.product_id === newProduct.id);
 
@@ -65,26 +121,39 @@ export function useCart() {
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 
-            const realId = res.data.id || res.data.cart_id || res.data.data?.id;
+            // 1. Ambil ID asli (Sekarang backend sudah mengirimkan cart_id)
+            const realId = res.data.cart_id || res.data.id || res.data.data?.id;
+
             const itemInCart = cartItems.value.find((i) => i.id === tempId);
 
             if (itemInCart) {
-                itemInCart.id = realId;
-                itemInCart.isCreating = false;
+                // 2. SAFETY CHECK: Pastikan realId benar-benar ada dan BUKAN undefined
+                if (realId) {
+                    itemInCart.id = realId;
+                    itemInCart.isCreating = false;
 
-                if (itemInCart.quantity !== 1) {
-                    syncQtyToDatabase(itemInCart);
+                    // Eksekusi antrean PUT API jika user sudah mengubah qty sebelum POST selesai
+                    if (itemInCart.quantity !== 1) {
+                        syncQtyToDatabase(itemInCart);
+                    } else {
+                        itemInCart.isSyncing = false;
+                    }
                 } else {
-                    itemInCart.isSyncing = false;
+                    // Jika entah bagaimana backend gagal kirim ID, lempar ke Error
+                    throw new Error("Missing Cart ID from Server!");
                 }
             } else {
-                axios.delete(`${BASE_URL}/carts/${realId}`, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
+                // Jika user menghapus barang SEBELUM POST selesai, hapus dari database
+                if (realId) {
+                    axios.delete(`${BASE_URL}/carts/${realId}`, {
+                        headers: { Authorization: `Bearer ${token}` }
+                    }).catch(() => { }); // silent catch
+                }
             }
         } catch (error) {
-            cartItems.value = cartItems.value.filter((i) => i.id !== tempId);
-            Swal.fire("Error", "Gagal menambahkan ke keranjang.", "error");
+            // ROLLBACK: Tarik ulang data asli dari server jika terjadi kepanikan error
+            console.error("Optimistic Add Error:", error);
+            fetchCarts();
         }
     };
 
