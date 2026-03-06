@@ -3546,6 +3546,25 @@ import { BASE_URL } from "../../config/api.js";
 import { useCart } from "../../composables/useCart.js";
 
 const { cartItems, cartCount, totalCartAmount } = useCart();
+import { Country, State } from "country-state-city";
+
+// Import Leaflet (Wajib untuk Peta)
+import "leaflet/dist/leaflet.css";
+import { LMap, LTileLayer, LMarker } from "@vue-leaflet/vue-leaflet";
+import L from "leaflet";
+
+delete L.Icon.Default.prototype._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: new URL(
+    "leaflet/dist/images/marker-icon-2x.png",
+    import.meta.url,
+  ).href,
+  iconUrl: new URL("leaflet/dist/images/marker-icon.png", import.meta.url).href,
+  shadowUrl: new URL("leaflet/dist/images/marker-shadow.png", import.meta.url)
+    .href,
+});
+
 const router = useRouter();
 
 const userData = ref(null);
