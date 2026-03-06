@@ -673,8 +673,38 @@ const handleOptimisticDelete = async (id) => {
   }
 };
 
+// const handleOptimisticAdd = (event) => {
+//   const newProduct = event.detail;
+
+//   const existingItem = cartItems.value.find(
+//     (item) => item.product_id === newProduct.id,
+//   );
+
+//   if (existingItem) {
+//     existingItem.quantity += 1;
+//     const unitPrice = parseFloat(
+//       existingItem.product.discount_price ?? existingItem.product.price,
+//     );
+//     existingItem.gross_amount = existingItem.quantity * unitPrice;
+//   } else {
+//     cartItems.value.push({
+//       id: Date.now(),
+//       product_id: newProduct.id,
+//       quantity: 1,
+//       gross_amount: parseFloat(newProduct.discount_price ?? newProduct.price),
+//       isSyncing: false,
+//       product: newProduct,
+//     });
+//   }
+
+//   isBadgePopping.value = true;
+//   setTimeout(() => (isBadgePopping.value = false), 300);
+// };
+
 const handleOptimisticAdd = (event) => {
-  const newProduct = event.detail;
+  // [PERBAIKAN] Terima payload yang sudah diubah dari ProductDetail
+  const newProduct = event.detail.product;
+  const realCartId = event.detail.cartId;
 
   const existingItem = cartItems.value.find(
     (item) => item.product_id === newProduct.id,
@@ -688,7 +718,7 @@ const handleOptimisticAdd = (event) => {
     existingItem.gross_amount = existingItem.quantity * unitPrice;
   } else {
     cartItems.value.push({
-      id: Date.now(),
+      id: realCartId, // <--- GUNAKAN ID ASLI DARI DATABASE, BUKAN Date.now()
       product_id: newProduct.id,
       quantity: 1,
       gross_amount: parseFloat(newProduct.discount_price ?? newProduct.price),
