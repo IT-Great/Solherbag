@@ -929,7 +929,7 @@ onMounted(fetchProductDetail);
             >
               {{ product.name }}
             </h1>
-            
+
             <button
               @click="toggleWishlist(product.id)"
               class="p-3 bg-gray-50 hover:bg-red-50 rounded-full transition-colors flex-shrink-0"
@@ -1172,7 +1172,7 @@ const fetchProductDetail = async () => {
 
 //     // 2. INSTANT ANIMATION
 //     const productImages = document.querySelectorAll(".main-product-image");
-//     const productImage = productImages[activeSlide.value]; 
+//     const productImage = productImages[activeSlide.value];
 //     const cartIcon = document.querySelector(".cart-icon-header");
 
 //     if (productImage && cartIcon) {
@@ -1240,7 +1240,7 @@ const fetchProductDetail = async () => {
 //         allowOutsideClick: false,
 //         didOpen: () => Swal.showLoading(),
 //       });
-      
+
 //       await axios.post(
 //         `${BASE_URL}/carts`,
 //         { product_id: product.value.id, quantity: 1 },
@@ -1252,7 +1252,7 @@ const fetchProductDetail = async () => {
 //         {},
 //         { headers: { Authorization: `Bearer ${token}` } }
 //       );
-      
+
 //       Swal.close();
 //       router.push(`/payment/${checkoutRes.data.transaction_id}`);
 //     }
@@ -1285,16 +1285,47 @@ const handleAction = async (type) => {
       timer: 2000,
     });
 
+    try {
+      // [PENTING] JANGAN HAPUS API POST INI!
+      const response = await axios.post(
+        `${BASE_URL}/carts`,
+        { product_id: product.value.id, quantity: 1 },
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+
+      const realCartId =
+        response.data.id || response.data.cart_id || response.data.data?.id;
+
+      // ... (Kode animasi terbang di sini tetap sama) ...
+
+      flyer.addEventListener(
+        "transitionend",
+        () => {
+          flyer.remove();
+          // [PENTING] Kirim object berisi product DAN cartId
+          window.dispatchEvent(
+            new CustomEvent("optimistic-add-to-cart", {
+              detail: { product: product.value, cartId: realCartId },
+            }),
+          );
+        },
+        { once: true },
+      );
+    } catch (error) {
+      console.error("Cart add error", error);
+      Swal.fire("Error", "Could not add item to bag", "error");
+    }
+
     // 2. INSTAN: Lempar data ke Header.vue agar Header yang mengurus API
     window.dispatchEvent(
       new CustomEvent("optimistic-add-to-cart", {
         detail: product.value,
-      })
+      }),
     );
 
     // 3. Jalankan Animasi Terbang tanpa mengganggu proses data
     const productImages = document.querySelectorAll(".main-product-image");
-    const productImage = productImages[activeSlide.value]; 
+    const productImage = productImages[activeSlide.value];
     const cartIcon = document.querySelector(".cart-icon-header");
 
     if (productImage && cartIcon) {
@@ -1332,7 +1363,9 @@ const handleAction = async (type) => {
         });
       });
 
-      flyer.addEventListener("transitionend", () => flyer.remove(), { once: true });
+      flyer.addEventListener("transitionend", () => flyer.remove(), {
+        once: true,
+      });
     }
     return; // STOP! Biarkan Header yang urus database.
   }
@@ -1345,25 +1378,29 @@ const handleAction = async (type) => {
         allowOutsideClick: false,
         didOpen: () => Swal.showLoading(),
       });
-      
+
       await axios.post(
         `${BASE_URL}/carts`,
         { product_id: product.value.id, quantity: 1 },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
 
       const checkoutRes = await axios.post(
         `${BASE_URL}/checkout`,
         {},
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
-      
+
       Swal.close();
       router.push(`/payment/${checkoutRes.data.transaction_id}`);
     }
   } catch (error) {
     Swal.close();
-    Swal.fire("Error", error.response?.data?.message || "Action failed", "error");
+    Swal.fire(
+      "Error",
+      error.response?.data?.message || "Action failed",
+      "error",
+    );
   }
 };
 

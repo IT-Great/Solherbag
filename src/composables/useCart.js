@@ -32,8 +32,65 @@ export function useCart() {
         }
     };
 
-    const handleOptimisticAdd = async (newProduct, onBounceCallback) => {
-        const existingItem = cartItems.value.find((item) => item.product_id === newProduct.id);
+    // const handleOptimisticAdd = async (newProduct, onBounceCallback) => {
+    //     const existingItem = cartItems.value.find((item) => item.product_id === newProduct.id);
+
+    //     if (existingItem) {
+    //         handleQtyChange(existingItem, existingItem.quantity + 1);
+    //         if (onBounceCallback) onBounceCallback();
+    //         return;
+    //     }
+
+    //     const tempId = "temp_" + Date.now();
+    //     const unitPrice = parseFloat(newProduct.discount_price ?? newProduct.price);
+
+    //     const newItem = {
+    //         id: tempId,
+    //         product_id: newProduct.id,
+    //         quantity: 1,
+    //         gross_amount: unitPrice,
+    //         isSyncing: true,
+    //         isCreating: true,
+    //         product: newProduct,
+    //     };
+
+    //     cartItems.value.unshift(newItem);
+    //     if (onBounceCallback) onBounceCallback();
+
+    //     try {
+    //         const token = localStorage.getItem("token");
+    //         const res = await axios.post(
+    //             `${BASE_URL}/carts`,
+    //             { product_id: newProduct.id, quantity: 1 },
+    //             { headers: { Authorization: `Bearer ${token}` } }
+    //         );
+
+    //         const realId = res.data.id || res.data.cart_id || res.data.data?.id;
+    //         const itemInCart = cartItems.value.find((i) => i.id === tempId);
+
+    //         if (itemInCart) {
+    //             itemInCart.id = realId;
+    //             itemInCart.isCreating = false;
+
+    //             if (itemInCart.quantity !== 1) {
+    //                 syncQtyToDatabase(itemInCart);
+    //             } else {
+    //                 itemInCart.isSyncing = false;
+    //             }
+    //         } else {
+    //             axios.delete(`${BASE_URL}/carts/${realId}`, {
+    //                 headers: { Authorization: `Bearer ${token}` }
+    //             });
+    //         }
+    //     } catch (error) {
+    //         cartItems.value = cartItems.value.filter((i) => i.id !== tempId);
+    //         Swal.fire("Error", "Gagal menambahkan ke keranjang.", "error");
+    //     }
+    // };
+
+    // [PERBAIKAN] Tangkap object { product, cartId }
+    const handleOptimisticAdd = async ({ product, cartId }, onBounceCallback) => {
+        const existingItem = cartItems.value.find((item) => item.product_id === product.id);
 
         if (existingItem) {
             handleQtyChange(existingItem, existingItem.quantity + 1);
@@ -41,51 +98,26 @@ export function useCart() {
             return;
         }
 
-        const tempId = "temp_" + Date.now();
-        const unitPrice = parseFloat(newProduct.discount_price ?? newProduct.price);
+        // Karena API dipanggil di ProductDetail, cartId sudah pasti ada (walau mungkin sementara)
+        const unitPrice = parseFloat(product.discount_price ?? product.price);
 
         const newItem = {
-            id: tempId,
-            product_id: newProduct.id,
+            id: cartId || ("temp_" + Date.now()), // Gunakan realCartId jika ada, jika tidak, tempId
+            product_id: product.id,
             quantity: 1,
             gross_amount: unitPrice,
-            isSyncing: true,
-            isCreating: true,
-            product: newProduct,
+            isSyncing: false, // Tidak perlu loading blur lagi karena API POST sudah beres di ProductDetail!
+            isCreating: false,
+            product: product,
         };
 
+        // Langsung masukkan ke state global
         cartItems.value.unshift(newItem);
+
         if (onBounceCallback) onBounceCallback();
 
-        try {
-            const token = localStorage.getItem("token");
-            const res = await axios.post(
-                `${BASE_URL}/carts`,
-                { product_id: newProduct.id, quantity: 1 },
-                { headers: { Authorization: `Bearer ${token}` } }
-            );
-
-            const realId = res.data.id || res.data.cart_id || res.data.data?.id;
-            const itemInCart = cartItems.value.find((i) => i.id === tempId);
-
-            if (itemInCart) {
-                itemInCart.id = realId;
-                itemInCart.isCreating = false;
-
-                if (itemInCart.quantity !== 1) {
-                    syncQtyToDatabase(itemInCart);
-                } else {
-                    itemInCart.isSyncing = false;
-                }
-            } else {
-                axios.delete(`${BASE_URL}/carts/${realId}`, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-            }
-        } catch (error) {
-            cartItems.value = cartItems.value.filter((i) => i.id !== tempId);
-            Swal.fire("Error", "Gagal menambahkan ke keranjang.", "error");
-        }
+        // CATATAN: KITA TIDAK MEMANGGIL API POST /carts DI SINI LAGI,
+        // KARENA API POST SUDAH DIPANGGIL DI ProductDetailPage.vue 
     };
 
     const handleQtyChange = (item, newQty) => {
