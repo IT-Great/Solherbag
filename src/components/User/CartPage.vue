@@ -252,30 +252,35 @@ const formatPrice = (v) =>
     minimumFractionDigits: 0,
   }).format(v);
 
-const handleCheckout = async () => {
-  isProcessingCheckout.value = true;
-  try {
-    const res = await axios.post(
-      `${BASE_URL}/checkout`,
-      {},
-      { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } },
-    );
+// const handleCheckout = async () => {
+//   isProcessingCheckout.value = true;
+//   try {
+//     const res = await axios.post(
+//       `${BASE_URL}/checkout`,
+//       {},
+//       { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } },
+//     );
 
-    const transactionId =
-      res.data.transaction_id || res.data.data?.transaction_id || res.data.id;
-    if (!transactionId) throw new Error("Transaction ID not found");
+//     const transactionId =
+//       res.data.transaction_id || res.data.data?.transaction_id || res.data.id;
+//     if (!transactionId) throw new Error("Transaction ID not found");
 
-    router.push(`/payment/${transactionId}`);
-  } catch (err) {
-    Swal.fire({
-      icon: "error",
-      title: "Checkout Failed",
-      text: "Unable to proceed to payment.",
-      confirmButtonColor: "#000",
-    });
-  } finally {
-    isProcessingCheckout.value = false;
-  }
+//     router.push(`/payment/${transactionId}`);
+//   } catch (err) {
+//     Swal.fire({
+//       icon: "error",
+//       title: "Checkout Failed",
+//       text: "Unable to proceed to payment.",
+//       confirmButtonColor: "#000",
+//     });
+//   } finally {
+//     isProcessingCheckout.value = false;
+//   }
+// };
+
+const handleCheckout = () => {
+  // Hanya berpindah halaman, datanya sudah ada di memori useCart!
+  router.push('/payment');
 };
 </script>
 

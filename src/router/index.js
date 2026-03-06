@@ -470,7 +470,7 @@ const routes = [
         meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true }
     },
     {
-        path: '/payment/:id',
+        path: '/payment',
         name: 'PaymentPage',
         component: PaymentPage,
         meta: { requiresAuth: true }
