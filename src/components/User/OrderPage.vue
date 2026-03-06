@@ -4678,7 +4678,7 @@ onUnmounted(() => {
 </script> -->
 
 <!-- Tanpa fetchBulkTracking method -->
-<template>
+<!-- <template>
   <div class="mx-auto px-6 py-20 max-w-7xl min-h-screen">
     <div class="flex justify-between items-center mb-10">
       <h1 class="font-serif text-gray-900 text-4xl uppercase tracking-tighter">
@@ -4826,79 +4826,6 @@ onUnmounted(() => {
         :key="order.id"
         class="bg-white shadow-sm hover:shadow-md border border-gray-100 rounded-2xl overflow-hidden transition-shadow duration-300 relative"
       >
-        <!-- <div
-          class="flex md:flex-row flex-col justify-between items-start md:items-center bg-gray-50 px-6 py-4 border-b border-gray-100 gap-4"
-        >
-          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
-            <div>
-              <p
-                class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-1"
-              >
-                Order ID
-              </p>
-              <p class="font-mono font-bold text-gray-800 text-sm">
-                {{ order.order_id }}
-              </p>
-            </div>
-            <div>
-              <p
-                class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-1"
-              >
-                Date
-              </p>
-              <p class="font-bold text-gray-800 text-xs">
-                {{ formatDateTime(order.created_at) }}
-              </p>
-            </div>
-          </div>
-
-          <div class="flex flex-col items-end gap-2 w-full md:w-auto">
-            <div
-              class="flex items-center justify-between md:justify-end w-full md:w-auto gap-3"
-            >
-              <span
-                class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
-                >Transaction:</span
-              >
-              <span
-                :class="statusClass(order.status)"
-                class="px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-tighter"
-              >
-                {{ formatStatus(order.status) }}
-              </span>
-            </div>
-
-            <div
-              v-if="order.shipping_method === 'biteship'"
-              class="flex items-center justify-between md:justify-end w-full md:w-auto gap-3"
-            >
-              <span
-                class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
-                >Shipping:</span
-              >
-              <span
-                :class="shippingStatusClass(order.shipping_status)"
-                class="px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-tighter border"
-              >
-                {{ formatStatus(order.shipping_status || "Pending") }}
-              </span>
-            </div>
-            <div
-              v-else-if="order.shipping_method === 'free'"
-              class="flex items-center justify-between md:justify-end w-full md:w-auto gap-3"
-            >
-              <span
-                class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
-                >Shipping:</span
-              >
-              <span
-                class="px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-tighter border bg-gray-100 text-gray-600"
-                >In-Store Pickup</span
-              >
-            </div>
-          </div>
-        </div> -->
-
         <div
           class="flex md:flex-row flex-col justify-between items-start md:items-center bg-gray-50 px-6 py-4 border-b border-gray-100 gap-4"
         >
@@ -6375,4 +6302,1175 @@ onMounted(() => {
 onUnmounted(() => {
   if (timerInterval) clearInterval(timerInterval);
 });
+</script> -->
+
+<template>
+  <div class="mx-auto px-6 py-20 max-w-7xl min-h-screen">
+    <div class="flex justify-between items-center mb-10">
+      <h1 class="font-serif text-gray-900 text-4xl uppercase tracking-tighter">
+        Track My Orders
+      </h1>
+    </div>
+
+    <div class="mb-8 space-y-4">
+      <div
+        class="flex items-center gap-4 overflow-x-auto pb-2 border-b border-gray-100"
+      >
+        <span
+          class="text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap"
+          >Transaction:</span
+        >
+        <button
+          v-for="tab in transactionTabs"
+          :key="tab.value"
+          @click="activeTransactionTab = tab.value"
+          :class="[
+            'px-4 py-2 rounded-t-lg font-bold text-xs uppercase tracking-widest transition-colors whitespace-nowrap border-b-2 flex items-center gap-2',
+            activeTransactionTab === tab.value
+              ? 'border-black text-black bg-gray-50'
+              : 'border-transparent text-gray-400 hover:text-gray-700 hover:bg-gray-50',
+          ]"
+        >
+          {{ tab.label }}
+          <span
+            v-if="getTransactionTabCount(tab.value) > 0"
+            :class="
+              activeTransactionTab === tab.value
+                ? 'bg-black text-white'
+                : 'bg-gray-200 text-gray-600'
+            "
+            class="px-1.5 py-0.5 rounded-md text-[9px] font-black"
+          >
+            {{ getTransactionTabCount(tab.value) }}
+          </span>
+        </button>
+      </div>
+
+      <div
+        class="flex items-center gap-4 overflow-x-auto pb-2 border-b border-gray-100"
+      >
+        <span
+          class="text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap"
+          >Shipping:</span
+        >
+        <button
+          v-for="tab in shippingTabs"
+          :key="tab.value"
+          @click="activeShippingTab = tab.value"
+          :class="[
+            'px-4 py-2 rounded-t-lg font-bold text-xs uppercase tracking-widest transition-colors whitespace-nowrap border-b-2 flex items-center gap-2',
+            activeShippingTab === tab.value
+              ? 'border-blue-600 text-blue-600 bg-blue-50/50'
+              : 'border-transparent text-gray-400 hover:text-gray-700 hover:bg-gray-50',
+          ]"
+        >
+          {{ tab.label }}
+          <span
+            v-if="getShippingTabCount(tab.value) > 0"
+            :class="
+              activeShippingTab === tab.value
+                ? 'bg-blue-600 text-white'
+                : 'bg-gray-200 text-gray-600'
+            "
+            class="px-1.5 py-0.5 rounded-md text-[9px] font-black"
+          >
+            {{ getShippingTabCount(tab.value) }}
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <div
+      class="flex flex-col md:flex-row justify-between items-center gap-4 mb-8"
+    >
+      <div class="relative w-full md:w-80">
+        <span
+          class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+        </span>
+        <input
+          v-model="searchQuery"
+          type="text"
+          placeholder="Search Order ID, Courier, Payment Method, and more"
+          class="bg-gray-50 pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none w-full text-sm transition"
+        />
+      </div>
+
+      <div class="flex items-center gap-2 w-full md:w-auto">
+        <span class="text-xs font-bold text-gray-400 uppercase tracking-wide"
+          >Show:</span
+        >
+        <select
+          v-model="itemsPerPage"
+          class="bg-gray-50 px-3 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none text-sm font-bold cursor-pointer"
+        >
+          <option :value="5">5</option>
+          <option :value="10">10</option>
+          <option :value="20">20</option>
+          <option :value="50">50</option>
+        </select>
+      </div>
+    </div>
+
+    <div v-if="loading" class="space-y-8 animate-fade-in">
+      <div v-for="i in 3" :key="i" class="bg-white border border-gray-100 rounded-2xl overflow-hidden">
+        <div class="flex flex-col md:flex-row justify-between bg-gray-50 px-6 py-4 border-b border-gray-100 gap-4">
+          <div class="flex flex-col md:flex-row gap-4 md:gap-8">
+            <div>
+              <div class="h-3 w-16 bg-gray-200 rounded animate-pulse mb-2"></div>
+              <div class="h-4 w-32 bg-gray-300 rounded animate-pulse"></div>
+            </div>
+            <div>
+              <div class="h-3 w-12 bg-gray-200 rounded animate-pulse mb-2"></div>
+              <div class="h-4 w-24 bg-gray-300 rounded animate-pulse"></div>
+            </div>
+          </div>
+          <div class="flex flex-col items-end gap-2">
+            <div class="h-6 w-24 bg-gray-300 rounded-full animate-pulse"></div>
+            <div class="h-6 w-28 bg-gray-200 rounded-full animate-pulse"></div>
+          </div>
+        </div>
+        
+        <div class="px-6 py-6">
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-16 bg-gray-200 rounded-lg animate-pulse shrink-0"></div>
+            <div class="flex-grow space-y-2">
+              <div class="h-4 w-48 bg-gray-300 rounded animate-pulse"></div>
+              <div class="h-3 w-20 bg-gray-200 rounded animate-pulse"></div>
+            </div>
+            <div class="h-5 w-24 bg-gray-300 rounded animate-pulse"></div>
+          </div>
+        </div>
+
+        <div class="bg-gray-50/50 px-6 py-4 border-t border-gray-100 flex justify-between items-center">
+          <div class="space-y-2">
+            <div class="h-3 w-40 bg-gray-200 rounded animate-pulse"></div>
+            <div class="h-3 w-32 bg-gray-200 rounded animate-pulse"></div>
+          </div>
+          <div class="h-10 w-32 bg-gray-300 rounded-xl animate-pulse"></div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      v-else-if="filteredTransactions.length === 0"
+      class="bg-white p-12 border border-gray-100 rounded-2xl text-center animate-fade-in"
+    >
+      <p class="text-gray-400 italic">
+        No orders found matching the selected filters.
+      </p>
+      <button
+        @click="resetFilters"
+        class="inline-block mt-6 font-bold text-black underline uppercase tracking-widest text-xs"
+      >
+        Clear Filters
+      </button>
+    </div>
+
+    <div v-else class="space-y-8 animate-fade-in">
+      <div
+        v-for="order in paginatedTransactions"
+        :key="order.id"
+        class="bg-white shadow-sm hover:shadow-md border border-gray-100 rounded-2xl overflow-hidden transition-shadow duration-300 relative"
+      >
+        <div
+          class="flex md:flex-row flex-col justify-between items-start md:items-center bg-gray-50 px-6 py-4 border-b border-gray-100 gap-4"
+        >
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
+            <div>
+              <p
+                class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-1"
+              >
+                Order ID
+              </p>
+              <p class="font-mono font-bold text-gray-800 text-sm">
+                {{ order.order_id }}
+              </p>
+            </div>
+            <div>
+              <p
+                class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-1"
+              >
+                Date
+              </p>
+              <p class="font-bold text-gray-800 text-xs">
+                {{ formatDateTime(order.created_at) }}
+              </p>
+            </div>
+          </div>
+
+          <div class="flex flex-col items-end gap-2 w-full md:w-auto">
+            <div
+              class="flex items-center justify-between md:justify-end w-full md:w-auto gap-3"
+            >
+              <span
+                class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
+                >Transaction:</span
+              >
+              <span
+                :class="statusClass(order.status)"
+                class="px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-tighter"
+              >
+                {{ formatStatus(order.status) }}
+              </span>
+            </div>
+
+            <div
+              v-if="order.shipping_method === 'biteship'"
+              class="flex items-center justify-between md:justify-end w-full md:w-auto gap-3"
+            >
+              <span
+                class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
+                >Shipping:</span
+              >
+              <span
+                :class="shippingStatusClass(order.shipping_status)"
+                class="px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-tighter border"
+              >
+                {{ formatStatus(order.shipping_status || "Pending") }}
+              </span>
+            </div>
+            <div
+              v-else-if="order.shipping_method === 'free'"
+              class="flex items-center justify-between md:justify-end w-full md:w-auto gap-3"
+            >
+              <span
+                class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
+                >Shipping:</span
+              >
+              <span
+                class="px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-tighter border bg-gray-100 text-gray-600"
+                >In-Store Pickup</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="bg-white px-6 py-4 border-b border-gray-100 flex flex-col md:flex-row gap-6 md:gap-12 relative"
+        >
+          <div
+            v-if="
+              userData?.is_membership &&
+              order.point > 0 &&
+              order.status === 'completed'
+            "
+            class="absolute top-4 right-6 bg-gradient-to-r from-yellow-100 to-yellow-50 border border-yellow-200 px-3 py-1.5 rounded-lg flex items-center gap-2 shadow-sm"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-4 h-4 text-yellow-500"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+              />
+            </svg>
+            <div>
+              <p
+                class="text-[8px] font-bold text-yellow-800 uppercase tracking-widest leading-none"
+              >
+                Points Earned
+              </p>
+              <p class="text-sm font-black text-yellow-600 leading-tight">
+                +{{ order.point }} Pts
+              </p>
+            </div>
+          </div>
+
+          <div class="flex-1 mt-4 md:mt-0"></div>
+
+          <div class="flex-1 mt-4 md:mt-0"></div>
+        </div>
+
+        <div
+          class="bg-white px-6 py-4 border-b border-gray-100 flex flex-col md:flex-row gap-6 md:gap-12"
+        >
+          <div class="flex-1">
+            <p
+              class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-3"
+            >
+              Payment Info
+            </p>
+            <div v-if="order.payment_method" class="flex items-center gap-3">
+              <div
+                class="w-12 h-8 bg-gray-50 border border-gray-100 rounded flex justify-center items-center overflow-hidden shrink-0"
+              >
+                <img
+                  v-if="getPaymentLogo(order.payment_method)"
+                  :src="getPaymentLogo(order.payment_method)"
+                  class="w-full h-full object-contain p-1"
+                />
+                <span v-else class="font-black text-gray-300 text-[8px]">{{
+                  order.payment_method.split(" ")[1] || "PAY"
+                }}</span>
+              </div>
+              <div>
+                <p class="font-bold text-gray-800 text-xs uppercase">
+                  {{ order.payment_method.replace("_", " ") }}
+                </p>
+                <p
+                  class="text-[10px] text-teal-600 font-bold mt-0.5"
+                  v-if="order.status === 'refunded'"
+                >
+                  REFUNDED
+                </p>
+                <p
+                  class="text-[10px] text-red-600 font-bold mt-0.5"
+                  v-else-if="order.status === 'cancelled'"
+                >
+                  EXPIRED / CANCELLED
+                </p>
+                <p
+                  class="text-[10px] text-orange-500 font-bold mt-0.5"
+                  v-else-if="canPay(order.status)"
+                >
+                  UNPAID
+                </p>
+                <p class="text-[10px] text-green-600 font-bold mt-0.5" v-else>
+                  PAID
+                </p>
+              </div>
+            </div>
+            <p v-else class="text-xs text-gray-400 italic">
+              Waiting for payment selection...
+            </p>
+          </div>
+
+          <div class="flex-1">
+            <p
+              class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-3"
+            >
+              Shipping Info
+            </p>
+            <div
+              v-if="order.shipping_method === 'free'"
+              class="flex items-center gap-3"
+            >
+              <div
+                class="w-12 h-12 bg-gray-100 text-gray-400 rounded-lg flex justify-center items-center shrink-0 border border-gray-200"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-6 h-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                  />
+                </svg>
+              </div>
+              <div>
+                <p class="font-bold text-gray-800 text-xs uppercase">
+                  No Courier
+                </p>
+                <p class="text-[10px] text-gray-500 font-medium mt-0.5">
+                  In-store Payment / Pickup
+                </p>
+              </div>
+            </div>
+
+            <div
+              v-else-if="
+                order.shipping_method === 'biteship' && order.courier_company
+              "
+              class="flex items-center gap-3"
+            >
+              <div
+                class="w-12 h-12 bg-white border border-gray-100 rounded-lg flex justify-center items-center overflow-hidden shrink-0"
+              >
+                <img
+                  v-if="getCourierLogo(order.courier_company)"
+                  :src="getCourierLogo(order.courier_company)"
+                  class="w-full h-full object-contain p-1"
+                />
+                <span v-else class="font-black text-gray-300 text-xs">{{
+                  order.courier_company.toUpperCase()
+                }}</span>
+              </div>
+              <div>
+                <p class="font-bold text-gray-800 text-xs uppercase">
+                  {{ order.courier_company }} - {{ order.courier_type }}
+                </p>
+                <p class="text-[10px] text-gray-500 mt-0.5">
+                  Resi:
+                  <span class="font-mono font-bold text-black">{{
+                    order.tracking_number || "Waiting..."
+                  }}</span>
+                </p>
+              </div>
+            </div>
+
+            <div v-else class="text-xs text-gray-400 italic">
+              Setup shipping at checkout
+            </div>
+          </div>
+        </div>
+
+        <div
+          @click="handleOrderClick(order)"
+          :class="[
+            'px-6 py-2',
+            canPay(order.status) && countdowns[order.id] !== 'Expired'
+              ? 'cursor-pointer hover:bg-blue-50/30 transition-colors'
+              : '',
+          ]"
+        >
+          <div
+            v-if="canPay(order.status) && countdowns[order.id] !== 'Expired'"
+            class="my-3 text-blue-600 text-[10px] text-center uppercase tracking-widest animate-pulse font-bold bg-blue-50 py-2 rounded-lg"
+          >
+            Tap anywhere here to complete payment
+          </div>
+
+          <div
+            v-for="detail in order.details"
+            :key="detail.id"
+            class="flex items-center gap-4 py-4 border-gray-50 last:border-0 border-b"
+          >
+            <img
+              :src="detail.product.image"
+              class="bg-gray-100 shadow-sm border border-gray-100 rounded-lg w-16 h-16 object-cover"
+            />
+            <div class="flex-grow">
+              <h4 class="font-bold text-gray-900 text-sm uppercase">
+                {{ detail.product.name }}
+              </h4>
+              <p class="text-gray-400 text-xs">
+                {{ detail.quantity }} x {{ formatPrice(detail.price) }}
+              </p>
+            </div>
+            <p class="font-bold text-gray-900 text-sm">
+              {{ formatPrice(detail.quantity * detail.price) }}
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-gray-50/50 px-6 py-4 border-t border-gray-100">
+          <div
+            class="flex flex-col mb-4 space-y-1 pb-4 border-b border-gray-200"
+          >
+            <div class="flex justify-between text-xs text-gray-500">
+              <span>Subtotal for Products</span
+              ><span>{{ formatPrice(getSubtotal(order)) }}</span>
+            </div>
+            <div class="flex justify-between text-xs text-gray-500">
+              <span
+                >Shipping Subtotal ({{
+                  order.shipping_cost > 0
+                    ? formatPrice(
+                        order.shipping_cost / getOrderQuantity(order),
+                      ) +
+                      " x " +
+                      getOrderQuantity(order)
+                    : "Free"
+                }})</span
+              >
+              <span>{{ formatPrice(order.shipping_cost) }}</span>
+            </div>
+            <div
+              class="flex justify-between text-sm font-bold text-gray-900 mt-2 pt-2 border-t border-gray-200 border-dashed"
+            >
+              <span class="uppercase tracking-widest text-[10px] mt-1"
+                >Final Amount</span
+              >
+              <span class="text-lg">{{
+                formatPrice(getGrandTotal(order))
+              }}</span>
+            </div>
+          </div>
+
+          <div
+            class="flex flex-col md:flex-row justify-between items-center gap-4"
+          >
+            <div class="w-full md:w-auto text-left">
+              <div
+                v-if="canPay(order.status) && order.payment"
+                class="flex items-center gap-2 justify-center md:justify-start"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-4 h-4 text-red-500 animate-pulse"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <span class="font-mono font-bold text-red-500 text-sm">{{
+                  countdowns[order.id]
+                }}</span>
+              </div>
+            </div>
+
+            <div
+              class="flex flex-wrap justify-center md:justify-end gap-3 w-full md:w-auto"
+            >
+              <button
+                v-if="canCancel(order.status)"
+                @click="cancelOrder(order.id)"
+                class="hover:bg-red-50 px-6 py-2 border border-red-200 rounded-xl font-bold text-red-600 text-xs uppercase tracking-widest transition w-full md:w-auto"
+              >
+                Cancel
+              </button>
+              <button
+                v-if="canPay(order.status)"
+                @click="redirectToPayment(order)"
+                :disabled="countdowns[order.id] === 'Expired'"
+                class="bg-black hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition w-full md:w-auto"
+              >
+                Pay Now
+              </button>
+              <button
+                v-if="
+                  [
+                    'processing',
+                    'completed',
+                    'cancelled',
+                    'refund_requested',
+                    'refund_approved',
+                    'refunded',
+                    'refund_rejected',
+                    'refund_manual_required',
+                    'shipping_failed',
+                    'returned',
+                  ].includes(order.status) &&
+                  order.shipping_method === 'biteship'
+                "
+                @click="
+                  $router.push({
+                    path: `/tracking/${order.id}`,
+                    state: { paymentMethod: order.payment_method },
+                  })
+                "
+                class="bg-black hover:bg-gray-800 px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition shadow-sm w-full md:w-auto"
+              >
+                Track Order
+              </button>
+              <button
+                v-if="canRequestRefund(order)"
+                @click="requestRefund(order.id)"
+                class="hover:bg-gray-100 px-6 py-2 border border-gray-300 rounded-xl font-bold text-gray-600 text-xs uppercase tracking-widest transition w-full md:w-auto"
+              >
+                Request to Refund
+              </button>
+              <div
+                v-if="order.status === 'refund_requested'"
+                class="bg-amber-100 px-4 py-2 rounded-xl text-amber-700 text-xs font-bold w-full md:w-auto text-center"
+              >
+                Waiting Admin
+              </div>
+              <div
+                v-if="order.status === 'refund_manual_required'"
+                class="bg-pink-100 px-4 py-2 rounded-xl text-pink-700 text-xs font-bold w-full md:w-auto text-center"
+              >
+                Manual Refund
+              </div>
+              <button
+                v-if="order.status === 'refund_approved'"
+                @click="processRefund(order.id)"
+                class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition shadow-sm w-full md:w-auto"
+              >
+                Refund Now
+              </button>
+              <div
+                v-if="order.status === 'refund_rejected'"
+                class="text-red-500 text-xs font-bold italic w-full md:w-auto text-center"
+              >
+                Refund Rejected
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        v-if="!loading && filteredTransactions.length > 0"
+        class="flex flex-col md:flex-row justify-between items-center gap-4 mt-8 pt-6 border-t border-gray-100"
+      >
+        <p class="text-sm text-gray-400">
+          Showing
+          <span class="font-bold text-black">{{ showingStart }}</span> to
+          <span class="font-bold text-black">{{ showingEnd }}</span> of
+          <span class="font-bold text-black">{{
+            filteredTransactions.length
+          }}</span>
+          orders
+        </p>
+
+        <div class="flex gap-2">
+          <button
+            @click="currentPage--"
+            :disabled="currentPage === 1"
+            class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+          >
+            Previous
+          </button>
+
+          <div class="flex gap-1">
+            <button
+              v-for="(page, index) in visiblePages"
+              :key="index"
+              @click="typeof page === 'number' ? (currentPage = page) : null"
+              :disabled="page === '...'"
+              :class="[
+                currentPage === page
+                  ? 'bg-black text-white border-black'
+                  : 'hover:bg-gray-50 border-gray-200',
+                page === '...'
+                  ? 'cursor-default border-transparent hover:bg-transparent'
+                  : 'border',
+              ]"
+              class="w-10 h-10 rounded-xl font-medium transition flex items-center justify-center text-sm"
+            >
+              {{ page }}
+            </button>
+          </div>
+
+          <button
+            @click="currentPage++"
+            :disabled="currentPage === totalPages || totalPages === 0"
+            class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, onUnmounted, computed, watch } from "vue";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { BASE_URL } from "../../config/api";
+import { useRouter } from "vue-router";
+
+const userData = ref(null);
+const router = useRouter();
+const transactions = ref([]);
+const loading = ref(true);
+const countdowns = ref({});
+let timerInterval = null;
+
+const searchQuery = ref("");
+const currentPage = ref(1);
+const itemsPerPage = ref(10);
+
+const activeTransactionTab = ref("all");
+const activeShippingTab = ref("all");
+
+// [PERBAIKAN 2]: Menghilangkan pending (awaiting_payment) karena sudah tidak ada di backend
+const transactionTabs = [
+  { label: "All", value: "all" },
+  { label: "Pending", value: "pending" }, // Kita sisakan 'pending' untuk payment yang belum dibayar tapi invoice sudah tergenerate di Xendit (ini bukan awaiting_payment dari keranjang)
+  { label: "Processing", value: "processing" },
+  { label: "Completed", value: "completed" },
+  { label: "Cancelled", value: "cancelled" },
+  { label: "Refund Issues", value: "refund" },
+  { label: "Returned/Failed", value: "failed_returned" },
+];
+
+const shippingTabs = [
+  { label: "All", value: "all" },
+  { label: "Placed / Pending / Confirmed", value: "placed" }, 
+  { label: "Allocated", value: "allocated" },
+  { label: "Picking Up", value: "picking_up" },
+  { label: "In Transit", value: "dropping_off" },
+  { label: "On Hold", value: "on_hold" },
+  { label: "Delivered", value: "delivered" },
+  { label: "Returning", value: "returning" },
+  { label: "Issues / Cancelled", value: "issues" },
+  { label: "No Shipping", value: "no_shipping" },
+];
+
+const getTransactionTabCount = (tabValue) => {
+  return transactions.value.filter((order) => {
+    if (tabValue === "all") return true;
+    
+    // Tidak ada lagi awaiting_payment. Kita hanya cek status order.status.
+    if (tabValue === "refund") return order.status.includes("refund");
+    if (tabValue === "failed_returned")
+      return ["returned", "shipping_failed"].includes(order.status);
+      
+    return order.status === tabValue;
+  }).length;
+};
+
+const getShippingTabCount = (tabValue) => {
+  return transactions.value.filter((order) => {
+    if (tabValue === "all") return true;
+    if (tabValue === "no_shipping") return order.shipping_method === "free";
+    if (order.shipping_method === "free") return false;
+
+    const shipStatus = order.shipping_status
+      ? order.shipping_status.toLowerCase()
+      : "pending";
+
+    if (tabValue === "placed")
+      return ["pending", "placed", "confirmed"].includes(shipStatus);
+    if (tabValue === "dropping_off")
+      return ["picked", "dropping_off"].includes(shipStatus);
+    if (tabValue === "returning")
+      return ["return_in_transit", "returned"].includes(shipStatus);
+    if (tabValue === "issues")
+      return [
+        "cancelled",
+        "rejected",
+        "disposed",
+        "courier_not_found",
+      ].includes(shipStatus);
+
+    return shipStatus === tabValue;
+  }).length;
+};
+
+const filteredTransactions = computed(() => {
+  const query = searchQuery.value.toLowerCase();
+
+  return transactions.value.filter((order) => {
+    let matchSearch = true;
+    if (query) {
+      matchSearch =
+        order.order_id.toLowerCase().includes(query) ||
+        (order.total_amount && order.total_amount.toString().includes(query)) ||
+        (order.shipping_cost &&
+          order.shipping_cost.toString().includes(query)) ||
+        (order.payment_method &&
+          order.payment_method.toLowerCase().includes(query)) ||
+        (order.tracking_number &&
+          order.tracking_number.toLowerCase().includes(query)) ||
+        (order.delivery_type &&
+          order.delivery_type.toLowerCase().includes(query)) ||
+        (order.courier_company &&
+          order.courier_company.toLowerCase().includes(query));
+    }
+
+    let matchTransaction = false;
+    if (activeTransactionTab.value === "all") matchTransaction = true;
+    // Logika tanpa awaiting_payment
+    else if (activeTransactionTab.value === "refund")
+      matchTransaction = order.status.includes("refund");
+    else if (activeTransactionTab.value === "failed_returned")
+      matchTransaction = ["returned", "shipping_failed"].includes(order.status);
+    else matchTransaction = order.status === activeTransactionTab.value;
+
+    let matchShipping = false;
+    if (activeShippingTab.value === "all") {
+      matchShipping = true;
+    } else if (activeShippingTab.value === "no_shipping") {
+      matchShipping = order.shipping_method === "free";
+    } else {
+      if (order.shipping_method === "free") {
+        matchShipping = false;
+      } else {
+        const shipStatus = order.shipping_status
+          ? order.shipping_status.toLowerCase()
+          : "pending";
+        if (activeShippingTab.value === "placed")
+          matchShipping = ["pending", "placed", "confirmed"].includes(
+            shipStatus,
+          );
+        else if (activeShippingTab.value === "dropping_off")
+          matchShipping = ["picked", "dropping_off"].includes(shipStatus);
+        else if (activeShippingTab.value === "returning")
+          matchShipping = ["return_in_transit", "returned"].includes(
+            shipStatus,
+          );
+        else if (activeShippingTab.value === "issues")
+          matchShipping = [
+            "cancelled",
+            "rejected",
+            "disposed",
+            "courier_not_found",
+          ].includes(shipStatus);
+        else matchShipping = shipStatus === activeShippingTab.value;
+      }
+    }
+    return matchSearch && matchTransaction && matchShipping;
+  });
+});
+
+const totalPages = computed(() =>
+  Math.ceil(filteredTransactions.value.length / itemsPerPage.value),
+);
+
+const paginatedTransactions = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value;
+  return filteredTransactions.value.slice(start, start + itemsPerPage.value);
+});
+
+const showingStart = computed(() =>
+  filteredTransactions.value.length === 0
+    ? 0
+    : (currentPage.value - 1) * itemsPerPage.value + 1,
+);
+const showingEnd = computed(() =>
+  Math.min(
+    currentPage.value * itemsPerPage.value,
+    filteredTransactions.value.length,
+  ),
+);
+
+const visiblePages = computed(() => {
+  const current = currentPage.value;
+  const total = totalPages.value;
+  const maxVisible = 7;
+
+  if (total <= maxVisible)
+    return Array.from({ length: total }, (_, i) => i + 1);
+  if (current <= 4) return [1, 2, 3, 4, 5, "...", total];
+  if (current >= total - 3)
+    return [1, "...", total - 4, total - 3, total - 2, total - 1, total];
+  return [1, "...", current - 1, current, current + 1, "...", total];
+});
+
+watch(
+  [searchQuery, itemsPerPage, activeTransactionTab, activeShippingTab],
+  () => {
+    currentPage.value = 1;
+  },
+);
+
+const resetFilters = () => {
+  activeTransactionTab.value = "all";
+  activeShippingTab.value = "all";
+  searchQuery.value = "";
+};
+
+const getCourierLogo = (company) => {
+  if (!company) return null;
+  const map = {
+    jne: "jne.png",
+    sicepat: "sicepat.png",
+    jnt: "jnt.png",
+    anteraja: "anteraja.png",
+    gojek: "gojek.png",
+    grab: "grab.png",
+    paxel: "paxel.png",
+    ninja: "ninja.png",
+  };
+  return map[company.toLowerCase()]
+    ? "/courier_images/" + map[company.toLowerCase()]
+    : null;
+};
+
+const getPaymentLogo = (methodString) => {
+  if (!methodString) return null;
+  const channel = methodString.split(" ")[1]?.toLowerCase();
+  const map = {
+    bca: "bca.png",
+    bni: "bni.png",
+    bri: "bri.png",
+    mandiri: "mandiri.png",
+    bsi: "bsi.png",
+    permata: "permata.png",
+    ovo: "ovo.png",
+    dana: "dana.png",
+    linkaja: "linkaja.png",
+    shopeepay: "shopeepay.png",
+    alfamart: "alfamart.png",
+    indomaret: "indomaret.png",
+    qris: "qris.png",
+  };
+  return map[channel] ? "/payment_images/" + map[channel] : null;
+};
+
+const getSubtotal = (order) => order.total_amount;
+const getGrandTotal = (order) =>
+  parseFloat(order.total_amount || 0) + parseFloat(order.shipping_cost || 0);
+const getOrderQuantity = (order) =>
+  order.details.reduce((sum, item) => sum + item.quantity, 0);
+
+const calculateTimeLeft = (referenceDate) => {
+  if (!referenceDate) return "Expired";
+  const expiryTime = new Date(referenceDate).getTime() + 86400000; // +24 Jam
+  const now = new Date().getTime();
+  const diff = expiryTime - now;
+
+  if (diff <= 0) return "Expired";
+
+  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+  return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+};
+
+const autoCancelSilent = async (id) => {
+  try {
+    await axios.post(
+      `${BASE_URL}/transactions/${id}/cancel`,
+      {},
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      },
+    );
+    fetchOrders(); 
+  } catch (e) {
+    console.error("Auto cancel failed", e);
+  }
+};
+
+const startTimers = () => {
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    transactions.value.forEach((order) => {
+      if (canPay(order.status)) {
+        const timeReference =
+          order.status === "pending" && order.payment?.created_at
+            ? order.payment.created_at
+            : order.created_at;
+
+        const timeLeft = calculateTimeLeft(timeReference);
+        countdowns.value[order.id] = timeLeft;
+
+        if (timeLeft === "Expired" && !order.isCancelling) {
+          order.isCancelling = true;
+          autoCancelSilent(order.id);
+        }
+      }
+    });
+  }, 1000);
+};
+
+const fetchOrders = async () => {
+  loading.value = true;
+  try {
+    const res = await axios.get(`${BASE_URL}/transactions`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    // Hapus filter yang menghilangkan transaction tanpa produk jika sistem kita sudah fix.
+    transactions.value = res.data.map((o) => ({ ...o, isCancelling: false }));
+    startTimers();
+  } catch (err) {
+    console.error(err);
+  } finally {
+    // Kurangi waktu buatan timeout agar lebih snappy, namun tetap nyaman dilihat
+    setTimeout(() => {
+      loading.value = false;
+    }, 300);
+  }
+};
+
+// [PERBAIKAN] Tidak ada lagi awaiting payment. Yang bisa dibayar hanya 'pending' (yaitu Invoice yang aktif)
+const canPay = (status) => ["pending"].includes(status);
+const canCancel = (status) => ["pending", "processing"].includes(status);
+
+const handleOrderClick = (order) => {
+  if (canPay(order.status) && countdowns.value[order.id] !== "Expired") {
+    redirectToPayment(order);
+  }
+};
+
+const redirectToPayment = (order) => {
+  if (order.status === "pending" && order.payment?.checkout_url)
+    window.location.href = order.payment.checkout_url;
+  else Swal.fire("Error", "Payment URL not found or invalid status", "error");
+};
+
+const cancelOrder = async (id) => {
+  const result = await Swal.fire({
+    title: "Cancel Order?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#000",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, cancel it!",
+  });
+  if (result.isConfirmed) {
+    try {
+      await axios.post(
+        `${BASE_URL}/transactions/${id}/cancel`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        },
+      );
+      Swal.fire("Cancelled!", "Your order has been cancelled.", "success");
+      fetchOrders();
+    } catch (err) {
+      Swal.fire(
+        "Error",
+        `Failed to cancel order: ${err.response?.data?.message || "Something went wrong"}`,
+        "error",
+      );
+    }
+  }
+};
+
+const canRequestRefund = (order) => {
+  if (!["completed", "shipping_failed", "returned"].includes(order.status))
+    return false;
+  if (["shipping_failed", "returned"].includes(order.status)) return true;
+  if (order.shipping_method === "free") return true;
+
+  if (order.shipping_method === "biteship") {
+    const shipStatus = order.shipping_status
+      ? order.shipping_status.toLowerCase()
+      : "pending";
+    const unRefundableLogistics = [
+      "picked",
+      "dropping_off",
+      "delivered",
+      "return_in_transit",
+    ];
+    if (unRefundableLogistics.includes(shipStatus)) return false;
+    return true;
+  }
+  return false;
+};
+
+const requestRefund = async (id) => {
+  const { value: text } = await Swal.fire({
+    title: "Request Refund",
+    input: "textarea",
+    inputLabel: "Reason for refund",
+    inputPlaceholder: "Type your reason here...",
+    showCancelButton: true,
+    confirmButtonColor: "#000",
+  });
+  if (text) {
+    try {
+      await axios.post(
+        `${BASE_URL}/transactions/${id}/refund-request`,
+        { reason: text },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        },
+      );
+      fetchOrders();
+      Swal.fire("Requested", "Refund request sent to admin.", "success");
+    } catch (err) {
+      Swal.fire("Error", "Failed to request refund", "error");
+    }
+  }
+};
+
+const processRefund = async (id) => {
+  try {
+    const res = await axios.post(
+      `${BASE_URL}/transactions/${id}/refund-process`,
+      {},
+      { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } },
+    );
+    fetchOrders();
+    Swal.fire("Refunded", res.data.message, "success");
+  } catch (err) {
+    Swal.fire("Error", "Refund process failed", "error");
+  }
+};
+
+const formatStatus = (status) => (status ? status.replace(/_/g, " ") : "");
+
+// [PERBAIKAN] Hilangkan style untuk 'awaiting_payment'
+const statusClass = (status) => {
+  const map = {
+    pending: "bg-orange-100 text-orange-700",
+    processing: "bg-blue-100 text-blue-700",
+    completed: "bg-green-100 text-green-700",
+    cancelled: "bg-red-100 text-red-700",
+    refund_requested: "bg-purple-100 text-purple-700",
+    refund_approved: "bg-indigo-100 text-indigo-700",
+    refund_rejected: "bg-gray-200 text-gray-600 line-through",
+    refunded: "bg-teal-100 text-teal-700",
+    refund_manual_required: "bg-pink-100 text-pink-700",
+    returned: "bg-gray-800 text-white",
+    shipping_failed: "bg-red-800 text-white",
+  };
+  return map[status] || "bg-gray-100 text-gray-500";
+};
+
+const shippingStatusClass = (status) => {
+  if (!status) return "bg-gray-50 border-gray-200 text-gray-500";
+  const str = status.toLowerCase();
+  if (["delivered"].includes(str))
+    return "bg-green-50 border-green-200 text-green-700";
+
+  if (["cancelled", "rejected", "disposed", "courier_not_found"].includes(str))
+    return "bg-red-50 border-red-200 text-red-700";
+  if (["on_hold", "return_in_transit", "returned"].includes(str))
+    return "bg-amber-50 border-amber-200 text-amber-700";
+
+  if (
+    ["picking_up", "picked", "dropping_off", "allocated", "confirmed"].includes(
+      str,
+    )
+  )
+    return "bg-blue-50 border-blue-200 text-blue-700";
+
+  return "bg-gray-50 border-gray-200 text-gray-600";
+};
+
+const formatPrice = (v) =>
+  new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(
+    v,
+  );
+const formatDateTime = (date) =>
+  new Date(date).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+onMounted(() => {
+  const user = localStorage.getItem("user");
+  if (user) userData.value = JSON.parse(user);
+  fetchOrders();
+});
+
+onUnmounted(() => {
+  if (timerInterval) clearInterval(timerInterval);
+});
 </script>
+
+<style scoped>
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.leading-relaxed {
+  transition: all 0.3s ease;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
