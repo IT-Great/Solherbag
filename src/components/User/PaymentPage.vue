@@ -1808,41 +1808,97 @@ const saveAddress = async () => {
 // [AKHIR] LOGIKA MODAL ADDRESS
 // ==========================================
 
+// const fetchData = async () => {
+//   try {
+//     const user = localStorage.getItem("user");
+//     if (user) userData.value = JSON.parse(user);
+
+//     const transactionId = route.params.id;
+//     const resTrx = await axios.get(
+//       `${BASE_URL}/transactions/${transactionId}`,
+//       axiosConfig,
+//     );
+//     transactionData.value = resTrx.data;
+
+//     const resAddr = await axios.get(`${BASE_URL}/addresses`, axiosConfig);
+//     addresses.value = resAddr.data.data;
+
+//     // [PERBAIKAN] Logika pengecekan alamat kosong
+//     // if (addresses.value.length === 0) {
+//     //   Swal.fire({
+//     //     title: "Address Required",
+//     //     text: "You must add a shipping address before you can proceed with the payment.",
+//     //     icon: "warning",
+//     //     showCancelButton: true,
+//     //     confirmButtonText: "Add Address Now",
+//     //     cancelButtonText: "Later",
+//     //     confirmButtonColor: "#000",
+//     //     allowOutsideClick: false, // Memaksa user untuk memilih
+//     //   }).then((result) => {
+//     //     if (result.isConfirmed) {
+//     //       // Arahkan ke Profile Page jika user memilih Add Address
+//     //       router.push("/profilepage");
+//     //     }
+//     //   });
+//     // }
+
+//     if (addresses.value.length === 0) {
+//       Swal.fire({
+//         title: "Address Required",
+//         text: "You must add a shipping address before you can proceed with the payment.",
+//         icon: "warning",
+//         showCancelButton: true,
+//         confirmButtonText: "Add Address Now",
+//         cancelButtonText: "Later",
+//         confirmButtonColor: "#000",
+//         allowOutsideClick: false, // Memaksa user untuk memilih
+//       }).then((result) => {
+//         if (result.isConfirmed) {
+//           // [PERBAIKAN] Langsung buka modal di halaman ini, bukan dialihkan
+//           openModal();
+//         }
+//       });
+//     } else {
+//       // Jika alamat ada, pilih yang default
+//       const defaultAddr = addresses.value.find((a) => a.is_default);
+//       if (defaultAddr) {
+//         selectedAddressId.value = defaultAddr.id;
+//       } else {
+//         // Jika tidak ada yang default tapi ada alamat, pilih yang pertama
+//         selectedAddressId.value = addresses.value[0].id;
+//       }
+//     }
+
+//     initDateTime(); // Setup awal waktu
+//   } catch (error) {
+//     Swal.fire("Error", "Failed to load checkout data", "error");
+//   }
+// };
+
 const fetchData = async () => {
+  // 1. Ambil data user dari localStorage (Instan)
+  const user = localStorage.getItem("user");
+  if (user) userData.value = JSON.parse(user);
+
+  // 2. ASUMSI AWAL: Munculkan loading atau periksa State bawaan (Optional)
+  // Jika Anda sebelumnya mem-passing data address via router (history.state),
+  // Anda bisa mengeceknya di sini. Jika tidak, kita langsung memanggil API.
+
+  const transactionId = route.params.id;
+
+  // 3. Tembak API secara PARALEL untuk mempercepat proses
   try {
-    const user = localStorage.getItem("user");
-    if (user) userData.value = JSON.parse(user);
+    const [resTrx, resAddr] = await Promise.all([
+      axios.get(`${BASE_URL}/transactions/${transactionId}`, axiosConfig),
+      axios.get(`${BASE_URL}/addresses`, axiosConfig),
+    ]);
 
-    const transactionId = route.params.id;
-    const resTrx = await axios.get(
-      `${BASE_URL}/transactions/${transactionId}`,
-      axiosConfig,
-    );
     transactionData.value = resTrx.data;
-
-    const resAddr = await axios.get(`${BASE_URL}/addresses`, axiosConfig);
     addresses.value = resAddr.data.data;
 
-    // [PERBAIKAN] Logika pengecekan alamat kosong
-    // if (addresses.value.length === 0) {
-    //   Swal.fire({
-    //     title: "Address Required",
-    //     text: "You must add a shipping address before you can proceed with the payment.",
-    //     icon: "warning",
-    //     showCancelButton: true,
-    //     confirmButtonText: "Add Address Now",
-    //     cancelButtonText: "Later",
-    //     confirmButtonColor: "#000",
-    //     allowOutsideClick: false, // Memaksa user untuk memilih
-    //   }).then((result) => {
-    //     if (result.isConfirmed) {
-    //       // Arahkan ke Profile Page jika user memilih Add Address
-    //       router.push("/profilepage");
-    //     }
-    //   });
-    // }
-
+    // 4. Logika Pengecekan Alamat
     if (addresses.value.length === 0) {
+      // Jika kosong, pastikan Alert muncul secepat mungkin
       Swal.fire({
         title: "Address Required",
         text: "You must add a shipping address before you can proceed with the payment.",
@@ -1854,17 +1910,15 @@ const fetchData = async () => {
         allowOutsideClick: false, // Memaksa user untuk memilih
       }).then((result) => {
         if (result.isConfirmed) {
-          // [PERBAIKAN] Langsung buka modal di halaman ini, bukan dialihkan
-          openModal();
+          openModal(); // Langsung buka modal di halaman ini
         }
       });
     } else {
-      // Jika alamat ada, pilih yang default
+      // Jika alamat ada, otomatis pilih yang default
       const defaultAddr = addresses.value.find((a) => a.is_default);
       if (defaultAddr) {
         selectedAddressId.value = defaultAddr.id;
       } else {
-        // Jika tidak ada yang default tapi ada alamat, pilih yang pertama
         selectedAddressId.value = addresses.value[0].id;
       }
     }
