@@ -3545,7 +3545,7 @@ import { BASE_URL } from "../../config/api.js";
 // Import State dari useCart
 import { useCart } from "../../composables/useCart.js";
 
-const { cartItems, cartCount, totalCartAmount } = useCart();
+const { cartItems, cartCount, totalCartAmount, clearCart } = useCart();
 import { Country, State } from "country-state-city";
 
 // Import Leaflet (Wajib untuk Peta)
@@ -4004,6 +4004,47 @@ const grandTotalWithDiscount = computed(
 // ===============================================
 // [PERBAIKAN] API POST /CHECKOUT DIPINDAH KE SINI
 // ===============================================
+// const handlePayment = async () => {
+//   isProcessing.value = true;
+//   try {
+//     const payload = {
+//       address_id: selectedAddressId.value,
+//       shipping_method: shippingMethod.value,
+//       use_points: pointsToUse.value,
+//       courier_company:
+//         shippingMethod.value === "biteship"
+//           ? selectedRate.value?.company
+//           : null,
+//       courier_type:
+//         shippingMethod.value === "biteship" ? selectedRate.value?.type : null,
+//       shipping_cost:
+//         shippingMethod.value === "biteship" ? selectedRate.value?.price : null,
+//       delivery_type:
+//         shippingMethod.value === "biteship" ? deliveryType.value : null,
+//       delivery_date:
+//         shippingMethod.value === "biteship" ? deliveryDate.value : null,
+//       delivery_time:
+//         shippingMethod.value === "biteship" ? deliveryTime.value : null,
+//     };
+
+//     // Tembak API /checkout (yang sekarang membuat Transaksi sekaligus Invoice Xendit)
+//     const res = await axios.post(`${BASE_URL}/checkout`, payload, axiosConfig);
+
+//     // Xendit Checkout URL didapat dari response
+//     if (res.data.checkout_url) {
+//       window.location.href = res.data.checkout_url;
+//     }
+//   } catch (error) {
+//     Swal.fire(
+//       "Payment Error",
+//       error.response?.data?.message || "Failed to create invoice",
+//       "error",
+//     );
+//   } finally {
+//     isProcessing.value = false;
+//   }
+// };
+
 const handlePayment = async () => {
   isProcessing.value = true;
   try {
@@ -4032,6 +4073,11 @@ const handlePayment = async () => {
 
     // Xendit Checkout URL didapat dari response
     if (res.data.checkout_url) {
+      
+      // [PERBAIKAN] KOSONGKAN KERANJANG DI MEMORI FRONTEND
+      clearCart();
+      
+      // Redirect ke Xendit
       window.location.href = res.data.checkout_url;
     }
   } catch (error) {

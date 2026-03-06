@@ -148,6 +148,11 @@ export function useCart() {
         }
     };
 
+    // [BARU] FUNGSI UNTUK MENGOSONGKAN KERANJANG DI FRONTEND
+    const clearCart = () => {
+        cartItems.value = [];
+    };
+
     return {
         cartItems,
         cartCount,
@@ -156,6 +161,7 @@ export function useCart() {
         handleOptimisticAdd,
         handleQtyChange,
         handleOptimisticDelete,
+        clearCart,
         handleQtyInput: (item) => {
             if (item.quantity === null || item.quantity === "") return;
             handleQtyChange(item, item.quantity);
