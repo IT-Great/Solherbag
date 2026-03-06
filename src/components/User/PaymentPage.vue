@@ -3677,6 +3677,197 @@ watch(deliveryType, (newVal) => {
   if (newVal === "later") initDateTime();
 });
 
+// ==========================================
+// [BARU] STATE & LOGIKA UNTUK MODAL ADDRESS
+// ==========================================
+const showModal = ref(false);
+const countries = ref(Country.getAllCountries());
+const filteredProvinces = ref([]);
+
+const form = ref({
+  id: null,
+  region: "Indonesia",
+  first_name_address: "",
+  last_name_address: "",
+  address_location: "",
+  location_type: "",
+  city: "",
+  province: "",
+  postal_code: "",
+  latitude: null,
+  longitude: null,
+  is_default: true, // Default true agar mempermudah user yang baru pertama kali tambah
+});
+
+const map = ref(null);
+const zoom = ref(13);
+const center = ref([-7.250445, 112.768845]); // Default Surabaya
+const markerLatLng = ref([-7.250445, 112.768845]);
+const searchQuery = ref("");
+const searchResults = ref([]);
+let debounceTimeout = null;
+
+// Fungsi Navigasi & Map
+const fetchProvinces = () => {
+  const selectedCountry = countries.value.find(
+    (c) => c.name === form.value.region,
+  );
+  if (selectedCountry) {
+    filteredProvinces.value = State.getStatesOfCountry(
+      selectedCountry.isoCode,
+    ).map((s) => s.name);
+  }
+};
+
+const openModal = () => {
+  form.value = {
+    region: "Indonesia",
+    is_default: true,
+    first_name_address: userData.value?.first_name || "",
+    last_name_address: userData.value?.last_name || "",
+    address_location: "",
+    location_type: "",
+    city: "",
+    province: "",
+    postal_code: "",
+    latitude: null,
+    longitude: null,
+  };
+  center.value = [-7.250445, 112.768845];
+  markerLatLng.value = [-7.250445, 112.768845];
+  fetchProvinces();
+  showModal.value = true;
+};
+
+const reverseGeocode = async (lat, lng) => {
+  try {
+    const res = await axios.get(
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`,
+    );
+    if (res.data && res.data.display_name) {
+      form.value.address_location = res.data.display_name;
+      if (res.data.address && res.data.address.postcode) {
+        form.value.postal_code = res.data.address.postcode;
+      }
+    }
+  } catch (error) {
+    console.error("Reverse Geocode Error", error);
+  }
+};
+
+const handleSearchInput = () => {
+  if (debounceTimeout) clearTimeout(debounceTimeout);
+  if (searchQuery.value.length < 3) {
+    searchResults.value = [];
+    return;
+  }
+  debounceTimeout = setTimeout(async () => {
+    try {
+      const res = await axios.get(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${searchQuery.value}&countrycodes=id&limit=5`,
+      );
+      searchResults.value = res.data;
+    } catch (error) {
+      console.error("Search Error", error);
+    }
+  }, 500);
+};
+
+const selectSearchResult = (result) => {
+  const lat = parseFloat(result.lat);
+  const lng = parseFloat(result.lon);
+
+  if (map.value && map.value.leafletObject) {
+    map.value.leafletObject.flyTo([lat, lng], 16);
+  } else {
+    center.value = [lat, lng];
+    zoom.value = 16;
+  }
+  markerLatLng.value = [lat, lng];
+  form.value.latitude = lat.toString();
+  form.value.longitude = lng.toString();
+  form.value.address_location = result.display_name;
+  searchResults.value = [];
+  searchQuery.value = "";
+};
+
+const onMapClick = (event) => {
+  const { lat, lng } = event.latlng;
+  updateLocation(lat, lng);
+};
+
+const onMarkerDrag = (event) => {
+  const { lat, lng } = event.target.getLatLng();
+  updateLocation(lat, lng);
+};
+
+const updateLocation = (lat, lng) => {
+  markerLatLng.value = [lat, lng];
+  form.value.latitude = lat.toString();
+  form.value.longitude = lng.toString();
+  reverseGeocode(lat, lng);
+};
+
+const getCurrentLocation = () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        if (map.value && map.value.leafletObject) {
+          map.value.leafletObject.flyTo([lat, lng], 16);
+        } else {
+          center.value = [lat, lng];
+          zoom.value = 16;
+        }
+        updateLocation(lat, lng);
+      },
+      () => {
+        Swal.fire("Error", "Please allow location access.", "error");
+      },
+    );
+  }
+};
+
+const saveAddress = async () => {
+  try {
+    const res = await axios.post(
+      `${BASE_URL}/addresses`,
+      form.value,
+      axiosConfig,
+    );
+    showModal.value = false;
+
+    // Fetch ulang data alamat di halaman Checkout
+    const resAddr = await axios.get(`${BASE_URL}/addresses`, axiosConfig);
+    addresses.value = resAddr.data.data;
+
+    // Otomatis pilih alamat yang baru saja dibuat
+    const newAddressId = res.data.id || res.data.data?.id;
+    if (newAddressId) {
+      selectedAddressId.value = newAddressId;
+    } else {
+      // Fallback jika response tidak standar
+      selectedAddressId.value = addresses.value[addresses.value.length - 1].id;
+    }
+
+    Swal.fire({
+      toast: true,
+      position: "top-end",
+      icon: "success",
+      title: "Address Added!",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  } catch (e) {
+    Swal.fire("Error", "Failed to save address", "error");
+  }
+};
+
+// ==========================================
+// [AKHIR] LOGIKA MODAL ADDRESS
+// ==========================================
+
 // const fetchData = async () => {
 //   try {
 //     const user = localStorage.getItem("user");
