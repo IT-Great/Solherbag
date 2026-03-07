@@ -1041,6 +1041,12 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
 
+// Tambahkan useCart ke daftar import
+import { useCart } from "../../composables/useCart";
+
+// Ekstrak fungsi dan state yang dibutuhkan
+const { handleOptimisticAdd, selectedItemIds, fetchCarts } = useCart();
+
 const route = useRoute();
 const router = useRouter();
 const product = ref(null);
@@ -1297,6 +1303,124 @@ const fetchProductDetail = async () => {
 //   }
 // };
 
+// const handleAction = async (type) => {
+//   const token = localStorage.getItem("token");
+//   if (!token) {
+//     Swal.fire({
+//       icon: "info",
+//       title: "Login Required",
+//       confirmButtonColor: "#000",
+//     }).then(() => router.push("/login"));
+//     return;
+//   }
+
+//   // --- START TRUE OPTIMISTIC UI ---
+//   if (type === "cart") {
+//     // 1. INSTAN 0 MILIDETIK: Tampilkan Notifikasi
+//     Swal.fire({
+//       title: "Added to Bag",
+//       icon: "success",
+//       toast: true,
+//       position: "top-center",
+//       showConfirmButton: false,
+//       timer: 2000,
+//     });
+
+//     // 2. INSTAN: Lempar data ke Header.vue agar Header yang mengurus API
+//     // window.dispatchEvent(
+//     //   new CustomEvent("optimistic-add-to-cart", {
+//     //     detail: product.value,
+//     //   }),
+//     // );
+
+//     window.dispatchEvent(
+//       new CustomEvent("optimistic-add-to-cart", {
+//         // [PERBAIKAN] Bungkus ke dalam object dengan cartId: null
+//         detail: { product: product.value, cartId: null },
+//       }),
+//     );
+
+//     // 3. Jalankan Animasi Terbang tanpa mengganggu proses data
+//     const productImages = document.querySelectorAll(".main-product-image");
+//     const productImage = productImages[activeSlide.value];
+//     const cartIcon = document.querySelector(".cart-icon-header");
+
+//     if (productImage && cartIcon) {
+//       const imgRect = productImage.getBoundingClientRect();
+//       const cartRect = cartIcon.getBoundingClientRect();
+
+//       const flyer = productImage.cloneNode(true);
+//       flyer.classList.add("fly-item");
+
+//       Object.assign(flyer.style, {
+//         position: "fixed",
+//         top: `${imgRect.top}px`,
+//         left: `${imgRect.left}px`,
+//         width: `${imgRect.width}px`,
+//         height: `${imgRect.height}px`,
+//         zIndex: "9999",
+//         transition: "all 0.7s cubic-bezier(0.25, 1, 0.5, 1)", // Animasi lebih smooth & cepat
+//         pointerEvents: "none",
+//         borderRadius: "10%",
+//       });
+
+//       document.body.appendChild(flyer);
+
+//       // Gunakan requestAnimationFrame agar browser tidak nge-lag saat merender
+//       requestAnimationFrame(() => {
+//         requestAnimationFrame(() => {
+//           Object.assign(flyer.style, {
+//             top: `${cartRect.top + 10}px`,
+//             left: `${cartRect.left + 10}px`,
+//             width: "15px",
+//             height: "15px",
+//             opacity: "0.2",
+//             transform: "scale(0.5) rotate(360deg)",
+//           });
+//         });
+//       });
+
+//       flyer.addEventListener("transitionend", () => flyer.remove(), {
+//         once: true,
+//       });
+//     }
+//     return; // STOP! Biarkan Header yang urus database.
+//   }
+
+//   // --- LOGIKA BUY IT NOW (Tetap sama) ---
+//   try {
+//     if (type === "buy") {
+//       Swal.fire({
+//         title: "Preparing Order...",
+//         allowOutsideClick: false,
+//         didOpen: () => Swal.showLoading(),
+//       });
+
+//       await axios.post(
+//         `${BASE_URL}/carts`,
+//         { product_id: product.value.id, quantity: 1 },
+//         { headers: { Authorization: `Bearer ${token}` } },
+//       );
+
+//       const checkoutRes = await axios.post(
+//         `${BASE_URL}/checkout`,
+//         {},
+//         { headers: { Authorization: `Bearer ${token}` } },
+//       );
+
+//       Swal.close();
+//       router.push(`/payment/${checkoutRes.data.transaction_id}`);
+//     }
+//   } catch (error) {
+//     Swal.close();
+//     Swal.fire(
+//       "Error",
+//       error.response?.data?.message || "Action failed",
+//       "error",
+//     );
+//   }
+// };
+
 const handleAction = async (type) => {
   const token = localStorage.getItem("token");
   if (!token) {
@@ -1308,9 +1432,8 @@ const handleAction = async (type) => {
     return;
   }
 
-  // --- START TRUE OPTIMISTIC UI ---
+  // --- START TRUE OPTIMISTIC UI (ADD TO CART) ---
   if (type === "cart") {
-    // 1. INSTAN 0 MILIDETIK: Tampilkan Notifikasi
     Swal.fire({
       title: "Added to Bag",
       icon: "success",
@@ -1320,14 +1443,13 @@ const handleAction = async (type) => {
       timer: 2000,
     });
 
-    // 2. INSTAN: Lempar data ke Header.vue agar Header yang mengurus API
+    // [PERBAIKAN] Lempar dengan format object { product, cartId }
     window.dispatchEvent(
       new CustomEvent("optimistic-add-to-cart", {
-        detail: product.value,
+        detail: { product: product.value, cartId: null },
       }),
     );
 
-    // 3. Jalankan Animasi Terbang tanpa mengganggu proses data
     const productImages = document.querySelectorAll(".main-product-image");
     const productImage = productImages[activeSlide.value];
     const cartIcon = document.querySelector(".cart-icon-header");
@@ -1346,14 +1468,13 @@ const handleAction = async (type) => {
         width: `${imgRect.width}px`,
         height: `${imgRect.height}px`,
         zIndex: "9999",
-        transition: "all 0.7s cubic-bezier(0.25, 1, 0.5, 1)", // Animasi lebih smooth & cepat
+        transition: "all 0.7s cubic-bezier(0.25, 1, 0.5, 1)",
         pointerEvents: "none",
         borderRadius: "10%",
       });
 
       document.body.appendChild(flyer);
 
-      // Gunakan requestAnimationFrame agar browser tidak nge-lag saat merender
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           Object.assign(flyer.style, {
@@ -1371,10 +1492,10 @@ const handleAction = async (type) => {
         once: true,
       });
     }
-    return; // STOP! Biarkan Header yang urus database.
+    return;
   }
 
-  // --- LOGIKA BUY IT NOW (Tetap sama) ---
+  // --- LOGIKA BUY IT NOW YANG BENAR ---
   try {
     if (type === "buy") {
       Swal.fire({
@@ -1383,20 +1504,26 @@ const handleAction = async (type) => {
         didOpen: () => Swal.showLoading(),
       });
 
-      await axios.post(
+      // 1. Masukkan barang ke database Cart
+      const resCart = await axios.post(
         `${BASE_URL}/carts`,
         { product_id: product.value.id, quantity: 1 },
         { headers: { Authorization: `Bearer ${token}` } },
       );
 
-      const checkoutRes = await axios.post(
-        `${BASE_URL}/checkout`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } },
-      );
+      const newCartId =
+        resCart.data.cart_id || resCart.data.id || resCart.data.data?.id;
+
+      // 2. Fetch ulang Global State agar Header dan Memori Sinkron
+      await fetchCarts();
+
+      // 3. SET Global State: Hanya centang barang yang baru saja dibeli!
+      selectedItemIds.value = [newCartId];
 
       Swal.close();
-      router.push(`/payment/${checkoutRes.data.transaction_id}`);
+
+      // 4. Lempar user langsung ke Halaman Pemilihan Alamat & Kurir
+      router.push(`/payment`);
     }
   } catch (error) {
     Swal.close();
