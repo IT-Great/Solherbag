@@ -1421,6 +1421,7 @@ const fetchProductDetail = async () => {
 //   }
 // };
 
+// New Implementation
 const handleAction = async (type) => {
   const token = localStorage.getItem("token");
   if (!token) {
