@@ -860,6 +860,61 @@ onMounted(() => {
               </div>
             </div>
           </TransitionGroup>
+          <div
+            v-if="suggestedProducts.length > 0"
+            class="pt-12 border-t border-gray-100"
+          >
+            <h3
+              class="font-bold text-sm uppercase tracking-widest text-gray-800 mb-6"
+            >
+              You May Also Like
+            </h3>
+
+            <TransitionGroup
+              name="list"
+              tag="div"
+              class="grid grid-cols-2 md:grid-cols-4 gap-6"
+            >
+              <div
+                v-for="product in suggestedProducts"
+                :key="product.id"
+                class="group flex flex-col"
+              >
+                <div
+                  class="relative aspect-square overflow-hidden rounded-2xl bg-gray-50 mb-3 cursor-pointer"
+                  @click="$router.push(`/product/${product.id}`)"
+                >
+                  <img
+                    :src="product.image"
+                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    alt="Suggested Product"
+                  />
+                  <div
+                    v-if="product.discount_price"
+                    class="absolute top-2 left-2 bg-red-600 text-white px-2 py-0.5 text-[8px] font-bold uppercase tracking-widest rounded-sm"
+                  >
+                    SALE
+                  </div>
+                </div>
+
+                <h4
+                  class="font-bold text-[10px] uppercase truncate tracking-wide text-gray-900 mb-1"
+                >
+                  {{ product.name }}
+                </h4>
+                <p class="text-xs font-medium text-gray-600 mb-3">
+                  {{ formatPrice(product.discount_price ?? product.price) }}
+                </p>
+
+                <button
+                  @click="addSuggestedProduct(product)"
+                  class="mt-auto border border-gray-200 hover:border-black hover:bg-black hover:text-white rounded-xl py-2 px-3 text-[9px] font-bold uppercase tracking-widest transition-all duration-300"
+                >
+                  Add This Product
+                </button>
+              </div>
+            </TransitionGroup>
+          </div>
         </div>
       </div>
 
@@ -910,61 +965,6 @@ onMounted(() => {
             >
           </button>
         </div>
-      </div>
-      <div
-        v-if="suggestedProducts.length > 0"
-        class="pt-12 border-t border-gray-100"
-      >
-        <h3
-          class="font-bold text-sm uppercase tracking-widest text-gray-800 mb-6"
-        >
-          You May Also Like
-        </h3>
-
-        <TransitionGroup
-          name="list"
-          tag="div"
-          class="grid grid-cols-2 md:grid-cols-4 gap-6"
-        >
-          <div
-            v-for="product in suggestedProducts"
-            :key="product.id"
-            class="group flex flex-col"
-          >
-            <div
-              class="relative aspect-square overflow-hidden rounded-2xl bg-gray-50 mb-3 cursor-pointer"
-              @click="$router.push(`/product/${product.id}`)"
-            >
-              <img
-                :src="product.image"
-                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                alt="Suggested Product"
-              />
-              <div
-                v-if="product.discount_price"
-                class="absolute top-2 left-2 bg-red-600 text-white px-2 py-0.5 text-[8px] font-bold uppercase tracking-widest rounded-sm"
-              >
-                SALE
-              </div>
-            </div>
-
-            <h4
-              class="font-bold text-[10px] uppercase truncate tracking-wide text-gray-900 mb-1"
-            >
-              {{ product.name }}
-            </h4>
-            <p class="text-xs font-medium text-gray-600 mb-3">
-              {{ formatPrice(product.discount_price ?? product.price) }}
-            </p>
-
-            <button
-              @click="addSuggestedProduct(product)"
-              class="mt-auto border border-gray-200 hover:border-black hover:bg-black hover:text-white rounded-xl py-2 px-3 text-[9px] font-bold uppercase tracking-widest transition-all duration-300"
-            >
-              Add This Product
-            </button>
-          </div>
-        </TransitionGroup>
       </div>
     </div>
   </div>
