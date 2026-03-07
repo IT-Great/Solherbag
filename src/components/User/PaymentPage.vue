@@ -2743,7 +2743,7 @@ onMounted(fetchData);
 </style> -->
 
 <template>
-  <div
+  <!-- <div
     v-if="isPageLoading"
     class="z-[100] fixed inset-0 flex flex-col justify-center items-center bg-white"
   >
@@ -2753,8 +2753,43 @@ onMounted(fetchData);
     <p class="mt-4 font-serif text-gray-400 italic animate-pulse">
       Preparing your checkout...
     </p>
+  </div> -->
+  <div
+    v-if="isPageLoading"
+    class="z-[100] fixed inset-0 flex flex-col justify-center items-center bg-white"
+  >
+    <div class="flex gap-2 mb-4">
+      <div class="w-3 h-3 bg-black rounded-full animate-bounce-1"></div>
+      <div class="w-3 h-3 bg-black rounded-full animate-bounce-2"></div>
+      <div class="w-3 h-3 bg-black rounded-full animate-bounce-3"></div>
+    </div>
+    <p
+      class="font-serif text-gray-500 italic tracking-widest text-sm animate-pulse"
+    >
+      Preparing your checkout...
+    </p>
   </div>
 
+  <!-- <div
+    v-else
+    class="mx-auto px-6 py-12 md:py-24 max-w-6xl min-h-screen animate-fade-in"
+  >
+    <div v-if="checkoutItems.length === 0" class="text-center py-20">
+      <h2 class="font-serif text-3xl mb-4">Your bag is empty</h2>
+      <button
+        @click="$router.push('/catalog')"
+        class="bg-black text-white px-8 py-3 rounded-full uppercase tracking-widest text-xs font-bold"
+      >
+        Return to Shop
+      </button>
+    </div>
+
+    <div v-else>
+      <h1
+        class="mb-12 font-serif text-3xl md:text-4xl uppercase tracking-tighter"
+      >
+        Checkout
+      </h1> -->
   <div
     v-else
     class="mx-auto px-6 py-12 md:py-24 max-w-6xl min-h-screen animate-fade-in"
@@ -4132,3 +4167,58 @@ onMounted(fetchData);
 
 // (Pastikan Anda menyalin sisa function `openModal`, `saveAddress`, dll di bagian bawah script ini)
 </script>
+
+<style scoped>
+/* [BARU] CSS Keyframes untuk Animasi Bouncing Dots */
+.animate-bounce-1 {
+  animation: bounceDots 1.4s infinite ease-in-out both;
+  animation-delay: -0.32s;
+}
+.animate-bounce-2 {
+  animation: bounceDots 1.4s infinite ease-in-out both;
+  animation-delay: -0.16s;
+}
+.animate-bounce-3 {
+  animation: bounceDots 1.4s infinite ease-in-out both;
+}
+
+@keyframes bounceDots {
+  0%, 80%, 100% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  height: 6px;
+  width: 6px; /* Tambahkan width agar scroll vertikal juga rapi */
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #e5e7eb;
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #d1d5db;
+}
+</style>
