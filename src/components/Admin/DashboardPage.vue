@@ -530,7 +530,7 @@ onMounted(fetchData);
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
-            AI Sales Prediction (C4.5 Algorithm)
+            Sales Prediction
           </h3>
           <p class="text-xs text-gray-500 mt-1">Predicting future bestsellers based on category trends, pricing, and scarcity rules.</p>
         </div>

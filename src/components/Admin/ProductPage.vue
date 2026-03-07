@@ -610,7 +610,7 @@ onMounted(fetchData);
   <div
     class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[500px] animate-fade-in"
   >
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-10">
       <div class="p-6 bg-gray-50 rounded-2xl border border-gray-100">
         <p class="text-xs text-gray-500 font-bold uppercase tracking-widest mb-1">Total Products</p>
         <p class="text-4xl font-black text-black">{{ products.length }}</p>
@@ -622,6 +622,10 @@ onMounted(fetchData);
       <div class="p-6 bg-red-50/50 rounded-2xl border border-red-100">
         <p class="text-xs text-red-600 font-bold uppercase tracking-widest mb-1">Low Stock (under 5)</p>
         <p class="text-4xl font-black text-red-700">{{ lowStockCount }}</p>
+      </div>
+      <div class="p-6 bg-purple-50/50 rounded-2xl border border-purple-100">
+        <p class="text-xs text-purple-600 font-bold uppercase tracking-widest mb-1">On Sale</p>
+        <p class="text-4xl font-black text-purple-700">{{ discountedProductsCount }}</p>
       </div>
     </div>
 
@@ -856,7 +860,7 @@ const products = ref([]);
 const categories = ref([]);
 const selectedCategory = ref("");
 const searchQuery = ref("");
-const isLoading = ref(true); // Mulai dari true untuk Skeleton
+const isLoading = ref(true);
 
 const currentPage = ref(1);
 const itemsPerPage = ref(5);
@@ -866,13 +870,18 @@ const axiosConfig = {
   headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
 };
 
-// --- [BARU] COMPUTED METRICS ---
+// --- COMPUTED METRICS ---
 const healthyStockCount = computed(() => {
   return products.value.filter(p => p.stock >= 5).length;
 });
 
 const lowStockCount = computed(() => {
   return products.value.filter(p => p.stock < 5).length;
+});
+
+// [BARU] Menghitung produk yang memiliki discount_price (dianggap diskon/sale)
+const discountedProductsCount = computed(() => {
+  return products.value.filter(p => p.discount_price && parseFloat(p.discount_price) < parseFloat(p.price)).length;
 });
 
 // --- FILTERING & PAGINATION ---
@@ -958,10 +967,10 @@ const confirmDelete = (id) => {
     confirmButtonText: "Yes, delete it!",
   }).then(async (result) => {
     if (result.isConfirmed) {
-      isLoading.value = true; // Munculkan skeleton saat menghapus
+      isLoading.value = true;
       try {
         await axios.delete(`${BASE_URL}/products/${id}`, axiosConfig);
-        await fetchData(); // fetchData akan menangani isLoading.value = false
+        await fetchData();
         Swal.fire("Deleted!", "Success", "success");
       } catch (err) {
         isLoading.value = false;
