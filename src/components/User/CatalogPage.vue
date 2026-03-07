@@ -651,11 +651,17 @@ onMounted(initCatalog);
       <div
         class="gap-x-6 gap-y-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mx-auto max-w-7xl"
       >
-        <div
+        <!-- <div
           v-for="product in paginatedProducts"
           :key="product.id"
           class="group cursor-pointer"
           @click="$router.push(`/product/${product.id}`)"
+        > -->
+        <div
+          v-for="product in paginatedProducts"
+          :key="product.id"
+          class="group cursor-pointer"
+          @click="goToDetail(product)"
         >
           <!-- <div
             class="relative bg-white shadow-sm mb-4 rounded-sm aspect-[4/5] overflow-hidden group/slider"
@@ -1060,21 +1066,29 @@ const fetchWishlists = async () => {
 
 const toggleWishlist = async (productId) => {
   if (!isAuthenticated) {
-    Swal.fire({ icon: "info", title: "Login Required", text: "Please login to add favorites." });
+    Swal.fire({
+      icon: "info",
+      title: "Login Required",
+      text: "Please login to add favorites.",
+    });
     return;
   }
-  
+
   // Optimistic UI Update
   if (isFavorited(productId)) {
-    userWishlists.value = userWishlists.value.filter(id => id !== productId);
+    userWishlists.value = userWishlists.value.filter((id) => id !== productId);
   } else {
     userWishlists.value.push(productId);
   }
 
   try {
-    await axios.post(`${BASE_URL}/wishlists/toggle`, { product_id: productId }, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-    });
+    await axios.post(
+      `${BASE_URL}/wishlists/toggle`,
+      { product_id: productId },
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      },
+    );
   } catch (error) {
     fetchWishlists(); // Rollback jika API gagal
   }
@@ -1146,6 +1160,15 @@ const formatPrice = (value) =>
     minimumFractionDigits: 0,
   }).format(value);
 
+// [BARU] Fungsi Lempar Data Instan ke Detail
+const goToDetail = (product) => {
+  router.push({
+    path: `/product/${product.id}`,
+    // Melemparkan data JSON mentah ke memory browser
+    state: { productData: JSON.stringify(product) } 
+  });
+};
+
 // onMounted(initCatalog);
 
 // onMounted(async () => {
@@ -1173,7 +1196,7 @@ watch(
     if (newSearch !== undefined) {
       searchQuery.value = newSearch;
     }
-  }
+  },
 );
 
 onUnmounted(() => {
