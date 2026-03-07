@@ -104,7 +104,7 @@ const pieOptions = {
 };
 </script> -->
 
-<template>
+<!-- <template>
   <div class="space-y-8 animate-fade-in">
     <div class="gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
       <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
@@ -276,6 +276,200 @@ const formatPrice = (v) =>
     currency: "IDR",
     minimumFractionDigits: 0,
   }).format(v);
+const chartOptions = { responsive: true, maintainAspectRatio: false };
+const pieOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: { legend: { position: "bottom" } },
+};
+
+onMounted(fetchData);
+</script> -->
+
+<template>
+  <div class="space-y-8 animate-fade-in">
+    <div class="gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
+        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">Total Sales</p>
+        <p class="font-black text-gray-900 text-2xl">{{ formatPrice(stats.total_sales) }}</p>
+        <span class="font-medium text-green-500 text-xs">Completed payments</span>
+      </div>
+      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
+        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">Total Products</p>
+        <p class="font-black text-gray-900 text-2xl">{{ stats.total_products }}</p>
+        <span class="text-gray-400 text-xs">Active pieces in catalog</span>
+      </div>
+      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
+        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">Total Transactions</p>
+        <p class="font-black text-gray-900 text-2xl">{{ stats.total_transactions }}</p>
+        <span class="text-gray-400 text-xs">All time orders</span>
+      </div>
+      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
+        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">Total Users</p>
+        <p class="font-black text-gray-900 text-2xl">{{ stats.total_users }}</p>
+        <span class="font-medium text-blue-500 text-xs">Registered members</span>
+      </div>
+    </div>
+
+    <div class="gap-6 grid grid-cols-1 lg:grid-cols-3">
+      <div class="lg:col-span-2 bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
+        <h3 class="mb-6 font-bold text-gray-800">Monthly Revenue Overview</h3>
+        <div class="h-[300px]" v-if="!isLoading">
+          <Line :data="revenueData" :options="chartOptions" />
+        </div>
+        <div v-else class="h-[300px] bg-gray-100 animate-pulse rounded-xl"></div>
+      </div>
+
+      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
+        <h3 class="mb-6 font-bold text-gray-800">Historical Best Sellers</h3>
+        <div class="flex justify-center h-[300px]" v-if="!isLoading">
+          <Pie :data="pieData" :options="pieOptions" />
+        </div>
+        <div v-else class="h-[300px] bg-gray-100 animate-pulse rounded-xl"></div>
+      </div>
+    </div>
+
+    <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
+      <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
+        <div>
+          <h3 class="font-bold text-gray-800 text-lg flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            AI Sales Prediction (C4.5 Algorithm)
+          </h3>
+          <p class="text-xs text-gray-500 mt-1">Predicting future bestsellers based on category trends, pricing, and scarcity rules.</p>
+        </div>
+      </div>
+
+      <div v-if="isLoading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div v-for="i in 4" :key="i" class="bg-gray-100 h-32 rounded-xl animate-pulse"></div>
+      </div>
+
+      <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div 
+          v-for="item in predictedProducts" 
+          :key="item.id"
+          class="border border-gray-100 rounded-xl p-4 hover:shadow-md transition bg-gray-50/50 flex flex-col"
+        >
+          <div class="flex items-start gap-4 mb-4">
+            <img :src="item.image" class="w-16 h-16 object-cover rounded-lg shadow-sm" />
+            <div>
+              <p class="font-bold text-gray-900 text-sm line-clamp-2 leading-tight">{{ item.name }}</p>
+              <p :class="item.color" class="font-black text-[10px] uppercase tracking-widest mt-1">{{ item.label }}</p>
+            </div>
+          </div>
+          
+          <div class="mt-auto pt-3 border-t border-gray-200 border-dashed">
+            <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Prediction Factors:</p>
+            <p class="text-xs text-gray-600 italic">{{ item.reasons || 'No specific factors' }}</p>
+            
+            <div class="mt-3 w-full bg-gray-200 rounded-full h-1.5">
+              <div class="bg-purple-600 h-1.5 rounded-full" :style="{ width: item.score + '%' }"></div>
+            </div>
+            <p class="text-right text-[10px] text-gray-500 mt-1 font-bold">{{ item.score }}% Match</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import { BASE_URL } from "../../config/api.js";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+} from "chart.js";
+import { Line, Pie } from "vue-chartjs";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+);
+
+const stats = ref({
+  total_sales: 0,
+  total_products: 0,
+  total_transactions: 0,
+  total_users: 0,
+});
+const revenueData = ref({ labels: [], datasets: [] });
+const pieData = ref({ labels: [], datasets: [] });
+const predictedProducts = ref([]); // [BARU] State untuk Prediksi
+const isLoading = ref(true);
+
+const axiosConfig = {
+  headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
+};
+
+const fetchData = async () => {
+  isLoading.value = true;
+  try {
+    const [resStats, resRevenue, resPopular, resPredict] = await Promise.all([
+      axios.get(`${BASE_URL}/admin/dashboard/stats`, axiosConfig),
+      axios.get(`${BASE_URL}/admin/dashboard/revenue-chart`, axiosConfig),
+      axios.get(`${BASE_URL}/admin/dashboard/popular-products`, axiosConfig),
+      axios.get(`${BASE_URL}/admin/dashboard/predicted-bestsellers`, axiosConfig), // [BARU] Hit API Prediksi
+    ]);
+
+    stats.value = resStats.data;
+    
+    predictedProducts.value = resPredict.data; // [BARU] Simpan hasil prediksi
+
+    revenueData.value = {
+      labels: resRevenue.data.map((item) => item.month),
+      datasets: [
+        {
+          label: "Revenue (IDR)",
+          backgroundColor: "#000",
+          borderColor: "#000",
+          data: resRevenue.data.map((item) => item.total),
+          tension: 0.4,
+          fill: false,
+        },
+      ],
+    };
+
+    pieData.value = {
+      labels: resPopular.data.map((item) => item.name),
+      datasets: [
+        {
+          backgroundColor: ["#1e1e1e", "#3b82f6", "#10b981", "#f59e0b", "#ef4444"],
+          data: resPopular.data.map((item) => item.total_sold),
+        },
+      ],
+    };
+  } catch (err) {
+    console.error("Dashboard data failed", err);
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+const formatPrice = (v) =>
+  new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0,
+  }).format(v);
+
 const chartOptions = { responsive: true, maintainAspectRatio: false };
 const pieOptions = {
   responsive: true,
