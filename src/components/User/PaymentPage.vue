@@ -2759,7 +2759,7 @@ onMounted(fetchData);
     v-else
     class="mx-auto px-6 py-12 md:py-24 max-w-6xl min-h-screen animate-fade-in"
   >
-    <div v-if="cartItems.length === 0" class="text-center py-20">
+    <div v-if="checkoutItems.length === 0" class="text-center py-20">
       <h2 class="font-serif text-3xl mb-4">Your bag is empty</h2>
       <button
         @click="$router.push('/catalog')"
@@ -2790,7 +2790,7 @@ onMounted(fetchData);
                 Shipping Address
               </h2>
             </div>
-            
+
             <div
               v-if="addresses.length === 0"
               class="text-center py-10 bg-gray-50 rounded-2xl border border-dashed border-gray-300"
@@ -2932,7 +2932,9 @@ onMounted(fetchData);
                     >
                       Standard / Express
                     </p>
-                    <p class="text-gray-500 text-xs mt-1">Powered by Biteship</p>
+                    <p class="text-gray-500 text-xs mt-1">
+                      Powered by Biteship
+                    </p>
                   </div>
                 </div>
               </label>
@@ -3150,7 +3152,12 @@ onMounted(fetchData);
             <div
               class="space-y-4 mb-8 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar"
             >
-              <div v-for="item in cartItems" :key="item.id" class="flex gap-4">
+              <!-- <div v-for="item in cartItems" :key="item.id" class="flex gap-4"> -->
+              <div
+                v-for="item in checkoutItems"
+                :key="item.id"
+                class="flex gap-4"
+              >
                 <img
                   :src="item.product.image"
                   class="w-16 h-16 object-cover rounded-xl bg-gray-100 shrink-0"
@@ -3180,12 +3187,12 @@ onMounted(fetchData);
               <div class="flex justify-between text-gray-500">
                 <span>Total Items</span>
                 <span class="font-bold text-gray-900"
-                  >{{ cartCount }} items</span
+                  >{{ checkoutCount }} items</span
                 >
               </div>
               <div class="flex justify-between text-gray-500">
                 <span>Subtotal</span>
-                <span>{{ formatPrice(totalCartAmount) }}</span>
+                <span>{{ formatPrice(checkoutTotalAmount) }}</span>
               </div>
 
               <div
@@ -3247,11 +3254,11 @@ onMounted(fetchData);
                   class="text-right"
                 >
                   <span class="font-medium text-gray-900 block">{{
-                    formatPrice(selectedRate.price * cartCount)
+                    formatPrice(selectedRate.price * checkoutCount)
                   }}</span>
                   <p class="text-[10px] text-gray-400 mt-1">
                     {{ formatPrice(selectedRate.price) }} x
-                    {{ cartCount }} items
+                    {{ checkoutCount }} items
                   </p>
                 </div>
                 <span v-else class="italic text-[10px]">Select method</span>
@@ -3545,7 +3552,15 @@ import { BASE_URL } from "../../config/api.js";
 // Import State dari useCart
 import { useCart } from "../../composables/useCart.js";
 
-const { cartItems, cartCount, totalCartAmount, clearCart } = useCart();
+// const { cartItems, cartCount, totalCartAmount, clearCart } = useCart();
+const {
+  cartItems,
+  checkoutCount, // Gantikan cartCount dengan checkoutCount
+  checkoutTotalAmount, // Gantikan totalCartAmount dengan checkoutTotalAmount
+  selectedItemIds,
+  clearSelectedCart, // Gantikan clearCart dengan clearSelectedCart
+} = useCart();
+
 import { Country, State } from "country-state-city";
 
 // Import Leaflet (Wajib untuk Peta)
@@ -3621,9 +3636,9 @@ const destinationInfo = computed(() => {
 });
 
 const grandTotal = computed(() => {
-  let total = totalCartAmount.value;
+  let total = checkoutTotalAmount.value;
   if (shippingMethod.value === "biteship" && selectedRate.value) {
-    total += parseFloat(selectedRate.value.price) * cartCount.value;
+    total += parseFloat(selectedRate.value.price) * checkoutCount.value;
   }
   return total;
 });
@@ -3976,10 +3991,10 @@ const fetchData = async () => {
 };
 
 const maxUsablePoints = computed(() => {
-  if (!userData.value || totalCartAmount.value === 0) return 0;
+  if (!userData.value || checkoutTotalAmount.value === 0) return 0;
   const userBalance = userData.value.point || 0;
   const maxPointsForPrice = Math.floor(
-    totalCartAmount.value / pointConversionRate,
+    checkoutTotalAmount.value / pointConversionRate,
   );
   return Math.min(userBalance, maxPointsForPrice);
 });
@@ -4052,6 +4067,7 @@ const handlePayment = async () => {
       address_id: selectedAddressId.value,
       shipping_method: shippingMethod.value,
       use_points: pointsToUse.value,
+      cart_ids: selectedItemIds.value,
       courier_company:
         shippingMethod.value === "biteship"
           ? selectedRate.value?.company
@@ -4073,10 +4089,12 @@ const handlePayment = async () => {
 
     // Xendit Checkout URL didapat dari response
     if (res.data.checkout_url) {
-      
       // [PERBAIKAN] KOSONGKAN KERANJANG DI MEMORI FRONTEND
-      clearCart();
-      
+      // clearCart();
+
+      // [PERBAIKAN] KOSONGKAN KERANJANG (HANYA BARANG YANG DIBELI) DI MEMORI FRONTEND
+      clearSelectedCart();
+
       // Redirect ke Xendit
       window.location.href = res.data.checkout_url;
     }
@@ -4092,8 +4110,15 @@ const handlePayment = async () => {
 };
 
 const calculateEarnedPoints = computed(() => {
-  if (!totalCartAmount.value) return 0;
-  return Math.floor(totalCartAmount.value / 100000);
+  if (!checkoutTotalAmount.value) return 0;
+  return Math.floor(checkoutTotalAmount.value / 100000);
+});
+
+// Buat computed untuk menyaring barang yang benar-benar akan dibayar
+const checkoutItems = computed(() => {
+  return cartItems.value.filter((item) =>
+    selectedItemIds.value.includes(item.id),
+  );
 });
 
 const formatPrice = (v) =>
