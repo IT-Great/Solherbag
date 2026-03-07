@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <section class="bg-white w-full">
     <div
       class="w-full overflow-hidden cursor-pointer"
@@ -11,7 +11,6 @@
       />
     </div>
 
-    <!-- INTRO -->
     <div class="mx-auto px-6 py-16 md:py-24 max-w-4xl text-center">
       <h2
         class="mb-6 font-medium text-black text-2xl md:text-3xl tracking-tight"
@@ -38,7 +37,6 @@
       />
     </div>
 
-    <!-- CTA -->
     <div class="mx-auto px-6 py-16 md:py-24 max-w-4xl text-center">
       <h2 class="mb-8 font-medium text-black text-xl md:text-2xl leading-snug">
         Embrace the possibilities with <br />go everywhere bags
@@ -53,32 +51,6 @@
     </div>
 
     <div class="px-6 py-24 w-full">
-      <!-- <div class="mx-auto max-w-[1600px]">
-        <h3
-          class="mb-10 font-serif font-light text-gray-800 text-3xl md:text-4xl italic"
-        >
-          Volume 1 - Goddess Of The Sun
-        </h3>
-        <div class="flex gap-4 overflow-x-auto scrollbar-hide">
-          <div
-            v-for="p in volumeOneProducts"
-            :key="p.id"
-            @click="$router.push(`/product/${p.id}`)"
-            class="flex-shrink-0 w-[300px] md:w-[380px] cursor-pointer"
-          >
-            <div class="bg-gray-100 mb-4 overflow-hidden">
-              <img
-                :src="p.image"
-                class="w-full h-[350px] md:h-[450px] object-cover hover:scale-110 transition-transform duration-700"
-              />
-            </div>
-            <h4 class="text-[10px] text-gray-500 uppercase tracking-widest">
-              {{ p.name }}
-            </h4>
-            <p class="font-medium text-black">{{ formatPrice(p.price) }}</p>
-          </div>
-        </div>
-      </div> -->
       <div class="mx-auto max-w-[1600px]">
         <h3
           class="mb-10 font-serif font-light text-gray-800 text-3xl md:text-4xl italic"
@@ -122,32 +94,6 @@
     </div>
 
     <div class="px-6 pb-24 w-full">
-      <!-- <div class="mx-auto max-w-[1600px]">
-        <h3
-          class="mb-10 font-serif font-light text-gray-800 text-3xl md:text-4xl italic"
-        >
-          Volume 2 - The Red Chapter Collection
-        </h3>
-        <div class="flex gap-4 overflow-x-auto scrollbar-hide">
-          <div
-            v-for="p in volumeTwoProducts"
-            :key="p.id"
-            @click="$router.push(`/product/${p.id}`)"
-            class="flex-shrink-0 w-[300px] md:w-[380px] cursor-pointer"
-          >
-            <div class="bg-gray-100 mb-4 overflow-hidden">
-              <img
-                :src="p.image"
-                class="w-full h-[350px] md:h-[450px] object-cover hover:scale-110 transition-transform duration-700"
-              />
-            </div>
-            <h4 class="text-[10px] text-gray-500 uppercase tracking-widest">
-              {{ p.name }}
-            </h4>
-            <p class="font-medium text-black">{{ formatPrice(p.price) }}</p>
-          </div>
-        </div>
-      </div> -->
       <div class="mx-auto max-w-[1600px]">
         <h3
           class="mb-10 font-serif font-light text-gray-800 text-3xl md:text-4xl italic"
@@ -190,8 +136,6 @@
       </div>
     </div>
 
-    <!-- FOOTER IMAGE -->
-    <!-- <div class="relative w-full h-[300px] md:h-[500px] overflow-hidden"> -->
     <div
       class="relative w-full h-[300px] md:h-[500px] overflow-hidden cursor-pointer"
       @click="navigateToSpecificProduct('RED CHARM')"
@@ -287,4 +231,259 @@ onMounted(initData);
 .contain {
   contain: layout paint;
 }
+</style> -->
+
+<template>
+  <section class="bg-white w-full">
+    <div
+      class="w-full overflow-hidden cursor-pointer relative"
+      @click="navigateToSpecificProduct('ETERNA RED')"
+    >
+      <img
+        src="../../assets/home_firstimage.jpeg"
+        alt="SolHer Product"
+        class="w-full h-auto object-cover hover:scale-105 transition-transform duration-1000"
+      />
+      <div class="absolute bottom-10 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-sm px-6 py-3 rounded-full shadow-2xl flex items-center gap-3 animate-bounce">
+        <span class="relative flex h-3 w-3">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+        </span>
+        <p class="font-bold text-xs uppercase tracking-widest text-black">Eterna Red is selling fast!</p>
+      </div>
+    </div>
+
+    <div class="mx-auto px-6 py-16 md:py-24 max-w-4xl text-center">
+      <h2 class="mb-6 font-medium text-black text-2xl md:text-3xl tracking-tight">
+        Crafted from Premium Selected Leatherty
+      </h2>
+      <p class="font-light text-gray-700 text-sm md:text-base leading-relaxed">
+        Crafted from carefully selected genuine leather, each SolHerbag piece
+        reflects timeless elegance and refined craftsmanship — a seamless blend
+        of beauty, quality, and modern sophistication.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 w-full overflow-hidden">
+      <div class="relative overflow-hidden group cursor-pointer" @click="navigateToSpecificProduct('IMPERIAL RED')">
+        <img src="../../assets/DSCF5814.jpg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+        <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+          <span class="bg-white text-black px-6 py-3 rounded-full font-bold text-xs uppercase tracking-widest">Discover Imperial</span>
+        </div>
+      </div>
+      <div class="relative overflow-hidden group cursor-pointer" @click="navigateToSpecificProduct('MAN TANG HONG')">
+        <img src="../../assets/DSCF5186.jpg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+        <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+          <span class="bg-white text-black px-6 py-3 rounded-full font-bold text-xs uppercase tracking-widest">Shop Man Tang</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mx-auto px-6 py-16 md:py-24 max-w-4xl text-center border-b border-gray-100">
+      <h2 class="mb-8 font-medium text-black text-xl md:text-2xl leading-snug">
+        Embrace the possibilities with <br />go everywhere bags
+      </h2>
+
+      <router-link
+        to="/catalog"
+        class="inline-block bg-[#1A1A1A] hover:bg-black px-10 py-4 font-semibold text-white text-xs uppercase tracking-[0.2em] transition"
+      >
+        Shop New Arrival
+      </router-link>
+    </div>
+
+    <div v-if="!isLoading && state.trendingProducts?.length > 0" class="px-6 py-20 w-full bg-gray-50 border-b border-gray-200">
+      <div class="mx-auto max-w-[1600px]">
+        <div class="flex justify-between items-end mb-10">
+          <div>
+            <h3 class="font-serif font-light text-red-700 text-3xl md:text-4xl italic">
+              Trending Now
+            </h3>
+            <p class="text-xs text-gray-500 uppercase tracking-widest mt-2 font-bold">Our most loved pieces this week</p>
+          </div>
+          <router-link to="/catalog" class="hidden md:block text-xs font-bold uppercase tracking-widest underline hover:text-red-600 transition">View All</router-link>
+        </div>
+
+        <div class="flex gap-4 overflow-x-auto scrollbar-hide pb-4">
+          <div
+            v-for="p in state.trendingProducts"
+            :key="'trend-'+p.id"
+            @click="$router.push(`/product/${p.id}`)"
+            class="group flex-shrink-0 w-[240px] md:w-[300px] cursor-pointer"
+          >
+            <div class="relative bg-white mb-4 overflow-hidden rounded-xl shadow-sm border border-gray-100">
+              <img
+                :src="p.image"
+                class="w-full h-[300px] md:h-[380px] object-cover group-hover:scale-105 transition-transform duration-700"
+                loading="lazy"
+              />
+              <div class="absolute top-3 left-3 bg-black text-white px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest">
+                Hot
+              </div>
+            </div>
+            <h4 class="font-bold text-xs text-gray-900 uppercase tracking-widest truncate">
+              {{ p.name }}
+            </h4>
+            <div class="flex items-center gap-2 mt-1">
+              <p v-if="p.discount_price" class="font-bold text-red-600 text-sm">{{ formatPrice(p.discount_price) }}</p>
+              <p :class="p.discount_price ? 'text-[10px] text-gray-400 line-through' : 'font-bold text-sm text-gray-600'">
+                {{ formatPrice(p.price) }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="px-6 py-24 w-full">
+      <div class="mx-auto max-w-[1600px]">
+        <h3 class="mb-10 font-serif font-light text-gray-800 text-3xl md:text-4xl italic">
+          Volume 1 - Goddess Of The Sun
+        </h3>
+
+        <div v-if="isLoading" class="flex gap-4 overflow-hidden">
+          <div v-for="n in 4" :key="n" class="flex-shrink-0 w-[300px] md:w-[380px] animate-pulse">
+            <div class="bg-gray-200 mb-4 w-full h-[350px] md:h-[450px]"></div>
+            <div class="bg-gray-200 mb-2 w-1/2 h-3"></div>
+            <div class="bg-gray-200 w-1/4 h-3"></div>
+          </div>
+        </div>
+
+        <div v-else class="flex gap-4 overflow-x-auto scrollbar-hide">
+          <div
+            v-for="p in state.volumeOne"
+            :key="p.id"
+            @click="$router.push(`/product/${p.id}`)"
+            class="group flex-shrink-0 w-[300px] md:w-[380px] cursor-pointer"
+          >
+            <div class="bg-gray-100 mb-4 overflow-hidden relative">
+              <img
+                :src="p.image"
+                class="w-full h-[350px] md:h-[450px] object-cover group-hover:scale-110 transition-transform duration-700"
+                loading="lazy"
+              />
+              <div v-if="p.stock < 5" class="absolute bottom-3 left-3 bg-amber-100 text-amber-800 px-2 py-1 text-[9px] font-bold uppercase tracking-widest rounded">Only {{ p.stock }} left</div>
+            </div>
+            <h4 class="text-[10px] text-gray-500 uppercase tracking-widest">
+              {{ p.name }}
+            </h4>
+            <p class="font-medium text-black">{{ formatPrice(p.discount_price ?? p.price) }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="px-6 pb-24 w-full">
+      <div class="mx-auto max-w-[1600px]">
+        <h3 class="mb-10 font-serif font-light text-gray-800 text-3xl md:text-4xl italic">
+          Volume 2 - The Red Chapter Collection
+        </h3>
+
+        <div v-if="isLoading" class="flex gap-4 overflow-hidden">
+          <div v-for="n in 4" :key="n" class="flex-shrink-0 w-[300px] md:w-[380px] animate-pulse">
+            <div class="bg-gray-200 mb-4 w-full h-[350px] md:h-[450px]"></div>
+            <div class="bg-gray-200 mb-2 w-1/2 h-3"></div>
+            <div class="bg-gray-200 w-1/4 h-3"></div>
+          </div>
+        </div>
+
+        <div v-else class="flex gap-4 overflow-x-auto scrollbar-hide">
+          <div
+            v-for="p in state.volumeTwo"
+            :key="p.id"
+            @click="$router.push(`/product/${p.id}`)"
+            class="group flex-shrink-0 w-[300px] md:w-[380px] cursor-pointer"
+          >
+            <div class="bg-gray-100 mb-4 overflow-hidden relative">
+              <img
+                :src="p.image"
+                class="w-full h-[350px] md:h-[450px] object-cover group-hover:scale-110 transition-transform duration-700"
+                loading="lazy"
+              />
+            </div>
+            <h4 class="text-[10px] text-gray-500 uppercase tracking-widest">
+              {{ p.name }}
+            </h4>
+            <p class="font-medium text-black">{{ formatPrice(p.discount_price ?? p.price) }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="relative w-full h-[300px] md:h-[500px] overflow-hidden cursor-pointer group"
+      @click="navigateToSpecificProduct('RED CHARM')"
+    >
+      <img
+        src="../../assets/home_lastimage.jpg"
+        alt="Premium Materials"
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
+      />
+      <div class="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 to-transparent p-8 md:p-16">
+        <h2 class="max-w-md font-serif font-light text-white text-2xl md:text-5xl translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+          Premium materials and <br />hand-selected finishing touches
+        </h2>
+      </div>
+    </div>
+  </section>
+</template>
+
+<script setup>
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import { useRouter } from "vue-router";
+import { BASE_URL } from "../../config/api.js";
+import { useProductStore } from "../../composables/useProductStore";
+
+const router = useRouter();
+const { state, fetchHomeData } = useProductStore();
+const isLoading = ref(false);
+
+const initData = async () => {
+  if (!state.isHomeLoaded) {
+    isLoading.value = true;
+    await fetchHomeData();
+    isLoading.value = false;
+  } else {
+    fetchHomeData();
+  }
+};
+
+const navigateToSpecificProduct = async (query) => {
+  try {
+    const res = await axios.get(`${BASE_URL}/home/find-product`, {
+      params: { query },
+    });
+    router.push(`/product/${res.data.id}`);
+  } catch (err) {
+    console.error("Product link broken or not found");
+  }
+};
+
+const formatPrice = (value) =>
+  new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0, // Dibuat 0 agar tidak mengganggu layout mata (lebih clean)
+  }).format(value);
+
+onMounted(initData);
+</script>
+
+<style scoped>
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.contain {
+  contain: layout paint;
+}
 </style>
+
