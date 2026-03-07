@@ -286,6 +286,7 @@ import SupplierPage from '../components/Admin/SupplierPage.vue'
 import InvoicePage from '../components/Admin/InvoicePage.vue'
 import CartPage from '../components/User/CartPage.vue'
 import DetailMessageViewPage from '../components/Admin/DetailMessageViewPage.vue'
+import SubscriberPage from '../components/Admin/SubscriberPage.vue'
 
 const routes = [
     { path: '/', name: 'Home', component: HomePage },
@@ -434,7 +435,7 @@ const routes = [
         meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true }
     },
     {
-        path: '/admin/subscribers', name: 'Subscribers', component: SubscriberListPage,
+        path: '/admin/subscribers', name: 'Subscribers', component: SubscriberPage,
         meta: {
             requiresAuth: true,
             hideHeaderFooter: true,
