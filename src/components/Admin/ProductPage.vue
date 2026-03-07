@@ -624,7 +624,7 @@ onMounted(fetchData);
         <p class="text-4xl font-black text-red-700">{{ lowStockCount }}</p>
       </div>
       <div class="p-6 bg-purple-50/50 rounded-2xl border border-purple-100">
-        <p class="text-xs text-purple-600 font-bold uppercase tracking-widest mb-1">On Sale</p>
+        <p class="text-xs text-purple-600 font-bold uppercase tracking-widest mb-1">On Discount</p>
         <p class="text-4xl font-black text-purple-700">{{ discountedProductsCount }}</p>
       </div>
     </div>
