@@ -998,13 +998,14 @@ onMounted(initCatalog);
 
 <script setup>
 import { ref, onMounted, computed, watch, onUnmounted } from "vue";
-import { useRoute } from "vue-router"; // [BARU] Import useRoute
+import { useRoute, useRouter } from "vue-router"; // [BARU] Import useRoute
 import Swal from "sweetalert2"; // Pastikan Swal diimport
 import { useProductStore } from "../../composables/useProductStore";
 import axios from "axios";
 import { BASE_URL } from "../../config/api.js";
 
 const route = useRoute(); // [BARU] Inisialisasi route
+const router = useRouter();
 
 const { state, fetchCatalogData } = useProductStore();
 const categories = computed(() => state.categories);
