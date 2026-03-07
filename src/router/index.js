@@ -434,6 +434,14 @@ const routes = [
         meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true }
     },
     {
+        path: '/admin/subscribers', name: 'Subscribers', component: SubscriberListPage,
+        meta: {
+            requiresAuth: true,
+            hideHeaderFooter: true,
+            isAdmin: true
+        }
+    },
+    {
         path: '/admin/messages',
         name: 'MessageView',
         component: MessageViewPage,
