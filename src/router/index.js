@@ -609,6 +609,9 @@ import SubscriberPage from '../components/Admin/SubscriberPage.vue'
 import ForgotPasswordPage from '../components/User/ForgotPasswordPage.vue'
 import CodeVerificationPage from '../components/User/CodeVerificationPage.vue'
 import ResetPasswordPage from '../components/User/ResetPasswordPage.vue'
+import AdminForgotPasswordPage from '../components/Admin/AdminForgotPasswordPage.vue'
+import AdminCodeVerificationPage from '../components/Admin/AdminCodeVerificationPage.vue'
+import AdminResetPasswordPage from '../components/Admin/AdminResetPasswordPage.vue'
 
 const routes = [
     { path: '/', name: 'Home', component: HomePage },
@@ -634,6 +637,25 @@ const routes = [
         meta: { hideHeaderFooter: true }
     },
     { path: '/loginadmin', name: 'AdminLogin', component: AdminLoginPage, meta: { hideHeaderFooter: true } },
+    // --- ADMIN FORGOT PASSWORD ROUTES ---
+    {
+        path: '/admin/forgot-password',
+        name: 'AdminForgotPassword',
+        component: AdminForgotPasswordPage,
+        meta: { hideHeaderFooter: true }
+    },
+    {
+        path: '/admin/verify-code',
+        name: 'AdminVerifyCode',
+        component: AdminCodeVerificationPage,
+        meta: { hideHeaderFooter: true }
+    },
+    {
+        path: '/admin/reset-password',
+        name: 'AdminResetPassword',
+        component: AdminResetPasswordPage,
+        meta: { hideHeaderFooter: true }
+    },
     {
         path: '/register',
         name: 'Register',

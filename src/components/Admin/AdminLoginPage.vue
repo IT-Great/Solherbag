@@ -52,6 +52,14 @@
             Login as Admin
           </button>
         </div>
+        <div class="text-center mt-4">
+          <router-link
+            to="/admin/forgot-password"
+            class="text-xs text-gray-500 hover:text-black hover:underline transition"
+          >
+            Forgot your password?
+          </router-link>
+        </div>
       </form>
     </div>
   </div>
