@@ -606,12 +606,33 @@ import InvoicePage from '../components/Admin/InvoicePage.vue'
 import CartPage from '../components/User/CartPage.vue'
 import DetailMessageViewPage from '../components/Admin/DetailMessageViewPage.vue'
 import SubscriberPage from '../components/Admin/SubscriberPage.vue'
+import ForgotPasswordPage from '../components/User/ForgotPasswordPage.vue'
+import CodeVerificationPage from '../components/User/CodeVerificationPage.vue'
+import ResetPasswordPage from '../components/User/ResetPasswordPage.vue'
 
 const routes = [
     { path: '/', name: 'Home', component: HomePage },
     { path: '/catalog', name: 'Catalog', component: CatalogPage },
     { path: '/contact', name: 'Contact', component: ContactPage },
     { path: '/login', name: 'Login', component: LoginPage, meta: { hideHeaderFooter: true } },
+    {
+        path: '/forgot-password',
+        name: 'ForgotPassword',
+        component: ForgotPasswordPage,
+        meta: { hideHeaderFooter: true }
+    },
+    {
+        path: '/verify-code',
+        name: 'VerifyCode',
+        component: CodeVerificationPage,
+        meta: { hideHeaderFooter: true }
+    },
+    {
+        path: '/reset-password',
+        name: 'ResetPassword',
+        component: ResetPasswordPage,
+        meta: { hideHeaderFooter: true }
+    },
     { path: '/loginadmin', name: 'AdminLogin', component: AdminLoginPage, meta: { hideHeaderFooter: true } },
     {
         path: '/register',

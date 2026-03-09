@@ -52,6 +52,14 @@
             Login
           </button>
         </div>
+        <div class="text-center mt-4">
+          <router-link
+            to="/forgot-password"
+            class="text-xs text-gray-500 hover:text-black hover:underline transition"
+          >
+            Forgot your password?
+          </router-link>
+        </div>
       </form>
 
       <p class="mt-6 text-gray-600 text-xs text-center">
