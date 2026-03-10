@@ -751,7 +751,7 @@ onMounted(fetchReport);
 </style> -->
 
 <!-- Updated Pagination & Data Load -->
-<template>
+<!-- <template>
   <div class="space-y-8 animate-fade-in">
     <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
       <div class="flex flex-wrap items-end gap-4">
@@ -1291,6 +1291,506 @@ onMounted(fetchReport);
 </script>
 
 <style scoped>
+@media print {
+  .export-header {
+    display: block !important;
+  }
+}
+</style> -->
+
+<template>
+  <div class="space-y-8 animate-fade-in pb-10">
+    <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
+      <div class="flex flex-wrap items-end gap-4">
+        <div class="w-full sm:w-auto">
+          <label class="block mb-1 font-bold text-gray-500 text-xs uppercase tracking-wide">
+            Year
+          </label>
+          <select
+            v-model="filters.year"
+            class="bg-gray-50 px-4 py-2 border border-gray-200 rounded-xl w-full sm:w-32 focus:ring-2 focus:ring-black outline-none font-bold transition"
+          >
+            <option v-for="y in years" :key="y" :value="y">{{ y }}</option>
+          </select>
+        </div>
+        <div class="w-full sm:w-auto">
+          <label class="block mb-1 font-bold text-gray-500 text-xs uppercase tracking-wide">
+            Month
+          </label>
+          <select
+            v-model="filters.month"
+            class="bg-gray-50 px-4 py-2 border border-gray-200 rounded-xl w-full sm:w-40 focus:ring-2 focus:ring-black outline-none transition"
+          >
+            <option value="">All Months</option>
+            <option v-for="(m, i) in months" :key="i" :value="i + 1">
+              {{ m }}
+            </option>
+          </select>
+        </div>
+        <div class="flex-grow w-full sm:w-auto">
+          <label class="block mb-1 font-bold text-gray-500 text-xs uppercase tracking-wide">
+            Search Product
+          </label>
+          <div class="relative">
+            <input
+              v-model="filters.search"
+              type="text"
+              placeholder="Search by product name or code..."
+              class="bg-gray-50 pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none w-full transition"
+            />
+            <svg
+              class="top-2.5 left-3 absolute w-5 h-5 text-gray-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+        </div>
+        <button
+          @click="fetchReport"
+          class="bg-black hover:bg-gray-800 px-6 py-2 rounded-xl font-bold text-white transition h-[42px] shadow-sm"
+        >
+          Apply Filter
+        </button>
+      </div>
+    </div>
+
+    <div class="gap-6 grid grid-cols-1 md:grid-cols-3">
+      <div class="bg-blue-50 p-6 border border-blue-100 rounded-2xl relative overflow-hidden">
+        <p class="font-bold text-blue-600 text-xs uppercase tracking-widest mb-1">Total Revenue</p>
+        <p v-if="!isLoading" class="font-black text-3xl text-blue-900">{{ formatPrice(grandTotalRevenue) }}</p>
+        <div v-else class="h-8 w-3/4 bg-blue-200 rounded animate-pulse mt-1"></div>
+      </div>
+      <div class="bg-green-50 p-6 border border-green-100 rounded-2xl relative overflow-hidden">
+        <p class="font-bold text-green-600 text-xs uppercase tracking-widest mb-1">Total Units Sold</p>
+        <p v-if="!isLoading" class="font-black text-3xl text-green-900">{{ totalUnitsSold }} pcs</p>
+        <div v-else class="h-8 w-1/2 bg-green-200 rounded animate-pulse mt-1"></div>
+      </div>
+      <div class="bg-purple-50 p-6 border border-purple-100 rounded-2xl relative overflow-hidden">
+        <p class="font-bold text-purple-600 text-xs uppercase tracking-widest mb-1">Top Best Seller</p>
+        <p v-if="!isLoading" class="font-black text-xl text-purple-900 truncate">{{ bestSellerName }}</p>
+        <div v-else class="h-6 w-3/4 bg-purple-200 rounded animate-pulse mt-2"></div>
+      </div>
+    </div>
+
+    <div class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[400px]">
+      
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+        <h2 class="font-bold text-gray-800 text-xl">Product Performance</h2>
+
+        <div class="flex items-center gap-4">
+          <div class="flex gap-2">
+            <button
+              @click="exportToPDF"
+              :disabled="allReportData.length === 0 || isLoading"
+              class="flex items-center gap-2 bg-red-50 hover:bg-red-100 text-red-600 disabled:opacity-50 disabled:cursor-not-allowed px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-widest transition"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              PDF
+            </button>
+            <button
+              @click="exportToExcel"
+              :disabled="allReportData.length === 0 || isLoading"
+              class="flex items-center gap-2 bg-green-50 hover:bg-green-100 text-green-600 disabled:opacity-50 disabled:cursor-not-allowed px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-widest transition"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Excel
+            </button>
+          </div>
+
+          <div class="h-6 w-px bg-gray-200 hidden md:block"></div>
+
+          <div class="flex items-center gap-2">
+            <span class="text-gray-500 text-xs uppercase">Show:</span>
+            <select
+              v-model="itemsPerPage"
+              class="bg-gray-50 px-2 py-1 border border-gray-200 rounded-lg text-sm outline-none cursor-pointer"
+            >
+              <option :value="5">5</option>
+              <option :value="10">10</option>
+              <option :value="20">20</option>
+              <option :value="50">50</option>
+              <option :value="100">100</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto" id="exportable-table">
+        <div class="hidden export-header mb-4">
+          <h2 class="text-2xl font-bold text-black">Sales Report</h2>
+          <p class="text-gray-500 text-sm">
+            Period:
+            {{ filters.month ? months[filters.month - 1] : "All Months" }}
+            {{ filters.year }}
+          </p>
+        </div>
+
+        <table class="w-full text-left bg-white border-collapse">
+          <thead>
+            <tr class="border-b border-gray-100 text-gray-400 text-xs uppercase tracking-widest">
+              <th class="pb-4 font-medium pl-2">Product Info</th>
+              <th class="pb-4 font-medium">Category</th>
+              <th class="pb-4 font-medium text-right">Units Sold</th>
+              <th class="pb-4 font-medium text-right pr-2">Revenue</th>
+            </tr>
+          </thead>
+          
+          <tbody v-if="isLoading">
+            <tr v-for="i in (itemsPerPage > 10 ? 10 : itemsPerPage)" :key="`skel-${i}`" class="border-b border-gray-50">
+              <td class="py-4 pl-2">
+                <div class="flex items-center gap-4">
+                  <div class="w-12 h-12 bg-gray-200 rounded-lg animate-pulse shrink-0"></div>
+                  <div class="space-y-2">
+                    <div class="h-4 w-32 bg-gray-200 rounded animate-pulse"></div>
+                    <div class="h-3 w-20 bg-gray-100 rounded animate-pulse"></div>
+                  </div>
+                </div>
+              </td>
+              <td class="py-4"><div class="h-4 w-24 bg-gray-200 rounded animate-pulse"></div></td>
+              <td class="py-4"><div class="h-4 w-12 bg-gray-200 rounded animate-pulse ml-auto"></div></td>
+              <td class="py-4 pr-2"><div class="h-4 w-24 bg-gray-200 rounded animate-pulse ml-auto"></div></td>
+            </tr>
+          </tbody>
+
+          <tbody v-else class="text-gray-600">
+            <tr
+              v-for="(item, index) in paginatedData"
+              :key="index"
+              class="hover:bg-gray-50 border-gray-50 border-b transition"
+            >
+              <td class="py-4 pl-2">
+                <div class="flex items-center gap-4">
+                  <img
+                    :src="`${item.image}?t=${new Date().getTime()}`"
+                    alt="Product"
+                    class="bg-gray-100 shadow-sm rounded-lg w-12 h-12 object-cover border border-gray-100"
+                    crossorigin="anonymous"
+                  />
+                  <div>
+                    <p class="font-bold text-gray-900">{{ item.name }}</p>
+                    <p class="font-mono text-gray-400 text-xs mt-0.5">{{ item.code }}</p>
+                  </div>
+                </div>
+              </td>
+              <td class="py-4 text-sm">{{ item.category_name }}</td>
+              <td class="py-4 font-medium text-right text-gray-900">
+                {{ item.total_sold }}
+              </td>
+              <td class="py-4 font-bold text-right text-green-600 pr-2">
+                {{ formatPrice(item.total_revenue) }}
+              </td>
+            </tr>
+            <tr v-if="allReportData.length === 0">
+              <td colspan="4" class="py-16 text-center text-gray-400 italic text-sm">
+                No sales data found for this period.
+              </td>
+            </tr>
+          </tbody>
+
+          <tfoot v-if="allReportData.length > 0 && !isLoading">
+            <tr class="bg-gray-50/50 font-bold text-gray-800 border-gray-100 border-t-2">
+              <td colspan="2" class="py-4 pl-4 text-right text-gray-500 text-xs uppercase tracking-widest">
+                Grand Total (All Pages)
+              </td>
+              <td class="py-4 text-right text-lg">{{ totalUnitsSold }}</td>
+              <td class="py-4 text-right text-green-700 text-xl pr-2">
+                {{ formatPrice(grandTotalRevenue) }}
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div
+        v-if="!isLoading && (totalPages > 0 || allReportData.length > 0)"
+        class="flex flex-col md:flex-row justify-between items-center gap-4 mt-6 pt-4 border-t border-gray-100"
+      >
+        <p class="text-sm text-gray-400">
+          Showing
+          <span class="font-bold text-gray-800">{{ showingStart }}</span> to
+          <span class="font-bold text-gray-800">{{ showingEnd }}</span> of
+          <span class="font-bold text-gray-800">{{ totalItems }}</span> products
+        </p>
+
+        <div v-if="totalPages > 1" class="flex gap-2">
+          <button
+            @click="changePage(currentPage - 1)"
+            :disabled="currentPage === 1"
+            class="px-4 py-2 border border-gray-200 rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+          >
+            Prev
+          </button>
+
+          <div class="flex gap-1 hidden sm:flex">
+            <button
+              v-for="(page, index) in visiblePages"
+              :key="index"
+              @click="typeof page === 'number' ? changePage(page) : null"
+              :disabled="page === '...'"
+              :class="[
+                currentPage === page
+                  ? 'bg-black text-white border-black'
+                  : 'hover:bg-gray-50 border-gray-200',
+                page === '...'
+                  ? 'cursor-default border-transparent hover:bg-transparent'
+                  : 'border',
+              ]"
+              class="w-10 h-10 rounded-xl font-medium transition flex items-center justify-center text-sm"
+            >
+              {{ page }}
+            </button>
+          </div>
+
+          <button
+            @click="changePage(currentPage + 1)"
+            :disabled="currentPage === totalPages"
+            class="px-4 py-2 border border-gray-200 rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, watch, computed } from "vue";
+import axios from "axios";
+import { BASE_URL } from "../../config/api.js";
+import html2pdf from "html2pdf.js";
+import * as XLSX from "xlsx";
+
+const allReportData = ref([]);
+const isLoading = ref(true); // Mulai dengan True agar skeleton muncul di awal
+
+const currentPage = ref(1);
+const itemsPerPage = ref(10);
+
+const grandTotalRevenue = ref(0);
+const totalUnitsSold = ref(0);
+const bestSellerName = ref("-");
+
+const currentYear = new Date().getFullYear();
+const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
+const months = [
+  "January", "February", "March", "April", "May", "June", 
+  "July", "August", "September", "October", "November", "December",
+];
+
+const filters = ref({
+  year: currentYear,
+  month: new Date().getMonth() + 1,
+  search: "",
+});
+
+const axiosConfig = {
+  headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
+};
+
+// ==========================================
+// CLIENT-SIDE PAGINATION LOGIC
+// ==========================================
+
+const totalItems = computed(() => allReportData.value.length);
+const totalPages = computed(() => Math.ceil(totalItems.value / itemsPerPage.value));
+
+const paginatedData = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value;
+  const end = start + itemsPerPage.value;
+  return allReportData.value.slice(start, end);
+});
+
+const showingStart = computed(() => {
+  if (totalItems.value === 0) return 0;
+  return (currentPage.value - 1) * itemsPerPage.value + 1;
+});
+
+const showingEnd = computed(() => {
+  return Math.min(currentPage.value * itemsPerPage.value, totalItems.value);
+});
+
+const visiblePages = computed(() => {
+  const current = currentPage.value;
+  const total = totalPages.value;
+  const maxVisible = 7;
+
+  if (total <= maxVisible) {
+    return Array.from({ length: total }, (_, i) => i + 1);
+  }
+
+  if (current <= 4) {
+    return [1, 2, 3, 4, 5, "...", total];
+  }
+
+  if (current >= total - 3) {
+    return [1, "...", total - 4, total - 3, total - 2, total - 1, total];
+  }
+
+  return [1, "...", current - 1, current, current + 1, "...", total];
+});
+
+// ==========================================
+// DATA FETCHING & CALCULATIONS
+// ==========================================
+
+const fetchReport = async () => {
+  isLoading.value = true;
+  try {
+    const params = {
+      month: filters.value.month,
+      year: filters.value.year,
+      search: filters.value.search,
+    };
+
+    const res = await axios.get(`${BASE_URL}/admin/sales-report`, {
+      ...axiosConfig,
+      params,
+    });
+
+    allReportData.value = res.data.data;
+    currentPage.value = 1;
+
+    calculateGlobalSummary(res.data.data);
+  } catch (error) {
+    console.error("Fetch report failed", error);
+  } finally {
+    // Tambahkan sedikit delay (misal 500ms) agar skeleton terbaca matanya (mencegah flickering jika internet terlalu cepat)
+    setTimeout(() => {
+      isLoading.value = false;
+    }, 500);
+  }
+};
+
+const calculateGlobalSummary = (data) => {
+  if (data.length > 0) {
+    grandTotalRevenue.value = data.reduce(
+      (acc, item) => acc + parseFloat(item.total_revenue),
+      0,
+    );
+    totalUnitsSold.value = data.reduce(
+      (acc, item) => acc + parseInt(item.total_sold),
+      0,
+    );
+    bestSellerName.value = data[0].name; // Karena data dari backend sudah diorder by total_sold DESC
+  } else {
+    grandTotalRevenue.value = 0;
+    totalUnitsSold.value = 0;
+    bestSellerName.value = "-";
+  }
+};
+
+const changePage = (page) => {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page;
+  }
+};
+
+const formatPrice = (v) =>
+  new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0,
+  }).format(v);
+
+let timeout = null;
+watch(
+  () => filters.value.search,
+  () => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      fetchReport();
+    }, 600);
+  },
+);
+
+watch(itemsPerPage, () => {
+  currentPage.value = 1;
+});
+
+// ==========================================
+// EXPORT FUNCTIONS
+// ==========================================
+
+const exportToPDF = () => {
+  const element = document.getElementById("exportable-table");
+  const headers = element.querySelectorAll(".export-header");
+  headers.forEach((h) => {
+    h.classList.remove("hidden");
+    h.classList.add("block");
+  });
+
+  const monthName = filters.value.month
+    ? months[filters.value.month - 1]
+    : "All";
+  const fileName = `Sales_Report_${filters.value.year}_${monthName}.pdf`;
+
+  const opt = {
+    margin: 0.5,
+    filename: fileName,
+    image: { type: "jpeg", quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true },
+    jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+  };
+
+  html2pdf()
+    .set(opt)
+    .from(element)
+    .save()
+    .then(() => {
+      headers.forEach((h) => {
+        h.classList.add("hidden");
+        h.classList.remove("block");
+      });
+    });
+};
+
+const exportToExcel = () => {
+  const excelData = allReportData.value.map((item, index) => ({
+    No: index + 1,
+    "Product Code": item.code,
+    "Product Name": item.name,
+    Category: item.category_name,
+    "Units Sold": parseInt(item.total_sold),
+    "Total Revenue (IDR)": parseFloat(item.total_revenue),
+  }));
+
+  excelData.push({
+    No: "",
+    "Product Code": "",
+    "Product Name": "",
+    Category: "GRAND TOTAL",
+    "Units Sold": totalUnitsSold.value,
+    "Total Revenue (IDR)": grandTotalRevenue.value,
+  });
+
+  const worksheet = XLSX.utils.json_to_sheet(excelData);
+  const workbook = XLSX.utils.book_new();
+
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Sales Data");
+
+  const monthName = filters.value.month
+    ? months[filters.value.month - 1]
+    : "All";
+  const fileName = `Sales_Report_${filters.value.year}_${monthName}.xlsx`;
+
+  XLSX.writeFile(workbook, fileName);
+};
+
+onMounted(fetchReport);
+</script>
+
+<style scoped>
+.animate-fade-in { animation: fadeIn 0.4s ease-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
 @media print {
   .export-header {
     display: block !important;
