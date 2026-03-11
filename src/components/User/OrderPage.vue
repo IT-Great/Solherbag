@@ -6312,7 +6312,7 @@ onUnmounted(() => {
       </h1>
     </div>
 
-    <div class="mb-8 space-y-4">
+    <!-- <div class="mb-8 space-y-4">
       <div
         class="flex items-center gap-4 overflow-x-auto pb-2 border-b border-gray-100"
       >
@@ -6375,6 +6375,35 @@ onUnmounted(() => {
             class="px-1.5 py-0.5 rounded-md text-[9px] font-black"
           >
             {{ getShippingTabCount(tab.value) }}
+          </span>
+        </button>
+      </div>
+    </div> -->
+
+    <div class="mb-8 border-b border-gray-200">
+      <div class="flex overflow-x-auto scrollbar-hide gap-6">
+        <button
+          v-for="tab in unifiedTabs"
+          :key="tab.value"
+          @click="activeUnifiedTab = tab.value"
+          :class="[
+            'pb-4 font-bold text-xs uppercase tracking-widest transition-colors whitespace-nowrap border-b-2 flex items-center gap-2',
+            activeUnifiedTab === tab.value
+              ? 'border-black text-black'
+              : 'border-transparent text-gray-400 hover:text-gray-700',
+          ]"
+        >
+          {{ tab.label }}
+          <span
+            v-if="getUnifiedTabCount(tab.value) > 0"
+            :class="
+              activeUnifiedTab === tab.value
+                ? 'bg-black text-white'
+                : 'bg-gray-200 text-gray-600'
+            "
+            class="px-2 py-0.5 rounded-full text-[9px] font-black"
+          >
+            {{ getUnifiedTabCount(tab.value) }}
           </span>
         </button>
       </div>
@@ -6984,6 +7013,44 @@ const itemsPerPage = ref(10);
 
 const activeTransactionTab = ref("all");
 const activeShippingTab = ref("all");
+// [BARU] STATE UNIFIED TABS
+const activeUnifiedTab = ref("all");
+
+const unifiedTabs = [
+  { label: "All Orders", value: "all" },
+  { label: "Unpaid", value: "unpaid" },
+  { label: "To Ship", value: "to_ship" },
+  { label: "In Transit", value: "shipping" },
+  { label: "Completed", value: "completed" },
+  { label: "Cancelled", value: "cancelled" },
+  { label: "Issues / Returns", value: "issues" },
+];
+
+const getUnifiedTabCount = (tabValue) => {
+  return transactions.value.filter((order) => {
+    if (tabValue === "all") return true;
+
+    const shipStatus = order.shipping_status ? order.shipping_status.toLowerCase() : "pending";
+
+    if (tabValue === "unpaid") return order.status === "pending";
+    
+    if (tabValue === "to_ship") {
+      return order.status === "processing" && ["pending", "placed", "confirmed", "allocated", "picking_up", "picked"].includes(shipStatus);
+    }
+    
+    if (tabValue === "shipping") return shipStatus === "dropping_off";
+    
+    if (tabValue === "completed") return order.status === "completed" || shipStatus === "delivered";
+    
+    if (tabValue === "cancelled") return order.status === "cancelled";
+    
+    if (tabValue === "issues") {
+      return order.status.includes("refund") || ["returned", "shipping_failed"].includes(order.status) || ["on_hold", "return_in_transit", "rejected", "disposed", "courier_not_found"].includes(shipStatus);
+    }
+
+    return false;
+  }).length;
+};
 
 // [PERBAIKAN 2]: Menghilangkan pending (awaiting_payment) karena sudah tidak ada di backend
 const transactionTabs = [
@@ -7050,69 +7117,109 @@ const getShippingTabCount = (tabValue) => {
   }).length;
 };
 
+// const filteredTransactions = computed(() => {
+//   const query = searchQuery.value.toLowerCase();
+
+//   return transactions.value.filter((order) => {
+//     let matchSearch = true;
+//     if (query) {
+//       matchSearch =
+//         order.order_id.toLowerCase().includes(query) ||
+//         (order.total_amount && order.total_amount.toString().includes(query)) ||
+//         (order.shipping_cost &&
+//           order.shipping_cost.toString().includes(query)) ||
+//         (order.payment_method &&
+//           order.payment_method.toLowerCase().includes(query)) ||
+//         (order.tracking_number &&
+//           order.tracking_number.toLowerCase().includes(query)) ||
+//         (order.delivery_type &&
+//           order.delivery_type.toLowerCase().includes(query)) ||
+//         (order.courier_company &&
+//           order.courier_company.toLowerCase().includes(query));
+//     }
+
+//     let matchTransaction = false;
+//     if (activeTransactionTab.value === "all") matchTransaction = true;
+//     // Logika tanpa awaiting_payment
+//     else if (activeTransactionTab.value === "refund")
+//       matchTransaction = order.status.includes("refund");
+//     else if (activeTransactionTab.value === "failed_returned")
+//       matchTransaction = ["returned", "shipping_failed"].includes(order.status);
+//     else matchTransaction = order.status === activeTransactionTab.value;
+
+//     let matchShipping = false;
+//     if (activeShippingTab.value === "all") {
+//       matchShipping = true;
+//     } else if (activeShippingTab.value === "no_shipping") {
+//       matchShipping = order.shipping_method === "free";
+//     } else {
+//       if (order.shipping_method === "free") {
+//         matchShipping = false;
+//       } else {
+//         const shipStatus = order.shipping_status
+//           ? order.shipping_status.toLowerCase()
+//           : "pending";
+//         if (activeShippingTab.value === "placed")
+//           matchShipping = ["pending", "placed", "confirmed"].includes(
+//             shipStatus,
+//           );
+//         else if (activeShippingTab.value === "dropping_off")
+//           matchShipping = ["picked", "dropping_off"].includes(shipStatus);
+//         else if (activeShippingTab.value === "returning")
+//           matchShipping = ["return_in_transit", "returned"].includes(
+//             shipStatus,
+//           );
+//         else if (activeShippingTab.value === "issues")
+//           matchShipping = [
+//             "cancelled",
+//             "rejected",
+//             "disposed",
+//             "courier_not_found",
+//           ].includes(shipStatus);
+//         else matchShipping = shipStatus === activeShippingTab.value;
+//       }
+//     }
+//     return matchSearch && matchTransaction && matchShipping;
+//   });
+// });
+
 const filteredTransactions = computed(() => {
   const query = searchQuery.value.toLowerCase();
-
+  
   return transactions.value.filter((order) => {
     let matchSearch = true;
     if (query) {
       matchSearch =
         order.order_id.toLowerCase().includes(query) ||
         (order.total_amount && order.total_amount.toString().includes(query)) ||
-        (order.shipping_cost &&
-          order.shipping_cost.toString().includes(query)) ||
-        (order.payment_method &&
-          order.payment_method.toLowerCase().includes(query)) ||
-        (order.tracking_number &&
-          order.tracking_number.toLowerCase().includes(query)) ||
-        (order.delivery_type &&
-          order.delivery_type.toLowerCase().includes(query)) ||
-        (order.courier_company &&
-          order.courier_company.toLowerCase().includes(query));
+        (order.shipping_cost && order.shipping_cost.toString().includes(query)) ||
+        (order.payment_method && order.payment_method.toLowerCase().includes(query)) ||
+        (order.tracking_number && order.tracking_number.toLowerCase().includes(query)) ||
+        (order.delivery_type && order.delivery_type.toLowerCase().includes(query)) ||
+        (order.courier_company && order.courier_company.toLowerCase().includes(query));
     }
 
-    let matchTransaction = false;
-    if (activeTransactionTab.value === "all") matchTransaction = true;
-    // Logika tanpa awaiting_payment
-    else if (activeTransactionTab.value === "refund")
-      matchTransaction = order.status.includes("refund");
-    else if (activeTransactionTab.value === "failed_returned")
-      matchTransaction = ["returned", "shipping_failed"].includes(order.status);
-    else matchTransaction = order.status === activeTransactionTab.value;
+    let matchTab = false;
+    const tabValue = activeUnifiedTab.value;
+    const shipStatus = order.shipping_status ? order.shipping_status.toLowerCase() : "pending";
 
-    let matchShipping = false;
-    if (activeShippingTab.value === "all") {
-      matchShipping = true;
-    } else if (activeShippingTab.value === "no_shipping") {
-      matchShipping = order.shipping_method === "free";
-    } else {
-      if (order.shipping_method === "free") {
-        matchShipping = false;
-      } else {
-        const shipStatus = order.shipping_status
-          ? order.shipping_status.toLowerCase()
-          : "pending";
-        if (activeShippingTab.value === "placed")
-          matchShipping = ["pending", "placed", "confirmed"].includes(
-            shipStatus,
-          );
-        else if (activeShippingTab.value === "dropping_off")
-          matchShipping = ["picked", "dropping_off"].includes(shipStatus);
-        else if (activeShippingTab.value === "returning")
-          matchShipping = ["return_in_transit", "returned"].includes(
-            shipStatus,
-          );
-        else if (activeShippingTab.value === "issues")
-          matchShipping = [
-            "cancelled",
-            "rejected",
-            "disposed",
-            "courier_not_found",
-          ].includes(shipStatus);
-        else matchShipping = shipStatus === activeShippingTab.value;
-      }
+    if (tabValue === "all") {
+        matchTab = true;
+    } else if (tabValue === "unpaid") {
+        matchTab = order.status === "pending";
+    } else if (tabValue === "to_ship") {
+        matchTab = order.status === "processing" && ["pending", "placed", "confirmed", "allocated", "picking_up", "picked"].includes(shipStatus);
+    } else if (tabValue === "shipping") {
+        matchTab = shipStatus === "dropping_off";
+    } else if (tabValue === "completed") {
+        matchTab = order.status === "completed" || shipStatus === "delivered";
+    } else if (tabValue === "cancelled") {
+        matchTab = order.status === "cancelled";
+    } else if (tabValue === "issues") {
+        matchTab = order.status.includes("refund") || ["returned", "shipping_failed"].includes(order.status) || ["on_hold", "return_in_transit", "rejected", "disposed", "courier_not_found"].includes(shipStatus);
     }
-    return matchSearch && matchTransaction && matchShipping;
+
+    return matchSearch && matchTab;
   });
 });
 
@@ -7151,13 +7258,14 @@ const visiblePages = computed(() => {
 });
 
 watch(
-  [searchQuery, itemsPerPage, activeTransactionTab, activeShippingTab],
+  [searchQuery, itemsPerPage, activeUnifiedTab],
   () => {
     currentPage.value = 1;
   },
 );
 
 const resetFilters = () => {
+  activeUnifiedTab.value = "all";
   activeTransactionTab.value = "all";
   activeShippingTab.value = "all";
   searchQuery.value = "";
