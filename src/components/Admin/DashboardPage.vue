@@ -1466,58 +1466,122 @@ const axiosConfig = {
   headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
 };
 
+// const fetchData = async () => {
+//   isLoading.value = true;
+//   try {
+//     const [resStats, resRevenue, resPopular, resPredict, resActivities, resDaily] = await Promise.all([
+//       axios.get(`${BASE_URL}/admin/dashboard/stats`, axiosConfig),
+//       axios.get(`${BASE_URL}/admin/dashboard/revenue-chart`, axiosConfig),
+//       axios.get(`${BASE_URL}/admin/dashboard/popular-products`, axiosConfig),
+//       axios.get(`${BASE_URL}/admin/dashboard/predicted-bestsellers`, axiosConfig),
+//       axios.get(`${BASE_URL}/admin/dashboard/recent-activities`, axiosConfig),
+//       axios.get(`${BASE_URL}/admin/dashboard/daily-average`, axiosConfig), // [BARU] Tembak API baru
+//     ]);
+
+//     stats.value = resStats.data;
+//     predictedProducts.value = resPredict.data;
+//     recentActivities.value = resActivities.data; 
+
+//     revenueData.value = {
+//       labels: resRevenue.data.map((item) => item.month),
+//       datasets: [
+//         {
+//           label: "Revenue (IDR)",
+//           backgroundColor: "#000",
+//           borderColor: "#000",
+//           data: resRevenue.data.map((item) => item.total),
+//           tension: 0.4,
+//           fill: false,
+//         },
+//       ],
+//     };
+
+//     // [BARU] Set Data untuk Grafik Batang (Average Daily)
+//     dailyAverageData.value = {
+//       labels: resDaily.data.map(item => item.day),
+//       datasets: [
+//         {
+//           label: "Avg Daily Sales (IDR)",
+//           backgroundColor: "#3b82f6", // Biru profesional
+//           borderRadius: 6, // Ujung batang membulat (estetika)
+//           data: resDaily.data.map(item => item.average),
+//         }
+//       ]
+//     };
+
+//     pieData.value = {
+//       labels: resPopular.data.map((item) => item.name),
+//       datasets: [
+//         {
+//           backgroundColor: ["#1e1e1e", "#3b82f6", "#10b981", "#f59e0b", "#ef4444"],
+//           data: resPopular.data.map((item) => item.total_sold),
+//         },
+//       ],
+//     };
+//   } catch (err) {
+//     console.error("Dashboard data failed", err);
+//   } finally {
+//     isLoading.value = false;
+//   }
+// };
+
 const fetchData = async () => {
   isLoading.value = true;
   try {
-    const [resStats, resRevenue, resPopular, resPredict, resActivities, resDaily] = await Promise.all([
-      axios.get(`${BASE_URL}/admin/dashboard/stats`, axiosConfig),
-      axios.get(`${BASE_URL}/admin/dashboard/revenue-chart`, axiosConfig),
-      axios.get(`${BASE_URL}/admin/dashboard/popular-products`, axiosConfig),
-      axios.get(`${BASE_URL}/admin/dashboard/predicted-bestsellers`, axiosConfig),
-      axios.get(`${BASE_URL}/admin/dashboard/recent-activities`, axiosConfig),
-      axios.get(`${BASE_URL}/admin/dashboard/daily-average`, axiosConfig), // [BARU] Tembak API baru
-    ]);
+    // [PERBAIKAN BESAR] KITA HANYA MENEMBAK 1 API SEKARANG!
+    // Ini menghemat koneksi database dan sangat aman dari Max Connection Error.
+    const res = await axios.get(`${BASE_URL}/admin/dashboard/master-data`, axiosConfig);
+    
+    const data = res.data; // Ambil master object-nya
 
-    stats.value = resStats.data;
-    predictedProducts.value = resPredict.data;
-    recentActivities.value = resActivities.data; 
+    // 1. Mapping Stats
+    stats.value = data.stats;
+    
+    // 2. Mapping C4.5 Predictions
+    predictedProducts.value = data.predicted;
+    
+    // 3. Mapping Recent Activities
+    recentActivities.value = data.activities; 
 
+    // 4. Mapping Line Chart (Monthly Revenue)
     revenueData.value = {
-      labels: resRevenue.data.map((item) => item.month),
+      labels: data.revenue.map((item) => item.month),
       datasets: [
         {
           label: "Revenue (IDR)",
           backgroundColor: "#000",
           borderColor: "#000",
-          data: resRevenue.data.map((item) => item.total),
+          data: data.revenue.map((item) => item.total),
           tension: 0.4,
           fill: false,
         },
       ],
     };
 
-    // [BARU] Set Data untuk Grafik Batang (Average Daily)
+    // 5. Mapping Bar Chart (Average Daily)
     dailyAverageData.value = {
-      labels: resDaily.data.map(item => item.day),
+      labels: data.daily.map(item => item.day),
       datasets: [
         {
           label: "Avg Daily Sales (IDR)",
-          backgroundColor: "#3b82f6", // Biru profesional
-          borderRadius: 6, // Ujung batang membulat (estetika)
-          data: resDaily.data.map(item => item.average),
+          backgroundColor: "#3b82f6", 
+          borderRadius: 6, 
+          data: data.daily.map(item => item.average),
         }
       ]
     };
 
+    // 6. Mapping Pie Chart (Popular Products)
     pieData.value = {
-      labels: resPopular.data.map((item) => item.name),
+      labels: data.popular.map((item) => item.name),
       datasets: [
         {
           backgroundColor: ["#1e1e1e", "#3b82f6", "#10b981", "#f59e0b", "#ef4444"],
-          data: resPopular.data.map((item) => item.total_sold),
+          data: data.popular.map((item) => item.total_sold),
         },
       ],
     };
+    
   } catch (err) {
     console.error("Dashboard data failed", err);
   } finally {
