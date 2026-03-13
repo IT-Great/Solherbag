@@ -1070,22 +1070,61 @@ const fillFormWithData = (p) => {
   currentVideo.value = p.variant_video;
 };
 
-onMounted(async () => {
-  const stateData = window.history.state?.productData;
+// onMounted(async () => {
+//   const stateData = window.history.state?.productData;
 
-  if (stateData) {
-    fillFormWithData(stateData);
+//   if (stateData) {
+//     fillFormWithData(stateData);
+//   }
+
+//   try {
+//     const catRes = await axios.get(`${BASE_URL}/categories`, axiosConfig);
+//     categories.value = catRes.data.data;
+
+//     const prodRes = await axios.get(
+//       `${BASE_URL}/products/${productId}`,
+//       axiosConfig,
+//     );
+//     fillFormWithData(prodRes.data);
+//   } catch (error) {
+//     if (!stateData) {
+//       Swal.fire("Error", "Gagal mengambil data produk.", "error");
+//     }
+//   }
+// });
+
+onMounted(async () => {
+  // 1. TANGKAP DATA STATE INSTAN (OPTISTIC UI)
+  const stateDataStr = window.history.state?.productData;
+  let stateData = null;
+
+  if (stateDataStr) {
+    try {
+      stateData = JSON.parse(stateDataStr);
+      // Langsung isi form detik itu juga tanpa delay API
+      fillFormWithData(stateData);
+    } catch (e) {
+      console.error("Gagal parsing state data", e);
+    }
   }
 
+  // 2. FETCH KATEGORI (Tetap diperlukan untuk mengisi Dropdown Option)
   try {
     const catRes = await axios.get(`${BASE_URL}/categories`, axiosConfig);
     categories.value = catRes.data.data;
-
+    
+    // 3. BACKGROUND FETCH (Self-Healing)
+    // Walaupun data sudah muncul secara instan, kita tetap tembak API secara diam-diam (background) 
+    // untuk memastikan jika ada admin lain yang mengedit data ini 1 detik yang lalu, 
+    // data yang sedang kita edit adalah data yang paling mutakhir (sinkronisasi).
     const prodRes = await axios.get(
       `${BASE_URL}/products/${productId}`,
       axiosConfig,
     );
-    fillFormWithData(prodRes.data);
+    
+    // Timpa form dengan data paling fresh dari database (biasanya sangat cepat dan user tidak akan sadar)
+    fillFormWithData(prodRes.data); 
+    
   } catch (error) {
     if (!stateData) {
       Swal.fire("Error", "Gagal mengambil data produk.", "error");
