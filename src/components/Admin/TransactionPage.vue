@@ -7549,10 +7549,108 @@ const getShippingTabCount = (tabValue) => {
 // });
 
 // Modifikasi Logic Filter Data
+// const filteredTransactions = computed(() => {
+//   const query = searchQuery.value.toLowerCase();
+
+//   return transactions.value.filter((order) => {
+//     let matchSearch = true;
+//     if (query) {
+//       matchSearch =
+//         order.order_id.toLowerCase().includes(query) ||
+//         order.user.first_name.toLowerCase().includes(query) ||
+//         order.user.email.toLowerCase().includes(query) ||
+//         (order.tracking_number && order.tracking_number.toLowerCase().includes(query));
+//     }
+
+//     let matchTab = false;
+//     const tabValue = activeUnifiedTab.value;
+//     const shipStatus = order.shipping_status ? order.shipping_status.toLowerCase() : "pending";
+
+//     if (tabValue === "all") {
+//         matchTab = true;
+//     } else if (tabValue === "unpaid") {
+//         matchTab = order.status === "pending";
+//     } else if (tabValue === "to_ship") {
+//         matchTab = order.status === "processing" && ["pending", "placed", "confirmed", "allocated", "picking_up", "picked"].includes(shipStatus);
+//     } else if (tabValue === "shipping") {
+//         matchTab = shipStatus === "dropping_off";
+//     } else if (tabValue === "completed") {
+//         matchTab = order.status === "completed" || shipStatus === "delivered";
+//     } else if (tabValue === "cancelled") {
+//         matchTab = order.status === "cancelled";
+//     } else if (tabValue === "issues") {
+//         matchTab = order.status.includes("refund") || ["returned", "shipping_failed"].includes(order.status) || ["on_hold", "return_in_transit", "rejected", "disposed", "courier_not_found"].includes(shipStatus);
+//     }
+
+//     return matchSearch && matchTab;
+//   });
+// });
+
+// Modifikasi Logic Filter Data dengan Custom Sorting untuk "refund_requested"
+// const filteredTransactions = computed(() => {
+//   const query = searchQuery.value.toLowerCase();
+
+//   // 1. Lakukan Filter Data seperti biasa
+//   let result = transactions.value.filter((order) => {
+//     let matchSearch = true;
+//     if (query) {
+//       matchSearch =
+//         order.order_id.toLowerCase().includes(query) ||
+//         order.user.first_name.toLowerCase().includes(query) ||
+//         order.user.email.toLowerCase().includes(query) ||
+//         (order.tracking_number && order.tracking_number.toLowerCase().includes(query));
+//     }
+
+//     let matchTab = false;
+//     const tabValue = activeUnifiedTab.value;
+//     const shipStatus = order.shipping_status ? order.shipping_status.toLowerCase() : "pending";
+
+//     if (tabValue === "all") {
+//         matchTab = true;
+//     } else if (tabValue === "unpaid") {
+//         matchTab = order.status === "pending";
+//     } else if (tabValue === "to_ship") {
+//         matchTab = order.status === "processing" && ["pending", "placed", "confirmed", "allocated", "picking_up", "picked"].includes(shipStatus);
+//     } else if (tabValue === "shipping") {
+//         matchTab = shipStatus === "dropping_off";
+//     } else if (tabValue === "completed") {
+//         matchTab = order.status === "completed" || shipStatus === "delivered";
+//     } else if (tabValue === "cancelled") {
+//         matchTab = order.status === "cancelled";
+//     } else if (tabValue === "issues") {
+//         matchTab = order.status.includes("refund") || ["returned", "shipping_failed"].includes(order.status) || ["on_hold", "return_in_transit", "rejected", "disposed", "courier_not_found"].includes(shipStatus);
+//     }
+
+//     return matchSearch && matchTab;
+//   });
+
+//   // 2. [BARU] Lakukan Pengurutan Kustom (Custom Sorting)
+//   // Aturan: Jika statusnya "refund_requested", letakkan di atas.
+//   // Jika sama-sama refund_requested, atau sama-sama bukan, urutkan berdasarkan ID/Tanggal terbaru (Descending).
+//   result.sort((a, b) => {
+//     const isARefund = a.status === 'refund_requested' ? 1 : 0;
+//     const isBRefund = b.status === 'refund_requested' ? 1 : 0;
+
+//     // Jika A adalah refund dan B bukan, A harus di atas (return -1)
+//     if (isARefund > isBRefund) return -1;
+
+//     // Jika B adalah refund dan A bukan, B harus di atas (return 1)
+//     if (isARefund < isBRefund) return 1;
+
+//     // Jika keduanya sama (sama-sama refund, atau sama-sama bukan refund),
+//     // pertahankan urutan bawaan dari Backend (yaitu id terbesar/terbaru di atas)
+//     return b.id - a.id;
+//   });
+
+//   return result;
+// });
+
+// Modifikasi Logic Filter Data dengan Custom Sorting untuk "refund_requested"
 const filteredTransactions = computed(() => {
   const query = searchQuery.value.toLowerCase();
   
-  return transactions.value.filter((order) => {
+  // 1. Lakukan Filter Data seperti biasa
+  let result = transactions.value.filter((order) => {
     let matchSearch = true;
     if (query) {
       matchSearch =
@@ -7584,6 +7682,26 @@ const filteredTransactions = computed(() => {
 
     return matchSearch && matchTab;
   });
+
+  // 2. [BARU] Lakukan Pengurutan Kustom (Custom Sorting)
+  // Aturan: Jika statusnya "refund_requested", letakkan di atas.
+  // Jika sama-sama refund_requested, atau sama-sama bukan, urutkan berdasarkan ID/Tanggal terbaru (Descending).
+  result.sort((a, b) => {
+    const isARefund = a.status === 'refund_requested' ? 1 : 0;
+    const isBRefund = b.status === 'refund_requested' ? 1 : 0;
+
+    // Jika A adalah refund dan B bukan, A harus di atas (return -1)
+    if (isARefund > isBRefund) return -1;
+    
+    // Jika B adalah refund dan A bukan, B harus di atas (return 1)
+    if (isARefund < isBRefund) return 1;
+
+    // Jika keduanya sama (sama-sama refund, atau sama-sama bukan refund),
+    // pertahankan urutan bawaan dari Backend (yaitu id terbesar/terbaru di atas)
+    return b.id - a.id; 
+  });
+
+  return result;
 });
 
 const resetFilters = () => {
