@@ -1443,12 +1443,203 @@ onUnmounted(() => {
 </template>
 
 <script setup>
+// import { ref, onMounted, computed, watch, onUnmounted } from "vue";
+// import { useRoute, useRouter } from "vue-router";
+// import Swal from "sweetalert2";
+// import { useProductStore } from "../../composables/useProductStore";
+// import axios from "axios";
+// import { BASE_URL } from "../../config/api.js";
+
+// const route = useRoute();
+// const router = useRouter();
+
+// const { state, fetchCatalogData } = useProductStore();
+// const categories = computed(() => state.categories);
+// const isLoading = ref(false);
+
+// const searchQuery = ref("");
+// const selectedCategory = ref("");
+// const showOnlySale = ref(false);
+// const currentPage = ref(1);
+// const itemsPerPage = 12;
+
+// const userWishlists = ref([]);
+// const isAuthenticated = !!localStorage.getItem("token");
+
+// const isFavorited = (id) => userWishlists.value.includes(id);
+
+// const activeSlides = ref({});
+
+// const getMediaArray = (prod) => {
+//   let media = [{ type: "image", url: prod.image }];
+//   if (prod.variant_images && Array.isArray(prod.variant_images)) {
+//     prod.variant_images.forEach((img) =>
+//       media.push({ type: "image", url: img }),
+//     );
+//   }
+//   if (prod.variant_video) {
+//     media.push({ type: "video", url: prod.variant_video });
+//   }
+//   return media;
+// };
+
+// const nextSlide = (prodId, max) => {
+//   if (activeSlides.value[prodId] === undefined) activeSlides.value[prodId] = 0;
+//   activeSlides.value[prodId] =
+//     activeSlides.value[prodId] >= max ? 0 : activeSlides.value[prodId] + 1;
+// };
+
+// const prevSlide = (prodId, max) => {
+//   if (activeSlides.value[prodId] === undefined) activeSlides.value[prodId] = 0;
+//   activeSlides.value[prodId] =
+//     activeSlides.value[prodId] <= 0 ? max : activeSlides.value[prodId] - 1;
+// };
+
+// const fetchWishlists = async () => {
+//   if (!isAuthenticated) return;
+//   try {
+//     const res = await axios.get(`${BASE_URL}/wishlists`, {
+//       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+//     });
+//     userWishlists.value = res.data.map((w) => w.product_id);
+//   } catch (error) {
+//     console.error("Failed to fetch wishlists");
+//   }
+// };
+
+// const toggleWishlist = async (productId) => {
+//   if (!isAuthenticated) {
+//     Swal.fire({
+//       icon: "info",
+//       title: "Login Required",
+//       text: "Please login to add favorites.",
+//     });
+//     return;
+//   }
+
+//   if (isFavorited(productId)) {
+//     userWishlists.value = userWishlists.value.filter((id) => id !== productId);
+//   } else {
+//     userWishlists.value.push(productId);
+//   }
+
+//   try {
+//     await axios.post(
+//       `${BASE_URL}/wishlists/toggle`,
+//       { product_id: productId },
+//       {
+//         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+//       },
+//     );
+//   } catch (error) {
+//     fetchWishlists(); 
+//   }
+// };
+
+// const initCatalog = async () => {
+//   if (!state.isCatalogLoaded) {
+//     isLoading.value = true;
+//     await fetchCatalogData();
+//     setTimeout(() => {
+//       isLoading.value = false;
+//     }, 500);
+//   } else {
+//     fetchCatalogData();
+//   }
+// };
+
+// const filteredProducts = computed(() => {
+//   const sourceProducts = state.catalogProducts || [];
+//   return sourceProducts.filter((p) => {
+//     const matchesSearch = p.name
+//       .toLowerCase()
+//       .includes(searchQuery.value.toLowerCase());
+//     const productCategory = p.category?.name || p.category_name;
+//     const matchesCategory =
+//       selectedCategory.value === "" ||
+//       productCategory === selectedCategory.value;
+//     const matchesSale = showOnlySale.value
+//       ? p.discount_price !== null && p.discount_price > 0
+//       : true;
+//     return matchesSearch && matchesCategory && matchesSale;
+//   });
+// });
+
+// const totalPages = computed(() =>
+//   Math.ceil(filteredProducts.value.length / itemsPerPage),
+// );
+// const paginatedProducts = computed(() => {
+//   const start = (currentPage.value - 1) * itemsPerPage;
+//   return filteredProducts.value.slice(start, start + itemsPerPage);
+// });
+
+// watch([searchQuery, selectedCategory, showOnlySale], () => {
+//   currentPage.value = 1;
+// });
+
+// const toggleSaleFilter = () => {
+//   showOnlySale.value = !showOnlySale.value;
+//   if (showOnlySale.value) selectedCategory.value = "";
+// };
+
+// const selectCategory = (name) => {
+//   selectedCategory.value = name;
+//   showOnlySale.value = false;
+// };
+
+// const resetAllFilters = () => {
+//   searchQuery.value = "";
+//   selectedCategory.value = "";
+//   showOnlySale.value = false;
+// };
+
+// const calculateDiscount = (price, discountPrice) =>
+//   Math.round(((price - discountPrice) / price) * 100);
+// const formatPrice = (value) =>
+//   new Intl.NumberFormat("id-ID", {
+//     style: "currency",
+//     currency: "IDR",
+//     minimumFractionDigits: 0,
+//   }).format(value);
+
+// const goToDetail = (product) => {
+//   router.push({
+//     path: `/product/${product.id}`,
+//     state: { productData: JSON.stringify(product) } 
+//   });
+// };
+
+// onMounted(async () => {
+//   if (route.query.search) {
+//     searchQuery.value = route.query.search;
+//   }
+
+//   initCatalog();
+//   fetchWishlists();
+//   window.addEventListener("wishlist-updated", fetchWishlists);
+// });
+
+// watch(
+//   () => route.query.search,
+//   (newSearch) => {
+//     if (newSearch !== undefined) {
+//       searchQuery.value = newSearch;
+//     }
+//   },
+// );
+
+// onUnmounted(() => {
+//   window.removeEventListener("wishlist-updated", fetchWishlists);
+// });
+
 import { ref, onMounted, computed, watch, onUnmounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import { useProductStore } from "../../composables/useProductStore";
 import axios from "axios";
 import { BASE_URL } from "../../config/api.js";
+// [BARU] Import Fuse.js
+import Fuse from "fuse.js";
 
 const route = useRoute();
 const router = useRouter();
@@ -1548,22 +1739,48 @@ const initCatalog = async () => {
   }
 };
 
+// ============================================================================
+// [PERBAIKAN] LOGIKA PENCARIAN TYPO-TOLERANT DENGAN FUSE.JS
+// ============================================================================
 const filteredProducts = computed(() => {
-  const sourceProducts = state.catalogProducts || [];
-  return sourceProducts.filter((p) => {
-    const matchesSearch = p.name
-      .toLowerCase()
-      .includes(searchQuery.value.toLowerCase());
+  let sourceProducts = state.catalogProducts || [];
+
+  // 1. Terapkan Filter Kategori & Diskon terlebih dahulu (Meringankan beban pencarian)
+  sourceProducts = sourceProducts.filter((p) => {
     const productCategory = p.category?.name || p.category_name;
-    const matchesCategory =
-      selectedCategory.value === "" ||
-      productCategory === selectedCategory.value;
-    const matchesSale = showOnlySale.value
-      ? p.discount_price !== null && p.discount_price > 0
-      : true;
-    return matchesSearch && matchesCategory && matchesSale;
+    const matchesCategory = selectedCategory.value === "" || productCategory === selectedCategory.value;
+    const matchesSale = showOnlySale.value ? p.discount_price !== null && p.discount_price > 0 : true;
+    
+    return matchesCategory && matchesSale;
   });
+
+  // 2. Jika ada query pencarian, jalankan algoritma Fuzzy Search (Typo-Tolerant)
+  if (searchQuery.value.trim() !== "") {
+    const fuseOptions = {
+      // Bobot pencarian: Nama lebih penting dari kategori, kode SKU lebih penting dari kategori
+      keys: [
+        { name: 'name', weight: 0.7 },
+        { name: 'code', weight: 0.2 },
+        { name: 'category.name', weight: 0.1 }
+      ],
+      // Threshold: 0.0 (Sama persis), 1.0 (Cocok dengan apapun). 
+      // 0.3 adalah angka emas (Golden Ratio) untuk menoleransi typo 1-2 huruf.
+      threshold: 0.3,
+      // Mengabaikan huruf besar/kecil (otomatis aktif di Fuse)
+      ignoreLocation: true 
+    };
+
+    const fuse = new Fuse(sourceProducts, fuseOptions);
+    const results = fuse.search(searchQuery.value);
+    
+    // Fuse mengembalikan objek berupa { item: product, refIndex: ... }, kita ambil item-nya saja
+    return results.map(result => result.item);
+  }
+
+  // Jika tidak ada pencarian, kembalikan produk yang sudah difilter kategori/sale
+  return sourceProducts;
 });
+// ============================================================================
 
 const totalPages = computed(() =>
   Math.ceil(filteredProducts.value.length / itemsPerPage),
