@@ -785,12 +785,26 @@ const userRole = ref(""); // Tambahkan state untuk menyimpan role user
 
 const openDropdowns = ref([]); 
 
+// const getUserData = () => {
+//   const user = localStorage.getItem("user");
+//   if (user) {
+//     const parsedUser = JSON.parse(user);
+//     userName.value = parsedUser.first_name;
+//     userRole.value = parsedUser.usertype; // Simpan role dari local storage
+//   }
+// };
+
 const getUserData = () => {
-  const user = localStorage.getItem("user");
-  if (user) {
-    const parsedUser = JSON.parse(user);
-    userName.value = parsedUser.first_name;
-    userRole.value = parsedUser.usertype; // Simpan role dari local storage
+  // [PERBAIKAN 1]: Ambil data dari key "admin", BUKAN "user"
+  const adminData = localStorage.getItem("admin");
+  
+  if (adminData) {
+    const parsedAdmin = JSON.parse(adminData);
+    userName.value = parsedAdmin.first_name;
+    userRole.value = parsedAdmin.usertype; // Menyimpan role yang benar (superadmin/gudang/dll)
+  } else {
+    // Fallback keamanan jika objek admin terhapus tapi token masih ada
+    userRole.value = localStorage.getItem("role") || "";
   }
 };
 
@@ -881,8 +895,34 @@ const menuItems = [
 ];
 
 // [BARU] Computed property untuk memfilter menu berdasarkan role
+// const filteredMenuItems = computed(() => {
+//   return menuItems.filter(item => {
+//     // Jika tidak ada batasan role, tampilkan untuk semua
+//     if (!item.roles) return true;
+
+//     // Cek apakah role user saat ini ada di dalam daftar roles menu
+//     const hasAccess = item.roles.includes(userRole.value);
+
+//     // Jika punya akses dan memiliki children, filter juga children-nya
+//     if (hasAccess && item.children) {
+//       item.children = item.children.filter(child => {
+//         if(!child.roles) return true;
+//         return child.roles.includes(userRole.value);
+//       });
+//       // Jangan tampilkan parent jika semua anaknya disembunyikan
+//       return item.children.length > 0; 
+//     }
+
+//     return hasAccess;
+//   });
+// });
+
+// [PERBAIKAN 2]: Hindari mutasi (perubahan) pada array asli `menuItems`
 const filteredMenuItems = computed(() => {
-  return menuItems.filter(item => {
+  // Kita harus melakukan "Deep Copy" (Kloning) array agar item.children tidak rusak permanen
+  const clonedMenuItems = JSON.parse(JSON.stringify(menuItems));
+
+  return clonedMenuItems.filter(item => {
     // Jika tidak ada batasan role, tampilkan untuk semua
     if (!item.roles) return true;
 
@@ -892,7 +932,7 @@ const filteredMenuItems = computed(() => {
     // Jika punya akses dan memiliki children, filter juga children-nya
     if (hasAccess && item.children) {
       item.children = item.children.filter(child => {
-        if(!child.roles) return true;
+        if (!child.roles) return true;
         return child.roles.includes(userRole.value);
       });
       // Jangan tampilkan parent jika semua anaknya disembunyikan
