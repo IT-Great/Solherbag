@@ -1005,12 +1005,43 @@ onUnmounted(() => {
   window.removeEventListener("toggle-admin-sidebar", handleExternalToggle);
 });
 
+// const handleLogout = () => {
+//   Swal.fire({
+//     // ... konfigurasi Swal tetap sama
+//   }).then((result) => {
+//     if (result.isConfirmed) {
+//       localStorage.clear();
+//       Swal.fire({
+//         title: "Logged Out!",
+//         text: "See you again.",
+//         icon: "success",
+//         timer: 1500,
+//         showConfirmButton: false,
+//       }).then(() => {
+//         router.push("/loginadmin");
+//       });
+//     }
+//   });
+// };
+
 const handleLogout = () => {
   Swal.fire({
-    // ... konfigurasi Swal tetap sama
+    title: "Are you sure?",
+    text: "You will be logged out from the staff panel.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#000",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, Logout!",
+    cancelButtonText: "Cancel",
   }).then((result) => {
     if (result.isConfirmed) {
-      localStorage.clear();
+      // Hapus data sesi admin
+      localStorage.removeItem("admin_token");
+      localStorage.removeItem("admin");
+      localStorage.removeItem("admin_login_time");
+      localStorage.removeItem("role");
+
       Swal.fire({
         title: "Logged Out!",
         text: "See you again.",
