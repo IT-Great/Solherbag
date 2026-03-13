@@ -7454,28 +7454,105 @@ const canRequestRefund = (order) => {
   return false;
 };
 
+// const requestRefund = async (id) => {
+//   const { value: text } = await Swal.fire({
+//     title: "Request Refund",
+//     input: "textarea",
+//     inputLabel: "Reason for refund",
+//     inputPlaceholder: "Type your reason here...",
+//     showCancelButton: true,
+//     confirmButtonColor: "#000",
+//   });
+//   if (text) {
+//     try {
+//       await axios.post(
+//         `${BASE_URL}/transactions/${id}/refund-request`,
+//         { reason: text },
+//         {
+//           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+//         },
+//       );
+//       fetchOrders();
+//       Swal.fire("Requested", "Refund request sent to admin.", "success");
+//     } catch (err) {
+//       Swal.fire("Error", "Failed to request refund", "error");
+//     }
+//   }
+// };
+
 const requestRefund = async (id) => {
-  const { value: text } = await Swal.fire({
+  const { value: formValues, isConfirmed } = await Swal.fire({
     title: "Request Refund",
-    input: "textarea",
-    inputLabel: "Reason for refund",
-    inputPlaceholder: "Type your reason here...",
+    html: `
+      <div class="text-left space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase tracking-widest mb-1">Reason for refund</label>
+          <textarea id="swal-refund-reason" rows="3" class="w-full bg-gray-50 border border-gray-300 rounded-xl p-3 text-sm outline-none focus:ring-2 focus:ring-black resize-none" placeholder="Explain why you want to refund this order..."></textarea>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase tracking-widest mb-1">Upload Proof (Photo/Video)</label>
+          <input type="file" id="swal-refund-file" accept="image/*,video/mp4,video/quicktime" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-gray-100 file:text-black hover:file:bg-gray-200 cursor-pointer" />
+          <p class="text-[10px] text-gray-400 mt-1 mt-1">Max 10MB. Formats: JPG, PNG, MP4.</p>
+        </div>
+      </div>
+    `,
     showCancelButton: true,
     confirmButtonColor: "#000",
+    confirmButtonText: "Submit Request",
+    preConfirm: () => {
+      const reason = document.getElementById("swal-refund-reason").value;
+      const fileInput = document.getElementById("swal-refund-file");
+      const file = fileInput.files[0];
+
+      if (!reason) {
+        Swal.showValidationMessage("Please provide a reason.");
+        return false;
+      }
+      if (!file) {
+        Swal.showValidationMessage("Please upload a proof file.");
+        return false;
+      }
+      
+      // Batasan ukuran 10MB di Frontend
+      if (file.size > 10 * 1024 * 1024) {
+        Swal.showValidationMessage("File size cannot exceed 10MB.");
+        return false;
+      }
+
+      return { reason: reason, file: file };
+    }
   });
-  if (text) {
+
+  if (isConfirmed && formValues) {
+    Swal.fire({
+      title: "Uploading...",
+      text: "Please wait while we process your request.",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+
     try {
+      const formData = new FormData();
+      formData.append('reason', formValues.reason);
+      formData.append('proof_file', formValues.file);
+
       await axios.post(
         `${BASE_URL}/transactions/${id}/refund-request`,
-        { reason: text },
+        formData,
         {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        },
+          headers: { 
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            'Content-Type': 'multipart/form-data'
+          },
+        }
       );
+      
       fetchOrders();
       Swal.fire("Requested", "Refund request sent to admin.", "success");
     } catch (err) {
-      Swal.fire("Error", "Failed to request refund", "error");
+      Swal.fire("Error", err.response?.data?.message || "Failed to request refund", "error");
     }
   }
 };

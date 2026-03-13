@@ -7153,7 +7153,7 @@ onUnmounted(() => {
               </span>
             </td>
 
-            <td class="py-6 text-center w-[10%] no-export" @click.stop>
+            <!-- <td class="py-6 text-center w-[10%] no-export" @click.stop>
               <div
                 v-if="trx.status === 'refund_requested'"
                 class="flex justify-center gap-2"
@@ -7199,6 +7199,56 @@ onUnmounted(() => {
                   </svg>
                 </button>
               </div>
+              <div
+                v-else-if="['completed', 'processing'].includes(trx.status)"
+                class="flex justify-center"
+              >
+                <button
+                  @click="goToDetail(trx)"
+                  class="text-[10px] font-bold text-blue-600 hover:underline"
+                >
+                  View Detail
+                </button>
+              </div>
+              <span v-else class="text-gray-300 text-[10px] italic"
+                >No Action</span
+              >
+            </td> -->
+            <td class="py-6 text-center w-[15%] no-export" @click.stop>
+              
+              <div v-if="trx.status === 'refund_requested'" class="flex flex-col items-center gap-3">
+                
+                <div class="bg-red-50 border border-red-100 p-3 rounded-xl w-full text-left">
+                  <p class="font-bold text-[9px] text-red-600 uppercase tracking-widest mb-1 border-b border-red-100 pb-1">Refund Reason</p>
+                  <p class="text-[10px] text-gray-700 italic line-clamp-3 mb-2" :title="trx.refund_reason">
+                    "{{ trx.refund_reason || 'No reason provided' }}"
+                  </p>
+                  <a v-if="trx.refund_proof_url" :href="trx.refund_proof_url" target="_blank" class="inline-flex items-center gap-1 text-[9px] font-bold text-blue-600 hover:underline bg-white px-2 py-1 rounded border border-blue-100 w-fit">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                    View Proof
+                  </a>
+                </div>
+
+                <div class="flex justify-center gap-2 w-full">
+                  <button
+                    @click="handleRefundAction(trx.id, 'approve')"
+                    class="bg-green-100 hover:bg-green-200 py-2 flex-1 rounded-lg text-green-700 transition shadow-sm font-bold text-[10px] uppercase tracking-widest flex justify-center items-center gap-1"
+                    title="Approve Refund"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                    Accept
+                  </button>
+                  <button
+                    @click="handleRefundAction(trx.id, 'reject')"
+                    class="bg-red-100 hover:bg-red-200 py-2 flex-1 rounded-lg text-red-700 transition shadow-sm font-bold text-[10px] uppercase tracking-widest flex justify-center items-center gap-1"
+                    title="Reject Refund"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    Deny
+                  </button>
+                </div>
+              </div>
+
               <div
                 v-else-if="['completed', 'processing'].includes(trx.status)"
                 class="flex justify-center"
