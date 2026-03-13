@@ -961,129 +961,256 @@ const router = createRouter({
 // export default router;
 
 // Navigation Guard
+// router.beforeEach((to, from, next) => {
+//     const userToken = localStorage.getItem("token");
+//     const adminToken = localStorage.getItem("admin_token");
+
+//     const userString = localStorage.getItem("user");
+//     const adminString = localStorage.getItem("admin");
+
+//     const adminLoginTime = localStorage.getItem("admin_login_time");
+
+//     const user = userString ? JSON.parse(userString) : null;
+//     let admin = adminString ? JSON.parse(adminString) : null;
+
+//     // [PERBAIKAN UTAMA 1] Definisikan array role admin yang valid
+//     const validAdminRoles = ["admin", "superadmin", "gudang", "accounting"];
+
+//     // Variabel pembantu untuk status validitas admin
+//     let isAdminSessionValid = !!(
+//         adminToken &&
+//         admin &&
+//         validAdminRoles.includes(admin.usertype) // <--- PERUBAHAN DI SINI
+//     );
+
+//     // =========================================================================
+//     // LOGIKA KEDALUWARSA TOKEN ADMIN (MAKSIMAL 15 MENIT)
+//     // =========================================================================
+//     if (isAdminSessionValid) {
+//         if (adminLoginTime) {
+//             const currentTime = new Date().getTime();
+//             const loginTime = parseInt(adminLoginTime, 10);
+//             const timeLimit = 15 * 60 * 1000; // 15 menit
+
+//             if (currentTime - loginTime > timeLimit) {
+//                 localStorage.removeItem("admin_token");
+//                 localStorage.removeItem("admin");
+//                 localStorage.removeItem("admin_login_time");
+
+//                 isAdminSessionValid = false;
+//                 admin = null;
+
+//                 if (to.path !== "/loginadmin") {
+//                     return next("/loginadmin");
+//                 }
+//             }
+//         } else {
+//             localStorage.setItem("admin_login_time", new Date().getTime().toString());
+//         }
+//     }
+//     // =========================================================================
+
+//     const isAccessingAdmin = to.path.startsWith("/admin") || to.meta.isAdmin;
+
+//     // --- PENCEGAHAN AKSES HALAMAN LOGIN JIKA SUDAH LOGIN ---
+//     // 1. User biasa
+//     if (userToken && user && user.usertype === "user") {
+//         if (["/loginadmin", "/login", "/register"].includes(to.path)) {
+//             return next("/");
+//         }
+//     }
+
+//     // 2. Admin
+//     if (isAdminSessionValid) {
+//         if (["/loginadmin", "/login", "/register"].includes(to.path)) {
+//             // Jika mereka mencoba masuk ke halaman login, tendang ke menu yang sesuai dengan role-nya
+//             if (admin.usertype === 'accounting') {
+//                 return next("/admin/coas");
+//             }
+//             return next("/admin/dashboard");
+//         }
+//     }
+
+//     // --- LOGIKA PROTEKSI ROUTE (REQUIRES AUTH) ---
+//     if (to.meta.requiresAuth) {
+//         // Jika akses admin area
+//         if (isAccessingAdmin) {
+//             if (!isAdminSessionValid) {
+//                 return next("/loginadmin");
+//             }
+
+//             // =====================================================================
+//             // [BARU] RBAC ROUTE GUARD (Mencegah Ketik URL Manual)
+//             // =====================================================================
+//             const role = admin.usertype;
+//             const targetPath = to.path;
+
+//             if (role !== 'superadmin') {
+
+//                 // Aturan untuk Gudang
+//                 if (role === 'gudang') {
+//                     const allowedGudangPaths = ['/admin/products', '/admin/stocks', '/admin/transactions', '/admin/profile'];
+//                     // Izinkan jika path dimulai dengan allowed paths (termasuk view/edit product)
+//                     const isAllowed = allowedGudangPaths.some(p => targetPath.startsWith(p));
+//                     if (!isAllowed) return next("/admin/transactions"); // Kick ke menu aman
+//                 }
+
+//                 // Aturan untuk Accounting
+//                 if (role === 'accounting') {
+//                     const allowedAccountingPaths = ['/admin/coas', '/admin/category-coas', '/admin/payments', '/admin/suppliers', '/admin/invoices', '/admin/salesreports', '/admin/profile'];
+//                     const isAllowed = allowedAccountingPaths.some(p => targetPath.startsWith(p));
+//                     if (!isAllowed) return next("/admin/coas"); // Kick ke menu aman
+//                 }
+
+//                 // Aturan untuk Admin Standar
+//                 if (role === 'admin') {
+//                     // Admin standar dilarang masuk ke menu accounting
+//                     const forbiddenAdminPaths = ['/admin/coas', '/admin/category-coas', '/admin/payments', '/admin/suppliers', '/admin/invoices'];
+//                     const isForbidden = forbiddenAdminPaths.some(p => targetPath.startsWith(p));
+//                     if (isForbidden) return next("/admin/dashboard");
+//                 }
+//             }
+//             // =====================================================================
+
+//             return next();
+//         }
+
+//         // Jika akses user area
+//         if (!userToken || !user || user.usertype !== "user") { // Pastikan admin tidak nyasar ke profile page user biasa
+//             return next("/login");
+//         }
+
+//         return next();
+//     }
+
+//     next();
+// });
+
+// export default router;
+
+// Navigation Guard
 router.beforeEach((to, from, next) => {
-    const userToken = localStorage.getItem("token");
-    const adminToken = localStorage.getItem("admin_token");
+  const userToken = localStorage.getItem("token");
+  const adminToken = localStorage.getItem("admin_token");
 
-    const userString = localStorage.getItem("user");
-    const adminString = localStorage.getItem("admin");
+  const userString = localStorage.getItem("user");
+  const adminString = localStorage.getItem("admin");
 
-    const adminLoginTime = localStorage.getItem("admin_login_time");
+  const adminLoginTime = localStorage.getItem("admin_login_time");
 
-    const user = userString ? JSON.parse(userString) : null;
-    let admin = adminString ? JSON.parse(adminString) : null;
+  const user = userString ? JSON.parse(userString) : null;
+  let admin = adminString ? JSON.parse(adminString) : null;
 
-    // [PERBAIKAN UTAMA 1] Definisikan array role admin yang valid
-    const validAdminRoles = ["admin", "superadmin", "gudang", "accounting"];
+  const validAdminRoles = ["admin", "superadmin", "gudang", "accounting"];
 
-    // Variabel pembantu untuk status validitas admin
-    let isAdminSessionValid = !!(
-        adminToken &&
-        admin &&
-        validAdminRoles.includes(admin.usertype) // <--- PERUBAHAN DI SINI
-    );
+  let isAdminSessionValid = !!(
+    adminToken &&
+    admin &&
+    validAdminRoles.includes(admin.usertype)
+  );
 
-    // =========================================================================
-    // LOGIKA KEDALUWARSA TOKEN ADMIN (MAKSIMAL 15 MENIT)
-    // =========================================================================
-    if (isAdminSessionValid) {
-        if (adminLoginTime) {
-            const currentTime = new Date().getTime();
-            const loginTime = parseInt(adminLoginTime, 10);
-            const timeLimit = 15 * 60 * 1000; // 15 menit
+  // =========================================================================
+  // LOGIKA KEDALUWARSA TOKEN ADMIN (MAKSIMAL 15 MENIT)
+  // =========================================================================
+  if (isAdminSessionValid) {
+    if (adminLoginTime) {
+      const currentTime = new Date().getTime();
+      const loginTime = parseInt(adminLoginTime, 10);
+      const timeLimit = 15 * 60 * 1000; // 15 menit
 
-            if (currentTime - loginTime > timeLimit) {
-                localStorage.removeItem("admin_token");
-                localStorage.removeItem("admin");
-                localStorage.removeItem("admin_login_time");
+      if (currentTime - loginTime > timeLimit) {
+        localStorage.removeItem("admin_token");
+        localStorage.removeItem("admin");
+        localStorage.removeItem("admin_login_time");
 
-                isAdminSessionValid = false;
-                admin = null;
+        isAdminSessionValid = false;
+        admin = null;
 
-                if (to.path !== "/loginadmin") {
-                    return next("/loginadmin");
-                }
-            }
-        } else {
-            localStorage.setItem("admin_login_time", new Date().getTime().toString());
+        if (to.path !== "/loginadmin") {
+          return next("/loginadmin");
         }
+      }
+    } else {
+      localStorage.setItem("admin_login_time", new Date().getTime().toString());
     }
-    // =========================================================================
+  }
+  // =========================================================================
 
-    const isAccessingAdmin = to.path.startsWith("/admin") || to.meta.isAdmin;
+  const isAccessingAdmin = to.path.startsWith("/admin") || to.meta.isAdmin;
 
-    // --- PENCEGAHAN AKSES HALAMAN LOGIN JIKA SUDAH LOGIN ---
-    // 1. User biasa
-    if (userToken && user && user.usertype === "user") {
-        if (["/loginadmin", "/login", "/register"].includes(to.path)) {
-            return next("/");
-        }
+  // --- PENCEGAHAN AKSES HALAMAN LOGIN JIKA SUDAH LOGIN ---
+  // 1. User biasa
+  if (userToken && user && user.usertype === "user") {
+    if (["/loginadmin", "/login", "/register"].includes(to.path)) {
+      return next("/");
     }
+  }
 
-    // 2. Admin
-    if (isAdminSessionValid) {
-        if (["/loginadmin", "/login", "/register"].includes(to.path)) {
-            // Jika mereka mencoba masuk ke halaman login, tendang ke menu yang sesuai dengan role-nya
-            if (admin.usertype === 'accounting') {
-                return next("/admin/coas");
-            }
-            return next("/admin/dashboard");
-        }
+  // 2. Admin & Staff
+  if (isAdminSessionValid) {
+    if (["/loginadmin", "/login", "/register"].includes(to.path)) {
+      // [PERBAIKAN] Pastikan semua role ditendang ke halaman beranda masing-masing divisi!
+      if (admin.usertype === 'accounting') {
+        return next("/admin/coas");
+      } else if (admin.usertype === 'gudang') {
+        return next("/admin/transactions");
+      } else {
+        return next("/admin/dashboard");
+      }
     }
+  }
 
-    // --- LOGIKA PROTEKSI ROUTE (REQUIRES AUTH) ---
-    if (to.meta.requiresAuth) {
-        // Jika akses admin area
-        if (isAccessingAdmin) {
-            if (!isAdminSessionValid) {
-                return next("/loginadmin");
-            }
+  // --- LOGIKA PROTEKSI ROUTE (REQUIRES AUTH) ---
+  if (to.meta.requiresAuth) {
+    
+    // Jika akses admin area
+    if (isAccessingAdmin) {
+      if (!isAdminSessionValid) {
+        return next("/loginadmin");
+      }
 
-            // =====================================================================
-            // [BARU] RBAC ROUTE GUARD (Mencegah Ketik URL Manual)
-            // =====================================================================
-            const role = admin.usertype;
-            const targetPath = to.path;
+      // =====================================================================
+      // RBAC ROUTE GUARD (Mencegah Ketik URL Manual)
+      // =====================================================================
+      const role = admin.usertype;
+      const targetPath = to.path;
 
-            if (role !== 'superadmin') {
-
-                // Aturan untuk Gudang
-                if (role === 'gudang') {
-                    const allowedGudangPaths = ['/admin/products', '/admin/stocks', '/admin/transactions', '/admin/profile'];
-                    // Izinkan jika path dimulai dengan allowed paths (termasuk view/edit product)
-                    const isAllowed = allowedGudangPaths.some(p => targetPath.startsWith(p));
-                    if (!isAllowed) return next("/admin/transactions"); // Kick ke menu aman
-                }
-
-                // Aturan untuk Accounting
-                if (role === 'accounting') {
-                    const allowedAccountingPaths = ['/admin/coas', '/admin/category-coas', '/admin/payments', '/admin/suppliers', '/admin/invoices', '/admin/salesreports', '/admin/profile'];
-                    const isAllowed = allowedAccountingPaths.some(p => targetPath.startsWith(p));
-                    if (!isAllowed) return next("/admin/coas"); // Kick ke menu aman
-                }
-
-                // Aturan untuk Admin Standar
-                if (role === 'admin') {
-                    // Admin standar dilarang masuk ke menu accounting
-                    const forbiddenAdminPaths = ['/admin/coas', '/admin/category-coas', '/admin/payments', '/admin/suppliers', '/admin/invoices'];
-                    const isForbidden = forbiddenAdminPaths.some(p => targetPath.startsWith(p));
-                    if (isForbidden) return next("/admin/dashboard");
-                }
-            }
-            // =====================================================================
-
-            return next();
+      if (role !== 'superadmin') {
+        // Aturan untuk Gudang
+        if (role === 'gudang') {
+          const allowedGudangPaths = ['/admin/products', '/admin/stocks', '/admin/transactions', '/admin/profile'];
+          const isAllowed = allowedGudangPaths.some(p => targetPath.startsWith(p));
+          if (!isAllowed) return next("/admin/transactions"); 
         }
 
-        // Jika akses user area
-        if (!userToken || !user || user.usertype !== "user") { // Pastikan admin tidak nyasar ke profile page user biasa
-            return next("/login");
+        // Aturan untuk Accounting
+        if (role === 'accounting') {
+          const allowedAccountingPaths = ['/admin/coas', '/admin/category-coas', '/admin/payments', '/admin/suppliers', '/admin/invoices', '/admin/salesreports', '/admin/profile'];
+          const isAllowed = allowedAccountingPaths.some(p => targetPath.startsWith(p));
+          if (!isAllowed) return next("/admin/coas"); 
         }
 
-        return next();
+        // Aturan untuk Admin Standar
+        if (role === 'admin') {
+          const forbiddenAdminPaths = ['/admin/coas', '/admin/category-coas', '/admin/payments', '/admin/suppliers', '/admin/invoices'];
+          const isForbidden = forbiddenAdminPaths.some(p => targetPath.startsWith(p));
+          if (isForbidden) return next("/admin/dashboard");
+        }
+      }
+      // =====================================================================
+
+      return next();
     }
 
-    next();
+    // Jika akses user area
+    if (!userToken || !user || user.usertype !== "user") { 
+      return next("/login");
+    }
+
+    return next();
+  }
+
+  next();
 });
 
 export default router;
