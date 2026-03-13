@@ -787,7 +787,9 @@ const handleSubmit = async () => {
     >
       <div class="space-y-6">
         <div>
-          <label class="block mb-1 font-bold text-sm">Product Name <span class="text-red-500">*</span></label>
+          <label class="block mb-1 font-bold text-sm"
+            >Product Name <span class="text-red-500">*</span></label
+          >
           <input
             v-model="form.name"
             type="text"
@@ -796,7 +798,9 @@ const handleSubmit = async () => {
           />
         </div>
         <div>
-          <label class="block mb-1 font-bold text-sm">Product Code <span class="text-red-500">*</span></label>
+          <label class="block mb-1 font-bold text-sm"
+            >Product Code <span class="text-red-500">*</span></label
+          >
           <input
             v-model="form.code"
             type="text"
@@ -807,7 +811,9 @@ const handleSubmit = async () => {
 
         <div class="gap-4 grid grid-cols-2">
           <div>
-            <label class="block mb-1 font-bold text-sm">Original Price <span class="text-red-500">*</span></label>
+            <label class="block mb-1 font-bold text-sm"
+              >Original Price <span class="text-red-500">*</span></label
+            >
             <input
               v-model="form.price"
               type="number"
@@ -816,7 +822,9 @@ const handleSubmit = async () => {
             />
           </div>
           <div>
-            <label class="block mb-1 font-bold text-sm">Discount Price (Optional)</label>
+            <label class="block mb-1 font-bold text-sm"
+              >Discount Price (Optional)</label
+            >
             <input
               v-model="form.discount_price"
               type="number"
@@ -827,7 +835,7 @@ const handleSubmit = async () => {
         </div>
 
         <div class="gap-4 grid grid-cols-2">
-          <div>
+          <!-- <div>
             <label class="block mb-1 font-bold text-sm">Stock <span class="text-red-500">*</span></label>
             <input
               v-model="form.stock"
@@ -835,9 +843,30 @@ const handleSubmit = async () => {
               class="bg-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 w-full"
               required
             />
+          </div> -->
+          <div>
+            <label class="block mb-1 font-bold text-sm"
+              >Stock <span class="text-red-500">*</span></label
+            >
+            <div class="relative">
+              <input
+                v-model="form.stock"
+                type="number"
+                class="bg-gray-200 text-gray-500 p-3 rounded-xl w-full cursor-not-allowed"
+                readonly
+                title="Stock must be managed via Stock Management Menu"
+              />
+              <p
+                class="text-[9px] text-gray-500 mt-1 uppercase tracking-widest font-bold"
+              >
+                ⚠️ Manage stock via Stock Menu
+              </p>
+            </div>
           </div>
           <div>
-            <label class="block mb-1 font-bold text-sm">Category <span class="text-red-500">*</span></label>
+            <label class="block mb-1 font-bold text-sm"
+              >Category <span class="text-red-500">*</span></label
+            >
             <select
               v-model="form.category_id"
               class="bg-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 w-full"
@@ -1112,19 +1141,18 @@ onMounted(async () => {
   try {
     const catRes = await axios.get(`${BASE_URL}/categories`, axiosConfig);
     categories.value = catRes.data.data;
-    
+
     // 3. BACKGROUND FETCH (Self-Healing)
-    // Walaupun data sudah muncul secara instan, kita tetap tembak API secara diam-diam (background) 
-    // untuk memastikan jika ada admin lain yang mengedit data ini 1 detik yang lalu, 
+    // Walaupun data sudah muncul secara instan, kita tetap tembak API secara diam-diam (background)
+    // untuk memastikan jika ada admin lain yang mengedit data ini 1 detik yang lalu,
     // data yang sedang kita edit adalah data yang paling mutakhir (sinkronisasi).
     const prodRes = await axios.get(
       `${BASE_URL}/products/${productId}`,
       axiosConfig,
     );
-    
+
     // Timpa form dengan data paling fresh dari database (biasanya sangat cepat dan user tidak akan sadar)
-    fillFormWithData(prodRes.data); 
-    
+    fillFormWithData(prodRes.data);
   } catch (error) {
     if (!stateData) {
       Swal.fire("Error", "Gagal mengambil data produk.", "error");

@@ -243,6 +243,69 @@
               {{ product.stock }} <span class="text-sm font-medium">pcs</span>
             </p>
           </div>
+          <div
+            class="bg-gray-50 p-6 rounded-2xl border border-gray-100 flex justify-between items-center"
+          >
+            <div>
+              <p
+                class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1"
+              >
+                Current Total Stock
+              </p>
+              <p
+                :class="product.stock <= 5 ? 'text-red-600' : 'text-gray-900'"
+                class="text-2xl font-black"
+              >
+                {{ product.stock }} <span class="text-sm font-medium">pcs</span>
+              </p>
+            </div>
+            <router-link
+              to="/admin/stocks"
+              class="text-xs font-bold text-blue-600 hover:underline flex items-center gap-1"
+            >
+              Manage Batches <span>→</span>
+            </router-link>
+          </div>
+
+          <div
+            v-if="product.stocks && product.stocks.length > 0"
+            class="mt-4 border border-gray-200 rounded-xl overflow-hidden"
+          >
+            <div class="bg-gray-100 px-4 py-2 border-b border-gray-200">
+              <p
+                class="text-[10px] font-bold text-gray-600 uppercase tracking-widest"
+              >
+                Active Stock Batches (FIFO)
+              </p>
+            </div>
+            <div
+              class="p-4 space-y-3 max-h-40 overflow-y-auto custom-scrollbar"
+            >
+              <div
+                v-for="batch in product.stocks"
+                :key="batch.id"
+                class="flex justify-between items-center text-sm"
+              >
+                <div class="flex items-center gap-3">
+                  <div
+                    class="w-2 h-2 bg-green-500 rounded-full animate-pulse"
+                  ></div>
+                  <div>
+                    <p class="font-mono font-bold text-gray-800 text-xs">
+                      {{ batch.batch_code }}
+                    </p>
+                    <p class="text-[10px] text-gray-400">
+                      {{ formatDate(batch.created_at) }}
+                    </p>
+                  </div>
+                </div>
+                <span
+                  class="font-black text-gray-700 bg-gray-50 px-2 py-1 rounded"
+                  >{{ batch.quantity }} pcs</span
+                >
+              </div>
+            </div>
+          </div>
           <div class="text-right">
             <p
               class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1"
@@ -423,7 +486,7 @@ const formatDate = (dateString) => {
 const goToEditPage = () => {
   router.push({
     path: `/admin/products/edit/${product.value.id}`,
-    state: { productData: JSON.stringify(product.value) } // Lempar data mentah ke halaman tujuan
+    state: { productData: JSON.stringify(product.value) }, // Lempar data mentah ke halaman tujuan
   });
 };
 
