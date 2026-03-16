@@ -70,12 +70,58 @@ const axiosConfig = {
   headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
 };
 
+// const fetchData = async () => {
+//   isLoading.value = true;
+//   try {
+//     const res = await axios.get(`${BASE_URL}/products/inactive`, axiosConfig);
+//     products.value = res.data;
+//   } catch (error) {
+//     console.error(error);
+//   } finally {
+//     setTimeout(() => isLoading.value = false, 500);
+//   }
+// };
+
+// const restoreProduct = async (id) => {
+//   try {
+//     await axios.put(`${BASE_URL}/products/${id}/restore`, {}, axiosConfig);
+//     Swal.fire("Activated!", "Product is now live.", "success");
+//     fetchData();
+//   } catch (error) {
+//     Swal.fire("Error", "Failed to restore product", "error");
+//   }
+// };
+
+// const confirmPermanentDelete = (id) => {
+//   Swal.fire({
+//     title: "Delete Permanently?",
+//     text: "This data will be gone forever from S3 and DB!",
+//     icon: "warning",
+//     showCancelButton: true,
+//     confirmButtonColor: "#d33",
+//     confirmButtonText: "Yes, destroy it!",
+//   }).then(async (result) => {
+//     if (result.isConfirmed) {
+//       try {
+//         await axios.delete(`${BASE_URL}/products/${id}/force`, axiosConfig);
+//         Swal.fire("Destroyed!", "Data has been wiped.", "success");
+//         fetchData();
+//       } catch (err) {
+//         Swal.fire("Error", "Action failed", "error");
+//       }
+//     }
+//   });
+// };
+
 const fetchData = async () => {
   isLoading.value = true;
   try {
     const res = await axios.get(`${BASE_URL}/products/inactive`, axiosConfig);
     products.value = res.data;
   } catch (error) {
+    // Menampilkan pesan error dari backend saat gagal ambil data
+    const msg = error.response?.data?.message || "Gagal mengambil data dari server";
+    Swal.fire("Error", msg, "error");
     console.error(error);
   } finally {
     setTimeout(() => isLoading.value = false, 500);
@@ -88,7 +134,9 @@ const restoreProduct = async (id) => {
     Swal.fire("Activated!", "Product is now live.", "success");
     fetchData();
   } catch (error) {
-    Swal.fire("Error", "Failed to restore product", "error");
+    // Mengambil pesan error dari JSON response
+    const msg = error.response?.data?.message || "Gagal memulihkan produk";
+    Swal.fire("Error", msg, "error");
   }
 };
 
@@ -106,8 +154,10 @@ const confirmPermanentDelete = (id) => {
         await axios.delete(`${BASE_URL}/products/${id}/force`, axiosConfig);
         Swal.fire("Destroyed!", "Data has been wiped.", "success");
         fetchData();
-      } catch (err) {
-        Swal.fire("Error", "Action failed", "error");
+      } catch (error) {
+        // Mengambil pesan error dari JSON response
+        const msg = error.response?.data?.message || "Gagal menghapus data secara permanen";
+        Swal.fire("Error", msg, "error");
       }
     }
   });
