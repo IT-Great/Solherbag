@@ -427,12 +427,105 @@ onMounted(async () => {
 </template>
 
 <script setup>
+// import { ref, onMounted } from "vue";
+// import axios from "axios";
+// import { useRouter } from "vue-router";
+// import Swal from "sweetalert2";
+// import { BASE_URL } from "../../config/api.js";
+// import { uploadToS3 } from "../../utils/s3Upload.js";
+
+// const router = useRouter();
+// const categories = ref([]);
+// const form = ref({
+//   name: "",
+//   code: "",
+//   price: "",
+//   stock: "",
+//   category_id: "",
+//   description: "",
+//   care: "",
+//   design: "",
+//   image: null,
+//   variant_images: [],
+//   variant_video: null,
+// });
+
+// const handleFile = (e) => (form.value.image = e.target.files[0]);
+
+// const handleVariantImages = (e) => {
+//   const files = Array.from(e.target.files);
+//   if (files.length > 5) {
+//     Swal.fire("Warning", "Maximum 5 variant images allowed", "warning");
+//     e.target.value = "";
+//     return;
+//   }
+//   form.value.variant_images = files;
+// };
+
+// const handleVideo = (e) => {
+//   const file = e.target.files[0];
+//   form.value.variant_video = file;
+// };
+
+// const handleSubmit = async () => {
+//   Swal.fire({ title: "Uploading...", allowOutsideClick: false });
+//   Swal.showLoading();
+
+//   try {
+//     // upload main image
+//     const imageUrl = await uploadToS3(form.value.image, "products");
+
+//     // variant images
+//     let variantUrls = [];
+
+//     for (const file of form.value.variant_images) {
+//       const url = await uploadToS3(file, "products/variants");
+//       variantUrls.push(url);
+//     }
+
+//     // video
+//     let videoUrl = null;
+
+//     if (form.value.variant_video) {
+//       videoUrl = await uploadToS3(form.value.variant_video, "products/videos");
+//     }
+
+//     await axios.post(
+//       `${BASE_URL}/products`,
+//       {
+//         ...form.value,
+//         image: imageUrl,
+//         variant_images: variantUrls,
+//         variant_video: videoUrl,
+//       },
+//       {
+//         headers: {
+//           "Content-Type": "multipart/form-data",
+//           Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
+//           Accept: "application/json",
+//         },
+//       },
+//     );
+
+//     Swal.fire("Success", "Product Added", "success");
+//     router.push("/admin/products");
+//   } catch (e) {
+//     Swal.fire("Upload Failed", "", "error");
+//   }
+// };
+
+// onMounted(async () => {
+//   const res = await axios.get(`${BASE_URL}/categories`, {
+//     headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
+//   });
+//   categories.value = res.data.data;
+// });
+
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
-import { uploadToS3 } from "../../utils/s3Upload.js";
 
 const router = useRouter();
 const categories = ref([]);
@@ -448,6 +541,7 @@ const form = ref({
   image: null,
   variant_images: [],
   variant_video: null,
+  discount_price: ""
 });
 
 const handleFile = (e) => (form.value.image = e.target.files[0]);
@@ -468,49 +562,57 @@ const handleVideo = (e) => {
 };
 
 const handleSubmit = async () => {
-  Swal.fire({ title: "Uploading...", allowOutsideClick: false });
-  Swal.showLoading();
+  Swal.fire({ title: "Uploading...", allowOutsideClick: false, didOpen: () => Swal.showLoading() });
 
   try {
-    // upload main image
-    const imageUrl = await uploadToS3(form.value.image, "products");
-
-    // variant images
-    let variantUrls = [];
-
-    for (const file of form.value.variant_images) {
-      const url = await uploadToS3(file, "products/variants");
-      variantUrls.push(url);
+    // Gunakan FormData untuk mengirim file
+    let formData = new FormData();
+    formData.append("name", form.value.name);
+    formData.append("code", form.value.code);
+    formData.append("price", form.value.price);
+    formData.append("stock", form.value.stock);
+    formData.append("category_id", form.value.category_id);
+    formData.append("description", form.value.description);
+    formData.append("care", form.value.care);
+    formData.append("design", form.value.design);
+    
+    if(form.value.discount_price) {
+        formData.append("discount_price", form.value.discount_price);
     }
 
-    // video
-    let videoUrl = null;
+    if (form.value.image) {
+      formData.append("image", form.value.image);
+    } else {
+      throw new Error("Main image is required");
+    }
+
+    if (form.value.variant_images.length > 0) {
+      form.value.variant_images.forEach((file, index) => {
+        formData.append(`variant_images[${index}]`, file);
+      });
+    }
 
     if (form.value.variant_video) {
-      videoUrl = await uploadToS3(form.value.variant_video, "products/videos");
+      formData.append("variant_video", form.value.variant_video);
     }
 
-    await axios.post(
-      `${BASE_URL}/products`,
-      {
-        ...form.value,
-        image: imageUrl,
-        variant_images: variantUrls,
-        variant_video: videoUrl,
+    await axios.post(`${BASE_URL}/products`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
       },
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
-          Accept: "application/json",
-        },
-      },
-    );
+    });
 
     Swal.fire("Success", "Product Added", "success");
     router.push("/admin/products");
-  } catch (e) {
-    Swal.fire("Upload Failed", "", "error");
+  } catch (error) {
+    let errorMsg = "Upload Failed";
+    if (error.response && error.response.data) {
+        errorMsg = Object.values(error.response.data).flat().join('<br>');
+    } else if (error.message) {
+        errorMsg = error.message;
+    }
+    Swal.fire("Error", errorMsg, "error");
   }
 };
 

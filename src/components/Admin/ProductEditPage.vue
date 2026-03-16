@@ -1023,12 +1023,212 @@ const handleSubmit = async () => {
 </template>
 
 <script setup>
+// import { ref, onMounted } from "vue";
+// import axios from "axios";
+// import { useRouter, useRoute } from "vue-router";
+// import Swal from "sweetalert2";
+// import { BASE_URL } from "../../config/api.js";
+// import { uploadToS3 } from "../../utils/s3Upload.js";
+
+// const router = useRouter();
+// const route = useRoute();
+// const productId = route.params.id;
+
+// const categories = ref([]);
+
+// // State Khusus Pratinjau (Data Murni dari DB)
+// const currentImage = ref("");
+// const currentVariantImages = ref([]);
+// const currentVideo = ref("");
+
+// // State Input Form (Hanya terisi jika admin MENGUNGGAH file BARU)
+// const form = ref({
+//   name: "",
+//   code: "",
+//   price: "",
+//   discount_price: "",
+//   stock: "",
+//   category_id: "",
+//   description: "",
+//   care: "",
+//   design: "",
+//   image: null, // File object
+//   variant_images: [], // Array File object
+//   variant_video: null, // File object
+// });
+
+// const axiosConfig = {
+//   headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
+// };
+
+// // Handlers untuk input file baru
+// const handleFile = (e) => {
+//   form.value.image = e.target.files[0];
+// };
+
+// const handleVariantImages = (e) => {
+//   const files = Array.from(e.target.files);
+//   if (files.length > 5) {
+//     Swal.fire("Warning", "Maximum 5 variant images allowed", "warning");
+//     e.target.value = "";
+//     return;
+//   }
+//   form.value.variant_images = files;
+// };
+
+// const handleVideo = (e) => {
+//   const file = e.target.files[0];
+//   form.value.variant_video = file;
+// };
+
+// // Fungsi helper untuk mengisi form dari data produk
+// const fillFormWithData = (p) => {
+//   form.value.name = p.name;
+//   form.value.code = p.code;
+//   form.value.price = p.price;
+//   form.value.discount_price = p.discount_price || "";
+//   form.value.stock = p.stock;
+//   form.value.category_id = p.category_id;
+//   form.value.description = p.description;
+//   form.value.care = p.care;
+//   form.value.design = p.design;
+
+//   // Set ke state pratinjau (BUKAN form.value.image, dll)
+//   currentImage.value = p.image;
+//   currentVariantImages.value = p.variant_images || [];
+//   currentVideo.value = p.variant_video;
+// };
+
+// // onMounted(async () => {
+// //   const stateData = window.history.state?.productData;
+
+// //   if (stateData) {
+// //     fillFormWithData(stateData);
+// //   }
+
+// //   try {
+// //     const catRes = await axios.get(`${BASE_URL}/categories`, axiosConfig);
+// //     categories.value = catRes.data.data;
+
+// //     const prodRes = await axios.get(
+// //       `${BASE_URL}/products/${productId}`,
+// //       axiosConfig,
+// //     );
+// //     fillFormWithData(prodRes.data);
+// //   } catch (error) {
+// //     if (!stateData) {
+// //       Swal.fire("Error", "Gagal mengambil data produk.", "error");
+// //     }
+// //   }
+// // });
+
+// onMounted(async () => {
+//   // 1. TANGKAP DATA STATE INSTAN (OPTISTIC UI)
+//   const stateDataStr = window.history.state?.productData;
+//   let stateData = null;
+
+//   if (stateDataStr) {
+//     try {
+//       stateData = JSON.parse(stateDataStr);
+//       // Langsung isi form detik itu juga tanpa delay API
+//       fillFormWithData(stateData);
+//     } catch (e) {
+//       console.error("Gagal parsing state data", e);
+//     }
+//   }
+
+//   // 2. FETCH KATEGORI (Tetap diperlukan untuk mengisi Dropdown Option)
+//   try {
+//     const catRes = await axios.get(`${BASE_URL}/categories`, axiosConfig);
+//     categories.value = catRes.data.data;
+
+//     // 3. BACKGROUND FETCH (Self-Healing)
+//     // Walaupun data sudah muncul secara instan, kita tetap tembak API secara diam-diam (background)
+//     // untuk memastikan jika ada admin lain yang mengedit data ini 1 detik yang lalu,
+//     // data yang sedang kita edit adalah data yang paling mutakhir (sinkronisasi).
+//     const prodRes = await axios.get(
+//       `${BASE_URL}/products/${productId}`,
+//       axiosConfig,
+//     );
+
+//     // Timpa form dengan data paling fresh dari database (biasanya sangat cepat dan user tidak akan sadar)
+//     fillFormWithData(prodRes.data);
+//   } catch (error) {
+//     if (!stateData) {
+//       Swal.fire("Error", "Gagal mengambil data produk.", "error");
+//     }
+//   }
+// });
+
+// const handleSubmit = async () => {
+//   Swal.fire({
+//     title: "Updating...",
+//     allowOutsideClick: false,
+//     didOpen: () => Swal.showLoading(),
+//   });
+
+//   try {
+//     let imageUrl = currentImage.value;
+//     let variantUrls = currentVariantImages.value;
+//     let videoUrl = currentVideo.value;
+
+//     /*
+//     ==========================
+//     MAIN IMAGE
+//     ==========================
+//     */
+//     if (form.value.image instanceof File) {
+//       imageUrl = await uploadToS3(form.value.image, "products");
+//     }
+
+//     /*
+//     ==========================
+//     VARIANT IMAGES
+//     ==========================
+//     */
+//     if (form.value.variant_images.length > 0) {
+//       variantUrls = [];
+
+//       for (const file of form.value.variant_images) {
+//         const url = await uploadToS3(file, "products/variants");
+//         variantUrls.push(url);
+//       }
+//     }
+
+//     /*
+//     ==========================
+//     VIDEO
+//     ==========================
+//     */
+//     if (form.value.variant_video instanceof File) {
+//       videoUrl = await uploadToS3(form.value.variant_video, "products/videos");
+//     }
+
+//     await axios.put(
+//       `${BASE_URL}/products/${productId}`,
+//       {
+//         ...form.value,
+//         image: imageUrl,
+//         variant_images: variantUrls,
+//         variant_video: videoUrl,
+//       },
+//       axiosConfig,
+//     );
+
+//     Swal.fire("Success", "Product Updated", "success");
+
+//     router.push("/admin/products");
+//   } catch (err) {
+//     console.error(err);
+//     Swal.fire("Error", "Update Failed", "error");
+//   }
+// };
+
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import { useRouter, useRoute } from "vue-router";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
-import { uploadToS3 } from "../../utils/s3Upload.js";
 
 const router = useRouter();
 const route = useRoute();
@@ -1036,12 +1236,10 @@ const productId = route.params.id;
 
 const categories = ref([]);
 
-// State Khusus Pratinjau (Data Murni dari DB)
 const currentImage = ref("");
 const currentVariantImages = ref([]);
 const currentVideo = ref("");
 
-// State Input Form (Hanya terisi jika admin MENGUNGGAH file BARU)
 const form = ref({
   name: "",
   code: "",
@@ -1052,16 +1250,15 @@ const form = ref({
   description: "",
   care: "",
   design: "",
-  image: null, // File object
-  variant_images: [], // Array File object
-  variant_video: null, // File object
+  image: null, 
+  variant_images: [], 
+  variant_video: null, 
 });
 
 const axiosConfig = {
   headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
 };
 
-// Handlers untuk input file baru
 const handleFile = (e) => {
   form.value.image = e.target.files[0];
 };
@@ -1077,11 +1274,9 @@ const handleVariantImages = (e) => {
 };
 
 const handleVideo = (e) => {
-  const file = e.target.files[0];
-  form.value.variant_video = file;
+  form.value.variant_video = e.target.files[0];
 };
 
-// Fungsi helper untuk mengisi form dari data produk
 const fillFormWithData = (p) => {
   form.value.name = p.name;
   form.value.code = p.code;
@@ -1093,65 +1288,29 @@ const fillFormWithData = (p) => {
   form.value.care = p.care;
   form.value.design = p.design;
 
-  // Set ke state pratinjau (BUKAN form.value.image, dll)
   currentImage.value = p.image;
   currentVariantImages.value = p.variant_images || [];
   currentVideo.value = p.variant_video;
 };
 
-// onMounted(async () => {
-//   const stateData = window.history.state?.productData;
-
-//   if (stateData) {
-//     fillFormWithData(stateData);
-//   }
-
-//   try {
-//     const catRes = await axios.get(`${BASE_URL}/categories`, axiosConfig);
-//     categories.value = catRes.data.data;
-
-//     const prodRes = await axios.get(
-//       `${BASE_URL}/products/${productId}`,
-//       axiosConfig,
-//     );
-//     fillFormWithData(prodRes.data);
-//   } catch (error) {
-//     if (!stateData) {
-//       Swal.fire("Error", "Gagal mengambil data produk.", "error");
-//     }
-//   }
-// });
-
 onMounted(async () => {
-  // 1. TANGKAP DATA STATE INSTAN (OPTISTIC UI)
   const stateDataStr = window.history.state?.productData;
   let stateData = null;
 
   if (stateDataStr) {
     try {
       stateData = JSON.parse(stateDataStr);
-      // Langsung isi form detik itu juga tanpa delay API
       fillFormWithData(stateData);
     } catch (e) {
       console.error("Gagal parsing state data", e);
     }
   }
 
-  // 2. FETCH KATEGORI (Tetap diperlukan untuk mengisi Dropdown Option)
   try {
     const catRes = await axios.get(`${BASE_URL}/categories`, axiosConfig);
     categories.value = catRes.data.data;
 
-    // 3. BACKGROUND FETCH (Self-Healing)
-    // Walaupun data sudah muncul secara instan, kita tetap tembak API secara diam-diam (background)
-    // untuk memastikan jika ada admin lain yang mengedit data ini 1 detik yang lalu,
-    // data yang sedang kita edit adalah data yang paling mutakhir (sinkronisasi).
-    const prodRes = await axios.get(
-      `${BASE_URL}/products/${productId}`,
-      axiosConfig,
-    );
-
-    // Timpa form dengan data paling fresh dari database (biasanya sangat cepat dan user tidak akan sadar)
+    const prodRes = await axios.get(`${BASE_URL}/products/${productId}`, axiosConfig);
     fillFormWithData(prodRes.data);
   } catch (error) {
     if (!stateData) {
@@ -1168,59 +1327,51 @@ const handleSubmit = async () => {
   });
 
   try {
-    let imageUrl = currentImage.value;
-    let variantUrls = currentVariantImages.value;
-    let videoUrl = currentVideo.value;
+    let formData = new FormData();
+    // Penting di Laravel jika ingin PUT lewat FormData
+    formData.append("_method", "PUT"); 
+    
+    formData.append("name", form.value.name);
+    formData.append("code", form.value.code);
+    formData.append("price", form.value.price);
+    formData.append("category_id", form.value.category_id);
+    formData.append("description", form.value.description || "");
+    formData.append("care", form.value.care || "");
+    formData.append("design", form.value.design || "");
 
-    /*
-    ==========================
-    MAIN IMAGE
-    ==========================
-    */
+    if(form.value.discount_price) {
+        formData.append("discount_price", form.value.discount_price);
+    }
+
     if (form.value.image instanceof File) {
-      imageUrl = await uploadToS3(form.value.image, "products");
+      formData.append("image", form.value.image);
     }
 
-    /*
-    ==========================
-    VARIANT IMAGES
-    ==========================
-    */
     if (form.value.variant_images.length > 0) {
-      variantUrls = [];
-
-      for (const file of form.value.variant_images) {
-        const url = await uploadToS3(file, "products/variants");
-        variantUrls.push(url);
-      }
+      form.value.variant_images.forEach((file, index) => {
+        formData.append(`variant_images[${index}]`, file);
+      });
     }
 
-    /*
-    ==========================
-    VIDEO
-    ==========================
-    */
     if (form.value.variant_video instanceof File) {
-      videoUrl = await uploadToS3(form.value.variant_video, "products/videos");
+      formData.append("variant_video", form.value.variant_video);
     }
 
-    await axios.put(
-      `${BASE_URL}/products/${productId}`,
-      {
-        ...form.value,
-        image: imageUrl,
-        variant_images: variantUrls,
-        variant_video: videoUrl,
+    await axios.post(`${BASE_URL}/products/${productId}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
       },
-      axiosConfig,
-    );
+    });
 
     Swal.fire("Success", "Product Updated", "success");
-
     router.push("/admin/products");
-  } catch (err) {
-    console.error(err);
-    Swal.fire("Error", "Update Failed", "error");
+  } catch (error) {
+    let errorMsg = "Update Failed";
+    if (error.response && error.response.data) {
+        errorMsg = Object.values(error.response.data).flat().join('<br>');
+    }
+    Swal.fire("Error", errorMsg, "error");
   }
 };
 </script>
