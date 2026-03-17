@@ -105,7 +105,7 @@
               </div>
             </td> -->
 
-            <td class="py-4 w-[35%]">
+            <!-- <td class="py-4 w-[35%]">
               <div v-if="product.stocks && product.stocks.length > 0" class="flex flex-col gap-2">
                 <div 
                   v-for="(batch, index) in sortBatchesFIFO(product.stocks)" 
@@ -128,6 +128,44 @@
                     </div>
                     
                     <span class="text-[9px] text-gray-400">{{ formatDate(batch.created_at) }}</span>
+                  </div>
+                  <div class="bg-gray-100 px-3 py-1 rounded font-bold text-gray-800">
+                    {{ batch.quantity }} pcs
+                  </div>
+                </div>
+              </div>
+              <div v-else class="text-xs text-gray-400 italic bg-gray-50 p-2 rounded-lg border border-dashed text-center">
+                No active batches.
+              </div>
+            </td> -->
+
+            <td class="py-4 w-[35%]">
+              <div v-if="product.display_stocks && product.display_stocks.length > 0" class="flex flex-col gap-2">
+                <div 
+                  v-for="(batch, index) in product.display_stocks" 
+                  :key="batch.id" 
+                  :class="[
+                    'flex justify-between items-center bg-white border rounded-lg p-2 shadow-sm text-xs transition-colors',
+                    index === 0 ? 'border-blue-300 bg-blue-50/50' : 'border-gray-200'
+                  ]"
+                >
+                  <div>
+                    <div class="flex items-center gap-2 mb-0.5">
+                      <span :class="batch.is_legacy ? 'text-gray-500' : 'text-blue-600'" class="font-mono font-bold block">
+                        {{ batch.batch_code }}
+                      </span>
+                      
+                      <span v-if="index === 0" class="bg-blue-600 text-white text-[8px] px-1.5 py-0.5 rounded uppercase tracking-widest font-bold shadow-sm animate-pulse">
+                        Next to Use
+                      </span>
+                      <span v-else-if="index === product.display_stocks.length - 1 && product.display_stocks.length > 1 && !batch.is_legacy" class="bg-green-100 text-green-700 text-[8px] px-1.5 py-0.5 rounded uppercase tracking-widest font-bold border border-green-200">
+                        Newest
+                      </span>
+                    </div>
+                    
+                    <span class="text-[9px] text-gray-400">
+                      {{ batch.is_legacy ? 'Legacy System Stock' : formatDate(batch.created_at) }}
+                    </span>
                   </div>
                   <div class="bg-gray-100 px-3 py-1 rounded font-bold text-gray-800">
                     {{ batch.quantity }} pcs
@@ -215,11 +253,59 @@ const filteredProducts = computed(() => {
   return products.value.filter(p => p.name.toLowerCase().includes(searchQuery.value.toLowerCase()));
 });
 
+// const fetchStocks = async () => {
+//   isLoading.value = true;
+//   try {
+//     const res = await axios.get(`${BASE_URL}/admin/product-stocks`, axiosConfig);
+//     products.value = res.data;
+//   } catch (error) {
+//     Swal.fire("Error", "Failed to load stock data", "error");
+//   } finally {
+//     setTimeout(() => (isLoading.value = false), 500);
+//   }
+// };
+
 const fetchStocks = async () => {
   isLoading.value = true;
   try {
     const res = await axios.get(`${BASE_URL}/admin/product-stocks`, axiosConfig);
-    products.value = res.data;
+    
+    // ====================================================================
+    // [PERBAIKAN] LOGIKA PENGGABUNGAN STOK LAMA (LEGACY) & STOK BARU (BATCH)
+    // ====================================================================
+    const processedProducts = res.data.map(product => {
+      let batches = [];
+      
+      // 1. Ambil dan urutkan batch asli dari database (FIFO: Paling lama di atas)
+      if (product.stocks && Array.isArray(product.stocks)) {
+        batches = [...product.stocks].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+      }
+      
+      // 2. Hitung jumlah barang yang ada di dalam sistem batch
+      const trackedQuantity = batches.reduce((sum, b) => sum + Number(b.quantity), 0);
+      
+      // 3. Hitung selisih dengan stok utama (Stok yang diinput sebelum fitur Batch dibuat)
+      const unbatchedQuantity = Number(product.stock) - trackedQuantity;
+      
+      // 4. Jika ada selisih (Stok Siluman), buatkan Batch Fiktif dan taruh di URUTAN PALING ATAS
+      if (unbatchedQuantity > 0) {
+        batches.unshift({
+          id: 'legacy-' + product.id,
+          batch_code: 'SYS-INITIAL-STOCK',
+          quantity: unbatchedQuantity,
+          created_at: product.created_at, // Menggunakan tanggal produk dibuat
+          is_legacy: true // Penanda khusus untuk frontend
+        });
+      }
+      
+      // Simpan ke properti baru bernama 'display_stocks' untuk dirender di tabel
+      product.display_stocks = batches;
+      return product;
+    });
+
+    products.value = processedProducts;
+    // ====================================================================
+
   } catch (error) {
     Swal.fire("Error", "Failed to load stock data", "error");
   } finally {
