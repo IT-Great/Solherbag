@@ -7366,19 +7366,43 @@ const startTimers = () => {
   }, 1000);
 };
 
+// const fetchOrders = async () => {
+//   loading.value = true;
+//   try {
+//     const res = await axios.get(`${BASE_URL}/transactions`, {
+//       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+//     });
+//     // Hapus filter yang menghilangkan transaction tanpa produk jika sistem kita sudah fix.
+//     transactions.value = res.data.map((o) => ({ ...o, isCancelling: false }));
+//     startTimers();
+//   } catch (err) {
+//     console.error(err);
+//   } finally {
+//     // Kurangi waktu buatan timeout agar lebih snappy, namun tetap nyaman dilihat
+//     setTimeout(() => {
+//       loading.value = false;
+//     }, 300);
+//   }
+// };
+
 const fetchOrders = async () => {
   loading.value = true;
   try {
     const res = await axios.get(`${BASE_URL}/transactions`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
-    // Hapus filter yang menghilangkan transaction tanpa produk jika sistem kita sudah fix.
-    transactions.value = res.data.map((o) => ({ ...o, isCancelling: false }));
+    
+    // =========================================================================
+    // [PERBAIKAN] BUANG DATA USANG (GHOST DATA)
+    // Filter transaksi yang statusnya 'awaiting_payment' agar tidak masuk ke sistem UI
+    // =========================================================================
+    const validTransactions = res.data.filter(order => order.status !== 'awaiting_payment');
+
+    transactions.value = validTransactions.map((o) => ({ ...o, isCancelling: false }));
     startTimers();
   } catch (err) {
     console.error(err);
   } finally {
-    // Kurangi waktu buatan timeout agar lebih snappy, namun tetap nyaman dilihat
     setTimeout(() => {
       loading.value = false;
     }, 300);
