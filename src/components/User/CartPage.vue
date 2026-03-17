@@ -1167,7 +1167,7 @@ onMounted(() => {
               <div
                 class="flex flex-col flex-grow justify-between min-h-[6rem] sm:min-h-[12rem]"
               >
-                <div>
+                <!-- <div>
                   <div class="flex justify-between items-start gap-2">
                     <h3
                       class="font-bold text-sm sm:text-xl uppercase tracking-tight w-2/3 cursor-pointer hover:text-gray-600 transition-colors line-clamp-2"
@@ -1189,6 +1189,39 @@ onMounted(() => {
                     }}
                     / pc
                   </p>
+                </div> -->
+
+                <div>
+                  <div class="flex justify-between items-start gap-2">
+                    <h3
+                      class="font-bold text-sm sm:text-xl uppercase tracking-tight w-2/3 cursor-pointer hover:text-gray-600 transition-colors line-clamp-2"
+                      @click="$router.push(`/product/${item.product.id}`)"
+                    >
+                      {{ item.product.name }}
+                    </h3>
+                    <p
+                      class="font-bold text-sm sm:text-xl text-right whitespace-nowrap"
+                    >
+                      {{ formatPrice(item.gross_amount) }}
+                    </p>
+                  </div>
+                  
+                  <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1">
+                    <p class="text-gray-400 text-xs italic tracking-widest">
+                      {{
+                        formatPrice(
+                          item.product.discount_price ?? item.product.price,
+                        )
+                      }}
+                      / pc
+                    </p>
+                    
+                    <span class="w-1 h-1 bg-gray-300 rounded-full hidden sm:block"></span>
+                    
+                    <p class="text-gray-500 text-[10px] font-bold uppercase tracking-widest">
+                      Avail. Stock: <span class="text-black">{{ item.product.stock }}</span>
+                    </p>
+                  </div>
                 </div>
 
                 <div
