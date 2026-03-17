@@ -88,11 +88,45 @@
               <span class="text-xs text-gray-400 ml-1">pcs</span>
             </td>
 
-            <td class="py-4 w-[35%]">
+            <!-- <td class="py-4 w-[35%]">
               <div v-if="product.stocks && product.stocks.length > 0" class="flex flex-col gap-2">
                 <div v-for="batch in product.stocks" :key="batch.id" class="flex justify-between items-center bg-white border border-gray-200 rounded-lg p-2 shadow-sm text-xs">
                   <div>
                     <span class="font-mono font-bold text-blue-600 block">{{ batch.batch_code }}</span>
+                    <span class="text-[9px] text-gray-400">{{ formatDate(batch.created_at) }}</span>
+                  </div>
+                  <div class="bg-gray-100 px-3 py-1 rounded font-bold text-gray-800">
+                    {{ batch.quantity }} pcs
+                  </div>
+                </div>
+              </div>
+              <div v-else class="text-xs text-gray-400 italic bg-gray-50 p-2 rounded-lg border border-dashed text-center">
+                No active batches.
+              </div>
+            </td> -->
+
+            <td class="py-4 w-[35%]">
+              <div v-if="product.stocks && product.stocks.length > 0" class="flex flex-col gap-2">
+                <div 
+                  v-for="(batch, index) in sortBatchesFIFO(product.stocks)" 
+                  :key="batch.id" 
+                  :class="[
+                    'flex justify-between items-center bg-white border rounded-lg p-2 shadow-sm text-xs transition-colors',
+                    index === 0 ? 'border-blue-300 bg-blue-50/50' : 'border-gray-200'
+                  ]"
+                >
+                  <div>
+                    <div class="flex items-center gap-2 mb-0.5">
+                      <span class="font-mono font-bold text-blue-600 block">{{ batch.batch_code }}</span>
+                      
+                      <span v-if="index === 0" class="bg-blue-600 text-white text-[8px] px-1.5 py-0.5 rounded uppercase tracking-widest font-bold shadow-sm animate-pulse">
+                        Next to Use
+                      </span>
+                      <span v-else-if="index === product.stocks.length - 1 && product.stocks.length > 1" class="bg-green-100 text-green-700 text-[8px] px-1.5 py-0.5 rounded uppercase tracking-widest font-bold border border-green-200">
+                        Newest
+                      </span>
+                    </div>
+                    
                     <span class="text-[9px] text-gray-400">{{ formatDate(batch.created_at) }}</span>
                   </div>
                   <div class="bg-gray-100 px-3 py-1 rounded font-bold text-gray-800">
@@ -212,6 +246,17 @@ const submitAddStock = async () => {
     isSubmitting.value = false;
   }
 };
+
+// --- [BARU] FUNGSI SORTING FIFO ---
+const sortBatchesFIFO = (stocks) => {
+  if (!stocks || !Array.isArray(stocks)) return [];
+  
+  // Melakukan 'Deep Copy' agar tidak merusak data asli, lalu mengurutkan secara Ascending.
+  // Waktu terlama (Oldest) akan berada di index 0 (Atas).
+  // Waktu terbaru (Newest) akan berada di index terakhir (Bawah).
+  return [...stocks].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+};
+// ----------------------------------
 
 const formatDate = (date) => new Date(date).toLocaleString("id-ID", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
 
