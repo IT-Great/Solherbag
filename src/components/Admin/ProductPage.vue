@@ -740,7 +740,7 @@ onMounted(fetchData);
           >
             <td class="py-4">
               <img
-                :src="`http://31.97.60.207:8246/${p.image}`"
+                :src="p.image"
                 class="shadow-sm rounded-lg w-16 h-16 object-cover"
                 alt="Product Image"
               />
