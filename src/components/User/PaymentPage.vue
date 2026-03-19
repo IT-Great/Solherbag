@@ -3023,7 +3023,7 @@ onMounted(fetchData);
                   <div class="flex flex-col md:flex-row gap-4 mb-4">
                     <label
                       :class="
-                        deliveryType === 'later'
+                        deliveryType === 'now'
                           ? 'border-black bg-gray-50'
                           : 'border-gray-200'
                       "
@@ -3627,7 +3627,7 @@ const shippingRates = ref([]);
 const selectedRate = ref(null);
 const isLoadingRates = ref(false);
 
-const deliveryType = ref("later");
+const deliveryType = ref("now");
 const deliveryDate = ref("");
 const deliveryTime = ref("");
 
@@ -3743,7 +3743,7 @@ watch(shippingMethod, (newVal) => {
   if (newVal === "free") selectedRate.value = null;
 });
 watch(deliveryType, (newVal) => {
-  if (newVal === "later") initDateTime();
+  if (newVal === "now") initDateTime();
 });
 
 // ==========================================
