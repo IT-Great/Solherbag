@@ -3020,7 +3020,7 @@ onMounted(fetchData);
                   <h3 class="font-bold text-sm uppercase tracking-widest mb-4">
                     Pickup Schedule
                   </h3>
-                  <div class="flex flex-col md:flex-row gap-4 mb-4">
+                  <!-- <div class="flex flex-col md:flex-row gap-4 mb-4">
                     <label
                       :class="
                         deliveryType === 'now'
@@ -3032,6 +3032,49 @@ onMounted(fetchData);
                       <input
                         type="radio"
                         value="later"
+                        v-model="deliveryType"
+                        class="hidden"
+                      />
+                      <p class="font-bold text-xs uppercase">Standard Pickup</p>
+                      <p class="text-[10px] text-gray-500 mt-1">
+                        Pickup within next hour
+                      </p>
+                    </label>
+                    <label
+                      :class="
+                        deliveryType === 'scheduled'
+                          ? 'border-black bg-gray-50'
+                          : 'border-gray-200'
+                      "
+                      class="flex-1 p-4 border rounded-xl cursor-pointer transition"
+                    >
+                      <input
+                        type="radio"
+                        value="scheduled"
+                        v-model="deliveryType"
+                        class="hidden"
+                      />
+                      <p class="font-bold text-xs uppercase">
+                        Scheduled Pickup
+                      </p>
+                      <p class="text-[10px] text-gray-500 mt-1">
+                        Choose specific date & time
+                      </p>
+                    </label>
+                  </div> -->
+
+                  <div class="flex flex-col md:flex-row gap-4 mb-4">
+                    <label
+                      :class="
+                        deliveryType === 'now'
+                          ? 'border-black bg-gray-50'
+                          : 'border-gray-200'
+                      "
+                      class="flex-1 p-4 border rounded-xl cursor-pointer transition"
+                    >
+                      <input
+                        type="radio"
+                        value="now" 
                         v-model="deliveryType"
                         class="hidden"
                       />
@@ -3870,6 +3913,105 @@ const getDistanceFromOrigin = (destLat, destLng) => {
 // });
 
 // 3. Computed Property: Auto-Run saat Jam, Tanggal, Alamat, atau Berat berubah
+// const processedShippingRates = computed(() => {
+//   // Pastikan data mentah tersedia
+//   if (!rawShippingRates.value || rawShippingRates.value.length === 0) return [];
+
+//   let checkHour = new Date().getHours();
+
+//   // Validasi Waktu Dinamis
+//   if (deliveryType.value === 'scheduled' && deliveryTime.value) {
+//      if (deliveryDate.value === todayDate.value) {
+//         checkHour = parseInt(deliveryTime.value.split(':')[0]);
+//      } else {
+//         checkHour = 12; // Jika besok, selalu aman (jam 12)
+//      }
+//   } else {
+//      checkHour += 1; // Jika 'now', asumsi pickup 1 jam dari sekarang
+//   }
+
+//   const totalWeightKg = totalQuantityToCheckout.value || 1; 
+
+//   // Validasi Jarak Dinamis
+//   let distanceKm = 999;
+//   if (addresses.value && selectedAddressId.value) {
+//       const destInfo = addresses.value.find(a => a.id === selectedAddressId.value);
+//       if (destInfo && destInfo.details.latitude && destInfo.details.longitude) {
+//           distanceKm = getDistanceFromOrigin(destInfo.details.latitude, destInfo.details.longitude);
+//       }
+//   }
+
+//   const rates = rawShippingRates.value.map(rate => {
+//     let is_disabled = false;
+//     let disable_reason = "";
+    
+//     // Pastikan aman jika API Biteship mengirim data kosong
+//     const type = rate.type ? rate.type.toLowerCase() : '';
+//     const company = rate.company ? rate.company.toLowerCase() : '';
+
+//     // A. Aturan Jarak (Maks 40KM untuk Ojek Online)
+//     if (company === 'gojek' || company === 'grab') {
+//        if (distanceKm > 40) {
+//          is_disabled = true;
+//          disable_reason = `Jarak > 40km (${distanceKm.toFixed(1)}km)`;
+//        }
+//     }
+
+//     // B. Aturan Gojek
+//     if (!is_disabled && company === 'gojek') {
+//       if (type.includes('same day') || type.includes('sameday')) {
+//         if (checkHour >= 14 || checkHour < 6) { // Tutup jam 15, batas aman jam 14
+//           is_disabled = true;
+//           disable_reason = "Tutup. Operasional 06:00 - 14:00";
+//         } else if (totalWeightKg > 7) {
+//           is_disabled = true;
+//           disable_reason = "Berat Maks 7kg";
+//         }
+//       }
+//       else if (type.includes('instant')) {
+//         if (checkHour >= 16 || checkHour < 6) { // Tutup jam 17, batas aman jam 16
+//           is_disabled = true;
+//           disable_reason = "Tutup. Operasional 06:00 - 16:00";
+//         } else if (totalWeightKg > 20) {
+//           is_disabled = true;
+//           disable_reason = "Berat Maks 20kg";
+//         }
+//       }
+//     }
+//     // C. Aturan Grab
+//     else if (!is_disabled && company === 'grab') {
+//       if (type.includes('same day') || type.includes('sameday')) {
+//         if (checkHour >= 14 || checkHour < 9) { 
+//           is_disabled = true;
+//           disable_reason = "Tutup. Operasional 09:00 - 14:00";
+//         } else if (totalWeightKg > 7) {
+//           is_disabled = true;
+//           disable_reason = "Berat Maks 7kg";
+//         }
+//       }
+//       else if (type.includes('instant')) {
+//         if (checkHour >= 18 || checkHour < 8) {
+//           is_disabled = true;
+//           disable_reason = "Tutup. Operasional 08:00 - 18:00";
+//         } else if (totalWeightKg > 20) {
+//           is_disabled = true;
+//           disable_reason = "Berat Maks 20kg";
+//         }
+//       }
+//     }
+
+//     return { ...rate, is_disabled, disable_reason };
+//   });
+
+//   // [PERBAIKAN PENTING] Jangan mengurutkan langsung pada array yang dihasilkan map() jika memori rentan.
+//   // Buat salinan (spread operator) lalu urutkan.
+//   return [...rates].sort((a, b) => {
+//     if (a.is_disabled === b.is_disabled) return 0;
+//     return a.is_disabled ? 1 : -1;
+//   });
+// });
+
+// 3. Computed Property: Akan otomatis berjalan Ulang setiap kali Jam, Tanggal, Alamat, atau Berat berubah!
 const processedShippingRates = computed(() => {
   // Pastikan data mentah tersedia
   if (!rawShippingRates.value || rawShippingRates.value.length === 0) return [];
@@ -3881,10 +4023,11 @@ const processedShippingRates = computed(() => {
      if (deliveryDate.value === todayDate.value) {
         checkHour = parseInt(deliveryTime.value.split(':')[0]);
      } else {
-        checkHour = 12; // Jika besok, selalu aman (jam 12)
+        checkHour = 12; // Jika besok, selalu aman (jam 12 siang)
      }
   } else {
-     checkHour += 1; // Jika 'now', asumsi pickup 1 jam dari sekarang
+     // Jika 'now', kita gunakan jam saat ini
+     checkHour = new Date().getHours();
   }
 
   const totalWeightKg = totalQuantityToCheckout.value || 1; 
@@ -3902,8 +4045,8 @@ const processedShippingRates = computed(() => {
     let is_disabled = false;
     let disable_reason = "";
     
-    // Pastikan aman jika API Biteship mengirim data kosong
-    const type = rate.type ? rate.type.toLowerCase() : '';
+    // [PERBAIKAN KRUSIAL] Hapus underscore (_) agar "same_day" berubah jadi "same day"
+    const type = rate.type ? rate.type.toLowerCase().replace(/_/g, ' ') : '';
     const company = rate.company ? rate.company.toLowerCase() : '';
 
     // A. Aturan Jarak (Maks 40KM untuk Ojek Online)
@@ -3917,18 +4060,20 @@ const processedShippingRates = computed(() => {
     // B. Aturan Gojek
     if (!is_disabled && company === 'gojek') {
       if (type.includes('same day') || type.includes('sameday')) {
-        if (checkHour >= 14 || checkHour < 6) { // Tutup jam 15, batas aman jam 14
+        // Gojek Same Day: Tutup Jam 15:00
+        if (checkHour >= 15 || checkHour < 6) { 
           is_disabled = true;
-          disable_reason = "Tutup. Operasional 06:00 - 14:00";
+          disable_reason = "Tutup. Operasional 06:00 - 15:00";
         } else if (totalWeightKg > 7) {
           is_disabled = true;
           disable_reason = "Berat Maks 7kg";
         }
       }
       else if (type.includes('instant')) {
-        if (checkHour >= 16 || checkHour < 6) { // Tutup jam 17, batas aman jam 16
+        // Gojek Instant: Tutup Jam 17:00
+        if (checkHour >= 17 || checkHour < 6) { 
           is_disabled = true;
-          disable_reason = "Tutup. Operasional 06:00 - 16:00";
+          disable_reason = "Tutup. Operasional 06:00 - 17:00";
         } else if (totalWeightKg > 20) {
           is_disabled = true;
           disable_reason = "Berat Maks 20kg";
@@ -3938,6 +4083,7 @@ const processedShippingRates = computed(() => {
     // C. Aturan Grab
     else if (!is_disabled && company === 'grab') {
       if (type.includes('same day') || type.includes('sameday')) {
+        // Grab Same Day: Tutup Jam 14:00 (Sesuai Error Biteship)
         if (checkHour >= 14 || checkHour < 9) { 
           is_disabled = true;
           disable_reason = "Tutup. Operasional 09:00 - 14:00";
@@ -3947,6 +4093,7 @@ const processedShippingRates = computed(() => {
         }
       }
       else if (type.includes('instant')) {
+        // Grab Instant: Tutup Jam 18:00
         if (checkHour >= 18 || checkHour < 8) {
           is_disabled = true;
           disable_reason = "Tutup. Operasional 08:00 - 18:00";
@@ -3960,8 +4107,7 @@ const processedShippingRates = computed(() => {
     return { ...rate, is_disabled, disable_reason };
   });
 
-  // [PERBAIKAN PENTING] Jangan mengurutkan langsung pada array yang dihasilkan map() jika memori rentan.
-  // Buat salinan (spread operator) lalu urutkan.
+  // Urutkan agar kurir yang "Disabled" turun ke posisi paling bawah
   return [...rates].sort((a, b) => {
     if (a.is_disabled === b.is_disabled) return 0;
     return a.is_disabled ? 1 : -1;
