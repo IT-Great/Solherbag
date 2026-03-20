@@ -3108,7 +3108,7 @@ onMounted(fetchData);
                     Calculating couriers...
                   </div>
                   <div
-                    v-else-if="shippingRates.length === 0"
+                    v-else-if="processedShippingRates.length === 0"
                     class="text-xs text-red-500 italic text-center py-4"
                   >
                     No couriers available.
@@ -3729,7 +3729,7 @@ const selectedAddressId = ref(null);
 const isProcessing = ref(false);
 
 const shippingMethod = ref("free");
-const shippingRates = ref([]);
+// const shippingRates = ref([]);
 const selectedRate = ref(null);
 const isLoadingRates = ref(false);
 
@@ -3783,7 +3783,95 @@ const getDistanceFromOrigin = (destLat, destLng) => {
 };
 
 // 3. Computed Property: Akan otomatis berjalan Ulang setiap kali Jam, Tanggal, Alamat, atau Berat berubah!
+// const processedShippingRates = computed(() => {
+//   if (!rawShippingRates.value || rawShippingRates.value.length === 0) return [];
+
+//   let checkHour = new Date().getHours();
+
+//   // Validasi Waktu Dinamis
+//   if (deliveryType.value === 'scheduled' && deliveryTime.value) {
+//      if (deliveryDate.value === todayDate.value) {
+//         checkHour = parseInt(deliveryTime.value.split(':')[0]);
+//      } else {
+//         checkHour = 12; // Jika pilih besok, jam aman dianggap jam 12 siang
+//      }
+//   } else {
+//      checkHour += 1; // Jika 'now', asumsi API Backend menjadwalkan 1 jam ke depan
+//   }
+
+//   const totalWeightKg = totalQuantityToCheckout.value; // Asumsi 1 barang = 1 KG
+
+//   // Validasi Jarak Dinamis
+//   const destInfo = addresses.value.find(a => a.id === selectedAddressId.value);
+//   const distanceKm = destInfo ? getDistanceFromOrigin(destInfo.details.latitude, destInfo.details.longitude) : 999;
+
+//   const rates = rawShippingRates.value.map(rate => {
+//     let is_disabled = false;
+//     let disable_reason = "";
+//     const type = rate.type.toLowerCase();
+//     const company = rate.company.toLowerCase();
+
+//     // A. Aturan Jarak (Maks 40KM untuk Ojek Online)
+//     if (company === 'gojek' || company === 'grab') {
+//        if (distanceKm > 40) {
+//          is_disabled = true;
+//          disable_reason = `Jarak > 40km (${distanceKm.toFixed(1)}km)`;
+//        }
+//     }
+
+//     // B. Aturan Gojek
+//     if (!is_disabled && company === 'gojek') {
+//       if (type.includes('same day') || type.includes('sameday')) {
+//         if (checkHour >= 15 || checkHour < 6) {
+//           is_disabled = true;
+//           disable_reason = "Tutup. Jam Operasional 06:00 - 15:00";
+//         } else if (totalWeightKg > 7) {
+//           is_disabled = true;
+//           disable_reason = "Berat Maksimal 7kg";
+//         }
+//       }
+//       else if (type.includes('instant')) {
+//         if (checkHour >= 17 || checkHour < 6) {
+//           is_disabled = true;
+//           disable_reason = "Tutup. Jam Operasional 06:00 - 17:00";
+//         } else if (totalWeightKg > 20) {
+//           is_disabled = true;
+//           disable_reason = "Berat Maksimal 20kg";
+//         }
+//       }
+//     }
+//     // C. Aturan Grab
+//     else if (!is_disabled && company === 'grab') {
+//       if (type.includes('same day') || type.includes('sameday')) {
+//         if (checkHour >= 14 || checkHour < 9) { // Aturan ketat dari Error Log Anda
+//           is_disabled = true;
+//           disable_reason = "Tutup. Jam Operasional 09:00 - 14:00";
+//         } else if (totalWeightKg > 7) {
+//           is_disabled = true;
+//           disable_reason = "Berat Maksimal 7kg";
+//         }
+//       }
+//       else if (type.includes('instant')) {
+//         if (checkHour >= 18 || checkHour < 8) {
+//           is_disabled = true;
+//           disable_reason = "Tutup. Jam Operasional 08:00 - 18:00";
+//         } else if (totalWeightKg > 20) {
+//           is_disabled = true;
+//           disable_reason = "Berat Maksimal 20kg";
+//         }
+//       }
+//     }
+
+//     return { ...rate, is_disabled, disable_reason };
+//   });
+
+//   // Urutkan: Kurir yang aktif di atas, yang disabled di bawah
+//   return rates.sort((a, b) => (a.is_disabled === b.is_disabled ? 0 : a.is_disabled ? 1 : -1));
+// });
+
+// 3. Computed Property: Auto-Run saat Jam, Tanggal, Alamat, atau Berat berubah
 const processedShippingRates = computed(() => {
+  // Pastikan data mentah tersedia
   if (!rawShippingRates.value || rawShippingRates.value.length === 0) return [];
 
   let checkHour = new Date().getHours();
@@ -3793,23 +3881,30 @@ const processedShippingRates = computed(() => {
      if (deliveryDate.value === todayDate.value) {
         checkHour = parseInt(deliveryTime.value.split(':')[0]);
      } else {
-        checkHour = 12; // Jika pilih besok, jam aman dianggap jam 12 siang
+        checkHour = 12; // Jika besok, selalu aman (jam 12)
      }
   } else {
-     checkHour += 1; // Jika 'now', asumsi API Backend menjadwalkan 1 jam ke depan
+     checkHour += 1; // Jika 'now', asumsi pickup 1 jam dari sekarang
   }
 
-  const totalWeightKg = totalQuantityToCheckout.value; // Asumsi 1 barang = 1 KG
+  const totalWeightKg = totalQuantityToCheckout.value || 1; 
 
   // Validasi Jarak Dinamis
-  const destInfo = addresses.value.find(a => a.id === selectedAddressId.value);
-  const distanceKm = destInfo ? getDistanceFromOrigin(destInfo.details.latitude, destInfo.details.longitude) : 999;
+  let distanceKm = 999;
+  if (addresses.value && selectedAddressId.value) {
+      const destInfo = addresses.value.find(a => a.id === selectedAddressId.value);
+      if (destInfo && destInfo.details.latitude && destInfo.details.longitude) {
+          distanceKm = getDistanceFromOrigin(destInfo.details.latitude, destInfo.details.longitude);
+      }
+  }
 
   const rates = rawShippingRates.value.map(rate => {
     let is_disabled = false;
     let disable_reason = "";
-    const type = rate.type.toLowerCase();
-    const company = rate.company.toLowerCase();
+    
+    // Pastikan aman jika API Biteship mengirim data kosong
+    const type = rate.type ? rate.type.toLowerCase() : '';
+    const company = rate.company ? rate.company.toLowerCase() : '';
 
     // A. Aturan Jarak (Maks 40KM untuk Ojek Online)
     if (company === 'gojek' || company === 'grab') {
@@ -3822,42 +3917,42 @@ const processedShippingRates = computed(() => {
     // B. Aturan Gojek
     if (!is_disabled && company === 'gojek') {
       if (type.includes('same day') || type.includes('sameday')) {
-        if (checkHour >= 15 || checkHour < 6) {
+        if (checkHour >= 14 || checkHour < 6) { // Tutup jam 15, batas aman jam 14
           is_disabled = true;
-          disable_reason = "Tutup. Jam Operasional 06:00 - 15:00";
+          disable_reason = "Tutup. Operasional 06:00 - 14:00";
         } else if (totalWeightKg > 7) {
           is_disabled = true;
-          disable_reason = "Berat Maksimal 7kg";
+          disable_reason = "Berat Maks 7kg";
         }
       }
       else if (type.includes('instant')) {
-        if (checkHour >= 17 || checkHour < 6) {
+        if (checkHour >= 16 || checkHour < 6) { // Tutup jam 17, batas aman jam 16
           is_disabled = true;
-          disable_reason = "Tutup. Jam Operasional 06:00 - 17:00";
+          disable_reason = "Tutup. Operasional 06:00 - 16:00";
         } else if (totalWeightKg > 20) {
           is_disabled = true;
-          disable_reason = "Berat Maksimal 20kg";
+          disable_reason = "Berat Maks 20kg";
         }
       }
     }
     // C. Aturan Grab
     else if (!is_disabled && company === 'grab') {
       if (type.includes('same day') || type.includes('sameday')) {
-        if (checkHour >= 14 || checkHour < 9) { // Aturan ketat dari Error Log Anda
+        if (checkHour >= 14 || checkHour < 9) { 
           is_disabled = true;
-          disable_reason = "Tutup. Jam Operasional 09:00 - 14:00";
+          disable_reason = "Tutup. Operasional 09:00 - 14:00";
         } else if (totalWeightKg > 7) {
           is_disabled = true;
-          disable_reason = "Berat Maksimal 7kg";
+          disable_reason = "Berat Maks 7kg";
         }
       }
       else if (type.includes('instant')) {
         if (checkHour >= 18 || checkHour < 8) {
           is_disabled = true;
-          disable_reason = "Tutup. Jam Operasional 08:00 - 18:00";
+          disable_reason = "Tutup. Operasional 08:00 - 18:00";
         } else if (totalWeightKg > 20) {
           is_disabled = true;
-          disable_reason = "Berat Maksimal 20kg";
+          disable_reason = "Berat Maks 20kg";
         }
       }
     }
@@ -3865,8 +3960,12 @@ const processedShippingRates = computed(() => {
     return { ...rate, is_disabled, disable_reason };
   });
 
-  // Urutkan: Kurir yang aktif di atas, yang disabled di bawah
-  return rates.sort((a, b) => (a.is_disabled === b.is_disabled ? 0 : a.is_disabled ? 1 : -1));
+  // [PERBAIKAN PENTING] Jangan mengurutkan langsung pada array yang dihasilkan map() jika memori rentan.
+  // Buat salinan (spread operator) lalu urutkan.
+  return [...rates].sort((a, b) => {
+    if (a.is_disabled === b.is_disabled) return 0;
+    return a.is_disabled ? 1 : -1;
+  });
 });
 
 const initDateTime = () => {
