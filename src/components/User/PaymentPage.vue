@@ -3113,8 +3113,8 @@ onMounted(fetchData);
                   >
                     No couriers available.
                   </div>
-                  <div v-else class="space-y-3">
-                    <label
+                  <!-- <div v-else class="space-y-3">
+                    <label 
                       v-for="(rate, idx) in shippingRates"
                       :key="idx"
                       :class="[
@@ -3166,6 +3166,59 @@ onMounted(fetchData);
                       <p class="font-black text-black text-sm">
                         {{ formatPrice(rate.price) }}
                       </p>
+                    </label>
+                  </div> -->
+                  <div v-else class="space-y-3">
+                    <label
+                      v-for="(rate, idx) in shippingRates"
+                      :key="idx"
+                      :class="[
+                        rate.is_disabled ? 'opacity-60 bg-gray-100 border-gray-200 cursor-not-allowed' :
+                        (selectedRate?.company === rate.company && selectedRate?.type === rate.type
+                          ? 'border-black bg-gray-50 shadow-sm'
+                          : 'border-gray-200 hover:bg-gray-50 cursor-pointer transition-all'),
+                      ]"
+                      class="flex flex-col p-4 border rounded-xl"
+                    >
+                      <div class="flex items-center w-full">
+                        <input
+                          type="radio"
+                          :value="rate"
+                          v-model="selectedRate"
+                          :disabled="rate.is_disabled"
+                          class="w-4 h-4 text-black focus:ring-black border-gray-300 disabled:opacity-50"
+                        />
+                        <div class="ml-4 flex-grow flex items-center gap-4">
+                          <div class="w-12 h-12 bg-white border border-gray-100 rounded-lg flex justify-center items-center overflow-hidden shrink-0">
+                            <img
+                              v-show="!imageErrors[rate.company]"
+                              v-if="getCourierLogo(rate.company)"
+                              :src="getCourierLogo(rate.company)"
+                              :alt="rate.company"
+                              class="w-full h-full object-contain p-1"
+                              @error="handleImageError(rate.company)"
+                            />
+                            <span v-show="imageErrors[rate.company] || !getCourierLogo(rate.company)" class="font-black text-gray-300 text-xs">
+                              {{ rate.company.toUpperCase() }}
+                            </span>
+                          </div>
+                          <div>
+                            <p class="font-bold text-gray-800 text-sm uppercase tracking-wide">
+                              {{ rate.company }} - {{ rate.type }}
+                            </p>
+                            <p class="text-gray-500 text-[10px] mt-0.5">
+                              {{ rate.courier_name }} ({{ rate.duration }})
+                            </p>
+                          </div>
+                        </div>
+                        <p class="font-black text-black text-sm">
+                          {{ formatPrice(rate.price) }}
+                        </p>
+                      </div>
+
+                      <div v-if="rate.is_disabled" class="mt-3 ml-8 text-[10px] text-red-600 bg-red-50 px-3 py-1.5 rounded-lg border border-red-100 font-bold uppercase tracking-widest">
+                        ⚠️ Unavailable: {{ rate.disable_reason }}
+                      </div>
                     </label>
                   </div>
                 </div>
@@ -3712,6 +3765,33 @@ const isButtonDisabled = computed(() => {
   return false;
 });
 
+// watch(selectedAddressId, async (newVal) => {
+//   if (newVal) {
+//     selectedRate.value = null;
+//     isLoadingRates.value = true;
+//     shippingRates.value = [];
+//     try {
+//       const res = await axios.post(
+//         `${BASE_URL}/shipping/rates`,
+//         { address_id: newVal },
+//         axiosConfig,
+//       );
+//       if (res.data && res.data.pricing) shippingRates.value = res.data.pricing;
+//     } catch (error) {
+//       Swal.fire({
+//         toast: true,
+//         position: "top-end",
+//         icon: "error",
+//         title: "Failed to calculate shipping.",
+//         showConfirmButton: false,
+//         timer: 4000,
+//       });
+//     } finally {
+//       isLoadingRates.value = false;
+//     }
+//   }
+// });
+
 watch(selectedAddressId, async (newVal) => {
   if (newVal) {
     selectedRate.value = null;
@@ -3720,10 +3800,56 @@ watch(selectedAddressId, async (newVal) => {
     try {
       const res = await axios.post(
         `${BASE_URL}/shipping/rates`,
-        { address_id: newVal },
+        { 
+          address_id: newVal,
+          total_quantity: checkoutCount.value // [PERBAIKAN] Kirim total quantity ke backend
+        },
         axiosConfig,
       );
-      if (res.data && res.data.pricing) shippingRates.value = res.data.pricing;
+      
+      if (res.data && res.data.pricing) {
+        const currentHour = new Date().getHours();
+        const totalWeightKg = checkoutCount.value; // Karena 1 item = 1kg
+
+        // [PERBAIKAN] Menyuntikkan aturan Validasi Lokal (Ojek Online)
+        const processedRates = res.data.pricing.map(rate => {
+          let is_disabled = false;
+          let disable_reason = "";
+
+          const type = rate.type.toLowerCase();
+          const company = rate.company.toLowerCase();
+
+          if (company === 'gojek' || company === 'grab') {
+            if (type.includes('same day') || type.includes('sameday')) {
+              // Same Day maksimal jam 15:00
+              if (currentHour >= 15 || currentHour < 6) {
+                is_disabled = true;
+                disable_reason = "Out of operational hours (06:00 - 15:00)";
+              } else if (totalWeightKg > 7) {
+                is_disabled = true;
+                disable_reason = "Weight exceeds max limit (7kg)";
+              }
+            } 
+            else if (type.includes('instant')) {
+              // Instant maksimal jam 17:00
+              if (currentHour >= 17 || currentHour < 6) {
+                is_disabled = true;
+                disable_reason = "Out of operational hours (06:00 - 17:00)";
+              } else if (totalWeightKg > 20) {
+                is_disabled = true;
+                disable_reason = "Weight exceeds max limit (20kg)";
+              }
+            }
+          }
+
+          return { ...rate, is_disabled, disable_reason };
+        });
+
+        // Urutkan agar kurir yang "Disabled" turun ke posisi paling bawah
+        processedRates.sort((a, b) => (a.is_disabled === b.is_disabled ? 0 : a.is_disabled ? 1 : -1));
+
+        shippingRates.value = processedRates;
+      }
     } catch (error) {
       Swal.fire({
         toast: true,
