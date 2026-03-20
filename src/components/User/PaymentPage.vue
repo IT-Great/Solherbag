@@ -3169,7 +3169,7 @@ onMounted(fetchData);
                     </label>
                   </div> -->
                   <div v-else class="space-y-3">
-                    <label
+                    <!-- <label
                       v-for="(rate, idx) in shippingRates"
                       :key="idx"
                       :class="[
@@ -3179,6 +3179,17 @@ onMounted(fetchData);
                           : 'border-gray-200 hover:bg-gray-50 cursor-pointer transition-all'),
                       ]"
                       class="flex flex-col p-4 border rounded-xl"
+                    > -->
+                    <label
+                      v-for="(rate, idx) in shippingRates"
+                      :key="idx"
+                      :class="[
+                        rate.is_disabled ? 'opacity-40 bg-gray-100 border-gray-200 pointer-events-none select-none' :
+                        (selectedRate?.company === rate.company && selectedRate?.type === rate.type
+                          ? 'border-black bg-gray-50 shadow-sm'
+                          : 'border-gray-200 hover:bg-gray-50 cursor-pointer transition-all'),
+                      ]"
+                      class="flex flex-col p-4 border rounded-xl relative"
                     >
                       <div class="flex items-center w-full">
                         <input
@@ -3792,6 +3803,79 @@ const isButtonDisabled = computed(() => {
 //   }
 // });
 
+// watch(selectedAddressId, async (newVal) => {
+//   if (newVal) {
+//     selectedRate.value = null;
+//     isLoadingRates.value = true;
+//     shippingRates.value = [];
+//     try {
+//       const res = await axios.post(
+//         `${BASE_URL}/shipping/rates`,
+//         { 
+//           address_id: newVal,
+//           total_quantity: checkoutCount.value // [PERBAIKAN] Kirim total quantity ke backend
+//         },
+//         axiosConfig,
+//       );
+      
+//       if (res.data && res.data.pricing) {
+//         const currentHour = new Date().getHours();
+//         const totalWeightKg = checkoutCount.value; // Karena 1 item = 1kg
+
+//         // [PERBAIKAN] Menyuntikkan aturan Validasi Lokal (Ojek Online)
+//         const processedRates = res.data.pricing.map(rate => {
+//           let is_disabled = false;
+//           let disable_reason = "";
+
+//           const type = rate.type.toLowerCase();
+//           const company = rate.company.toLowerCase();
+
+//           if (company === 'gojek' || company === 'grab') {
+//             if (type.includes('same day') || type.includes('sameday')) {
+//               // Same Day maksimal jam 15:00
+//               if (currentHour >= 15 || currentHour < 6) {
+//                 is_disabled = true;
+//                 disable_reason = "Out of operational hours (06:00 - 15:00)";
+//               } else if (totalWeightKg > 7) {
+//                 is_disabled = true;
+//                 disable_reason = "Weight exceeds max limit (7kg)";
+//               }
+//             } 
+//             else if (type.includes('instant')) {
+//               // Instant maksimal jam 17:00
+//               if (currentHour >= 17 || currentHour < 6) {
+//                 is_disabled = true;
+//                 disable_reason = "Out of operational hours (06:00 - 17:00)";
+//               } else if (totalWeightKg > 20) {
+//                 is_disabled = true;
+//                 disable_reason = "Weight exceeds max limit (20kg)";
+//               }
+//             }
+//           }
+
+//           return { ...rate, is_disabled, disable_reason };
+//         });
+
+//         // Urutkan agar kurir yang "Disabled" turun ke posisi paling bawah
+//         processedRates.sort((a, b) => (a.is_disabled === b.is_disabled ? 0 : a.is_disabled ? 1 : -1));
+
+//         shippingRates.value = processedRates;
+//       }
+//     } catch (error) {
+//       Swal.fire({
+//         toast: true,
+//         position: "top-end",
+//         icon: "error",
+//         title: "Failed to calculate shipping.",
+//         showConfirmButton: false,
+//         timer: 4000,
+//       });
+//     } finally {
+//       isLoadingRates.value = false;
+//     }
+//   }
+// });
+
 watch(selectedAddressId, async (newVal) => {
   if (newVal) {
     selectedRate.value = null;
@@ -3802,16 +3886,15 @@ watch(selectedAddressId, async (newVal) => {
         `${BASE_URL}/shipping/rates`,
         { 
           address_id: newVal,
-          total_quantity: checkoutCount.value // [PERBAIKAN] Kirim total quantity ke backend
+          total_quantity: checkoutCount.value 
         },
         axiosConfig,
       );
       
       if (res.data && res.data.pricing) {
         const currentHour = new Date().getHours();
-        const totalWeightKg = checkoutCount.value; // Karena 1 item = 1kg
+        const totalWeightKg = checkoutCount.value; 
 
-        // [PERBAIKAN] Menyuntikkan aturan Validasi Lokal (Ojek Online)
         const processedRates = res.data.pricing.map(rate => {
           let is_disabled = false;
           let disable_reason = "";
@@ -3821,20 +3904,20 @@ watch(selectedAddressId, async (newVal) => {
 
           if (company === 'gojek' || company === 'grab') {
             if (type.includes('same day') || type.includes('sameday')) {
-              // Same Day maksimal jam 15:00
-              if (currentHour >= 15 || currentHour < 6) {
+              // [PERBAIKAN] Same Day tutup jam 15:00. Kita blokir di jam 14:00.
+              if (currentHour >= 14 || currentHour < 6) {
                 is_disabled = true;
-                disable_reason = "Out of operational hours (06:00 - 15:00)";
+                disable_reason = "Out of operational hours (06:00 - 14:00)";
               } else if (totalWeightKg > 7) {
                 is_disabled = true;
                 disable_reason = "Weight exceeds max limit (7kg)";
               }
             } 
             else if (type.includes('instant')) {
-              // Instant maksimal jam 17:00
-              if (currentHour >= 17 || currentHour < 6) {
+              // [PERBAIKAN] Instant tutup 17:00, kita blokir di jam 16:00
+              if (currentHour >= 16 || currentHour < 6) {
                 is_disabled = true;
-                disable_reason = "Out of operational hours (06:00 - 17:00)";
+                disable_reason = "Out of operational hours (06:00 - 16:00)";
               } else if (totalWeightKg > 20) {
                 is_disabled = true;
                 disable_reason = "Weight exceeds max limit (20kg)";
@@ -3845,7 +3928,7 @@ watch(selectedAddressId, async (newVal) => {
           return { ...rate, is_disabled, disable_reason };
         });
 
-        // Urutkan agar kurir yang "Disabled" turun ke posisi paling bawah
+        // Sort agar yang disabled pindah ke paling bawah
         processedRates.sort((a, b) => (a.is_disabled === b.is_disabled ? 0 : a.is_disabled ? 1 : -1));
 
         shippingRates.value = processedRates;
