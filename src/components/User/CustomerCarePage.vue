@@ -4,7 +4,7 @@
       <div class="mb-16">
         <h1 class="font-serif text-gray-900 text-5xl md:text-7xl lg:text-8xl leading-tight tracking-tight">
           Welcome to <br />
-          SolHerbag <br />
+          SolHer <br />
           Customer Care!
         </h1>
       </div>

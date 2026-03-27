@@ -2156,7 +2156,7 @@ onMounted(fetchData);
                   SOLHER BAG
                 </h1>
                 <p class="text-[10px] font-bold mt-1 text-black">
-                  solherbag.com
+                  solher.co.id
                 </p>
               </div>
               <div class="w-1/3 text-right">

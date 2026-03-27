@@ -18,7 +18,7 @@
         Crafted from Premium Selected Leatherty
       </h2>
       <p class="font-light text-gray-700 text-sm md:text-base leading-relaxed">
-        Crafted from carefully selected genuine leather, each SolHerbag piece
+        Crafted from carefully selected genuine leather, each SolHer piece
         reflects timeless elegance and refined craftsmanship — a seamless blend
         of beauty, quality, and modern sophistication.
       </p>
@@ -258,7 +258,7 @@ onMounted(initData);
         Crafted from Premium Selected Leatherty
       </h2>
       <p class="font-light text-gray-700 text-sm md:text-base leading-relaxed">
-        Crafted from carefully selected genuine leather, each SolHerbag piece
+        Crafted from carefully selected genuine leather, each SolHer piece
         reflects timeless elegance and refined craftsmanship — a seamless blend
         of beauty, quality, and modern sophistication.
       </p>
@@ -513,7 +513,7 @@ onMounted(initData);
         Crafted from Premium Selected Leatherty
       </h2>
       <p class="font-light text-gray-700 text-sm md:text-base leading-relaxed">
-        Crafted from carefully selected genuine leather, each SolHerbag piece
+        Crafted from carefully selected genuine leather, each SolHer piece
         reflects timeless elegance and refined craftsmanship — a seamless blend
         of beauty, quality, and modern sophistication.
       </p>
