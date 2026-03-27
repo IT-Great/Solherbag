@@ -6817,6 +6817,15 @@ onUnmounted(() => {
               >
               <span>{{ formatPrice(order.shipping_cost) }}</span>
             </div>
+            <div v-if="order.promo_discount > 0" class="flex justify-between text-xs text-green-600 font-medium">
+              <span>Promo Applied (<span class="font-mono uppercase">{{ order.promo_code }}</span>)</span>
+              <span>- {{ formatPrice(order.promo_discount) }}</span>
+            </div>
+
+            <div v-if="order.points_used > 0" class="flex justify-between text-xs text-yellow-600 font-medium">
+              <span>Points Redeemed ({{ order.points_used }} Pts)</span>
+              <span>- {{ formatPrice(order.points_used * 1000) }}</span>
+            </div>
             <div
               class="flex justify-between text-sm font-bold text-gray-900 mt-2 pt-2 border-t border-gray-200 border-dashed"
             >
@@ -7310,8 +7319,19 @@ const getPaymentLogo = (methodString) => {
 };
 
 const getSubtotal = (order) => order.total_amount;
-const getGrandTotal = (order) =>
-  parseFloat(order.total_amount || 0) + parseFloat(order.shipping_cost || 0);
+
+// const getGrandTotal = (order) =>
+//   parseFloat(order.total_amount || 0) + parseFloat(order.shipping_cost || 0);
+
+const getGrandTotal = (order) => {
+  if (!order) return 0;
+  const total = parseFloat(order.total_amount || 0);
+  const shipping = parseFloat(order.shipping_cost || 0);
+  const promo = parseFloat(order.promo_discount || 0);
+  const pointsDiscount = parseFloat((order.points_used || 0) * 1000);
+  return total + shipping - promo - pointsDiscount;
+};
+
 const getOrderQuantity = (order) =>
   order.details.reduce((sum, item) => sum + item.quantity, 0);
 

@@ -1891,6 +1891,26 @@ onMounted(fetchAllData);
               <span>{{ formatPrice(orderData.shipping_cost) }}</span>
             </div>
             <div
+              v-if="orderData.promo_discount > 0"
+              class="flex justify-between text-xs text-green-600 font-medium"
+            >
+              <span
+                >Promo Applied (<span class="font-mono uppercase">{{
+                  orderData.promo_code
+                }}</span
+                >)</span
+              >
+              <span>- {{ formatPrice(orderData.promo_discount) }}</span>
+            </div>
+
+            <div
+              v-if="orderData.points_used > 0"
+              class="flex justify-between text-xs text-yellow-600 font-medium"
+            >
+              <span>Points Redeemed ({{ orderData.points_used }} Pts)</span>
+              <span>- {{ formatPrice(orderData.points_used * 1000) }}</span>
+            </div>
+            <div
               class="flex justify-between items-center mt-4 pt-4 border-t border-gray-200 border-dashed"
             >
               <span
@@ -1903,7 +1923,14 @@ onMounted(fetchAllData);
             </div>
           </div>
 
-          <div v-if="userData?.is_membership && orderData.point > 0 && orderData.status === 'completed'" class="mt-6 p-4 bg-gradient-to-r from-yellow-50 to-white border border-yellow-100 rounded-xl flex items-center justify-between">
+          <div
+            v-if="
+              userData?.is_membership &&
+              orderData.point > 0 &&
+              orderData.status === 'completed'
+            "
+            class="mt-6 p-4 bg-gradient-to-r from-yellow-50 to-white border border-yellow-100 rounded-xl flex items-center justify-between"
+          >
             <div class="flex items-center gap-3">
               <div
                 class="w-10 h-10 bg-yellow-400 text-white rounded-full flex justify-center items-center shadow-sm"
@@ -2050,11 +2077,20 @@ const formatPrice = (v) =>
     v || 0,
   );
 
+// const getGrandTotal = (order) => {
+//   if (!order) return 0;
+//   const total = parseFloat(order.total_amount || 0);
+//   const shipping = parseFloat(order.shipping_cost || 0);
+//   return total + shipping;
+// };
+
 const getGrandTotal = (order) => {
   if (!order) return 0;
   const total = parseFloat(order.total_amount || 0);
   const shipping = parseFloat(order.shipping_cost || 0);
-  return total + shipping;
+  const promo = parseFloat(order.promo_discount || 0);
+  const pointsDiscount = parseFloat((order.points_used || 0) * 1000);
+  return total + shipping - promo - pointsDiscount;
 };
 
 const fetchAllData = async () => {
