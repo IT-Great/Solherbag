@@ -46,7 +46,7 @@
         <div
           class="flex justify-center space-x-4 text-[10px] text-gray-500 uppercase"
         >
-          <span>© 2026 Solher Bag</span>
+          <span>© 2026 Solher</span>
           <a href="#" class="hover:text-black">Terms and Policies</a>
         </div>
       </div>
@@ -113,7 +113,7 @@
         <div
           class="flex justify-center space-x-4 text-[10px] text-gray-500 uppercase"
         >
-          <span>© 2026 Solher Bag</span>
+          <span>© 2026 Solher</span>
           <a href="#" class="hover:text-black">Terms and Policies</a>
         </div>
       </div>
@@ -200,7 +200,7 @@ const handleFooterSignUp = () => {
         <div
           class="flex justify-center space-x-4 text-[10px] text-gray-500 uppercase"
         >
-          <span>© 2026 Solher Bag</span>
+          <span>© 2026 Solher</span>
           <a href="#" class="hover:text-black">Terms and Policies</a>
         </div>
       </div>

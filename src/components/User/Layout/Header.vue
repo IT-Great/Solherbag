@@ -231,7 +231,7 @@
           <div
             class="mt-auto pt-10 text-gray-400 text-xs uppercase tracking-widest"
           >
-            <p>© 2026 Solher Bag</p>
+            <p>© 2026 Solher</p>
           </div>
         </div>
       </div>
@@ -1288,7 +1288,7 @@ watch(
           <div
             class="mt-auto pt-10 text-gray-400 text-xs uppercase tracking-widest"
           >
-            <p>© 2026 Solher Bag</p>
+            <p>© 2026 Solher</p>
           </div>
         </div>
       </div>
@@ -2176,7 +2176,7 @@ watch(
           <div
             class="mt-auto pt-10 text-gray-400 text-xs uppercase tracking-widest"
           >
-            <p>© 2026 Solher Bag</p>
+            <p>© 2026 Solher</p>
           </div>
         </div>
       </div>

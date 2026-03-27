@@ -2153,7 +2153,7 @@ onMounted(fetchData);
                 <h1
                   class="font-black text-3xl tracking-widest uppercase text-black"
                 >
-                  SOLHER BAG
+                  SOLHER
                 </h1>
                 <p class="text-[10px] font-bold mt-1 text-black">
                   solher.co.id
@@ -2283,7 +2283,7 @@ onMounted(fetchData);
             </div>
 
             <div class="text-center pt-4 text-sm font-bold text-black">
-              Pengiriman melalui platform Solher Bag
+              Pengiriman melalui platform Solher
             </div>
           </div>
         </div>
