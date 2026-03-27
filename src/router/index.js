@@ -613,9 +613,13 @@ import AdminForgotPasswordPage from "../components/Admin/AdminForgotPasswordPage
 import AdminCodeVerificationPage from "../components/Admin/AdminCodeVerificationPage.vue";
 import AdminResetPasswordPage from "../components/Admin/AdminResetPasswordPage.vue";
 import ProductStockPage from "../components/Admin/ProductStockPage.vue";
+import CollectionsPage from "../components/User/CollectionPage.vue";
+import BestSellerPage from "../components/User/BestSellerPage.vue"; 
+import ContactPage from "../components/User/ContactPage.vue";
 
 const routes = [
   { path: "/", name: "Home", component: HomePage },
+  { path: "/best-sellers", name: "BestSellers", component: BestSellerPage },
   { path: "/collections", name: "Collections", component: CollectionsPage },
   { path: "/contact", name: "Contact", component: ContactPage },
   {

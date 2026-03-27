@@ -1961,6 +1961,11 @@ watch(
             >Home</router-link
           >
           <router-link
+            to="/best-sellers"
+            class="hover:text-gray-500 transition cursor-pointer text-red-600 font-bold"
+            >Best Sellers</router-link
+          >
+          <router-link
             to="/collections"
             class="hover:text-gray-500 transition cursor-pointer"
             >Collections</router-link
@@ -2159,6 +2164,12 @@ watch(
               class="pb-4 border-gray-50 border-b hover:text-gray-500 transition-colors"
               @click="isMobileMenuOpen = false"
               >Home</router-link
+            >
+            <router-link
+              to="/best-sellers"
+              class="pb-4 border-gray-50 border-b text-red-600 font-bold hover:text-red-800 transition-colors"
+              @click="isMobileMenuOpen = false"
+              >Best Sellers</router-link
             >
             <router-link
               to="/collections"
