@@ -774,7 +774,7 @@ onMounted(initData);
         </h2>
       </div>
     </div>
-    <Transition
+    <!-- <Transition
       enter-active-class="transition ease-out duration-700"
       enter-from-class="opacity-0 scale-95 translate-y-10"
       enter-to-class="opacity-100 scale-100 translate-y-0"
@@ -856,6 +856,73 @@ onMounted(initData);
               class="w-full bg-black text-white font-bold uppercase tracking-widest text-xs py-4 hover:bg-gray-800 hover:shadow-lg transition-all"
             >
               CLAIM REWARD NOW
+            </button>
+          </div>
+        </div>
+      </div>
+    </Transition> -->
+    <Transition
+      enter-active-class="transition ease-out duration-700"
+      enter-from-class="opacity-0 scale-95 translate-y-10"
+      enter-to-class="opacity-100 scale-100 translate-y-0"
+      leave-active-class="transition ease-in duration-500"
+      leave-from-class="opacity-100 scale-100"
+      leave-to-class="opacity-0 scale-95"
+    >
+      <div
+        v-if="showPromoPopup"
+        class="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm px-4"
+        @click.self="closePopup"
+      >
+        <div
+          class="bg-[#F8F8F8] w-full max-w-3xl flex flex-col md:flex-row relative shadow-2xl overflow-hidden"
+        >
+          <button
+            @click="closePopup"
+            class="absolute top-3 right-3 z-10 text-gray-500 hover:text-black transition"
+          >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+
+          <div class="hidden md:block md:w-1/2 relative bg-gray-200">
+            <img
+              src="../../assets/DSCF5814.jpg"
+              alt="Solher Bags"
+              class="w-full h-full object-cover"
+            />
+          </div>
+
+          <div class="w-full md:w-1/2 px-8 py-12 flex flex-col justify-center items-center text-center">
+            
+            <h4 class="font-bold tracking-[0.2em] text-xs uppercase text-[#333] mb-1">
+              S O L H E R
+            </h4>
+            <p class="text-[9px] tracking-widest text-gray-500 uppercase mb-8">Indonesia</p>
+
+            <h2 class="text-[34px] md:text-[38px] font-extrabold text-[#111] mb-2 tracking-tight whitespace-nowrap">
+              GET 25.000 OFF
+            </h2>
+            <p class="text-base text-gray-800 mb-8 font-serif">
+              your first order
+            </p>
+
+            <p class="text-[11px] text-[#444] leading-relaxed mb-6 max-w-[240px]">
+              Subscribe now and get notified about new launches, and special offers.
+            </p>
+
+            <input
+              type="email"
+              placeholder="Enter your email address."
+              class="w-full border border-black bg-white px-4 py-[14px] mb-3 text-xs focus:outline-none focus:ring-1 focus:ring-black placeholder-gray-400"
+            />
+
+            <button
+              @click="claimPromo"
+              class="w-full bg-black text-white font-bold uppercase tracking-widest text-[11px] py-4 hover:bg-gray-800 transition-colors"
+            >
+              GET 25.000 OFF
             </button>
           </div>
         </div>
@@ -955,9 +1022,21 @@ const closePopup = () => {
 };
 
 // [BARU] Fungsi jika tombol ditekan
+// const claimPromo = () => {
+//   closePopup();
+//   router.push("/register"); // Lempar ke halaman daftar
+// };
+
+// [BARU] Fungsi jika tombol ditekan (Mocking Demo)
 const claimPromo = () => {
+  // Munculkan notifikasi sukses palsu agar bos senang
+  alert("Success! The promo code has been applied to your account.");
+  
+  // Tutup popup & catat di memori
   closePopup();
-  router.push("/register"); // Lempar ke halaman daftar
+  
+  // Arahkan ke halaman register untuk menyelesaikan alur (opsional)
+  router.push("/register"); 
 };
 
 onMounted(() => {
