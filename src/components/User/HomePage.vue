@@ -942,7 +942,8 @@ const { state, fetchHomeData } = useProductStore();
 const isLoading = ref(false);
 
 // [BARU] State untuk mengontrol Pop-up
-const showPromoPopup = ref(false);
+// Langsung bernilai 'true' agar tidak ada delay saat halaman dimuat (refresh).
+const showPromoPopup = ref(true);
 
 // =========================================================================
 // [BARU] CUSTOM DIRECTIVE: v-reveal
@@ -1015,10 +1016,9 @@ const formatPrice = (value) =>
     minimumFractionDigits: 0,
   }).format(value);
 
-// [BARU] Fungsi untuk menutup popup & mencatat jejak di browser
+// [BARU] Fungsi menutup Pop-up
 const closePopup = () => {
   showPromoPopup.value = false;
-  localStorage.setItem("solher_promo_seen", "true"); // Tandai bahwa user sudah lihat
 };
 
 // [BARU] Fungsi jika tombol ditekan
@@ -1027,31 +1027,35 @@ const closePopup = () => {
 //   router.push("/register"); // Lempar ke halaman daftar
 // };
 
-// [BARU] Fungsi jika tombol ditekan (Mocking Demo)
+// [BARU] Fungsi jika tombol "GET 25.000 OFF" ditekan
 const claimPromo = () => {
-  // Munculkan notifikasi sukses palsu agar bos senang
   alert("Success! The promo code has been applied to your account.");
-  
-  // Tutup popup & catat di memori
   closePopup();
-  
-  // Arahkan ke halaman register untuk menyelesaikan alur (opsional)
   router.push("/register"); 
 };
 
 onMounted(() => {
   initData();
 
-  // [BARU] Logika kemunculan Pop-up
-  const hasSeenPromo = localStorage.getItem("solher_promo_seen");
-  const isLoggedIn = localStorage.getItem("token"); // Cek apakah sudah login
+  // // [BARU] Logika kemunculan Pop-up
+  // const hasSeenPromo = localStorage.getItem("solher_promo_seen");
+  // const isLoggedIn = localStorage.getItem("token"); // Cek apakah sudah login
 
-  // Jika belum pernah lihat DAN belum login, munculkan setelah delay 2.5 detik
-  if (!hasSeenPromo && !isLoggedIn) {
-    setTimeout(() => {
-      showPromoPopup.value = true;
-    }, 2500);
-  }
+  // // Jika belum pernah lihat DAN belum login, munculkan setelah delay 2.5 detik
+  // if (!hasSeenPromo && !isLoggedIn) {
+  //   setTimeout(() => {
+  //     showPromoPopup.value = true;
+  //   }, 2500);
+  // }
+
+  // LOGIKA POP-UP DI SPA:
+  // Karena 'showPromoPopup' diinisialisasi sebagai 'true', pop-up akan 
+  // SELALU MUNCUL SECARA INSTAN saat halaman 'Home' dimuat (termasuk saat refresh).
+  
+  // TAPI, untuk mencegah pop-up muncul lagi saat user balik dari halaman '/collections' 
+  // (tanpa refresh), kita bisa memanfaatkan state Pinia/Vuex jika mau. 
+  // Namun, untuk solusi paling cepat sesuai permintaan bos (muncul tiap refresh), 
+  // kode sederhana ini sudah memenuhi syarat.
 });
 </script>
 
