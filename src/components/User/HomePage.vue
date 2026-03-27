@@ -938,6 +938,7 @@ import axios from "axios";
 import { useRouter } from "vue-router";
 import { BASE_URL } from "../../config/api.js";
 import { useProductStore } from "../../composables/useProductStore";
+import Swal from "sweetalert2";
 
 const { state, fetchHomeData } = useProductStore();
 const isLoading = ref(false);
