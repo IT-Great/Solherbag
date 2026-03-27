@@ -871,7 +871,6 @@ import { useRouter } from "vue-router";
 import { BASE_URL } from "../../config/api.js";
 import { useProductStore } from "../../composables/useProductStore";
 
-const router = useRouter();
 const { state, fetchHomeData } = useProductStore();
 const isLoading = ref(false);
 
