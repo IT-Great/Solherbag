@@ -914,6 +914,7 @@ onMounted(initData);
 
             <input
               type="email"
+              v-model="promoEmail"
               placeholder="Enter your email address."
               class="w-full border border-black bg-white px-4 py-[14px] mb-3 text-xs focus:outline-none focus:ring-1 focus:ring-black placeholder-gray-400"
             />
@@ -940,6 +941,10 @@ import { useProductStore } from "../../composables/useProductStore";
 
 const { state, fetchHomeData } = useProductStore();
 const isLoading = ref(false);
+
+// Tambahkan 2 state baru di bawah isLoading
+const promoEmail = ref("");
+const isClaimingPromo = ref(false);
 
 // [BARU] State untuk mengontrol Pop-up
 // Langsung bernilai 'true' agar tidak ada delay saat halaman dimuat (refresh).
@@ -1029,10 +1034,41 @@ const closePopup = () => {
 // };
 
 // [BARU] Fungsi jika tombol "GET 25.000 OFF" ditekan
-const claimPromo = () => {
-  alert("Success! The promo code has been applied to your account.");
-  closePopup();
-  router.push("/register"); 
+// const claimPromo = () => {
+//   alert("Success! The promo code has been applied to your account.");
+//   closePopup();
+//   router.push("/register"); 
+// };
+
+// Ubah fungsi claimPromo Anda menjadi ini:
+const claimPromo = async () => {
+  if (!promoEmail.value) {
+    return Swal.fire({ toast: true, position: 'top-end', icon: 'warning', title: 'Please enter your email', showConfirmButton: false, timer: 3000 });
+  }
+
+  isClaimingPromo.value = true;
+  try {
+    const res = await axios.post(`${BASE_URL}/promo/claim`, { email: promoEmail.value });
+    
+    Swal.fire({
+      icon: 'success',
+      title: 'Promo Claimed!',
+      text: `Your promo code is ${res.data.promo_code}. You can use it at checkout!`,
+      confirmButtonColor: '#000'
+    });
+    
+    closePopup();
+    
+    // Jika belum login, tawarkan untuk ke halaman register
+    const isLoggedIn = localStorage.getItem("token");
+    if (!isLoggedIn) {
+      router.push("/register"); 
+    }
+  } catch (error) {
+    Swal.fire({ toast: true, position: 'top-end', icon: 'error', title: error.response?.data?.message || 'Failed to claim promo', showConfirmButton: false, timer: 4000 });
+  } finally {
+    isClaimingPromo.value = false;
+  }
 };
 
 onMounted(() => {

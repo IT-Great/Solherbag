@@ -3074,7 +3074,7 @@ onMounted(fetchData);
                     >
                       <input
                         type="radio"
-                        value="now" 
+                        value="now"
                         v-model="deliveryType"
                         class="hidden"
                       />
@@ -3269,10 +3269,12 @@ onMounted(fetchData);
                       v-for="(rate, idx) in processedShippingRates"
                       :key="idx"
                       :class="[
-                        rate.is_disabled ? 'opacity-40 bg-gray-100 border-gray-200 pointer-events-none select-none' :
-                        (selectedRate?.company === rate.company && selectedRate?.type === rate.type
-                          ? 'border-black bg-gray-50 shadow-sm'
-                          : 'border-gray-200 hover:bg-gray-50 cursor-pointer transition-all'),
+                        rate.is_disabled
+                          ? 'opacity-40 bg-gray-100 border-gray-200 pointer-events-none select-none'
+                          : selectedRate?.company === rate.company &&
+                              selectedRate?.type === rate.type
+                            ? 'border-black bg-gray-50 shadow-sm'
+                            : 'border-gray-200 hover:bg-gray-50 cursor-pointer transition-all',
                       ]"
                       class="flex flex-col p-4 border rounded-xl relative"
                     >
@@ -3285,7 +3287,9 @@ onMounted(fetchData);
                           class="w-4 h-4 text-black focus:ring-black border-gray-300 disabled:opacity-50"
                         />
                         <div class="ml-4 flex-grow flex items-center gap-4">
-                          <div class="w-12 h-12 bg-white border border-gray-100 rounded-lg flex justify-center items-center overflow-hidden shrink-0">
+                          <div
+                            class="w-12 h-12 bg-white border border-gray-100 rounded-lg flex justify-center items-center overflow-hidden shrink-0"
+                          >
                             <img
                               v-show="!imageErrors[rate.company]"
                               v-if="getCourierLogo(rate.company)"
@@ -3294,12 +3298,20 @@ onMounted(fetchData);
                               class="w-full h-full object-contain p-1"
                               @error="handleImageError(rate.company)"
                             />
-                            <span v-show="imageErrors[rate.company] || !getCourierLogo(rate.company)" class="font-black text-gray-300 text-xs">
+                            <span
+                              v-show="
+                                imageErrors[rate.company] ||
+                                !getCourierLogo(rate.company)
+                              "
+                              class="font-black text-gray-300 text-xs"
+                            >
                               {{ rate.company.toUpperCase() }}
                             </span>
                           </div>
                           <div>
-                            <p class="font-bold text-gray-800 text-sm uppercase tracking-wide">
+                            <p
+                              class="font-bold text-gray-800 text-sm uppercase tracking-wide"
+                            >
                               {{ rate.company }} - {{ rate.type }}
                             </p>
                             <p class="text-gray-500 text-[10px] mt-0.5">
@@ -3312,7 +3324,10 @@ onMounted(fetchData);
                         </p>
                       </div>
 
-                      <div v-if="rate.is_disabled" class="mt-3 ml-8 text-[10px] text-red-600 bg-red-50 px-3 py-1.5 rounded-lg border border-red-100 font-bold uppercase tracking-widest">
+                      <div
+                        v-if="rate.is_disabled"
+                        class="mt-3 ml-8 text-[10px] text-red-600 bg-red-50 px-3 py-1.5 rounded-lg border border-red-100 font-bold uppercase tracking-widest"
+                      >
                         ⚠️ Unavailable: {{ rate.disable_reason }}
                       </div>
                     </label>
@@ -3377,6 +3392,61 @@ onMounted(fetchData);
               <div class="flex justify-between text-gray-500">
                 <span>Subtotal</span>
                 <span>{{ formatPrice(checkoutTotalAmount) }}</span>
+              </div>
+
+              <div class="pt-4 mt-2 border-t border-dashed border-gray-200">
+                <label
+                  class="text-[10px] font-bold text-gray-900 uppercase tracking-widest mb-2 block"
+                >
+                  Promo Code
+                </label>
+                <div class="flex gap-2">
+                  <input
+                    type="text"
+                    v-model="promoInput"
+                    :disabled="appliedPromoCode !== null || isVerifyingPromo"
+                    placeholder="e.g. SOLHERBARU"
+                    class="flex-1 bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-sm uppercase focus:ring-black outline-none disabled:bg-gray-100 disabled:text-gray-400"
+                  />
+                  <button
+                    v-if="!appliedPromoCode"
+                    @click="applyPromo"
+                    :disabled="!promoInput || isVerifyingPromo"
+                    class="bg-black text-white text-[10px] font-bold uppercase px-4 rounded-lg hover:bg-gray-800 transition disabled:bg-gray-300 w-20 flex justify-center items-center"
+                  >
+                    <span v-if="!isVerifyingPromo">Apply</span>
+                    <div
+                      v-else
+                      class="w-3 h-3 border-2 border-white/40 border-t-white rounded-full animate-spin"
+                    ></div>
+                  </button>
+                  <button
+                    v-else
+                    @click="removePromo"
+                    class="bg-red-50 text-red-600 border border-red-200 text-[10px] font-bold uppercase px-4 rounded-lg hover:bg-red-100 transition w-20"
+                  >
+                    Remove
+                  </button>
+                </div>
+                <p
+                  v-if="promoMessage"
+                  :class="promoSuccess ? 'text-green-600' : 'text-red-500'"
+                  class="text-[10px] mt-2 font-medium"
+                >
+                  {{ promoMessage }}
+                </p>
+                <div
+                  v-if="appliedPromoCode"
+                  class="flex justify-between items-center mt-2"
+                >
+                  <span
+                    class="text-[10px] font-bold text-gray-500 uppercase tracking-widest"
+                    >Promo Applied</span
+                  >
+                  <span class="text-[11px] text-green-600 font-medium"
+                    >- {{ formatPrice(promoDiscountAmount) }}</span
+                  >
+                </div>
               </div>
 
               <div
@@ -3783,6 +3853,63 @@ const deliveryTime = ref("");
 const pointsToUse = ref(0);
 const pointConversionRate = 1000;
 
+// State Promo
+const promoInput = ref("");
+const appliedPromoCode = ref(null);
+const promoDiscountAmount = ref(0);
+const promoMessage = ref("");
+const promoSuccess = ref(false);
+const isVerifyingPromo = ref(false);
+
+const applyPromo = async () => {
+  if (!promoInput.value) return;
+  isVerifyingPromo.value = true;
+  try {
+    const res = await axios.post(
+      `${BASE_URL}/promo/verify`,
+      { promo_code: promoInput.value },
+      axiosConfig,
+    );
+
+    // Cek batas minimal belanja Rp 50.000
+    if (checkoutTotalAmount.value < 50000) {
+      throw new Error("Minimum spend for this promo is Rp 50.000");
+    }
+
+    promoSuccess.value = true;
+    promoMessage.value = "✅ " + res.data.message;
+    appliedPromoCode.value = promoInput.value.toUpperCase();
+
+    // Terapkan Zero-Floor (Diskon tidak boleh lebih dari total barang)
+    promoDiscountAmount.value = Math.min(
+      res.data.discount_value,
+      checkoutTotalAmount.value,
+    );
+
+    // Reset points jika poin melebihi sisa harga setelah promo
+    if (pointsToUse.value > maxUsablePoints.value) {
+      pointsToUse.value = maxUsablePoints.value;
+    }
+  } catch (error) {
+    promoSuccess.value = false;
+    promoMessage.value =
+      "❌ " +
+      (error.message || error.response?.data?.message || "Invalid promo");
+    appliedPromoCode.value = null;
+    promoDiscountAmount.value = 0;
+  } finally {
+    isVerifyingPromo.value = false;
+  }
+};
+
+const removePromo = () => {
+  promoInput.value = "";
+  appliedPromoCode.value = null;
+  promoDiscountAmount.value = 0;
+  promoMessage.value = "";
+  promoSuccess.value = false;
+};
+
 // =========================================================================
 // [PERBAIKAN] LOGIKA PENGIRIMAN SUPER-REAKTIF & VALIDASI KETAT
 // =========================================================================
@@ -3809,19 +3936,22 @@ const totalQuantityToCheckout = computed(() => {
 
 // 2. Rumus Haversine: Mengukur Jarak Koordinat Asli dari Toko (Surabaya) ke Alamat User
 const getDistanceFromOrigin = (destLat, destLng) => {
-  if (!destLat || !destLng) return 999; 
-  const lat1 = -7.25706;  // Latitude Solher Store
+  if (!destLat || !destLng) return 999;
+  const lat1 = -7.25706; // Latitude Solher Store
   const lon1 = 112.74549; // Longitude Solher Store
   const lat2 = parseFloat(destLat);
   const lon2 = parseFloat(destLng);
 
   const R = 6371; // Radius bumi dalam KM
-  const dLat = (lat2 - lat1) * Math.PI / 180;
-  const dLon = (lon2 - lon1) * Math.PI / 180;
-  const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-            Math.sin(dLon/2) * Math.sin(dLon/2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c; // Hasil dalam KM
 };
 
@@ -3930,7 +4060,7 @@ const getDistanceFromOrigin = (destLat, destLng) => {
 //      checkHour += 1; // Jika 'now', asumsi pickup 1 jam dari sekarang
 //   }
 
-//   const totalWeightKg = totalQuantityToCheckout.value || 1; 
+//   const totalWeightKg = totalQuantityToCheckout.value || 1;
 
 //   // Validasi Jarak Dinamis
 //   let distanceKm = 999;
@@ -3944,7 +4074,7 @@ const getDistanceFromOrigin = (destLat, destLng) => {
 //   const rates = rawShippingRates.value.map(rate => {
 //     let is_disabled = false;
 //     let disable_reason = "";
-    
+
 //     // Pastikan aman jika API Biteship mengirim data kosong
 //     const type = rate.type ? rate.type.toLowerCase() : '';
 //     const company = rate.company ? rate.company.toLowerCase() : '';
@@ -3981,7 +4111,7 @@ const getDistanceFromOrigin = (destLat, destLng) => {
 //     // C. Aturan Grab
 //     else if (!is_disabled && company === 'grab') {
 //       if (type.includes('same day') || type.includes('sameday')) {
-//         if (checkHour >= 14 || checkHour < 9) { 
+//         if (checkHour >= 14 || checkHour < 9) {
 //           is_disabled = true;
 //           disable_reason = "Tutup. Operasional 09:00 - 14:00";
 //         } else if (totalWeightKg > 7) {
@@ -4019,59 +4149,63 @@ const processedShippingRates = computed(() => {
   let checkHour = new Date().getHours();
 
   // Validasi Waktu Dinamis
-  if (deliveryType.value === 'scheduled' && deliveryTime.value) {
-     if (deliveryDate.value === todayDate.value) {
-        checkHour = parseInt(deliveryTime.value.split(':')[0]);
-     } else {
-        checkHour = 12; // Jika besok, selalu aman (jam 12 siang)
-     }
+  if (deliveryType.value === "scheduled" && deliveryTime.value) {
+    if (deliveryDate.value === todayDate.value) {
+      checkHour = parseInt(deliveryTime.value.split(":")[0]);
+    } else {
+      checkHour = 12; // Jika besok, selalu aman (jam 12 siang)
+    }
   } else {
-     // Jika 'now', kita gunakan jam saat ini
-     checkHour = new Date().getHours();
+    // Jika 'now', kita gunakan jam saat ini
+    checkHour = new Date().getHours();
   }
 
-  const totalWeightKg = totalQuantityToCheckout.value || 1; 
+  const totalWeightKg = totalQuantityToCheckout.value || 1;
 
   // Validasi Jarak Dinamis
   let distanceKm = 999;
   if (addresses.value && selectedAddressId.value) {
-      const destInfo = addresses.value.find(a => a.id === selectedAddressId.value);
-      if (destInfo && destInfo.details.latitude && destInfo.details.longitude) {
-          distanceKm = getDistanceFromOrigin(destInfo.details.latitude, destInfo.details.longitude);
-      }
+    const destInfo = addresses.value.find(
+      (a) => a.id === selectedAddressId.value,
+    );
+    if (destInfo && destInfo.details.latitude && destInfo.details.longitude) {
+      distanceKm = getDistanceFromOrigin(
+        destInfo.details.latitude,
+        destInfo.details.longitude,
+      );
+    }
   }
 
-  const rates = rawShippingRates.value.map(rate => {
+  const rates = rawShippingRates.value.map((rate) => {
     let is_disabled = false;
     let disable_reason = "";
-    
+
     // [PERBAIKAN KRUSIAL] Hapus underscore (_) agar "same_day" berubah jadi "same day"
-    const type = rate.type ? rate.type.toLowerCase().replace(/_/g, ' ') : '';
-    const company = rate.company ? rate.company.toLowerCase() : '';
+    const type = rate.type ? rate.type.toLowerCase().replace(/_/g, " ") : "";
+    const company = rate.company ? rate.company.toLowerCase() : "";
 
     // A. Aturan Jarak (Maks 40KM untuk Ojek Online)
-    if (company === 'gojek' || company === 'grab') {
-       if (distanceKm > 40) {
-         is_disabled = true;
-         disable_reason = `Jarak > 40km (${distanceKm.toFixed(1)}km)`;
-       }
+    if (company === "gojek" || company === "grab") {
+      if (distanceKm > 40) {
+        is_disabled = true;
+        disable_reason = `Jarak > 40km (${distanceKm.toFixed(1)}km)`;
+      }
     }
 
     // B. Aturan Gojek
-    if (!is_disabled && company === 'gojek') {
-      if (type.includes('same day') || type.includes('sameday')) {
+    if (!is_disabled && company === "gojek") {
+      if (type.includes("same day") || type.includes("sameday")) {
         // Gojek Same Day: Tutup Jam 15:00
-        if (checkHour >= 15 || checkHour < 6) { 
+        if (checkHour >= 15 || checkHour < 6) {
           is_disabled = true;
           disable_reason = "Tutup. Operasional 06:00 - 15:00";
         } else if (totalWeightKg > 7) {
           is_disabled = true;
           disable_reason = "Berat Maks 7kg";
         }
-      }
-      else if (type.includes('instant')) {
+      } else if (type.includes("instant")) {
         // Gojek Instant: Tutup Jam 17:00
-        if (checkHour >= 17 || checkHour < 6) { 
+        if (checkHour >= 17 || checkHour < 6) {
           is_disabled = true;
           disable_reason = "Tutup. Operasional 06:00 - 17:00";
         } else if (totalWeightKg > 20) {
@@ -4081,18 +4215,17 @@ const processedShippingRates = computed(() => {
       }
     }
     // C. Aturan Grab
-    else if (!is_disabled && company === 'grab') {
-      if (type.includes('same day') || type.includes('sameday')) {
+    else if (!is_disabled && company === "grab") {
+      if (type.includes("same day") || type.includes("sameday")) {
         // Grab Same Day: Tutup Jam 14:00 (Sesuai Error Biteship)
-        if (checkHour >= 14 || checkHour < 9) { 
+        if (checkHour >= 14 || checkHour < 9) {
           is_disabled = true;
           disable_reason = "Tutup. Operasional 09:00 - 14:00";
         } else if (totalWeightKg > 7) {
           is_disabled = true;
           disable_reason = "Berat Maks 7kg";
         }
-      }
-      else if (type.includes('instant')) {
+      } else if (type.includes("instant")) {
         // Grab Instant: Tutup Jam 18:00
         if (checkHour >= 18 || checkHour < 8) {
           is_disabled = true;
@@ -4213,13 +4346,13 @@ const isButtonDisabled = computed(() => {
 //     try {
 //       const res = await axios.post(
 //         `${BASE_URL}/shipping/rates`,
-//         { 
+//         {
 //           address_id: newVal,
 //           total_quantity: checkoutCount.value // [PERBAIKAN] Kirim total quantity ke backend
 //         },
 //         axiosConfig,
 //       );
-      
+
 //       if (res.data && res.data.pricing) {
 //         const currentHour = new Date().getHours();
 //         const totalWeightKg = checkoutCount.value; // Karena 1 item = 1kg
@@ -4242,7 +4375,7 @@ const isButtonDisabled = computed(() => {
 //                 is_disabled = true;
 //                 disable_reason = "Weight exceeds max limit (7kg)";
 //               }
-//             } 
+//             }
 //             else if (type.includes('instant')) {
 //               // Instant maksimal jam 17:00
 //               if (currentHour >= 17 || currentHour < 6) {
@@ -4286,16 +4419,16 @@ const isButtonDisabled = computed(() => {
 //     try {
 //       const res = await axios.post(
 //         `${BASE_URL}/shipping/rates`,
-//         { 
+//         {
 //           address_id: newVal,
-//           total_quantity: checkoutCount.value 
+//           total_quantity: checkoutCount.value
 //         },
 //         axiosConfig,
 //       );
-      
+
 //       if (res.data && res.data.pricing) {
 //         const currentHour = new Date().getHours();
-//         const totalWeightKg = checkoutCount.value; 
+//         const totalWeightKg = checkoutCount.value;
 
 //         const processedRates = res.data.pricing.map(rate => {
 //           let is_disabled = false;
@@ -4314,7 +4447,7 @@ const isButtonDisabled = computed(() => {
 //                 is_disabled = true;
 //                 disable_reason = "Weight exceeds max limit (7kg)";
 //               }
-//             } 
+//             }
 //             else if (type.includes('instant')) {
 //               // [PERBAIKAN] Instant tutup 17:00, kita blokir di jam 16:00
 //               if (currentHour >= 16 || currentHour < 6) {
@@ -4359,9 +4492,9 @@ watch(selectedAddressId, async (newVal) => {
     try {
       const res = await axios.post(
         `${BASE_URL}/shipping/rates`,
-        { 
+        {
           address_id: newVal,
-          total_quantity: totalQuantityToCheckout.value // Kuantitas akurat
+          total_quantity: totalQuantityToCheckout.value, // Kuantitas akurat
         },
         axiosConfig,
       );
@@ -4370,7 +4503,12 @@ watch(selectedAddressId, async (newVal) => {
       }
     } catch (error) {
       Swal.fire({
-        toast: true, position: "top-end", icon: "error", title: "Failed to calculate shipping.", showConfirmButton: false, timer: 4000,
+        toast: true,
+        position: "top-end",
+        icon: "error",
+        title: "Failed to calculate shipping.",
+        showConfirmButton: false,
+        timer: 4000,
       });
     } finally {
       isLoadingRates.value = false;
@@ -4379,14 +4517,22 @@ watch(selectedAddressId, async (newVal) => {
 });
 
 // 5. [Auto-Healing] Batalkan pilihan jika user iseng mengganti jam hingga kurir tersebut expired
-watch(processedShippingRates, (newRates) => {
-   if (selectedRate.value) {
-      const match = newRates.find(r => r.company === selectedRate.value.company && r.type === selectedRate.value.type);
+watch(
+  processedShippingRates,
+  (newRates) => {
+    if (selectedRate.value) {
+      const match = newRates.find(
+        (r) =>
+          r.company === selectedRate.value.company &&
+          r.type === selectedRate.value.type,
+      );
       if (match && match.is_disabled) {
-         selectedRate.value = null; // Auto un-select!
+        selectedRate.value = null; // Auto un-select!
       }
-   }
-}, { deep: true });
+    }
+  },
+  { deep: true },
+);
 
 watch(shippingMethod, (newVal) => {
   if (newVal === "free") selectedRate.value = null;
@@ -4674,12 +4820,26 @@ const fetchData = async () => {
   }
 };
 
+// const maxUsablePoints = computed(() => {
+//   if (!userData.value || checkoutTotalAmount.value === 0) return 0;
+//   const userBalance = userData.value.point || 0;
+//   const maxPointsForPrice = Math.floor(
+//     checkoutTotalAmount.value / pointConversionRate,
+//   );
+//   return Math.min(userBalance, maxPointsForPrice);
+// });
+
+// [PERBAIKAN] Pastikan Poin tidak memotong Harga Promo
 const maxUsablePoints = computed(() => {
   if (!userData.value || checkoutTotalAmount.value === 0) return 0;
   const userBalance = userData.value.point || 0;
+
+  // Harga yang bisa dipotong poin = Subtotal Barang - Diskon Promo
+  const priceAfterPromo = checkoutTotalAmount.value - promoDiscountAmount.value;
   const maxPointsForPrice = Math.floor(
-    checkoutTotalAmount.value / pointConversionRate,
+    Math.max(0, priceAfterPromo) / pointConversionRate,
   );
+
   return Math.min(userBalance, maxPointsForPrice);
 });
 
@@ -4696,9 +4856,15 @@ watch(pointsToUse, (newVal) => {
   if (newVal > maxUsablePoints.value) pointsToUse.value = maxUsablePoints.value;
 });
 
-const grandTotalWithDiscount = computed(
-  () => grandTotal.value - pointDiscountAmount.value,
-);
+// const grandTotalWithDiscount = computed(
+//   () => grandTotal.value - pointDiscountAmount.value,
+// );
+
+// [PERBAIKAN] Grand Total Akhir
+const grandTotalWithDiscount = computed(() => {
+  let total = grandTotal.value; // (Subtotal + Ongkir)
+  return total - promoDiscountAmount.value - pointDiscountAmount.value;
+});
 
 // ===============================================
 // [PERBAIKAN] API POST /CHECKOUT DIPINDAH KE SINI
@@ -4766,6 +4932,7 @@ const handlePayment = async () => {
         shippingMethod.value === "biteship" ? deliveryDate.value : null,
       delivery_time:
         shippingMethod.value === "biteship" ? deliveryTime.value : null,
+      promo_code: appliedPromoCode.value,
     };
 
     // Tembak API /checkout (yang sekarang membuat Transaksi sekaligus Invoice Xendit)
@@ -4832,7 +4999,9 @@ onMounted(fetchData);
 }
 
 @keyframes bounceDots {
-  0%, 80%, 100% {
+  0%,
+  80%,
+  100% {
     transform: scale(0);
     opacity: 0.5;
   }
