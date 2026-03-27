@@ -571,7 +571,6 @@
 
 import { createRouter, createWebHistory } from "vue-router";
 import HomePage from "../components/User/HomePage.vue";
-import ContactPage from "../components/User/ContactPage.vue";
 import LoginPage from "../components/User/LoginPage.vue";
 import RegisterPage from "../components/User/RegisterPage.vue";
 import ProfilePage from "../components/User/ProfilePage.vue";
