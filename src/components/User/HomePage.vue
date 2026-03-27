@@ -918,7 +918,7 @@ const vReveal = {
 
 const router = useRouter();
 // const { state, fetchHomeData } = useProductStore();
-const isLoading = ref(false);
+// const isLoading = ref(false);
 
 const initData = async () => {
   if (!state.isHomeLoaded) {
