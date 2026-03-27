@@ -3405,7 +3405,7 @@ onMounted(fetchData);
                     type="text"
                     v-model="promoInput"
                     :disabled="appliedPromoCode !== null || isVerifyingPromo"
-                    placeholder="e.g. SOLHERBARU"
+                    placeholder="Enter your promo code"
                     class="flex-1 bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-sm uppercase focus:ring-black outline-none disabled:bg-gray-100 disabled:text-gray-400"
                   />
                   <button
@@ -3861,6 +3861,47 @@ const promoMessage = ref("");
 const promoSuccess = ref(false);
 const isVerifyingPromo = ref(false);
 
+// const applyPromo = async () => {
+//   if (!promoInput.value) return;
+//   isVerifyingPromo.value = true;
+//   try {
+//     const res = await axios.post(
+//       `${BASE_URL}/promo/verify`,
+//       { promo_code: promoInput.value },
+//       axiosConfig,
+//     );
+
+//     // Cek batas minimal belanja Rp 50.000
+//     if (checkoutTotalAmount.value < 50000) {
+//       throw new Error("Minimum spend for this promo is Rp 50.000");
+//     }
+
+//     promoSuccess.value = true;
+//     promoMessage.value = "✅ " + res.data.message;
+//     appliedPromoCode.value = promoInput.value.toUpperCase();
+
+//     // Terapkan Zero-Floor (Diskon tidak boleh lebih dari total barang)
+//     promoDiscountAmount.value = Math.min(
+//       res.data.discount_value,
+//       checkoutTotalAmount.value,
+//     );
+
+//     // Reset points jika poin melebihi sisa harga setelah promo
+//     if (pointsToUse.value > maxUsablePoints.value) {
+//       pointsToUse.value = maxUsablePoints.value;
+//     }
+//   } catch (error) {
+//     promoSuccess.value = false;
+//     promoMessage.value =
+//       "❌ " +
+//       (error.message || error.response?.data?.message || "Invalid promo");
+//     appliedPromoCode.value = null;
+//     promoDiscountAmount.value = 0;
+//   } finally {
+//     isVerifyingPromo.value = false;
+//   }
+// };
+
 const applyPromo = async () => {
   if (!promoInput.value) return;
   isVerifyingPromo.value = true;
@@ -3891,10 +3932,22 @@ const applyPromo = async () => {
       pointsToUse.value = maxUsablePoints.value;
     }
   } catch (error) {
+    // =========================================================================
+    // [PERBAIKAN] TAMPILKAN PESAN ERROR SPESIFIK DARI BACKEND
+    // =========================================================================
     promoSuccess.value = false;
-    promoMessage.value =
-      "❌ " +
-      (error.message || error.response?.data?.message || "Invalid promo");
+    
+    // Prioritas 1: Ambil pesan error spesifik dari Backend (response 404/400)
+    // Prioritas 2: Ambil pesan error buatan Frontend (seperti "Minimum spend...")
+    // Prioritas 3: Pesan error default
+    let errorMessage = "Invalid promo code.";
+    if (error.response && error.response.data && error.response.data.message) {
+      errorMessage = error.response.data.message;
+    } else if (error.message) {
+      errorMessage = error.message;
+    }
+
+    promoMessage.value = "❌ " + errorMessage;
     appliedPromoCode.value = null;
     promoDiscountAmount.value = 0;
   } finally {
