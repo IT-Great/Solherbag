@@ -1635,7 +1635,7 @@ onUnmounted(() => {
 import { ref, onMounted, computed, watch, onUnmounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import Swal from "sweetalert2";
-import { useProductStore } from "../../composables/useProductStore";
+import { useProductStore } from "../../composables/useProductStore.js";
 import axios from "axios";
 import { BASE_URL } from "../../config/api.js";
 // [BARU] Import Fuse.js
