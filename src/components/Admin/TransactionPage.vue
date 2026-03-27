@@ -7093,6 +7093,20 @@ onUnmounted(() => {
 
             <td class="py-6 w-[15%] pr-2">
               <div class="flex flex-col gap-1.5">
+                <!-- <div class="flex justify-between text-[10px] text-gray-500">
+                  <span>Subtotal:</span
+                  ><span>{{ formatPrice(trx.total_amount) }}</span>
+                </div>
+                <div class="flex justify-between text-[10px] text-gray-500">
+                  <span>Shipping:</span
+                  ><span>{{ formatPrice(trx.shipping_cost) }}</span>
+                </div>
+                <div
+                  class="flex justify-between text-sm font-bold text-black border-t border-dashed border-gray-200 pt-1.5 mt-1"
+                >
+                  <span>Total:</span
+                  ><span>{{ formatPrice(getGrandTotal(trx)) }}</span>
+                </div> -->
                 <div class="flex justify-between text-[10px] text-gray-500">
                   <span>Subtotal:</span
                   ><span>{{ formatPrice(trx.total_amount) }}</span>
@@ -7101,6 +7115,16 @@ onUnmounted(() => {
                   <span>Shipping:</span
                   ><span>{{ formatPrice(trx.shipping_cost) }}</span>
                 </div>
+
+                <div v-if="trx.promo_discount > 0" class="flex justify-between text-[9px] text-green-600 font-bold">
+                  <span>Promo (<span class="font-mono">{{ trx.promo_code }}</span>)</span>
+                  <span>-{{ formatPrice(trx.promo_discount) }}</span>
+                </div>
+                <div v-if="trx.points_used > 0" class="flex justify-between text-[9px] text-yellow-600 font-bold">
+                  <span>Pts ({{ trx.points_used }})</span>
+                  <span>-{{ formatPrice(trx.points_used * 1000) }}</span>
+                </div>
+
                 <div
                   class="flex justify-between text-sm font-bold text-black border-t border-dashed border-gray-200 pt-1.5 mt-1"
                 >
@@ -7760,8 +7784,18 @@ const goToDetail = (trx) => {
   });
 };
 
-const getGrandTotal = (trx) =>
-  parseFloat(trx.total_amount) || 0 + parseFloat(trx.shipping_cost) || 0;
+// const getGrandTotal = (trx) =>
+//   parseFloat(trx.total_amount) || 0 + parseFloat(trx.shipping_cost) || 0;
+
+// [PERBAIKAN] Rumus Grand Total yang benar untuk Admin
+const getGrandTotal = (trx) => {
+  if (!trx) return 0;
+  const total = parseFloat(trx.total_amount || 0);
+  const shipping = parseFloat(trx.shipping_cost || 0);
+  const promo = parseFloat(trx.promo_discount || 0);
+  const points = parseFloat((trx.points_used || 0) * 1000);
+  return total + shipping - promo - points;
+};
 
 const totalRevenue = computed(() => {
   return transactions.value
@@ -7932,6 +7966,42 @@ const exportToPDF = () => {
     });
 };
 
+// const exportToExcel = () => {
+//   const excelData = paginatedTransactions.value.map((item, index) => ({
+//     No: index + 1,
+//     "Order ID": item.order_id,
+//     Date: formatDate(item.created_at),
+//     "Customer Name": `${item.user.first_name} ${item.user.last_name}`,
+//     Email: item.user.email,
+//     "Total Items": item.details.length,
+//     "Payment Method": item.payment_method
+//       ? item.payment_method.replace(/_/g, " ").toUpperCase()
+//       : "-",
+//     "Payment Status": getPaymentStatusText(item.status),
+//     "Shipping Method":
+//       item.shipping_method === "free"
+//         ? "In-Store Pickup"
+//         : `${item.courier_company} - ${item.courier_type}`,
+//     "Tracking Number": item.tracking_number || "-",
+//     "Subtotal (IDR)": parseFloat(item.total_amount),
+//     "Shipping Cost (IDR)": parseFloat(item.shipping_cost),
+//     "Grand Total (IDR)": getGrandTotal(item),
+//     "Points Earned": item.status === "completed" ? item.point || 0 : 0,
+//     "Transaction Status": item.status.replace(/_/g, " ").toUpperCase(),
+//     "Shipping Status":
+//       item.shipping_method === "free"
+//         ? "IN-STORE"
+//         : (item.shipping_status || "PENDING").toUpperCase(),
+//   }));
+//   const worksheet = XLSX.utils.json_to_sheet(excelData);
+//   const workbook = XLSX.utils.book_new();
+//   XLSX.utils.book_append_sheet(workbook, worksheet, "Transactions");
+//   XLSX.writeFile(
+//     workbook,
+//     `Transaction_Data_${new Date().toISOString().split("T")[0]}.xlsx`,
+//   );
+// };
+
 const exportToExcel = () => {
   const excelData = paginatedTransactions.value.map((item, index) => ({
     No: index + 1,
@@ -7951,6 +8021,11 @@ const exportToExcel = () => {
     "Tracking Number": item.tracking_number || "-",
     "Subtotal (IDR)": parseFloat(item.total_amount),
     "Shipping Cost (IDR)": parseFloat(item.shipping_cost),
+    // [BARU] Kolom Diskon di Laporan Excel
+    "Promo Code": item.promo_code || "-",
+    "Promo Discount (IDR)": parseFloat(item.promo_discount || 0),
+    "Points Discount (IDR)": parseFloat((item.points_used || 0) * 1000),
+    // [PERBAIKAN] Grand Total
     "Grand Total (IDR)": getGrandTotal(item),
     "Points Earned": item.status === "completed" ? item.point || 0 : 0,
     "Transaction Status": item.status.replace(/_/g, " ").toUpperCase(),

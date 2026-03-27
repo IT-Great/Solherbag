@@ -2188,9 +2188,20 @@ onMounted(fetchData);
               v-if="printSettings.shipping_fee_shown"
               class="text-center py-4 border-b-2 border-black"
             >
+              <!-- <p class="font-black text-2xl text-black">
+                Ongkos Kirim: {{ formatPrice(transaction.shipping_cost) }}
+              </p>
+              <p class="font-bold text-lg mt-1 text-black">
+                Jenis Layanan - {{ transaction.courier_type }}
+              </p> -->
               <p class="font-black text-2xl text-black">
                 Ongkos Kirim: {{ formatPrice(transaction.shipping_cost) }}
               </p>
+              
+              <p v-if="transaction.promo_discount > 0" class="font-bold text-lg mt-1 text-black">
+                Diskon Promo: - {{ formatPrice(transaction.promo_discount) }}
+              </p>
+
               <p class="font-bold text-lg mt-1 text-black">
                 Jenis Layanan - {{ transaction.courier_type }}
               </p>
@@ -2865,6 +2876,44 @@ onMounted(fetchData);
             Financial Summary
           </h2>
           <div class="space-y-4">
+            <!-- <div
+              class="flex justify-between items-center text-gray-600 text-sm"
+            >
+              <span>Subtotal ({{ totalQuantity }} items)</span>
+              <span class="font-medium text-gray-900">{{
+                formatPrice(transaction.total_amount)
+              }}</span>
+            </div>
+            <div
+              class="flex justify-between items-center text-gray-600 text-sm"
+            >
+              <span>Shipping Fee</span>
+              <span
+                v-if="transaction.shipping_method === 'free'"
+                class="font-bold text-green-600"
+                >Free</span
+              >
+              <span v-else class="font-medium text-gray-900">{{
+                formatPrice(transaction.shipping_cost)
+              }}</span>
+            </div>
+            <div
+              class="flex justify-between items-end pt-4 border-gray-100 border-t border-dashed"
+            >
+              <div>
+                <span
+                  class="block font-bold text-gray-900 text-xs uppercase tracking-widest"
+                  >Grand Total</span
+                >
+                <span class="text-[10px] text-gray-400 italic"
+                  >Paid by customer</span
+                >
+              </div>
+              <span class="font-bold text-black text-2xl">{{
+                formatPrice(getGrandTotal(transaction))
+              }}</span>
+            </div> -->
+
             <div
               class="flex justify-between items-center text-gray-600 text-sm"
             >
@@ -2885,6 +2934,15 @@ onMounted(fetchData);
               <span v-else class="font-medium text-gray-900">{{
                 formatPrice(transaction.shipping_cost)
               }}</span>
+            </div>
+
+            <div v-if="transaction.promo_discount > 0" class="flex justify-between items-center text-green-600 text-sm font-medium">
+              <span>Promo Code ({{ transaction.promo_code }})</span>
+              <span>- {{ formatPrice(transaction.promo_discount) }}</span>
+            </div>
+            <div v-if="transaction.points_used > 0" class="flex justify-between items-center text-yellow-600 text-sm font-medium">
+              <span>Loyalty Points ({{ transaction.points_used }} Pts)</span>
+              <span>- {{ formatPrice(transaction.points_used * 1000) }}</span>
             </div>
             <div
               class="flex justify-between items-end pt-4 border-gray-100 border-t border-dashed"
@@ -3261,8 +3319,18 @@ const generateAndDownloadPDF = () => {
   }, 1500);
 };
 
-const getGrandTotal = (trx) =>
-  parseFloat(trx.total_amount) + parseFloat(trx.shipping_cost);
+// const getGrandTotal = (trx) =>
+//   parseFloat(trx.total_amount) + parseFloat(trx.shipping_cost);
+
+const getGrandTotal = (trx) => {
+  if (!trx) return 0;
+  const total = parseFloat(trx.total_amount || 0);
+  const shipping = parseFloat(trx.shipping_cost || 0);
+  const promo = parseFloat(trx.promo_discount || 0);
+  const pointsDiscount = parseFloat((trx.points_used || 0) * 1000);
+  return total + shipping - promo - pointsDiscount;
+};
+
 const getPaymentLogo = (methodString) => {
   if (!methodString) return null;
   const channel = methodString.split(" ")[1]?.toLowerCase();
