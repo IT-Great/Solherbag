@@ -1042,6 +1042,36 @@ const closePopup = () => {
 // };
 
 // Ubah fungsi claimPromo Anda menjadi ini:
+// const claimPromo = async () => {
+//   if (!promoEmail.value) {
+//     return Swal.fire({ toast: true, position: 'top-end', icon: 'warning', title: 'Please enter your email', showConfirmButton: false, timer: 3000 });
+//   }
+
+//   isClaimingPromo.value = true;
+//   try {
+//     const res = await axios.post(`${BASE_URL}/promo/claim`, { email: promoEmail.value });
+    
+//     Swal.fire({
+//       icon: 'success',
+//       title: 'Promo Claimed!',
+//       text: `Your promo code is ${res.data.promo_code}. You can use it at checkout!`,
+//       confirmButtonColor: '#000'
+//     });
+    
+//     closePopup();
+    
+//     // Jika belum login, tawarkan untuk ke halaman register
+//     const isLoggedIn = localStorage.getItem("token");
+//     if (!isLoggedIn) {
+//       router.push("/register"); 
+//     }
+//   } catch (error) {
+//     Swal.fire({ toast: true, position: 'top-end', icon: 'error', title: error.response?.data?.message || 'Failed to claim promo', showConfirmButton: false, timer: 4000 });
+//   } finally {
+//     isClaimingPromo.value = false;
+//   }
+// };
+
 const claimPromo = async () => {
   if (!promoEmail.value) {
     return Swal.fire({ toast: true, position: 'top-end', icon: 'warning', title: 'Please enter your email', showConfirmButton: false, timer: 3000 });
@@ -1051,10 +1081,11 @@ const claimPromo = async () => {
   try {
     const res = await axios.post(`${BASE_URL}/promo/claim`, { email: promoEmail.value });
     
+    // [PERBAIKAN] Ubah pesan untuk mengarahkan user mengecek email
     Swal.fire({
       icon: 'success',
       title: 'Promo Claimed!',
-      text: `Your promo code is ${res.data.promo_code}. You can use it at checkout!`,
+      text: `We've sent the exclusive promo code to ${promoEmail.value}. Check your inbox or spam folder!`,
       confirmButtonColor: '#000'
     });
     
