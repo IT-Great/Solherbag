@@ -7,10 +7,10 @@ import { BASE_URL } from '../config/api';
 const state = reactive({
     volumeOne: [],
     volumeTwo: [],
-    catalogProducts: [],
+    collectionsProducts: [],
     categories: [],
     isHomeLoaded: false,
-    isCatalogLoaded: false
+    isCollectionsLoaded: false
 });
 
 export function useProductStore() {
@@ -32,26 +32,26 @@ export function useProductStore() {
         }
     };
 
-    // Fetch Data Catalog (Hanya jika belum loaded)
-    const fetchCatalogData = async () => {
-        if (state.isCatalogLoaded) return;
+    // Fetch Data Collections (Hanya jika belum loaded)
+    const fetchCollectionsData = async () => {
+        if (state.isCollectionsLoaded) return;
 
         try {
             const [prodRes, catRes] = await Promise.all([
                 axios.get(`${BASE_URL}/products`),
                 axios.get(`${BASE_URL}/guest/categories`)
             ]);
-            state.catalogProducts = prodRes.data;
+            state.collectionsProducts = prodRes.data;
             state.categories = catRes.data.data; // Sesuaikan dengan struktur respons API
-            state.isCatalogLoaded = true;
+            state.isCollectionsLoaded = true;
         } catch (error) {
-            console.error("Error loading catalog:", error);
+            console.error("Error loading collections:", error);
         }
     };
 
     return {
         state,
         fetchHomeData,
-        fetchCatalogData
+        fetchCollectionsData
     };
 }

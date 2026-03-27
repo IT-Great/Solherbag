@@ -2,7 +2,7 @@
   <div class="mx-auto px-6 py-24 max-w-7xl min-h-screen">
     <div class="flex items-center gap-4 mb-10">
       <button
-        @click="$router.push('/catalog')"
+        @click="$router.push('/collections')"
         class="p-2 bg-white rounded-full shadow-sm hover:bg-gray-50 transition"
       >
         <svg
@@ -52,7 +52,7 @@
             Your bag is currently empty.
           </p>
           <button
-            @click="$router.push('/catalog')"
+            @click="$router.push('/collections')"
             class="bg-black text-white px-8 py-4 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-gray-800 transition"
           >
             Continue Shopping
@@ -303,7 +303,7 @@ const handleCheckout = () => {
   <div class="mx-auto px-6 py-24 max-w-7xl min-h-screen">
     <div class="flex items-center gap-4 mb-10">
       <button
-        @click="$router.push('/catalog')"
+        @click="$router.push('/collections')"
         class="p-2 bg-white rounded-full shadow-sm hover:bg-gray-50 transition"
       >
         <svg
@@ -353,7 +353,7 @@ const handleCheckout = () => {
             Your bag is currently empty.
           </p>
           <button
-            @click="$router.push('/catalog')"
+            @click="$router.push('/collections')"
             class="bg-black text-white px-8 py-4 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-gray-800 transition"
           >
             Continue Shopping
@@ -676,7 +676,7 @@ onMounted(() => {
   <div class="mx-auto px-6 py-24 max-w-7xl min-h-screen">
     <div class="flex items-center gap-4 mb-10">
       <button
-        @click="$router.push('/catalog')"
+        @click="$router.push('/collections')"
         class="p-2 bg-white rounded-full shadow-sm hover:bg-gray-50 transition"
       >
         <svg
@@ -712,7 +712,7 @@ onMounted(() => {
             Your bag is currently empty.
           </p>
           <button
-            @click="$router.push('/catalog')"
+            @click="$router.push('/collections')"
             class="bg-black text-white px-8 py-4 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-gray-800 transition"
           >
             Continue Shopping
@@ -1071,7 +1071,7 @@ onMounted(() => {
   <div class="mx-auto px-6 py-24 max-w-7xl min-h-screen">
     <div class="flex items-center gap-4 mb-10">
       <button
-        @click="$router.push('/catalog')"
+        @click="$router.push('/collections')"
         class="p-2 bg-white rounded-full shadow-sm hover:bg-gray-50 transition"
       >
         <svg
@@ -1107,7 +1107,7 @@ onMounted(() => {
             Your bag is currently empty.
           </p>
           <button
-            @click="$router.push('/catalog')"
+            @click="$router.push('/collections')"
             class="bg-black text-white px-8 py-4 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-gray-800 transition"
           >
             Continue Shopping

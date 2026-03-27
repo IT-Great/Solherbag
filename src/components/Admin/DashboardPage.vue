@@ -10,7 +10,7 @@
       <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
         <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">Total Products</p>
         <p class="font-black text-gray-900 text-2xl">48</p>
-        <span class="text-gray-400 text-xs">Active in catalog</span>
+        <span class="text-gray-400 text-xs">Active in collections</span>
       </div>
 
       <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
@@ -130,7 +130,7 @@ const pieOptions = {
         <p class="font-black text-gray-900 text-2xl">
           {{ stats.total_products }}
         </p>
-        <span class="text-gray-400 text-xs">Active pieces in catalog</span>
+        <span class="text-gray-400 text-xs">Active pieces in collections</span>
       </div>
 
       <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
@@ -297,7 +297,7 @@ onMounted(fetchData);
       <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
         <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">Total Products</p>
         <p class="font-black text-gray-900 text-2xl">{{ stats.total_products }}</p>
-        <span class="text-gray-400 text-xs">Active pieces in catalog</span>
+        <span class="text-gray-400 text-xs">Active pieces in collections</span>
       </div>
       <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
         <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">Total Transactions</p>
@@ -491,7 +491,7 @@ onMounted(fetchData);
       <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
         <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">Total Products</p>
         <p class="font-black text-gray-900 text-2xl">{{ stats.total_products }}</p>
-        <span class="text-gray-400 text-xs">Active pieces in catalog</span>
+        <span class="text-gray-400 text-xs">Active pieces in collections</span>
       </div>
       <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
         <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">Total Transactions</p>

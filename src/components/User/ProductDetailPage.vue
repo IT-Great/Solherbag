@@ -381,7 +381,7 @@ const fetchProductDetail = async () => {
     window.dispatchEvent(event);
   } catch (error) {
     console.error("Error fetching detail:", error);
-    router.push("/catalog");
+    router.push("/collections");
   } finally {
     setTimeout(() => {
       isLoading.value = false;
@@ -1145,7 +1145,7 @@ onMounted(fetchProductDetail);
 // //     window.dispatchEvent(event);
 // //   } catch (error) {
 // //     console.error("Error fetching detail:", error);
-// //     router.push("/catalog");
+// //     router.push("/collections");
 // //   } finally {
 // //     setTimeout(() => {
 // //       isLoading.value = false;
@@ -1180,7 +1180,7 @@ onMounted(fetchProductDetail);
 //     localStorage.setItem("recently_viewed", JSON.stringify(list));
 //   } catch (error) {
 //     console.error("Error fetching detail:", error);
-//     router.push("/catalog");
+//     router.push("/collections");
 //   } finally {
 //     setTimeout(() => {
 //       isLoading.value = false;
@@ -1649,7 +1649,7 @@ const toggleWishlist = async (productId) => {
 
 const fetchProductDetail = async () => {
   // [PERBAIKAN BESAR] Pengecekan Instant State Router
-  // Cek apakah ada data pre-fetched yang dibawa dari halaman Catalog
+  // Cek apakah ada data pre-fetched yang dibawa dari halaman Collections
   if (history.state && history.state.productData) {
     product.value = JSON.parse(history.state.productData);
     isLoading.value = false; // Matikan loading INSTAN 0 MILIDETIK!
@@ -1674,8 +1674,8 @@ const fetchProductDetail = async () => {
     localStorage.setItem("recently_viewed", JSON.stringify(list));
   } catch (error) {
     console.error("Error fetching detail:", error);
-    // Hanya redirect ke catalog jika produk benar-benar tidak ada di database
-    if (!product.value) router.push("/catalog");
+    // Hanya redirect ke collections jika produk benar-benar tidak ada di database
+    if (!product.value) router.push("/collections");
   } finally {
     isLoading.value = false;
   }

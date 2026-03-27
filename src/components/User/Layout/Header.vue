@@ -13,9 +13,9 @@
             >Home</router-link
           >
           <router-link
-            to="/catalog"
+            to="/collections"
             class="hover:text-gray-500 transition cursor-pointer"
-            >Catalog</router-link
+            >Collections</router-link
           >
           <router-link
             to="/contact"
@@ -215,10 +215,10 @@
               >Home</router-link
             >
             <router-link
-              to="/catalog"
+              to="/collections"
               class="pb-4 border-gray-50 border-b hover:text-gray-500 transition-colors"
               @click="isMobileMenuOpen = false"
-              >Catalog</router-link
+              >Collections</router-link
             >
             <router-link
               to="/contact"
@@ -1070,9 +1070,9 @@ watch(
             >Home</router-link
           >
           <router-link
-            to="/catalog"
+            to="/collections"
             class="hover:text-gray-500 transition cursor-pointer"
-            >Catalog</router-link
+            >Collections</router-link
           >
           <router-link
             to="/contact"
@@ -1272,10 +1272,10 @@ watch(
               >Home</router-link
             >
             <router-link
-              to="/catalog"
+              to="/collections"
               class="pb-4 border-gray-50 border-b hover:text-gray-500 transition-colors"
               @click="isMobileMenuOpen = false"
-              >Catalog</router-link
+              >Collections</router-link
             >
             <router-link
               to="/contact"
@@ -1961,9 +1961,9 @@ watch(
             >Home</router-link
           >
           <router-link
-            to="/catalog"
+            to="/collections"
             class="hover:text-gray-500 transition cursor-pointer"
-            >Catalog</router-link
+            >Collections</router-link
           >
           <router-link
             to="/contact"
@@ -2161,10 +2161,10 @@ watch(
               >Home</router-link
             >
             <router-link
-              to="/catalog"
+              to="/collections"
               class="pb-4 border-gray-50 border-b hover:text-gray-500 transition-colors"
               @click="isMobileMenuOpen = false"
-              >Catalog</router-link
+              >Collections</router-link
             >
             <router-link
               to="/contact"

@@ -43,7 +43,7 @@
       </h2>
 
       <router-link
-        to="/catalog"
+        to="/collections"
         class="inline-block bg-[#1A1A1A] hover:bg-black px-10 py-4 font-semibold text-white text-xs uppercase tracking-[0.2em] transition"
       >
         Shop New Arrival
@@ -285,7 +285,7 @@ onMounted(initData);
       </h2>
 
       <router-link
-        to="/catalog"
+        to="/collections"
         class="inline-block bg-[#1A1A1A] hover:bg-black px-10 py-4 font-semibold text-white text-xs uppercase tracking-[0.2em] transition"
       >
         Shop New Arrival
@@ -301,7 +301,7 @@ onMounted(initData);
             </h3>
             <p class="text-xs text-gray-500 uppercase tracking-widest mt-2 font-bold">Our most loved pieces this week</p>
           </div>
-          <router-link to="/catalog" class="hidden md:block text-xs font-bold uppercase tracking-widest underline hover:text-red-600 transition">View All</router-link>
+          <router-link to="/collections" class="hidden md:block text-xs font-bold uppercase tracking-widest underline hover:text-red-600 transition">View All</router-link>
         </div>
 
         <div class="flex gap-4 overflow-x-auto scrollbar-hide pb-4">
@@ -540,7 +540,7 @@ onMounted(initData);
       </h2>
 
       <router-link
-        to="/catalog"
+        to="/collections"
         class="inline-block bg-[#1A1A1A] hover:bg-black px-10 py-4 font-semibold text-white text-xs uppercase tracking-[0.2em] transition shadow-xl"
       >
         Shop New Arrival
@@ -556,7 +556,7 @@ onMounted(initData);
             </h3>
             <p class="text-xs text-gray-500 uppercase tracking-widest mt-2 font-bold">Our most loved pieces this week</p>
           </div>
-          <router-link to="/catalog" class="hidden md:block text-xs font-bold uppercase tracking-widest underline hover:text-red-600 transition">View All</router-link>
+          <router-link to="/collections" class="hidden md:block text-xs font-bold uppercase tracking-widest underline hover:text-red-600 transition">View All</router-link>
         </div>
 
         <div class="flex gap-4 overflow-x-auto scrollbar-hide pb-4">

@@ -6,7 +6,7 @@
     
     <div v-else-if="transactions.length === 0" class="bg-white p-12 border rounded-2xl text-center">
       <p class="text-gray-400 italic">You haven't placed any orders yet.</p>
-      <router-link to="/catalog" class="inline-block mt-4 font-bold text-black text-xs underline uppercase tracking-widest">Start Shopping</router-link>
+      <router-link to="/collections" class="inline-block mt-4 font-bold text-black text-xs underline uppercase tracking-widest">Start Shopping</router-link>
     </div>
 
     <div v-else class="space-y-6">
@@ -121,7 +121,7 @@ onMounted(fetchOrders);
          </svg>
       </div>
       <p class="text-gray-400 italic">You haven't placed any orders yet.</p>
-      <router-link to="/catalog" class="inline-block mt-6 font-bold text-black hover:text-gray-500 text-xs underline uppercase tracking-widest transition-colors">Start Shopping</router-link>
+      <router-link to="/collections" class="inline-block mt-6 font-bold text-black hover:text-gray-500 text-xs underline uppercase tracking-widest transition-colors">Start Shopping</router-link>
     </div>
 
     <div v-else class="space-y-6 animate-fade-in">
@@ -242,7 +242,7 @@ onMounted(fetchOrders);
     >
       <p class="text-gray-400 italic">You haven't placed any orders yet.</p>
       <router-link
-        to="/catalog"
+        to="/collections"
         class="inline-block mt-6 font-bold text-black underline uppercase tracking-widest"
         >Start Shopping</router-link
       >
@@ -597,7 +597,7 @@ onMounted(fetchOrders);
     >
       <p class="text-gray-400 italic">You haven't placed any orders yet.</p>
       <router-link
-        to="/catalog"
+        to="/collections"
         class="inline-block mt-6 font-bold text-black underline uppercase tracking-widest"
         >Start Shopping</router-link
       >
@@ -1256,7 +1256,7 @@ onUnmounted(() => {
     >
       <p class="text-gray-400 italic">You haven't placed any orders yet.</p>
       <router-link
-        to="/catalog"
+        to="/collections"
         class="inline-block mt-6 font-bold text-black underline uppercase tracking-widest"
         >Start Shopping</router-link
       >

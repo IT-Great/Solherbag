@@ -457,7 +457,7 @@ onMounted(() => {
 // const viewAllResults = () => {
 //   emit("close");
 //   // Navigasi ke katalog dengan membawa query parameter 'search'
-//   router.push({ path: '/catalog', query: { search: searchInput.value } });
+//   router.push({ path: '/collections', query: { search: searchInput.value } });
 // };
 
 // const formatPrice = (v) =>
@@ -556,7 +556,7 @@ const navigateToProduct = (id) => {
 
 const viewAllResults = () => {
   emit("close");
-  router.push({ path: '/catalog', query: { search: searchInput.value } });
+  router.push({ path: '/collections', query: { search: searchInput.value } });
 };
 
 const formatPrice = (v) =>

@@ -1890,7 +1890,7 @@ onMounted(fetchData);
     <div v-if="cartItems.length === 0" class="text-center py-20">
       <h2 class="font-serif text-3xl mb-4">Your bag is empty</h2>
       <button
-        @click="$router.push('/catalog')"
+        @click="$router.push('/collections')"
         class="bg-black text-white px-8 py-3 rounded-full uppercase tracking-widest text-xs font-bold"
       >
         Return to Shop
@@ -2777,7 +2777,7 @@ onMounted(fetchData);
     <div v-if="checkoutItems.length === 0" class="text-center py-20">
       <h2 class="font-serif text-3xl mb-4">Your bag is empty</h2>
       <button
-        @click="$router.push('/catalog')"
+        @click="$router.push('/collections')"
         class="bg-black text-white px-8 py-3 rounded-full uppercase tracking-widest text-xs font-bold"
       >
         Return to Shop
@@ -2797,7 +2797,7 @@ onMounted(fetchData);
     <div v-if="checkoutItems.length === 0" class="text-center py-20">
       <h2 class="font-serif text-3xl mb-4">Your bag is empty</h2>
       <button
-        @click="$router.push('/catalog')"
+        @click="$router.push('/collections')"
         class="bg-black text-white px-8 py-3 rounded-full uppercase tracking-widest text-xs font-bold"
       >
         Return to Shop

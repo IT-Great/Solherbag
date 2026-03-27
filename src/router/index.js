@@ -1,7 +1,7 @@
 // // src/router/index.js
 // import { createRouter, createWebHistory } from 'vue-router'
 // import HomePage from '../components/User/HomePage.vue'
-// import CatalogPage from '../components/User/CatalogPage.vue'
+// import CollectionsPage from '../components/User/CollectionsPage.vue'
 // import ContactPage from '../components/User/ContactPage.vue'
 // import LoginPage from '../components/User/LoginPage.vue'
 // import RegisterPage from '../components/User/RegisterPage.vue'
@@ -29,13 +29,13 @@
 // import PaymentSuccessPage from '../components/User/PaymentSuccessPage.vue'
 // import TrackingPage from '../components/User/TrackingPage.vue'
 
-// // Import komponen lainnya (Anda bisa buat file kosong dulu untuk Catalog & Contact)
-// // const CatalogPage = { template: '<div class="py-20 text-center text-3xl">Catalog Page Coming Soon</div>' }
+// // Import komponen lainnya (Anda bisa buat file kosong dulu untuk Collections & Contact)
+// // const CollectionsPage = { template: '<div class="py-20 text-center text-3xl">Collections Page Coming Soon</div>' }
 // // const ContactPage = { template: '<div class="py-20 text-center text-3xl">Contact Page Coming Soon</div>' }
 
 // const routes = [
 //     { path: '/', name: 'Home', component: HomePage },
-//     { path: '/catalog', name: 'Catalog', component: CatalogPage },
+//     { path: '/collections', name: 'Collections', component: CollectionsPage },
 //     { path: '/contact', name: 'Contact', component: ContactPage },
 //     { path: '/login', name: 'Login', component: LoginPage, meta: { hideHeaderFooter: true } },
 //     { path: '/loginadmin', name: 'AdminLogin', component: AdminLoginPage, meta: { hideHeaderFooter: true } },
@@ -252,7 +252,7 @@
 
 // import { createRouter, createWebHistory } from 'vue-router'
 // import HomePage from '../components/User/HomePage.vue'
-// import CatalogPage from '../components/User/CatalogPage.vue'
+// import CollectionsPage from '../components/User/CollectionsPage.vue'
 // import ContactPage from '../components/User/ContactPage.vue'
 // import LoginPage from '../components/User/LoginPage.vue'
 // import RegisterPage from '../components/User/RegisterPage.vue'
@@ -290,7 +290,7 @@
 
 // const routes = [
 //     { path: '/', name: 'Home', component: HomePage },
-//     { path: '/catalog', name: 'Catalog', component: CatalogPage },
+//     { path: '/collections', name: 'Collections', component: CollectionsPage },
 //     { path: '/contact', name: 'Contact', component: ContactPage },
 //     { path: '/login', name: 'Login', component: LoginPage, meta: { hideHeaderFooter: true } },
 //     { path: '/loginadmin', name: 'AdminLogin', component: AdminLoginPage, meta: { hideHeaderFooter: true } },
@@ -571,7 +571,7 @@
 
 import { createRouter, createWebHistory } from "vue-router";
 import HomePage from "../components/User/HomePage.vue";
-import CatalogPage from "../components/User/CatalogPage.vue";
+import CollectionsPage from "../components/User/CollectionsPage.vue";
 import ContactPage from "../components/User/ContactPage.vue";
 import LoginPage from "../components/User/LoginPage.vue";
 import RegisterPage from "../components/User/RegisterPage.vue";
@@ -616,7 +616,7 @@ import ProductStockPage from "../components/Admin/ProductStockPage.vue";
 
 const routes = [
   { path: "/", name: "Home", component: HomePage },
-  { path: "/catalog", name: "Catalog", component: CatalogPage },
+  { path: "/collections", name: "Collections", component: CollectionsPage },
   { path: "/contact", name: "Contact", component: ContactPage },
   {
     path: "/login",

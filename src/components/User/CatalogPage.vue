@@ -416,7 +416,7 @@ import { useProductStore } from "../../composables/useProductStore";
 import axios from "axios";
 import { BASE_URL } from "../../config/api.js";
 
-const { state, fetchCatalogData } = useProductStore();
+const { state, fetchCollectionsData } = useProductStore();
 
 // const products = ref([]);
 // const categories = ref([]);
@@ -431,16 +431,16 @@ const showOnlySale = ref(false);
 const currentPage = ref(1);
 const itemsPerPage = 12;
 
-const initCatalog = async () => {
-  if (!state.isCatalogLoaded) {
+const initCollections = async () => {
+  if (!state.isCollectionsLoaded) {
     isLoading.value = true;
-    await fetchCatalogData();
+    await fetchCollectionsData();
     // Beri sedikit delay untuk UX loading pertama kali saja
     setTimeout(() => {
       isLoading.value = false;
     }, 500);
   } else {
-    fetchCatalogData();
+    fetchCollectionsData();
   }
 };
 
@@ -475,7 +475,7 @@ const fetchInitialData = async () => {
 // });
 
 // const filteredProducts = computed(() => {
-//   return state.catalogProducts.filter((p) => {
+//   return state.collectionsProducts.filter((p) => {
 //     const matchesSearch = p.name
 //       .toLowerCase()
 //       .includes(searchQuery.value.toLowerCase());
@@ -489,10 +489,10 @@ const fetchInitialData = async () => {
 //   });
 // });
 
-// Logika Filtering (Menggunakan state.catalogProducts)
+// Logika Filtering (Menggunakan state.collectionsProducts)
 const filteredProducts = computed(() => {
-  // Pastikan state.catalogProducts ada isinya sebelum filter
-  const sourceProducts = state.catalogProducts || [];
+  // Pastikan state.collectionsProducts ada isinya sebelum filter
+  const sourceProducts = state.collectionsProducts || [];
 
   return sourceProducts.filter((p) => {
     const matchesSearch = p.name
@@ -555,7 +555,7 @@ const formatPrice = (value) => {
   }).format(value);
 };
 
-onMounted(initCatalog);
+onMounted(initCollections);
 </script> -->
 
 <!-- <template>
@@ -900,7 +900,7 @@ import { BASE_URL } from "../../config/api.js";
 const route = useRoute(); // [BARU] Inisialisasi route
 const router = useRouter();
 
-const { state, fetchCatalogData } = useProductStore();
+const { state, fetchCollectionsData } = useProductStore();
 const categories = computed(() => state.categories);
 const isLoading = ref(false);
 
@@ -988,20 +988,20 @@ const toggleWishlist = async (productId) => {
   }
 };
 
-const initCatalog = async () => {
-  if (!state.isCatalogLoaded) {
+const initCollections = async () => {
+  if (!state.isCollectionsLoaded) {
     isLoading.value = true;
-    await fetchCatalogData();
+    await fetchCollectionsData();
     setTimeout(() => {
       isLoading.value = false;
     }, 500);
   } else {
-    fetchCatalogData();
+    fetchCollectionsData();
   }
 };
 
 const filteredProducts = computed(() => {
-  const sourceProducts = state.catalogProducts || [];
+  const sourceProducts = state.collectionsProducts || [];
   return sourceProducts.filter((p) => {
     const matchesSearch = p.name
       .toLowerCase()
@@ -1063,10 +1063,10 @@ const goToDetail = (product) => {
   });
 };
 
-// onMounted(initCatalog);
+// onMounted(initCollections);
 
 // onMounted(async () => {
-//   initCatalog();
+//   initCollections();
 //   fetchWishlists();
 //   window.addEventListener("wishlist-updated", fetchWishlists);
 // });
@@ -1078,12 +1078,12 @@ onMounted(async () => {
     searchQuery.value = route.query.search;
   }
 
-  initCatalog();
+  initCollections();
   fetchWishlists();
   window.addEventListener("wishlist-updated", fetchWishlists);
 });
 
-// [BARU] Tambahkan watcher agar jika query url berubah (meski sudah di halaman catalog), search box ikut update
+// [BARU] Tambahkan watcher agar jika query url berubah (meski sudah di halaman collections), search box ikut update
 watch(
   () => route.query.search,
   (newSearch) => {
@@ -1453,7 +1453,7 @@ onUnmounted(() => {
 // const route = useRoute();
 // const router = useRouter();
 
-// const { state, fetchCatalogData } = useProductStore();
+// const { state, fetchCollectionsData } = useProductStore();
 // const categories = computed(() => state.categories);
 // const isLoading = ref(false);
 
@@ -1536,20 +1536,20 @@ onUnmounted(() => {
 //   }
 // };
 
-// const initCatalog = async () => {
-//   if (!state.isCatalogLoaded) {
+// const initCollections = async () => {
+//   if (!state.isCollectionsLoaded) {
 //     isLoading.value = true;
-//     await fetchCatalogData();
+//     await fetchCollectionsData();
 //     setTimeout(() => {
 //       isLoading.value = false;
 //     }, 500);
 //   } else {
-//     fetchCatalogData();
+//     fetchCollectionsData();
 //   }
 // };
 
 // const filteredProducts = computed(() => {
-//   const sourceProducts = state.catalogProducts || [];
+//   const sourceProducts = state.collectionsProducts || [];
 //   return sourceProducts.filter((p) => {
 //     const matchesSearch = p.name
 //       .toLowerCase()
@@ -1614,7 +1614,7 @@ onUnmounted(() => {
 //     searchQuery.value = route.query.search;
 //   }
 
-//   initCatalog();
+//   initCollections();
 //   fetchWishlists();
 //   window.addEventListener("wishlist-updated", fetchWishlists);
 // });
@@ -1644,7 +1644,7 @@ import Fuse from "fuse.js";
 const route = useRoute();
 const router = useRouter();
 
-const { state, fetchCatalogData } = useProductStore();
+const { state, fetchCollectionsData } = useProductStore();
 const categories = computed(() => state.categories);
 const isLoading = ref(false);
 
@@ -1727,15 +1727,15 @@ const toggleWishlist = async (productId) => {
   }
 };
 
-const initCatalog = async () => {
-  if (!state.isCatalogLoaded) {
+const initCollections = async () => {
+  if (!state.isCollectionsLoaded) {
     isLoading.value = true;
-    await fetchCatalogData();
+    await fetchCollectionsData();
     setTimeout(() => {
       isLoading.value = false;
     }, 500);
   } else {
-    fetchCatalogData();
+    fetchCollectionsData();
   }
 };
 
@@ -1743,7 +1743,7 @@ const initCatalog = async () => {
 // [PERBAIKAN] LOGIKA PENCARIAN TYPO-TOLERANT DENGAN FUSE.JS
 // ============================================================================
 const filteredProducts = computed(() => {
-  let sourceProducts = state.catalogProducts || [];
+  let sourceProducts = state.collectionsProducts || [];
 
   // 1. Terapkan Filter Kategori & Diskon terlebih dahulu (Meringankan beban pencarian)
   sourceProducts = sourceProducts.filter((p) => {
@@ -1831,7 +1831,7 @@ onMounted(async () => {
     searchQuery.value = route.query.search;
   }
 
-  initCatalog();
+  initCollections();
   fetchWishlists();
   window.addEventListener("wishlist-updated", fetchWishlists);
 });
