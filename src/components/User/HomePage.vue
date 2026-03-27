@@ -932,7 +932,7 @@ onMounted(initData);
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, nextTick } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 import { BASE_URL } from "../../config/api.js";
@@ -943,7 +943,8 @@ const isLoading = ref(false);
 
 // [BARU] State untuk mengontrol Pop-up
 // Langsung bernilai 'true' agar tidak ada delay saat halaman dimuat (refresh).
-const showPromoPopup = ref(true);
+// const showPromoPopup = ref(true);
+const showPromoPopup = ref(false);
 
 // =========================================================================
 // [BARU] CUSTOM DIRECTIVE: v-reveal
@@ -1056,6 +1057,14 @@ onMounted(() => {
   // (tanpa refresh), kita bisa memanfaatkan state Pinia/Vuex jika mau. 
   // Namun, untuk solusi paling cepat sesuai permintaan bos (muncul tiap refresh), 
   // kode sederhana ini sudah memenuhi syarat.
+
+  // Memicu animasi pop-up dengan sangat cepat (seakan-akan tanpa delay)
+  // tapi memberikan cukup waktu bagi browser untuk memutar animasi transisi.
+  nextTick(() => {
+    setTimeout(() => {
+      showPromoPopup.value = true;
+    }, 50); // Delay 50 milidetik (0.05 detik), sangat cepat tapi animasi tetap jalan
+  });
 });
 </script>
 
