@@ -1250,9 +1250,14 @@ const form = ref({
   description: "",
   care: "",
   design: "",
-  image: null, 
-  variant_images: [], 
-  variant_video: null, 
+  image: null,
+  variant_images: [],
+  variant_video: null,
+  weight: "",
+  length: "",
+  width: "",
+  height: "",
+  material: "",
 });
 
 const axiosConfig = {
@@ -1287,6 +1292,11 @@ const fillFormWithData = (p) => {
   form.value.description = p.description;
   form.value.care = p.care;
   form.value.design = p.design;
+  form.value.weight = p.weight;
+  form.value.length = p.length;
+  form.value.width = p.width;
+  form.value.height = p.height;
+  form.value.material = p.material;
 
   currentImage.value = p.image;
   currentVariantImages.value = p.variant_images || [];
@@ -1310,7 +1320,10 @@ onMounted(async () => {
     const catRes = await axios.get(`${BASE_URL}/categories`, axiosConfig);
     categories.value = catRes.data.data;
 
-    const prodRes = await axios.get(`${BASE_URL}/products/${productId}`, axiosConfig);
+    const prodRes = await axios.get(
+      `${BASE_URL}/products/${productId}`,
+      axiosConfig,
+    );
     fillFormWithData(prodRes.data);
   } catch (error) {
     if (!stateData) {
@@ -1329,8 +1342,8 @@ const handleSubmit = async () => {
   try {
     let formData = new FormData();
     // Penting di Laravel jika ingin PUT lewat FormData
-    formData.append("_method", "PUT"); 
-    
+    formData.append("_method", "PUT");
+
     formData.append("name", form.value.name);
     formData.append("code", form.value.code);
     formData.append("price", form.value.price);
@@ -1339,8 +1352,14 @@ const handleSubmit = async () => {
     formData.append("care", form.value.care || "");
     formData.append("design", form.value.design || "");
 
-    if(form.value.discount_price) {
-        formData.append("discount_price", form.value.discount_price);
+    formData.append("weight", form.value.weight);
+    if (form.value.length) formData.append("length", form.value.length);
+    if (form.value.width) formData.append("width", form.value.width);
+    if (form.value.height) formData.append("height", form.value.height);
+    if (form.value.material) formData.append("material", form.value.material);
+
+    if (form.value.discount_price) {
+      formData.append("discount_price", form.value.discount_price);
     }
 
     if (form.value.image instanceof File) {
@@ -1369,7 +1388,7 @@ const handleSubmit = async () => {
   } catch (error) {
     let errorMsg = "Update Failed";
     if (error.response && error.response.data) {
-        errorMsg = Object.values(error.response.data).flat().join('<br>');
+      errorMsg = Object.values(error.response.data).flat().join("<br>");
     }
     Swal.fire("Error", errorMsg, "error");
   }

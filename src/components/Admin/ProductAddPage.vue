@@ -387,6 +387,77 @@ onMounted(async () => {
         </div>
       </div>
 
+      <div
+        class="col-span-1 md:col-span-2 p-6 border border-gray-200 rounded-2xl bg-gray-50/50 mt-4 mb-2"
+      >
+        <h3
+          class="font-bold text-gray-800 text-sm mb-4 uppercase tracking-widest border-b pb-2"
+        >
+          Physical Attributes
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          <div>
+            <label class="block mb-1 font-bold text-xs text-gray-600"
+              >Weight (Grams) <span class="text-red-500">*</span></label
+            >
+            <input
+              v-model="form.weight"
+              type="number"
+              placeholder="e.g. 1000"
+              class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm"
+              required
+            />
+          </div>
+          <div>
+            <label class="block mb-1 font-bold text-xs text-gray-600"
+              >Length (cm)</label
+            >
+            <input
+              v-model="form.length"
+              type="number"
+              step="0.01"
+              placeholder="e.g. 25.5"
+              class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm"
+            />
+          </div>
+          <div>
+            <label class="block mb-1 font-bold text-xs text-gray-600"
+              >Width (cm)</label
+            >
+            <input
+              v-model="form.width"
+              type="number"
+              step="0.01"
+              placeholder="e.g. 10"
+              class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm"
+            />
+          </div>
+          <div>
+            <label class="block mb-1 font-bold text-xs text-gray-600"
+              >Height (cm)</label
+            >
+            <input
+              v-model="form.height"
+              type="number"
+              step="0.01"
+              placeholder="e.g. 15"
+              class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm"
+            />
+          </div>
+          <div class="md:col-span-4 mt-2">
+            <label class="block mb-1 font-bold text-xs text-gray-600"
+              >Material (Optional)</label
+            >
+            <input
+              v-model="form.material"
+              type="text"
+              placeholder="e.g. 100% Genuine Cowhide Leather"
+              class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm"
+            />
+          </div>
+        </div>
+      </div>
+
       <div class="space-y-4">
         <div>
           <label class="block mb-1 font-bold text-sm">Description</label>
@@ -535,13 +606,19 @@ const form = ref({
   price: "",
   stock: "",
   category_id: "",
+  // [BARU] Atribut Fisik
+  weight: 1000,
+  length: "",
+  width: "",
+  height: "",
+  material: "",
   description: "",
   care: "",
   design: "",
   image: null,
   variant_images: [],
   variant_video: null,
-  discount_price: ""
+  discount_price: "",
 });
 
 const handleFile = (e) => (form.value.image = e.target.files[0]);
@@ -562,7 +639,11 @@ const handleVideo = (e) => {
 };
 
 const handleSubmit = async () => {
-  Swal.fire({ title: "Uploading...", allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+  Swal.fire({
+    title: "Uploading...",
+    allowOutsideClick: false,
+    didOpen: () => Swal.showLoading(),
+  });
 
   try {
     // Gunakan FormData untuk mengirim file
@@ -572,12 +653,18 @@ const handleSubmit = async () => {
     formData.append("price", form.value.price);
     formData.append("stock", form.value.stock);
     formData.append("category_id", form.value.category_id);
+    // [BARU] Append Atribut Fisik
+    formData.append("weight", form.value.weight);
+    if (form.value.length) formData.append("length", form.value.length);
+    if (form.value.width) formData.append("width", form.value.width);
+    if (form.value.height) formData.append("height", form.value.height);
+    if (form.value.material) formData.append("material", form.value.material);
     formData.append("description", form.value.description);
     formData.append("care", form.value.care);
     formData.append("design", form.value.design);
-    
-    if(form.value.discount_price) {
-        formData.append("discount_price", form.value.discount_price);
+
+    if (form.value.discount_price) {
+      formData.append("discount_price", form.value.discount_price);
     }
 
     if (form.value.image) {
@@ -608,9 +695,9 @@ const handleSubmit = async () => {
   } catch (error) {
     let errorMsg = "Upload Failed";
     if (error.response && error.response.data) {
-        errorMsg = Object.values(error.response.data).flat().join('<br>');
+      errorMsg = Object.values(error.response.data).flat().join("<br>");
     } else if (error.message) {
-        errorMsg = error.message;
+      errorMsg = error.message;
     }
     Swal.fire("Error", errorMsg, "error");
   }

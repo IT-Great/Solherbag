@@ -227,6 +227,25 @@
           </div>
         </div>
 
+        <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 flex flex-wrap gap-6 mb-6">
+          <div>
+            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Weight</p>
+            <p class="font-bold text-gray-900">{{ product.weight }} <span class="text-xs font-medium">gr</span></p>
+          </div>
+          <div v-if="product.length || product.width || product.height">
+            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Dimensions (L x W x H)</p>
+            <p class="font-bold text-gray-900 font-mono">
+              {{ product.length || '-' }} <span class="text-xs text-gray-400">x</span> 
+              {{ product.width || '-' }} <span class="text-xs text-gray-400">x</span> 
+              {{ product.height || '-' }} <span class="text-xs font-medium">cm</span>
+            </p>
+          </div>
+          <div v-if="product.material">
+            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Material</p>
+            <p class="font-bold text-gray-900">{{ product.material }}</p>
+          </div>
+        </div>
+
         <div
           class="bg-gray-50 p-6 rounded-2xl border border-gray-100 flex justify-between items-center"
         >
