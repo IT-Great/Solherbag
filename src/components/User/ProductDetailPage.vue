@@ -1009,7 +1009,22 @@ onMounted(fetchProductDetail);
           </div>
         </div>
 
-        <div class="flex sm:flex-row flex-col gap-4 pt-4">
+        <div v-if="product.stock > 0" class="flex items-center gap-6 pt-4 border-t border-gray-100 mt-2">
+          <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest w-24 shrink-0">Quantity</span>
+          <div class="flex items-center bg-gray-50 border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+            <button @click="decreaseQuantity" class="hover:bg-gray-200 px-4 py-2 transition-colors font-bold text-lg text-gray-600">-</button>
+            <input 
+              type="number" 
+              v-model.number="selectedQuantity" 
+              @change="validateQuantity"
+              class="bg-transparent border-none focus:ring-0 w-12 font-bold text-sm text-center p-0" 
+            />
+            <button @click="increaseQuantity" class="hover:bg-gray-200 px-4 py-2 transition-colors font-bold text-lg text-gray-600">+</button>
+          </div>
+          <span class="text-[10px] text-gray-400 uppercase tracking-widest font-medium">{{ product.stock }} Available</span>
+        </div>
+
+        <!-- <div class="flex sm:flex-row flex-col gap-4 pt-4">
           <button
             @click="handleAction('cart')"
             class="flex-1 hover:bg-black py-4 border-2 border-black font-bold hover:text-white text-xs uppercase tracking-widest transition"
@@ -1019,6 +1034,33 @@ onMounted(fetchProductDetail);
           <button
             @click="handleAction('buy')"
             class="flex-1 bg-black hover:bg-gray-800 py-4 font-bold text-white text-xs uppercase tracking-widest transition"
+          >
+            Buy It Now
+          </button>
+        </div> -->
+
+        <div class="flex sm:flex-row flex-col gap-4 pt-4">
+          <button
+            @click="handleAction('cart')"
+            :disabled="isInCart || product.stock === 0"
+            :class="[
+              isInCart || product.stock === 0 
+                ? 'bg-gray-100 text-gray-400 border-gray-100 cursor-not-allowed' 
+                : 'hover:bg-black hover:text-white border-black text-black',
+              'flex-1 py-4 border-2 font-bold text-xs uppercase tracking-widest transition'
+            ]"
+          >
+            {{ isInCart ? 'Already in Bag' : (product.stock === 0 ? 'Out of Stock' : 'Add to Cart') }}
+          </button>
+          <button
+            @click="handleAction('buy')"
+            :disabled="product.stock === 0"
+            :class="[
+              product.stock === 0 
+                ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
+                : 'bg-black hover:bg-gray-800 text-white',
+              'flex-1 py-4 font-bold text-xs uppercase tracking-widest transition border-2 border-transparent'
+            ]"
           >
             Buy It Now
           </button>
@@ -1581,7 +1623,7 @@ import { BASE_URL } from "../../config/api.js";
 import { useCart } from "../../composables/useCart";
 
 // Ekstrak fungsi dan state yang dibutuhkan
-const { handleOptimisticAdd, selectedItemIds, fetchCarts } = useCart();
+const { handleOptimisticAdd, selectedItemIds, fetchCarts, cartItems } = useCart();
 
 const route = useRoute();
 const router = useRouter();
@@ -1595,6 +1637,34 @@ const userWishlists = ref([]);
 const isAuthenticated = !!localStorage.getItem("token");
 
 const activeSlide = ref(0);
+
+// ==========================================
+// [BARU] STATE & FUNGSI UNTUK QUANTITY
+// ==========================================
+const selectedQuantity = ref(1);
+
+const decreaseQuantity = () => {
+  if (selectedQuantity.value > 1) selectedQuantity.value--;
+};
+
+const increaseQuantity = () => {
+  if (selectedQuantity.value < product.value.stock) selectedQuantity.value++;
+};
+
+const validateQuantity = () => {
+  if (selectedQuantity.value < 1 || isNaN(selectedQuantity.value)) {
+    selectedQuantity.value = 1;
+  } else if (selectedQuantity.value > product.value.stock) {
+    selectedQuantity.value = product.value.stock;
+  }
+};
+
+// Mengecek apakah produk ini sudah ada di keranjang user
+const isInCart = computed(() => {
+  if (!product.value || !cartItems.value) return false;
+  return cartItems.value.some(item => item.product_id === product.value.id);
+});
+// ==========================================
 
 const allMedia = computed(() => {
   if (!product.value) return [];
@@ -1727,9 +1797,16 @@ const handleAction = async (type) => {
       timer: 2000,
     });
 
+    // window.dispatchEvent(
+    //   new CustomEvent("optimistic-add-to-cart", {
+    //     detail: { product: product.value, cartId: null },
+    //   }),
+    // );
+
+    // [PERBAIKAN] Sisipkan informasi quantity agar composable useCart mendeteksinya
     window.dispatchEvent(
       new CustomEvent("optimistic-add-to-cart", {
-        detail: { product: product.value, cartId: null },
+        detail: { product: product.value, cartId: null, quantity: selectedQuantity.value },
       }),
     );
 
@@ -1787,9 +1864,16 @@ const handleAction = async (type) => {
         didOpen: () => Swal.showLoading(),
       });
 
+      // const resCart = await axios.post(
+      //   `${BASE_URL}/carts`,
+      //   { product_id: product.value.id, quantity: 1 },
+      //   { headers: { Authorization: `Bearer ${token}` } },
+      // );
+
+      // [PERBAIKAN] Kirim quantity sesuai dengan jumlah yang dipilih user
       const resCart = await axios.post(
         `${BASE_URL}/carts`,
-        { product_id: product.value.id, quantity: 1 },
+        { product_id: product.value.id, quantity: selectedQuantity.value },
         { headers: { Authorization: `Bearer ${token}` } },
       );
 
