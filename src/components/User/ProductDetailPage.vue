@@ -985,6 +985,30 @@ onMounted(fetchProductDetail);
           </div>
         </div>
 
+        <div 
+          v-if="product.material || product.weight || product.length" 
+          class="bg-gray-50/50 border border-gray-100 p-4 rounded-xl space-y-3"
+        >
+          <div v-if="product.material" class="flex justify-between items-start text-sm">
+            <span class="text-gray-500 font-bold uppercase tracking-widest text-[10px] w-24 shrink-0">Material</span>
+            <span class="text-gray-900 font-medium text-right">{{ product.material }}</span>
+          </div>
+          
+          <div v-if="product.length || product.width || product.height" class="flex justify-between items-start text-sm border-t border-gray-100 pt-3">
+            <span class="text-gray-500 font-bold uppercase tracking-widest text-[10px] w-24 shrink-0">Dimensions</span>
+            <span class="text-gray-900 font-mono text-right">
+              {{ product.length || '-' }} <span class="text-gray-400 text-xs">x</span> 
+              {{ product.width || '-' }} <span class="text-gray-400 text-xs">x</span> 
+              {{ product.height || '-' }} <span class="text-xs">cm</span>
+            </span>
+          </div>
+          
+          <div v-if="product.weight" class="flex justify-between items-start text-sm border-t border-gray-100 pt-3">
+            <span class="text-gray-500 font-bold uppercase tracking-widest text-[10px] w-24 shrink-0">Weight</span>
+            <span class="text-gray-900 font-medium text-right">{{ product.weight }} <span class="text-xs">gram</span></span>
+          </div>
+        </div>
+
         <div class="flex sm:flex-row flex-col gap-4 pt-4">
           <button
             @click="handleAction('cart')"
