@@ -374,14 +374,93 @@ export function useCart() {
         }
     };
 
-    const handleOptimisticAdd = async ({ product, cartId }, onBounceCallback) => {
+    // const handleOptimisticAdd = async ({ product, cartId }, onBounceCallback) => {
+    //     const existingItem = cartItems.value.find((item) => item.product_id === product.id);
+
+    //     if (existingItem) {
+    //         handleQtyChange(existingItem, existingItem.quantity + 1);
+    //         if (onBounceCallback) onBounceCallback();
+
+    //         // Otomatis centang barang jika user menambahkannya lagi dari luar
+    //         if (!selectedItemIds.value.includes(existingItem.id)) {
+    //             selectedItemIds.value.push(existingItem.id);
+    //         }
+    //         return;
+    //     }
+
+    //     const tempId = cartId || ("temp_" + Date.now());
+    //     const unitPrice = parseFloat(product.discount_price ?? product.price);
+
+    //     const newItem = {
+    //         id: tempId,
+    //         product_id: product.id,
+    //         quantity: 1,
+    //         gross_amount: unitPrice,
+    //         isSyncing: !cartId,
+    //         isCreating: !cartId,
+    //         product: product,
+    //     };
+
+    //     cartItems.value.unshift(newItem);
+    //     selectedItemIds.value.push(tempId); // [BARU] Otomatis centang barang baru
+
+    //     if (onBounceCallback) onBounceCallback();
+
+    //     if (cartId) return;
+
+    //     try {
+    //         const token = localStorage.getItem("token");
+    //         const res = await axios.post(
+    //             `${BASE_URL}/carts`,
+    //             { product_id: product.id, quantity: 1 },
+    //             { headers: { Authorization: `Bearer ${token}` } }
+    //         );
+
+    //         const realId = res.data.cart_id || res.data.id || res.data.data?.id;
+    //         const itemInCart = cartItems.value.find((i) => i.id === tempId);
+
+    //         if (itemInCart) {
+    //             if (realId) {
+    //                 itemInCart.id = realId;
+    //                 itemInCart.isCreating = false;
+
+    //                 // [BARU] Perbarui ID di dalam array selectedItemIds (Dari Temp ID ke Real ID)
+    //                 const selIndex = selectedItemIds.value.indexOf(tempId);
+    //                 if (selIndex !== -1) {
+    //                     selectedItemIds.value[selIndex] = realId;
+    //                 }
+
+    //                 if (itemInCart.quantity !== 1) {
+    //                     syncQtyToDatabase(itemInCart);
+    //                 } else {
+    //                     itemInCart.isSyncing = false;
+    //                 }
+    //             } else {
+    //                 throw new Error("Missing Cart ID from Server!");
+    //             }
+    //         } else {
+    //             if (realId) {
+    //                 axios.delete(`${BASE_URL}/carts/${realId}`, {
+    //                     headers: { Authorization: `Bearer ${token}` }
+    //                 }).catch(() => { });
+    //             }
+    //         }
+    //     } catch (error) {
+    //         cartItems.value = cartItems.value.filter((i) => i.id !== tempId);
+    //         selectedItemIds.value = selectedItemIds.value.filter(id => id !== tempId);
+    //         fetchCarts();
+    //     }
+    // };
+
+    // [PERBAIKAN] Tambahkan 'quantity = 1' di parameter destructuring
+    const handleOptimisticAdd = async ({ product, cartId, quantity = 1 }, onBounceCallback) => {
         const existingItem = cartItems.value.find((item) => item.product_id === product.id);
 
         if (existingItem) {
-            handleQtyChange(existingItem, existingItem.quantity + 1);
+            // [PERBAIKAN] Tambahkan berdasarkan jumlah yang di-request, bukan sekadar + 1
+            handleQtyChange(existingItem, existingItem.quantity + quantity);
             if (onBounceCallback) onBounceCallback();
 
-            // Otomatis centang barang jika user menambahkannya lagi dari luar
             if (!selectedItemIds.value.includes(existingItem.id)) {
                 selectedItemIds.value.push(existingItem.id);
             }
@@ -394,15 +473,15 @@ export function useCart() {
         const newItem = {
             id: tempId,
             product_id: product.id,
-            quantity: 1,
-            gross_amount: unitPrice,
+            quantity: quantity, // [PERBAIKAN] Gunakan variabel quantity
+            gross_amount: unitPrice * quantity, // [PERBAIKAN] Harga dikalikan quantity
             isSyncing: !cartId,
             isCreating: !cartId,
             product: product,
         };
 
         cartItems.value.unshift(newItem);
-        selectedItemIds.value.push(tempId); // [BARU] Otomatis centang barang baru
+        selectedItemIds.value.push(tempId); 
 
         if (onBounceCallback) onBounceCallback();
 
@@ -412,7 +491,8 @@ export function useCart() {
             const token = localStorage.getItem("token");
             const res = await axios.post(
                 `${BASE_URL}/carts`,
-                { product_id: product.id, quantity: 1 },
+                // [PERBAIKAN] Kirim quantity aktual ke backend
+                { product_id: product.id, quantity: quantity }, 
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 
@@ -424,13 +504,14 @@ export function useCart() {
                     itemInCart.id = realId;
                     itemInCart.isCreating = false;
 
-                    // [BARU] Perbarui ID di dalam array selectedItemIds (Dari Temp ID ke Real ID)
                     const selIndex = selectedItemIds.value.indexOf(tempId);
                     if (selIndex !== -1) {
                         selectedItemIds.value[selIndex] = realId;
                     }
 
-                    if (itemInCart.quantity !== 1) {
+                    // Hanya sync jika quantity BUKAN seperti yang kita kirim
+                    // (misal dibatasi oleh backend karena stok kurang)
+                    if (itemInCart.quantity !== quantity) { 
                         syncQtyToDatabase(itemInCart);
                     } else {
                         itemInCart.isSyncing = false;
