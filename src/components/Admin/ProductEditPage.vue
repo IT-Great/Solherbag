@@ -987,6 +987,31 @@ const handleSubmit = async () => {
       </div>
 
       <div class="space-y-4">
+      <div class="col-span-1 md:col-span-2 p-6 border border-gray-200 rounded-2xl bg-gray-50/50 mt-4 mb-2">
+          <h3 class="font-bold text-gray-800 text-sm mb-4 uppercase tracking-widest border-b pb-2">Physical Attributes</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+            <div>
+              <label class="block mb-1 font-bold text-xs text-gray-600">Weight (Grams) <span class="text-red-500">*</span></label>
+              <input v-model="form.weight" type="number" placeholder="e.g. 1000" class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm" required />
+            </div>
+            <div>
+              <label class="block mb-1 font-bold text-xs text-gray-600">Length (cm)</label>
+              <input v-model="form.length" type="number" step="0.01" placeholder="e.g. 25.5" class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm" />
+            </div>
+            <div>
+              <label class="block mb-1 font-bold text-xs text-gray-600">Width (cm)</label>
+              <input v-model="form.width" type="number" step="0.01" placeholder="e.g. 10" class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm" />
+            </div>
+            <div>
+              <label class="block mb-1 font-bold text-xs text-gray-600">Height (cm)</label>
+              <input v-model="form.height" type="number" step="0.01" placeholder="e.g. 15" class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm" />
+            </div>
+            <div class="md:col-span-4 mt-2">
+              <label class="block mb-1 font-bold text-xs text-gray-600">Material (Optional)</label>
+              <input v-model="form.material" type="text" placeholder="e.g. 100% Genuine Cowhide Leather" class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm" />
+            </div>
+          </div>
+        </div>
         <div>
           <label class="block mb-1 font-bold text-sm">Description</label>
           <textarea

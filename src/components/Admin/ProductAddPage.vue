@@ -387,6 +387,7 @@ onMounted(async () => {
         </div>
       </div>
 
+      <div class="space-y-4">
       <div
         class="col-span-1 md:col-span-2 p-6 border border-gray-200 rounded-2xl bg-gray-50/50 mt-4 mb-2"
       >
@@ -457,8 +458,6 @@ onMounted(async () => {
           </div>
         </div>
       </div>
-
-      <div class="space-y-4">
         <div>
           <label class="block mb-1 font-bold text-sm">Description</label>
           <textarea
