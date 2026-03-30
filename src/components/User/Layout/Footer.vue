@@ -315,7 +315,7 @@ const handleSubscribe = async () => {
             <h4 class="font-bold text-black text-[11px] uppercase tracking-widest mb-2">About Us</h4>
             <router-link to="/about-us" class="text-gray-600 hover:text-black transition-colors text-xs font-medium">About Solher</router-link>
             <router-link to="/contact" class="text-gray-600 hover:text-black transition-colors text-xs font-medium">Contact Us</router-link>
-            <router-link to="/stores" class="text-gray-600 hover:text-black transition-colors text-xs font-medium">Stores</router-link>
+            <!-- <router-link to="/stores" class="text-gray-600 hover:text-black transition-colors text-xs font-medium">Stores</router-link> -->
           </div>
 
           <div class="flex flex-col space-y-4">
