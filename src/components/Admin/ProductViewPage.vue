@@ -227,30 +227,70 @@
           </div>
         </div>
 
-        <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 flex flex-wrap gap-6 mb-6">
+        <div
+          class="bg-gray-50 p-6 rounded-2xl border border-gray-100 flex flex-wrap gap-6 mb-6"
+        >
           <div>
-            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Weight</p>
-            <p class="font-bold text-gray-900">{{ product.weight }} <span class="text-xs font-medium">gr</span></p>
+            <p
+              class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1"
+            >
+              Weight
+            </p>
+            <p class="font-bold text-gray-900">
+              {{ product.weight }} <span class="text-xs font-medium">gr</span>
+            </p>
           </div>
           <div v-if="product.length || product.width || product.height">
-            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Dimensions (L x W x H)</p>
+            <p
+              class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1"
+            >
+              Dimensions (L x W x H)
+            </p>
             <p class="font-bold text-gray-900 font-mono">
-              {{ product.length || '-' }} <span class="text-xs text-gray-400">x</span> 
-              {{ product.width || '-' }} <span class="text-xs text-gray-400">x</span> 
-              {{ product.height || '-' }} <span class="text-xs font-medium">cm</span>
+              {{ product.length || "-" }}
+              <span class="text-xs text-gray-400">x</span>
+              {{ product.width || "-" }}
+              <span class="text-xs text-gray-400">x</span>
+              {{ product.height || "-" }}
+              <span class="text-xs font-medium">cm</span>
             </p>
           </div>
           <div v-else>
-            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Dimensions (L x W x H)</p>
+            <p
+              class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1"
+            >
+              Dimensions (L x W x H)
+            </p>
             <p class="font-bold text-gray-900 font-mono">
-              {{ product.length || '-' }} <span class="text-xs text-gray-400">x</span> 
-              {{ product.width || '-' }} <span class="text-xs text-gray-400">x</span> 
-              {{ product.height || '-' }} <span class="text-xs font-medium">cm</span>
+              {{ product.length || "-" }}
+              <span class="text-xs text-gray-400">x</span>
+              {{ product.width || "-" }}
+              <span class="text-xs text-gray-400">x</span>
+              {{ product.height || "-" }}
+              <span class="text-xs font-medium">cm</span>
             </p>
           </div>
           <div v-if="product.material">
-            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Material</p>
+            <p
+              class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1"
+            >
+              Material
+            </p>
             <p class="font-bold text-gray-900">{{ product.material }}</p>
+          </div>
+          <div v-if="product.color">
+            <p
+              class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1"
+            >
+              Color
+            </p>
+            <div class="flex items-center gap-2">
+              <div
+                class="w-4 h-4 rounded-full border border-gray-300 shadow-sm"
+                :style="{ backgroundColor: getColorHex(product.color) }"
+              ></div>
+              <p class="font-bold text-gray-900">{{ product.color }}</p>
+            </div>
           </div>
         </div>
 
@@ -515,6 +555,25 @@ const goToEditPage = () => {
     path: `/admin/products/edit/${product.value.id}`,
     state: { productData: JSON.stringify(product.value) }, // Lempar data mentah ke halaman tujuan
   });
+};
+
+// [BARU] Array warna yang sama untuk mencari kode HEX
+const colorMap = {
+  Black: "#000000",
+  White: "#FFFFFF",
+  Brown: "#8B4513",
+  Beige: "#F5F5DC",
+  Red: "#DC143C",
+  Navy: "#000080",
+  Green: "#008000",
+  Grey: "#808080",
+  Pink: "#FFC0CB",
+  Yellow: "#FFD700",
+  Blue: "#4169E1",
+};
+
+const getColorHex = (colorName) => {
+  return colorMap[colorName] || "#cccccc"; // Default abu-abu jika warna tidak dikenali
 };
 
 onMounted(fetchData);

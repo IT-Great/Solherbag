@@ -1006,6 +1006,49 @@ const handleSubmit = async () => {
               <label class="block mb-1 font-bold text-xs text-gray-600">Height (cm)</label>
               <input v-model="form.height" type="number" step="0.01" placeholder="e.g. 15" class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm" />
             </div>
+            <div class="relative">
+              <label class="block mb-1 font-bold text-xs text-gray-600">Color</label>
+              <div 
+                @click="toggleColorDropdown"
+                class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm cursor-pointer flex justify-between items-center"
+              >
+                <div class="flex items-center gap-2">
+                  <div 
+                    v-if="form.color" 
+                    class="w-4 h-4 rounded-full border border-gray-300 shadow-sm"
+                    :style="{ backgroundColor: colorOptions.find(c => c.name === form.color)?.hex || '#ccc' }"
+                  ></div>
+                  <span :class="form.color ? 'text-gray-900' : 'text-gray-400'">
+                    {{ form.color || 'Select Color' }}
+                  </span>
+                </div>
+                <span class="text-gray-400 text-xs">▼</span>
+              </div>
+
+              <div 
+                v-if="isColorDropdownOpen" 
+                class="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg max-h-48 overflow-y-auto"
+              >
+                <div 
+                  @click="selectColor('')"
+                  class="p-3 hover:bg-gray-50 cursor-pointer text-sm text-gray-500 border-b border-gray-100"
+                >
+                  None / Unspecified
+                </div>
+                <div 
+                  v-for="color in colorOptions" 
+                  :key="color.name"
+                  @click="selectColor(color.name)"
+                  class="p-3 hover:bg-gray-50 cursor-pointer flex items-center gap-3 border-b border-gray-50 last:border-0"
+                >
+                  <div 
+                    class="w-5 h-5 rounded-full border border-gray-300 shadow-sm" 
+                    :style="{ backgroundColor: color.hex }"
+                  ></div>
+                  <span class="text-sm font-medium text-gray-700">{{ color.name }}</span>
+                </div>
+              </div>
+            </div>
             <div class="md:col-span-4 mt-2">
               <label class="block mb-1 font-bold text-xs text-gray-600">Material (Optional)</label>
               <input v-model="form.material" type="text" placeholder="e.g. 100% Genuine Cowhide Leather" class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm" />
@@ -1283,7 +1326,34 @@ const form = ref({
   width: "",
   height: "",
   material: "",
+  color: ""
 });
+
+// [BARU] Daftar Warna Standar
+const colorOptions = [
+  { name: 'Black', hex: '#000000' },
+  { name: 'White', hex: '#FFFFFF' },
+  { name: 'Brown', hex: '#8B4513' },
+  { name: 'Beige', hex: '#F5F5DC' },
+  { name: 'Red', hex: '#DC143C' },
+  { name: 'Navy', hex: '#000080' },
+  { name: 'Green', hex: '#008000' },
+  { name: 'Grey', hex: '#808080' },
+  { name: 'Pink', hex: '#FFC0CB' },
+  { name: 'Yellow', hex: '#FFD700' },
+  { name: 'Blue', hex: '#4169E1' },
+];
+
+const isColorDropdownOpen = ref(false);
+
+const toggleColorDropdown = () => {
+  isColorDropdownOpen.value = !isColorDropdownOpen.value;
+};
+
+const selectColor = (colorName) => {
+  form.value.color = colorName;
+  isColorDropdownOpen.value = false;
+};
 
 const axiosConfig = {
   headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
@@ -1322,6 +1392,7 @@ const fillFormWithData = (p) => {
   form.value.width = p.width;
   form.value.height = p.height;
   form.value.material = p.material;
+  form.value.color = p.color;
 
   currentImage.value = p.image;
   currentVariantImages.value = p.variant_images || [];
@@ -1382,6 +1453,7 @@ const handleSubmit = async () => {
     if (form.value.width) formData.append("width", form.value.width);
     if (form.value.height) formData.append("height", form.value.height);
     if (form.value.material) formData.append("material", form.value.material);
+    formData.append("color", form.value.color || "");
 
     if (form.value.discount_price) {
       formData.append("discount_price", form.value.discount_price);
