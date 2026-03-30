@@ -2576,7 +2576,7 @@ const generateRandomProducts = () => {
 const fetchCategoriesForMegaMenu = async () => {
   if (categories.value.length > 0) return; // Jangan panggil lagi jika sudah ada
   try {
-    const res = await axios.get(`${BASE_URL}/categories`);
+    const res = await axios.get(`${BASE_URL}/guest/categories`);
     categories.value = res.data.data || res.data;
   } catch (error) {
     console.error("Failed to load categories for Mega Menu", error);
