@@ -1950,8 +1950,10 @@ watch(
   <header
     class="top-0 left-0 z-50 fixed bg-white px-6 py-4 border-gray-200 border-b w-full"
   >
-    <div class="flex justify-between items-center mx-auto max-w-7xl">
-      <div class="flex items-center">
+    <div
+      class="relative flex justify-between items-center mx-auto max-w-7xl h-8 md:h-12"
+    >
+      <div class="flex items-center flex-1 justify-start">
         <nav
           class="hidden md:flex space-x-6 font-medium text-xs uppercase tracking-widest"
         >
@@ -1997,15 +1999,20 @@ watch(
         </button>
       </div>
 
-      <div class="flex-shrink-0">
+      <div
+        class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex-shrink-0 flex justify-center pointer-events-none"
+      >
         <img
           src="../../../assets/solherbrandbook.png"
           alt="Solher Logo"
-          class="w-auto h-8 md:h-12 object-contain"
+          class="w-auto h-8 md:h-12 object-contain pointer-events-auto cursor-pointer"
+          @click="$router.push('/')"
         />
       </div>
 
-      <div class="flex items-center space-x-4 md:space-x-5 text-gray-700">
+      <div
+        class="flex items-center space-x-4 md:space-x-5 text-gray-700 flex-1 justify-end"
+      >
         <button
           @click="openSearch"
           class="flex justify-center items-center focus:outline-none hover:text-black transition-colors"
@@ -2043,6 +2050,7 @@ watch(
               />
             </svg>
           </button>
+
           <div
             v-if="isDropdownOpen"
             class="top-full right-0 z-[60] absolute bg-white shadow-xl mt-4 p-6 border border-gray-100 w-64 animate-fade-in"
