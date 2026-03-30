@@ -1039,7 +1039,7 @@ onMounted(fetchProductDetail);
           </button>
         </div> -->
 
-        <div class="flex sm:flex-row flex-col gap-4 pt-4">
+        <!-- <div class="flex sm:flex-row flex-col gap-4 pt-4">
           <button
             @click="handleAction('cart')"
             :disabled="isInCart || product.stock === 0"
@@ -1053,6 +1053,35 @@ onMounted(fetchProductDetail);
             {{ isInCart ? 'Already in Bag' : (product.stock === 0 ? 'Out of Stock' : 'Add to Cart') }}
           </button>
           <button
+            @click="handleAction('buy')"
+            :disabled="product.stock === 0"
+            :class="[
+              product.stock === 0 
+                ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
+                : 'bg-black hover:bg-gray-800 text-white',
+              'flex-1 py-4 font-bold text-xs uppercase tracking-widest transition border-2 border-transparent'
+            ]"
+          >
+            Buy It Now
+          </button>
+        </div> -->
+
+        <div class="flex sm:flex-row flex-col gap-4 pt-4">
+          <button
+            @click="handleAction('cart')"
+            :disabled="isInCart || product.stock === 0"
+            :class="[
+              isInCart || product.stock === 0 
+                ? 'bg-gray-100 text-gray-400 border-gray-100 cursor-not-allowed' 
+                : 'hover:bg-black hover:text-white border-black text-black',
+              'flex-1 py-4 border-2 font-bold text-xs uppercase tracking-widest transition'
+            ]"
+          >
+            {{ isInCart ? 'Already in Bag' : (product.stock === 0 ? 'Out of Stock' : 'Add to Cart') }}
+          </button>
+          
+          <button
+            v-if="!isInCart"
             @click="handleAction('buy')"
             :disabled="product.stock === 0"
             :class="[
