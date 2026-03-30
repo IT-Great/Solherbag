@@ -4547,7 +4547,9 @@ watch(selectedAddressId, async (newVal) => {
         `${BASE_URL}/shipping/rates`,
         {
           address_id: newVal,
-          total_quantity: totalQuantityToCheckout.value, // Kuantitas akurat
+          // total_quantity: totalQuantityToCheckout.value, // Kuantitas akurat
+          // [PERBAIKAN] Kirim ID barang yang dipilih, biarkan backend yang menimbang
+          cart_ids: selectedItemIds.value,
         },
         axiosConfig,
       );
