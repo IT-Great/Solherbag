@@ -1946,7 +1946,7 @@ watch(
 );
 </script> -->
 
-<template>
+<!-- <template>
   <header
     class="top-0 left-0 z-50 fixed bg-white px-6 py-4 border-gray-200 border-b w-full"
   >
@@ -2315,4 +2315,407 @@ watch(
   opacity: 0;
   transform: translateX(-20px);
 }
-</style>
+</style> -->
+
+<template>
+  <header
+    class="top-0 left-0 z-50 fixed bg-white px-6 py-4 border-gray-200 border-b w-full"
+    @mouseleave="closeMegaMenu" 
+  >
+    <div
+      class="relative flex justify-between items-center mx-auto max-w-7xl h-8 md:h-12"
+    >
+      <div class="flex items-center flex-1 justify-start">
+        <nav
+          class="hidden md:flex space-x-6 font-medium text-xs uppercase tracking-widest h-full items-center"
+        >
+          <router-link
+            to="/"
+            class="hover:text-gray-500 transition cursor-pointer"
+            >Home</router-link
+          >
+          <router-link
+            to="/best-sellers"
+            class="hover:text-gray-500 transition cursor-pointer text-red-600 font-bold"
+            >Best Sellers</router-link
+          >
+          
+          <div 
+            class="relative h-full flex items-center"
+            @mouseenter="openMegaMenu"
+          >
+            <router-link
+              to="/collections"
+              class="hover:text-gray-500 transition cursor-pointer"
+              :class="{'text-gray-500': isMegaMenuOpen}"
+              >Collections</router-link
+            >
+          </div>
+
+          <router-link
+            to="/contact"
+            class="hover:text-gray-500 transition cursor-pointer"
+            >Contact</router-link
+          >
+        </nav>
+        
+        <button
+          @click="isMobileMenuOpen = true"
+          class="md:hidden flex justify-center items-center focus:outline-none text-gray-700 hover:text-black"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex-shrink-0 flex justify-center pointer-events-none">
+        <img src="../../../assets/solherbrandbook.png" alt="Solher Logo" class="w-auto h-8 md:h-12 object-contain pointer-events-auto cursor-pointer" @click="$router.push('/')" />
+      </div>
+
+      <div class="flex items-center space-x-4 md:space-x-5 text-gray-700 flex-1 justify-end">
+         <button @click="openSearch" class="flex justify-center items-center focus:outline-none hover:text-black transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
+        </button>
+
+        <div class="relative flex justify-center items-center">
+          <button @click="toggleDropdown">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" /></svg>
+          </button>
+          
+          <div v-if="isDropdownOpen" class="top-full right-0 z-[60] absolute bg-white shadow-xl mt-4 p-6 border border-gray-100 w-64 animate-fade-in">
+             <div v-if="isAuthenticated" class="text-left">
+              <h3 class="font-bold text-black text-sm truncate uppercase tracking-tight">HI {{ userData?.first_name }} {{ userData?.last_name }}</h3>
+              <p class="mb-4 text-gray-500 text-xs truncate">{{ userData?.email }}</p>
+            </div>
+            <div v-else>
+              <h3 class="mb-4 font-bold text-black text-xs text-left uppercase tracking-widest">Account</h3>
+              <router-link to="/login" @click="isDropdownOpen = false" class="block bg-black hover:bg-gray-800 mb-4 py-3 w-full font-bold text-white text-xs text-center uppercase tracking-widest transition">Sign In</router-link>
+            </div>
+            <div class="gap-2 grid grid-cols-2">
+              <router-link to="/orderpage" @click="isDropdownOpen = false" class="flex justify-center items-center space-x-2 bg-gray-100 hover:bg-gray-200 py-3 transition"><span class="font-bold text-[10px] uppercase tracking-wider">Orders</span></router-link>
+              <router-link to="/profilepage" @click="isDropdownOpen = false" class="flex justify-center items-center space-x-2 bg-gray-100 hover:bg-gray-200 py-3 transition"><span class="font-bold text-[10px] uppercase tracking-wider">Profile</span></router-link>
+            </div>
+          </div>
+        </div>
+
+        <button @click="openCartPage" class="relative hover:text-black transition-colors cart-icon-header">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" /></svg>
+          <span v-if="cartCount > 0" :class="[isBadgePopping ? 'scale-150 bg-red-600' : 'scale-100 bg-black']" class="-top-2 -right-2 absolute flex justify-center items-center rounded-full w-4 h-4 text-[10px] text-white transition-all duration-300 pointer-events-none">{{ cartCount }}</span>
+        </button>
+      </div>
+    </div>
+
+    <transition name="mega-menu-fade">
+      <div 
+        v-if="isMegaMenuOpen" 
+        class="absolute left-0 top-full w-full bg-white border-t border-gray-100 shadow-xl overflow-hidden hidden md:block"
+        @mouseenter="keepMegaMenuOpen"
+        @mouseleave="closeMegaMenu"
+      >
+        <div class="mx-auto max-w-7xl flex h-[400px]">
+          
+          <div class="w-1/4 border-r border-gray-100 bg-gray-50/50 py-8 px-6 overflow-y-auto">
+            <h3 class="font-bold text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-6">Categories</h3>
+            <ul class="space-y-4">
+              <li>
+                <button 
+                  @click="selectMegaMenuCategory('all')"
+                  @mouseenter="selectMegaMenuCategory('all')"
+                  :class="activeMegaCategory === 'all' ? 'text-black font-bold' : 'text-gray-500 hover:text-black'"
+                  class="text-xs uppercase tracking-widest transition-colors w-full text-left"
+                >
+                  All Bags
+                </button>
+              </li>
+              <li v-for="cat in categories" :key="cat.id">
+                <button 
+                  @click="selectMegaMenuCategory(cat.id)"
+                  @mouseenter="selectMegaMenuCategory(cat.id)"
+                  :class="activeMegaCategory === cat.id ? 'text-black font-bold' : 'text-gray-500 hover:text-black'"
+                  class="text-xs uppercase tracking-widest transition-colors w-full text-left"
+                >
+                  {{ cat.category_name }}
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <div class="w-3/4 py-8 px-10 relative">
+            <div class="flex justify-between items-center mb-6">
+              <h3 class="font-bold text-[10px] uppercase tracking-[0.2em] text-gray-400">
+                {{ activeMegaCategory === 'all' ? 'Featured Picks' : 'Category Highlights' }}
+              </h3>
+              <router-link to="/collections" class="text-[10px] font-bold uppercase tracking-widest border-b border-black pb-0.5 hover:text-gray-500 transition-colors">
+                View All Collection
+              </router-link>
+            </div>
+
+            <div v-if="isMegaMenuLoading" class="absolute inset-0 flex justify-center items-center bg-white/80 z-10">
+              <div class="w-8 h-8 border-2 border-gray-200 border-t-black rounded-full animate-spin"></div>
+            </div>
+
+            <div class="grid grid-cols-4 gap-x-6 gap-y-8">
+              <div 
+                v-for="product in randomMegaProducts" 
+                :key="product.id"
+                @click="navigateToProduct(product.id)"
+                class="group cursor-pointer"
+              >
+                <div class="bg-gray-100 aspect-square mb-3 overflow-hidden rounded-lg relative">
+                  <img :src="product.image" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <div v-if="product.discount_price" class="absolute top-2 left-2 bg-red-600 text-white px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-widest rounded-sm">Sale</div>
+                </div>
+                <h4 class="font-bold text-[10px] uppercase tracking-widest text-gray-900 truncate">{{ product.name }}</h4>
+                <p class="text-[10px] text-gray-500 mt-0.5">{{ formatPrice(product.discount_price ?? product.price) }}</p>
+              </div>
+            </div>
+
+            <div v-if="!isMegaMenuLoading && randomMegaProducts.length === 0" class="flex flex-col items-center justify-center h-48 text-gray-400 italic font-serif">
+              No products found in this category.
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </transition>
+    <transition name="slide-fade">
+      <div v-if="isMobileMenuOpen" class="z-[200] fixed inset-0 flex">
+        <div
+          @click="isMobileMenuOpen = false"
+          class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity"
+        ></div>
+        <div
+          class="relative flex flex-col bg-white shadow-2xl p-8 w-[80%] max-w-sm h-full overflow-y-auto"
+        >
+          </div>
+      </div>
+    </transition>
+
+  </header>
+  <SearchModal v-if="isSearchOpen" @close="closeSearch" />
+</template>
+
+<script setup>
+import { ref, onMounted, onUnmounted, watch, computed } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import Swal from "sweetalert2";
+import SearchModal from "../../User/Layout/SearchModal.vue";
+
+// [BARU] Import Global Cart State
+import { useCart } from "../../../composables/useCart";
+import { BASE_URL } from "../../../config/api"; // Pastikan path benar
+
+// [BARU] Import Product Store untuk akses data katalog tanpa hit API terus menerus
+import { useProductStore } from "../../../composables/useProductStore";
+
+const route = useRoute();
+const router = useRouter();
+
+const isSearchOpen = ref(false);
+const openSearch = () => (isSearchOpen.value = true);
+const closeSearch = () => (isSearchOpen.value = false);
+
+const isDropdownOpen = ref(false);
+const isAuthenticated = ref(false);
+const userData = ref(null);
+const isMobileMenuOpen = ref(false);
+
+// Menggunakan State Global untuk Header
+const { cartCount, fetchCarts, handleOptimisticAdd } = useCart();
+const { state: productState, fetchHomeData } = useProductStore(); // Inisialisasi Store
+const isBadgePopping = ref(false);
+
+// =======================================================
+// [BARU] STATE & LOGIKA MEGA MENU
+// =======================================================
+const isMegaMenuOpen = ref(false);
+const megaMenuTimer = ref(null);
+const activeMegaCategory = ref('all');
+const categories = ref([]);
+const isMegaMenuLoading = ref(false);
+const randomMegaProducts = ref([]);
+
+const formatPrice = (v) => new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(v);
+
+// Fungsi mengacak array (Fisher-Yates Shuffle)
+const shuffleArray = (array) => {
+  let currentIndex = array.length, randomIndex;
+  while (currentIndex > 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+  }
+  return array;
+};
+
+// Filter dan Acak Produk
+const generateRandomProducts = () => {
+  if (!productState.allProducts || productState.allProducts.length === 0) return;
+  
+  isMegaMenuLoading.value = true;
+  
+  // Kasih delay super kecil agar loading UI sempat merender (memberi kesan sistem sedang bekerja)
+  setTimeout(() => {
+    let filtered = [];
+    if (activeMegaCategory.value === 'all') {
+      filtered = [...productState.allProducts];
+    } else {
+      filtered = productState.allProducts.filter(p => p.category_id === activeMegaCategory.value);
+    }
+
+    // Acak dan ambil maksimal 8
+    randomMegaProducts.value = shuffleArray(filtered).slice(0, 8);
+    isMegaMenuLoading.value = false;
+  }, 100);
+};
+
+// Ambil Kategori (Dari API atau dari Store jika Anda sudah menyimpannya di Store)
+const fetchCategoriesForMegaMenu = async () => {
+  if (categories.value.length > 0) return; // Jangan panggil lagi jika sudah ada
+  try {
+    const res = await axios.get(`${BASE_URL}/categories`);
+    categories.value = res.data.data || res.data;
+  } catch (error) {
+    console.error("Failed to load categories for Mega Menu", error);
+  }
+};
+
+const openMegaMenu = async () => {
+  clearTimeout(megaMenuTimer.value);
+  isMegaMenuOpen.value = true;
+  isDropdownOpen.value = false; // Tutup dropdown profile jika sedang buka
+  
+  // Pastikan data katalog sudah ada di Global Store
+  if (!productState.isHomeLoaded) {
+    await fetchHomeData();
+  }
+  
+  fetchCategoriesForMegaMenu();
+  generateRandomProducts(); // Acak saat pertama dibuka
+};
+
+const keepMegaMenuOpen = () => {
+  clearTimeout(megaMenuTimer.value);
+};
+
+const closeMegaMenu = () => {
+  // Beri sedikit jeda (debounce) agar menu tidak langsung hilang saat mouse meleset sedikit
+  megaMenuTimer.value = setTimeout(() => {
+    isMegaMenuOpen.value = false;
+  }, 150); 
+};
+
+const selectMegaMenuCategory = (catId) => {
+  if (activeMegaCategory.value !== catId) {
+    activeMegaCategory.value = catId;
+    generateRandomProducts(); // Acak ulang setiap kali ganti kategori
+  }
+};
+
+const navigateToProduct = (id) => {
+  closeMegaMenu(); // Tutup menu langsung
+  router.push(`/product/${id}`);
+};
+// =======================================================
+
+const openCartPage = () => {
+  if (!isAuthenticated.value) {
+    Swal.fire({
+      icon: "info",
+      title: "Sign In Required",
+      text: "Please login to see your shopping bag.",
+      confirmButtonColor: "#000",
+    });
+    return;
+  }
+  router.push("/cart");
+};
+
+const checkAuth = () => {
+  const token = localStorage.getItem("token");
+  const user = localStorage.getItem("user");
+  if (token && user) {
+    isAuthenticated.value = true;
+    userData.value = JSON.parse(user);
+  } else {
+    isAuthenticated.value = false;
+    userData.value = null;
+  }
+};
+
+const toggleDropdown = () => {
+  checkAuth();
+  isDropdownOpen.value = !isDropdownOpen.value;
+  isMegaMenuOpen.value = false; // Tutup mega menu jika buka profile
+};
+
+// Menangkap Event Fly Animation dari Product Detail
+const onAddToCartEvent = (e) => {
+  handleOptimisticAdd(e.detail, () => {
+    isBadgePopping.value = true;
+    setTimeout(() => (isBadgePopping.value = false), 300);
+  });
+};
+
+onMounted(() => {
+  checkAuth();
+  if (isAuthenticated.value) fetchCarts(); // Ambil data diam-diam di background!
+
+  window.addEventListener("optimistic-add-to-cart", onAddToCartEvent);
+  window.addEventListener("click", (e) => {
+    if (!e.target.closest(".relative")) isDropdownOpen.value = false;
+  });
+  window.addEventListener("refresh-cart", fetchCarts);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("optimistic-add-to-cart", onAddToCartEvent);
+});
+
+watch(
+  () => route.path,
+  () => {
+    isDropdownOpen.value = false;
+    isMobileMenuOpen.value = false;
+    checkAuth();
+  },
+);
+</script>
+
+<style scoped>
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: all 0.3s ease;
+}
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+/* [BARU] Animasi untuk Mega Menu */
+.mega-menu-fade-enter-active,
+.mega-menu-fade-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  transform-origin: top;
+}
+.mega-menu-fade-enter-from,
+.mega-menu-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-5px) scaleY(0.98);
+}
+</style> 
