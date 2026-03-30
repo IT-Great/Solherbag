@@ -1008,6 +1008,17 @@ const handleSubmit = async () => {
                 required
               />
             </div>
+            <div class="md:col-span-2 mt-2">
+              <label class="block mb-1 font-bold text-xs text-gray-600"
+                >Strap Length (Optional)</label
+              >
+              <input
+                v-model="form.strap_length"
+                type="text"
+                placeholder="e.g. 100 - 120 cm Adjustable"
+                class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm"
+              />
+            </div>
             <div>
               <label class="block mb-1 font-bold text-xs text-gray-600"
                 >Length (cm)</label
@@ -1421,7 +1432,7 @@ const form = ref({
   stock: "",
   category_id: "",
   description: "",
-  care: "",
+  // care: "",
   design: "",
   image: null,
   variant_images: [],
@@ -1431,6 +1442,7 @@ const form = ref({
   width: "",
   height: "",
   material: "",
+  strap_length: "", // <--- BARU
   color: [],
 });
 
@@ -1516,6 +1528,7 @@ const fillFormWithData = (p) => {
   form.value.width = p.width;
   form.value.height = p.height;
   form.value.material = p.material;
+  form.value.strap_length = p.strap_length; // <--- BARU
   // form.value.color = p.color;
   form.value.color = Array.isArray(p.color) ? p.color : [];
 
@@ -1570,7 +1583,7 @@ const handleSubmit = async () => {
     formData.append("price", form.value.price);
     formData.append("category_id", form.value.category_id);
     formData.append("description", form.value.description || "");
-    formData.append("care", form.value.care || "");
+    // formData.append("care", form.value.care || "");
     formData.append("design", form.value.design || "");
 
     formData.append("weight", form.value.weight);
@@ -1578,6 +1591,8 @@ const handleSubmit = async () => {
     if (form.value.width) formData.append("width", form.value.width);
     if (form.value.height) formData.append("height", form.value.height);
     if (form.value.material) formData.append("material", form.value.material);
+    if (form.value.strap_length) formData.append("strap_length", form.value.strap_length); // <--- BARU
+    if (form.value.strap_length) formData.append("strap_length", form.value.strap_length); // <--- BARU
     // formData.append("color", form.value.color || "");
     // [BARU] Cara mengirim Array Color ke Laravel
     if (form.value.color && form.value.color.length > 0) {

@@ -1032,6 +1032,19 @@ onMounted(fetchProductDetail);
           </div>
 
           <div
+            v-if="product.strap_length"
+            class="flex justify-between items-start text-sm border-t border-gray-100 pt-3"
+          >
+            <span
+              class="text-gray-500 font-bold uppercase tracking-widest text-[10px] w-24 shrink-0"
+              >Strap Length</span
+            >
+            <span class="text-gray-900 font-medium text-right">{{
+              product.strap_length
+            }}</span>
+          </div>
+
+          <div
             v-if="product.length || product.width || product.height"
             class="flex justify-between items-start text-sm border-t border-gray-100 pt-3"
           >
@@ -1232,7 +1245,12 @@ onMounted(fetchProductDetail);
         </div> -->
         <div class="pt-8 border-gray-200 border-t divide-y divide-gray-200">
           <div
-            v-for="section in ['Description', 'Care', 'Design', 'Shipping & Returns']"
+            v-for="section in [
+              'Description',
+              'Care',
+              'Design',
+              'Shipping & Returns',
+            ]"
             :key="section"
             class="py-4"
           >
@@ -1253,10 +1271,18 @@ onMounted(fetchProductDetail);
                 class="mt-4 text-gray-600 text-sm leading-relaxed whitespace-pre-wrap"
               >
                 <template v-if="section !== 'Shipping & Returns'">
-                  {{ product[section.toLowerCase()] || "No information available." }}
+                  {{
+                    product[section.toLowerCase()] ||
+                    "No information available."
+                  }}
                 </template>
-                <template v-else>Shipping options are available on the payment page through our partnership with Biteship. For product returns, please refer to the contact information on our Customer Care page. Returns can be coordinated following an automatic refund or as part of a manual refund application.
-                </template>
+                <template v-else
+                  >Shipping options are available on the payment page through
+                  our partnership with Biteship. For product returns, please
+                  refer to the contact information on our Customer Care page.
+                  Returns can be coordinated following an automatic refund or as
+                  part of a manual refund application.</template
+                >
               </div>
             </transition>
           </div>

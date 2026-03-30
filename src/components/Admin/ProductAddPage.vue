@@ -480,6 +480,17 @@ onMounted(async () => {
                 required
               />
             </div>
+            <div class="md:col-span-2 mt-2">
+              <label class="block mb-1 font-bold text-xs text-gray-600"
+                >Strap Length (Optional)</label
+              >
+              <input
+                v-model="form.strap_length"
+                type="text"
+                placeholder="e.g. 100 - 120 cm Adjustable"
+                class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm"
+              />
+            </div>
             <div>
               <label class="block mb-1 font-bold text-xs text-gray-600"
                 >Length (cm)</label
@@ -638,14 +649,14 @@ onMounted(async () => {
             class="bg-gray-100 p-3 rounded-xl w-full h-24"
           ></textarea>
         </div>
-        <div>
+        <!-- <div>
           <label class="block mb-1 font-bold text-sm">Care Instructions</label>
           <textarea
             v-model="form.care"
             placeholder="Care Instructions"
             class="bg-gray-100 p-3 rounded-xl w-full h-24"
           ></textarea>
-        </div>
+        </div> -->
         <div>
           <label class="block mb-1 font-bold text-sm">Design Details</label>
           <textarea
@@ -783,9 +794,10 @@ const form = ref({
   width: "",
   height: "",
   material: "",
+  strap_length: "", // <--- BARU
   color: [],
   description: "",
-  care: "",
+  // care: "",
   design: "",
   image: null,
   variant_images: [],
