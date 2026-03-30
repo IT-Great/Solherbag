@@ -2501,6 +2501,7 @@ watch(
 import { ref, onMounted, onUnmounted, watch, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import Swal from "sweetalert2";
+import axios from "axios"; // Tambahkan axios jika belum ada
 import SearchModal from "../../User/Layout/SearchModal.vue";
 
 // [BARU] Import Global Cart State
