@@ -2525,7 +2525,7 @@ const isMobileMenuOpen = ref(false);
 
 // Menggunakan State Global untuk Header
 const { cartCount, fetchCarts, handleOptimisticAdd } = useCart();
-const { state: productState, fetchHomeData } = useProductStore(); // Inisialisasi Store
+const { state: productState, fetchCollectionsData } = useProductStore(); // Inisialisasi Store
 const isBadgePopping = ref(false);
 
 // =======================================================
@@ -2572,10 +2572,36 @@ const shuffleArray = (array) => {
 //   }, 100);
 // };
 
+// const generateRandomProducts = () => {
+//   // Fallback check: if it's STILL empty after awaiting, log it so we know the store is the issue
+//   if (!productState.allProducts || productState.allProducts.length === 0) {
+//     console.warn("Mega Menu: productState.allProducts is empty even after fetching.");
+//     isMegaMenuLoading.value = false;
+//     randomMegaProducts.value = [];
+//     return;
+//   }
+  
+//   isMegaMenuLoading.value = true;
+  
+//   setTimeout(() => {
+//     let filtered = [];
+//     if (activeMegaCategory.value === 'all') {
+//       filtered = [...productState.allProducts];
+//     } else {
+//       // NOTE: Ensure the data types match! 
+//       // Sometimes API returns category_id as String, but activeMegaCategory is an Integer (or vice versa).
+//       // Using '==' instead of '===' prevents type mismatch bugs here.
+//       filtered = productState.allProducts.filter(p => p.category_id == activeMegaCategory.value);
+//     }
+
+//     randomMegaProducts.value = shuffleArray(filtered).slice(0, 8);
+//     isMegaMenuLoading.value = false;
+//   }, 100);
+// };
+
 const generateRandomProducts = () => {
-  // Fallback check: if it's STILL empty after awaiting, log it so we know the store is the issue
-  if (!productState.allProducts || productState.allProducts.length === 0) {
-    console.warn("Mega Menu: productState.allProducts is empty even after fetching.");
+  if (!productState.collectionsProducts || productState.collectionsProducts.length === 0) {
+    console.warn("Mega Menu: productState.collectionsProducts is empty even after fetching.");
     isMegaMenuLoading.value = false;
     randomMegaProducts.value = [];
     return;
@@ -2586,12 +2612,10 @@ const generateRandomProducts = () => {
   setTimeout(() => {
     let filtered = [];
     if (activeMegaCategory.value === 'all') {
-      filtered = [...productState.allProducts];
+      filtered = [...productState.collectionsProducts];
     } else {
-      // NOTE: Ensure the data types match! 
-      // Sometimes API returns category_id as String, but activeMegaCategory is an Integer (or vice versa).
-      // Using '==' instead of '===' prevents type mismatch bugs here.
-      filtered = productState.allProducts.filter(p => p.category_id == activeMegaCategory.value);
+      // Gunakan '==' agar aman jika tipe datanya beda (String vs Integer)
+      filtered = productState.collectionsProducts.filter(p => p.category_id == activeMegaCategory.value);
     }
 
     randomMegaProducts.value = shuffleArray(filtered).slice(0, 8);
@@ -2636,11 +2660,20 @@ const openMegaMenu = async () => {
   fetchCategoriesForMegaMenu();
 
   // 3. Ensure product data exists
-  if (!productState.isHomeLoaded || !productState.allProducts || productState.allProducts.length === 0) {
+  // if (!productState.isHomeLoaded || !productState.allProducts || productState.allProducts.length === 0) {
+  //   try {
+  //     await fetchHomeData();
+  //   } catch (e) {
+  //     console.error("Failed to fetch home data for Mega Menu", e);
+  //   }
+  // }
+
+  // [PERBAIKAN 3]: Gunakan isCollectionsLoaded dan fetchCollectionsData()
+  if (!productState.isCollectionsLoaded || !productState.collectionsProducts || productState.collectionsProducts.length === 0) {
     try {
-      await fetchHomeData();
+      await fetchCollectionsData();
     } catch (e) {
-      console.error("Failed to fetch home data for Mega Menu", e);
+      console.error("Failed to fetch collections data for Mega Menu", e);
     }
   }
   
