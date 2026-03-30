@@ -278,7 +278,7 @@
             </p>
             <p class="font-bold text-gray-900">{{ product.material }}</p>
           </div>
-          <div v-if="product.color">
+          <!-- <div v-if="product.color">
             <p
               class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1"
             >
@@ -290,6 +290,21 @@
                 :style="{ backgroundColor: getColorHex(product.color) }"
               ></div>
               <p class="font-bold text-gray-900">{{ product.color }}</p>
+            </div>
+          </div> -->
+          <div v-if="product.color && product.color.length > 0">
+            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Colors</p>
+            <div class="flex flex-wrap items-center gap-3">
+              <div 
+                v-for="(c, idx) in product.color" :key="idx"
+                class="flex items-center gap-1.5 bg-white border border-gray-200 px-2 py-1 rounded-lg shadow-sm"
+              >
+                <div 
+                  class="w-3 h-3 rounded-full border border-gray-300"
+                  :style="{ backgroundColor: getColorHex(c) }"
+                ></div>
+                <span class="font-bold text-gray-800 text-[10px] uppercase tracking-wider">{{ c }}</span>
+              </div>
             </div>
           </div>
         </div>

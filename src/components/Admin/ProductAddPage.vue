@@ -514,7 +514,7 @@ onMounted(async () => {
               />
             </div>
 
-            <div class="relative">
+            <!-- <div class="relative">
               <label class="block mb-1 font-bold text-xs text-gray-600"
                 >Color</label
               >
@@ -562,6 +562,58 @@ onMounted(async () => {
                   <span class="text-sm font-medium text-gray-700">{{
                     color.name
                   }}</span>
+                </div>
+              </div>
+            </div> -->
+            <div class="relative">
+              <label class="block mb-1 font-bold text-xs text-gray-600">Colors</label>
+              <div 
+                @click="toggleColorDropdown"
+                class="bg-white p-3 rounded-xl w-full border border-gray-200 min-h-[46px] text-sm cursor-pointer flex justify-between items-center"
+              >
+                <div class="flex flex-wrap items-center gap-2">
+                  <template v-if="form.color.length > 0">
+                    <div 
+                      v-for="(selColor, idx) in form.color" :key="idx"
+                      class="w-5 h-5 rounded-full border border-gray-300 shadow-sm"
+                      :style="{ backgroundColor: colorOptions.find(c => c.name === selColor)?.hex || '#ccc' }"
+                      :title="selColor"
+                    ></div>
+                  </template>
+                  <span v-else class="text-gray-400">Select Colors</span>
+                </div>
+                <span class="text-gray-400 text-xs">▼</span>
+              </div>
+
+              <div 
+                v-if="isColorDropdownOpen" 
+                class="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-xl max-h-56 overflow-y-auto"
+              >
+                <div 
+                  @click="selectColor('')"
+                  class="p-3 hover:bg-red-50 cursor-pointer text-sm font-bold text-red-500 border-b border-gray-100 flex items-center justify-center"
+                >
+                  Clear All Colors
+                </div>
+                <div 
+                  v-for="color in colorOptions" 
+                  :key="color.name"
+                  @click="selectColor(color.name)"
+                  class="p-3 hover:bg-gray-50 cursor-pointer flex justify-between items-center border-b border-gray-50 last:border-0 transition-colors"
+                  :class="form.color.includes(color.name) ? 'bg-blue-50/50' : ''"
+                >
+                  <div class="flex items-center gap-3">
+                    <div 
+                      class="w-5 h-5 rounded-full border border-gray-300 shadow-sm" 
+                      :style="{ backgroundColor: color.hex }"
+                    ></div>
+                    <span class="text-sm font-medium" :class="form.color.includes(color.name) ? 'text-blue-700' : 'text-gray-700'">
+                      {{ color.name }}
+                    </span>
+                  </div>
+                  <svg v-if="form.color.includes(color.name)" class="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                  </svg>
                 </div>
               </div>
             </div>
@@ -731,6 +783,7 @@ const form = ref({
   width: "",
   height: "",
   material: "",
+  color: [],
   description: "",
   care: "",
   design: "",
@@ -761,9 +814,28 @@ const toggleColorDropdown = () => {
   isColorDropdownOpen.value = !isColorDropdownOpen.value;
 };
 
+// const selectColor = (colorName) => {
+//   form.value.color = colorName;
+//   isColorDropdownOpen.value = false;
+// };
+
+// 2. Ubah fungsi selectColor menjadi toggle (bisa tambah/hapus)
 const selectColor = (colorName) => {
-  form.value.color = colorName;
-  isColorDropdownOpen.value = false;
+  // Jika "None" dipilih, kosongkan semua
+  if (colorName === "") {
+    form.value.color = [];
+    isColorDropdownOpen.value = false;
+    return;
+  }
+
+  // Jika warna sudah ada, hapus. Jika belum, tambahkan.
+  const index = form.value.color.indexOf(colorName);
+  if (index > -1) {
+    form.value.color.splice(index, 1);
+  } else {
+    form.value.color.push(colorName);
+  }
+  // Catatan: isColorDropdownOpen tidak di-false-kan agar admin bisa pilih warna lain sekaligus
 };
 
 const handleFile = (e) => (form.value.image = e.target.files[0]);
@@ -804,6 +876,12 @@ const handleSubmit = async () => {
     if (form.value.width) formData.append("width", form.value.width);
     if (form.value.height) formData.append("height", form.value.height);
     if (form.value.material) formData.append("material", form.value.material);
+    // [BARU] Cara mengirim Array Color ke Laravel
+    if (form.value.color && form.value.color.length > 0) {
+      form.value.color.forEach((c, index) => {
+        formData.append(`color[${index}]`, c);
+      });
+    }
     formData.append("description", form.value.description);
     formData.append("care", form.value.care);
     formData.append("design", form.value.design);
