@@ -985,7 +985,7 @@ onMounted(fetchProductDetail);
           </div>
         </div>
 
-        <div 
+        <!-- <div 
           v-if="product.material || product.weight || product.length" 
           class="bg-gray-50/50 border border-gray-100 p-4 rounded-xl space-y-3"
         >
@@ -1007,21 +1007,121 @@ onMounted(fetchProductDetail);
             <span class="text-gray-500 font-bold uppercase tracking-widest text-[10px] w-24 shrink-0">Weight</span>
             <span class="text-gray-900 font-medium text-right">{{ product.weight }} <span class="text-xs">gram</span></span>
           </div>
+        </div> -->
+
+        <div
+          v-if="
+            product.material ||
+            product.weight ||
+            product.length ||
+            (product.color && product.color.length > 0)
+          "
+          class="bg-gray-50/50 border border-gray-100 p-4 rounded-xl space-y-3"
+        >
+          <div
+            v-if="product.material"
+            class="flex justify-between items-start text-sm"
+          >
+            <span
+              class="text-gray-500 font-bold uppercase tracking-widest text-[10px] w-24 shrink-0"
+              >Material</span
+            >
+            <span class="text-gray-900 font-medium text-right">{{
+              product.material
+            }}</span>
+          </div>
+
+          <div
+            v-if="product.length || product.width || product.height"
+            class="flex justify-between items-start text-sm border-t border-gray-100 pt-3"
+          >
+            <span
+              class="text-gray-500 font-bold uppercase tracking-widest text-[10px] w-24 shrink-0"
+              >Dimensions</span
+            >
+            <span class="text-gray-900 font-mono text-right">
+              {{ product.length || "-" }}
+              <span class="text-gray-400 text-xs">x</span>
+              {{ product.width || "-" }}
+              <span class="text-gray-400 text-xs">x</span>
+              {{ product.height || "-" }} <span class="text-xs">cm</span>
+            </span>
+          </div>
+
+          <div
+            v-if="product.weight"
+            class="flex justify-between items-start text-sm border-t border-gray-100 pt-3"
+          >
+            <span
+              class="text-gray-500 font-bold uppercase tracking-widest text-[10px] w-24 shrink-0"
+              >Weight</span
+            >
+            <span class="text-gray-900 font-medium text-right"
+              >{{ product.weight }} <span class="text-xs">gram</span></span
+            >
+          </div>
+
+          <div
+            v-if="product.color && product.color.length > 0"
+            class="flex justify-between items-start text-sm border-t border-gray-100 pt-3"
+          >
+            <span
+              class="text-gray-500 font-bold uppercase tracking-widest text-[10px] w-24 shrink-0 mt-1"
+              >Colors</span
+            >
+            <div class="flex flex-wrap justify-end gap-2">
+              <div
+                v-for="(c, idx) in product.color"
+                :key="idx"
+                class="flex items-center gap-1.5 bg-white border border-gray-200 px-2 py-1 rounded-lg shadow-sm"
+              >
+                <div
+                  class="w-3 h-3 rounded-full border border-gray-300"
+                  :style="{ backgroundColor: getColorHex(c) }"
+                ></div>
+                <span
+                  class="font-bold text-gray-800 text-[10px] uppercase tracking-wider"
+                  >{{ c }}</span
+                >
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div v-if="product.stock > 0" class="flex items-center gap-6 pt-4 border-t border-gray-100 mt-2">
-          <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest w-24 shrink-0">Quantity</span>
-          <div class="flex items-center bg-gray-50 border border-gray-200 rounded-xl overflow-hidden shadow-sm">
-            <button @click="decreaseQuantity" class="hover:bg-gray-200 px-4 py-2 transition-colors font-bold text-lg text-gray-600">-</button>
-            <input 
-              type="number" 
-              v-model.number="selectedQuantity" 
+        <div
+          v-if="product.stock > 0"
+          class="flex items-center gap-6 pt-4 border-t border-gray-100 mt-2"
+        >
+          <span
+            class="text-[10px] font-bold text-gray-500 uppercase tracking-widest w-24 shrink-0"
+            >Quantity</span
+          >
+          <div
+            class="flex items-center bg-gray-50 border border-gray-200 rounded-xl overflow-hidden shadow-sm"
+          >
+            <button
+              @click="decreaseQuantity"
+              class="hover:bg-gray-200 px-4 py-2 transition-colors font-bold text-lg text-gray-600"
+            >
+              -
+            </button>
+            <input
+              type="number"
+              v-model.number="selectedQuantity"
               @change="validateQuantity"
-              class="bg-transparent border-none focus:ring-0 w-12 font-bold text-sm text-center p-0" 
+              class="bg-transparent border-none focus:ring-0 w-12 font-bold text-sm text-center p-0"
             />
-            <button @click="increaseQuantity" class="hover:bg-gray-200 px-4 py-2 transition-colors font-bold text-lg text-gray-600">+</button>
+            <button
+              @click="increaseQuantity"
+              class="hover:bg-gray-200 px-4 py-2 transition-colors font-bold text-lg text-gray-600"
+            >
+              +
+            </button>
           </div>
-          <span class="text-[10px] text-gray-400 uppercase tracking-widest font-medium">{{ product.stock }} Available</span>
+          <span
+            class="text-[10px] text-gray-400 uppercase tracking-widest font-medium"
+            >{{ product.stock }} Available</span
+          >
         </div>
 
         <!-- <div class="flex sm:flex-row flex-col gap-4 pt-4">
@@ -1071,31 +1171,37 @@ onMounted(fetchProductDetail);
             @click="handleAction('cart')"
             :disabled="isInCart || product.stock === 0"
             :class="[
-              isInCart || product.stock === 0 
-                ? 'bg-gray-100 text-gray-400 border-gray-100 cursor-not-allowed' 
+              isInCart || product.stock === 0
+                ? 'bg-gray-100 text-gray-400 border-gray-100 cursor-not-allowed'
                 : 'hover:bg-black hover:text-white border-black text-black',
-              'flex-1 py-4 border-2 font-bold text-xs uppercase tracking-widest transition'
+              'flex-1 py-4 border-2 font-bold text-xs uppercase tracking-widest transition',
             ]"
           >
-            {{ isInCart ? 'Already in Bag' : (product.stock === 0 ? 'Out of Stock' : 'Add to Cart') }}
+            {{
+              isInCart
+                ? "Already in Bag"
+                : product.stock === 0
+                  ? "Out of Stock"
+                  : "Add to Cart"
+            }}
           </button>
-          
+
           <button
             v-if="!isInCart"
             @click="handleAction('buy')"
             :disabled="product.stock === 0"
             :class="[
-              product.stock === 0 
-                ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
+              product.stock === 0
+                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                 : 'bg-black hover:bg-gray-800 text-white',
-              'flex-1 py-4 font-bold text-xs uppercase tracking-widest transition border-2 border-transparent'
+              'flex-1 py-4 font-bold text-xs uppercase tracking-widest transition border-2 border-transparent',
             ]"
           >
             Buy It Now
           </button>
         </div>
 
-        <div class="pt-8 border-gray-200 border-t divide-y divide-gray-200">
+        <!-- <div class="pt-8 border-gray-200 border-t divide-y divide-gray-200">
           <div
             v-for="section in ['Description', 'Care', 'Design']"
             :key="section"
@@ -1120,6 +1226,38 @@ onMounted(fetchProductDetail);
                 {{
                   product[section.toLowerCase()] || "No information available."
                 }}
+              </div>
+            </transition>
+          </div>
+        </div> -->
+        <div class="pt-8 border-gray-200 border-t divide-y divide-gray-200">
+          <div
+            v-for="section in ['Description', 'Care', 'Design', 'Shipping & Returns']"
+            :key="section"
+            class="py-4"
+          >
+            <button
+              @click="
+                activeSection = activeSection === section ? null : section
+              "
+              class="group flex justify-between items-center w-full font-medium text-xs text-left uppercase tracking-widest"
+            >
+              <span class="group-hover:text-gray-500 transition">{{
+                section
+              }}</span>
+              <span>{{ activeSection === section ? "−" : "+" }}</span>
+            </button>
+            <transition name="fade">
+              <div
+                v-show="activeSection === section"
+                class="mt-4 text-gray-600 text-sm leading-relaxed whitespace-pre-wrap"
+              >
+                <template v-if="section !== 'Shipping & Returns'">
+                  {{ product[section.toLowerCase()] || "No information available." }}
+                </template>
+                <template v-else>
+                  Shipping options are available on the payment page through our partnership with Biteship. For product returns, please refer to the contact information on our Customer Care page. Returns can be coordinated following an automatic refund or as part of a manual refund application.
+                </template>
               </div>
             </transition>
           </div>
@@ -1652,7 +1790,8 @@ import { BASE_URL } from "../../config/api.js";
 import { useCart } from "../../composables/useCart";
 
 // Ekstrak fungsi dan state yang dibutuhkan
-const { handleOptimisticAdd, selectedItemIds, fetchCarts, cartItems } = useCart();
+const { handleOptimisticAdd, selectedItemIds, fetchCarts, cartItems } =
+  useCart();
 
 const route = useRoute();
 const router = useRouter();
@@ -1691,7 +1830,7 @@ const validateQuantity = () => {
 // Mengecek apakah produk ini sudah ada di keranjang user
 const isInCart = computed(() => {
   if (!product.value || !cartItems.value) return false;
-  return cartItems.value.some(item => item.product_id === product.value.id);
+  return cartItems.value.some((item) => item.product_id === product.value.id);
 });
 // ==========================================
 
@@ -1835,7 +1974,11 @@ const handleAction = async (type) => {
     // [PERBAIKAN] Sisipkan informasi quantity agar composable useCart mendeteksinya
     window.dispatchEvent(
       new CustomEvent("optimistic-add-to-cart", {
-        detail: { product: product.value, cartId: null, quantity: selectedQuantity.value },
+        detail: {
+          product: product.value,
+          cartId: null,
+          quantity: selectedQuantity.value,
+        },
       }),
     );
 
@@ -1935,6 +2078,25 @@ const formatPrice = (value) =>
   }).format(value);
 const calculateDiscount = (price, discountPrice) =>
   Math.round(((price - discountPrice) / price) * 100);
+
+// [BARU] Peta Warna untuk UI
+const colorMap = {
+  Black: "#000000",
+  White: "#FFFFFF",
+  Brown: "#8B4513",
+  Beige: "#F5F5DC",
+  Red: "#DC143C",
+  Navy: "#000080",
+  Green: "#008000",
+  Grey: "#808080",
+  Pink: "#FFC0CB",
+  Yellow: "#FFD700",
+  Blue: "#4169E1",
+};
+
+const getColorHex = (colorName) => {
+  return colorMap[colorName] || "#cccccc";
+};
 
 onMounted(fetchProductDetail);
 </script>
