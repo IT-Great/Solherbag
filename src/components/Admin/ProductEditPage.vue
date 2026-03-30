@@ -987,71 +987,176 @@ const handleSubmit = async () => {
       </div>
 
       <div class="space-y-4">
-      <div class="col-span-1 md:col-span-2 p-6 border border-gray-200 rounded-2xl bg-gray-50/50 mt-4 mb-2">
-          <h3 class="font-bold text-gray-800 text-sm mb-4 uppercase tracking-widest border-b pb-2">Physical Attributes</h3>
+        <div
+          class="col-span-1 md:col-span-2 p-6 border border-gray-200 rounded-2xl bg-gray-50/50 mt-4 mb-2"
+        >
+          <h3
+            class="font-bold text-gray-800 text-sm mb-4 uppercase tracking-widest border-b pb-2"
+          >
+            Physical Attributes
+          </h3>
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             <div>
-              <label class="block mb-1 font-bold text-xs text-gray-600">Weight (Grams) <span class="text-red-500">*</span></label>
-              <input v-model="form.weight" type="number" placeholder="e.g. 1000" class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm" required />
+              <label class="block mb-1 font-bold text-xs text-gray-600"
+                >Weight (Grams) <span class="text-red-500">*</span></label
+              >
+              <input
+                v-model="form.weight"
+                type="number"
+                placeholder="e.g. 1000"
+                class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm"
+                required
+              />
             </div>
             <div>
-              <label class="block mb-1 font-bold text-xs text-gray-600">Length (cm)</label>
-              <input v-model="form.length" type="number" step="0.01" placeholder="e.g. 25.5" class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm" />
+              <label class="block mb-1 font-bold text-xs text-gray-600"
+                >Length (cm)</label
+              >
+              <input
+                v-model="form.length"
+                type="number"
+                step="0.01"
+                placeholder="e.g. 25.5"
+                class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm"
+              />
             </div>
             <div>
-              <label class="block mb-1 font-bold text-xs text-gray-600">Width (cm)</label>
-              <input v-model="form.width" type="number" step="0.01" placeholder="e.g. 10" class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm" />
+              <label class="block mb-1 font-bold text-xs text-gray-600"
+                >Width (cm)</label
+              >
+              <input
+                v-model="form.width"
+                type="number"
+                step="0.01"
+                placeholder="e.g. 10"
+                class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm"
+              />
             </div>
             <div>
-              <label class="block mb-1 font-bold text-xs text-gray-600">Height (cm)</label>
-              <input v-model="form.height" type="number" step="0.01" placeholder="e.g. 15" class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm" />
+              <label class="block mb-1 font-bold text-xs text-gray-600"
+                >Height (cm)</label
+              >
+              <input
+                v-model="form.height"
+                type="number"
+                step="0.01"
+                placeholder="e.g. 15"
+                class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm"
+              />
             </div>
-            <div class="relative">
-              <label class="block mb-1 font-bold text-xs text-gray-600">Color</label>
-              <div 
+            <!-- <div class="relative">
+              <label class="block mb-1 font-bold text-xs text-gray-600"
+                >Color</label
+              >
+              <div
                 @click="toggleColorDropdown"
                 class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm cursor-pointer flex justify-between items-center"
               >
                 <div class="flex items-center gap-2">
-                  <div 
-                    v-if="form.color" 
+                  <div
+                    v-if="form.color"
                     class="w-4 h-4 rounded-full border border-gray-300 shadow-sm"
-                    :style="{ backgroundColor: colorOptions.find(c => c.name === form.color)?.hex || '#ccc' }"
+                    :style="{
+                      backgroundColor:
+                        colorOptions.find((c) => c.name === form.color)?.hex ||
+                        '#ccc',
+                    }"
                   ></div>
                   <span :class="form.color ? 'text-gray-900' : 'text-gray-400'">
-                    {{ form.color || 'Select Color' }}
+                    {{ form.color || "Select Color" }}
                   </span>
+                </div>
+                <span class="text-gray-400 text-xs">▼</span>
+              </div>
+
+              <div
+                v-if="isColorDropdownOpen"
+                class="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg max-h-48 overflow-y-auto"
+              >
+                <div
+                  @click="selectColor('')"
+                  class="p-3 hover:bg-gray-50 cursor-pointer text-sm text-gray-500 border-b border-gray-100"
+                >
+                  None / Unspecified
+                </div>
+                <div
+                  v-for="color in colorOptions"
+                  :key="color.name"
+                  @click="selectColor(color.name)"
+                  class="p-3 hover:bg-gray-50 cursor-pointer flex items-center gap-3 border-b border-gray-50 last:border-0"
+                >
+                  <div
+                    class="w-5 h-5 rounded-full border border-gray-300 shadow-sm"
+                    :style="{ backgroundColor: color.hex }"
+                  ></div>
+                  <span class="text-sm font-medium text-gray-700">{{
+                    color.name
+                  }}</span>
+                </div>
+              </div>
+            </div> -->
+            <div class="relative">
+              <label class="block mb-1 font-bold text-xs text-gray-600">Colors</label>
+              <div 
+                @click="toggleColorDropdown"
+                class="bg-white p-3 rounded-xl w-full border border-gray-200 min-h-[46px] text-sm cursor-pointer flex justify-between items-center"
+              >
+                <div class="flex flex-wrap items-center gap-2">
+                  <template v-if="form.color.length > 0">
+                    <div 
+                      v-for="(selColor, idx) in form.color" :key="idx"
+                      class="w-5 h-5 rounded-full border border-gray-300 shadow-sm"
+                      :style="{ backgroundColor: colorOptions.find(c => c.name === selColor)?.hex || '#ccc' }"
+                      :title="selColor"
+                    ></div>
+                  </template>
+                  <span v-else class="text-gray-400">Select Colors</span>
                 </div>
                 <span class="text-gray-400 text-xs">▼</span>
               </div>
 
               <div 
                 v-if="isColorDropdownOpen" 
-                class="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg max-h-48 overflow-y-auto"
+                class="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-xl max-h-56 overflow-y-auto"
               >
                 <div 
                   @click="selectColor('')"
-                  class="p-3 hover:bg-gray-50 cursor-pointer text-sm text-gray-500 border-b border-gray-100"
+                  class="p-3 hover:bg-red-50 cursor-pointer text-sm font-bold text-red-500 border-b border-gray-100 flex items-center justify-center"
                 >
-                  None / Unspecified
+                  Clear All Colors
                 </div>
                 <div 
                   v-for="color in colorOptions" 
                   :key="color.name"
                   @click="selectColor(color.name)"
-                  class="p-3 hover:bg-gray-50 cursor-pointer flex items-center gap-3 border-b border-gray-50 last:border-0"
+                  class="p-3 hover:bg-gray-50 cursor-pointer flex justify-between items-center border-b border-gray-50 last:border-0 transition-colors"
+                  :class="form.color.includes(color.name) ? 'bg-blue-50/50' : ''"
                 >
-                  <div 
-                    class="w-5 h-5 rounded-full border border-gray-300 shadow-sm" 
-                    :style="{ backgroundColor: color.hex }"
-                  ></div>
-                  <span class="text-sm font-medium text-gray-700">{{ color.name }}</span>
+                  <div class="flex items-center gap-3">
+                    <div 
+                      class="w-5 h-5 rounded-full border border-gray-300 shadow-sm" 
+                      :style="{ backgroundColor: color.hex }"
+                    ></div>
+                    <span class="text-sm font-medium" :class="form.color.includes(color.name) ? 'text-blue-700' : 'text-gray-700'">
+                      {{ color.name }}
+                    </span>
+                  </div>
+                  <svg v-if="form.color.includes(color.name)" class="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                  </svg>
                 </div>
               </div>
             </div>
             <div class="md:col-span-4 mt-2">
-              <label class="block mb-1 font-bold text-xs text-gray-600">Material (Optional)</label>
-              <input v-model="form.material" type="text" placeholder="e.g. 100% Genuine Cowhide Leather" class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm" />
+              <label class="block mb-1 font-bold text-xs text-gray-600"
+                >Material (Optional)</label
+              >
+              <input
+                v-model="form.material"
+                type="text"
+                placeholder="e.g. 100% Genuine Cowhide Leather"
+                class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm"
+              />
             </div>
           </div>
         </div>
@@ -1326,22 +1431,22 @@ const form = ref({
   width: "",
   height: "",
   material: "",
-  color: ""
+  color: [],
 });
 
 // [BARU] Daftar Warna Standar
 const colorOptions = [
-  { name: 'Black', hex: '#000000' },
-  { name: 'White', hex: '#FFFFFF' },
-  { name: 'Brown', hex: '#8B4513' },
-  { name: 'Beige', hex: '#F5F5DC' },
-  { name: 'Red', hex: '#DC143C' },
-  { name: 'Navy', hex: '#000080' },
-  { name: 'Green', hex: '#008000' },
-  { name: 'Grey', hex: '#808080' },
-  { name: 'Pink', hex: '#FFC0CB' },
-  { name: 'Yellow', hex: '#FFD700' },
-  { name: 'Blue', hex: '#4169E1' },
+  { name: "Black", hex: "#000000" },
+  { name: "White", hex: "#FFFFFF" },
+  { name: "Brown", hex: "#8B4513" },
+  { name: "Beige", hex: "#F5F5DC" },
+  { name: "Red", hex: "#DC143C" },
+  { name: "Navy", hex: "#000080" },
+  { name: "Green", hex: "#008000" },
+  { name: "Grey", hex: "#808080" },
+  { name: "Pink", hex: "#FFC0CB" },
+  { name: "Yellow", hex: "#FFD700" },
+  { name: "Blue", hex: "#4169E1" },
 ];
 
 const isColorDropdownOpen = ref(false);
@@ -1350,9 +1455,28 @@ const toggleColorDropdown = () => {
   isColorDropdownOpen.value = !isColorDropdownOpen.value;
 };
 
+// const selectColor = (colorName) => {
+//   form.value.color = colorName;
+//   isColorDropdownOpen.value = false;
+// };
+
+// 2. Ubah fungsi selectColor menjadi toggle (bisa tambah/hapus)
 const selectColor = (colorName) => {
-  form.value.color = colorName;
-  isColorDropdownOpen.value = false;
+  // Jika "None" dipilih, kosongkan semua
+  if (colorName === "") {
+    form.value.color = [];
+    isColorDropdownOpen.value = false;
+    return;
+  }
+
+  // Jika warna sudah ada, hapus. Jika belum, tambahkan.
+  const index = form.value.color.indexOf(colorName);
+  if (index > -1) {
+    form.value.color.splice(index, 1);
+  } else {
+    form.value.color.push(colorName);
+  }
+  // Catatan: isColorDropdownOpen tidak di-false-kan agar admin bisa pilih warna lain sekaligus
 };
 
 const axiosConfig = {
@@ -1392,7 +1516,8 @@ const fillFormWithData = (p) => {
   form.value.width = p.width;
   form.value.height = p.height;
   form.value.material = p.material;
-  form.value.color = p.color;
+  // form.value.color = p.color;
+  form.value.color = Array.isArray(p.color) ? p.color : [];
 
   currentImage.value = p.image;
   currentVariantImages.value = p.variant_images || [];
@@ -1453,7 +1578,13 @@ const handleSubmit = async () => {
     if (form.value.width) formData.append("width", form.value.width);
     if (form.value.height) formData.append("height", form.value.height);
     if (form.value.material) formData.append("material", form.value.material);
-    formData.append("color", form.value.color || "");
+    // formData.append("color", form.value.color || "");
+    // [BARU] Cara mengirim Array Color ke Laravel
+    if (form.value.color && form.value.color.length > 0) {
+      form.value.color.forEach((c, index) => {
+        formData.append(`color[${index}]`, c);
+      });
+    }
 
     if (form.value.discount_price) {
       formData.append("discount_price", form.value.discount_price);
