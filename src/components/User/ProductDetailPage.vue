@@ -1247,7 +1247,6 @@ onMounted(fetchProductDetail);
           <div
             v-for="section in [
               'Description',
-              'Care',
               'Design',
               'Shipping & Returns',
             ]"

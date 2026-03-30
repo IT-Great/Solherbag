@@ -1178,13 +1178,13 @@ const handleSubmit = async () => {
             class="bg-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 w-full h-32"
           ></textarea>
         </div>
-        <div>
+        <!-- <div>
           <label class="block mb-1 font-bold text-sm">Care Instructions</label>
           <textarea
             v-model="form.care"
             class="bg-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 w-full h-32"
           ></textarea>
-        </div>
+        </div> -->
         <div>
           <label class="block mb-1 font-bold text-sm">Design Details</label>
           <textarea

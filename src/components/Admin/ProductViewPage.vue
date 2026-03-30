@@ -443,7 +443,7 @@
             </div>
           </div>
 
-          <div class="py-4">
+          <!-- <div class="py-4">
             <button
               @click="toggleSection('care')"
               class="w-full flex justify-between items-center text-left focus:outline-none"
@@ -462,7 +462,7 @@
             >
               {{ product.care || "No care instructions provided." }}
             </div>
-          </div>
+          </div> -->
 
           <div class="py-4">
             <button
