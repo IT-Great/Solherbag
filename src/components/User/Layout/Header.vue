@@ -2552,21 +2552,48 @@ const shuffleArray = (array) => {
 };
 
 // Filter dan Acak Produk
+// const generateRandomProducts = () => {
+//   if (!productState.allProducts || productState.allProducts.length === 0) return;
+  
+//   isMegaMenuLoading.value = true;
+  
+//   // Kasih delay super kecil agar loading UI sempat merender (memberi kesan sistem sedang bekerja)
+//   setTimeout(() => {
+//     let filtered = [];
+//     if (activeMegaCategory.value === 'all') {
+//       filtered = [...productState.allProducts];
+//     } else {
+//       filtered = productState.allProducts.filter(p => p.category_id === activeMegaCategory.value);
+//     }
+
+//     // Acak dan ambil maksimal 8
+//     randomMegaProducts.value = shuffleArray(filtered).slice(0, 8);
+//     isMegaMenuLoading.value = false;
+//   }, 100);
+// };
+
 const generateRandomProducts = () => {
-  if (!productState.allProducts || productState.allProducts.length === 0) return;
+  // Fallback check: if it's STILL empty after awaiting, log it so we know the store is the issue
+  if (!productState.allProducts || productState.allProducts.length === 0) {
+    console.warn("Mega Menu: productState.allProducts is empty even after fetching.");
+    isMegaMenuLoading.value = false;
+    randomMegaProducts.value = [];
+    return;
+  }
   
   isMegaMenuLoading.value = true;
   
-  // Kasih delay super kecil agar loading UI sempat merender (memberi kesan sistem sedang bekerja)
   setTimeout(() => {
     let filtered = [];
     if (activeMegaCategory.value === 'all') {
       filtered = [...productState.allProducts];
     } else {
-      filtered = productState.allProducts.filter(p => p.category_id === activeMegaCategory.value);
+      // NOTE: Ensure the data types match! 
+      // Sometimes API returns category_id as String, but activeMegaCategory is an Integer (or vice versa).
+      // Using '==' instead of '===' prevents type mismatch bugs here.
+      filtered = productState.allProducts.filter(p => p.category_id == activeMegaCategory.value);
     }
 
-    // Acak dan ambil maksimal 8
     randomMegaProducts.value = shuffleArray(filtered).slice(0, 8);
     isMegaMenuLoading.value = false;
   }, 100);
@@ -2583,18 +2610,42 @@ const fetchCategoriesForMegaMenu = async () => {
   }
 };
 
+// const openMegaMenu = async () => {
+//   clearTimeout(megaMenuTimer.value);
+//   isMegaMenuOpen.value = true;
+//   isDropdownOpen.value = false; // Tutup dropdown profile jika sedang buka
+  
+//   // Pastikan data katalog sudah ada di Global Store
+//   if (!productState.isHomeLoaded) {
+//     await fetchHomeData();
+//   }
+  
+//   fetchCategoriesForMegaMenu();
+//   generateRandomProducts(); // Acak saat pertama dibuka
+// };
+
 const openMegaMenu = async () => {
   clearTimeout(megaMenuTimer.value);
   isMegaMenuOpen.value = true;
-  isDropdownOpen.value = false; // Tutup dropdown profile jika sedang buka
+  isDropdownOpen.value = false;
   
-  // Pastikan data katalog sudah ada di Global Store
-  if (!productState.isHomeLoaded) {
-    await fetchHomeData();
+  // 1. Show loading state immediately
+  isMegaMenuLoading.value = true;
+
+  // 2. Fetch categories
+  fetchCategoriesForMegaMenu();
+
+  // 3. Ensure product data exists
+  if (!productState.isHomeLoaded || !productState.allProducts || productState.allProducts.length === 0) {
+    try {
+      await fetchHomeData();
+    } catch (e) {
+      console.error("Failed to fetch home data for Mega Menu", e);
+    }
   }
   
-  fetchCategoriesForMegaMenu();
-  generateRandomProducts(); // Acak saat pertama dibuka
+  // 4. Generate random products (it will now definitely have data)
+  generateRandomProducts();
 };
 
 const keepMegaMenuOpen = () => {
