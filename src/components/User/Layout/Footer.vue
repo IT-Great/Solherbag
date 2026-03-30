@@ -143,7 +143,7 @@ const handleFooterSignUp = () => {
 };
 </script> -->
 
-<template>
+<!-- <template>
   <footer
     class="relative bg-[#c1c1c1] mt-auto px-6 pt-16 pb-8 border-gray-300 border-t w-full"
   >
@@ -252,4 +252,96 @@ const handleSubscribe = async () => {
     isLoading.value = false;
   }
 };
-</script>
+</script> -->
+
+<template>
+  <footer
+    class="relative bg-[#c1c1c1] mt-auto px-6 pt-16 pb-12 border-gray-300 border-t w-full"
+  >
+    <div class="mx-auto max-w-7xl">
+      <div
+        class="flex md:flex-row flex-col justify-between items-start gap-10 mb-12 pb-12 border-gray-400 border-b"
+      >
+        <div class="max-w-sm">
+          <h3 class="mb-4 font-normal text-black text-2xl">
+            Join our email list
+          </h3>
+          <p class="text-gray-600 text-sm">
+            Get exclusive deals and early access to new products.
+          </p>
+        </div>
+
+        <form
+          @submit.prevent="handleSubscribe"
+          class="flex sm:flex-row flex-col gap-3 w-full md:w-auto"
+        >
+          <input
+            v-model="footerEmail"
+            type="email"
+            placeholder="Email address"
+            class="bg-gray-100/50 px-4 py-3 border-none outline-none focus:ring-1 focus:ring-black min-w-[300px] text-sm placeholder-gray-700 disabled:opacity-50"
+            :disabled="isLoading"
+            required
+          />
+          <button
+            type="submit"
+            :disabled="isLoading"
+            class="bg-[#1A1A1A] hover:bg-black disabled:bg-gray-500 px-8 py-3 font-semibold text-white text-sm uppercase tracking-widest transition flex justify-center items-center gap-2"
+          >
+            <span v-if="!isLoading">Subscribe</span>
+            <span v-else class="flex items-center gap-2">
+              <div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+              Wait...
+            </span>
+          </button>
+        </form>
+      </div>
+
+      <div class="flex flex-col md:flex-row justify-between items-start gap-10">
+        
+        <div class="w-full md:w-1/4">
+          <h4 class="font-bold text-black text-lg uppercase tracking-widest mb-4">Solher</h4>
+          <p class="text-xs text-gray-600 mb-8 leading-relaxed pr-4">
+            Crafted from premium selected leather, each SolHer piece reflects timeless elegance and refined craftsmanship.
+          </p>
+          <div class="text-[10px] text-gray-500 uppercase tracking-widest">
+            <span>© 2026 Solher.<br/>All Rights Reserved.</span>
+          </div>
+        </div>
+
+        <div class="w-full md:w-3/4 grid grid-cols-2 md:grid-cols-3 gap-8 text-sm">
+          
+          <div class="flex flex-col space-y-4">
+            <h4 class="font-bold text-black text-[11px] uppercase tracking-widest mb-2">About Us</h4>
+            <router-link to="/about-us" class="text-gray-600 hover:text-black transition-colors text-xs font-medium">About Solher</router-link>
+            <router-link to="/contact" class="text-gray-600 hover:text-black transition-colors text-xs font-medium">Contact Us</router-link>
+            <router-link to="/stores" class="text-gray-600 hover:text-black transition-colors text-xs font-medium">Stores</router-link>
+          </div>
+
+          <div class="flex flex-col space-y-4">
+            <h4 class="font-bold text-black text-[11px] uppercase tracking-widest mb-2">Support</h4>
+            <router-link to="/customer-care" class="text-gray-600 hover:text-black transition-colors text-xs font-medium">Customer Care</router-link>
+            <router-link to="/faq" class="text-gray-600 hover:text-black transition-colors text-xs font-medium">FAQs</router-link>
+          </div>
+
+          <div class="flex flex-col space-y-4">
+            <h4 class="font-bold text-black text-[11px] uppercase tracking-widest mb-2">Policies</h4>
+            <router-link to="/terms" class="text-gray-600 hover:text-black transition-colors text-xs font-medium">Terms & Conditions</router-link>
+            <router-link to="/privacy" class="text-gray-600 hover:text-black transition-colors text-xs font-medium">Privacy Policy</router-link>
+            <router-link to="/shipping-policy" class="text-gray-600 hover:text-black transition-colors text-xs font-medium">Shipping Policy</router-link>
+            <router-link to="/refund-policy" class="text-gray-600 hover:text-black transition-colors text-xs font-medium">Refund Policy</router-link>
+          </div>
+          
+        </div>
+      </div>
+      </div>
+
+    <a
+      href="https://wa.me/628883888585?text=Hi"
+      target="_blank"
+      class="right-8 bottom-8 z-[60] fixed hover:scale-110 transition-transform"
+    >
+      <img src="../../../assets/wa_icon.png" alt="WA" class="w-12 h-12" />
+    </a>
+  </footer>
+</template>
