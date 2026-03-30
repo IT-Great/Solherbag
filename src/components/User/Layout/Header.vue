@@ -2320,7 +2320,6 @@ watch(
 <template>
   <header
     class="top-0 left-0 z-50 fixed bg-white px-6 py-4 border-gray-200 border-b w-full"
-    @mouseleave="closeMegaMenu" 
   >
     <div
       class="relative flex justify-between items-center mx-auto max-w-7xl h-8 md:h-12"
@@ -2343,6 +2342,7 @@ watch(
           <div 
             class="relative h-full flex items-center"
             @mouseenter="openMegaMenu"
+            @mouseleave="closeMegaMenu"
           >
             <router-link
               to="/collections"
