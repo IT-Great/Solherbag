@@ -614,6 +614,10 @@ import ProductStockPage from "../components/Admin/ProductStockPage.vue";
 import CollectionsPage from "../components/User/CollectionPage.vue";
 import BestSellerPage from "../components/User/BestSellerPage.vue"; 
 import ContactPage from "../components/User/ContactPage.vue";
+import ShippingPolicy from "../components/User/ShippingPolicy.vue";
+import RefundPolicy from "../components/User/RefundPolicy.vue";
+import TermsAndCondition from "../components/User/TermsAndCondition.vue";
+import PrivacyPolicy from "../components/User/PrivacyPolicy.vue";
 
 const routes = [
   { path: "/", name: "Home", component: HomePage },
@@ -690,6 +694,26 @@ const routes = [
   { path: "/customer-care", name: "CustomerCare", component: CustomerCarePage },
   { path: "/faq", name: "Faq", component: FaqPage },
   { path: "/about-us", name: "AboutUs", component: AboutUsPage },
+  {
+    path: '/shipping-policy',
+    name: 'ShippingPolicy',
+    component: ShippingPolicy
+  },
+  {
+    path: '/refund-policy',
+    name: 'RefundPolicy',
+    component: RefundPolicy
+  },
+  {
+    path: '/terms',
+    name: 'TermsAndCondition',
+    component: TermsAndCondition
+  },
+  {
+    path: '/privacy',
+    name: 'PrivacyPolicy',
+    component: PrivacyPolicy
+  },
   {
     path: "/favorites",
     name: "Favorites",

@@ -1255,8 +1255,7 @@ onMounted(fetchProductDetail);
                 <template v-if="section !== 'Shipping & Returns'">
                   {{ product[section.toLowerCase()] || "No information available." }}
                 </template>
-                <template v-else>
-                  Shipping options are available on the payment page through our partnership with Biteship. For product returns, please refer to the contact information on our Customer Care page. Returns can be coordinated following an automatic refund or as part of a manual refund application.
+                <template v-else>Shipping options are available on the payment page through our partnership with Biteship. For product returns, please refer to the contact information on our Customer Care page. Returns can be coordinated following an automatic refund or as part of a manual refund application.
                 </template>
               </div>
             </transition>
