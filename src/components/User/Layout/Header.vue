@@ -2618,7 +2618,7 @@ const generateRandomProducts = () => {
       filtered = productState.collectionsProducts.filter(p => p.category_id == activeMegaCategory.value);
     }
 
-    randomMegaProducts.value = shuffleArray(filtered).slice(0, 8);
+    randomMegaProducts.value = shuffleArray(filtered).slice(0, 4);
     isMegaMenuLoading.value = false;
   }, 100);
 };
