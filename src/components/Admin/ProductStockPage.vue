@@ -75,7 +75,7 @@
           <tr v-for="product in filteredProducts" :key="product.id" class="border-b border-gray-50 hover:bg-gray-50 transition align-top">
             <td class="py-4 pl-2 w-[25%]">
               <div class="flex items-center gap-4">
-                <img :src="product.image" class="w-12 h-12 rounded-lg object-cover border border-gray-100 shadow-sm" />
+                <img :src="product.image || defaultBagIcon" class="w-12 h-12 rounded-lg object-cover border border-gray-100 shadow-sm" />
                 <div>
                   <p class="font-bold text-gray-900 text-sm">{{ product.name }}</p>
                   <p class="text-[10px] text-gray-400 font-mono">{{ product.code }}</p>
@@ -223,6 +223,9 @@ import { ref, onMounted, computed } from "vue";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
+
+// [BARU] Import gambar default sebagai fallback
+import defaultBagIcon from "../../assets/products/bag_icon.jpg";
 
 const products = ref([]);
 const isLoading = ref(true);
