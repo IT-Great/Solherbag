@@ -330,7 +330,7 @@
           </div>
         </div>
 
-        <div
+        <!-- <div
           class="bg-gray-50 p-6 rounded-2xl border border-gray-100 flex justify-between items-center"
         >
           <div>
@@ -418,6 +418,86 @@
             <p class="text-sm font-medium text-gray-900">
               {{ formatDate(product.created_at) }}
             </p>
+          </div>
+        </div> -->
+
+        <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 flex flex-col gap-5 mb-6">
+          <div class="flex justify-between items-start sm:items-center flex-col sm:flex-row gap-4">
+            <div>
+              <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">
+                Total Available Stock
+              </p>
+              <p :class="product.stock <= 5 ? 'text-red-600' : 'text-gray-900'" class="text-3xl font-black">
+                {{ product.stock }} <span class="text-sm font-medium text-gray-500">pcs</span>
+              </p>
+            </div>
+            <router-link
+              to="/admin/stocks"
+              class="bg-white border border-gray-200 hover:border-blue-500 hover:text-blue-600 px-4 py-2.5 rounded-xl text-xs font-bold text-gray-700 transition-all flex items-center gap-2 shadow-sm group"
+            >
+              Manage Batches 
+              <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
+            </router-link>
+          </div>
+
+          <div
+            v-if="product.stocks && product.stocks.length > 0"
+            class="border border-gray-200 rounded-xl bg-white overflow-hidden shadow-sm"
+          >
+            <div class="bg-gray-100/50 px-5 py-3 border-b border-gray-200 flex justify-between items-center">
+              <p class="text-[10px] font-bold text-gray-600 uppercase tracking-widest">
+                Active Stock Batches (FIFO)
+              </p>
+              <span class="text-[10px] font-bold text-gray-400 bg-gray-200 px-2 py-0.5 rounded-md">
+                {{ product.stocks.length }} Batch
+              </span>
+            </div>
+            
+            <div class="p-2 max-h-48 overflow-y-auto custom-scrollbar">
+              <div
+                v-for="batch in product.stocks"
+                :key="batch.id"
+                class="flex justify-between items-center p-3 hover:bg-gray-50 rounded-lg transition-colors border border-transparent hover:border-gray-100"
+              >
+                <div class="flex items-center gap-4">
+                  <div class="relative flex items-center justify-center w-3 h-3">
+                    <span class="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-green-400"></span>
+                    <span class="relative inline-flex w-2 h-2 rounded-full bg-green-500"></span>
+                  </div>
+                  
+                  <div>
+                    <p class="font-mono font-bold text-gray-800 text-sm">
+                      {{ batch.batch_code }}
+                    </p>
+                    <p class="text-[10px] font-medium text-gray-400 mt-0.5 uppercase tracking-wide">
+                      Added: {{ formatDate(batch.created_at) }}
+                    </p>
+                  </div>
+                </div>
+                
+                <span class="font-black text-blue-700 bg-blue-50 border border-blue-100 px-3 py-1.5 rounded-lg text-xs shadow-sm">
+                  {{ batch.quantity }} pcs
+                </span>
+              </div>
+            </div>
+          </div>
+          
+          <div v-else class="text-center py-6 bg-white rounded-xl border border-gray-200 border-dashed">
+            <p class="text-xs text-gray-500 font-medium">No active stock batches found.</p>
+          </div>
+
+          <div class="flex justify-between items-center border-t border-gray-200 pt-4 mt-2">
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+              Data Record
+            </p>
+            <div class="text-right">
+              <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-0.5">
+                Created At
+              </p>
+              <p class="text-xs font-bold text-gray-700">
+                {{ formatDate(product.created_at) }}
+              </p>
+            </div>
           </div>
         </div>
 
