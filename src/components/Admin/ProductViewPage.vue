@@ -496,6 +496,9 @@ import { useRoute, useRouter } from "vue-router";
 import axios from "axios";
 import { BASE_URL } from "../../config/api.js";
 
+// [BARU] Import gambar default
+import defaultBagIcon from "../../assets/products/bag_icon.jpg";
+
 const route = useRoute();
 const router = useRouter();
 const product = ref(null);
@@ -512,7 +515,9 @@ const axiosConfig = {
 const allMedia = computed(() => {
   if (!product.value) return [];
 
-  let media = [{ type: "image", url: product.value.image }];
+  // let media = [{ type: "image", url: product.value.image }];
+  // [PERBAIKAN] Berikan fallback defaultBagIcon jika product.value.image kosong
+  let media = [{ type: "image", url: product.value.image || defaultBagIcon }];
 
   if (
     product.value.variant_images &&

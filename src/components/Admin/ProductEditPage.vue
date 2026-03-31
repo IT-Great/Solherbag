@@ -889,7 +889,7 @@ const handleSubmit = async () => {
               Leave blank to keep current image.
             </p>
             <div class="flex items-center gap-4">
-              <img
+              <!-- <img
                 v-if="currentImage"
                 :src="currentImage"
                 class="w-16 h-16 object-cover rounded-lg border shadow-sm"
@@ -900,7 +900,13 @@ const handleSubmit = async () => {
                 class="w-16 h-16 bg-gray-200 rounded-lg flex justify-center items-center text-[10px] text-gray-400"
               >
                 No Img
-              </div>
+              </div> -->
+
+              <img
+                :src="currentImage || defaultBagIcon"
+                class="w-16 h-16 object-cover rounded-lg border shadow-sm"
+                alt="Main Image Preview"
+              />
 
               <input
                 type="file"
@@ -1413,6 +1419,9 @@ import axios from "axios";
 import { useRouter, useRoute } from "vue-router";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
+
+// [BARU] Import gambar default
+import defaultBagIcon from "../../assets/products/bag_icon.jpg";
 
 const router = useRouter();
 const route = useRoute();

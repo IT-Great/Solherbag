@@ -740,7 +740,7 @@ onMounted(fetchData);
           >
             <td class="py-4">
               <img
-                :src="p.image"
+                :src="p.image || defaultBagIcon"
                 class="shadow-sm rounded-lg w-16 h-16 object-cover"
                 alt="Product Image"
               />
@@ -855,6 +855,9 @@ import { useRouter } from "vue-router";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
+
+// [BARU] Import gambar default
+import defaultBagIcon from "../../assets/products/bag_icon.jpg";
 
 const products = ref([]);
 const categories = ref([]);

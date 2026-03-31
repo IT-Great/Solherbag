@@ -345,7 +345,7 @@ onMounted(async () => {
           </select>
         </div>
 
-        <div>
+        <!-- <div>
           <label class="block mb-1 font-bold text-sm"
             >Main Image <span class="text-red-500">*</span></label
           >
@@ -355,6 +355,18 @@ onMounted(async () => {
             accept="image/*"
             class="w-full text-sm"
             required
+          />
+        </div> -->
+
+        <div>
+          <label class="block mb-1 font-bold text-sm"
+            >Main Image (Optional)</label
+          >
+          <input
+            type="file"
+            @change="handleFile"
+            accept="image/*"
+            class="w-full text-sm"
           />
         </div>
 
@@ -919,11 +931,16 @@ const handleSubmit = async () => {
       formData.append("discount_price", form.value.discount_price);
     }
 
+    // if (form.value.image) {
+    //   formData.append("image", form.value.image);
+    // } else {
+    //   throw new Error("Main image is required");
+    // }
+
     if (form.value.image) {
       formData.append("image", form.value.image);
-    } else {
-      throw new Error("Main image is required");
     }
+    // else block dihapus, sehingga form tetap terkirim meskipun image tidak ada
 
     if (form.value.variant_images.length > 0) {
       form.value.variant_images.forEach((file, index) => {
