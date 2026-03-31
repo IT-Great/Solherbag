@@ -754,6 +754,58 @@ onMounted(initData);
       </div>
     </div>
 
+    <div class="px-6 pb-24 w-full">
+      <div class="mx-auto max-w-[1600px]">
+        <h3
+          v-reveal
+          class="mb-10 font-serif font-light text-gray-800 text-3xl md:text-4xl italic"
+        >
+          Volume 3 - The Raya Heirloom
+        </h3>
+
+        <div v-if="isLoading" class="flex gap-4 overflow-hidden">
+          <div
+            v-for="n in 4"
+            :key="n"
+            class="flex-shrink-0 w-[300px] md:w-[380px] animate-pulse"
+          >
+            <div class="bg-gray-200 mb-4 w-full h-[350px] md:h-[450px]"></div>
+            <div class="bg-gray-200 mb-2 w-1/2 h-3"></div>
+            <div class="bg-gray-200 w-1/4 h-3"></div>
+          </div>
+        </div>
+
+        <div v-else v-reveal class="flex gap-4 overflow-x-auto scrollbar-hide">
+          <div
+            v-for="p in state.volumeThree"
+            :key="p.id"
+            @click="$router.push(`/product/${p.id}`)"
+            class="group flex-shrink-0 w-[300px] md:w-[380px] cursor-pointer"
+          >
+            <div class="bg-gray-100 mb-4 overflow-hidden relative">
+              <img
+                :src="p.image"
+                class="w-full h-[350px] md:h-[450px] object-cover group-hover:scale-110 transition-transform duration-700"
+                loading="lazy"
+              />
+              <div
+                v-if="p.stock < 5"
+                class="absolute bottom-3 left-3 bg-amber-100 text-amber-800 px-2 py-1 text-[9px] font-bold uppercase tracking-widest rounded shadow-sm"
+              >
+                Only {{ p.stock }} left
+              </div>
+            </div>
+            <h4 class="text-[10px] text-gray-500 uppercase tracking-widest">
+              {{ p.name }}
+            </h4>
+            <p class="font-medium text-black">
+              {{ formatPrice(p.discount_price ?? p.price) }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div
       v-reveal
       class="relative w-full h-[300px] md:h-[500px] overflow-hidden cursor-pointer group"
