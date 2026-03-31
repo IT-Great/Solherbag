@@ -2122,6 +2122,7 @@ const colorMap = {
   Pink: "#FFC0CB",
   Yellow: "#FFD700",
   Blue: "#4169E1",
+  Mocca: '#967969', // <--- WARNA BARU
 };
 
 const getColorHex = (colorName) => {

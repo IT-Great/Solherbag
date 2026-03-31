@@ -612,7 +612,8 @@ const colorMap = {
   Yellow: "#FFD700",
   Blue: "#4169E1",
   Cream: '#FFFDD0', // <--- Warna Baru
-  Sage: '#9DC183'   // <--- Warna Baru
+  Sage: '#9DC183',   // <--- Warna Baru
+  Mocca: '#967969', // <--- WARNA BARU
 };
 
 const getColorHex = (colorName) => {

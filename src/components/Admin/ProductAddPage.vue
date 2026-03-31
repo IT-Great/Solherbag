@@ -588,7 +588,7 @@ onMounted(async () => {
                 </div>
               </div>
             </div> -->
-            <div class="relative">
+            <div class="relative md:col-span-4">
               <label class="block mb-1 font-bold text-xs text-gray-600">Colors</label>
               <div 
                 @click="toggleColorDropdown"
@@ -847,6 +847,7 @@ const colorOptions = [
   { name: "Blue", hex: "#4169E1" },
   { name: "Cream", hex: "#FFFDD0" }, // <--- Warna Baru
   { name: "Sage", hex: "#9DC183" },  // <--- Warna Baru
+  { name: "Mocca", hex: "#967969" }, // <--- WARNA BARU
 ];
 
 const isColorDropdownOpen = ref(false);
