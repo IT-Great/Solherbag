@@ -606,6 +606,8 @@ const colorMap = {
   Pink: "#FFC0CB",
   Yellow: "#FFD700",
   Blue: "#4169E1",
+  Cream: '#FFFDD0', // <--- Warna Baru
+  Sage: '#9DC183'   // <--- Warna Baru
 };
 
 const getColorHex = (colorName) => {

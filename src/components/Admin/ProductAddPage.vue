@@ -805,6 +805,21 @@ const form = ref({
   discount_price: "",
 });
 
+// // [BARU] Daftar Warna Standar
+// const colorOptions = [
+//   { name: "Black", hex: "#000000" },
+//   { name: "White", hex: "#FFFFFF" },
+//   { name: "Brown", hex: "#8B4513" },
+//   { name: "Beige", hex: "#F5F5DC" },
+//   { name: "Red", hex: "#DC143C" },
+//   { name: "Navy", hex: "#000080" },
+//   { name: "Green", hex: "#008000" },
+//   { name: "Grey", hex: "#808080" },
+//   { name: "Pink", hex: "#FFC0CB" },
+//   { name: "Yellow", hex: "#FFD700" },
+//   { name: "Blue", hex: "#4169E1" },
+// ];
+
 // [BARU] Daftar Warna Standar
 const colorOptions = [
   { name: "Black", hex: "#000000" },
@@ -818,6 +833,8 @@ const colorOptions = [
   { name: "Pink", hex: "#FFC0CB" },
   { name: "Yellow", hex: "#FFD700" },
   { name: "Blue", hex: "#4169E1" },
+  { name: "Cream", hex: "#FFFDD0" }, // <--- Warna Baru
+  { name: "Sage", hex: "#9DC183" },  // <--- Warna Baru
 ];
 
 const isColorDropdownOpen = ref(false);
