@@ -2463,7 +2463,7 @@ watch(
                 class="group cursor-pointer"
               >
                 <div class="bg-gray-100 aspect-square mb-3 overflow-hidden rounded-lg relative">
-                  <img :src="product.image" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <img :src="product.image || defaultBagIcon" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   <div v-if="product.discount_price" class="absolute top-2 left-2 bg-red-600 text-white px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-widest rounded-sm">Sale</div>
                 </div>
                 <h4 class="font-bold text-[10px] uppercase tracking-widest text-gray-900 truncate">{{ product.name }}</h4>
@@ -2503,6 +2503,9 @@ import { useRoute, useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import axios from "axios"; // Tambahkan axios jika belum ada
 import SearchModal from "../../User/Layout/SearchModal.vue";
+
+// [BARU] Import gambar default untuk fallback
+import defaultBagIcon from "../../../assets/products/bag_icon.jpg";
 
 // [BARU] Import Global Cart State
 import { useCart } from "../../../composables/useCart";

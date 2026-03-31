@@ -1151,7 +1151,7 @@ onMounted(() => {
                 @click="$router.push(`/product/${item.product.id}`)"
               >
                 <img
-                  :src="item.product.image"
+                  :src="item.product.image|| defaultBagIcon"
                   class="bg-gray-50 shadow-sm rounded-2xl w-full h-full object-cover"
                 />
                 <div
@@ -1323,7 +1323,7 @@ onMounted(() => {
                   @click="$router.push(`/product/${product.id}`)"
                 >
                   <img
-                    :src="product.image"
+                    :src="product.image || defaultBagIcon"
                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     alt="Suggested Product"
                   />
@@ -1415,6 +1415,9 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
 import { useCart } from "../../composables/useCart";
+
+// [BARU] Import gambar default
+import defaultBagIcon from "../../assets/products/bag_icon.jpg";
 
 const router = useRouter();
 const isProcessingCheckout = ref(false);

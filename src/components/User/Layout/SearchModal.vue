@@ -310,7 +310,7 @@ onMounted(() => {
             >
               <div class="relative bg-gray-50 shadow-sm mb-2 rounded-xl aspect-square overflow-hidden">
                 <img
-                  :src="product.image"
+                  :src="product.image || defaultBagIcon"
                   class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
               </div>
@@ -359,7 +359,7 @@ onMounted(() => {
               >
                 <div class="relative bg-gray-50 shadow-sm mb-2 rounded-xl aspect-square overflow-hidden">
                   <img
-                    :src="item.image"
+                    :src="item.image || defaultBagIcon"
                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                 </div>
@@ -386,7 +386,7 @@ onMounted(() => {
               >
                 <div class="relative bg-gray-50 shadow-sm mb-2 rounded-xl aspect-square overflow-hidden">
                   <img
-                    :src="product.image"
+                    :src="product.image || defaultBagIcon"
                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                 </div>
@@ -499,6 +499,9 @@ import { ref, onMounted, onUnmounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
 import { BASE_URL } from "../../../config/api";
+
+// [BARU] Import gambar default
+import defaultBagIcon from "../../../assets/products/bag_icon.jpg";
 
 const emit = defineEmits(["close"]);
 const router = useRouter();
