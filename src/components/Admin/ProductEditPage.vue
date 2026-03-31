@@ -1648,7 +1648,7 @@ const handleSubmit = async () => {
 
     await axios.post(`${BASE_URL}/products/${productId}`, formData, {
       headers: {
-        "Content-Type": "multipart/form-data",
+        // "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
       },
     });
