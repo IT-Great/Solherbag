@@ -1810,6 +1810,9 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
 
+// [BARU] Import gambar default
+import defaultBagIcon from "../../assets/products/bag_icon.jpg";
+
 // Tambahkan useCart ke daftar import
 import { useCart } from "../../composables/useCart";
 
@@ -1860,7 +1863,10 @@ const isInCart = computed(() => {
 
 const allMedia = computed(() => {
   if (!product.value) return [];
-  let media = [{ type: "image", url: product.value.image }];
+
+  // let media = [{ type: "image", url: product.value.image }];
+  // [PERBAIKAN] Gunakan fallback image
+  let media = [{ type: "image", url: product.value.image || defaultBagIcon }];
 
   if (
     product.value.variant_images &&

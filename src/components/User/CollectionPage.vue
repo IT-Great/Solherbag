@@ -1216,7 +1216,7 @@ onUnmounted(() => {
                 >
                   <img
                     v-if="media.type === 'image'"
-                    :src="media.url"
+                    :src="media.url || defaultBagIcon"
                     class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     alt="Product Image"
                   />
@@ -1641,6 +1641,9 @@ import { BASE_URL } from "../../config/api.js";
 // [BARU] Import Fuse.js
 import Fuse from "fuse.js";
 
+// [BARU] Import gambar default
+import defaultBagIcon from "../../assets/products/bag_icon.jpg";
+
 const route = useRoute();
 const router = useRouter();
 
@@ -1662,7 +1665,11 @@ const isFavorited = (id) => userWishlists.value.includes(id);
 const activeSlides = ref({});
 
 const getMediaArray = (prod) => {
-  let media = [{ type: "image", url: prod.image }];
+  // let media = [{ type: "image", url: prod.image }];
+
+  // [PERBAIKAN] Berikan defaultBagIcon jika prod.image kosong
+  let media = [{ type: "image", url: prod.image || defaultBagIcon }];
+
   if (prod.variant_images && Array.isArray(prod.variant_images)) {
     prod.variant_images.forEach((img) =>
       media.push({ type: "image", url: img }),
