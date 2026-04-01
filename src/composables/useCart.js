@@ -455,16 +455,110 @@ export function useCart() {
   // };
 
   // [PERBAIKAN] Tambahkan 'quantity = 1' di parameter destructuring
+  //   const handleOptimisticAdd = async (
+  //     { product, cartId, quantity = 1 },
+  //     onBounceCallback,
+  //   ) => {
+  //     const existingItem = cartItems.value.find(
+  //       (item) => item.product_id === product.id,
+  //     );
+
+  //     if (existingItem) {
+  //       // [PERBAIKAN] Tambahkan berdasarkan jumlah yang di-request, bukan sekadar + 1
+  //       handleQtyChange(existingItem, existingItem.quantity + quantity);
+  //       if (onBounceCallback) onBounceCallback();
+
+  //       if (!selectedItemIds.value.includes(existingItem.id)) {
+  //         selectedItemIds.value.push(existingItem.id);
+  //       }
+  //       return;
+  //     }
+
+  //     const tempId = cartId || "temp_" + Date.now();
+  //     const unitPrice = parseFloat(product.discount_price ?? product.price);
+
+  //     const newItem = {
+  //       id: tempId,
+  //       product_id: product.id,
+  //       quantity: quantity, // [PERBAIKAN] Gunakan variabel quantity
+  //       gross_amount: unitPrice * quantity, // [PERBAIKAN] Harga dikalikan quantity
+  //       isSyncing: !cartId,
+  //       isCreating: !cartId,
+  //       product: product,
+  //     };
+
+  //     cartItems.value.unshift(newItem);
+  //     selectedItemIds.value.push(tempId);
+
+  //     if (onBounceCallback) onBounceCallback();
+
+  //     if (cartId) return;
+
+  //     try {
+  //       const token = localStorage.getItem("token");
+  //       const res = await axios.post(
+  //         `${BASE_URL}/carts`,
+  //         // [PERBAIKAN] Kirim quantity aktual ke backend
+  //         {
+  //           product_id: product.id,
+  //           quantity: quantity, // [PERBAIKAN MUTLAK] TANGKAP WARNANYA!
+  //           color: payload.color || payload.detail?.color || null,
+  //         },
+  //         { headers: { Authorization: `Bearer ${token}` } },
+  //       );
+
+  //       const realId = res.data.cart_id || res.data.id || res.data.data?.id;
+  //       const itemInCart = cartItems.value.find((i) => i.id === tempId);
+
+  //       if (itemInCart) {
+  //         if (realId) {
+  //           itemInCart.id = realId;
+  //           itemInCart.isCreating = false;
+
+  //           const selIndex = selectedItemIds.value.indexOf(tempId);
+  //           if (selIndex !== -1) {
+  //             selectedItemIds.value[selIndex] = realId;
+  //           }
+
+  //           // Hanya sync jika quantity BUKAN seperti yang kita kirim
+  //           // (misal dibatasi oleh backend karena stok kurang)
+  //           if (itemInCart.quantity !== quantity) {
+  //             syncQtyToDatabase(itemInCart);
+  //           } else {
+  //             itemInCart.isSyncing = false;
+  //           }
+  //         } else {
+  //           throw new Error("Missing Cart ID from Server!");
+  //         }
+  //       } else {
+  //         if (realId) {
+  //           axios
+  //             .delete(`${BASE_URL}/carts/${realId}`, {
+  //               headers: { Authorization: `Bearer ${token}` },
+  //             })
+  //             .catch(() => {});
+  //         }
+  //       }
+  //     } catch (error) {
+  //       cartItems.value = cartItems.value.filter((i) => i.id !== tempId);
+  //       selectedItemIds.value = selectedItemIds.value.filter(
+  //         (id) => id !== tempId,
+  //       );
+  //       fetchCarts();
+  //     }
+  //   };
+
+  // [PERBAIKAN MUTLAK] Tangkap parameter 'color' langsung dari destructuring argumen
   const handleOptimisticAdd = async (
-    { product, cartId, quantity = 1 },
+    { product, cartId, quantity = 1, color = null }, // <--- TANGKAP COLOR DI SINI
     onBounceCallback,
   ) => {
+    // 1. Cek apakah barang dengan ID dan WARNA yang sama persis sudah ada di keranjang
     const existingItem = cartItems.value.find(
-      (item) => item.product_id === product.id,
+      (item) => item.product_id === product.id && item.color === color, // <--- PERBAIKAN PENTING: Harus match warnanya juga
     );
 
     if (existingItem) {
-      // [PERBAIKAN] Tambahkan berdasarkan jumlah yang di-request, bukan sekadar + 1
       handleQtyChange(existingItem, existingItem.quantity + quantity);
       if (onBounceCallback) onBounceCallback();
 
@@ -474,14 +568,16 @@ export function useCart() {
       return;
     }
 
+    // 2. Jika barang baru atau warna baru, buat item sementara
     const tempId = cartId || "temp_" + Date.now();
     const unitPrice = parseFloat(product.discount_price ?? product.price);
 
     const newItem = {
       id: tempId,
       product_id: product.id,
-      quantity: quantity, // [PERBAIKAN] Gunakan variabel quantity
-      gross_amount: unitPrice * quantity, // [PERBAIKAN] Harga dikalikan quantity
+      quantity: quantity,
+      gross_amount: unitPrice * quantity,
+      color: color, // <--- Simpan warna di state lokal
       isSyncing: !cartId,
       isCreating: !cartId,
       product: product,
@@ -494,15 +590,15 @@ export function useCart() {
 
     if (cartId) return;
 
+    // 3. Tembak ke API Backend
     try {
       const token = localStorage.getItem("token");
       const res = await axios.post(
         `${BASE_URL}/carts`,
-        // [PERBAIKAN] Kirim quantity aktual ke backend
         {
           product_id: product.id,
-          quantity: quantity, // [PERBAIKAN MUTLAK] TANGKAP WARNANYA!
-          color: payload.color || payload.detail?.color || null,
+          quantity: quantity,
+          color: color, // <--- KIRIM VARIABEL COLOR YANG BENAR KE BACKEND
         },
         { headers: { Authorization: `Bearer ${token}` } },
       );
@@ -520,8 +616,6 @@ export function useCart() {
             selectedItemIds.value[selIndex] = realId;
           }
 
-          // Hanya sync jika quantity BUKAN seperti yang kita kirim
-          // (misal dibatasi oleh backend karena stok kurang)
           if (itemInCart.quantity !== quantity) {
             syncQtyToDatabase(itemInCart);
           } else {
