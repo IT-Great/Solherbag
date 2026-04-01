@@ -323,305 +323,349 @@ const debounceTimers = new Map();
 const selectedItemIds = ref([]);
 
 export function useCart() {
-    // Total jumlah kuantitas SEMUA barang (untuk Badge di Header)
-    const cartCount = computed(() => {
-        return cartItems.value.reduce((acc, item) => acc + item.quantity, 0);
-    });
+  // Total jumlah kuantitas SEMUA barang (untuk Badge di Header)
+  const cartCount = computed(() => {
+    return cartItems.value.reduce((acc, item) => acc + item.quantity, 0);
+  });
 
-    // [BARU] Total jumlah kuantitas HANYA barang yang DIPILIH (untuk Summary Checkout)
-    const checkoutCount = computed(() => {
-        return cartItems.value
-            .filter(item => selectedItemIds.value.includes(item.id))
-            .reduce((acc, item) => acc + item.quantity, 0);
-    });
+  // [BARU] Total jumlah kuantitas HANYA barang yang DIPILIH (untuk Summary Checkout)
+  const checkoutCount = computed(() => {
+    return cartItems.value
+      .filter((item) => selectedItemIds.value.includes(item.id))
+      .reduce((acc, item) => acc + item.quantity, 0);
+  });
 
-    // [BARU] Total harga HANYA barang yang DIPILIH (untuk Summary Checkout)
-    const checkoutTotalAmount = computed(() => {
-        return cartItems.value
-            .filter(item => selectedItemIds.value.includes(item.id))
-            .reduce((acc, item) => acc + (parseFloat(item.gross_amount) || 0), 0);
-    });
+  // [BARU] Total harga HANYA barang yang DIPILIH (untuk Summary Checkout)
+  const checkoutTotalAmount = computed(() => {
+    return cartItems.value
+      .filter((item) => selectedItemIds.value.includes(item.id))
+      .reduce((acc, item) => acc + (parseFloat(item.gross_amount) || 0), 0);
+  });
 
-    // [BARU] Logika V-Model untuk "Select All" Checkbox
-    const isAllSelected = computed({
-        get: () => cartItems.value.length > 0 && selectedItemIds.value.length === cartItems.value.length,
-        set: (val) => {
-            if (val) {
-                selectedItemIds.value = cartItems.value.map(item => item.id);
-            } else {
-                selectedItemIds.value = [];
-            }
-        }
-    });
+  // [BARU] Logika V-Model untuk "Select All" Checkbox
+  const isAllSelected = computed({
+    get: () =>
+      cartItems.value.length > 0 &&
+      selectedItemIds.value.length === cartItems.value.length,
+    set: (val) => {
+      if (val) {
+        selectedItemIds.value = cartItems.value.map((item) => item.id);
+      } else {
+        selectedItemIds.value = [];
+      }
+    },
+  });
 
-    const fetchCarts = async () => {
-        const token = localStorage.getItem("token");
-        if (!token) return;
-        try {
-            const res = await axios.get(`${BASE_URL}/carts`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-            cartItems.value = res.data.map((item) => ({ ...item, isSyncing: false }));
+  const fetchCarts = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+    try {
+      const res = await axios.get(`${BASE_URL}/carts`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      cartItems.value = res.data.map((item) => ({ ...item, isSyncing: false }));
 
-            // [BARU] Otomatis centang barang yang baru di-fetch dari database jika belum ada di list selected
-            res.data.forEach(item => {
-                if (!selectedItemIds.value.includes(item.id)) {
-                    selectedItemIds.value.push(item.id);
-                }
-            });
-        } catch (err) {
-            console.error("Failed to load bag", err);
-        }
-    };
-
-    // const handleOptimisticAdd = async ({ product, cartId }, onBounceCallback) => {
-    //     const existingItem = cartItems.value.find((item) => item.product_id === product.id);
-
-    //     if (existingItem) {
-    //         handleQtyChange(existingItem, existingItem.quantity + 1);
-    //         if (onBounceCallback) onBounceCallback();
-
-    //         // Otomatis centang barang jika user menambahkannya lagi dari luar
-    //         if (!selectedItemIds.value.includes(existingItem.id)) {
-    //             selectedItemIds.value.push(existingItem.id);
-    //         }
-    //         return;
-    //     }
-
-    //     const tempId = cartId || ("temp_" + Date.now());
-    //     const unitPrice = parseFloat(product.discount_price ?? product.price);
-
-    //     const newItem = {
-    //         id: tempId,
-    //         product_id: product.id,
-    //         quantity: 1,
-    //         gross_amount: unitPrice,
-    //         isSyncing: !cartId,
-    //         isCreating: !cartId,
-    //         product: product,
-    //     };
-
-    //     cartItems.value.unshift(newItem);
-    //     selectedItemIds.value.push(tempId); // [BARU] Otomatis centang barang baru
-
-    //     if (onBounceCallback) onBounceCallback();
-
-    //     if (cartId) return;
-
-    //     try {
-    //         const token = localStorage.getItem("token");
-    //         const res = await axios.post(
-    //             `${BASE_URL}/carts`,
-    //             { product_id: product.id, quantity: 1 },
-    //             { headers: { Authorization: `Bearer ${token}` } }
-    //         );
-
-    //         const realId = res.data.cart_id || res.data.id || res.data.data?.id;
-    //         const itemInCart = cartItems.value.find((i) => i.id === tempId);
-
-    //         if (itemInCart) {
-    //             if (realId) {
-    //                 itemInCart.id = realId;
-    //                 itemInCart.isCreating = false;
-
-    //                 // [BARU] Perbarui ID di dalam array selectedItemIds (Dari Temp ID ke Real ID)
-    //                 const selIndex = selectedItemIds.value.indexOf(tempId);
-    //                 if (selIndex !== -1) {
-    //                     selectedItemIds.value[selIndex] = realId;
-    //                 }
-
-    //                 if (itemInCart.quantity !== 1) {
-    //                     syncQtyToDatabase(itemInCart);
-    //                 } else {
-    //                     itemInCart.isSyncing = false;
-    //                 }
-    //             } else {
-    //                 throw new Error("Missing Cart ID from Server!");
-    //             }
-    //         } else {
-    //             if (realId) {
-    //                 axios.delete(`${BASE_URL}/carts/${realId}`, {
-    //                     headers: { Authorization: `Bearer ${token}` }
-    //                 }).catch(() => { });
-    //             }
-    //         }
-    //     } catch (error) {
-    //         cartItems.value = cartItems.value.filter((i) => i.id !== tempId);
-    //         selectedItemIds.value = selectedItemIds.value.filter(id => id !== tempId);
-    //         fetchCarts();
-    //     }
-    // };
-
-    // [PERBAIKAN] Tambahkan 'quantity = 1' di parameter destructuring
-    const handleOptimisticAdd = async ({ product, cartId, quantity = 1 }, onBounceCallback) => {
-        const existingItem = cartItems.value.find((item) => item.product_id === product.id);
-
-        if (existingItem) {
-            // [PERBAIKAN] Tambahkan berdasarkan jumlah yang di-request, bukan sekadar + 1
-            handleQtyChange(existingItem, existingItem.quantity + quantity);
-            if (onBounceCallback) onBounceCallback();
-
-            if (!selectedItemIds.value.includes(existingItem.id)) {
-                selectedItemIds.value.push(existingItem.id);
-            }
-            return;
-        }
-
-        const tempId = cartId || ("temp_" + Date.now());
-        const unitPrice = parseFloat(product.discount_price ?? product.price);
-
-        const newItem = {
-            id: tempId,
-            product_id: product.id,
-            quantity: quantity, // [PERBAIKAN] Gunakan variabel quantity
-            gross_amount: unitPrice * quantity, // [PERBAIKAN] Harga dikalikan quantity
-            isSyncing: !cartId,
-            isCreating: !cartId,
-            product: product,
-        };
-
-        cartItems.value.unshift(newItem);
-        selectedItemIds.value.push(tempId); 
-
-        if (onBounceCallback) onBounceCallback();
-
-        if (cartId) return;
-
-        try {
-            const token = localStorage.getItem("token");
-            const res = await axios.post(
-                `${BASE_URL}/carts`,
-                // [PERBAIKAN] Kirim quantity aktual ke backend
-                { product_id: product.id, quantity: quantity }, 
-                { headers: { Authorization: `Bearer ${token}` } }
-            );
-
-            const realId = res.data.cart_id || res.data.id || res.data.data?.id;
-            const itemInCart = cartItems.value.find((i) => i.id === tempId);
-
-            if (itemInCart) {
-                if (realId) {
-                    itemInCart.id = realId;
-                    itemInCart.isCreating = false;
-
-                    const selIndex = selectedItemIds.value.indexOf(tempId);
-                    if (selIndex !== -1) {
-                        selectedItemIds.value[selIndex] = realId;
-                    }
-
-                    // Hanya sync jika quantity BUKAN seperti yang kita kirim
-                    // (misal dibatasi oleh backend karena stok kurang)
-                    if (itemInCart.quantity !== quantity) { 
-                        syncQtyToDatabase(itemInCart);
-                    } else {
-                        itemInCart.isSyncing = false;
-                    }
-                } else {
-                    throw new Error("Missing Cart ID from Server!");
-                }
-            } else {
-                if (realId) {
-                    axios.delete(`${BASE_URL}/carts/${realId}`, {
-                        headers: { Authorization: `Bearer ${token}` }
-                    }).catch(() => { });
-                }
-            }
-        } catch (error) {
-            cartItems.value = cartItems.value.filter((i) => i.id !== tempId);
-            selectedItemIds.value = selectedItemIds.value.filter(id => id !== tempId);
-            fetchCarts();
-        }
-    };
-
-    const handleQtyChange = (item, newQty) => {
-        if (newQty < 1) newQty = 1;
-        if (newQty > item.product.stock) {
-            newQty = item.product.stock;
-            Swal.fire({ toast: true, position: "top-end", icon: "warning", title: `Max stock is ${item.product.stock}`, showConfirmButton: false, timer: 2000 });
-        }
-
-        item.quantity = newQty;
-        item.gross_amount = item.quantity * parseFloat(item.product.discount_price ?? item.product.price);
-        item.isSyncing = true;
-
-        // Otomatis centang jika user mengubah qty nya
+      // [BARU] Otomatis centang barang yang baru di-fetch dari database jika belum ada di list selected
+      res.data.forEach((item) => {
         if (!selectedItemIds.value.includes(item.id)) {
-            selectedItemIds.value.push(item.id);
+          selectedItemIds.value.push(item.id);
         }
+      });
+    } catch (err) {
+      console.error("Failed to load bag", err);
+    }
+  };
 
-        if (item.isCreating) return;
+  // const handleOptimisticAdd = async ({ product, cartId }, onBounceCallback) => {
+  //     const existingItem = cartItems.value.find((item) => item.product_id === product.id);
 
-        if (debounceTimers.has(item.id)) clearTimeout(debounceTimers.get(item.id));
+  //     if (existingItem) {
+  //         handleQtyChange(existingItem, existingItem.quantity + 1);
+  //         if (onBounceCallback) onBounceCallback();
 
-        const timerId = setTimeout(() => {
-            syncQtyToDatabase(item);
-            debounceTimers.delete(item.id);
-        }, 600);
+  //         // Otomatis centang barang jika user menambahkannya lagi dari luar
+  //         if (!selectedItemIds.value.includes(existingItem.id)) {
+  //             selectedItemIds.value.push(existingItem.id);
+  //         }
+  //         return;
+  //     }
 
-        debounceTimers.set(item.id, timerId);
+  //     const tempId = cartId || ("temp_" + Date.now());
+  //     const unitPrice = parseFloat(product.discount_price ?? product.price);
+
+  //     const newItem = {
+  //         id: tempId,
+  //         product_id: product.id,
+  //         quantity: 1,
+  //         gross_amount: unitPrice,
+  //         isSyncing: !cartId,
+  //         isCreating: !cartId,
+  //         product: product,
+  //     };
+
+  //     cartItems.value.unshift(newItem);
+  //     selectedItemIds.value.push(tempId); // [BARU] Otomatis centang barang baru
+
+  //     if (onBounceCallback) onBounceCallback();
+
+  //     if (cartId) return;
+
+  //     try {
+  //         const token = localStorage.getItem("token");
+  //         const res = await axios.post(
+  //             `${BASE_URL}/carts`,
+  //             { product_id: product.id, quantity: 1 },
+  //             { headers: { Authorization: `Bearer ${token}` } }
+  //         );
+
+  //         const realId = res.data.cart_id || res.data.id || res.data.data?.id;
+  //         const itemInCart = cartItems.value.find((i) => i.id === tempId);
+
+  //         if (itemInCart) {
+  //             if (realId) {
+  //                 itemInCart.id = realId;
+  //                 itemInCart.isCreating = false;
+
+  //                 // [BARU] Perbarui ID di dalam array selectedItemIds (Dari Temp ID ke Real ID)
+  //                 const selIndex = selectedItemIds.value.indexOf(tempId);
+  //                 if (selIndex !== -1) {
+  //                     selectedItemIds.value[selIndex] = realId;
+  //                 }
+
+  //                 if (itemInCart.quantity !== 1) {
+  //                     syncQtyToDatabase(itemInCart);
+  //                 } else {
+  //                     itemInCart.isSyncing = false;
+  //                 }
+  //             } else {
+  //                 throw new Error("Missing Cart ID from Server!");
+  //             }
+  //         } else {
+  //             if (realId) {
+  //                 axios.delete(`${BASE_URL}/carts/${realId}`, {
+  //                     headers: { Authorization: `Bearer ${token}` }
+  //                 }).catch(() => { });
+  //             }
+  //         }
+  //     } catch (error) {
+  //         cartItems.value = cartItems.value.filter((i) => i.id !== tempId);
+  //         selectedItemIds.value = selectedItemIds.value.filter(id => id !== tempId);
+  //         fetchCarts();
+  //     }
+  // };
+
+  // [PERBAIKAN] Tambahkan 'quantity = 1' di parameter destructuring
+  const handleOptimisticAdd = async (
+    { product, cartId, quantity = 1 },
+    onBounceCallback,
+  ) => {
+    const existingItem = cartItems.value.find(
+      (item) => item.product_id === product.id,
+    );
+
+    if (existingItem) {
+      // [PERBAIKAN] Tambahkan berdasarkan jumlah yang di-request, bukan sekadar + 1
+      handleQtyChange(existingItem, existingItem.quantity + quantity);
+      if (onBounceCallback) onBounceCallback();
+
+      if (!selectedItemIds.value.includes(existingItem.id)) {
+        selectedItemIds.value.push(existingItem.id);
+      }
+      return;
+    }
+
+    const tempId = cartId || "temp_" + Date.now();
+    const unitPrice = parseFloat(product.discount_price ?? product.price);
+
+    const newItem = {
+      id: tempId,
+      product_id: product.id,
+      quantity: quantity, // [PERBAIKAN] Gunakan variabel quantity
+      gross_amount: unitPrice * quantity, // [PERBAIKAN] Harga dikalikan quantity
+      isSyncing: !cartId,
+      isCreating: !cartId,
+      product: product,
     };
 
-    const syncQtyToDatabase = async (item) => {
-        if (String(item.id).startsWith("temp_")) {
-            setTimeout(() => syncQtyToDatabase(item), 500);
-            return;
+    cartItems.value.unshift(newItem);
+    selectedItemIds.value.push(tempId);
+
+    if (onBounceCallback) onBounceCallback();
+
+    if (cartId) return;
+
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.post(
+        `${BASE_URL}/carts`,
+        // [PERBAIKAN] Kirim quantity aktual ke backend
+        {
+          product_id: product.id,
+          quantity: quantity, // [PERBAIKAN MUTLAK] TANGKAP WARNANYA!
+          color: payload.color || payload.detail?.color || null,
+        },
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+
+      const realId = res.data.cart_id || res.data.id || res.data.data?.id;
+      const itemInCart = cartItems.value.find((i) => i.id === tempId);
+
+      if (itemInCart) {
+        if (realId) {
+          itemInCart.id = realId;
+          itemInCart.isCreating = false;
+
+          const selIndex = selectedItemIds.value.indexOf(tempId);
+          if (selIndex !== -1) {
+            selectedItemIds.value[selIndex] = realId;
+          }
+
+          // Hanya sync jika quantity BUKAN seperti yang kita kirim
+          // (misal dibatasi oleh backend karena stok kurang)
+          if (itemInCart.quantity !== quantity) {
+            syncQtyToDatabase(itemInCart);
+          } else {
+            itemInCart.isSyncing = false;
+          }
+        } else {
+          throw new Error("Missing Cart ID from Server!");
         }
-        try {
-            const res = await axios.put(
-                `${BASE_URL}/carts/${item.id}`,
-                { quantity: item.quantity },
-                { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
-            );
-            item.gross_amount = res.data.gross_amount;
-        } catch (error) {
-            fetchCarts();
-        } finally {
-            item.isSyncing = false;
+      } else {
+        if (realId) {
+          axios
+            .delete(`${BASE_URL}/carts/${realId}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            })
+            .catch(() => {});
         }
-    };
+      }
+    } catch (error) {
+      cartItems.value = cartItems.value.filter((i) => i.id !== tempId);
+      selectedItemIds.value = selectedItemIds.value.filter(
+        (id) => id !== tempId,
+      );
+      fetchCarts();
+    }
+  };
 
-    const handleOptimisticDelete = async (id) => {
-        const backupItems = [...cartItems.value];
+  const handleQtyChange = (item, newQty) => {
+    if (newQty < 1) newQty = 1;
+    if (newQty > item.product.stock) {
+      newQty = item.product.stock;
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "warning",
+        title: `Max stock is ${item.product.stock}`,
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    }
 
-        cartItems.value = cartItems.value.filter((item) => item.id !== id);
-        selectedItemIds.value = selectedItemIds.value.filter(selId => selId !== id); // [BARU] Hapus dari daftar centang
+    item.quantity = newQty;
+    item.gross_amount =
+      item.quantity *
+      parseFloat(item.product.discount_price ?? item.product.price);
+    item.isSyncing = true;
 
-        Swal.fire({ toast: true, position: "top-end", icon: "success", title: "Item Removed", showConfirmButton: false, timer: 2000 });
+    // Otomatis centang jika user mengubah qty nya
+    if (!selectedItemIds.value.includes(item.id)) {
+      selectedItemIds.value.push(item.id);
+    }
 
-        if (String(id).startsWith("temp_")) return;
+    if (item.isCreating) return;
 
-        try {
-            await axios.delete(`${BASE_URL}/carts/${id}`, {
-                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-            });
-        } catch (error) {
-            cartItems.value = backupItems;
-            if (!selectedItemIds.value.includes(id)) selectedItemIds.value.push(id);
-            Swal.fire({ toast: true, position: "top-end", icon: "error", title: "Failed to remove item", showConfirmButton: false, timer: 3000 });
-        }
-    };
+    if (debounceTimers.has(item.id)) clearTimeout(debounceTimers.get(item.id));
 
-    // [PERBAIKAN BESAR] HANYA HAPUS BARANG YANG DIBELI, BIARKAN YANG TIDAK DIBELI
-    const clearSelectedCart = () => {
-        cartItems.value = cartItems.value.filter(item => !selectedItemIds.value.includes(item.id));
-        selectedItemIds.value = []; // Reset centangan
-    };
+    const timerId = setTimeout(() => {
+      syncQtyToDatabase(item);
+      debounceTimers.delete(item.id);
+    }, 600);
 
-    return {
-        cartItems,
-        cartCount,
-        checkoutCount, // <-- Export baru
-        checkoutTotalAmount, // <-- Export baru
-        selectedItemIds, // <-- Export baru
-        isAllSelected, // <-- Export baru
-        fetchCarts,
-        handleOptimisticAdd,
-        handleQtyChange,
-        handleOptimisticDelete,
-        clearSelectedCart, // <-- Nama baru
-        handleQtyInput: (item) => {
-            if (item.quantity === null || item.quantity === "") return;
-            handleQtyChange(item, item.quantity);
-        }
-    };
+    debounceTimers.set(item.id, timerId);
+  };
+
+  const syncQtyToDatabase = async (item) => {
+    if (String(item.id).startsWith("temp_")) {
+      setTimeout(() => syncQtyToDatabase(item), 500);
+      return;
+    }
+    try {
+      const res = await axios.put(
+        `${BASE_URL}/carts/${item.id}`,
+        { quantity: item.quantity },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        },
+      );
+      item.gross_amount = res.data.gross_amount;
+    } catch (error) {
+      fetchCarts();
+    } finally {
+      item.isSyncing = false;
+    }
+  };
+
+  const handleOptimisticDelete = async (id) => {
+    const backupItems = [...cartItems.value];
+
+    cartItems.value = cartItems.value.filter((item) => item.id !== id);
+    selectedItemIds.value = selectedItemIds.value.filter(
+      (selId) => selId !== id,
+    ); // [BARU] Hapus dari daftar centang
+
+    Swal.fire({
+      toast: true,
+      position: "top-end",
+      icon: "success",
+      title: "Item Removed",
+      showConfirmButton: false,
+      timer: 2000,
+    });
+
+    if (String(id).startsWith("temp_")) return;
+
+    try {
+      await axios.delete(`${BASE_URL}/carts/${id}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+    } catch (error) {
+      cartItems.value = backupItems;
+      if (!selectedItemIds.value.includes(id)) selectedItemIds.value.push(id);
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "error",
+        title: "Failed to remove item",
+        showConfirmButton: false,
+        timer: 3000,
+      });
+    }
+  };
+
+  // [PERBAIKAN BESAR] HANYA HAPUS BARANG YANG DIBELI, BIARKAN YANG TIDAK DIBELI
+  const clearSelectedCart = () => {
+    cartItems.value = cartItems.value.filter(
+      (item) => !selectedItemIds.value.includes(item.id),
+    );
+    selectedItemIds.value = []; // Reset centangan
+  };
+
+  return {
+    cartItems,
+    cartCount,
+    checkoutCount, // <-- Export baru
+    checkoutTotalAmount, // <-- Export baru
+    selectedItemIds, // <-- Export baru
+    isAllSelected, // <-- Export baru
+    fetchCarts,
+    handleOptimisticAdd,
+    handleQtyChange,
+    handleOptimisticDelete,
+    clearSelectedCart, // <-- Nama baru
+    handleQtyInput: (item) => {
+      if (item.quantity === null || item.quantity === "") return;
+      handleQtyChange(item, item.quantity);
+    },
+  };
 }
