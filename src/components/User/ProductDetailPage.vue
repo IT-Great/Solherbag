@@ -1074,7 +1074,7 @@ onMounted(fetchProductDetail);
             >
           </div>
 
-          <div
+          <!-- <div
             v-if="product.color && product.color.length > 0"
             class="flex justify-between items-start text-sm border-t border-gray-100 pt-3"
           >
@@ -1097,6 +1097,38 @@ onMounted(fetchProductDetail);
                   >{{ c }}</span
                 >
               </div>
+            </div>
+          </div> -->
+          <div
+            v-if="product.color && product.color.length > 0"
+            class="flex justify-between items-start text-sm border-t border-gray-100 pt-3"
+          >
+            <span
+              class="text-gray-500 font-bold uppercase tracking-widest text-[10px] w-24 shrink-0 mt-1"
+              >Colors</span
+            >
+            <div class="flex flex-col items-end">
+              <div class="flex flex-wrap justify-end gap-2">
+                <div
+                  v-for="(c, idx) in product.color"
+                  :key="idx"
+                  @click="selectedColor = c"
+                  :class="selectedColor === c ? 'ring-2 ring-black border-transparent scale-110 shadow-md' : 'border-gray-200 hover:border-gray-400'"
+                  class="flex items-center gap-1.5 bg-white border px-2 py-1 rounded-lg cursor-pointer transition-all duration-200"
+                >
+                  <div
+                    class="w-3 h-3 rounded-full border border-gray-300"
+                    :style="{ backgroundColor: getColorHex(c) }"
+                  ></div>
+                  <span
+                    class="font-bold text-gray-800 text-[10px] uppercase tracking-wider"
+                    >{{ c }}</span
+                  >
+                </div>
+              </div>
+              <p v-if="colorError" class="text-red-500 text-[9px] font-bold uppercase tracking-widest mt-2 animate-pulse">
+                * Please select a color first
+              </p>
             </div>
           </div>
         </div>
@@ -1838,6 +1870,9 @@ const activeSlide = ref(0);
 // ==========================================
 const selectedQuantity = ref(1);
 
+const selectedColor = ref("");
+const colorError = ref(false);
+
 const decreaseQuantity = () => {
   if (selectedQuantity.value > 1) selectedQuantity.value--;
 };
@@ -1984,6 +2019,13 @@ const handleAction = async (type) => {
     return;
   }
 
+  // [BARU] VALIDASI WARNA: Cek apakah produk punya varian warna, tapi user belum memilih
+  if (product.value.color && product.value.color.length > 0 && !selectedColor.value) {
+    colorError.value = true;
+    setTimeout(() => (colorError.value = false), 3000);
+    return; // Hentikan eksekusi jika belum pilih warna
+  }
+
   // --- START TRUE OPTIMISTIC UI (ADD TO CART) ---
   if (type === "cart") {
     Swal.fire({
@@ -2002,12 +2044,24 @@ const handleAction = async (type) => {
     // );
 
     // [PERBAIKAN] Sisipkan informasi quantity agar composable useCart mendeteksinya
+    // window.dispatchEvent(
+    //   new CustomEvent("optimistic-add-to-cart", {
+    //     detail: {
+    //       product: product.value,
+    //       cartId: null,
+    //       quantity: selectedQuantity.value,
+    //     },
+    //   }),
+    // );
+
+    // [PERBAIKAN] Sisipkan color ke dalam payload optimistic UI
     window.dispatchEvent(
       new CustomEvent("optimistic-add-to-cart", {
         detail: {
           product: product.value,
           cartId: null,
           quantity: selectedQuantity.value,
+          color: selectedColor.value || null, // <--- BARU
         },
       }),
     );
@@ -2073,9 +2127,20 @@ const handleAction = async (type) => {
       // );
 
       // [PERBAIKAN] Kirim quantity sesuai dengan jumlah yang dipilih user
+      // const resCart = await axios.post(
+      //   `${BASE_URL}/carts`,
+      //   { product_id: product.value.id, quantity: selectedQuantity.value },
+      //   { headers: { Authorization: `Bearer ${token}` } },
+      // );
+
+      // [PERBAIKAN] Kirim color ke API Carts
       const resCart = await axios.post(
         `${BASE_URL}/carts`,
-        { product_id: product.value.id, quantity: selectedQuantity.value },
+        { 
+            product_id: product.value.id, 
+            quantity: selectedQuantity.value,
+            color: selectedColor.value || null // <--- BARU
+        },
         { headers: { Authorization: `Bearer ${token}` } },
       );
 

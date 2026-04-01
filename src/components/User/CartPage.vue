@@ -1199,6 +1199,9 @@ onMounted(() => {
                     >
                       {{ item.product.name }}
                     </h3>
+                    <p v-if="item.color" class="text-[10px] sm:text-xs text-gray-500 uppercase tracking-widest mt-1">
+                      Color: <span class="font-bold text-gray-800">{{ item.color }}</span>
+                    </p>
                     <p
                       class="font-bold text-sm sm:text-xl text-right whitespace-nowrap"
                     >

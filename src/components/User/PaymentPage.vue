@@ -3362,10 +3362,19 @@ onMounted(fetchData);
                   class="w-16 h-16 object-cover rounded-xl bg-gray-100 shrink-0"
                 />
                 <div class="flex-grow">
-                  <p
+                  <!-- <p
                     class="font-bold text-gray-900 text-[11px] uppercase truncate w-32"
                   >
                     {{ item.product.name }}
+                  </p> -->
+                  <p
+                    class="font-bold text-gray-900 text-[11px] uppercase truncate w-32"
+                    :title="item.product.name"
+                  >
+                    {{ item.product.name }}
+                  </p>
+                  <p v-if="item.color" class="text-gray-500 text-[9px] uppercase tracking-widest mt-0.5">
+                    Color: <span class="font-bold text-gray-700">{{ item.color }}</span>
                   </p>
                   <p class="text-gray-400 text-[10px]">
                     Qty: {{ item.quantity }}
