@@ -1879,7 +1879,32 @@ onMounted(fetchAllData);
         </div>
 
         <div class="p-6">
-          <div class="space-y-4 mb-6"></div>
+          <div class="space-y-4 mb-6">
+            <div
+              v-for="detail in orderData.details"
+              :key="detail.id"
+              class="flex items-center gap-4 py-2 border-b border-gray-50 last:border-0 pb-4"
+            >
+              <img
+                :src="detail.product.image"
+                class="bg-gray-100 border border-gray-100 rounded-lg w-16 h-16 object-cover"
+              />
+              <div class="flex-grow">
+                <h4 class="font-bold text-gray-900 text-sm uppercase">
+                  {{ detail.product.name }}
+                </h4>
+                <p v-if="detail.color" class="text-[10px] text-gray-500 uppercase tracking-widest mt-0.5">
+                  Color: <span class="font-bold text-gray-700">{{ detail.color }}</span>
+                </p>
+                <p class="text-gray-400 text-xs mt-1">
+                  {{ detail.quantity }} x {{ formatPrice(detail.price) }}
+                </p>
+              </div>
+              <p class="font-bold text-gray-900 text-sm">
+                {{ formatPrice(detail.quantity * detail.price) }}
+              </p>
+            </div>
+          </div>
 
           <div class="border-t border-gray-100 pt-4 space-y-2">
             <div class="flex justify-between text-xs text-gray-500">

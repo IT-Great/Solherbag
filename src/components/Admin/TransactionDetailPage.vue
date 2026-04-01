@@ -2568,6 +2568,9 @@ onMounted(fetchData);
                 >
                   {{ item.product.name }}
                 </h3>
+                <p v-if="item.color" class="text-[10px] text-gray-500 uppercase tracking-widest mt-1">
+                  Color: <span class="font-bold text-gray-800">{{ item.color }}</span>
+                </p>
                 <p class="mt-1 text-gray-400 text-xs font-mono">
                   SKU: {{ item.product.code }}
                 </p>
@@ -3262,6 +3265,10 @@ const getItemsDescription = () => {
   return transaction.value.details
     .map((d) => {
       let desc = `${d.quantity}x ${d.product.name}`;
+      // [BARU] Masukkan warna ke deskripsi barang resi kurir
+      if (d.color) {
+          desc += ` - ${d.color}`;
+      }
       if (printSettings.value.item_sku_shown && d.product.code)
         desc += ` (${d.product.code})`;
       return desc;
