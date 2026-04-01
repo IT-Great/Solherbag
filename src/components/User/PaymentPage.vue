@@ -4548,6 +4548,8 @@ const isButtonDisabled = computed(() => {
 // 4. API Fetcher
 watch(selectedAddressId, async (newVal) => {
   if (newVal) {
+    // [PERBAIKAN PENTING] Rem darurat: Jangan tembak API jika keranjang masih kosong
+    if (!selectedItemIds.value || selectedItemIds.value.length === 0) return;
     selectedRate.value = null;
     isLoadingRates.value = true;
     rawShippingRates.value = [];
