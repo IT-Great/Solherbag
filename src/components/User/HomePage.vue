@@ -940,7 +940,7 @@ onMounted(initData);
 
           <div class="hidden md:block md:w-1/2 relative bg-gray-200">
             <img
-              src="../../assets/DSCF5814.jpg"
+              src="../../assets/DSCF2551.jpg"
               alt="Solher Bags"
               class="w-full h-full object-cover"
             />
