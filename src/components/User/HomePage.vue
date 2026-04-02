@@ -529,7 +529,7 @@ onMounted(initData);
       </p>
     </div>
 
-    <div
+    <!-- <div
       v-reveal
       class="grid grid-cols-1 md:grid-cols-2 w-full overflow-hidden"
     >
@@ -564,6 +564,46 @@ onMounted(initData);
           <span
             class="bg-white text-black px-6 py-3 rounded-full font-bold text-xs uppercase tracking-widest shadow-lg"
             >Shop Man Tang</span
+          >
+        </div>
+      </div>
+    </div> -->
+
+    <div
+      v-reveal
+      class="grid grid-cols-1 md:grid-cols-2 w-full overflow-hidden"
+    >
+      <div
+        class="relative overflow-hidden group cursor-pointer"
+        @click="navigateToSpecificProduct('ZAHARA')"
+      >
+        <img
+          src="../../assets/DSCF2648.jpg"
+          class="w-full h-[400px] md:h-full object-cover group-hover:scale-105 transition-transform duration-700"
+        />
+        <div
+          class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+        >
+          <span
+            class="bg-white text-black px-6 py-3 rounded-full font-bold text-xs uppercase tracking-widest shadow-lg"
+            >Discover Zahara</span
+          >
+        </div>
+      </div>
+
+      <div
+        class="relative overflow-hidden group"
+      >
+        <img
+          src="../../assets/home_img_2.png"
+          class="w-full h-[400px] md:h-full object-cover group-hover:scale-105 transition-transform duration-700"
+        />
+        <div
+          class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+        >
+          <span
+            class="bg-white text-black px-6 py-3 rounded-full font-bold text-xs uppercase tracking-widest shadow-lg"
+            >Coming Soon</span
           >
         </div>
       </div>
