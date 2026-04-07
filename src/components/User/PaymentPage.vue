@@ -2978,10 +2978,10 @@ onMounted(fetchData);
                 v-if="shippingMethod === 'biteship'"
                 class="p-6 mt-4 space-y-8 bg-white border border-gray-200 rounded-3xl animate-fade-in"
               >
-                <!-- <div
+                <div
                   class="grid grid-cols-1 gap-6 p-4 md:grid-cols-2 bg-gray-50 rounded-2xl"
                 >
-                  <div>
+                  <!-- <div>
                     <h3
                       class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-3"
                     >
@@ -2996,7 +2996,7 @@ onMounted(fetchData);
                     <p class="mt-1 text-xs text-gray-500 line-clamp-2">
                       {{ shipperInfo.address }} - {{ shipperInfo.postal_code }}
                     </p>
-                  </div>
+                  </div> -->
                   <div>
                     <h3
                       class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-3"
@@ -3014,7 +3014,7 @@ onMounted(fetchData);
                       {{ destinationInfo?.postal_code }}
                     </p>
                   </div>
-                </div> -->
+                </div>
 
                 <div>
                   <h3 class="mb-4 text-sm font-bold tracking-widest uppercase">
@@ -5108,8 +5108,8 @@ const isPageLoading = ref(true);
 const shipperInfo = {
   name: "Solher Store",
   phone: "08883888585",
-  address: "Jalan Kecilung N0. 8A, Kota Surabaya, Jawa Timur 60275, Indonesia",
-  postal_code: "60275",
+  address: "Jalan Wijaya Kusuma No.57, Kota Surabaya, Jawa Timur 60272, Indonesia",
+  postal_code: "60272",
 };
 
 const totalQuantityToCheckout = computed(() => {
