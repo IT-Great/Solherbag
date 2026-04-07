@@ -1,23 +1,23 @@
 <!-- <template>
-  <div class="mx-auto px-6 py-20 max-w-5xl min-h-screen">
-    <h1 class="mb-10 font-serif text-gray-900 text-4xl uppercase tracking-tighter">My Orders</h1>
+  <div class="max-w-5xl min-h-screen px-6 py-20 mx-auto">
+    <h1 class="mb-10 font-serif text-4xl tracking-tighter text-gray-900 uppercase">My Orders</h1>
 
     <div v-if="loading" class="py-20 text-center">Loading orders...</div>
     
-    <div v-else-if="transactions.length === 0" class="bg-white p-12 border rounded-2xl text-center">
-      <p class="text-gray-400 italic">You haven't placed any orders yet.</p>
-      <router-link to="/collections" class="inline-block mt-4 font-bold text-black text-xs underline uppercase tracking-widest">Start Shopping</router-link>
+    <div v-else-if="transactions.length === 0" class="p-12 text-center bg-white border rounded-2xl">
+      <p class="italic text-gray-400">You haven't placed any orders yet.</p>
+      <router-link to="/collections" class="inline-block mt-4 text-xs font-bold tracking-widest text-black underline uppercase">Start Shopping</router-link>
     </div>
 
     <div v-else class="space-y-6">
-      <div v-for="order in transactions" :key="order.id" class="bg-white shadow-sm border border-gray-100 rounded-2xl overflow-hidden">
-        <div class="flex md:flex-row flex-col justify-between items-start md:items-center bg-gray-50 px-6 py-4 border-b">
+      <div v-for="order in transactions" :key="order.id" class="overflow-hidden bg-white border border-gray-100 shadow-sm rounded-2xl">
+        <div class="flex flex-col items-start justify-between px-6 py-4 border-b md:flex-row md:items-center bg-gray-50">
           <div>
-            <p class="font-bold text-gray-400 text-xs uppercase tracking-widest">Order ID</p>
+            <p class="text-xs font-bold tracking-widest text-gray-400 uppercase">Order ID</p>
             <p class="font-mono text-sm">{{ order.order_id }}</p>
           </div>
           <div class="mt-4 md:mt-0 md:text-center">
-            <p class="font-bold text-gray-400 text-xs uppercase tracking-widest">Date</p>
+            <p class="text-xs font-bold tracking-widest text-gray-400 uppercase">Date</p>
             <p class="text-sm">{{ formatDate(order.created_at) }}</p>
           </div>
           <div class="mt-4 md:mt-0 md:text-right">
@@ -28,19 +28,19 @@
         </div>
 
         <div class="p-6">
-          <div v-for="detail in order.details" :key="detail.id" class="flex items-center gap-4 py-4 border-gray-50 last:border-0 border-b">
-            <img :src="detail.product.image" class="bg-gray-100 rounded-lg w-16 h-16 object-cover" />
+          <div v-for="detail in order.details" :key="detail.id" class="flex items-center gap-4 py-4 border-b border-gray-50 last:border-0">
+            <img :src="detail.product.image" class="object-cover w-16 h-16 bg-gray-100 rounded-lg" />
             <div class="flex-grow">
-              <h4 class="font-bold text-gray-900 text-sm uppercase">{{ detail.product.name }}</h4>
-              <p class="text-gray-400 text-xs">{{ detail.quantity }} x {{ formatPrice(detail.price) }}</p>
+              <h4 class="text-sm font-bold text-gray-900 uppercase">{{ detail.product.name }}</h4>
+              <p class="text-xs text-gray-400">{{ detail.quantity }} x {{ formatPrice(detail.price) }}</p>
             </div>
-            <p class="font-bold text-gray-900 text-sm">{{ formatPrice(detail.quantity * detail.price) }}</p>
+            <p class="text-sm font-bold text-gray-900">{{ formatPrice(detail.quantity * detail.price) }}</p>
           </div>
         </div>
 
-        <div class="flex justify-between items-center bg-gray-50/50 px-6 py-4 border-t">
-          <p class="font-bold text-gray-400 text-xs uppercase tracking-widest">Total Amount</p>
-          <p class="font-bold text-black text-xl">{{ formatPrice(order.total_amount) }} IDR</p>
+        <div class="flex items-center justify-between px-6 py-4 border-t bg-gray-50/50">
+          <p class="text-xs font-bold tracking-widest text-gray-400 uppercase">Total Amount</p>
+          <p class="text-xl font-bold text-black">{{ formatPrice(order.total_amount) }} IDR</p>
         </div>
       </div>
     </div>
@@ -85,55 +85,55 @@ onMounted(fetchOrders);
 </script> -->
 
 <!-- <template>
-  <div class="mx-auto px-6 py-20 max-w-5xl min-h-screen">
-    <h1 class="mb-10 font-serif text-gray-900 text-4xl uppercase tracking-tighter">My Orders</h1>
+  <div class="max-w-5xl min-h-screen px-6 py-20 mx-auto">
+    <h1 class="mb-10 font-serif text-4xl tracking-tighter text-gray-900 uppercase">My Orders</h1>
 
     <div v-if="loading" class="space-y-6">
-      <div v-for="n in 3" :key="n" class="bg-white border border-gray-100 rounded-2xl overflow-hidden animate-pulse">
-        <div class="flex justify-between items-center bg-gray-50 px-6 py-4">
+      <div v-for="n in 3" :key="n" class="overflow-hidden bg-white border border-gray-100 rounded-2xl animate-pulse">
+        <div class="flex items-center justify-between px-6 py-4 bg-gray-50">
           <div class="space-y-2">
-            <div class="bg-gray-200 rounded w-16 h-3"></div>
-            <div class="bg-gray-200 rounded w-32 h-4"></div>
+            <div class="w-16 h-3 bg-gray-200 rounded"></div>
+            <div class="w-32 h-4 bg-gray-200 rounded"></div>
           </div>
-          <div class="bg-gray-200 rounded-full w-20 h-6"></div>
+          <div class="w-20 h-6 bg-gray-200 rounded-full"></div>
         </div>
-        <div class="space-y-4 p-6">
+        <div class="p-6 space-y-4">
           <div class="flex items-center gap-4 py-2">
-            <div class="bg-gray-100 rounded-lg w-16 h-16"></div>
+            <div class="w-16 h-16 bg-gray-100 rounded-lg"></div>
             <div class="flex-grow space-y-2">
-              <div class="bg-gray-100 rounded w-1/2 h-4"></div>
-              <div class="bg-gray-100 rounded w-1/4 h-3"></div>
+              <div class="w-1/2 h-4 bg-gray-100 rounded"></div>
+              <div class="w-1/4 h-3 bg-gray-100 rounded"></div>
             </div>
-            <div class="bg-gray-100 rounded w-20 h-4"></div>
+            <div class="w-20 h-4 bg-gray-100 rounded"></div>
           </div>
         </div>
-        <div class="flex justify-between items-center bg-gray-50/50 px-6 py-4 border-gray-50 border-t">
-          <div class="bg-gray-200 rounded w-20 h-3"></div>
-          <div class="bg-gray-200 rounded w-32 h-6"></div>
+        <div class="flex items-center justify-between px-6 py-4 border-t bg-gray-50/50 border-gray-50">
+          <div class="w-20 h-3 bg-gray-200 rounded"></div>
+          <div class="w-32 h-6 bg-gray-200 rounded"></div>
         </div>
       </div>
     </div>
     
-    <div v-else-if="transactions.length === 0" class="bg-white p-12 border rounded-2xl text-center animate-fade-in">
+    <div v-else-if="transactions.length === 0" class="p-12 text-center bg-white border rounded-2xl animate-fade-in">
       <div class="flex justify-center mb-6">
          <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
          </svg>
       </div>
-      <p class="text-gray-400 italic">You haven't placed any orders yet.</p>
-      <router-link to="/collections" class="inline-block mt-6 font-bold text-black hover:text-gray-500 text-xs underline uppercase tracking-widest transition-colors">Start Shopping</router-link>
+      <p class="italic text-gray-400">You haven't placed any orders yet.</p>
+      <router-link to="/collections" class="inline-block mt-6 text-xs font-bold tracking-widest text-black underline uppercase transition-colors hover:text-gray-500">Start Shopping</router-link>
     </div>
 
     <div v-else class="space-y-6 animate-fade-in">
-      <div v-for="order in transactions" :key="order.id" class="bg-white shadow-sm hover:shadow-md border border-gray-100 rounded-2xl overflow-hidden transition-shadow duration-300">
-        <div class="flex md:flex-row flex-col justify-between items-start md:items-center bg-gray-50 px-6 py-4 border-b">
+      <div v-for="order in transactions" :key="order.id" class="overflow-hidden transition-shadow duration-300 bg-white border border-gray-100 shadow-sm hover:shadow-md rounded-2xl">
+        <div class="flex flex-col items-start justify-between px-6 py-4 border-b md:flex-row md:items-center bg-gray-50">
           <div>
             <p class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em]">Order ID</p>
-            <p class="font-mono font-bold text-gray-800 text-sm">{{ order.order_id }}</p>
+            <p class="font-mono text-sm font-bold text-gray-800">{{ order.order_id }}</p>
           </div>
           <div class="mt-4 md:mt-0 md:text-center">
             <p class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em]">Date</p>
-            <p class="text-gray-600 text-sm">{{ formatDate(order.created_at) }}</p>
+            <p class="text-sm text-gray-600">{{ formatDate(order.created_at) }}</p>
           </div>
           <div class="mt-4 md:mt-0 md:text-right">
             <span :class="statusClass(order.status)" class="px-4 py-1 rounded-full font-bold text-[10px] uppercase tracking-tighter">
@@ -143,19 +143,19 @@ onMounted(fetchOrders);
         </div>
 
         <div class="p-6">
-          <div v-for="detail in order.details" :key="detail.id" class="group flex items-center gap-4 py-4 border-gray-50 last:border-0 border-b">
-            <img :src="detail.product.image" class="bg-gray-100 shadow-sm rounded-lg w-16 h-16 object-cover group-hover:scale-105 transition-transform" />
+          <div v-for="detail in order.details" :key="detail.id" class="flex items-center gap-4 py-4 border-b group border-gray-50 last:border-0">
+            <img :src="detail.product.image" class="object-cover w-16 h-16 transition-transform bg-gray-100 rounded-lg shadow-sm group-hover:scale-105" />
             <div class="flex-grow">
-              <h4 class="font-bold text-gray-900 text-sm uppercase tracking-tight">{{ detail.product.name }}</h4>
-              <p class="text-gray-400 text-xs">{{ detail.quantity }} x {{ formatPrice(detail.price) }}</p>
+              <h4 class="text-sm font-bold tracking-tight text-gray-900 uppercase">{{ detail.product.name }}</h4>
+              <p class="text-xs text-gray-400">{{ detail.quantity }} x {{ formatPrice(detail.price) }}</p>
             </div>
-            <p class="font-bold text-gray-900 text-sm">{{ formatPrice(detail.quantity * detail.price) }}</p>
+            <p class="text-sm font-bold text-gray-900">{{ formatPrice(detail.quantity * detail.price) }}</p>
           </div>
         </div>
 
-        <div class="flex justify-between items-center bg-gray-50/50 px-6 py-4 border-t">
+        <div class="flex items-center justify-between px-6 py-4 border-t bg-gray-50/50">
           <p class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em]">Total Amount</p>
-          <p class="font-bold text-black text-xl">{{ formatPrice(order.total_amount) }} <span class="font-normal text-gray-400 text-xs">IDR</span></p>
+          <p class="text-xl font-bold text-black">{{ formatPrice(order.total_amount) }} <span class="text-xs font-normal text-gray-400">IDR</span></p>
         </div>
       </div>
     </div>
@@ -225,25 +225,25 @@ onMounted(fetchOrders);
 
 <!-- Sebelum Timer untuk Expired -->
 <!-- <template>
-  <div class="mx-auto px-6 py-20 max-w-5xl min-h-screen">
+  <div class="max-w-5xl min-h-screen px-6 py-20 mx-auto">
     <h1
-      class="mb-10 font-serif text-gray-900 text-4xl uppercase tracking-tighter"
+      class="mb-10 font-serif text-4xl tracking-tighter text-gray-900 uppercase"
     >
       My Orders
     </h1>
 
     <div v-if="loading" class="space-y-6">
-      <div class="bg-gray-100 h-40 rounded-2xl animate-pulse"></div>
+      <div class="h-40 bg-gray-100 rounded-2xl animate-pulse"></div>
     </div>
 
     <div
       v-else-if="transactions.length === 0"
-      class="bg-white p-12 border rounded-2xl text-center animate-fade-in"
+      class="p-12 text-center bg-white border rounded-2xl animate-fade-in"
     >
-      <p class="text-gray-400 italic">You haven't placed any orders yet.</p>
+      <p class="italic text-gray-400">You haven't placed any orders yet.</p>
       <router-link
         to="/collections"
-        class="inline-block mt-6 font-bold text-black underline uppercase tracking-widest"
+        class="inline-block mt-6 font-bold tracking-widest text-black underline uppercase"
         >Start Shopping</router-link
       >
     </div>
@@ -252,10 +252,10 @@ onMounted(fetchOrders);
       <div
         v-for="order in transactions"
         :key="order.id"
-        class="bg-white shadow-sm hover:shadow-md border border-gray-100 rounded-2xl overflow-hidden transition-shadow duration-300 relative"
+        class="relative overflow-hidden transition-shadow duration-300 bg-white border border-gray-100 shadow-sm hover:shadow-md rounded-2xl"
       >
         <div
-          class="flex md:flex-row flex-col justify-between items-start md:items-center bg-gray-50 px-6 py-4 border-b"
+          class="flex flex-col items-start justify-between px-6 py-4 border-b md:flex-row md:items-center bg-gray-50"
         >
           <div>
             <p
@@ -263,11 +263,11 @@ onMounted(fetchOrders);
             >
               Order ID
             </p>
-            <p class="font-mono font-bold text-gray-800 text-sm">
+            <p class="font-mono text-sm font-bold text-gray-800">
               {{ order.order_id }}
             </p>
           </div>
-          <div class="mt-2 md:mt-0 text-right">
+          <div class="mt-2 text-right md:mt-0">
             <span
               :class="statusClass(order.status)"
               class="px-4 py-1 rounded-full font-bold text-[10px] uppercase tracking-tighter"
@@ -288,7 +288,7 @@ onMounted(fetchOrders);
         >
           <div
             v-if="canPay(order.status)"
-            class="mb-4 text-blue-600 text-xs text-center uppercase tracking-widest animate-pulse"
+            class="mb-4 text-xs tracking-widest text-center text-blue-600 uppercase animate-pulse"
           >
             Tap here to complete payment
           </div>
@@ -296,29 +296,29 @@ onMounted(fetchOrders);
           <div
             v-for="detail in order.details"
             :key="detail.id"
-            class="flex items-center gap-4 py-4 border-gray-50 last:border-0 border-b"
+            class="flex items-center gap-4 py-4 border-b border-gray-50 last:border-0"
           >
             <img
               :src="detail.product.image"
-              class="bg-gray-100 shadow-sm rounded-lg w-16 h-16 object-cover"
+              class="object-cover w-16 h-16 bg-gray-100 rounded-lg shadow-sm"
             />
             <div class="flex-grow">
-              <h4 class="font-bold text-gray-900 text-sm uppercase">
+              <h4 class="text-sm font-bold text-gray-900 uppercase">
                 {{ detail.product.name }}
               </h4>
-              <p class="text-gray-400 text-xs">
+              <p class="text-xs text-gray-400">
                 {{ detail.quantity }} x {{ formatPrice(detail.price) }}
               </p>
             </div>
-            <p class="font-bold text-gray-900 text-sm">
+            <p class="text-sm font-bold text-gray-900">
               {{ formatPrice(detail.quantity * detail.price) }}
             </p>
           </div>
         </div>
 
-        <div class="bg-gray-50/50 px-6 py-4 border-t">
+        <div class="px-6 py-4 border-t bg-gray-50/50">
           <div
-            class="flex flex-col md:flex-row justify-between items-center gap-4"
+            class="flex flex-col items-center justify-between gap-4 md:flex-row"
           >
             <div>
               <p
@@ -326,7 +326,7 @@ onMounted(fetchOrders);
               >
                 Total Amount
               </p>
-              <p class="font-bold text-black text-xl">
+              <p class="text-xl font-bold text-black">
                 {{ formatPrice(order.total_amount) }}
               </p>
             </div>
@@ -335,7 +335,7 @@ onMounted(fetchOrders);
               <button
                 v-if="canPay(order.status)"
                 @click="cancelOrder(order.id)"
-                class="hover:bg-red-50 px-6 py-2 border border-red-200 rounded-xl font-bold text-red-600 text-xs uppercase tracking-widest transition"
+                class="px-6 py-2 text-xs font-bold tracking-widest text-red-600 uppercase transition border border-red-200 hover:bg-red-50 rounded-xl"
               >
                 Cancel Order
               </button>
@@ -343,7 +343,7 @@ onMounted(fetchOrders);
               <button
                 v-if="canPay(order.status)"
                 @click="redirectToPayment(order)"
-                class="bg-black hover:bg-gray-800 px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition"
+                class="px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-black hover:bg-gray-800 rounded-xl"
               >
                 Pay Now
               </button>
@@ -351,7 +351,7 @@ onMounted(fetchOrders);
               <button
                 v-if="order.status === 'processing'"
                 @click="confirmReceived(order.id)"
-                class="bg-green-600 hover:bg-green-700 px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition"
+                class="px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-green-600 hover:bg-green-700 rounded-xl"
               >
                 Order Received
               </button>
@@ -359,21 +359,21 @@ onMounted(fetchOrders);
               <button
                 v-if="['completed', 'processing'].includes(order.status)"
                 @click="requestRefund(order.id)"
-                class="hover:bg-gray-100 px-6 py-2 border border-gray-300 rounded-xl font-bold text-gray-600 text-xs uppercase tracking-widest transition"
+                class="px-6 py-2 text-xs font-bold tracking-widest text-gray-600 uppercase transition border border-gray-300 hover:bg-gray-100 rounded-xl"
               >
                 Request Refund
               </button>
 
               <div
                 v-if="order.status === 'refund_requested'"
-                class="bg-amber-100 px-4 py-2 rounded-xl text-amber-700 text-xs font-bold"
+                class="px-4 py-2 text-xs font-bold bg-amber-100 rounded-xl text-amber-700"
               >
                 Waiting Admin Confirmation
               </div>
 
               <div
                 v-if="order.status === 'refund_manual_required'"
-                class="bg-pink-100 px-4 py-2 rounded-xl text-pink-700 text-xs font-bold"
+                class="px-4 py-2 text-xs font-bold text-pink-700 bg-pink-100 rounded-xl"
               >
                 Process via Manual Transfer (Contact Admin)
               </div>
@@ -381,14 +381,14 @@ onMounted(fetchOrders);
               <button
                 v-if="order.status === 'refund_approved'"
                 @click="processRefund(order.id)"
-                class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition"
+                class="px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-blue-600 hover:bg-blue-700 rounded-xl"
               >
                 Refund Now
               </button>
 
               <div
                 v-if="order.status === 'refund_rejected'"
-                class="text-red-500 text-xs font-bold italic"
+                class="text-xs italic font-bold text-red-500"
               >
                 Refund Request Rejected
               </div>
@@ -580,25 +580,25 @@ onMounted(fetchOrders);
 
 <!-- Sesudah Timer untuk Expired -->
 <!-- <template>
-  <div class="mx-auto px-6 py-20 max-w-5xl min-h-screen">
+  <div class="max-w-5xl min-h-screen px-6 py-20 mx-auto">
     <h1
-      class="mb-10 font-serif text-gray-900 text-4xl uppercase tracking-tighter"
+      class="mb-10 font-serif text-4xl tracking-tighter text-gray-900 uppercase"
     >
       Track My Orders
     </h1>
 
     <div v-if="loading" class="space-y-6">
-      <div class="bg-gray-100 h-40 rounded-2xl animate-pulse"></div>
+      <div class="h-40 bg-gray-100 rounded-2xl animate-pulse"></div>
     </div>
 
     <div
       v-else-if="transactions.length === 0"
-      class="bg-white p-12 border rounded-2xl text-center animate-fade-in"
+      class="p-12 text-center bg-white border rounded-2xl animate-fade-in"
     >
-      <p class="text-gray-400 italic">You haven't placed any orders yet.</p>
+      <p class="italic text-gray-400">You haven't placed any orders yet.</p>
       <router-link
         to="/collections"
-        class="inline-block mt-6 font-bold text-black underline uppercase tracking-widest"
+        class="inline-block mt-6 font-bold tracking-widest text-black underline uppercase"
         >Start Shopping</router-link
       >
     </div>
@@ -607,11 +607,11 @@ onMounted(fetchOrders);
       <div
         v-for="order in transactions"
         :key="order.id"
-        class="bg-white shadow-sm hover:shadow-md border border-gray-100 rounded-2xl overflow-hidden transition-shadow duration-300 relative"
+        class="relative overflow-hidden transition-shadow duration-300 bg-white border border-gray-100 shadow-sm hover:shadow-md rounded-2xl"
       >
 
         <div
-          class="flex md:flex-row flex-col justify-between items-start md:items-center bg-gray-50 px-6 py-4 border-b"
+          class="flex flex-col items-start justify-between px-6 py-4 border-b md:flex-row md:items-center bg-gray-50"
         >
           <div>
             <div class="flex items-center gap-3">
@@ -631,7 +631,7 @@ onMounted(fetchOrders);
               {{ order.order_id }}
             </p>
           </div>
-          <div class="mt-2 md:mt-0 text-right">
+          <div class="mt-2 text-right md:mt-0">
             <span
               :class="statusClass(order.status)"
               class="px-4 py-1 rounded-full font-bold text-[10px] uppercase tracking-tighter"
@@ -652,7 +652,7 @@ onMounted(fetchOrders);
         >
           <div
             v-if="canPay(order.status) && countdowns[order.id] !== 'Expired'"
-            class="mb-4 text-blue-600 text-xs text-center uppercase tracking-widest animate-pulse"
+            class="mb-4 text-xs tracking-widest text-center text-blue-600 uppercase animate-pulse"
           >
             Tap here to complete payment
           </div>
@@ -660,29 +660,29 @@ onMounted(fetchOrders);
           <div
             v-for="detail in order.details"
             :key="detail.id"
-            class="flex items-center gap-4 py-4 border-gray-50 last:border-0 border-b"
+            class="flex items-center gap-4 py-4 border-b border-gray-50 last:border-0"
           >
             <img
               :src="detail.product.image"
-              class="bg-gray-100 shadow-sm rounded-lg w-16 h-16 object-cover"
+              class="object-cover w-16 h-16 bg-gray-100 rounded-lg shadow-sm"
             />
             <div class="flex-grow">
-              <h4 class="font-bold text-gray-900 text-sm uppercase">
+              <h4 class="text-sm font-bold text-gray-900 uppercase">
                 {{ detail.product.name }}
               </h4>
-              <p class="text-gray-400 text-xs">
+              <p class="text-xs text-gray-400">
                 {{ detail.quantity }} x {{ formatPrice(detail.price) }}
               </p>
             </div>
-            <p class="font-bold text-gray-900 text-sm">
+            <p class="text-sm font-bold text-gray-900">
               {{ formatPrice(detail.quantity * detail.price) }}
             </p>
           </div>
         </div>
 
-        <div class="bg-gray-50/50 px-6 py-4 border-t">
+        <div class="px-6 py-4 border-t bg-gray-50/50">
           <div
-            class="flex flex-col md:flex-row justify-between items-center gap-4"
+            class="flex flex-col items-center justify-between gap-4 md:flex-row"
           >
             <div>
               <p
@@ -690,12 +690,12 @@ onMounted(fetchOrders);
               >
                 Total Amount
               </p>
-              <p class="font-bold text-black text-xl">
+              <p class="text-xl font-bold text-black">
                 {{ formatPrice(order.total_amount) }}
               </p>
             </div>
 
-            <div class="flex flex-col md:flex-row items-center gap-4">
+            <div class="flex flex-col items-center gap-4 md:flex-row">
               <div
                 v-if="canPay(order.status) && order.payment"
                 class="flex items-center gap-2"
@@ -714,7 +714,7 @@ onMounted(fetchOrders);
                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
-                <span class="font-mono font-bold text-red-500 text-sm">
+                <span class="font-mono text-sm font-bold text-red-500">
                   {{ countdowns[order.id] }}
                 </span>
               </div>
@@ -723,7 +723,7 @@ onMounted(fetchOrders);
                 <button
                   v-if="canPay(order.status)"
                   @click="cancelOrder(order.id)"
-                  class="hover:bg-red-50 px-6 py-2 border border-red-200 rounded-xl font-bold text-red-600 text-xs uppercase tracking-widest transition"
+                  class="px-6 py-2 text-xs font-bold tracking-widest text-red-600 uppercase transition border border-red-200 hover:bg-red-50 rounded-xl"
                 >
                   Cancel Order
                 </button>
@@ -732,7 +732,7 @@ onMounted(fetchOrders);
                   v-if="canPay(order.status)"
                   @click="redirectToPayment(order)"
                   :disabled="countdowns[order.id] === 'Expired'"
-                  class="bg-black hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition"
+                  class="px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-black hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed rounded-xl"
                 >
                   Pay Now
                 </button>
@@ -740,7 +740,7 @@ onMounted(fetchOrders);
                 <button
                   v-if="order.status === 'processing'"
                   @click="confirmReceived(order.id)"
-                  class="bg-green-600 hover:bg-green-700 px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition"
+                  class="px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-green-600 hover:bg-green-700 rounded-xl"
                 >
                   Order Received
                 </button>
@@ -756,7 +756,7 @@ onMounted(fetchOrders);
                       state: { paymentMethod: order.payment_method },
                     })
                   "
-                  class="bg-black hover:bg-gray-800 px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition"
+                  class="px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-black hover:bg-gray-800 rounded-xl"
                 >
                   Track Order
                 </button>
@@ -764,21 +764,21 @@ onMounted(fetchOrders);
                 <button
                   v-if="['completed', 'processing'].includes(order.status)"
                   @click="requestRefund(order.id)"
-                  class="hover:bg-gray-100 px-6 py-2 border border-gray-300 rounded-xl font-bold text-gray-600 text-xs uppercase tracking-widest transition"
+                  class="px-6 py-2 text-xs font-bold tracking-widest text-gray-600 uppercase transition border border-gray-300 hover:bg-gray-100 rounded-xl"
                 >
                   Request Refund
                 </button>
 
                 <div
                   v-if="order.status === 'refund_requested'"
-                  class="bg-amber-100 px-4 py-2 rounded-xl text-amber-700 text-xs font-bold"
+                  class="px-4 py-2 text-xs font-bold bg-amber-100 rounded-xl text-amber-700"
                 >
                   Waiting Admin Confirmation
                 </div>
 
                 <div
                   v-if="order.status === 'refund_manual_required'"
-                  class="bg-pink-100 px-4 py-2 rounded-xl text-pink-700 text-xs font-bold"
+                  class="px-4 py-2 text-xs font-bold text-pink-700 bg-pink-100 rounded-xl"
                 >
                   Process via Manual Transfer (Contact Admin)
                 </div>
@@ -786,14 +786,14 @@ onMounted(fetchOrders);
                 <button
                   v-if="order.status === 'refund_approved'"
                   @click="processRefund(order.id)"
-                  class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition"
+                  class="px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-blue-600 hover:bg-blue-700 rounded-xl"
                 >
                   Refund Now
                 </button>
 
                 <div
                   v-if="order.status === 'refund_rejected'"
-                  class="text-red-500 text-xs font-bold italic"
+                  class="text-xs italic font-bold text-red-500"
                 >
                   Refund Request Rejected
                 </div>
@@ -1239,25 +1239,25 @@ onUnmounted(() => {
 </script> -->
 
 <!-- <template>
-  <div class="mx-auto px-6 py-20 max-w-5xl min-h-screen">
+  <div class="max-w-5xl min-h-screen px-6 py-20 mx-auto">
     <h1
-      class="mb-10 font-serif text-gray-900 text-4xl uppercase tracking-tighter"
+      class="mb-10 font-serif text-4xl tracking-tighter text-gray-900 uppercase"
     >
       Track My Orders
     </h1>
 
     <div v-if="loading" class="space-y-6">
-      <div class="bg-gray-100 h-40 rounded-2xl animate-pulse"></div>
+      <div class="h-40 bg-gray-100 rounded-2xl animate-pulse"></div>
     </div>
 
     <div
       v-else-if="transactions.length === 0"
-      class="bg-white p-12 border rounded-2xl text-center animate-fade-in"
+      class="p-12 text-center bg-white border rounded-2xl animate-fade-in"
     >
-      <p class="text-gray-400 italic">You haven't placed any orders yet.</p>
+      <p class="italic text-gray-400">You haven't placed any orders yet.</p>
       <router-link
         to="/collections"
-        class="inline-block mt-6 font-bold text-black underline uppercase tracking-widest"
+        class="inline-block mt-6 font-bold tracking-widest text-black underline uppercase"
         >Start Shopping</router-link
       >
     </div>
@@ -1266,19 +1266,19 @@ onUnmounted(() => {
       <div
         v-for="order in transactions"
         :key="order.id"
-        class="bg-white shadow-sm hover:shadow-md border border-gray-100 rounded-2xl overflow-hidden transition-shadow duration-300 relative"
+        class="relative overflow-hidden transition-shadow duration-300 bg-white border border-gray-100 shadow-sm hover:shadow-md rounded-2xl"
       >
         <div
-          class="flex md:flex-row flex-col justify-between items-start md:items-center bg-gray-50 px-6 py-4 border-b gap-4"
+          class="flex flex-col items-start justify-between gap-4 px-6 py-4 border-b md:flex-row md:items-center bg-gray-50"
         >
-          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
+          <div class="flex flex-col gap-4 md:flex-row md:items-center md:gap-8">
             <div>
               <p
                 class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-1"
               >
                 Order ID
               </p>
-              <p class="font-mono font-bold text-gray-800 text-sm">
+              <p class="font-mono text-sm font-bold text-gray-800">
                 {{ order.order_id }}
               </p>
             </div>
@@ -1289,12 +1289,12 @@ onUnmounted(() => {
               >
                 Date
               </p>
-              <p class="font-bold text-gray-800 text-xs">
+              <p class="text-xs font-bold text-gray-800">
                 {{ formatDateTime(order.created_at) }}
               </p>
             </div>
 
-            <div class="md:hidden mt-2">
+            <div class="mt-2 md:hidden">
               <span
                 :class="statusClass(order.status)"
                 class="px-4 py-1 rounded-full font-bold text-[10px] uppercase tracking-tighter"
@@ -1304,7 +1304,7 @@ onUnmounted(() => {
             </div>
           </div>
 
-          <div class="hidden md:block text-right">
+          <div class="hidden text-right md:block">
             <span
               :class="statusClass(order.status)"
               class="px-4 py-1 rounded-full font-bold text-[10px] uppercase tracking-tighter"
@@ -1315,7 +1315,7 @@ onUnmounted(() => {
         </div>
 
         <div
-          class="bg-white px-6 py-4 border-b flex flex-col md:flex-row gap-6 md:gap-12"
+          class="flex flex-col gap-6 px-6 py-4 bg-white border-b md:flex-row md:gap-12"
         >
           <div class="flex-1">
             <p
@@ -1325,19 +1325,19 @@ onUnmounted(() => {
             </p>
             <div v-if="order.payment_method" class="flex items-center gap-3">
               <div
-                class="w-12 h-8 bg-gray-50 border border-gray-100 rounded flex justify-center items-center overflow-hidden shrink-0"
+                class="flex items-center justify-center w-12 h-8 overflow-hidden border border-gray-100 rounded bg-gray-50 shrink-0"
               >
                 <img
                   v-if="getPaymentLogo(order.payment_method)"
                   :src="getPaymentLogo(order.payment_method)"
-                  class="w-full h-full object-contain p-1"
+                  class="object-contain w-full h-full p-1"
                 />
                 <span v-else class="font-black text-gray-300 text-[8px]">{{
                   order.payment_method.split(" ")[1] || "PAY"
                 }}</span>
               </div>
               <div>
-                <p class="font-bold text-gray-800 text-xs uppercase">
+                <p class="text-xs font-bold text-gray-800 uppercase">
                   {{ order.payment_method.replace("_", " ") }}
                 </p>
 
@@ -1367,7 +1367,7 @@ onUnmounted(() => {
                 </p>
               </div>
             </div>
-            <p v-else class="text-xs text-gray-400 italic">
+            <p v-else class="text-xs italic text-gray-400">
               Waiting for payment selection...
             </p>
           </div>
@@ -1383,7 +1383,7 @@ onUnmounted(() => {
               class="flex items-center gap-3"
             >
               <div
-                class="w-12 h-12 bg-black text-white rounded-lg flex justify-center items-center shrink-0"
+                class="flex items-center justify-center w-12 h-12 text-white bg-black rounded-lg shrink-0"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -1401,7 +1401,7 @@ onUnmounted(() => {
                 </svg>
               </div>
               <div>
-                <p class="font-bold text-gray-800 text-xs uppercase">
+                <p class="text-xs font-bold text-gray-800 uppercase">
                   Internal Courier
                 </p>
                 <p class="text-[10px] text-gray-500 mt-0.5">
@@ -1417,19 +1417,19 @@ onUnmounted(() => {
               class="flex items-center gap-3"
             >
               <div
-                class="w-12 h-12 bg-white border border-gray-100 rounded-lg flex justify-center items-center overflow-hidden shrink-0"
+                class="flex items-center justify-center w-12 h-12 overflow-hidden bg-white border border-gray-100 rounded-lg shrink-0"
               >
                 <img
                   v-if="getCourierLogo(order.courier_company)"
                   :src="getCourierLogo(order.courier_company)"
-                  class="w-full h-full object-contain p-1"
+                  class="object-contain w-full h-full p-1"
                 />
-                <span v-else class="font-black text-gray-300 text-xs">{{
+                <span v-else class="text-xs font-black text-gray-300">{{
                   order.courier_company.toUpperCase()
                 }}</span>
               </div>
               <div>
-                <p class="font-bold text-gray-800 text-xs uppercase">
+                <p class="text-xs font-bold text-gray-800 uppercase">
                   {{ order.courier_company }} - {{ order.courier_type }}
                 </p>
                 <p class="text-[10px] text-gray-500 mt-0.5">
@@ -1441,7 +1441,7 @@ onUnmounted(() => {
               </div>
             </div>
 
-            <div v-else class="text-xs text-gray-400 italic">
+            <div v-else class="text-xs italic text-gray-400">
               Setup shipping at checkout
             </div>
           </div>
@@ -1466,29 +1466,29 @@ onUnmounted(() => {
           <div
             v-for="detail in order.details"
             :key="detail.id"
-            class="flex items-center gap-4 py-4 border-gray-50 last:border-0 border-b"
+            class="flex items-center gap-4 py-4 border-b border-gray-50 last:border-0"
           >
             <img
               :src="detail.product.image"
-              class="bg-gray-100 shadow-sm rounded-lg w-16 h-16 object-cover"
+              class="object-cover w-16 h-16 bg-gray-100 rounded-lg shadow-sm"
             />
             <div class="flex-grow">
-              <h4 class="font-bold text-gray-900 text-sm uppercase">
+              <h4 class="text-sm font-bold text-gray-900 uppercase">
                 {{ detail.product.name }}
               </h4>
-              <p class="text-gray-400 text-xs">
+              <p class="text-xs text-gray-400">
                 {{ detail.quantity }} x {{ formatPrice(detail.price) }}
               </p>
             </div>
-            <p class="font-bold text-gray-900 text-sm">
+            <p class="text-sm font-bold text-gray-900">
               {{ formatPrice(detail.quantity * detail.price) }}
             </p>
           </div>
         </div>
 
-        <div class="bg-gray-50/50 px-6 py-4 border-t">
+        <div class="px-6 py-4 border-t bg-gray-50/50">
           <div
-            class="flex flex-col mb-4 space-y-1 pb-4 border-b border-gray-200"
+            class="flex flex-col pb-4 mb-4 space-y-1 border-b border-gray-200"
           >
             <div class="flex justify-between text-xs text-gray-500">
               <span>Subtotal for Products</span>
@@ -1509,7 +1509,7 @@ onUnmounted(() => {
               <span>{{ formatPrice(order.shipping_cost) }}</span>
             </div>
             <div
-              class="flex justify-between text-sm font-bold text-gray-900 mt-2 pt-2 border-t border-gray-200 border-dashed"
+              class="flex justify-between pt-2 mt-2 text-sm font-bold text-gray-900 border-t border-gray-200 border-dashed"
             >
               <span class="uppercase tracking-widest text-[10px] mt-1"
                 >Final Amount</span
@@ -1521,12 +1521,12 @@ onUnmounted(() => {
           </div>
 
           <div
-            class="flex flex-col md:flex-row justify-between items-center gap-4"
+            class="flex flex-col items-center justify-between gap-4 md:flex-row"
           >
-            <div class="w-full md:w-auto text-left">
+            <div class="w-full text-left md:w-auto">
               <div
                 v-if="canPay(order.status) && order.payment"
-                class="flex items-center gap-2 justify-center md:justify-start"
+                class="flex items-center justify-center gap-2 md:justify-start"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -1542,19 +1542,19 @@ onUnmounted(() => {
                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
-                <span class="font-mono font-bold text-red-500 text-sm">{{
+                <span class="font-mono text-sm font-bold text-red-500">{{
                   countdowns[order.id]
                 }}</span>
               </div>
             </div>
 
             <div
-              class="flex flex-wrap justify-center md:justify-end gap-3 w-full md:w-auto"
+              class="flex flex-wrap justify-center w-full gap-3 md:justify-end md:w-auto"
             >
               <button
                 v-if="canPay(order.status)"
                 @click="cancelOrder(order.id)"
-                class="hover:bg-red-50 px-6 py-2 border border-red-200 rounded-xl font-bold text-red-600 text-xs uppercase tracking-widest transition w-full md:w-auto"
+                class="w-full px-6 py-2 text-xs font-bold tracking-widest text-red-600 uppercase transition border border-red-200 hover:bg-red-50 rounded-xl md:w-auto"
               >
                 Cancel
               </button>
@@ -1562,7 +1562,7 @@ onUnmounted(() => {
                 v-if="canPay(order.status)"
                 @click="redirectToPayment(order)"
                 :disabled="countdowns[order.id] === 'Expired'"
-                class="bg-black hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition w-full md:w-auto"
+                class="w-full px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-black hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed rounded-xl md:w-auto"
               >
                 Pay Now
               </button>
@@ -1570,7 +1570,7 @@ onUnmounted(() => {
               <button
                 v-if="order.status === 'processing'"
                 @click="confirmReceived(order.id)"
-                class="bg-green-600 hover:bg-green-700 px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition w-full md:w-auto"
+                class="w-full px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-green-600 hover:bg-green-700 rounded-xl md:w-auto"
               >
                 Order Received
               </button>
@@ -1586,7 +1586,7 @@ onUnmounted(() => {
                     state: { paymentMethod: order.payment_method },
                   })
                 "
-                class="bg-black hover:bg-gray-800 px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition w-full md:w-auto"
+                class="w-full px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-black hover:bg-gray-800 rounded-xl md:w-auto"
               >
                 Track Order
               </button>
@@ -1594,33 +1594,33 @@ onUnmounted(() => {
               <button
                 v-if="['completed', 'processing'].includes(order.status)"
                 @click="requestRefund(order.id)"
-                class="hover:bg-gray-100 px-6 py-2 border border-gray-300 rounded-xl font-bold text-gray-600 text-xs uppercase tracking-widest transition w-full md:w-auto"
+                class="w-full px-6 py-2 text-xs font-bold tracking-widest text-gray-600 uppercase transition border border-gray-300 hover:bg-gray-100 rounded-xl md:w-auto"
               >
                 Refund
               </button>
 
               <div
                 v-if="order.status === 'refund_requested'"
-                class="bg-amber-100 px-4 py-2 rounded-xl text-amber-700 text-xs font-bold w-full md:w-auto text-center"
+                class="w-full px-4 py-2 text-xs font-bold text-center bg-amber-100 rounded-xl text-amber-700 md:w-auto"
               >
                 Waiting Admin
               </div>
               <div
                 v-if="order.status === 'refund_manual_required'"
-                class="bg-pink-100 px-4 py-2 rounded-xl text-pink-700 text-xs font-bold w-full md:w-auto text-center"
+                class="w-full px-4 py-2 text-xs font-bold text-center text-pink-700 bg-pink-100 rounded-xl md:w-auto"
               >
                 Manual Refund
               </div>
               <button
                 v-if="order.status === 'refund_approved'"
                 @click="processRefund(order.id)"
-                class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition w-full md:w-auto"
+                class="w-full px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-blue-600 hover:bg-blue-700 rounded-xl md:w-auto"
               >
                 Refund Now
               </button>
               <div
                 v-if="order.status === 'refund_rejected'"
-                class="text-red-500 text-xs font-bold italic w-full md:w-auto text-center"
+                class="w-full text-xs italic font-bold text-center text-red-500 md:w-auto"
               >
                 Refund Rejected
               </div>
@@ -1912,21 +1912,21 @@ onUnmounted(() => {
 
 <!-- Dengan Tab Filter -->
 <!-- <template>
-  <div class="mx-auto px-6 py-20 max-w-5xl min-h-screen">
-    <div class="flex justify-between items-center mb-10">
-      <h1 class="font-serif text-gray-900 text-4xl uppercase tracking-tighter">
+  <div class="max-w-5xl min-h-screen px-6 py-20 mx-auto">
+    <div class="flex items-center justify-between mb-10">
+      <h1 class="font-serif text-4xl tracking-tighter text-gray-900 uppercase">
         Track My Orders
       </h1>
       <router-link
         to="/shippingmanagement"
-        class="bg-black hover:bg-gray-800 px-6 py-3 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition shadow-md"
+        class="px-6 py-3 text-xs font-bold tracking-widest text-white uppercase transition bg-black shadow-md hover:bg-gray-800 rounded-xl"
       >
         Simulate Shipping
       </router-link>
     </div>
 
     <div class="mb-8 space-y-4">
-      <div class="flex items-center gap-4 overflow-x-auto pb-2 border-b border-gray-100">
+      <div class="flex items-center gap-4 pb-2 overflow-x-auto border-b border-gray-100">
         <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap">Transaction:</span>
         <button 
           v-for="tab in transactionTabs" 
@@ -1943,7 +1943,7 @@ onUnmounted(() => {
         </button>
       </div>
 
-      <div class="flex items-center gap-4 overflow-x-auto pb-2 border-b border-gray-100">
+      <div class="flex items-center gap-4 pb-2 overflow-x-auto border-b border-gray-100">
         <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap">Shipping:</span>
         <button 
           v-for="tab in shippingTabs" 
@@ -1962,18 +1962,18 @@ onUnmounted(() => {
     </div>
 
     <div v-if="loading" class="space-y-6">
-      <div class="bg-gray-100 h-40 rounded-2xl animate-pulse"></div>
-      <div class="bg-gray-100 h-40 rounded-2xl animate-pulse"></div>
+      <div class="h-40 bg-gray-100 rounded-2xl animate-pulse"></div>
+      <div class="h-40 bg-gray-100 rounded-2xl animate-pulse"></div>
     </div>
 
     <div
       v-else-if="filteredTransactions.length === 0"
-      class="bg-white p-12 border border-gray-100 rounded-2xl text-center animate-fade-in"
+      class="p-12 text-center bg-white border border-gray-100 rounded-2xl animate-fade-in"
     >
-      <p class="text-gray-400 italic">No orders found matching the selected filters.</p>
+      <p class="italic text-gray-400">No orders found matching the selected filters.</p>
       <button
         @click="resetFilters"
-        class="inline-block mt-6 font-bold text-black underline uppercase tracking-widest text-xs"
+        class="inline-block mt-6 text-xs font-bold tracking-widest text-black underline uppercase"
       >
         Clear Filters
       </button>
@@ -1983,15 +1983,15 @@ onUnmounted(() => {
       <div
         v-for="order in filteredTransactions"
         :key="order.id"
-        class="bg-white shadow-sm hover:shadow-md border border-gray-100 rounded-2xl overflow-hidden transition-shadow duration-300 relative"
+        class="relative overflow-hidden transition-shadow duration-300 bg-white border border-gray-100 shadow-sm hover:shadow-md rounded-2xl"
       >
-        <div class="flex md:flex-row flex-col justify-between items-start md:items-center bg-gray-50 px-6 py-4 border-b border-gray-100 gap-4">
-          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
+        <div class="flex flex-col items-start justify-between gap-4 px-6 py-4 border-b border-gray-100 md:flex-row md:items-center bg-gray-50">
+          <div class="flex flex-col gap-4 md:flex-row md:items-center md:gap-8">
             <div>
               <p class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-1">
                 Order ID
               </p>
-              <p class="font-mono font-bold text-gray-800 text-sm">
+              <p class="font-mono text-sm font-bold text-gray-800">
                 {{ order.order_id }}
               </p>
             </div>
@@ -2000,28 +2000,28 @@ onUnmounted(() => {
               <p class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-1">
                 Date
               </p>
-              <p class="font-bold text-gray-800 text-xs">
+              <p class="text-xs font-bold text-gray-800">
                 {{ formatDateTime(order.created_at) }}
               </p>
             </div>
           </div>
 
-          <div class="flex flex-col items-end gap-2 w-full md:w-auto">
-            <div class="flex items-center justify-between md:justify-end w-full md:w-auto gap-3">
+          <div class="flex flex-col items-end w-full gap-2 md:w-auto">
+            <div class="flex items-center justify-between w-full gap-3 md:justify-end md:w-auto">
               <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Transaction:</span>
               <span :class="statusClass(order.status)" class="px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-tighter">
                 {{ formatStatus(order.status) }}
               </span>
             </div>
             
-            <div v-if="order.shipping_method === 'biteship'" class="flex items-center justify-between md:justify-end w-full md:w-auto gap-3">
+            <div v-if="order.shipping_method === 'biteship'" class="flex items-center justify-between w-full gap-3 md:justify-end md:w-auto">
               <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Shipping:</span>
               <span v-if="order.biteshipDataLoading" class="text-[10px] text-gray-400 italic animate-pulse">Loading...</span>
               <span v-else :class="shippingStatusClass(order.biteshipData?.status)" class="px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-tighter border">
                 {{ formatStatus(order.biteshipData?.status || 'Pending') }}
               </span>
             </div>
-            <div v-else-if="order.shipping_method === 'free'" class="flex items-center justify-between md:justify-end w-full md:w-auto gap-3">
+            <div v-else-if="order.shipping_method === 'free'" class="flex items-center justify-between w-full gap-3 md:justify-end md:w-auto">
                <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Shipping:</span>
                <span class="px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-tighter border bg-gray-100 text-gray-600">
                  Internal Delivery
@@ -2030,24 +2030,24 @@ onUnmounted(() => {
           </div>
         </div>
 
-        <div class="bg-white px-6 py-4 border-b border-gray-100 flex flex-col md:flex-row gap-6 md:gap-12">
+        <div class="flex flex-col gap-6 px-6 py-4 bg-white border-b border-gray-100 md:flex-row md:gap-12">
           <div class="flex-1">
             <p class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-3">
               Payment Info
             </p>
             <div v-if="order.payment_method" class="flex items-center gap-3">
-              <div class="w-12 h-8 bg-gray-50 border border-gray-100 rounded flex justify-center items-center overflow-hidden shrink-0">
+              <div class="flex items-center justify-center w-12 h-8 overflow-hidden border border-gray-100 rounded bg-gray-50 shrink-0">
                 <img
                   v-if="getPaymentLogo(order.payment_method)"
                   :src="getPaymentLogo(order.payment_method)"
-                  class="w-full h-full object-contain p-1"
+                  class="object-contain w-full h-full p-1"
                 />
                 <span v-else class="font-black text-gray-300 text-[8px]">{{
                   order.payment_method.split(" ")[1] || "PAY"
                 }}</span>
               </div>
               <div>
-                <p class="font-bold text-gray-800 text-xs uppercase">
+                <p class="text-xs font-bold text-gray-800 uppercase">
                   {{ order.payment_method.replace("_", " ") }}
                 </p>
                 <p class="text-[10px] text-teal-600 font-bold mt-0.5" v-if="order.status === 'refunded'">REFUNDED</p>
@@ -2056,7 +2056,7 @@ onUnmounted(() => {
                 <p class="text-[10px] text-green-600 font-bold mt-0.5" v-else>PAID</p>
               </div>
             </div>
-            <p v-else class="text-xs text-gray-400 italic">Waiting for payment selection...</p>
+            <p v-else class="text-xs italic text-gray-400">Waiting for payment selection...</p>
           </div>
 
           <div class="flex-1">
@@ -2065,28 +2065,28 @@ onUnmounted(() => {
             </p>
             
             <div v-if="order.shipping_method === 'free'" class="flex items-center gap-3">
-              <div class="w-12 h-12 bg-black text-white rounded-lg flex justify-center items-center shrink-0">
+              <div class="flex items-center justify-center w-12 h-12 text-white bg-black rounded-lg shrink-0">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
                 </svg>
               </div>
               <div>
-                <p class="font-bold text-gray-800 text-xs uppercase">Internal Courier</p>
+                <p class="text-xs font-bold text-gray-800 uppercase">Internal Courier</p>
                 <p class="text-[10px] text-gray-500 mt-0.5">Free Shipping - Next Day</p>
               </div>
             </div>
 
             <div v-else-if="order.shipping_method === 'biteship' && order.courier_company" class="flex items-center gap-3">
-              <div class="w-12 h-12 bg-white border border-gray-100 rounded-lg flex justify-center items-center overflow-hidden shrink-0">
+              <div class="flex items-center justify-center w-12 h-12 overflow-hidden bg-white border border-gray-100 rounded-lg shrink-0">
                 <img
                   v-if="getCourierLogo(order.courier_company)"
                   :src="getCourierLogo(order.courier_company)"
-                  class="w-full h-full object-contain p-1"
+                  class="object-contain w-full h-full p-1"
                 />
-                <span v-else class="font-black text-gray-300 text-xs">{{ order.courier_company.toUpperCase() }}</span>
+                <span v-else class="text-xs font-black text-gray-300">{{ order.courier_company.toUpperCase() }}</span>
               </div>
               <div>
-                <p class="font-bold text-gray-800 text-xs uppercase">
+                <p class="text-xs font-bold text-gray-800 uppercase">
                   {{ order.courier_company }} - {{ order.courier_type }}
                 </p>
                 <div v-if="order.biteshipDataLoading" class="text-[10px] text-gray-400 italic mt-0.5">Fetching Waybill...</div>
@@ -2099,7 +2099,7 @@ onUnmounted(() => {
               </div>
             </div>
 
-            <div v-else class="text-xs text-gray-400 italic">
+            <div v-else class="text-xs italic text-gray-400">
               Setup shipping at checkout
             </div>
           </div>
@@ -2124,19 +2124,19 @@ onUnmounted(() => {
           <div
             v-for="detail in order.details"
             :key="detail.id"
-            class="flex items-center gap-4 py-4 border-gray-50 last:border-0 border-b"
+            class="flex items-center gap-4 py-4 border-b border-gray-50 last:border-0"
           >
-            <img :src="detail.product.image" class="bg-gray-100 shadow-sm border border-gray-100 rounded-lg w-16 h-16 object-cover" />
+            <img :src="detail.product.image" class="object-cover w-16 h-16 bg-gray-100 border border-gray-100 rounded-lg shadow-sm" />
             <div class="flex-grow">
-              <h4 class="font-bold text-gray-900 text-sm uppercase">{{ detail.product.name }}</h4>
-              <p class="text-gray-400 text-xs">{{ detail.quantity }} x {{ formatPrice(detail.price) }}</p>
+              <h4 class="text-sm font-bold text-gray-900 uppercase">{{ detail.product.name }}</h4>
+              <p class="text-xs text-gray-400">{{ detail.quantity }} x {{ formatPrice(detail.price) }}</p>
             </div>
-            <p class="font-bold text-gray-900 text-sm">{{ formatPrice(detail.quantity * detail.price) }}</p>
+            <p class="text-sm font-bold text-gray-900">{{ formatPrice(detail.quantity * detail.price) }}</p>
           </div>
         </div>
 
-        <div class="bg-gray-50/50 px-6 py-4 border-t border-gray-100">
-          <div class="flex flex-col mb-4 space-y-1 pb-4 border-b border-gray-200">
+        <div class="px-6 py-4 border-t border-gray-100 bg-gray-50/50">
+          <div class="flex flex-col pb-4 mb-4 space-y-1 border-b border-gray-200">
             <div class="flex justify-between text-xs text-gray-500">
               <span>Subtotal for Products</span>
               <span>{{ formatPrice(getSubtotal(order)) }}</span>
@@ -2151,56 +2151,56 @@ onUnmounted(() => {
               </span>
               <span>{{ formatPrice(order.shipping_cost) }}</span>
             </div>
-            <div class="flex justify-between text-sm font-bold text-gray-900 mt-2 pt-2 border-t border-gray-200 border-dashed">
+            <div class="flex justify-between pt-2 mt-2 text-sm font-bold text-gray-900 border-t border-gray-200 border-dashed">
               <span class="uppercase tracking-widest text-[10px] mt-1">Final Amount</span>
               <span class="text-lg">{{ formatPrice(getGrandTotal(order)) }}</span>
             </div>
           </div>
 
-          <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="w-full md:w-auto text-left">
-              <div v-if="canPay(order.status) && order.payment" class="flex items-center gap-2 justify-center md:justify-start">
+          <div class="flex flex-col items-center justify-between gap-4 md:flex-row">
+            <div class="w-full text-left md:w-auto">
+              <div v-if="canPay(order.status) && order.payment" class="flex items-center justify-center gap-2 md:justify-start">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-500 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span class="font-mono font-bold text-red-500 text-sm">{{ countdowns[order.id] }}</span>
+                <span class="font-mono text-sm font-bold text-red-500">{{ countdowns[order.id] }}</span>
               </div>
             </div>
 
-            <div class="flex flex-wrap justify-center md:justify-end gap-3 w-full md:w-auto">
-              <button v-if="canPay(order.status)" @click="cancelOrder(order.id)" class="hover:bg-red-50 px-6 py-2 border border-red-200 rounded-xl font-bold text-red-600 text-xs uppercase tracking-widest transition w-full md:w-auto">
+            <div class="flex flex-wrap justify-center w-full gap-3 md:justify-end md:w-auto">
+              <button v-if="canPay(order.status)" @click="cancelOrder(order.id)" class="w-full px-6 py-2 text-xs font-bold tracking-widest text-red-600 uppercase transition border border-red-200 hover:bg-red-50 rounded-xl md:w-auto">
                 Cancel
               </button>
-              <button v-if="canPay(order.status)" @click="redirectToPayment(order)" :disabled="countdowns[order.id] === 'Expired'" class="bg-black hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition w-full md:w-auto">
+              <button v-if="canPay(order.status)" @click="redirectToPayment(order)" :disabled="countdowns[order.id] === 'Expired'" class="w-full px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-black hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed rounded-xl md:w-auto">
                 Pay Now
               </button>
 
-              <button v-if="order.status === 'processing'" @click="confirmReceived(order.id)" class="bg-green-600 hover:bg-green-700 px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition shadow-sm w-full md:w-auto">
+              <button v-if="order.status === 'processing'" @click="confirmReceived(order.id)" class="w-full px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-green-600 shadow-sm hover:bg-green-700 rounded-xl md:w-auto">
                 Order Received
               </button>
 
               <button
                 v-if="['processing', 'completed'].includes(order.status) && order.shipping_method === 'biteship'"
                 @click="$router.push({ path: `/tracking/${order.id}`, state: { paymentMethod: order.payment_method } })"
-                class="bg-black hover:bg-gray-800 px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition shadow-sm w-full md:w-auto"
+                class="w-full px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-black shadow-sm hover:bg-gray-800 rounded-xl md:w-auto"
               >
                 Track Order
               </button>
 
-              <button v-if="['completed', 'processing'].includes(order.status)" @click="requestRefund(order.id)" class="hover:bg-gray-100 px-6 py-2 border border-gray-300 rounded-xl font-bold text-gray-600 text-xs uppercase tracking-widest transition w-full md:w-auto">
+              <button v-if="['completed', 'processing'].includes(order.status)" @click="requestRefund(order.id)" class="w-full px-6 py-2 text-xs font-bold tracking-widest text-gray-600 uppercase transition border border-gray-300 hover:bg-gray-100 rounded-xl md:w-auto">
                 Refund
               </button>
 
-              <div v-if="order.status === 'refund_requested'" class="bg-amber-100 px-4 py-2 rounded-xl text-amber-700 text-xs font-bold w-full md:w-auto text-center">
+              <div v-if="order.status === 'refund_requested'" class="w-full px-4 py-2 text-xs font-bold text-center bg-amber-100 rounded-xl text-amber-700 md:w-auto">
                 Waiting Admin
               </div>
-              <div v-if="order.status === 'refund_manual_required'" class="bg-pink-100 px-4 py-2 rounded-xl text-pink-700 text-xs font-bold w-full md:w-auto text-center">
+              <div v-if="order.status === 'refund_manual_required'" class="w-full px-4 py-2 text-xs font-bold text-center text-pink-700 bg-pink-100 rounded-xl md:w-auto">
                 Manual Refund
               </div>
-              <button v-if="order.status === 'refund_approved'" @click="processRefund(order.id)" class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition shadow-sm w-full md:w-auto">
+              <button v-if="order.status === 'refund_approved'" @click="processRefund(order.id)" class="w-full px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-blue-600 shadow-sm hover:bg-blue-700 rounded-xl md:w-auto">
                 Refund Now
               </button>
-              <div v-if="order.status === 'refund_rejected'" class="text-red-500 text-xs font-bold italic w-full md:w-auto text-center">
+              <div v-if="order.status === 'refund_rejected'" class="w-full text-xs italic font-bold text-center text-red-500 md:w-auto">
                 Refund Rejected
               </div>
             </div>
@@ -2483,14 +2483,14 @@ onUnmounted(() => {
 
 <!-- Perbaikan -->
 <!-- <template>
-  <div class="mx-auto px-6 py-20 max-w-5xl min-h-screen">
-    <div class="flex justify-between items-center mb-10">
-      <h1 class="font-serif text-gray-900 text-4xl uppercase tracking-tighter">
+  <div class="max-w-5xl min-h-screen px-6 py-20 mx-auto">
+    <div class="flex items-center justify-between mb-10">
+      <h1 class="font-serif text-4xl tracking-tighter text-gray-900 uppercase">
         Track My Orders
       </h1>
       <router-link
         to="/shippingmanagement"
-        class="bg-black hover:bg-gray-800 px-6 py-3 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition shadow-md"
+        class="px-6 py-3 text-xs font-bold tracking-widest text-white uppercase transition bg-black shadow-md hover:bg-gray-800 rounded-xl"
       >
         Simulate Shipping
       </router-link>
@@ -2498,7 +2498,7 @@ onUnmounted(() => {
 
     <div class="mb-8 space-y-4">
       <div
-        class="flex items-center gap-4 overflow-x-auto pb-2 border-b border-gray-100"
+        class="flex items-center gap-4 pb-2 overflow-x-auto border-b border-gray-100"
       >
         <span
           class="text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap"
@@ -2520,7 +2520,7 @@ onUnmounted(() => {
       </div>
 
       <div
-        class="flex items-center gap-4 overflow-x-auto pb-2 border-b border-gray-100"
+        class="flex items-center gap-4 pb-2 overflow-x-auto border-b border-gray-100"
       >
         <span
           class="text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap"
@@ -2543,20 +2543,20 @@ onUnmounted(() => {
     </div>
 
     <div v-if="loading" class="space-y-6">
-      <div class="bg-gray-100 h-40 rounded-2xl animate-pulse"></div>
-      <div class="bg-gray-100 h-40 rounded-2xl animate-pulse"></div>
+      <div class="h-40 bg-gray-100 rounded-2xl animate-pulse"></div>
+      <div class="h-40 bg-gray-100 rounded-2xl animate-pulse"></div>
     </div>
 
     <div
       v-else-if="filteredTransactions.length === 0"
-      class="bg-white p-12 border border-gray-100 rounded-2xl text-center animate-fade-in"
+      class="p-12 text-center bg-white border border-gray-100 rounded-2xl animate-fade-in"
     >
-      <p class="text-gray-400 italic">
+      <p class="italic text-gray-400">
         No orders found matching the selected filters.
       </p>
       <button
         @click="resetFilters"
-        class="inline-block mt-6 font-bold text-black underline uppercase tracking-widest text-xs"
+        class="inline-block mt-6 text-xs font-bold tracking-widest text-black underline uppercase"
       >
         Clear Filters
       </button>
@@ -2566,19 +2566,19 @@ onUnmounted(() => {
       <div
         v-for="order in filteredTransactions"
         :key="order.id"
-        class="bg-white shadow-sm hover:shadow-md border border-gray-100 rounded-2xl overflow-hidden transition-shadow duration-300 relative"
+        class="relative overflow-hidden transition-shadow duration-300 bg-white border border-gray-100 shadow-sm hover:shadow-md rounded-2xl"
       >
         <div
-          class="flex md:flex-row flex-col justify-between items-start md:items-center bg-gray-50 px-6 py-4 border-b border-gray-100 gap-4"
+          class="flex flex-col items-start justify-between gap-4 px-6 py-4 border-b border-gray-100 md:flex-row md:items-center bg-gray-50"
         >
-          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
+          <div class="flex flex-col gap-4 md:flex-row md:items-center md:gap-8">
             <div>
               <p
                 class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-1"
               >
                 Order ID
               </p>
-              <p class="font-mono font-bold text-gray-800 text-sm">
+              <p class="font-mono text-sm font-bold text-gray-800">
                 {{ order.order_id }}
               </p>
             </div>
@@ -2589,15 +2589,15 @@ onUnmounted(() => {
               >
                 Date
               </p>
-              <p class="font-bold text-gray-800 text-xs">
+              <p class="text-xs font-bold text-gray-800">
                 {{ formatDateTime(order.created_at) }}
               </p>
             </div>
           </div>
 
-          <div class="flex flex-col items-end gap-2 w-full md:w-auto">
+          <div class="flex flex-col items-end w-full gap-2 md:w-auto">
             <div
-              class="flex items-center justify-between md:justify-end w-full md:w-auto gap-3"
+              class="flex items-center justify-between w-full gap-3 md:justify-end md:w-auto"
             >
               <span
                 class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
@@ -2613,7 +2613,7 @@ onUnmounted(() => {
 
             <div
               v-if="order.shipping_method === 'biteship'"
-              class="flex items-center justify-between md:justify-end w-full md:w-auto gap-3"
+              class="flex items-center justify-between w-full gap-3 md:justify-end md:w-auto"
             >
               <span
                 class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
@@ -2634,7 +2634,7 @@ onUnmounted(() => {
             </div>
             <div
               v-else-if="order.shipping_method === 'free'"
-              class="flex items-center justify-between md:justify-end w-full md:w-auto gap-3"
+              class="flex items-center justify-between w-full gap-3 md:justify-end md:w-auto"
             >
               <span
                 class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
@@ -2650,7 +2650,7 @@ onUnmounted(() => {
         </div>
 
         <div
-          class="bg-white px-6 py-4 border-b border-gray-100 flex flex-col md:flex-row gap-6 md:gap-12"
+          class="flex flex-col gap-6 px-6 py-4 bg-white border-b border-gray-100 md:flex-row md:gap-12"
         >
           <div class="flex-1">
             <p
@@ -2660,19 +2660,19 @@ onUnmounted(() => {
             </p>
             <div v-if="order.payment_method" class="flex items-center gap-3">
               <div
-                class="w-12 h-8 bg-gray-50 border border-gray-100 rounded flex justify-center items-center overflow-hidden shrink-0"
+                class="flex items-center justify-center w-12 h-8 overflow-hidden border border-gray-100 rounded bg-gray-50 shrink-0"
               >
                 <img
                   v-if="getPaymentLogo(order.payment_method)"
                   :src="getPaymentLogo(order.payment_method)"
-                  class="w-full h-full object-contain p-1"
+                  class="object-contain w-full h-full p-1"
                 />
                 <span v-else class="font-black text-gray-300 text-[8px]">{{
                   order.payment_method.split(" ")[1] || "PAY"
                 }}</span>
               </div>
               <div>
-                <p class="font-bold text-gray-800 text-xs uppercase">
+                <p class="text-xs font-bold text-gray-800 uppercase">
                   {{ order.payment_method.replace("_", " ") }}
                 </p>
                 <p
@@ -2698,7 +2698,7 @@ onUnmounted(() => {
                 </p>
               </div>
             </div>
-            <p v-else class="text-xs text-gray-400 italic">
+            <p v-else class="text-xs italic text-gray-400">
               Waiting for payment selection...
             </p>
           </div>
@@ -2715,7 +2715,7 @@ onUnmounted(() => {
               class="flex items-center gap-3"
             >
               <div
-                class="w-12 h-12 bg-gray-100 text-gray-400 rounded-lg flex justify-center items-center shrink-0 border border-gray-200"
+                class="flex items-center justify-center w-12 h-12 text-gray-400 bg-gray-100 border border-gray-200 rounded-lg shrink-0"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -2733,7 +2733,7 @@ onUnmounted(() => {
                 </svg>
               </div>
               <div>
-                <p class="font-bold text-gray-800 text-xs uppercase">
+                <p class="text-xs font-bold text-gray-800 uppercase">
                   No Courier
                 </p>
                 <p class="text-[10px] text-gray-500 mt-0.5 font-medium">
@@ -2749,19 +2749,19 @@ onUnmounted(() => {
               class="flex items-center gap-3"
             >
               <div
-                class="w-12 h-12 bg-white border border-gray-100 rounded-lg flex justify-center items-center overflow-hidden shrink-0"
+                class="flex items-center justify-center w-12 h-12 overflow-hidden bg-white border border-gray-100 rounded-lg shrink-0"
               >
                 <img
                   v-if="getCourierLogo(order.courier_company)"
                   :src="getCourierLogo(order.courier_company)"
-                  class="w-full h-full object-contain p-1"
+                  class="object-contain w-full h-full p-1"
                 />
-                <span v-else class="font-black text-gray-300 text-xs">{{
+                <span v-else class="text-xs font-black text-gray-300">{{
                   order.courier_company.toUpperCase()
                 }}</span>
               </div>
               <div>
-                <p class="font-bold text-gray-800 text-xs uppercase">
+                <p class="text-xs font-bold text-gray-800 uppercase">
                   {{ order.courier_company }} - {{ order.courier_type }}
                 </p>
                 <div
@@ -2779,7 +2779,7 @@ onUnmounted(() => {
               </div>
             </div>
 
-            <div v-else class="text-xs text-gray-400 italic">
+            <div v-else class="text-xs italic text-gray-400">
               Setup shipping at checkout
             </div>
           </div>
@@ -2804,29 +2804,29 @@ onUnmounted(() => {
           <div
             v-for="detail in order.details"
             :key="detail.id"
-            class="flex items-center gap-4 py-4 border-gray-50 last:border-0 border-b"
+            class="flex items-center gap-4 py-4 border-b border-gray-50 last:border-0"
           >
             <img
               :src="detail.product.image"
-              class="bg-gray-100 shadow-sm border border-gray-100 rounded-lg w-16 h-16 object-cover"
+              class="object-cover w-16 h-16 bg-gray-100 border border-gray-100 rounded-lg shadow-sm"
             />
             <div class="flex-grow">
-              <h4 class="font-bold text-gray-900 text-sm uppercase">
+              <h4 class="text-sm font-bold text-gray-900 uppercase">
                 {{ detail.product.name }}
               </h4>
-              <p class="text-gray-400 text-xs">
+              <p class="text-xs text-gray-400">
                 {{ detail.quantity }} x {{ formatPrice(detail.price) }}
               </p>
             </div>
-            <p class="font-bold text-gray-900 text-sm">
+            <p class="text-sm font-bold text-gray-900">
               {{ formatPrice(detail.quantity * detail.price) }}
             </p>
           </div>
         </div>
 
-        <div class="bg-gray-50/50 px-6 py-4 border-t border-gray-100">
+        <div class="px-6 py-4 border-t border-gray-100 bg-gray-50/50">
           <div
-            class="flex flex-col mb-4 space-y-1 pb-4 border-b border-gray-200"
+            class="flex flex-col pb-4 mb-4 space-y-1 border-b border-gray-200"
           >
             <div class="flex justify-between text-xs text-gray-500">
               <span>Subtotal for Products</span>
@@ -2847,7 +2847,7 @@ onUnmounted(() => {
               <span>{{ formatPrice(order.shipping_cost) }}</span>
             </div>
             <div
-              class="flex justify-between text-sm font-bold text-gray-900 mt-2 pt-2 border-t border-gray-200 border-dashed"
+              class="flex justify-between pt-2 mt-2 text-sm font-bold text-gray-900 border-t border-gray-200 border-dashed"
             >
               <span class="uppercase tracking-widest text-[10px] mt-1"
                 >Final Amount</span
@@ -2859,12 +2859,12 @@ onUnmounted(() => {
           </div>
 
           <div
-            class="flex flex-col md:flex-row justify-between items-center gap-4"
+            class="flex flex-col items-center justify-between gap-4 md:flex-row"
           >
-            <div class="w-full md:w-auto text-left">
+            <div class="w-full text-left md:w-auto">
               <div
                 v-if="canPay(order.status) && order.payment"
-                class="flex items-center gap-2 justify-center md:justify-start"
+                class="flex items-center justify-center gap-2 md:justify-start"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -2880,19 +2880,19 @@ onUnmounted(() => {
                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
-                <span class="font-mono font-bold text-red-500 text-sm">{{
+                <span class="font-mono text-sm font-bold text-red-500">{{
                   countdowns[order.id]
                 }}</span>
               </div>
             </div>
 
             <div
-              class="flex flex-wrap justify-center md:justify-end gap-3 w-full md:w-auto"
+              class="flex flex-wrap justify-center w-full gap-3 md:justify-end md:w-auto"
             >
               <button
                 v-if="canPay(order.status)"
                 @click="cancelOrder(order.id)"
-                class="hover:bg-red-50 px-6 py-2 border border-red-200 rounded-xl font-bold text-red-600 text-xs uppercase tracking-widest transition w-full md:w-auto"
+                class="w-full px-6 py-2 text-xs font-bold tracking-widest text-red-600 uppercase transition border border-red-200 hover:bg-red-50 rounded-xl md:w-auto"
               >
                 Cancel
               </button>
@@ -2900,7 +2900,7 @@ onUnmounted(() => {
                 v-if="canPay(order.status)"
                 @click="redirectToPayment(order)"
                 :disabled="countdowns[order.id] === 'Expired'"
-                class="bg-black hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition w-full md:w-auto"
+                class="w-full px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-black hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed rounded-xl md:w-auto"
               >
                 Pay Now
               </button>
@@ -2908,7 +2908,7 @@ onUnmounted(() => {
               <button
                 v-if="order.status === 'processing'"
                 @click="confirmReceived(order.id)"
-                class="bg-green-600 hover:bg-green-700 px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition shadow-sm w-full md:w-auto"
+                class="w-full px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-green-600 shadow-sm hover:bg-green-700 rounded-xl md:w-auto"
               >
                 Order Received
               </button>
@@ -2924,7 +2924,7 @@ onUnmounted(() => {
                     state: { paymentMethod: order.payment_method },
                   })
                 "
-                class="bg-black hover:bg-gray-800 px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition shadow-sm w-full md:w-auto"
+                class="w-full px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-black shadow-sm hover:bg-gray-800 rounded-xl md:w-auto"
               >
                 Track Order
               </button>
@@ -2932,33 +2932,33 @@ onUnmounted(() => {
               <button
                 v-if="['completed', 'processing'].includes(order.status)"
                 @click="requestRefund(order.id)"
-                class="hover:bg-gray-100 px-6 py-2 border border-gray-300 rounded-xl font-bold text-gray-600 text-xs uppercase tracking-widest transition w-full md:w-auto"
+                class="w-full px-6 py-2 text-xs font-bold tracking-widest text-gray-600 uppercase transition border border-gray-300 hover:bg-gray-100 rounded-xl md:w-auto"
               >
                 Refund
               </button>
 
               <div
                 v-if="order.status === 'refund_requested'"
-                class="bg-amber-100 px-4 py-2 rounded-xl text-amber-700 text-xs font-bold w-full md:w-auto text-center"
+                class="w-full px-4 py-2 text-xs font-bold text-center bg-amber-100 rounded-xl text-amber-700 md:w-auto"
               >
                 Waiting Admin
               </div>
               <div
                 v-if="order.status === 'refund_manual_required'"
-                class="bg-pink-100 px-4 py-2 rounded-xl text-pink-700 text-xs font-bold w-full md:w-auto text-center"
+                class="w-full px-4 py-2 text-xs font-bold text-center text-pink-700 bg-pink-100 rounded-xl md:w-auto"
               >
                 Manual Refund
               </div>
               <button
                 v-if="order.status === 'refund_approved'"
                 @click="processRefund(order.id)"
-                class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition shadow-sm w-full md:w-auto"
+                class="w-full px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-blue-600 shadow-sm hover:bg-blue-700 rounded-xl md:w-auto"
               >
                 Refund Now
               </button>
               <div
                 v-if="order.status === 'refund_rejected'"
-                class="text-red-500 text-xs font-bold italic w-full md:w-auto text-center"
+                class="w-full text-xs italic font-bold text-center text-red-500 md:w-auto"
               >
                 Refund Rejected
               </div>
@@ -3722,16 +3722,16 @@ onUnmounted(() => {
 
 <!-- Dengan Badge Count -->
 <!-- <template>
-  <div class="mx-auto px-6 py-20 max-w-7xl min-h-screen">
-    <div class="flex justify-between items-center mb-10">
-      <h1 class="font-serif text-gray-900 text-4xl uppercase tracking-tighter">
+  <div class="min-h-screen px-6 py-20 mx-auto max-w-7xl">
+    <div class="flex items-center justify-between mb-10">
+      <h1 class="font-serif text-4xl tracking-tighter text-gray-900 uppercase">
         Track My Orders
       </h1>
     </div>
 
     <div class="mb-8 space-y-4">
       <div
-        class="flex items-center gap-4 overflow-x-auto pb-2 border-b border-gray-100"
+        class="flex items-center gap-4 pb-2 overflow-x-auto border-b border-gray-100"
       >
         <span
           class="text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap"
@@ -3764,7 +3764,7 @@ onUnmounted(() => {
       </div>
 
       <div
-        class="flex items-center gap-4 overflow-x-auto pb-2 border-b border-gray-100"
+        class="flex items-center gap-4 pb-2 overflow-x-auto border-b border-gray-100"
       >
         <span
           class="text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap"
@@ -3798,20 +3798,20 @@ onUnmounted(() => {
     </div>
 
     <div v-if="loading" class="space-y-6">
-      <div class="bg-gray-100 h-40 rounded-2xl animate-pulse"></div>
-      <div class="bg-gray-100 h-40 rounded-2xl animate-pulse"></div>
+      <div class="h-40 bg-gray-100 rounded-2xl animate-pulse"></div>
+      <div class="h-40 bg-gray-100 rounded-2xl animate-pulse"></div>
     </div>
 
     <div
       v-else-if="filteredTransactions.length === 0"
-      class="bg-white p-12 border border-gray-100 rounded-2xl text-center animate-fade-in"
+      class="p-12 text-center bg-white border border-gray-100 rounded-2xl animate-fade-in"
     >
-      <p class="text-gray-400 italic">
+      <p class="italic text-gray-400">
         No orders found matching the selected filters.
       </p>
       <button
         @click="resetFilters"
-        class="inline-block mt-6 font-bold text-black underline uppercase tracking-widest text-xs"
+        class="inline-block mt-6 text-xs font-bold tracking-widest text-black underline uppercase"
       >
         Clear Filters
       </button>
@@ -3821,19 +3821,19 @@ onUnmounted(() => {
       <div
         v-for="order in filteredTransactions"
         :key="order.id"
-        class="bg-white shadow-sm hover:shadow-md border border-gray-100 rounded-2xl overflow-hidden transition-shadow duration-300 relative"
+        class="relative overflow-hidden transition-shadow duration-300 bg-white border border-gray-100 shadow-sm hover:shadow-md rounded-2xl"
       >
         <div
-          class="flex md:flex-row flex-col justify-between items-start md:items-center bg-gray-50 px-6 py-4 border-b border-gray-100 gap-4"
+          class="flex flex-col items-start justify-between gap-4 px-6 py-4 border-b border-gray-100 md:flex-row md:items-center bg-gray-50"
         >
-          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
+          <div class="flex flex-col gap-4 md:flex-row md:items-center md:gap-8">
             <div>
               <p
                 class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-1"
               >
                 Order ID
               </p>
-              <p class="font-mono font-bold text-gray-800 text-sm">
+              <p class="font-mono text-sm font-bold text-gray-800">
                 {{ order.order_id }}
               </p>
             </div>
@@ -3843,15 +3843,15 @@ onUnmounted(() => {
               >
                 Date
               </p>
-              <p class="font-bold text-gray-800 text-xs">
+              <p class="text-xs font-bold text-gray-800">
                 {{ formatDateTime(order.created_at) }}
               </p>
             </div>
           </div>
 
-          <div class="flex flex-col items-end gap-2 w-full md:w-auto">
+          <div class="flex flex-col items-end w-full gap-2 md:w-auto">
             <div
-              class="flex items-center justify-between md:justify-end w-full md:w-auto gap-3"
+              class="flex items-center justify-between w-full gap-3 md:justify-end md:w-auto"
             >
               <span
                 class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
@@ -3867,7 +3867,7 @@ onUnmounted(() => {
 
             <div
               v-if="order.shipping_method === 'biteship'"
-              class="flex items-center justify-between md:justify-end w-full md:w-auto gap-3"
+              class="flex items-center justify-between w-full gap-3 md:justify-end md:w-auto"
             >
               <span
                 class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
@@ -3888,7 +3888,7 @@ onUnmounted(() => {
             </div>
             <div
               v-else-if="order.shipping_method === 'free'"
-              class="flex items-center justify-between md:justify-end w-full md:w-auto gap-3"
+              class="flex items-center justify-between w-full gap-3 md:justify-end md:w-auto"
             >
               <span
                 class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
@@ -3904,7 +3904,7 @@ onUnmounted(() => {
         </div>
 
         <div
-          class="bg-white px-6 py-4 border-b border-gray-100 flex flex-col md:flex-row gap-6 md:gap-12"
+          class="flex flex-col gap-6 px-6 py-4 bg-white border-b border-gray-100 md:flex-row md:gap-12"
         >
           <div class="flex-1">
             <p
@@ -3914,19 +3914,19 @@ onUnmounted(() => {
             </p>
             <div v-if="order.payment_method" class="flex items-center gap-3">
               <div
-                class="w-12 h-8 bg-gray-50 border border-gray-100 rounded flex justify-center items-center overflow-hidden shrink-0"
+                class="flex items-center justify-center w-12 h-8 overflow-hidden border border-gray-100 rounded bg-gray-50 shrink-0"
               >
                 <img
                   v-if="getPaymentLogo(order.payment_method)"
                   :src="getPaymentLogo(order.payment_method)"
-                  class="w-full h-full object-contain p-1"
+                  class="object-contain w-full h-full p-1"
                 />
                 <span v-else class="font-black text-gray-300 text-[8px]">{{
                   order.payment_method.split(" ")[1] || "PAY"
                 }}</span>
               </div>
               <div>
-                <p class="font-bold text-gray-800 text-xs uppercase">
+                <p class="text-xs font-bold text-gray-800 uppercase">
                   {{ order.payment_method.replace("_", " ") }}
                 </p>
                 <p
@@ -3952,7 +3952,7 @@ onUnmounted(() => {
                 </p>
               </div>
             </div>
-            <p v-else class="text-xs text-gray-400 italic">
+            <p v-else class="text-xs italic text-gray-400">
               Waiting for payment selection...
             </p>
           </div>
@@ -3968,7 +3968,7 @@ onUnmounted(() => {
               class="flex items-center gap-3"
             >
               <div
-                class="w-12 h-12 bg-gray-100 text-gray-400 rounded-lg flex justify-center items-center shrink-0 border border-gray-200"
+                class="flex items-center justify-center w-12 h-12 text-gray-400 bg-gray-100 border border-gray-200 rounded-lg shrink-0"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -3986,7 +3986,7 @@ onUnmounted(() => {
                 </svg>
               </div>
               <div>
-                <p class="font-bold text-gray-800 text-xs uppercase">
+                <p class="text-xs font-bold text-gray-800 uppercase">
                   No Courier
                 </p>
                 <p class="text-[10px] text-gray-500 mt-0.5 font-medium">
@@ -4002,19 +4002,19 @@ onUnmounted(() => {
               class="flex items-center gap-3"
             >
               <div
-                class="w-12 h-12 bg-white border border-gray-100 rounded-lg flex justify-center items-center overflow-hidden shrink-0"
+                class="flex items-center justify-center w-12 h-12 overflow-hidden bg-white border border-gray-100 rounded-lg shrink-0"
               >
                 <img
                   v-if="getCourierLogo(order.courier_company)"
                   :src="getCourierLogo(order.courier_company)"
-                  class="w-full h-full object-contain p-1"
+                  class="object-contain w-full h-full p-1"
                 />
-                <span v-else class="font-black text-gray-300 text-xs">{{
+                <span v-else class="text-xs font-black text-gray-300">{{
                   order.courier_company.toUpperCase()
                 }}</span>
               </div>
               <div>
-                <p class="font-bold text-gray-800 text-xs uppercase">
+                <p class="text-xs font-bold text-gray-800 uppercase">
                   {{ order.courier_company }} - {{ order.courier_type }}
                 </p>
                 <div
@@ -4032,7 +4032,7 @@ onUnmounted(() => {
               </div>
             </div>
 
-            <div v-else class="text-xs text-gray-400 italic">
+            <div v-else class="text-xs italic text-gray-400">
               Setup shipping at checkout
             </div>
           </div>
@@ -4057,29 +4057,29 @@ onUnmounted(() => {
           <div
             v-for="detail in order.details"
             :key="detail.id"
-            class="flex items-center gap-4 py-4 border-gray-50 last:border-0 border-b"
+            class="flex items-center gap-4 py-4 border-b border-gray-50 last:border-0"
           >
             <img
               :src="detail.product.image"
-              class="bg-gray-100 shadow-sm border border-gray-100 rounded-lg w-16 h-16 object-cover"
+              class="object-cover w-16 h-16 bg-gray-100 border border-gray-100 rounded-lg shadow-sm"
             />
             <div class="flex-grow">
-              <h4 class="font-bold text-gray-900 text-sm uppercase">
+              <h4 class="text-sm font-bold text-gray-900 uppercase">
                 {{ detail.product.name }}
               </h4>
-              <p class="text-gray-400 text-xs">
+              <p class="text-xs text-gray-400">
                 {{ detail.quantity }} x {{ formatPrice(detail.price) }}
               </p>
             </div>
-            <p class="font-bold text-gray-900 text-sm">
+            <p class="text-sm font-bold text-gray-900">
               {{ formatPrice(detail.quantity * detail.price) }}
             </p>
           </div>
         </div>
 
-        <div class="bg-gray-50/50 px-6 py-4 border-t border-gray-100">
+        <div class="px-6 py-4 border-t border-gray-100 bg-gray-50/50">
           <div
-            class="flex flex-col mb-4 space-y-1 pb-4 border-b border-gray-200"
+            class="flex flex-col pb-4 mb-4 space-y-1 border-b border-gray-200"
           >
             <div class="flex justify-between text-xs text-gray-500">
               <span>Subtotal for Products</span
@@ -4100,7 +4100,7 @@ onUnmounted(() => {
               <span>{{ formatPrice(order.shipping_cost) }}</span>
             </div>
             <div
-              class="flex justify-between text-sm font-bold text-gray-900 mt-2 pt-2 border-t border-gray-200 border-dashed"
+              class="flex justify-between pt-2 mt-2 text-sm font-bold text-gray-900 border-t border-gray-200 border-dashed"
             >
               <span class="uppercase tracking-widest text-[10px] mt-1"
                 >Final Amount</span
@@ -4112,12 +4112,12 @@ onUnmounted(() => {
           </div>
 
           <div
-            class="flex flex-col md:flex-row justify-between items-center gap-4"
+            class="flex flex-col items-center justify-between gap-4 md:flex-row"
           >
-            <div class="w-full md:w-auto text-left">
+            <div class="w-full text-left md:w-auto">
               <div
                 v-if="canPay(order.status) && order.payment"
-                class="flex items-center gap-2 justify-center md:justify-start"
+                class="flex items-center justify-center gap-2 md:justify-start"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -4133,19 +4133,19 @@ onUnmounted(() => {
                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
-                <span class="font-mono font-bold text-red-500 text-sm">{{
+                <span class="font-mono text-sm font-bold text-red-500">{{
                   countdowns[order.id]
                 }}</span>
               </div>
             </div>
 
             <div
-              class="flex flex-wrap justify-center md:justify-end gap-3 w-full md:w-auto"
+              class="flex flex-wrap justify-center w-full gap-3 md:justify-end md:w-auto"
             >
               <button
                 v-if="canCancel(order.status)"
                 @click="cancelOrder(order.id)"
-                class="hover:bg-red-50 px-6 py-2 border border-red-200 rounded-xl font-bold text-red-600 text-xs uppercase tracking-widest transition w-full md:w-auto"
+                class="w-full px-6 py-2 text-xs font-bold tracking-widest text-red-600 uppercase transition border border-red-200 hover:bg-red-50 rounded-xl md:w-auto"
               >
                 Cancel
               </button>
@@ -4153,7 +4153,7 @@ onUnmounted(() => {
                 v-if="canPay(order.status)"
                 @click="redirectToPayment(order)"
                 :disabled="countdowns[order.id] === 'Expired'"
-                class="bg-black hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition w-full md:w-auto"
+                class="w-full px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-black hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed rounded-xl md:w-auto"
               >
                 Pay Now
               </button>
@@ -4168,39 +4168,39 @@ onUnmounted(() => {
                     state: { paymentMethod: order.payment_method },
                   })
                 "
-                class="bg-black hover:bg-gray-800 px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition shadow-sm w-full md:w-auto"
+                class="w-full px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-black shadow-sm hover:bg-gray-800 rounded-xl md:w-auto"
               >
                 Track Order
               </button>
               <button
                 v-if="canRequestRefund(order)"
                 @click="requestRefund(order.id)"
-                class="hover:bg-gray-100 px-6 py-2 border border-gray-300 rounded-xl font-bold text-gray-600 text-xs uppercase tracking-widest transition w-full md:w-auto"
+                class="w-full px-6 py-2 text-xs font-bold tracking-widest text-gray-600 uppercase transition border border-gray-300 hover:bg-gray-100 rounded-xl md:w-auto"
               >
                 Request to Refund
               </button>
               <div
                 v-if="order.status === 'refund_requested'"
-                class="bg-amber-100 px-4 py-2 rounded-xl text-amber-700 text-xs font-bold w-full md:w-auto text-center"
+                class="w-full px-4 py-2 text-xs font-bold text-center bg-amber-100 rounded-xl text-amber-700 md:w-auto"
               >
                 Waiting Admin
               </div>
               <div
                 v-if="order.status === 'refund_manual_required'"
-                class="bg-pink-100 px-4 py-2 rounded-xl text-pink-700 text-xs font-bold w-full md:w-auto text-center"
+                class="w-full px-4 py-2 text-xs font-bold text-center text-pink-700 bg-pink-100 rounded-xl md:w-auto"
               >
                 Manual Refund
               </div>
               <button
                 v-if="order.status === 'refund_approved'"
                 @click="processRefund(order.id)"
-                class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition shadow-sm w-full md:w-auto"
+                class="w-full px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-blue-600 shadow-sm hover:bg-blue-700 rounded-xl md:w-auto"
               >
                 Refund Now
               </button>
               <div
                 v-if="order.status === 'refund_rejected'"
-                class="text-red-500 text-xs font-bold italic w-full md:w-auto text-center"
+                class="w-full text-xs italic font-bold text-center text-red-500 md:w-auto"
               >
                 Refund Rejected
               </div>
@@ -4679,16 +4679,16 @@ onUnmounted(() => {
 
 <!-- Tanpa fetchBulkTracking method -->
 <!-- <template>
-  <div class="mx-auto px-6 py-20 max-w-7xl min-h-screen">
-    <div class="flex justify-between items-center mb-10">
-      <h1 class="font-serif text-gray-900 text-4xl uppercase tracking-tighter">
+  <div class="min-h-screen px-6 py-20 mx-auto max-w-7xl">
+    <div class="flex items-center justify-between mb-10">
+      <h1 class="font-serif text-4xl tracking-tighter text-gray-900 uppercase">
         Track My Orders
       </h1>
     </div>
 
     <div class="mb-8 space-y-4">
       <div
-        class="flex items-center gap-4 overflow-x-auto pb-2 border-b border-gray-100"
+        class="flex items-center gap-4 pb-2 overflow-x-auto border-b border-gray-100"
       >
         <span
           class="text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap"
@@ -4721,7 +4721,7 @@ onUnmounted(() => {
       </div>
 
       <div
-        class="flex items-center gap-4 overflow-x-auto pb-2 border-b border-gray-100"
+        class="flex items-center gap-4 pb-2 overflow-x-auto border-b border-gray-100"
       >
         <span
           class="text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap"
@@ -4755,7 +4755,7 @@ onUnmounted(() => {
     </div>
 
     <div
-      class="flex flex-col md:flex-row justify-between items-center gap-4 mb-8"
+      class="flex flex-col items-center justify-between gap-4 mb-8 md:flex-row"
     >
       <div class="relative w-full md:w-80">
         <span
@@ -4780,17 +4780,17 @@ onUnmounted(() => {
           v-model="searchQuery"
           type="text"
           placeholder="Search Order ID, Courier, Payment Method, and more"
-          class="bg-gray-50 pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none w-full text-sm transition"
+          class="w-full py-2 pl-10 pr-4 text-sm transition border border-gray-200 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
         />
       </div>
 
-      <div class="flex items-center gap-2 w-full md:w-auto">
-        <span class="text-xs font-bold text-gray-400 uppercase tracking-wide"
+      <div class="flex items-center w-full gap-2 md:w-auto">
+        <span class="text-xs font-bold tracking-wide text-gray-400 uppercase"
           >Show:</span
         >
         <select
           v-model="itemsPerPage"
-          class="bg-gray-50 px-3 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none text-sm font-bold cursor-pointer"
+          class="px-3 py-2 text-sm font-bold border border-gray-200 outline-none cursor-pointer bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
         >
           <option :value="5">5</option>
           <option :value="10">10</option>
@@ -4801,20 +4801,20 @@ onUnmounted(() => {
     </div>
 
     <div v-if="loading" class="space-y-6">
-      <div class="bg-gray-100 h-40 rounded-2xl animate-pulse"></div>
-      <div class="bg-gray-100 h-40 rounded-2xl animate-pulse"></div>
+      <div class="h-40 bg-gray-100 rounded-2xl animate-pulse"></div>
+      <div class="h-40 bg-gray-100 rounded-2xl animate-pulse"></div>
     </div>
 
     <div
       v-else-if="filteredTransactions.length === 0"
-      class="bg-white p-12 border border-gray-100 rounded-2xl text-center animate-fade-in"
+      class="p-12 text-center bg-white border border-gray-100 rounded-2xl animate-fade-in"
     >
-      <p class="text-gray-400 italic">
+      <p class="italic text-gray-400">
         No orders found matching the selected filters.
       </p>
       <button
         @click="resetFilters"
-        class="inline-block mt-6 font-bold text-black underline uppercase tracking-widest text-xs"
+        class="inline-block mt-6 text-xs font-bold tracking-widest text-black underline uppercase"
       >
         Clear Filters
       </button>
@@ -4824,19 +4824,19 @@ onUnmounted(() => {
       <div
         v-for="order in paginatedTransactions"
         :key="order.id"
-        class="bg-white shadow-sm hover:shadow-md border border-gray-100 rounded-2xl overflow-hidden transition-shadow duration-300 relative"
+        class="relative overflow-hidden transition-shadow duration-300 bg-white border border-gray-100 shadow-sm hover:shadow-md rounded-2xl"
       >
         <div
-          class="flex md:flex-row flex-col justify-between items-start md:items-center bg-gray-50 px-6 py-4 border-b border-gray-100 gap-4"
+          class="flex flex-col items-start justify-between gap-4 px-6 py-4 border-b border-gray-100 md:flex-row md:items-center bg-gray-50"
         >
-          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
+          <div class="flex flex-col gap-4 md:flex-row md:items-center md:gap-8">
             <div>
               <p
                 class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-1"
               >
                 Order ID
               </p>
-              <p class="font-mono font-bold text-gray-800 text-sm">
+              <p class="font-mono text-sm font-bold text-gray-800">
                 {{ order.order_id }}
               </p>
             </div>
@@ -4846,15 +4846,15 @@ onUnmounted(() => {
               >
                 Date
               </p>
-              <p class="font-bold text-gray-800 text-xs">
+              <p class="text-xs font-bold text-gray-800">
                 {{ formatDateTime(order.created_at) }}
               </p>
             </div>
           </div>
 
-          <div class="flex flex-col items-end gap-2 w-full md:w-auto">
+          <div class="flex flex-col items-end w-full gap-2 md:w-auto">
             <div
-              class="flex items-center justify-between md:justify-end w-full md:w-auto gap-3"
+              class="flex items-center justify-between w-full gap-3 md:justify-end md:w-auto"
             >
               <span
                 class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
@@ -4870,7 +4870,7 @@ onUnmounted(() => {
 
             <div
               v-if="order.shipping_method === 'biteship'"
-              class="flex items-center justify-between md:justify-end w-full md:w-auto gap-3"
+              class="flex items-center justify-between w-full gap-3 md:justify-end md:w-auto"
             >
               <span
                 class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
@@ -4885,7 +4885,7 @@ onUnmounted(() => {
             </div>
             <div
               v-else-if="order.shipping_method === 'free'"
-              class="flex items-center justify-between md:justify-end w-full md:w-auto gap-3"
+              class="flex items-center justify-between w-full gap-3 md:justify-end md:w-auto"
             >
               <span
                 class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
@@ -4900,7 +4900,7 @@ onUnmounted(() => {
         </div>
 
         <div
-          class="bg-white px-6 py-4 border-b border-gray-100 flex flex-col md:flex-row gap-6 md:gap-12 relative"
+          class="relative flex flex-col gap-6 px-6 py-4 bg-white border-b border-gray-100 md:flex-row md:gap-12"
         >
           <div
             v-if="
@@ -4926,7 +4926,7 @@ onUnmounted(() => {
               >
                 Points Earned
               </p>
-              <p class="text-sm font-black text-yellow-600 leading-tight">
+              <p class="text-sm font-black leading-tight text-yellow-600">
                 +{{ order.point }} Pts
               </p>
             </div>
@@ -4938,7 +4938,7 @@ onUnmounted(() => {
         </div>
 
         <div
-          class="bg-white px-6 py-4 border-b border-gray-100 flex flex-col md:flex-row gap-6 md:gap-12"
+          class="flex flex-col gap-6 px-6 py-4 bg-white border-b border-gray-100 md:flex-row md:gap-12"
         >
           <div class="flex-1">
             <p
@@ -4948,19 +4948,19 @@ onUnmounted(() => {
             </p>
             <div v-if="order.payment_method" class="flex items-center gap-3">
               <div
-                class="w-12 h-8 bg-gray-50 border border-gray-100 rounded flex justify-center items-center overflow-hidden shrink-0"
+                class="flex items-center justify-center w-12 h-8 overflow-hidden border border-gray-100 rounded bg-gray-50 shrink-0"
               >
                 <img
                   v-if="getPaymentLogo(order.payment_method)"
                   :src="getPaymentLogo(order.payment_method)"
-                  class="w-full h-full object-contain p-1"
+                  class="object-contain w-full h-full p-1"
                 />
                 <span v-else class="font-black text-gray-300 text-[8px]">{{
                   order.payment_method.split(" ")[1] || "PAY"
                 }}</span>
               </div>
               <div>
-                <p class="font-bold text-gray-800 text-xs uppercase">
+                <p class="text-xs font-bold text-gray-800 uppercase">
                   {{ order.payment_method.replace("_", " ") }}
                 </p>
                 <p
@@ -4986,7 +4986,7 @@ onUnmounted(() => {
                 </p>
               </div>
             </div>
-            <p v-else class="text-xs text-gray-400 italic">
+            <p v-else class="text-xs italic text-gray-400">
               Waiting for payment selection...
             </p>
           </div>
@@ -5002,7 +5002,7 @@ onUnmounted(() => {
               class="flex items-center gap-3"
             >
               <div
-                class="w-12 h-12 bg-gray-100 text-gray-400 rounded-lg flex justify-center items-center shrink-0 border border-gray-200"
+                class="flex items-center justify-center w-12 h-12 text-gray-400 bg-gray-100 border border-gray-200 rounded-lg shrink-0"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -5020,7 +5020,7 @@ onUnmounted(() => {
                 </svg>
               </div>
               <div>
-                <p class="font-bold text-gray-800 text-xs uppercase">
+                <p class="text-xs font-bold text-gray-800 uppercase">
                   No Courier
                 </p>
                 <p class="text-[10px] text-gray-500 font-medium mt-0.5">
@@ -5036,19 +5036,19 @@ onUnmounted(() => {
               class="flex items-center gap-3"
             >
               <div
-                class="w-12 h-12 bg-white border border-gray-100 rounded-lg flex justify-center items-center overflow-hidden shrink-0"
+                class="flex items-center justify-center w-12 h-12 overflow-hidden bg-white border border-gray-100 rounded-lg shrink-0"
               >
                 <img
                   v-if="getCourierLogo(order.courier_company)"
                   :src="getCourierLogo(order.courier_company)"
-                  class="w-full h-full object-contain p-1"
+                  class="object-contain w-full h-full p-1"
                 />
-                <span v-else class="font-black text-gray-300 text-xs">{{
+                <span v-else class="text-xs font-black text-gray-300">{{
                   order.courier_company.toUpperCase()
                 }}</span>
               </div>
               <div>
-                <p class="font-bold text-gray-800 text-xs uppercase">
+                <p class="text-xs font-bold text-gray-800 uppercase">
                   {{ order.courier_company }} - {{ order.courier_type }}
                 </p>
                 <p class="text-[10px] text-gray-500 mt-0.5">
@@ -5060,7 +5060,7 @@ onUnmounted(() => {
               </div>
             </div>
 
-            <div v-else class="text-xs text-gray-400 italic">
+            <div v-else class="text-xs italic text-gray-400">
               Setup shipping at checkout
             </div>
           </div>
@@ -5085,29 +5085,29 @@ onUnmounted(() => {
           <div
             v-for="detail in order.details"
             :key="detail.id"
-            class="flex items-center gap-4 py-4 border-gray-50 last:border-0 border-b"
+            class="flex items-center gap-4 py-4 border-b border-gray-50 last:border-0"
           >
             <img
               :src="detail.product.image"
-              class="bg-gray-100 shadow-sm border border-gray-100 rounded-lg w-16 h-16 object-cover"
+              class="object-cover w-16 h-16 bg-gray-100 border border-gray-100 rounded-lg shadow-sm"
             />
             <div class="flex-grow">
-              <h4 class="font-bold text-gray-900 text-sm uppercase">
+              <h4 class="text-sm font-bold text-gray-900 uppercase">
                 {{ detail.product.name }}
               </h4>
-              <p class="text-gray-400 text-xs">
+              <p class="text-xs text-gray-400">
                 {{ detail.quantity }} x {{ formatPrice(detail.price) }}
               </p>
             </div>
-            <p class="font-bold text-gray-900 text-sm">
+            <p class="text-sm font-bold text-gray-900">
               {{ formatPrice(detail.quantity * detail.price) }}
             </p>
           </div>
         </div>
 
-        <div class="bg-gray-50/50 px-6 py-4 border-t border-gray-100">
+        <div class="px-6 py-4 border-t border-gray-100 bg-gray-50/50">
           <div
-            class="flex flex-col mb-4 space-y-1 pb-4 border-b border-gray-200"
+            class="flex flex-col pb-4 mb-4 space-y-1 border-b border-gray-200"
           >
             <div class="flex justify-between text-xs text-gray-500">
               <span>Subtotal for Products</span
@@ -5128,7 +5128,7 @@ onUnmounted(() => {
               <span>{{ formatPrice(order.shipping_cost) }}</span>
             </div>
             <div
-              class="flex justify-between text-sm font-bold text-gray-900 mt-2 pt-2 border-t border-gray-200 border-dashed"
+              class="flex justify-between pt-2 mt-2 text-sm font-bold text-gray-900 border-t border-gray-200 border-dashed"
             >
               <span class="uppercase tracking-widest text-[10px] mt-1"
                 >Final Amount</span
@@ -5140,12 +5140,12 @@ onUnmounted(() => {
           </div>
 
           <div
-            class="flex flex-col md:flex-row justify-between items-center gap-4"
+            class="flex flex-col items-center justify-between gap-4 md:flex-row"
           >
-            <div class="w-full md:w-auto text-left">
+            <div class="w-full text-left md:w-auto">
               <div
                 v-if="canPay(order.status) && order.payment"
-                class="flex items-center gap-2 justify-center md:justify-start"
+                class="flex items-center justify-center gap-2 md:justify-start"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -5161,19 +5161,19 @@ onUnmounted(() => {
                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
-                <span class="font-mono font-bold text-red-500 text-sm">{{
+                <span class="font-mono text-sm font-bold text-red-500">{{
                   countdowns[order.id]
                 }}</span>
               </div>
             </div>
 
             <div
-              class="flex flex-wrap justify-center md:justify-end gap-3 w-full md:w-auto"
+              class="flex flex-wrap justify-center w-full gap-3 md:justify-end md:w-auto"
             >
               <button
                 v-if="canCancel(order.status)"
                 @click="cancelOrder(order.id)"
-                class="hover:bg-red-50 px-6 py-2 border border-red-200 rounded-xl font-bold text-red-600 text-xs uppercase tracking-widest transition w-full md:w-auto"
+                class="w-full px-6 py-2 text-xs font-bold tracking-widest text-red-600 uppercase transition border border-red-200 hover:bg-red-50 rounded-xl md:w-auto"
               >
                 Cancel
               </button>
@@ -5181,7 +5181,7 @@ onUnmounted(() => {
                 v-if="canPay(order.status)"
                 @click="redirectToPayment(order)"
                 :disabled="countdowns[order.id] === 'Expired'"
-                class="bg-black hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition w-full md:w-auto"
+                class="w-full px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-black hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed rounded-xl md:w-auto"
               >
                 Pay Now
               </button>
@@ -5207,39 +5207,39 @@ onUnmounted(() => {
                     state: { paymentMethod: order.payment_method },
                   })
                 "
-                class="bg-black hover:bg-gray-800 px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition shadow-sm w-full md:w-auto"
+                class="w-full px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-black shadow-sm hover:bg-gray-800 rounded-xl md:w-auto"
               >
                 Track Order
               </button>
               <button
                 v-if="canRequestRefund(order)"
                 @click="requestRefund(order.id)"
-                class="hover:bg-gray-100 px-6 py-2 border border-gray-300 rounded-xl font-bold text-gray-600 text-xs uppercase tracking-widest transition w-full md:w-auto"
+                class="w-full px-6 py-2 text-xs font-bold tracking-widest text-gray-600 uppercase transition border border-gray-300 hover:bg-gray-100 rounded-xl md:w-auto"
               >
                 Request to Refund
               </button>
               <div
                 v-if="order.status === 'refund_requested'"
-                class="bg-amber-100 px-4 py-2 rounded-xl text-amber-700 text-xs font-bold w-full md:w-auto text-center"
+                class="w-full px-4 py-2 text-xs font-bold text-center bg-amber-100 rounded-xl text-amber-700 md:w-auto"
               >
                 Waiting Admin
               </div>
               <div
                 v-if="order.status === 'refund_manual_required'"
-                class="bg-pink-100 px-4 py-2 rounded-xl text-pink-700 text-xs font-bold w-full md:w-auto text-center"
+                class="w-full px-4 py-2 text-xs font-bold text-center text-pink-700 bg-pink-100 rounded-xl md:w-auto"
               >
                 Manual Refund
               </div>
               <button
                 v-if="order.status === 'refund_approved'"
                 @click="processRefund(order.id)"
-                class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition shadow-sm w-full md:w-auto"
+                class="w-full px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-blue-600 shadow-sm hover:bg-blue-700 rounded-xl md:w-auto"
               >
                 Refund Now
               </button>
               <div
                 v-if="order.status === 'refund_rejected'"
-                class="text-red-500 text-xs font-bold italic w-full md:w-auto text-center"
+                class="w-full text-xs italic font-bold text-center text-red-500 md:w-auto"
               >
                 Refund Rejected
               </div>
@@ -5249,7 +5249,7 @@ onUnmounted(() => {
       </div>
       <div
         v-if="!loading && filteredTransactions.length > 0"
-        class="flex flex-col md:flex-row justify-between items-center gap-4 mt-8 pt-6 border-t border-gray-100"
+        class="flex flex-col items-center justify-between gap-4 pt-6 mt-8 border-t border-gray-100 md:flex-row"
       >
         <p class="text-sm text-gray-400">
           Showing
@@ -5265,7 +5265,7 @@ onUnmounted(() => {
           <button
             @click="currentPage--"
             :disabled="currentPage === 1"
-            class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+            class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
           >
             Previous
           </button>
@@ -5284,7 +5284,7 @@ onUnmounted(() => {
                   ? 'cursor-default border-transparent hover:bg-transparent'
                   : 'border',
               ]"
-              class="w-10 h-10 rounded-xl font-medium transition flex items-center justify-center text-sm"
+              class="flex items-center justify-center w-10 h-10 text-sm font-medium transition rounded-xl"
             >
               {{ page }}
             </button>
@@ -5293,7 +5293,7 @@ onUnmounted(() => {
           <button
             @click="currentPage++"
             :disabled="currentPage === totalPages || totalPages === 0"
-            class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+            class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
           >
             Next
           </button>
@@ -6305,16 +6305,16 @@ onUnmounted(() => {
 </script> -->
 
 <template>
-  <div class="mx-auto px-6 py-20 max-w-7xl min-h-screen">
-    <div class="flex justify-between items-center mb-10">
-      <h1 class="font-serif text-gray-900 text-4xl uppercase tracking-tighter">
+  <div class="min-h-screen px-6 py-20 mx-auto max-w-7xl">
+    <div class="flex items-center justify-between mb-10">
+      <h1 class="font-serif text-4xl tracking-tighter text-gray-900 uppercase">
         Track My Orders
       </h1>
     </div>
 
     <!-- <div class="mb-8 space-y-4">
       <div
-        class="flex items-center gap-4 overflow-x-auto pb-2 border-b border-gray-100"
+        class="flex items-center gap-4 pb-2 overflow-x-auto border-b border-gray-100"
       >
         <span
           class="text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap"
@@ -6347,7 +6347,7 @@ onUnmounted(() => {
       </div>
 
       <div
-        class="flex items-center gap-4 overflow-x-auto pb-2 border-b border-gray-100"
+        class="flex items-center gap-4 pb-2 overflow-x-auto border-b border-gray-100"
       >
         <span
           class="text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap"
@@ -6381,7 +6381,7 @@ onUnmounted(() => {
     </div> -->
 
     <div class="mb-8 border-b border-gray-200">
-      <div class="flex overflow-x-auto scrollbar-hide gap-6">
+      <div class="flex gap-6 overflow-x-auto scrollbar-hide">
         <button
           v-for="tab in unifiedTabs"
           :key="tab.value"
@@ -6410,7 +6410,7 @@ onUnmounted(() => {
     </div>
 
     <div
-      class="flex flex-col md:flex-row justify-between items-center gap-4 mb-8"
+      class="flex flex-col items-center justify-between gap-4 mb-8 md:flex-row"
     >
       <div class="relative w-full md:w-80">
         <span
@@ -6435,17 +6435,17 @@ onUnmounted(() => {
           v-model="searchQuery"
           type="text"
           placeholder="Search Order ID, Courier, Payment Method, and more"
-          class="bg-gray-50 pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none w-full text-sm transition"
+          class="w-full py-2 pl-10 pr-4 text-sm transition border border-gray-200 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
         />
       </div>
 
-      <div class="flex items-center gap-2 w-full md:w-auto">
-        <span class="text-xs font-bold text-gray-400 uppercase tracking-wide"
+      <div class="flex items-center w-full gap-2 md:w-auto">
+        <span class="text-xs font-bold tracking-wide text-gray-400 uppercase"
           >Show:</span
         >
         <select
           v-model="itemsPerPage"
-          class="bg-gray-50 px-3 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none text-sm font-bold cursor-pointer"
+          class="px-3 py-2 text-sm font-bold border border-gray-200 outline-none cursor-pointer bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
         >
           <option :value="5">5</option>
           <option :value="10">10</option>
@@ -6456,21 +6456,21 @@ onUnmounted(() => {
     </div>
 
     <div v-if="loading" class="space-y-8 animate-fade-in">
-      <div v-for="i in 3" :key="i" class="bg-white border border-gray-100 rounded-2xl overflow-hidden">
-        <div class="flex flex-col md:flex-row justify-between bg-gray-50 px-6 py-4 border-b border-gray-100 gap-4">
-          <div class="flex flex-col md:flex-row gap-4 md:gap-8">
+      <div v-for="i in 3" :key="i" class="overflow-hidden bg-white border border-gray-100 rounded-2xl">
+        <div class="flex flex-col justify-between gap-4 px-6 py-4 border-b border-gray-100 md:flex-row bg-gray-50">
+          <div class="flex flex-col gap-4 md:flex-row md:gap-8">
             <div>
-              <div class="h-3 w-16 bg-gray-200 rounded animate-pulse mb-2"></div>
-              <div class="h-4 w-32 bg-gray-300 rounded animate-pulse"></div>
+              <div class="w-16 h-3 mb-2 bg-gray-200 rounded animate-pulse"></div>
+              <div class="w-32 h-4 bg-gray-300 rounded animate-pulse"></div>
             </div>
             <div>
-              <div class="h-3 w-12 bg-gray-200 rounded animate-pulse mb-2"></div>
-              <div class="h-4 w-24 bg-gray-300 rounded animate-pulse"></div>
+              <div class="w-12 h-3 mb-2 bg-gray-200 rounded animate-pulse"></div>
+              <div class="w-24 h-4 bg-gray-300 rounded animate-pulse"></div>
             </div>
           </div>
           <div class="flex flex-col items-end gap-2">
-            <div class="h-6 w-24 bg-gray-300 rounded-full animate-pulse"></div>
-            <div class="h-6 w-28 bg-gray-200 rounded-full animate-pulse"></div>
+            <div class="w-24 h-6 bg-gray-300 rounded-full animate-pulse"></div>
+            <div class="h-6 bg-gray-200 rounded-full w-28 animate-pulse"></div>
           </div>
         </div>
         
@@ -6478,33 +6478,33 @@ onUnmounted(() => {
           <div class="flex items-center gap-4">
             <div class="w-16 h-16 bg-gray-200 rounded-lg animate-pulse shrink-0"></div>
             <div class="flex-grow space-y-2">
-              <div class="h-4 w-48 bg-gray-300 rounded animate-pulse"></div>
-              <div class="h-3 w-20 bg-gray-200 rounded animate-pulse"></div>
+              <div class="w-48 h-4 bg-gray-300 rounded animate-pulse"></div>
+              <div class="w-20 h-3 bg-gray-200 rounded animate-pulse"></div>
             </div>
-            <div class="h-5 w-24 bg-gray-300 rounded animate-pulse"></div>
+            <div class="w-24 h-5 bg-gray-300 rounded animate-pulse"></div>
           </div>
         </div>
 
-        <div class="bg-gray-50/50 px-6 py-4 border-t border-gray-100 flex justify-between items-center">
+        <div class="flex items-center justify-between px-6 py-4 border-t border-gray-100 bg-gray-50/50">
           <div class="space-y-2">
-            <div class="h-3 w-40 bg-gray-200 rounded animate-pulse"></div>
-            <div class="h-3 w-32 bg-gray-200 rounded animate-pulse"></div>
+            <div class="w-40 h-3 bg-gray-200 rounded animate-pulse"></div>
+            <div class="w-32 h-3 bg-gray-200 rounded animate-pulse"></div>
           </div>
-          <div class="h-10 w-32 bg-gray-300 rounded-xl animate-pulse"></div>
+          <div class="w-32 h-10 bg-gray-300 rounded-xl animate-pulse"></div>
         </div>
       </div>
     </div>
 
     <div
       v-else-if="filteredTransactions.length === 0"
-      class="bg-white p-12 border border-gray-100 rounded-2xl text-center animate-fade-in"
+      class="p-12 text-center bg-white border border-gray-100 rounded-2xl animate-fade-in"
     >
-      <p class="text-gray-400 italic">
+      <p class="italic text-gray-400">
         No orders found matching the selected filters.
       </p>
       <button
         @click="resetFilters"
-        class="inline-block mt-6 font-bold text-black underline uppercase tracking-widest text-xs"
+        class="inline-block mt-6 text-xs font-bold tracking-widest text-black underline uppercase"
       >
         Clear Filters
       </button>
@@ -6514,19 +6514,19 @@ onUnmounted(() => {
       <div
         v-for="order in paginatedTransactions"
         :key="order.id"
-        class="bg-white shadow-sm hover:shadow-md border border-gray-100 rounded-2xl overflow-hidden transition-shadow duration-300 relative"
+        class="relative overflow-hidden transition-shadow duration-300 bg-white border border-gray-100 shadow-sm hover:shadow-md rounded-2xl"
       >
         <div
-          class="flex md:flex-row flex-col justify-between items-start md:items-center bg-gray-50 px-6 py-4 border-b border-gray-100 gap-4"
+          class="flex flex-col items-start justify-between gap-4 px-6 py-4 border-b border-gray-100 md:flex-row md:items-center bg-gray-50"
         >
-          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
+          <div class="flex flex-col gap-4 md:flex-row md:items-center md:gap-8">
             <div>
               <p
                 class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-1"
               >
                 Order ID
               </p>
-              <p class="font-mono font-bold text-gray-800 text-sm">
+              <p class="font-mono text-sm font-bold text-gray-800">
                 {{ order.order_id }}
               </p>
             </div>
@@ -6536,15 +6536,15 @@ onUnmounted(() => {
               >
                 Date
               </p>
-              <p class="font-bold text-gray-800 text-xs">
+              <p class="text-xs font-bold text-gray-800">
                 {{ formatDateTime(order.created_at) }}
               </p>
             </div>
           </div>
 
-          <div class="flex flex-col items-end gap-2 w-full md:w-auto">
+          <div class="flex flex-col items-end w-full gap-2 md:w-auto">
             <div
-              class="flex items-center justify-between md:justify-end w-full md:w-auto gap-3"
+              class="flex items-center justify-between w-full gap-3 md:justify-end md:w-auto"
             >
               <span
                 class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
@@ -6560,7 +6560,7 @@ onUnmounted(() => {
 
             <div
               v-if="order.shipping_method === 'biteship'"
-              class="flex items-center justify-between md:justify-end w-full md:w-auto gap-3"
+              class="flex items-center justify-between w-full gap-3 md:justify-end md:w-auto"
             >
               <span
                 class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
@@ -6575,7 +6575,7 @@ onUnmounted(() => {
             </div>
             <div
               v-else-if="order.shipping_method === 'free'"
-              class="flex items-center justify-between md:justify-end w-full md:w-auto gap-3"
+              class="flex items-center justify-between w-full gap-3 md:justify-end md:w-auto"
             >
               <span
                 class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
@@ -6590,7 +6590,7 @@ onUnmounted(() => {
         </div>
 
         <div
-          class="bg-white px-6 py-4 border-b border-gray-100 flex flex-col md:flex-row gap-6 md:gap-12 relative"
+          class="relative flex flex-col gap-6 px-6 py-4 bg-white border-b border-gray-100 md:flex-row md:gap-12"
         >
           <div
             v-if="
@@ -6616,7 +6616,7 @@ onUnmounted(() => {
               >
                 Points Earned
               </p>
-              <p class="text-sm font-black text-yellow-600 leading-tight">
+              <p class="text-sm font-black leading-tight text-yellow-600">
                 +{{ order.point }} Pts
               </p>
             </div>
@@ -6628,7 +6628,7 @@ onUnmounted(() => {
         </div>
 
         <div
-          class="bg-white px-6 py-4 border-b border-gray-100 flex flex-col md:flex-row gap-6 md:gap-12"
+          class="flex flex-col gap-6 px-6 py-4 bg-white border-b border-gray-100 md:flex-row md:gap-12"
         >
           <div class="flex-1">
             <p
@@ -6638,19 +6638,19 @@ onUnmounted(() => {
             </p>
             <div v-if="order.payment_method" class="flex items-center gap-3">
               <div
-                class="w-12 h-8 bg-gray-50 border border-gray-100 rounded flex justify-center items-center overflow-hidden shrink-0"
+                class="flex items-center justify-center w-12 h-8 overflow-hidden border border-gray-100 rounded bg-gray-50 shrink-0"
               >
                 <img
                   v-if="getPaymentLogo(order.payment_method)"
                   :src="getPaymentLogo(order.payment_method)"
-                  class="w-full h-full object-contain p-1"
+                  class="object-contain w-full h-full p-1"
                 />
                 <span v-else class="font-black text-gray-300 text-[8px]">{{
                   order.payment_method.split(" ")[1] || "PAY"
                 }}</span>
               </div>
               <div>
-                <p class="font-bold text-gray-800 text-xs uppercase">
+                <p class="text-xs font-bold text-gray-800 uppercase">
                   {{ order.payment_method.replace("_", " ") }}
                 </p>
                 <p
@@ -6676,7 +6676,7 @@ onUnmounted(() => {
                 </p>
               </div>
             </div>
-            <p v-else class="text-xs text-gray-400 italic">
+            <p v-else class="text-xs italic text-gray-400">
               Waiting for payment selection...
             </p>
           </div>
@@ -6692,7 +6692,7 @@ onUnmounted(() => {
               class="flex items-center gap-3"
             >
               <div
-                class="w-12 h-12 bg-gray-100 text-gray-400 rounded-lg flex justify-center items-center shrink-0 border border-gray-200"
+                class="flex items-center justify-center w-12 h-12 text-gray-400 bg-gray-100 border border-gray-200 rounded-lg shrink-0"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -6710,7 +6710,7 @@ onUnmounted(() => {
                 </svg>
               </div>
               <div>
-                <p class="font-bold text-gray-800 text-xs uppercase">
+                <p class="text-xs font-bold text-gray-800 uppercase">
                   No Courier
                 </p>
                 <p class="text-[10px] text-gray-500 font-medium mt-0.5">
@@ -6726,19 +6726,19 @@ onUnmounted(() => {
               class="flex items-center gap-3"
             >
               <div
-                class="w-12 h-12 bg-white border border-gray-100 rounded-lg flex justify-center items-center overflow-hidden shrink-0"
+                class="flex items-center justify-center w-12 h-12 overflow-hidden bg-white border border-gray-100 rounded-lg shrink-0"
               >
                 <img
                   v-if="getCourierLogo(order.courier_company)"
                   :src="getCourierLogo(order.courier_company)"
-                  class="w-full h-full object-contain p-1"
+                  class="object-contain w-full h-full p-1"
                 />
-                <span v-else class="font-black text-gray-300 text-xs">{{
+                <span v-else class="text-xs font-black text-gray-300">{{
                   order.courier_company.toUpperCase()
                 }}</span>
               </div>
               <div>
-                <p class="font-bold text-gray-800 text-xs uppercase">
+                <p class="text-xs font-bold text-gray-800 uppercase">
                   {{ order.courier_company }} - {{ order.courier_type }}
                 </p>
                 <p class="text-[10px] text-gray-500 mt-0.5">
@@ -6750,7 +6750,7 @@ onUnmounted(() => {
               </div>
             </div>
 
-            <div v-else class="text-xs text-gray-400 italic">
+            <div v-else class="text-xs italic text-gray-400">
               Setup shipping at checkout
             </div>
           </div>
@@ -6775,29 +6775,32 @@ onUnmounted(() => {
           <div
             v-for="detail in order.details"
             :key="detail.id"
-            class="flex items-center gap-4 py-4 border-gray-50 last:border-0 border-b"
+            class="flex items-center gap-4 py-4 border-b border-gray-50 last:border-0"
           >
             <img
               :src="detail.product.image"
-              class="bg-gray-100 shadow-sm border border-gray-100 rounded-lg w-16 h-16 object-cover"
+              class="object-cover w-16 h-16 bg-gray-100 border border-gray-100 rounded-lg shadow-sm"
             />
             <div class="flex-grow">
-              <h4 class="font-bold text-gray-900 text-sm uppercase">
+              <h4 class="text-sm font-bold text-gray-900 uppercase">
                 {{ detail.product.name }}
               </h4>
-              <p class="text-gray-400 text-xs">
+              <p v-if="detail.color" class="text-[10px] text-gray-500 uppercase tracking-widest mt-0.5">
+                Color: <span class="font-bold text-gray-800">{{ detail.color }}</span>
+              </p>
+              <p class="text-xs text-gray-400">
                 {{ detail.quantity }} x {{ formatPrice(detail.price) }}
               </p>
             </div>
-            <p class="font-bold text-gray-900 text-sm">
+            <p class="text-sm font-bold text-gray-900">
               {{ formatPrice(detail.quantity * detail.price) }}
             </p>
           </div>
         </div>
 
-        <div class="bg-gray-50/50 px-6 py-4 border-t border-gray-100">
+        <div class="px-6 py-4 border-t border-gray-100 bg-gray-50/50">
           <div
-            class="flex flex-col mb-4 space-y-1 pb-4 border-b border-gray-200"
+            class="flex flex-col pb-4 mb-4 space-y-1 border-b border-gray-200"
           >
             <div class="flex justify-between text-xs text-gray-500">
               <span>Subtotal for Products</span
@@ -6817,17 +6820,17 @@ onUnmounted(() => {
               >
               <span>{{ formatPrice(order.shipping_cost) }}</span>
             </div>
-            <div v-if="order.promo_discount > 0" class="flex justify-between text-xs text-green-600 font-medium">
+            <div v-if="order.promo_discount > 0" class="flex justify-between text-xs font-medium text-green-600">
               <span>Promo Applied (<span class="font-mono uppercase">{{ order.promo_code }}</span>)</span>
               <span>- {{ formatPrice(order.promo_discount) }}</span>
             </div>
 
-            <div v-if="order.points_used > 0" class="flex justify-between text-xs text-yellow-600 font-medium">
+            <div v-if="order.points_used > 0" class="flex justify-between text-xs font-medium text-yellow-600">
               <span>Points Redeemed ({{ order.points_used }} Pts)</span>
               <span>- {{ formatPrice(order.points_used * 1000) }}</span>
             </div>
             <div
-              class="flex justify-between text-sm font-bold text-gray-900 mt-2 pt-2 border-t border-gray-200 border-dashed"
+              class="flex justify-between pt-2 mt-2 text-sm font-bold text-gray-900 border-t border-gray-200 border-dashed"
             >
               <span class="uppercase tracking-widest text-[10px] mt-1"
                 >Final Amount</span
@@ -6839,12 +6842,12 @@ onUnmounted(() => {
           </div>
 
           <div
-            class="flex flex-col md:flex-row justify-between items-center gap-4"
+            class="flex flex-col items-center justify-between gap-4 md:flex-row"
           >
-            <div class="w-full md:w-auto text-left">
+            <div class="w-full text-left md:w-auto">
               <div
                 v-if="canPay(order.status) && order.payment"
-                class="flex items-center gap-2 justify-center md:justify-start"
+                class="flex items-center justify-center gap-2 md:justify-start"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -6860,19 +6863,19 @@ onUnmounted(() => {
                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
-                <span class="font-mono font-bold text-red-500 text-sm">{{
+                <span class="font-mono text-sm font-bold text-red-500">{{
                   countdowns[order.id]
                 }}</span>
               </div>
             </div>
 
             <div
-              class="flex flex-wrap justify-center md:justify-end gap-3 w-full md:w-auto"
+              class="flex flex-wrap justify-center w-full gap-3 md:justify-end md:w-auto"
             >
               <button
                 v-if="canCancel(order.status)"
                 @click="cancelOrder(order.id)"
-                class="hover:bg-red-50 px-6 py-2 border border-red-200 rounded-xl font-bold text-red-600 text-xs uppercase tracking-widest transition w-full md:w-auto"
+                class="w-full px-6 py-2 text-xs font-bold tracking-widest text-red-600 uppercase transition border border-red-200 hover:bg-red-50 rounded-xl md:w-auto"
               >
                 Cancel
               </button>
@@ -6880,7 +6883,7 @@ onUnmounted(() => {
                 v-if="canPay(order.status)"
                 @click="redirectToPayment(order)"
                 :disabled="countdowns[order.id] === 'Expired'"
-                class="bg-black hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition w-full md:w-auto"
+                class="w-full px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-black hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed rounded-xl md:w-auto"
               >
                 Pay Now
               </button>
@@ -6906,39 +6909,39 @@ onUnmounted(() => {
                     state: { paymentMethod: order.payment_method },
                   })
                 "
-                class="bg-black hover:bg-gray-800 px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition shadow-sm w-full md:w-auto"
+                class="w-full px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-black shadow-sm hover:bg-gray-800 rounded-xl md:w-auto"
               >
                 Track Order
               </button>
               <button
                 v-if="canRequestRefund(order)"
                 @click="requestRefund(order.id)"
-                class="hover:bg-gray-100 px-6 py-2 border border-gray-300 rounded-xl font-bold text-gray-600 text-xs uppercase tracking-widest transition w-full md:w-auto"
+                class="w-full px-6 py-2 text-xs font-bold tracking-widest text-gray-600 uppercase transition border border-gray-300 hover:bg-gray-100 rounded-xl md:w-auto"
               >
                 Request to Refund
               </button>
               <div
                 v-if="order.status === 'refund_requested'"
-                class="bg-amber-100 px-4 py-2 rounded-xl text-amber-700 text-xs font-bold w-full md:w-auto text-center"
+                class="w-full px-4 py-2 text-xs font-bold text-center bg-amber-100 rounded-xl text-amber-700 md:w-auto"
               >
                 Waiting Admin
               </div>
               <div
                 v-if="order.status === 'refund_manual_required'"
-                class="bg-pink-100 px-4 py-2 rounded-xl text-pink-700 text-xs font-bold w-full md:w-auto text-center"
+                class="w-full px-4 py-2 text-xs font-bold text-center text-pink-700 bg-pink-100 rounded-xl md:w-auto"
               >
                 Manual Refund
               </div>
               <button
                 v-if="order.status === 'refund_approved'"
                 @click="processRefund(order.id)"
-                class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-xl font-bold text-white text-xs uppercase tracking-widest transition shadow-sm w-full md:w-auto"
+                class="w-full px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-blue-600 shadow-sm hover:bg-blue-700 rounded-xl md:w-auto"
               >
                 Refund Now
               </button>
               <div
                 v-if="order.status === 'refund_rejected'"
-                class="text-red-500 text-xs font-bold italic w-full md:w-auto text-center"
+                class="w-full text-xs italic font-bold text-center text-red-500 md:w-auto"
               >
                 Refund Rejected
               </div>
@@ -6948,7 +6951,7 @@ onUnmounted(() => {
       </div>
       <div
         v-if="!loading && filteredTransactions.length > 0"
-        class="flex flex-col md:flex-row justify-between items-center gap-4 mt-8 pt-6 border-t border-gray-100"
+        class="flex flex-col items-center justify-between gap-4 pt-6 mt-8 border-t border-gray-100 md:flex-row"
       >
         <p class="text-sm text-gray-400">
           Showing
@@ -6964,7 +6967,7 @@ onUnmounted(() => {
           <button
             @click="currentPage--"
             :disabled="currentPage === 1"
-            class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+            class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
           >
             Previous
           </button>
@@ -6983,7 +6986,7 @@ onUnmounted(() => {
                   ? 'cursor-default border-transparent hover:bg-transparent'
                   : 'border',
               ]"
-              class="w-10 h-10 rounded-xl font-medium transition flex items-center justify-center text-sm"
+              class="flex items-center justify-center w-10 h-10 text-sm font-medium transition rounded-xl"
             >
               {{ page }}
             </button>
@@ -6992,7 +6995,7 @@ onUnmounted(() => {
           <button
             @click="currentPage++"
             :disabled="currentPage === totalPages || totalPages === 0"
-            class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+            class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
           >
             Next
           </button>
@@ -7528,14 +7531,14 @@ const requestRefund = async (id) => {
   const { value: formValues, isConfirmed } = await Swal.fire({
     title: "Request Refund",
     html: `
-      <div class="text-left space-y-4">
+      <div class="space-y-4 text-left">
         <div>
-          <label class="block text-xs font-bold text-gray-700 uppercase tracking-widest mb-1">Reason for refund</label>
-          <textarea id="swal-refund-reason" rows="3" class="w-full bg-gray-50 border border-gray-300 rounded-xl p-3 text-sm outline-none focus:ring-2 focus:ring-black resize-none" placeholder="Explain why you want to refund this order..."></textarea>
+          <label class="block mb-1 text-xs font-bold tracking-widest text-gray-700 uppercase">Reason for refund</label>
+          <textarea id="swal-refund-reason" rows="3" class="w-full p-3 text-sm border border-gray-300 outline-none resize-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-black" placeholder="Explain why you want to refund this order..."></textarea>
         </div>
         <div>
-          <label class="block text-xs font-bold text-gray-700 uppercase tracking-widest mb-1">Upload Proof (Photo/Video)</label>
-          <input type="file" id="swal-refund-file" accept="image/*,video/mp4,video/quicktime" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-gray-100 file:text-black hover:file:bg-gray-200 cursor-pointer" />
+          <label class="block mb-1 text-xs font-bold tracking-widest text-gray-700 uppercase">Upload Proof (Photo/Video)</label>
+          <input type="file" id="swal-refund-file" accept="image/*,video/mp4,video/quicktime" class="w-full text-sm text-gray-500 cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-gray-100 file:text-black hover:file:bg-gray-200" />
           <p class="text-[10px] text-gray-400 mt-1 mt-1">Max 10MB. Formats: JPG, PNG, MP4.</p>
         </div>
       </div>
