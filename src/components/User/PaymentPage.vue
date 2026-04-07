@@ -1,15 +1,15 @@
 <!-- <template>
   <div
-    class="mx-auto px-6 py-12 md:py-24 max-w-4xl min-h-screen animate-fade-in"
+    class="max-w-4xl min-h-screen px-6 py-12 mx-auto md:py-24 animate-fade-in"
   >
     <h1
-      class="mb-12 font-serif text-3xl md:text-4xl uppercase tracking-tighter"
+      class="mb-12 font-serif text-3xl tracking-tighter uppercase md:text-4xl"
     >
       Checkout
     </h1>
 
-    <div class="flex lg:flex-row flex-col gap-12">
-      <div class="space-y-12 flex-grow">
+    <div class="flex flex-col gap-12 lg:flex-row">
+      <div class="flex-grow space-y-12">
         <section>
           <div class="flex items-center gap-4 mb-4">
             <span
@@ -17,13 +17,13 @@
               >1</span
             >
             <h2
-              class="font-bold text-gray-900 text-sm uppercase tracking-widest"
+              class="text-sm font-bold tracking-widest text-gray-900 uppercase"
             >
               Contact Information
             </h2>
           </div>
-          <div class="bg-gray-50 p-6 border border-gray-100 rounded-2xl">
-            <p class="text-gray-500 text-xs uppercase tracking-wider mb-1">
+          <div class="p-6 border border-gray-100 bg-gray-50 rounded-2xl">
+            <p class="mb-1 text-xs tracking-wider text-gray-500 uppercase">
               Email Address
             </p>
             <p class="font-medium text-gray-900">{{ userData?.email }}</p>
@@ -37,19 +37,19 @@
               >2</span
             >
             <h2
-              class="font-bold text-gray-900 text-sm uppercase tracking-widest"
+              class="text-sm font-bold tracking-widest text-gray-900 uppercase"
             >
               Shipping Address
             </h2>
           </div>
           <div
             v-if="addresses.length === 0"
-            class="text-center py-10 bg-gray-50 rounded-2xl border border-dashed border-gray-300"
+            class="py-10 text-center border border-gray-300 border-dashed bg-gray-50 rounded-2xl"
           >
-            <p class="text-gray-500 text-sm italic">No address found.</p>
+            <p class="text-sm italic text-gray-500">No address found.</p>
             <router-link
               to="/profilepage"
-              class="text-blue-600 text-xs font-bold underline"
+              class="text-xs font-bold text-blue-600 underline"
               >+ Add New Address</router-link
             >
           </div>
@@ -62,18 +62,18 @@
                   ? 'border-black ring-1 ring-black bg-white'
                   : 'border-gray-100 bg-gray-50/50',
               ]"
-              class="relative flex items-start p-6 border rounded-2xl cursor-pointer transition-all hover:bg-white"
+              class="relative flex items-start p-6 transition-all border cursor-pointer rounded-2xl hover:bg-white"
             >
               <input
                 type="radio"
                 name="address"
                 :value="addr.id"
                 v-model="selectedAddressId"
-                class="mt-1 w-4 h-4 text-black focus:ring-black border-gray-300"
+                class="w-4 h-4 mt-1 text-black border-gray-300 focus:ring-black"
               />
-              <div class="ml-4 flex-grow">
+              <div class="flex-grow ml-4">
                 <div class="flex justify-between">
-                  <p class="font-bold text-gray-900 text-sm uppercase">
+                  <p class="text-sm font-bold text-gray-900 uppercase">
                     {{ addr.receiver.full_name }}
                   </p>
                   <span
@@ -82,7 +82,7 @@
                     >Default</span
                   >
                 </div>
-                <p class="mt-2 text-gray-600 text-sm leading-relaxed">
+                <p class="mt-2 text-sm leading-relaxed text-gray-600">
                   {{ addr.details.location }}, {{ addr.details.type }} <br />
                   {{ addr.details.city }}, {{ addr.details.province }} <br />
                   {{ addr.details.region }} - {{ addr.details.postal_code }}
@@ -99,7 +99,7 @@
               >3</span
             >
             <h2
-              class="font-bold text-gray-900 text-sm uppercase tracking-widest"
+              class="text-sm font-bold tracking-widest text-gray-900 uppercase"
             >
               Shipping Method
             </h2>
@@ -112,22 +112,22 @@
                   ? 'border-black ring-1 ring-black bg-white'
                   : 'border-gray-100 bg-gray-50/50',
               ]"
-              class="relative flex items-center p-6 border rounded-2xl cursor-pointer transition-all"
+              class="relative flex items-center p-6 transition-all border cursor-pointer rounded-2xl"
             >
               <input
                 type="radio"
                 value="free"
                 v-model="shippingMethod"
-                class="w-4 h-4 text-black focus:ring-black border-gray-300"
+                class="w-4 h-4 text-black border-gray-300 focus:ring-black"
               />
-              <div class="ml-4 flex-grow flex justify-between items-center">
+              <div class="flex items-center justify-between flex-grow ml-4">
                 <div>
                   <p
-                    class="font-bold text-gray-900 text-sm uppercase tracking-wide"
+                    class="text-sm font-bold tracking-wide text-gray-900 uppercase"
                   >
                     Free Shipping
                   </p>
-                  <p class="text-green-600 font-bold text-xs mt-1">
+                  <p class="mt-1 text-xs font-bold text-green-600">
                     Ships next day
                   </p>
                 </div>
@@ -141,29 +141,29 @@
                   ? 'border-black ring-1 ring-black bg-white'
                   : 'border-gray-100 bg-gray-50/50',
               ]"
-              class="relative flex items-center p-6 border rounded-2xl cursor-pointer transition-all"
+              class="relative flex items-center p-6 transition-all border cursor-pointer rounded-2xl"
             >
               <input
                 type="radio"
                 value="biteship"
                 v-model="shippingMethod"
-                class="w-4 h-4 text-black focus:ring-black border-gray-300"
+                class="w-4 h-4 text-black border-gray-300 focus:ring-black"
               />
-              <div class="ml-4 flex-grow flex justify-between items-center">
+              <div class="flex items-center justify-between flex-grow ml-4">
                 <div>
                   <p
-                    class="font-bold text-gray-900 text-sm uppercase tracking-wide"
+                    class="text-sm font-bold tracking-wide text-gray-900 uppercase"
                   >
                     Standard / Express
                   </p>
-                  <p class="text-gray-500 text-xs mt-1">Powered by Biteship</p>
+                  <p class="mt-1 text-xs text-gray-500">Powered by Biteship</p>
                 </div>
               </div>
             </label>
 
             <div
               v-if="shippingMethod === 'biteship'"
-              class="pl-10 space-y-3 mt-2"
+              class="pl-10 mt-2 space-y-3"
             >
               <div
                 v-if="isLoadingRates"
@@ -173,7 +173,7 @@
               </div>
               <div
                 v-else-if="shippingRates.length === 0"
-                class="text-xs text-red-500 italic"
+                class="text-xs italic text-red-500"
               >
                 No couriers available.
               </div>
@@ -188,18 +188,18 @@
                     ? 'border-black bg-gray-50'
                     : 'border-gray-200',
                 ]"
-                class="flex items-center p-4 border rounded-xl cursor-pointer transition-all hover:bg-gray-50"
+                class="flex items-center p-4 transition-all border cursor-pointer rounded-xl hover:bg-gray-50"
               >
                 <input
                   type="radio"
                   :value="rate"
                   v-model="selectedRate"
-                  class="w-3 h-3 text-black focus:ring-black border-gray-300"
+                  class="w-3 h-3 text-black border-gray-300 focus:ring-black"
                 />
-                <div class="ml-3 flex-grow flex justify-between items-center">
+                <div class="flex items-center justify-between flex-grow ml-3">
                   <div>
                     <p
-                      class="font-bold text-gray-800 text-xs uppercase tracking-wide"
+                      class="text-xs font-bold tracking-wide text-gray-800 uppercase"
                     >
                       {{ rate.company }} - {{ rate.type }}
                     </p>
@@ -207,7 +207,7 @@
                       {{ rate.courier_name }} ({{ rate.duration }})
                     </p>
                   </div>
-                  <p class="font-bold text-black text-xs">
+                  <p class="text-xs font-bold text-black">
                     {{ formatPrice(rate.price) }}
                   </p>
                 </div>
@@ -219,10 +219,10 @@
 
       <div class="lg:w-[380px] space-y-6">
         <div
-          class="bg-white shadow-xl p-8 border border-gray-100 rounded-3xl sticky top-28"
+          class="sticky p-8 bg-white border border-gray-100 shadow-xl rounded-3xl top-28"
         >
           <h2
-            class="mb-6 font-bold text-gray-900 text-sm uppercase tracking-widest border-b pb-4"
+            class="pb-4 mb-6 text-sm font-bold tracking-widest text-gray-900 uppercase border-b"
           >
             Order Summary
           </h2>
@@ -237,7 +237,7 @@
             >
               <img
                 :src="item.product.image"
-                class="w-16 h-16 object-cover rounded-xl bg-gray-100"
+                class="object-cover w-16 h-16 bg-gray-100 rounded-xl"
               />
               <div class="flex-grow">
                 <p
@@ -248,14 +248,14 @@
                 <p class="text-gray-400 text-[10px]">
                   Qty: {{ item.quantity }}
                 </p>
-                <p class="font-medium text-gray-900 text-xs mt-1">
+                <p class="mt-1 text-xs font-medium text-gray-900">
                   {{ formatPrice(item.price * item.quantity) }}
                 </p>
               </div>
             </div>
           </div>
 
-          <div class="space-y-3 pt-4 border-t border-gray-50 text-sm">
+          <div class="pt-4 space-y-3 text-sm border-t border-gray-50">
             <div class="flex justify-between text-gray-500">
               <span>Subtotal</span>
               <span>{{ formatPrice(transactionData?.total_amount) }}</span>
@@ -279,7 +279,7 @@
             <div
               class="flex justify-between pt-4 font-bold text-gray-900 border-t border-gray-100"
             >
-              <span class="uppercase tracking-widest text-xs mt-1"
+              <span class="mt-1 text-xs tracking-widest uppercase"
                 >Total Amount</span
               >
               <span class="text-xl">{{ formatPrice(grandTotal) }}</span>
@@ -296,9 +296,9 @@
             class="mt-8 w-full bg-black hover:bg-gray-800 disabled:bg-gray-300 py-5 rounded-2xl font-bold text-white text-xs uppercase tracking-[0.3em] transition-all duration-500 shadow-xl shadow-black/10"
           >
             <span v-if="!isProcessing">Pay Now</span>
-            <span v-else class="flex justify-center items-center gap-2">
+            <span v-else class="flex items-center justify-center gap-2">
               <div
-                class="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin"
+                class="w-3 h-3 border-2 rounded-full border-white/30 border-t-white animate-spin"
               ></div>
               Processing...
             </span>
@@ -477,16 +477,16 @@ onMounted(fetchData);
 
 <!-- <template>
   <div
-    class="mx-auto px-6 py-12 md:py-24 max-w-6xl min-h-screen animate-fade-in"
+    class="max-w-6xl min-h-screen px-6 py-12 mx-auto md:py-24 animate-fade-in"
   >
     <h1
-      class="mb-12 font-serif text-3xl md:text-4xl uppercase tracking-tighter"
+      class="mb-12 font-serif text-3xl tracking-tighter uppercase md:text-4xl"
     >
       Checkout
     </h1>
 
-    <div class="flex lg:flex-row flex-col gap-12">
-      <div class="space-y-12 flex-grow">
+    <div class="flex flex-col gap-12 lg:flex-row">
+      <div class="flex-grow space-y-12">
         <section>
           <div class="flex items-center gap-4 mb-4">
             <span
@@ -494,19 +494,19 @@ onMounted(fetchData);
               >1</span
             >
             <h2
-              class="font-bold text-gray-900 text-sm uppercase tracking-widest"
+              class="text-sm font-bold tracking-widest text-gray-900 uppercase"
             >
               Shipping Address
             </h2>
           </div>
           <div
             v-if="addresses.length === 0"
-            class="text-center py-10 bg-gray-50 rounded-2xl border border-dashed border-gray-300"
+            class="py-10 text-center border border-gray-300 border-dashed bg-gray-50 rounded-2xl"
           >
-            <p class="text-gray-500 text-sm italic">No address found.</p>
+            <p class="text-sm italic text-gray-500">No address found.</p>
             <button
               @click="openModal()"
-              class="text-blue-600 text-xs font-bold underline"
+              class="text-xs font-bold text-blue-600 underline"
             >
               + Add New Address
             </button>
@@ -520,18 +520,18 @@ onMounted(fetchData);
                   ? 'border-black ring-1 ring-black bg-white shadow-md'
                   : 'border-gray-100 bg-gray-50/50',
               ]"
-              class="relative flex items-start p-6 border rounded-2xl cursor-pointer transition-all hover:bg-white"
+              class="relative flex items-start p-6 transition-all border cursor-pointer rounded-2xl hover:bg-white"
             >
               <input
                 type="radio"
                 name="address"
                 :value="addr.id"
                 v-model="selectedAddressId"
-                class="mt-1 w-4 h-4 text-black focus:ring-black border-gray-300"
+                class="w-4 h-4 mt-1 text-black border-gray-300 focus:ring-black"
               />
-              <div class="ml-4 flex-grow">
+              <div class="flex-grow ml-4">
                 <div class="flex justify-between">
-                  <p class="font-bold text-gray-900 text-sm uppercase">
+                  <p class="text-sm font-bold text-gray-900 uppercase">
                     {{ addr.receiver.full_name }}
                   </p>
                   <span
@@ -540,7 +540,7 @@ onMounted(fetchData);
                     >Default</span
                   >
                 </div>
-                <p class="mt-2 text-gray-600 text-sm leading-relaxed">
+                <p class="mt-2 text-sm leading-relaxed text-gray-600">
                   {{ addr.details.location }}, {{ addr.details.type }} <br />
                   {{ addr.details.city }}, {{ addr.details.province }} <br />
                   {{ addr.details.region }} - {{ addr.details.postal_code }}
@@ -557,14 +557,14 @@ onMounted(fetchData);
               >2</span
             >
             <h2
-              class="font-bold text-gray-900 text-sm uppercase tracking-widest"
+              class="text-sm font-bold tracking-widest text-gray-900 uppercase"
             >
               Shipping Method
             </h2>
           </div>
 
           <div>
-            <h4 class="text-gray-900 text-sm uppercase tracking-widest">
+            <h4 class="text-sm tracking-widest text-gray-900 uppercase">
               Choose the shipping address first
             </h4>
           </div>
@@ -577,7 +577,7 @@ onMounted(fetchData);
               >2</span
             >
             <h2
-              class="font-bold text-gray-900 text-sm uppercase tracking-widest"
+              class="text-sm font-bold tracking-widest text-gray-900 uppercase"
             >
               Shipping Method
             </h2>
@@ -590,22 +590,22 @@ onMounted(fetchData);
                   ? 'border-black ring-1 ring-black bg-white shadow-md'
                   : 'border-gray-100 bg-gray-50/50',
               ]"
-              class="relative flex items-center p-6 border rounded-2xl cursor-pointer transition-all"
+              class="relative flex items-center p-6 transition-all border cursor-pointer rounded-2xl"
             >
               <input
                 type="radio"
                 value="free"
                 v-model="shippingMethod"
-                class="w-4 h-4 text-black focus:ring-black border-gray-300"
+                class="w-4 h-4 text-black border-gray-300 focus:ring-black"
               />
-              <div class="ml-4 flex-grow flex justify-between items-center">
+              <div class="flex items-center justify-between flex-grow ml-4">
                 <div>
                   <p
-                    class="font-bold text-gray-900 text-sm uppercase tracking-wide"
+                    class="text-sm font-bold tracking-wide text-gray-900 uppercase"
                   >
                     Free Shipping
                   </p>
-                  <p class="text-green-600 font-bold text-xs mt-1">
+                  <p class="mt-1 text-xs font-bold text-green-600">
                     In-Store Pickup (Ambil barang di toko)
                   </p>
                 </div>
@@ -619,32 +619,32 @@ onMounted(fetchData);
                   ? 'border-black ring-1 ring-black bg-white shadow-md'
                   : 'border-gray-100 bg-gray-50/50',
               ]"
-              class="relative flex items-center p-6 border rounded-2xl cursor-pointer transition-all"
+              class="relative flex items-center p-6 transition-all border cursor-pointer rounded-2xl"
             >
               <input
                 type="radio"
                 value="biteship"
                 v-model="shippingMethod"
-                class="w-4 h-4 text-black focus:ring-black border-gray-300"
+                class="w-4 h-4 text-black border-gray-300 focus:ring-black"
               />
-              <div class="ml-4 flex-grow flex justify-between items-center">
+              <div class="flex items-center justify-between flex-grow ml-4">
                 <div>
                   <p
-                    class="font-bold text-gray-900 text-sm uppercase tracking-wide"
+                    class="text-sm font-bold tracking-wide text-gray-900 uppercase"
                   >
                     Standard / Express
                   </p>
-                  <p class="text-gray-500 text-xs mt-1">Powered by Biteship</p>
+                  <p class="mt-1 text-xs text-gray-500">Powered by Biteship</p>
                 </div>
               </div>
             </label>
 
             <div
               v-if="shippingMethod === 'biteship'"
-              class="p-6 border border-gray-200 rounded-3xl mt-4 bg-white space-y-8 animate-fade-in"
+              class="p-6 mt-4 space-y-8 bg-white border border-gray-200 rounded-3xl animate-fade-in"
             >
               <div
-                class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-gray-50 rounded-2xl"
+                class="grid grid-cols-1 gap-6 p-4 md:grid-cols-2 bg-gray-50 rounded-2xl"
               >
                 <div>
                   <h3
@@ -652,13 +652,13 @@ onMounted(fetchData);
                   >
                     Shipper Origin
                   </h3>
-                  <p class="font-bold text-gray-900 text-xs uppercase">
+                  <p class="text-xs font-bold text-gray-900 uppercase">
                     {{ shipperInfo.name }}
                   </p>
-                  <p class="text-gray-500 text-xs mt-1">
+                  <p class="mt-1 text-xs text-gray-500">
                     {{ shipperInfo.phone }}
                   </p>
-                  <p class="text-gray-500 text-xs mt-1 line-clamp-2">
+                  <p class="mt-1 text-xs text-gray-500 line-clamp-2">
                     {{ shipperInfo.address }} - {{ shipperInfo.postal_code }}
                   </p>
                 </div>
@@ -668,13 +668,13 @@ onMounted(fetchData);
                   >
                     Destination
                   </h3>
-                  <p class="font-bold text-gray-900 text-xs uppercase">
+                  <p class="text-xs font-bold text-gray-900 uppercase">
                     {{ destinationInfo?.name }}
                   </p>
-                  <p class="text-gray-500 text-xs mt-1">
+                  <p class="mt-1 text-xs text-gray-500">
                     {{ destinationInfo?.phone }}
                   </p>
-                  <p class="text-gray-500 text-xs mt-1 line-clamp-2">
+                  <p class="mt-1 text-xs text-gray-500 line-clamp-2">
                     {{ destinationInfo?.address }} -
                     {{ destinationInfo?.postal_code }}
                   </p>
@@ -682,17 +682,17 @@ onMounted(fetchData);
               </div>
 
               <div>
-                <h3 class="font-bold text-sm uppercase tracking-widest mb-4">
+                <h3 class="mb-4 text-sm font-bold tracking-widest uppercase">
                   Pickup Schedule
                 </h3>
-                <div class="flex flex-col md:flex-row gap-4 mb-4">
+                <div class="flex flex-col gap-4 mb-4 md:flex-row">
                   <label
                     :class="
                       deliveryType === 'later'
                         ? 'border-black bg-gray-50'
                         : 'border-gray-200'
                     "
-                    class="flex-1 p-4 border rounded-xl cursor-pointer transition"
+                    class="flex-1 p-4 transition border cursor-pointer rounded-xl"
                   >
                     <input
                       type="radio"
@@ -700,7 +700,7 @@ onMounted(fetchData);
                       v-model="deliveryType"
                       class="hidden"
                     />
-                    <p class="font-bold text-xs uppercase">Standard Pickup</p>
+                    <p class="text-xs font-bold uppercase">Standard Pickup</p>
                     <p class="text-[10px] text-gray-500 mt-1">
                       Pickup within next hour
                     </p>
@@ -711,7 +711,7 @@ onMounted(fetchData);
                         ? 'border-black bg-gray-50'
                         : 'border-gray-200'
                     "
-                    class="flex-1 p-4 border rounded-xl cursor-pointer transition"
+                    class="flex-1 p-4 transition border cursor-pointer rounded-xl"
                   >
                     <input
                       type="radio"
@@ -719,7 +719,7 @@ onMounted(fetchData);
                       v-model="deliveryType"
                       class="hidden"
                     />
-                    <p class="font-bold text-xs uppercase">Scheduled Pickup</p>
+                    <p class="text-xs font-bold uppercase">Scheduled Pickup</p>
                     <p class="text-[10px] text-gray-500 mt-1">
                       Choose specific date & time
                     </p>
@@ -739,7 +739,7 @@ onMounted(fetchData);
                       type="date"
                       v-model="deliveryDate"
                       :min="todayDate"
-                      class="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-black focus:border-black outline-none"
+                      class="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg outline-none focus:ring-black focus:border-black"
                       required
                     />
                   </div>
@@ -751,7 +751,7 @@ onMounted(fetchData);
                     <input
                       type="time"
                       v-model="deliveryTime"
-                      class="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-black focus:border-black outline-none"
+                      class="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg outline-none focus:ring-black focus:border-black"
                       required
                     />
                   </div>
@@ -760,20 +760,20 @@ onMounted(fetchData);
 
               <div>
                 <h3
-                  class="font-bold text-sm uppercase tracking-widest mb-4 border-t pt-6"
+                  class="pt-6 mb-4 text-sm font-bold tracking-widest uppercase border-t"
                 >
                   Select Courier
                 </h3>
 
                 <div
                   v-if="isLoadingRates"
-                  class="text-sm text-gray-500 animate-pulse text-center py-4"
+                  class="py-4 text-sm text-center text-gray-500 animate-pulse"
                 >
                   Calculating couriers...
                 </div>
                 <div
                   v-else-if="shippingRates.length === 0"
-                  class="text-xs text-red-500 italic text-center py-4"
+                  class="py-4 text-xs italic text-center text-red-500"
                 >
                   No couriers available.
                 </div>
@@ -788,25 +788,25 @@ onMounted(fetchData);
                         ? 'border-black bg-gray-50 shadow-sm'
                         : 'border-gray-200',
                     ]"
-                    class="flex items-center p-4 border rounded-xl cursor-pointer transition-all hover:bg-gray-50"
+                    class="flex items-center p-4 transition-all border cursor-pointer rounded-xl hover:bg-gray-50"
                   >
                     <input
                       type="radio"
                       :value="rate"
                       v-model="selectedRate"
-                      class="w-4 h-4 text-black focus:ring-black border-gray-300"
+                      class="w-4 h-4 text-black border-gray-300 focus:ring-black"
                     />
 
-                    <div class="ml-4 flex-grow flex items-center gap-4">
+                    <div class="flex items-center flex-grow gap-4 ml-4">
                       <div
-                        class="w-12 h-12 bg-white border border-gray-100 rounded-lg flex justify-center items-center overflow-hidden shrink-0"
+                        class="flex items-center justify-center w-12 h-12 overflow-hidden bg-white border border-gray-100 rounded-lg shrink-0"
                       >
                         <img
                           v-show="!imageErrors[rate.company]"
                           v-if="getCourierLogo(rate.company)"
                           :src="getCourierLogo(rate.company)"
                           :alt="rate.company"
-                          class="w-full h-full object-contain p-1"
+                          class="object-contain w-full h-full p-1"
                           @error="handleImageError(rate.company)"
                         />
 
@@ -815,14 +815,14 @@ onMounted(fetchData);
                             imageErrors[rate.company] ||
                             !getCourierLogo(rate.company)
                           "
-                          class="font-black text-gray-300 text-xs"
+                          class="text-xs font-black text-gray-300"
                         >
                           {{ rate.company.toUpperCase() }}
                         </span>
                       </div>
                       <div>
                         <p
-                          class="font-bold text-gray-800 text-sm uppercase tracking-wide"
+                          class="text-sm font-bold tracking-wide text-gray-800 uppercase"
                         >
                           {{ rate.company }} - {{ rate.type }}
                         </p>
@@ -832,7 +832,7 @@ onMounted(fetchData);
                       </div>
                     </div>
 
-                    <p class="font-black text-black text-sm">
+                    <p class="text-sm font-black text-black">
                       {{ formatPrice(rate.price) }}
                     </p>
                   </label>
@@ -845,10 +845,10 @@ onMounted(fetchData);
 
       <div class="lg:w-[400px] space-y-6">
         <div
-          class="bg-white shadow-xl p-8 border border-gray-100 rounded-3xl sticky top-28"
+          class="sticky p-8 bg-white border border-gray-100 shadow-xl rounded-3xl top-28"
         >
           <h2
-            class="mb-6 font-bold text-gray-900 text-sm uppercase tracking-widest border-b pb-4"
+            class="pb-4 mb-6 text-sm font-bold tracking-widest text-gray-900 uppercase border-b"
           >
             Order Summary
           </h2>
@@ -863,7 +863,7 @@ onMounted(fetchData);
             >
               <img
                 :src="item.product.image"
-                class="w-16 h-16 object-cover rounded-xl bg-gray-100 shrink-0"
+                class="object-cover w-16 h-16 bg-gray-100 rounded-xl shrink-0"
               />
               <div class="flex-grow">
                 <p
@@ -874,7 +874,7 @@ onMounted(fetchData);
                 <p class="text-gray-400 text-[10px]">
                   Qty: {{ item.quantity }}
                 </p>
-                <p class="font-medium text-gray-900 text-xs mt-1">
+                <p class="mt-1 text-xs font-medium text-gray-900">
                   {{ formatPrice(item.price * item.quantity) }}
                 </p>
               </div>
@@ -885,7 +885,7 @@ onMounted(fetchData);
 
         
 
-          <div class="space-y-3 pt-4 border-t border-gray-50 text-sm">
+          <div class="pt-4 space-y-3 text-sm border-t border-gray-50">
 
             <div class="flex justify-between text-gray-500">
               <span>Total Items</span>
@@ -900,9 +900,9 @@ onMounted(fetchData);
 
             <div
               v-if="userData?.is_membership && userData?.point > 0"
-              class="pt-4 mt-2 border-t border-dashed border-gray-200"
+              class="pt-4 mt-2 border-t border-gray-200 border-dashed"
             >
-              <div class="flex justify-between items-center mb-2">
+              <div class="flex items-center justify-between mb-2">
                 <span
                   class="text-[10px] font-bold text-yellow-800 uppercase tracking-widest flex items-center gap-1"
                 >
@@ -946,7 +946,7 @@ onMounted(fetchData);
                 - {{ formatPrice(pointDiscountAmount) }}
               </p>
             </div>
-            <div class="flex justify-between text-gray-500 items-start">
+            <div class="flex items-start justify-between text-gray-500">
               <span>Shipping</span>
               <span
                 v-if="shippingMethod === 'free'"
@@ -958,7 +958,7 @@ onMounted(fetchData);
                 v-else-if="shippingMethod === 'biteship' && selectedRate"
                 class="text-right"
               >
-                <span class="font-medium text-gray-900 block">{{
+                <span class="block font-medium text-gray-900">{{
                   formatPrice(selectedRate.price * totalQuantity)
                 }}</span>
                 <p class="text-[10px] text-gray-400 mt-1">
@@ -973,7 +973,7 @@ onMounted(fetchData);
             <div
               class="flex justify-between pt-4 font-bold text-gray-900 border-t border-gray-100"
             >
-              <span class="uppercase tracking-widest text-xs mt-1"
+              <span class="mt-1 text-xs tracking-widest uppercase"
                 >Grand Total</span
               >
               <span class="text-xl">{{
@@ -983,10 +983,10 @@ onMounted(fetchData);
 
             <div
               v-if="userData?.is_membership"
-              class="mt-4 p-3 bg-yellow-50 border border-yellow-100 rounded-xl flex items-center gap-3"
+              class="flex items-center gap-3 p-3 mt-4 border border-yellow-100 bg-yellow-50 rounded-xl"
             >
               <div
-                class="w-8 h-8 bg-yellow-400 text-white rounded-full flex justify-center items-center shrink-0"
+                class="flex items-center justify-center w-8 h-8 text-white bg-yellow-400 rounded-full shrink-0"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -1018,9 +1018,9 @@ onMounted(fetchData);
             class="mt-8 w-full bg-black hover:bg-gray-800 disabled:bg-gray-300 py-5 rounded-2xl font-bold text-white text-xs uppercase tracking-[0.3em] transition-all duration-500 shadow-xl shadow-black/10"
           >
             <span v-if="!isProcessing">Pay Now</span>
-            <span v-else class="flex justify-center items-center gap-2">
+            <span v-else class="flex items-center justify-center gap-2">
               <div
-                class="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin"
+                class="w-3 h-3 border-2 rounded-full border-white/30 border-t-white animate-spin"
               ></div>
               Processing...
             </span>
@@ -1045,18 +1045,18 @@ onMounted(fetchData);
   ]
   <div
     v-if="showModal"
-    class="z-50 fixed inset-0 flex justify-center items-center bg-black/40 backdrop-blur-sm p-4 overflow-y-auto"
+    class="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto bg-black/40 backdrop-blur-sm"
   >
     <div
-      class="relative bg-white shadow-2xl p-6 rounded-2xl w-full max-w-2xl my-4"
+      class="relative w-full max-w-2xl p-6 my-4 bg-white shadow-2xl rounded-2xl"
     >
       <button
         @click="showModal = false"
-        class="top-4 right-5 absolute text-gray-400 hover:text-black text-xl"
+        class="absolute text-xl text-gray-400 top-4 right-5 hover:text-black"
       >
         ✕
       </button>
-      <h3 class="mb-4 font-bold text-xl">Add New Address</h3>
+      <h3 class="mb-4 text-xl font-bold">Add New Address</h3>
 
       <form @submit.prevent="saveAddress" class="space-y-3">
         <div class="flex items-center gap-2 mb-2">
@@ -1064,25 +1064,25 @@ onMounted(fetchData);
           <label for="def" class="text-sm">Set as my default address</label>
         </div>
 
-        <div class="gap-3 grid grid-cols-2">
+        <div class="grid grid-cols-2 gap-3">
           <input
             v-model="form.first_name_address"
             placeholder="First name"
-            class="bg-gray-50 py-2 px-3 border rounded-xl outline-none text-sm"
+            class="px-3 py-2 text-sm border outline-none bg-gray-50 rounded-xl"
             required
           />
           <input
             v-model="form.last_name_address"
             placeholder="Last name"
-            class="bg-gray-50 py-2 px-3 border rounded-xl outline-none text-sm"
+            class="px-3 py-2 text-sm border outline-none bg-gray-50 rounded-xl"
             required
           />
         </div>
 
-        <div class="gap-3 grid grid-cols-2">
+        <div class="grid grid-cols-2 gap-3">
           <select
             v-model="form.province"
-            class="bg-gray-50 py-2 px-3 border rounded-xl outline-none text-sm"
+            class="px-3 py-2 text-sm border outline-none bg-gray-50 rounded-xl"
             required
           >
             <option value="" disabled>Select Province</option>
@@ -1093,13 +1093,13 @@ onMounted(fetchData);
           <input
             v-model="form.city"
             placeholder="City"
-            class="bg-gray-50 py-2 px-3 border rounded-xl outline-none text-sm"
+            class="px-3 py-2 text-sm border outline-none bg-gray-50 rounded-xl"
             required
           />
         </div>
 
         <div
-          class="border border-gray-200 rounded-xl overflow-hidden mt-2 relative"
+          class="relative mt-2 overflow-hidden border border-gray-200 rounded-xl"
         >
           <div
             class="bg-amber-50 border-b border-amber-100 py-1.5 px-3 flex items-start gap-2"
@@ -1126,7 +1126,7 @@ onMounted(fetchData);
           </div>
 
           <div
-            class="bg-gray-50 p-2 border-b border-gray-200 flex justify-between items-center gap-2"
+            class="flex items-center justify-between gap-2 p-2 border-b border-gray-200 bg-gray-50"
           >
             <div class="relative flex-1">
               <input
@@ -1144,7 +1144,7 @@ onMounted(fetchData);
                   v-for="(result, idx) in searchResults"
                   :key="idx"
                   @click="selectSearchResult(result)"
-                  class="px-3 py-2 text-xs hover:bg-blue-50 cursor-pointer border-b last:border-0 text-gray-700"
+                  class="px-3 py-2 text-xs text-gray-700 border-b cursor-pointer hover:bg-blue-50 last:border-0"
                 >
                   {{ result.display_name }}
                 </div>
@@ -1159,7 +1159,7 @@ onMounted(fetchData);
             </button>
           </div>
 
-          <div class="h-40 sm:h-48 w-full relative z-0">
+          <div class="relative z-0 w-full h-40 sm:h-48">
             <l-map
               ref="map"
               v-model:zoom="zoom"
@@ -1188,7 +1188,7 @@ onMounted(fetchData);
         </div>
 
         <div class="relative pt-1">
-          <div class="flex justify-between items-end mb-1">
+          <div class="flex items-end justify-between mb-1">
             <label
               class="font-bold text-gray-700 text-[10px] uppercase tracking-widest"
               >Detail Address</label
@@ -1202,21 +1202,21 @@ onMounted(fetchData);
             v-model="form.address_location"
             rows="2"
             placeholder="Enter full street address and specific details..."
-            class="bg-gray-50 py-2 px-3 border rounded-xl outline-none w-full resize-none focus:ring-2 focus:ring-blue-500 text-sm"
+            class="w-full px-3 py-2 text-sm border outline-none resize-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-blue-500"
             required
           ></textarea>
         </div>
 
-        <div class="gap-3 grid grid-cols-2 pt-1">
+        <div class="grid grid-cols-2 gap-3 pt-1">
           <input
             v-model="form.location_type"
             placeholder="Apartment, suite (optional)"
-            class="bg-gray-50 py-2 px-3 border rounded-xl outline-none text-sm"
+            class="px-3 py-2 text-sm border outline-none bg-gray-50 rounded-xl"
           />
           <input
             v-model="form.postal_code"
             placeholder="Postal code"
-            class="bg-gray-50 py-2 px-3 border rounded-xl outline-none text-sm"
+            class="px-3 py-2 text-sm border outline-none bg-gray-50 rounded-xl"
             required
           />
         </div>
@@ -1226,13 +1226,13 @@ onMounted(fetchData);
             <button
               type="button"
               @click="showModal = false"
-              class="text-gray-500 hover:text-gray-800 font-bold px-3 text-sm"
+              class="px-3 text-sm font-bold text-gray-500 hover:text-gray-800"
             >
               Cancel
             </button>
             <button
               type="submit"
-              class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-xl font-bold text-white shadow-md shadow-blue-500/30 transition-colors text-sm"
+              class="px-6 py-2 text-sm font-bold text-white transition-colors bg-blue-600 shadow-md hover:bg-blue-700 rounded-xl shadow-blue-500/30"
             >
               Save Address
             </button>
@@ -1885,13 +1885,13 @@ onMounted(fetchData);
 
 <!-- <template>
   <div
-    class="mx-auto px-6 py-12 md:py-24 max-w-6xl min-h-screen animate-fade-in"
+    class="max-w-6xl min-h-screen px-6 py-12 mx-auto md:py-24 animate-fade-in"
   >
-    <div v-if="cartItems.length === 0" class="text-center py-20">
-      <h2 class="font-serif text-3xl mb-4">Your bag is empty</h2>
+    <div v-if="cartItems.length === 0" class="py-20 text-center">
+      <h2 class="mb-4 font-serif text-3xl">Your bag is empty</h2>
       <button
         @click="$router.push('/collections')"
-        class="bg-black text-white px-8 py-3 rounded-full uppercase tracking-widest text-xs font-bold"
+        class="px-8 py-3 text-xs font-bold tracking-widest text-white uppercase bg-black rounded-full"
       >
         Return to Shop
       </button>
@@ -1899,13 +1899,13 @@ onMounted(fetchData);
 
     <div v-else>
       <h1
-        class="mb-12 font-serif text-3xl md:text-4xl uppercase tracking-tighter"
+        class="mb-12 font-serif text-3xl tracking-tighter uppercase md:text-4xl"
       >
         Checkout
       </h1>
 
-      <div class="flex lg:flex-row flex-col gap-12">
-        <div class="space-y-12 flex-grow">
+      <div class="flex flex-col gap-12 lg:flex-row">
+        <div class="flex-grow space-y-12">
           <section>
             <div class="flex items-center gap-4 mb-4">
               <span
@@ -1913,7 +1913,7 @@ onMounted(fetchData);
                 >1</span
               >
               <h2
-                class="font-bold text-gray-900 text-sm uppercase tracking-widest"
+                class="text-sm font-bold tracking-widest text-gray-900 uppercase"
               >
                 Shipping Address
               </h2>
@@ -1921,12 +1921,12 @@ onMounted(fetchData);
 
             <div
               v-if="addresses.length === 0"
-              class="text-center py-10 bg-gray-50 rounded-2xl border border-dashed border-gray-300"
+              class="py-10 text-center border border-gray-300 border-dashed bg-gray-50 rounded-2xl"
             >
-              <p class="text-gray-500 text-sm italic mb-2">No address found.</p>
+              <p class="mb-2 text-sm italic text-gray-500">No address found.</p>
               <button
                 @click="openModal()"
-                class="text-blue-600 text-xs font-bold underline"
+                class="text-xs font-bold text-blue-600 underline"
               >
                 + Add New Address
               </button>
@@ -1941,18 +1941,18 @@ onMounted(fetchData);
                     ? 'border-black ring-1 ring-black bg-white shadow-md'
                     : 'border-gray-100 bg-gray-50/50',
                 ]"
-                class="relative flex items-start p-6 border rounded-2xl cursor-pointer transition-all hover:bg-white"
+                class="relative flex items-start p-6 transition-all border cursor-pointer rounded-2xl hover:bg-white"
               >
                 <input
                   type="radio"
                   name="address"
                   :value="addr.id"
                   v-model="selectedAddressId"
-                  class="mt-1 w-4 h-4 text-black focus:ring-black border-gray-300"
+                  class="w-4 h-4 mt-1 text-black border-gray-300 focus:ring-black"
                 />
-                <div class="ml-4 flex-grow">
+                <div class="flex-grow ml-4">
                   <div class="flex justify-between">
-                    <p class="font-bold text-gray-900 text-sm uppercase">
+                    <p class="text-sm font-bold text-gray-900 uppercase">
                       {{ addr.receiver.full_name }}
                     </p>
                     <span
@@ -1961,7 +1961,7 @@ onMounted(fetchData);
                       >Default</span
                     >
                   </div>
-                  <p class="mt-2 text-gray-600 text-sm leading-relaxed">
+                  <p class="mt-2 text-sm leading-relaxed text-gray-600">
                     {{ addr.details.location }}, {{ addr.details.type }} <br />
                     {{ addr.details.city }}, {{ addr.details.province }} <br />
                     {{ addr.details.region }} - {{ addr.details.postal_code }}
@@ -1970,7 +1970,7 @@ onMounted(fetchData);
               </label>
               <button
                 @click="openModal()"
-                class="mt-4 text-gray-500 text-xs font-bold underline hover:text-black"
+                class="mt-4 text-xs font-bold text-gray-500 underline hover:text-black"
               >
                 + Add Another Address
               </button>
@@ -1984,7 +1984,7 @@ onMounted(fetchData);
                 >2</span
               >
               <h2
-                class="font-bold text-gray-900 text-sm uppercase tracking-widest"
+                class="text-sm font-bold tracking-widest text-gray-900 uppercase"
               >
                 Shipping Method
               </h2>
@@ -1997,22 +1997,22 @@ onMounted(fetchData);
                     ? 'border-black ring-1 ring-black bg-white shadow-md'
                     : 'border-gray-100 bg-gray-50/50',
                 ]"
-                class="relative flex items-center p-6 border rounded-2xl cursor-pointer transition-all"
+                class="relative flex items-center p-6 transition-all border cursor-pointer rounded-2xl"
               >
                 <input
                   type="radio"
                   value="free"
                   v-model="shippingMethod"
-                  class="w-4 h-4 text-black focus:ring-black border-gray-300"
+                  class="w-4 h-4 text-black border-gray-300 focus:ring-black"
                 />
-                <div class="ml-4 flex-grow flex justify-between items-center">
+                <div class="flex items-center justify-between flex-grow ml-4">
                   <div>
                     <p
-                      class="font-bold text-gray-900 text-sm uppercase tracking-wide"
+                      class="text-sm font-bold tracking-wide text-gray-900 uppercase"
                     >
                       Free Shipping
                     </p>
-                    <p class="text-green-600 font-bold text-xs mt-1">
+                    <p class="mt-1 text-xs font-bold text-green-600">
                       In-Store Pickup (Ambil barang di toko)
                     </p>
                   </div>
@@ -2026,22 +2026,22 @@ onMounted(fetchData);
                     ? 'border-black ring-1 ring-black bg-white shadow-md'
                     : 'border-gray-100 bg-gray-50/50',
                 ]"
-                class="relative flex items-center p-6 border rounded-2xl cursor-pointer transition-all"
+                class="relative flex items-center p-6 transition-all border cursor-pointer rounded-2xl"
               >
                 <input
                   type="radio"
                   value="biteship"
                   v-model="shippingMethod"
-                  class="w-4 h-4 text-black focus:ring-black border-gray-300"
+                  class="w-4 h-4 text-black border-gray-300 focus:ring-black"
                 />
-                <div class="ml-4 flex-grow flex justify-between items-center">
+                <div class="flex items-center justify-between flex-grow ml-4">
                   <div>
                     <p
-                      class="font-bold text-gray-900 text-sm uppercase tracking-wide"
+                      class="text-sm font-bold tracking-wide text-gray-900 uppercase"
                     >
                       Standard / Express
                     </p>
-                    <p class="text-gray-500 text-xs mt-1">
+                    <p class="mt-1 text-xs text-gray-500">
                       Powered by Biteship
                     </p>
                   </div>
@@ -2050,10 +2050,10 @@ onMounted(fetchData);
 
               <div
                 v-if="shippingMethod === 'biteship'"
-                class="p-6 border border-gray-200 rounded-3xl mt-4 bg-white space-y-8 animate-fade-in"
+                class="p-6 mt-4 space-y-8 bg-white border border-gray-200 rounded-3xl animate-fade-in"
               >
                 <div
-                  class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-gray-50 rounded-2xl"
+                  class="grid grid-cols-1 gap-6 p-4 md:grid-cols-2 bg-gray-50 rounded-2xl"
                 >
                   <div>
                     <h3
@@ -2061,13 +2061,13 @@ onMounted(fetchData);
                     >
                       Shipper Origin
                     </h3>
-                    <p class="font-bold text-gray-900 text-xs uppercase">
+                    <p class="text-xs font-bold text-gray-900 uppercase">
                       {{ shipperInfo.name }}
                     </p>
-                    <p class="text-gray-500 text-xs mt-1">
+                    <p class="mt-1 text-xs text-gray-500">
                       {{ shipperInfo.phone }}
                     </p>
-                    <p class="text-gray-500 text-xs mt-1 line-clamp-2">
+                    <p class="mt-1 text-xs text-gray-500 line-clamp-2">
                       {{ shipperInfo.address }} - {{ shipperInfo.postal_code }}
                     </p>
                   </div>
@@ -2077,13 +2077,13 @@ onMounted(fetchData);
                     >
                       Destination
                     </h3>
-                    <p class="font-bold text-gray-900 text-xs uppercase">
+                    <p class="text-xs font-bold text-gray-900 uppercase">
                       {{ destinationInfo?.name }}
                     </p>
-                    <p class="text-gray-500 text-xs mt-1">
+                    <p class="mt-1 text-xs text-gray-500">
                       {{ destinationInfo?.phone }}
                     </p>
-                    <p class="text-gray-500 text-xs mt-1 line-clamp-2">
+                    <p class="mt-1 text-xs text-gray-500 line-clamp-2">
                       {{ destinationInfo?.address }} -
                       {{ destinationInfo?.postal_code }}
                     </p>
@@ -2091,17 +2091,17 @@ onMounted(fetchData);
                 </div>
 
                 <div>
-                  <h3 class="font-bold text-sm uppercase tracking-widest mb-4">
+                  <h3 class="mb-4 text-sm font-bold tracking-widest uppercase">
                     Pickup Schedule
                   </h3>
-                  <div class="flex flex-col md:flex-row gap-4 mb-4">
+                  <div class="flex flex-col gap-4 mb-4 md:flex-row">
                     <label
                       :class="
                         deliveryType === 'later'
                           ? 'border-black bg-gray-50'
                           : 'border-gray-200'
                       "
-                      class="flex-1 p-4 border rounded-xl cursor-pointer transition"
+                      class="flex-1 p-4 transition border cursor-pointer rounded-xl"
                     >
                       <input
                         type="radio"
@@ -2109,7 +2109,7 @@ onMounted(fetchData);
                         v-model="deliveryType"
                         class="hidden"
                       />
-                      <p class="font-bold text-xs uppercase">Standard Pickup</p>
+                      <p class="text-xs font-bold uppercase">Standard Pickup</p>
                       <p class="text-[10px] text-gray-500 mt-1">
                         Pickup within next hour
                       </p>
@@ -2120,7 +2120,7 @@ onMounted(fetchData);
                           ? 'border-black bg-gray-50'
                           : 'border-gray-200'
                       "
-                      class="flex-1 p-4 border rounded-xl cursor-pointer transition"
+                      class="flex-1 p-4 transition border cursor-pointer rounded-xl"
                     >
                       <input
                         type="radio"
@@ -2128,7 +2128,7 @@ onMounted(fetchData);
                         v-model="deliveryType"
                         class="hidden"
                       />
-                      <p class="font-bold text-xs uppercase">
+                      <p class="text-xs font-bold uppercase">
                         Scheduled Pickup
                       </p>
                       <p class="text-[10px] text-gray-500 mt-1">
@@ -2150,7 +2150,7 @@ onMounted(fetchData);
                         type="date"
                         v-model="deliveryDate"
                         :min="todayDate"
-                        class="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-black focus:border-black outline-none"
+                        class="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg outline-none focus:ring-black focus:border-black"
                         required
                       />
                     </div>
@@ -2162,7 +2162,7 @@ onMounted(fetchData);
                       <input
                         type="time"
                         v-model="deliveryTime"
-                        class="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-black focus:border-black outline-none"
+                        class="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg outline-none focus:ring-black focus:border-black"
                         required
                       />
                     </div>
@@ -2171,19 +2171,19 @@ onMounted(fetchData);
 
                 <div>
                   <h3
-                    class="font-bold text-sm uppercase tracking-widest mb-4 border-t pt-6"
+                    class="pt-6 mb-4 text-sm font-bold tracking-widest uppercase border-t"
                   >
                     Select Courier
                   </h3>
                   <div
                     v-if="isLoadingRates"
-                    class="text-sm text-gray-500 animate-pulse text-center py-4"
+                    class="py-4 text-sm text-center text-gray-500 animate-pulse"
                   >
                     Calculating couriers...
                   </div>
                   <div
                     v-else-if="shippingRates.length === 0"
-                    class="text-xs text-red-500 italic text-center py-4"
+                    class="py-4 text-xs italic text-center text-red-500"
                   >
                     No couriers available.
                   </div>
@@ -2197,24 +2197,24 @@ onMounted(fetchData);
                           ? 'border-black bg-gray-50 shadow-sm'
                           : 'border-gray-200',
                       ]"
-                      class="flex items-center p-4 border rounded-xl cursor-pointer transition-all hover:bg-gray-50"
+                      class="flex items-center p-4 transition-all border cursor-pointer rounded-xl hover:bg-gray-50"
                     >
                       <input
                         type="radio"
                         :value="rate"
                         v-model="selectedRate"
-                        class="w-4 h-4 text-black focus:ring-black border-gray-300"
+                        class="w-4 h-4 text-black border-gray-300 focus:ring-black"
                       />
-                      <div class="ml-4 flex-grow flex items-center gap-4">
+                      <div class="flex items-center flex-grow gap-4 ml-4">
                         <div
-                          class="w-12 h-12 bg-white border border-gray-100 rounded-lg flex justify-center items-center overflow-hidden shrink-0"
+                          class="flex items-center justify-center w-12 h-12 overflow-hidden bg-white border border-gray-100 rounded-lg shrink-0"
                         >
                           <img
                             v-show="!imageErrors[rate.company]"
                             v-if="getCourierLogo(rate.company)"
                             :src="getCourierLogo(rate.company)"
                             :alt="rate.company"
-                            class="w-full h-full object-contain p-1"
+                            class="object-contain w-full h-full p-1"
                             @error="handleImageError(rate.company)"
                           />
                           <span
@@ -2222,13 +2222,13 @@ onMounted(fetchData);
                               imageErrors[rate.company] ||
                               !getCourierLogo(rate.company)
                             "
-                            class="font-black text-gray-300 text-xs"
+                            class="text-xs font-black text-gray-300"
                             >{{ rate.company.toUpperCase() }}</span
                           >
                         </div>
                         <div>
                           <p
-                            class="font-bold text-gray-800 text-sm uppercase tracking-wide"
+                            class="text-sm font-bold tracking-wide text-gray-800 uppercase"
                           >
                             {{ rate.company }} - {{ rate.type }}
                           </p>
@@ -2237,7 +2237,7 @@ onMounted(fetchData);
                           </p>
                         </div>
                       </div>
-                      <p class="font-black text-black text-sm">
+                      <p class="text-sm font-black text-black">
                         {{ formatPrice(rate.price) }}
                       </p>
                     </label>
@@ -2250,10 +2250,10 @@ onMounted(fetchData);
 
         <div class="lg:w-[400px] space-y-6">
           <div
-            class="bg-white shadow-xl p-8 border border-gray-100 rounded-3xl sticky top-28"
+            class="sticky p-8 bg-white border border-gray-100 shadow-xl rounded-3xl top-28"
           >
             <h2
-              class="mb-6 font-bold text-gray-900 text-sm uppercase tracking-widest border-b pb-4"
+              class="pb-4 mb-6 text-sm font-bold tracking-widest text-gray-900 uppercase border-b"
             >
               Order Summary
             </h2>
@@ -2264,7 +2264,7 @@ onMounted(fetchData);
               <div v-for="item in cartItems" :key="item.id" class="flex gap-4">
                 <img
                   :src="item.product.image"
-                  class="w-16 h-16 object-cover rounded-xl bg-gray-100 shrink-0"
+                  class="object-cover w-16 h-16 bg-gray-100 rounded-xl shrink-0"
                 />
                 <div class="flex-grow">
                   <p
@@ -2275,7 +2275,7 @@ onMounted(fetchData);
                   <p class="text-gray-400 text-[10px]">
                     Qty: {{ item.quantity }}
                   </p>
-                  <p class="font-medium text-gray-900 text-xs mt-1">
+                  <p class="mt-1 text-xs font-medium text-gray-900">
                     {{
                       formatPrice(
                         (item.product.discount_price ?? item.product.price) *
@@ -2287,7 +2287,7 @@ onMounted(fetchData);
               </div>
             </div>
 
-            <div class="space-y-3 pt-4 border-t border-gray-50 text-sm">
+            <div class="pt-4 space-y-3 text-sm border-t border-gray-50">
               <div class="flex justify-between text-gray-500">
                 <span>Total Items</span>
                 <span class="font-bold text-gray-900"
@@ -2301,9 +2301,9 @@ onMounted(fetchData);
 
               <div
                 v-if="userData?.is_membership && userData?.point > 0"
-                class="pt-4 mt-2 border-t border-dashed border-gray-200"
+                class="pt-4 mt-2 border-t border-gray-200 border-dashed"
               >
-                <div class="flex justify-between items-center mb-2">
+                <div class="flex items-center justify-between mb-2">
                   <span
                     class="text-[10px] font-bold text-yellow-800 uppercase tracking-widest flex items-center gap-1"
                   >
@@ -2347,7 +2347,7 @@ onMounted(fetchData);
                 </p>
               </div>
 
-              <div class="flex justify-between text-gray-500 items-start">
+              <div class="flex items-start justify-between text-gray-500">
                 <span>Shipping</span>
                 <span
                   v-if="shippingMethod === 'free'"
@@ -2358,7 +2358,7 @@ onMounted(fetchData);
                   v-else-if="shippingMethod === 'biteship' && selectedRate"
                   class="text-right"
                 >
-                  <span class="font-medium text-gray-900 block">{{
+                  <span class="block font-medium text-gray-900">{{
                     formatPrice(selectedRate.price * cartCount)
                   }}</span>
                   <p class="text-[10px] text-gray-400 mt-1">
@@ -2372,7 +2372,7 @@ onMounted(fetchData);
               <div
                 class="flex justify-between pt-4 font-bold text-gray-900 border-t border-gray-100"
               >
-                <span class="uppercase tracking-widest text-xs mt-1"
+                <span class="mt-1 text-xs tracking-widest uppercase"
                   >Grand Total</span
                 >
                 <span class="text-xl">{{
@@ -2382,10 +2382,10 @@ onMounted(fetchData);
 
               <div
                 v-if="userData?.is_membership"
-                class="mt-4 p-3 bg-yellow-50 border border-yellow-100 rounded-xl flex items-center gap-3"
+                class="flex items-center gap-3 p-3 mt-4 border border-yellow-100 bg-yellow-50 rounded-xl"
               >
                 <div
-                  class="w-8 h-8 bg-yellow-400 text-white rounded-full flex justify-center items-center shrink-0"
+                  class="flex items-center justify-center w-8 h-8 text-white bg-yellow-400 rounded-full shrink-0"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -2417,9 +2417,9 @@ onMounted(fetchData);
               class="mt-8 w-full bg-black hover:bg-gray-800 disabled:bg-gray-300 py-5 rounded-2xl font-bold text-white text-xs uppercase tracking-[0.3em] transition-all duration-500 shadow-xl shadow-black/10"
             >
               <span v-if="!isProcessing">Pay Now</span>
-              <span v-else class="flex justify-center items-center gap-2">
+              <span v-else class="flex items-center justify-center gap-2">
                 <div
-                  class="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin"
+                  class="w-3 h-3 border-2 rounded-full border-white/30 border-t-white animate-spin"
                 ></div>
                 Processing...
               </span>
@@ -2748,9 +2748,9 @@ onMounted(fetchData);
     class="z-[100] fixed inset-0 flex flex-col justify-center items-center bg-white"
   >
     <div
-      class="border-4 border-gray-100 border-t-black rounded-full w-12 h-12 animate-spin"
+      class="w-12 h-12 border-4 border-gray-100 rounded-full border-t-black animate-spin"
     ></div>
-    <p class="mt-4 font-serif text-gray-400 italic animate-pulse">
+    <p class="mt-4 font-serif italic text-gray-400 animate-pulse">
       Preparing your checkout...
     </p>
   </div> -->
@@ -2764,7 +2764,7 @@ onMounted(fetchData);
       <div class="w-3 h-3 bg-black rounded-full animate-bounce-3"></div>
     </div>
     <p
-      class="font-serif text-gray-500 italic tracking-widest text-sm animate-pulse"
+      class="font-serif text-sm italic tracking-widest text-gray-500 animate-pulse"
     >
       Preparing your checkout...
     </p>
@@ -2772,13 +2772,13 @@ onMounted(fetchData);
 
   <!-- <div
     v-else
-    class="mx-auto px-6 py-12 md:py-24 max-w-6xl min-h-screen animate-fade-in"
+    class="max-w-6xl min-h-screen px-6 py-12 mx-auto md:py-24 animate-fade-in"
   >
-    <div v-if="checkoutItems.length === 0" class="text-center py-20">
-      <h2 class="font-serif text-3xl mb-4">Your bag is empty</h2>
+    <div v-if="checkoutItems.length === 0" class="py-20 text-center">
+      <h2 class="mb-4 font-serif text-3xl">Your bag is empty</h2>
       <button
         @click="$router.push('/collections')"
-        class="bg-black text-white px-8 py-3 rounded-full uppercase tracking-widest text-xs font-bold"
+        class="px-8 py-3 text-xs font-bold tracking-widest text-white uppercase bg-black rounded-full"
       >
         Return to Shop
       </button>
@@ -2786,19 +2786,19 @@ onMounted(fetchData);
 
     <div v-else>
       <h1
-        class="mb-12 font-serif text-3xl md:text-4xl uppercase tracking-tighter"
+        class="mb-12 font-serif text-3xl tracking-tighter uppercase md:text-4xl"
       >
         Checkout
       </h1> -->
   <div
     v-else
-    class="mx-auto px-6 py-12 md:py-24 max-w-6xl min-h-screen animate-fade-in"
+    class="max-w-6xl min-h-screen px-6 py-12 mx-auto md:py-24 animate-fade-in"
   >
-    <div v-if="checkoutItems.length === 0" class="text-center py-20">
-      <h2 class="font-serif text-3xl mb-4">Your bag is empty</h2>
+    <div v-if="checkoutItems.length === 0" class="py-20 text-center">
+      <h2 class="mb-4 font-serif text-3xl">Your bag is empty</h2>
       <button
         @click="$router.push('/collections')"
-        class="bg-black text-white px-8 py-3 rounded-full uppercase tracking-widest text-xs font-bold"
+        class="px-8 py-3 text-xs font-bold tracking-widest text-white uppercase bg-black rounded-full"
       >
         Return to Shop
       </button>
@@ -2806,13 +2806,13 @@ onMounted(fetchData);
 
     <div v-else>
       <h1
-        class="mb-12 font-serif text-3xl md:text-4xl uppercase tracking-tighter"
+        class="mb-12 font-serif text-3xl tracking-tighter uppercase md:text-4xl"
       >
         Checkout
       </h1>
 
-      <div class="flex lg:flex-row flex-col gap-12">
-        <div class="space-y-12 flex-grow">
+      <div class="flex flex-col gap-12 lg:flex-row">
+        <div class="flex-grow space-y-12">
           <section>
             <div class="flex items-center gap-4 mb-4">
               <span
@@ -2820,7 +2820,7 @@ onMounted(fetchData);
                 >1</span
               >
               <h2
-                class="font-bold text-gray-900 text-sm uppercase tracking-widest"
+                class="text-sm font-bold tracking-widest text-gray-900 uppercase"
               >
                 Shipping Address
               </h2>
@@ -2828,12 +2828,12 @@ onMounted(fetchData);
 
             <div
               v-if="addresses.length === 0"
-              class="text-center py-10 bg-gray-50 rounded-2xl border border-dashed border-gray-300"
+              class="py-10 text-center border border-gray-300 border-dashed bg-gray-50 rounded-2xl"
             >
-              <p class="text-gray-500 text-sm italic mb-2">No address found.</p>
+              <p class="mb-2 text-sm italic text-gray-500">No address found.</p>
               <button
                 @click="openModal()"
-                class="text-blue-600 text-xs font-bold underline"
+                class="text-xs font-bold text-blue-600 underline"
               >
                 + Add New Address
               </button>
@@ -2847,18 +2847,18 @@ onMounted(fetchData);
                     ? 'border-black ring-1 ring-black bg-white shadow-md'
                     : 'border-gray-100 bg-gray-50/50',
                 ]"
-                class="relative flex items-start p-6 border rounded-2xl cursor-pointer transition-all hover:bg-white"
+                class="relative flex items-start p-6 transition-all border cursor-pointer rounded-2xl hover:bg-white"
               >
                 <input
                   type="radio"
                   name="address"
                   :value="addr.id"
                   v-model="selectedAddressId"
-                  class="mt-1 w-4 h-4 text-black focus:ring-black border-gray-300"
+                  class="w-4 h-4 mt-1 text-black border-gray-300 focus:ring-black"
                 />
-                <div class="ml-4 flex-grow">
+                <div class="flex-grow ml-4">
                   <div class="flex justify-between">
-                    <p class="font-bold text-gray-900 text-sm uppercase">
+                    <p class="text-sm font-bold text-gray-900 uppercase">
                       {{ addr.receiver.full_name }}
                     </p>
                     <span
@@ -2867,7 +2867,7 @@ onMounted(fetchData);
                       >Default</span
                     >
                   </div>
-                  <p class="mt-2 text-gray-600 text-sm leading-relaxed">
+                  <p class="mt-2 text-sm leading-relaxed text-gray-600">
                     {{ addr.details.location }}, {{ addr.details.type }} <br />
                     {{ addr.details.city }}, {{ addr.details.province }} <br />
                     {{ addr.details.region }} - {{ addr.details.postal_code }}
@@ -2876,7 +2876,7 @@ onMounted(fetchData);
               </label>
               <button
                 @click="openModal()"
-                class="mt-4 text-gray-500 text-xs font-bold underline hover:text-black"
+                class="mt-4 text-xs font-bold text-gray-500 underline hover:text-black"
               >
                 + Add Another Address
               </button>
@@ -2890,14 +2890,14 @@ onMounted(fetchData);
                 >2</span
               >
               <h2
-                class="font-bold text-gray-900 text-sm uppercase tracking-widest"
+                class="text-sm font-bold tracking-widest text-gray-900 uppercase"
               >
                 Shipping Method
               </h2>
             </div>
 
             <div>
-              <h4 class="text-gray-900 text-sm uppercase tracking-widest">
+              <h4 class="text-sm tracking-widest text-gray-900 uppercase">
                 Choose the shipping address first
               </h4>
             </div>
@@ -2910,7 +2910,7 @@ onMounted(fetchData);
                 >2</span
               >
               <h2
-                class="font-bold text-gray-900 text-sm uppercase tracking-widest"
+                class="text-sm font-bold tracking-widest text-gray-900 uppercase"
               >
                 Shipping Method
               </h2>
@@ -2923,22 +2923,22 @@ onMounted(fetchData);
                     ? 'border-black ring-1 ring-black bg-white shadow-md'
                     : 'border-gray-100 bg-gray-50/50',
                 ]"
-                class="relative flex items-center p-6 border rounded-2xl cursor-pointer transition-all"
+                class="relative flex items-center p-6 transition-all border cursor-pointer rounded-2xl"
               >
                 <input
                   type="radio"
                   value="free"
                   v-model="shippingMethod"
-                  class="w-4 h-4 text-black focus:ring-black border-gray-300"
+                  class="w-4 h-4 text-black border-gray-300 focus:ring-black"
                 />
-                <div class="ml-4 flex-grow flex justify-between items-center">
+                <div class="flex items-center justify-between flex-grow ml-4">
                   <div>
                     <p
-                      class="font-bold text-gray-900 text-sm uppercase tracking-wide"
+                      class="text-sm font-bold tracking-wide text-gray-900 uppercase"
                     >
                       Free Shipping
                     </p>
-                    <p class="text-green-600 font-bold text-xs mt-1">
+                    <p class="mt-1 text-xs font-bold text-green-600">
                       In-Store Pickup (Ambil barang di toko)
                     </p>
                   </div>
@@ -2952,22 +2952,22 @@ onMounted(fetchData);
                     ? 'border-black ring-1 ring-black bg-white shadow-md'
                     : 'border-gray-100 bg-gray-50/50',
                 ]"
-                class="relative flex items-center p-6 border rounded-2xl cursor-pointer transition-all"
+                class="relative flex items-center p-6 transition-all border cursor-pointer rounded-2xl"
               >
                 <input
                   type="radio"
                   value="biteship"
                   v-model="shippingMethod"
-                  class="w-4 h-4 text-black focus:ring-black border-gray-300"
+                  class="w-4 h-4 text-black border-gray-300 focus:ring-black"
                 />
-                <div class="ml-4 flex-grow flex justify-between items-center">
+                <div class="flex items-center justify-between flex-grow ml-4">
                   <div>
                     <p
-                      class="font-bold text-gray-900 text-sm uppercase tracking-wide"
+                      class="text-sm font-bold tracking-wide text-gray-900 uppercase"
                     >
                       Standard / Express
                     </p>
-                    <p class="text-gray-500 text-xs mt-1">
+                    <p class="mt-1 text-xs text-gray-500">
                       Powered by Biteship
                     </p>
                   </div>
@@ -2976,10 +2976,10 @@ onMounted(fetchData);
 
               <div
                 v-if="shippingMethod === 'biteship'"
-                class="p-6 border border-gray-200 rounded-3xl mt-4 bg-white space-y-8 animate-fade-in"
+                class="p-6 mt-4 space-y-8 bg-white border border-gray-200 rounded-3xl animate-fade-in"
               >
                 <div
-                  class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-gray-50 rounded-2xl"
+                  class="grid grid-cols-1 gap-6 p-4 md:grid-cols-2 bg-gray-50 rounded-2xl"
                 >
                   <div>
                     <h3
@@ -2987,13 +2987,13 @@ onMounted(fetchData);
                     >
                       Shipper Origin
                     </h3>
-                    <p class="font-bold text-gray-900 text-xs uppercase">
+                    <p class="text-xs font-bold text-gray-900 uppercase">
                       {{ shipperInfo.name }}
                     </p>
-                    <p class="text-gray-500 text-xs mt-1">
+                    <p class="mt-1 text-xs text-gray-500">
                       {{ shipperInfo.phone }}
                     </p>
-                    <p class="text-gray-500 text-xs mt-1 line-clamp-2">
+                    <p class="mt-1 text-xs text-gray-500 line-clamp-2">
                       {{ shipperInfo.address }} - {{ shipperInfo.postal_code }}
                     </p>
                   </div>
@@ -3003,13 +3003,13 @@ onMounted(fetchData);
                     >
                       Destination
                     </h3>
-                    <p class="font-bold text-gray-900 text-xs uppercase">
+                    <p class="text-xs font-bold text-gray-900 uppercase">
                       {{ destinationInfo?.name }}
                     </p>
-                    <p class="text-gray-500 text-xs mt-1">
+                    <p class="mt-1 text-xs text-gray-500">
                       {{ destinationInfo?.phone }}
                     </p>
-                    <p class="text-gray-500 text-xs mt-1 line-clamp-2">
+                    <p class="mt-1 text-xs text-gray-500 line-clamp-2">
                       {{ destinationInfo?.address }} -
                       {{ destinationInfo?.postal_code }}
                     </p>
@@ -3017,17 +3017,17 @@ onMounted(fetchData);
                 </div>
 
                 <div>
-                  <h3 class="font-bold text-sm uppercase tracking-widest mb-4">
+                  <h3 class="mb-4 text-sm font-bold tracking-widest uppercase">
                     Pickup Schedule
                   </h3>
-                  <!-- <div class="flex flex-col md:flex-row gap-4 mb-4">
+                  <!-- <div class="flex flex-col gap-4 mb-4 md:flex-row">
                     <label
                       :class="
                         deliveryType === 'now'
                           ? 'border-black bg-gray-50'
                           : 'border-gray-200'
                       "
-                      class="flex-1 p-4 border rounded-xl cursor-pointer transition"
+                      class="flex-1 p-4 transition border cursor-pointer rounded-xl"
                     >
                       <input
                         type="radio"
@@ -3035,7 +3035,7 @@ onMounted(fetchData);
                         v-model="deliveryType"
                         class="hidden"
                       />
-                      <p class="font-bold text-xs uppercase">Standard Pickup</p>
+                      <p class="text-xs font-bold uppercase">Standard Pickup</p>
                       <p class="text-[10px] text-gray-500 mt-1">
                         Pickup within next hour
                       </p>
@@ -3046,7 +3046,7 @@ onMounted(fetchData);
                           ? 'border-black bg-gray-50'
                           : 'border-gray-200'
                       "
-                      class="flex-1 p-4 border rounded-xl cursor-pointer transition"
+                      class="flex-1 p-4 transition border cursor-pointer rounded-xl"
                     >
                       <input
                         type="radio"
@@ -3054,7 +3054,7 @@ onMounted(fetchData);
                         v-model="deliveryType"
                         class="hidden"
                       />
-                      <p class="font-bold text-xs uppercase">
+                      <p class="text-xs font-bold uppercase">
                         Scheduled Pickup
                       </p>
                       <p class="text-[10px] text-gray-500 mt-1">
@@ -3063,14 +3063,14 @@ onMounted(fetchData);
                     </label>
                   </div> -->
 
-                  <div class="flex flex-col md:flex-row gap-4 mb-4">
+                  <div class="flex flex-col gap-4 mb-4 md:flex-row">
                     <label
                       :class="
                         deliveryType === 'now'
                           ? 'border-black bg-gray-50'
                           : 'border-gray-200'
                       "
-                      class="flex-1 p-4 border rounded-xl cursor-pointer transition"
+                      class="flex-1 p-4 transition border cursor-pointer rounded-xl"
                     >
                       <input
                         type="radio"
@@ -3078,9 +3078,9 @@ onMounted(fetchData);
                         v-model="deliveryType"
                         class="hidden"
                       />
-                      <p class="font-bold text-xs uppercase">Standard Pickup</p>
+                      <p class="text-xs font-bold uppercase">Standard Pickup</p>
                       <p class="text-[10px] text-gray-500 mt-1">
-                        Pickup within next hour
+                        Pickup Now
                       </p>
                     </label>
                     <label
@@ -3089,7 +3089,7 @@ onMounted(fetchData);
                           ? 'border-black bg-gray-50'
                           : 'border-gray-200'
                       "
-                      class="flex-1 p-4 border rounded-xl cursor-pointer transition"
+                      class="flex-1 p-4 transition border cursor-pointer rounded-xl"
                     >
                       <input
                         type="radio"
@@ -3097,7 +3097,7 @@ onMounted(fetchData);
                         v-model="deliveryType"
                         class="hidden"
                       />
-                      <p class="font-bold text-xs uppercase">
+                      <p class="text-xs font-bold uppercase">
                         Scheduled Pickup
                       </p>
                       <p class="text-[10px] text-gray-500 mt-1">
@@ -3119,7 +3119,7 @@ onMounted(fetchData);
                         type="date"
                         v-model="deliveryDate"
                         :min="todayDate"
-                        class="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-black focus:border-black outline-none"
+                        class="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg outline-none focus:ring-black focus:border-black"
                         required
                       />
                     </div>
@@ -3131,7 +3131,7 @@ onMounted(fetchData);
                       <input
                         type="time"
                         v-model="deliveryTime"
-                        class="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-black focus:border-black outline-none"
+                        class="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg outline-none focus:ring-black focus:border-black"
                         required
                       />
                     </div>
@@ -3140,19 +3140,19 @@ onMounted(fetchData);
 
                 <div>
                   <h3
-                    class="font-bold text-sm uppercase tracking-widest mb-4 border-t pt-6"
+                    class="pt-6 mb-4 text-sm font-bold tracking-widest uppercase border-t"
                   >
                     Select Courier
                   </h3>
                   <div
                     v-if="isLoadingRates"
-                    class="text-sm text-gray-500 animate-pulse text-center py-4"
+                    class="py-4 text-sm text-center text-gray-500 animate-pulse"
                   >
                     Calculating couriers...
                   </div>
                   <div
                     v-else-if="processedShippingRates.length === 0"
-                    class="text-xs text-red-500 italic text-center py-4"
+                    class="py-4 text-xs italic text-center text-red-500"
                   >
                     No couriers available.
                   </div>
@@ -3166,24 +3166,24 @@ onMounted(fetchData);
                           ? 'border-black bg-gray-50 shadow-sm'
                           : 'border-gray-200',
                       ]"
-                      class="flex items-center p-4 border rounded-xl cursor-pointer transition-all hover:bg-gray-50"
+                      class="flex items-center p-4 transition-all border cursor-pointer rounded-xl hover:bg-gray-50"
                     >
                       <input
                         type="radio"
                         :value="rate"
                         v-model="selectedRate"
-                        class="w-4 h-4 text-black focus:ring-black border-gray-300"
+                        class="w-4 h-4 text-black border-gray-300 focus:ring-black"
                       />
-                      <div class="ml-4 flex-grow flex items-center gap-4">
+                      <div class="flex items-center flex-grow gap-4 ml-4">
                         <div
-                          class="w-12 h-12 bg-white border border-gray-100 rounded-lg flex justify-center items-center overflow-hidden shrink-0"
+                          class="flex items-center justify-center w-12 h-12 overflow-hidden bg-white border border-gray-100 rounded-lg shrink-0"
                         >
                           <img
                             v-show="!imageErrors[rate.company]"
                             v-if="getCourierLogo(rate.company)"
                             :src="getCourierLogo(rate.company)"
                             :alt="rate.company"
-                            class="w-full h-full object-contain p-1"
+                            class="object-contain w-full h-full p-1"
                             @error="handleImageError(rate.company)"
                           />
                           <span
@@ -3191,13 +3191,13 @@ onMounted(fetchData);
                               imageErrors[rate.company] ||
                               !getCourierLogo(rate.company)
                             "
-                            class="font-black text-gray-300 text-xs"
+                            class="text-xs font-black text-gray-300"
                             >{{ rate.company.toUpperCase() }}</span
                           >
                         </div>
                         <div>
                           <p
-                            class="font-bold text-gray-800 text-sm uppercase tracking-wide"
+                            class="text-sm font-bold tracking-wide text-gray-800 uppercase"
                           >
                             {{ rate.company }} - {{ rate.type }}
                           </p>
@@ -3206,7 +3206,7 @@ onMounted(fetchData);
                           </p>
                         </div>
                       </div>
-                      <p class="font-black text-black text-sm">
+                      <p class="text-sm font-black text-black">
                         {{ formatPrice(rate.price) }}
                       </p>
                     </label>
@@ -3221,7 +3221,7 @@ onMounted(fetchData);
                           ? 'border-black bg-gray-50 shadow-sm'
                           : 'border-gray-200 hover:bg-gray-50 cursor-pointer transition-all'),
                       ]"
-                      class="flex flex-col p-4 border rounded-xl relative"
+                      class="relative flex flex-col p-4 border rounded-xl"
                     >
                       <div class="flex items-center w-full">
                         <input
@@ -3229,24 +3229,24 @@ onMounted(fetchData);
                           :value="rate"
                           v-model="selectedRate"
                           :disabled="rate.is_disabled"
-                          class="w-4 h-4 text-black focus:ring-black border-gray-300 disabled:opacity-50"
+                          class="w-4 h-4 text-black border-gray-300 focus:ring-black disabled:opacity-50"
                         />
-                        <div class="ml-4 flex-grow flex items-center gap-4">
-                          <div class="w-12 h-12 bg-white border border-gray-100 rounded-lg flex justify-center items-center overflow-hidden shrink-0">
+                        <div class="flex items-center flex-grow gap-4 ml-4">
+                          <div class="flex items-center justify-center w-12 h-12 overflow-hidden bg-white border border-gray-100 rounded-lg shrink-0">
                             <img
                               v-show="!imageErrors[rate.company]"
                               v-if="getCourierLogo(rate.company)"
                               :src="getCourierLogo(rate.company)"
                               :alt="rate.company"
-                              class="w-full h-full object-contain p-1"
+                              class="object-contain w-full h-full p-1"
                               @error="handleImageError(rate.company)"
                             />
-                            <span v-show="imageErrors[rate.company] || !getCourierLogo(rate.company)" class="font-black text-gray-300 text-xs">
+                            <span v-show="imageErrors[rate.company] || !getCourierLogo(rate.company)" class="text-xs font-black text-gray-300">
                               {{ rate.company.toUpperCase() }}
                             </span>
                           </div>
                           <div>
-                            <p class="font-bold text-gray-800 text-sm uppercase tracking-wide">
+                            <p class="text-sm font-bold tracking-wide text-gray-800 uppercase">
                               {{ rate.company }} - {{ rate.type }}
                             </p>
                             <p class="text-gray-500 text-[10px] mt-0.5">
@@ -3254,7 +3254,7 @@ onMounted(fetchData);
                             </p>
                           </div>
                         </div>
-                        <p class="font-black text-black text-sm">
+                        <p class="text-sm font-black text-black">
                           {{ formatPrice(rate.price) }}
                         </p>
                       </div>
@@ -3276,7 +3276,7 @@ onMounted(fetchData);
                             ? 'border-black bg-gray-50 shadow-sm'
                             : 'border-gray-200 hover:bg-gray-50 cursor-pointer transition-all',
                       ]"
-                      class="flex flex-col p-4 border rounded-xl relative"
+                      class="relative flex flex-col p-4 border rounded-xl"
                     >
                       <div class="flex items-center w-full">
                         <input
@@ -3284,18 +3284,18 @@ onMounted(fetchData);
                           :value="rate"
                           v-model="selectedRate"
                           :disabled="rate.is_disabled"
-                          class="w-4 h-4 text-black focus:ring-black border-gray-300 disabled:opacity-50"
+                          class="w-4 h-4 text-black border-gray-300 focus:ring-black disabled:opacity-50"
                         />
-                        <div class="ml-4 flex-grow flex items-center gap-4">
+                        <div class="flex items-center flex-grow gap-4 ml-4">
                           <div
-                            class="w-12 h-12 bg-white border border-gray-100 rounded-lg flex justify-center items-center overflow-hidden shrink-0"
+                            class="flex items-center justify-center w-12 h-12 overflow-hidden bg-white border border-gray-100 rounded-lg shrink-0"
                           >
                             <img
                               v-show="!imageErrors[rate.company]"
                               v-if="getCourierLogo(rate.company)"
                               :src="getCourierLogo(rate.company)"
                               :alt="rate.company"
-                              class="w-full h-full object-contain p-1"
+                              class="object-contain w-full h-full p-1"
                               @error="handleImageError(rate.company)"
                             />
                             <span
@@ -3303,14 +3303,14 @@ onMounted(fetchData);
                                 imageErrors[rate.company] ||
                                 !getCourierLogo(rate.company)
                               "
-                              class="font-black text-gray-300 text-xs"
+                              class="text-xs font-black text-gray-300"
                             >
                               {{ rate.company.toUpperCase() }}
                             </span>
                           </div>
                           <div>
                             <p
-                              class="font-bold text-gray-800 text-sm uppercase tracking-wide"
+                              class="text-sm font-bold tracking-wide text-gray-800 uppercase"
                             >
                               {{ rate.company }} - {{ rate.type }}
                             </p>
@@ -3319,7 +3319,7 @@ onMounted(fetchData);
                             </p>
                           </div>
                         </div>
-                        <p class="font-black text-black text-sm">
+                        <p class="text-sm font-black text-black">
                           {{ formatPrice(rate.price) }}
                         </p>
                       </div>
@@ -3340,10 +3340,10 @@ onMounted(fetchData);
 
         <div class="lg:w-[400px] space-y-6">
           <div
-            class="bg-white shadow-xl p-8 border border-gray-100 rounded-3xl sticky top-28"
+            class="sticky p-8 bg-white border border-gray-100 shadow-xl rounded-3xl top-28"
           >
             <h2
-              class="mb-6 font-bold text-gray-900 text-sm uppercase tracking-widest border-b pb-4"
+              class="pb-4 mb-6 text-sm font-bold tracking-widest text-gray-900 uppercase border-b"
             >
               Order Summary
             </h2>
@@ -3359,7 +3359,7 @@ onMounted(fetchData);
               >
                 <img
                   :src="item.product.image"
-                  class="w-16 h-16 object-cover rounded-xl bg-gray-100 shrink-0"
+                  class="object-cover w-16 h-16 bg-gray-100 rounded-xl shrink-0"
                 />
                 <div class="flex-grow">
                   <!-- <p
@@ -3379,7 +3379,7 @@ onMounted(fetchData);
                   <p class="text-gray-400 text-[10px]">
                     Qty: {{ item.quantity }}
                   </p>
-                  <p class="font-medium text-gray-900 text-xs mt-1">
+                  <p class="mt-1 text-xs font-medium text-gray-900">
                     {{
                       formatPrice(
                         (item.product.discount_price ?? item.product.price) *
@@ -3391,7 +3391,7 @@ onMounted(fetchData);
               </div>
             </div>
 
-            <div class="space-y-3 pt-4 border-t border-gray-50 text-sm">
+            <div class="pt-4 space-y-3 text-sm border-t border-gray-50">
               <div class="flex justify-between text-gray-500">
                 <span>Total Items</span>
                 <span class="font-bold text-gray-900"
@@ -3403,7 +3403,7 @@ onMounted(fetchData);
                 <span>{{ formatPrice(checkoutTotalAmount) }}</span>
               </div>
 
-              <div class="pt-4 mt-2 border-t border-dashed border-gray-200">
+              <div class="pt-4 mt-2 border-t border-gray-200 border-dashed">
                 <label
                   class="text-[10px] font-bold text-gray-900 uppercase tracking-widest mb-2 block"
                 >
@@ -3426,7 +3426,7 @@ onMounted(fetchData);
                     <span v-if="!isVerifyingPromo">Apply</span>
                     <div
                       v-else
-                      class="w-3 h-3 border-2 border-white/40 border-t-white rounded-full animate-spin"
+                      class="w-3 h-3 border-2 rounded-full border-white/40 border-t-white animate-spin"
                     ></div>
                   </button>
                   <button
@@ -3446,7 +3446,7 @@ onMounted(fetchData);
                 </p>
                 <div
                   v-if="appliedPromoCode"
-                  class="flex justify-between items-center mt-2"
+                  class="flex items-center justify-between mt-2"
                 >
                   <span
                     class="text-[10px] font-bold text-gray-500 uppercase tracking-widest"
@@ -3460,9 +3460,9 @@ onMounted(fetchData);
 
               <div
                 v-if="userData?.is_membership && userData?.point > 0"
-                class="pt-4 mt-2 border-t border-dashed border-gray-200"
+                class="pt-4 mt-2 border-t border-gray-200 border-dashed"
               >
-                <div class="flex justify-between items-center mb-2">
+                <div class="flex items-center justify-between mb-2">
                   <span
                     class="text-[10px] font-bold text-yellow-800 uppercase tracking-widest flex items-center gap-1"
                   >
@@ -3505,7 +3505,7 @@ onMounted(fetchData);
                   - {{ formatPrice(pointDiscountAmount) }}
                 </p>
               </div>
-              <div class="flex justify-between text-gray-500 items-start">
+              <div class="flex items-start justify-between text-gray-500">
                 <span>Shipping</span>
                 <span
                   v-if="shippingMethod === 'free'"
@@ -3516,7 +3516,7 @@ onMounted(fetchData);
                   v-else-if="shippingMethod === 'biteship' && selectedRate"
                   class="text-right"
                 >
-                  <span class="font-medium text-gray-900 block">{{
+                  <span class="block font-medium text-gray-900">{{
                     formatPrice(selectedRate.price * checkoutCount)
                   }}</span>
                   <p class="text-[10px] text-gray-400 mt-1">
@@ -3530,7 +3530,7 @@ onMounted(fetchData);
               <div
                 class="flex justify-between pt-4 font-bold text-gray-900 border-t border-gray-100"
               >
-                <span class="uppercase tracking-widest text-xs mt-1"
+                <span class="mt-1 text-xs tracking-widest uppercase"
                   >Grand Total</span
                 >
                 <span class="text-xl">{{
@@ -3540,10 +3540,10 @@ onMounted(fetchData);
 
               <div
                 v-if="userData?.is_membership"
-                class="mt-4 p-3 bg-yellow-50 border border-yellow-100 rounded-xl flex items-center gap-3"
+                class="flex items-center gap-3 p-3 mt-4 border border-yellow-100 bg-yellow-50 rounded-xl"
               >
                 <div
-                  class="w-8 h-8 bg-yellow-400 text-white rounded-full flex justify-center items-center shrink-0"
+                  class="flex items-center justify-center w-8 h-8 text-white bg-yellow-400 rounded-full shrink-0"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -3575,9 +3575,9 @@ onMounted(fetchData);
               class="mt-8 w-full bg-black hover:bg-gray-800 disabled:bg-gray-300 py-5 rounded-2xl font-bold text-white text-xs uppercase tracking-[0.3em] transition-all duration-500 shadow-xl shadow-black/10"
             >
               <span v-if="!isProcessing">Pay Now</span>
-              <span v-else class="flex justify-center items-center gap-2">
+              <span v-else class="flex items-center justify-center gap-2">
                 <div
-                  class="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin"
+                  class="w-3 h-3 border-2 rounded-full border-white/30 border-t-white animate-spin"
                 ></div>
                 Processing...
               </span>
@@ -3602,18 +3602,18 @@ onMounted(fetchData);
 
     <div
       v-if="showModal"
-      class="z-50 fixed inset-0 flex justify-center items-center bg-black/40 backdrop-blur-sm p-4 overflow-y-auto"
+      class="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto bg-black/40 backdrop-blur-sm"
     >
       <div
-        class="relative bg-white shadow-2xl p-6 rounded-2xl w-full max-w-2xl my-4"
+        class="relative w-full max-w-2xl p-6 my-4 bg-white shadow-2xl rounded-2xl"
       >
         <button
           @click="showModal = false"
-          class="top-4 right-5 absolute text-gray-400 hover:text-black text-xl"
+          class="absolute text-xl text-gray-400 top-4 right-5 hover:text-black"
         >
           ✕
         </button>
-        <h3 class="mb-4 font-bold text-xl">Add New Address</h3>
+        <h3 class="mb-4 text-xl font-bold">Add New Address</h3>
 
         <form @submit.prevent="saveAddress" class="space-y-3">
           <div class="flex items-center gap-2 mb-2">
@@ -3621,25 +3621,25 @@ onMounted(fetchData);
             <label for="def" class="text-sm">Set as my default address</label>
           </div>
 
-          <div class="gap-3 grid grid-cols-2">
+          <div class="grid grid-cols-2 gap-3">
             <input
               v-model="form.first_name_address"
               placeholder="First name"
-              class="bg-gray-50 py-2 px-3 border rounded-xl outline-none text-sm"
+              class="px-3 py-2 text-sm border outline-none bg-gray-50 rounded-xl"
               required
             />
             <input
               v-model="form.last_name_address"
               placeholder="Last name"
-              class="bg-gray-50 py-2 px-3 border rounded-xl outline-none text-sm"
+              class="px-3 py-2 text-sm border outline-none bg-gray-50 rounded-xl"
               required
             />
           </div>
 
-          <div class="gap-3 grid grid-cols-2">
+          <div class="grid grid-cols-2 gap-3">
             <select
               v-model="form.province"
-              class="bg-gray-50 py-2 px-3 border rounded-xl outline-none text-sm"
+              class="px-3 py-2 text-sm border outline-none bg-gray-50 rounded-xl"
               required
             >
               <option value="" disabled>Select Province</option>
@@ -3650,13 +3650,13 @@ onMounted(fetchData);
             <input
               v-model="form.city"
               placeholder="City"
-              class="bg-gray-50 py-2 px-3 border rounded-xl outline-none text-sm"
+              class="px-3 py-2 text-sm border outline-none bg-gray-50 rounded-xl"
               required
             />
           </div>
 
           <div
-            class="border border-gray-200 rounded-xl overflow-hidden mt-2 relative"
+            class="relative mt-2 overflow-hidden border border-gray-200 rounded-xl"
           >
             <div
               class="bg-amber-50 border-b border-amber-100 py-1.5 px-3 flex items-start gap-2"
@@ -3683,7 +3683,7 @@ onMounted(fetchData);
             </div>
 
             <div
-              class="bg-gray-50 p-2 border-b border-gray-200 flex justify-between items-center gap-2"
+              class="flex items-center justify-between gap-2 p-2 border-b border-gray-200 bg-gray-50"
             >
               <div class="relative flex-1">
                 <input
@@ -3701,7 +3701,7 @@ onMounted(fetchData);
                     v-for="(result, idx) in searchResults"
                     :key="idx"
                     @click="selectSearchResult(result)"
-                    class="px-3 py-2 text-xs hover:bg-blue-50 cursor-pointer border-b last:border-0 text-gray-700"
+                    class="px-3 py-2 text-xs text-gray-700 border-b cursor-pointer hover:bg-blue-50 last:border-0"
                   >
                     {{ result.display_name }}
                   </div>
@@ -3716,7 +3716,7 @@ onMounted(fetchData);
               </button>
             </div>
 
-            <div class="h-40 sm:h-48 w-full relative z-0">
+            <div class="relative z-0 w-full h-40 sm:h-48">
               <l-map
                 ref="map"
                 v-model:zoom="zoom"
@@ -3749,7 +3749,7 @@ onMounted(fetchData);
           </div>
 
           <div class="relative pt-1">
-            <div class="flex justify-between items-end mb-1">
+            <div class="flex items-end justify-between mb-1">
               <label
                 class="font-bold text-gray-700 text-[10px] uppercase tracking-widest"
                 >Detail Address</label
@@ -3763,21 +3763,21 @@ onMounted(fetchData);
               v-model="form.address_location"
               rows="2"
               placeholder="Enter full street address and specific details..."
-              class="bg-gray-50 py-2 px-3 border rounded-xl outline-none w-full resize-none focus:ring-2 focus:ring-blue-500 text-sm"
+              class="w-full px-3 py-2 text-sm border outline-none resize-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-blue-500"
               required
             ></textarea>
           </div>
 
-          <div class="gap-3 grid grid-cols-2 pt-1">
+          <div class="grid grid-cols-2 gap-3 pt-1">
             <input
               v-model="form.location_type"
               placeholder="Apartment, suite (optional)"
-              class="bg-gray-50 py-2 px-3 border rounded-xl outline-none text-sm"
+              class="px-3 py-2 text-sm border outline-none bg-gray-50 rounded-xl"
             />
             <input
               v-model="form.postal_code"
               placeholder="Postal code"
-              class="bg-gray-50 py-2 px-3 border rounded-xl outline-none text-sm"
+              class="px-3 py-2 text-sm border outline-none bg-gray-50 rounded-xl"
               required
             />
           </div>
@@ -3787,13 +3787,13 @@ onMounted(fetchData);
               <button
                 type="button"
                 @click="showModal = false"
-                class="text-gray-500 hover:text-gray-800 font-bold px-3 text-sm"
+                class="px-3 text-sm font-bold text-gray-500 hover:text-gray-800"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-xl font-bold text-white shadow-md shadow-blue-500/30 transition-colors text-sm"
+                class="px-6 py-2 text-sm font-bold text-white transition-colors bg-blue-600 shadow-md hover:bg-blue-700 rounded-xl shadow-blue-500/30"
               >
                 Save Address
               </button>
