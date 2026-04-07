@@ -1114,6 +1114,47 @@ const router = createRouter({
 
 // export default router;
 
+// =========================================================================
+// [BARU] LOGIKA AUTO-RESET IDLE TIMER
+// Setiap kali admin menggerakkan mouse, klik, atau ngetik, reset timernya.
+// =========================================================================
+let idleTimer = null;
+
+const resetIdleTimer = () => {
+  const adminToken = localStorage.getItem("admin_token");
+  if (!adminToken) return; // Jangan jalankan timer kalau bukan admin
+
+  // Simpan/Update waktu aktivitas terakhir ke LocalStorage
+  localStorage.setItem("admin_last_activity", new Date().getTime().toString());
+
+  // Hapus timer lama
+  if (idleTimer) clearTimeout(idleTimer);
+
+  // Buat timer baru: 15 Menit = 15 * 60 * 1000 milidetik
+  idleTimer = setTimeout(() => {
+    // Tepat setelah 15 menit tanpa aktivitas, hapus token dan lempar keluar
+    localStorage.removeItem("admin_token");
+    localStorage.removeItem("admin");
+    localStorage.removeItem("admin_last_activity");
+    
+    // Matikan pemantau aktivitas agar browser tidak bekerja terus menerus
+    stopActivityListeners();
+
+    // Lempar ke halaman login
+    window.location.href = '/loginadmin'; 
+  }, 15 * 60 * 1000);
+};
+
+// Pasang pendeteksi pergerakan user
+const activityEvents = ['mousedown', 'mousemove', 'keydown', 'scroll', 'touchstart'];
+const startActivityListeners = () => {
+  activityEvents.forEach(event => document.addEventListener(event, resetIdleTimer, true));
+};
+const stopActivityListeners = () => {
+  activityEvents.forEach(event => document.removeEventListener(event, resetIdleTimer, true));
+};
+// =========================================================================
+
 // Navigation Guard
 router.beforeEach((to, from, next) => {
   const userToken = localStorage.getItem("token");
@@ -1135,30 +1176,68 @@ router.beforeEach((to, from, next) => {
     validAdminRoles.includes(admin.usertype)
   );
 
-  // =========================================================================
-  // LOGIKA KEDALUWARSA TOKEN ADMIN (MAKSIMAL 15 MENIT)
+  // // =========================================================================
+  // // LOGIKA KEDALUWARSA TOKEN ADMIN (MAKSIMAL 15 MENIT)
+  // // =========================================================================
+  // if (isAdminSessionValid) {
+  //   if (adminLoginTime) {
+  //     const currentTime = new Date().getTime();
+  //     const loginTime = parseInt(adminLoginTime, 10);
+  //     const timeLimit = 15 * 60 * 1000; // 15 menit
+
+  //     if (currentTime - loginTime > timeLimit) {
+  //       localStorage.removeItem("admin_token");
+  //       localStorage.removeItem("admin");
+  //       localStorage.removeItem("admin_login_time");
+
+  //       isAdminSessionValid = false;
+  //       admin = null;
+
+  //       if (to.path !== "/loginadmin") {
+  //         return next("/loginadmin");
+  //       }
+  //     }
+  //   } else {
+  //     localStorage.setItem("admin_login_time", new Date().getTime().toString());
+  //   }
+  // }
+  // // =========================================================================
+
+// =========================================================================
+  // [PERBAIKAN] CEK IDLE TIMEOUT SAAT PINDAH HALAMAN
   // =========================================================================
   if (isAdminSessionValid) {
-    if (adminLoginTime) {
+    const lastActivity = localStorage.getItem("admin_last_activity");
+    if (lastActivity) {
       const currentTime = new Date().getTime();
-      const loginTime = parseInt(adminLoginTime, 10);
-      const timeLimit = 15 * 60 * 1000; // 15 menit
-
-      if (currentTime - loginTime > timeLimit) {
+      const diff = currentTime - parseInt(lastActivity, 10);
+      
+      // Jika ternyata beda waktunya sudah lewat 15 menit (misal dia tutup laptop lalu buka lagi)
+      // if (diff > 15 * 60 * 1000) {
+      if (diff > 59 * 1000) {
         localStorage.removeItem("admin_token");
         localStorage.removeItem("admin");
-        localStorage.removeItem("admin_login_time");
-
+        localStorage.removeItem("admin_last_activity");
         isAdminSessionValid = false;
         admin = null;
+        stopActivityListeners();
 
         if (to.path !== "/loginadmin") {
           return next("/loginadmin");
         }
+      } else {
+        // Jika masih aman (dibawah 15 menit), nyalakan listener dan reset timer
+        startActivityListeners();
+        resetIdleTimer();
       }
     } else {
-      localStorage.setItem("admin_login_time", new Date().getTime().toString());
+      // Jika baru pertama kali masuk, catat waktunya dan mulai pantau
+      startActivityListeners();
+      resetIdleTimer();
     }
+  } else {
+    // Pastikan listener dimatikan jika yang login bukan admin (atau belum login)
+    stopActivityListeners();
   }
   // =========================================================================
 
