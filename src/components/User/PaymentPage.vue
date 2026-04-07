@@ -2978,7 +2978,7 @@ onMounted(fetchData);
                 v-if="shippingMethod === 'biteship'"
                 class="p-6 mt-4 space-y-8 bg-white border border-gray-200 rounded-3xl animate-fade-in"
               >
-                <div
+                <!-- <div
                   class="grid grid-cols-1 gap-6 p-4 md:grid-cols-2 bg-gray-50 rounded-2xl"
                 >
                   <div>
@@ -3014,7 +3014,7 @@ onMounted(fetchData);
                       {{ destinationInfo?.postal_code }}
                     </p>
                   </div>
-                </div>
+                </div> -->
 
                 <div>
                   <h3 class="mb-4 text-sm font-bold tracking-widest uppercase">
@@ -5118,8 +5118,10 @@ const totalQuantityToCheckout = computed(() => {
 
 const getDistanceFromOrigin = (destLat, destLng) => {
   if (!destLat || !destLng) return 999;
-  const lat1 = -7.25706; 
-  const lon1 = 112.74549; 
+  // const lat1 = -7.25706; 
+  const lat1 = -7.25653; 
+  // const lon1 = 112.74549; 
+  const lon1 = 112.74877; 
   const lat2 = parseFloat(destLat);
   const lon2 = parseFloat(destLng);
   const R = 6371; 
