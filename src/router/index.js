@@ -916,16 +916,16 @@
 // //   );
 
 // //   // =========================================================================
-// //   // [BARU] LOGIKA KEDALUWARSA TOKEN ADMIN (MAKSIMAL 15 MENIT)
+// //   // [BARU] LOGIKA KEDALUWARSA TOKEN ADMIN (MAKSIMAL 5 MENIT)
 // //   // =========================================================================
 // //   if (isAdminSessionValid) {
 // //     if (adminLoginTime) {
 // //       const currentTime = new Date().getTime();
 // //       const loginTime = parseInt(adminLoginTime, 10);
-// //       const timeLimit = 15 * 60 * 1000; // 15 menit dalam milidetik (900.000 ms)
+// //       const timeLimit = 5 * 60 * 1000; // 5 menit dalam milidetik (900.000 ms)
 
 // //       if (currentTime - loginTime > timeLimit) {
-// //         // Sesi telah melebihi 15 menit! Hapus semua data admin dari memori
+// //         // Sesi telah melebihi 5 menit! Hapus semua data admin dari memori
 // //         localStorage.removeItem("admin_token");
 // //         localStorage.removeItem("admin");
 // //         localStorage.removeItem("admin_login_time");
@@ -1010,13 +1010,13 @@
 // //     );
 
 // //     // =========================================================================
-// //     // LOGIKA KEDALUWARSA TOKEN ADMIN (MAKSIMAL 15 MENIT)
+// //     // LOGIKA KEDALUWARSA TOKEN ADMIN (MAKSIMAL 5 MENIT)
 // //     // =========================================================================
 // //     if (isAdminSessionValid) {
 // //         if (adminLoginTime) {
 // //             const currentTime = new Date().getTime();
 // //             const loginTime = parseInt(adminLoginTime, 10);
-// //             const timeLimit = 15 * 60 * 1000; // 15 menit
+// //             const timeLimit = 5 * 60 * 1000; // 5 menit
 
 // //             if (currentTime - loginTime > timeLimit) {
 // //                 localStorage.removeItem("admin_token");
@@ -1136,13 +1136,13 @@
 //   );
 
 //   // =========================================================================
-//   // LOGIKA KEDALUWARSA TOKEN ADMIN (MAKSIMAL 15 MENIT)
+//   // LOGIKA KEDALUWARSA TOKEN ADMIN (MAKSIMAL 5 MENIT)
 //   // =========================================================================
 //   if (isAdminSessionValid) {
 //     if (adminLoginTime) {
 //       const currentTime = new Date().getTime();
 //       const loginTime = parseInt(adminLoginTime, 10);
-//       const timeLimit = 15 * 60 * 1000; // 15 menit
+//       const timeLimit = 5 * 60 * 1000; // 5 menit
 
 //       if (currentTime - loginTime > timeLimit) {
 //         localStorage.removeItem("admin_token");
@@ -1371,9 +1371,9 @@ const resetIdleTimer = () => {
   // Hapus timer lama
   if (idleTimer) clearTimeout(idleTimer);
 
-  // Buat timer baru: 15 Menit = 15 * 60 * 1000 milidetik
+  // Buat timer baru: 5 Menit = 5 * 60 * 1000 milidetik
   idleTimer = setTimeout(() => {
-    // Tepat setelah 15 menit tanpa aktivitas, hapus token dan lempar keluar
+    // Tepat setelah 5 menit tanpa aktivitas, hapus token dan lempar keluar
     localStorage.removeItem("admin_token");
     localStorage.removeItem("admin");
     localStorage.removeItem("admin_last_activity");
@@ -1383,7 +1383,7 @@ const resetIdleTimer = () => {
 
     // Lempar ke halaman login
     window.location.href = '/loginadmin'; 
-  }, 15 * 1000);
+  }, 5 * 60 * 1000);
 };
 
 // Pasang pendeteksi pergerakan user
@@ -1418,8 +1418,8 @@ router.beforeEach((to, from, next) => {
       const currentTime = new Date().getTime();
       const diff = currentTime - parseInt(lastActivity, 10);
       
-      // Jika ternyata beda waktunya sudah lewat 15 menit (misal dia tutup laptop lalu buka lagi)
-      if (diff > 15 * 60 * 1000) {
+      // Jika ternyata beda waktunya sudah lewat 5 menit (misal dia tutup laptop lalu buka lagi)
+      if (diff > 5 * 60 * 1000) {
         localStorage.removeItem("admin_token");
         localStorage.removeItem("admin");
         localStorage.removeItem("admin_last_activity");
@@ -1431,7 +1431,7 @@ router.beforeEach((to, from, next) => {
           return next("/loginadmin");
         }
       } else {
-        // Jika masih aman (dibawah 15 menit), nyalakan listener dan reset timer
+        // Jika masih aman (dibawah 5 menit), nyalakan listener dan reset timer
         startActivityListeners();
         resetIdleTimer();
       }
