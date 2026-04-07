@@ -1,29 +1,29 @@
 <!-- <template>
   <div class="space-y-8 animate-fade-in">
     
-    <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
+    <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
        <div class="flex flex-wrap items-end gap-4">
         <div class="w-full sm:w-auto">
-          <label class="block mb-1 font-bold text-gray-500 text-xs uppercase tracking-wide">Year</label>
-          <select v-model="filters.year" class="bg-gray-50 px-4 py-2 border rounded-xl w-full sm:w-32 focus:ring-2 focus:ring-black outline-none font-bold">
+          <label class="block mb-1 text-xs font-bold tracking-wide text-gray-500 uppercase">Year</label>
+          <select v-model="filters.year" class="w-full px-4 py-2 font-bold border outline-none bg-gray-50 rounded-xl sm:w-32 focus:ring-2 focus:ring-black">
             <option v-for="y in years" :key="y" :value="y">{{ y }}</option>
           </select>
         </div>
         <div class="w-full sm:w-auto">
-          <label class="block mb-1 font-bold text-gray-500 text-xs uppercase tracking-wide">Month</label>
-          <select v-model="filters.month" class="bg-gray-50 px-4 py-2 border rounded-xl w-full sm:w-40 focus:ring-2 focus:ring-black outline-none">
+          <label class="block mb-1 text-xs font-bold tracking-wide text-gray-500 uppercase">Month</label>
+          <select v-model="filters.month" class="w-full px-4 py-2 border outline-none bg-gray-50 rounded-xl sm:w-40 focus:ring-2 focus:ring-black">
             <option value="">All Months</option>
             <option v-for="(m, i) in months" :key="i" :value="i + 1">{{ m }}</option>
           </select>
         </div>
         <div class="flex-grow w-full sm:w-auto">
-          <label class="block mb-1 font-bold text-gray-500 text-xs uppercase tracking-wide">Search Product</label>
+          <label class="block mb-1 text-xs font-bold tracking-wide text-gray-500 uppercase">Search Product</label>
           <div class="relative">
             <input 
               v-model="filters.search" 
               type="text" 
               placeholder="Search by product name or code..." 
-              class="bg-gray-50 pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none w-full transition"
+              class="w-full py-2 pl-10 pr-4 transition border border-gray-200 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
             />
             <svg class="top-2.5 left-3 absolute w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -36,32 +36,32 @@
       </div>
     </div>
 
-    <div class="gap-6 grid grid-cols-1 md:grid-cols-3">
-      <div class="bg-blue-50 p-6 border border-blue-100 rounded-2xl">
-        <p class="font-bold text-blue-600 text-xs uppercase">Total Revenue</p>
-        <p class="font-black text-2xl">{{ formatPrice(grandTotalRevenue) }}</p>
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+      <div class="p-6 border border-blue-100 bg-blue-50 rounded-2xl">
+        <p class="text-xs font-bold text-blue-600 uppercase">Total Revenue</p>
+        <p class="text-2xl font-black">{{ formatPrice(grandTotalRevenue) }}</p>
       </div>
-      <div class="bg-green-50 p-6 border border-green-100 rounded-2xl">
-        <p class="font-bold text-green-600 text-xs uppercase">Total Units Sold</p>
-        <p class="font-black text-2xl">{{ totalUnitsSold }} pcs</p>
+      <div class="p-6 border border-green-100 bg-green-50 rounded-2xl">
+        <p class="text-xs font-bold text-green-600 uppercase">Total Units Sold</p>
+        <p class="text-2xl font-black">{{ totalUnitsSold }} pcs</p>
       </div>
-      <div class="bg-purple-50 p-6 border border-purple-100 rounded-2xl">
-        <p class="font-bold text-purple-600 text-xs uppercase">Best Seller</p>
-        <p class="font-black text-lg truncate">{{ bestSellerName }}</p>
+      <div class="p-6 border border-purple-100 bg-purple-50 rounded-2xl">
+        <p class="text-xs font-bold text-purple-600 uppercase">Best Seller</p>
+        <p class="text-lg font-black truncate">{{ bestSellerName }}</p>
       </div>
     </div>
 
     <div class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[400px]">
       
-      <div v-if="isLoading" class="z-10 absolute inset-0 flex justify-center items-center bg-white/80 backdrop-blur-sm rounded-2xl">
-        <div class="border-4 border-gray-200 border-t-black rounded-full w-10 h-10 animate-spin"></div>
+      <div v-if="isLoading" class="absolute inset-0 z-10 flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-2xl">
+        <div class="w-10 h-10 border-4 border-gray-200 rounded-full border-t-black animate-spin"></div>
       </div>
 
-      <div class="flex justify-between items-center mb-6">
-        <h2 class="font-bold text-gray-800 text-xl">Product Performance</h2>
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-xl font-bold text-gray-800">Product Performance</h2>
         <div class="flex items-center gap-2">
-          <span class="text-gray-500 text-xs uppercase">Show:</span>
-          <select v-model="itemsPerPage" @change="fetchReport" class="bg-gray-50 px-2 py-1 border rounded-lg text-sm">
+          <span class="text-xs text-gray-500 uppercase">Show:</span>
+          <select v-model="itemsPerPage" @change="fetchReport" class="px-2 py-1 text-sm border rounded-lg bg-gray-50">
             <option :value="5">5</option>
             <option :value="10">10</option>
             <option :value="20">20</option>
@@ -73,7 +73,7 @@
       <div class="overflow-x-auto">
         <table class="w-full text-left">
           <thead>
-            <tr class="border-b text-gray-400 text-xs uppercase tracking-widest">
+            <tr class="text-xs tracking-widest text-gray-400 uppercase border-b">
               <th class="pb-4">Product Info</th>
               <th class="pb-4">Category</th>
               <th class="pb-4 text-right">Units Sold</th>
@@ -81,17 +81,17 @@
             </tr>
           </thead>
           <tbody class="text-gray-600">
-            <tr v-for="(item, index) in reportData" :key="index" class="hover:bg-gray-50 border-gray-50 border-b transition">
+            <tr v-for="(item, index) in reportData" :key="index" class="transition border-b hover:bg-gray-50 border-gray-50">
               <td class="py-4">
                 <div class="flex items-center gap-4">
                   <img 
                     :src="item.image" 
                     alt="Product" 
-                    class="bg-gray-100 shadow-sm rounded-lg w-12 h-12 object-cover"
+                    class="object-cover w-12 h-12 bg-gray-100 rounded-lg shadow-sm"
                   />
                   <div>
                     <p class="font-bold text-gray-900">{{ item.name }}</p>
-                    <p class="font-mono text-gray-400 text-xs">{{ item.code }}</p>
+                    <p class="font-mono text-xs text-gray-400">{{ item.code }}</p>
                   </div>
                 </div>
               </td>
@@ -100,13 +100,13 @@
               <td class="py-4 font-bold text-right text-green-600">{{ formatPrice(item.total_revenue) }}</td>
             </tr>
             <tr v-if="!isLoading && reportData.length === 0">
-              <td colspan="4" class="py-12 text-center text-gray-400 italic">No sales data found for this period.</td>
+              <td colspan="4" class="py-12 italic text-center text-gray-400">No sales data found for this period.</td>
             </tr>
           </tbody>
           
           <tfoot v-if="reportData.length > 0 && !isLoading">
-            <tr class="bg-gray-50/50 font-bold text-gray-800 border-gray-100 border-t-2">
-              <td colspan="2" class="py-4 pl-4 text-right text-gray-500 text-xs uppercase tracking-widest">
+            <tr class="font-bold text-gray-800 border-t-2 border-gray-100 bg-gray-50/50">
+              <td colspan="2" class="py-4 pl-4 text-xs tracking-widest text-right text-gray-500 uppercase">
                 Total (This Page)
               </td>
               <td class="py-4 text-right">
@@ -121,11 +121,11 @@
         </table>
       </div>
 
-      <div v-if="lastPage > 1" class="flex justify-between items-center mt-6 pt-4 border-t">
-        <span class="text-gray-400 text-xs">Page {{ currentPage }} of {{ lastPage }}</span>
+      <div v-if="lastPage > 1" class="flex items-center justify-between pt-4 mt-6 border-t">
+        <span class="text-xs text-gray-400">Page {{ currentPage }} of {{ lastPage }}</span>
         <div class="flex gap-2">
-          <button @click="changePage(currentPage - 1)" :disabled="currentPage === 1" class="hover:bg-gray-100 px-3 py-1 border rounded-lg disabled:opacity-50 text-xs">Prev</button>
-          <button @click="changePage(currentPage + 1)" :disabled="currentPage === lastPage" class="hover:bg-gray-100 px-3 py-1 border rounded-lg disabled:opacity-50 text-xs">Next</button>
+          <button @click="changePage(currentPage - 1)" :disabled="currentPage === 1" class="px-3 py-1 text-xs border rounded-lg hover:bg-gray-100 disabled:opacity-50">Prev</button>
+          <button @click="changePage(currentPage + 1)" :disabled="currentPage === lastPage" class="px-3 py-1 text-xs border rounded-lg hover:bg-gray-100 disabled:opacity-50">Next</button>
         </div>
       </div>
     </div>
@@ -223,28 +223,28 @@ onMounted(fetchReport);
 <!-- Update sales report -->
 <!-- <template>
   <div class="space-y-8 animate-fade-in">
-    <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
+    <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
       <div class="flex flex-wrap items-end gap-4">
         <div class="w-full sm:w-auto">
           <label
-            class="block mb-1 font-bold text-gray-500 text-xs uppercase tracking-wide"
+            class="block mb-1 text-xs font-bold tracking-wide text-gray-500 uppercase"
             >Year</label
           >
           <select
             v-model="filters.year"
-            class="bg-gray-50 px-4 py-2 border rounded-xl w-full sm:w-32 focus:ring-2 focus:ring-black outline-none font-bold"
+            class="w-full px-4 py-2 font-bold border outline-none bg-gray-50 rounded-xl sm:w-32 focus:ring-2 focus:ring-black"
           >
             <option v-for="y in years" :key="y" :value="y">{{ y }}</option>
           </select>
         </div>
         <div class="w-full sm:w-auto">
           <label
-            class="block mb-1 font-bold text-gray-500 text-xs uppercase tracking-wide"
+            class="block mb-1 text-xs font-bold tracking-wide text-gray-500 uppercase"
             >Month</label
           >
           <select
             v-model="filters.month"
-            class="bg-gray-50 px-4 py-2 border rounded-xl w-full sm:w-40 focus:ring-2 focus:ring-black outline-none"
+            class="w-full px-4 py-2 border outline-none bg-gray-50 rounded-xl sm:w-40 focus:ring-2 focus:ring-black"
           >
             <option value="">All Months</option>
             <option v-for="(m, i) in months" :key="i" :value="i + 1">
@@ -254,7 +254,7 @@ onMounted(fetchReport);
         </div>
         <div class="flex-grow w-full sm:w-auto">
           <label
-            class="block mb-1 font-bold text-gray-500 text-xs uppercase tracking-wide"
+            class="block mb-1 text-xs font-bold tracking-wide text-gray-500 uppercase"
             >Search Product</label
           >
           <div class="relative">
@@ -262,7 +262,7 @@ onMounted(fetchReport);
               v-model="filters.search"
               type="text"
               placeholder="Search by product name or code..."
-              class="bg-gray-50 pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none w-full transition"
+              class="w-full py-2 pl-10 pr-4 transition border border-gray-200 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
             />
             <svg
               class="top-2.5 left-3 absolute w-5 h-5 text-gray-400"
@@ -288,20 +288,20 @@ onMounted(fetchReport);
       </div>
     </div>
 
-    <div class="gap-6 grid grid-cols-1 md:grid-cols-3">
-      <div class="bg-blue-50 p-6 border border-blue-100 rounded-2xl">
-        <p class="font-bold text-blue-600 text-xs uppercase">Total Revenue</p>
-        <p class="font-black text-2xl">{{ formatPrice(grandTotalRevenue) }}</p>
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+      <div class="p-6 border border-blue-100 bg-blue-50 rounded-2xl">
+        <p class="text-xs font-bold text-blue-600 uppercase">Total Revenue</p>
+        <p class="text-2xl font-black">{{ formatPrice(grandTotalRevenue) }}</p>
       </div>
-      <div class="bg-green-50 p-6 border border-green-100 rounded-2xl">
-        <p class="font-bold text-green-600 text-xs uppercase">
+      <div class="p-6 border border-green-100 bg-green-50 rounded-2xl">
+        <p class="text-xs font-bold text-green-600 uppercase">
           Total Units Sold
         </p>
-        <p class="font-black text-2xl">{{ totalUnitsSold }} pcs</p>
+        <p class="text-2xl font-black">{{ totalUnitsSold }} pcs</p>
       </div>
-      <div class="bg-purple-50 p-6 border border-purple-100 rounded-2xl">
-        <p class="font-bold text-purple-600 text-xs uppercase">Best Seller</p>
-        <p class="font-black text-lg truncate">{{ bestSellerName }}</p>
+      <div class="p-6 border border-purple-100 bg-purple-50 rounded-2xl">
+        <p class="text-xs font-bold text-purple-600 uppercase">Best Seller</p>
+        <p class="text-lg font-black truncate">{{ bestSellerName }}</p>
       </div>
     </div>
 
@@ -310,24 +310,24 @@ onMounted(fetchReport);
     >
       <div
         v-if="isInitialLoading"
-        class="z-10 absolute inset-0 flex justify-center items-center bg-white/80 backdrop-blur-sm rounded-2xl"
+        class="absolute inset-0 z-10 flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-2xl"
       >
         <div
-          class="border-4 border-gray-200 border-t-black rounded-full w-10 h-10 animate-spin"
+          class="w-10 h-10 border-4 border-gray-200 rounded-full border-t-black animate-spin"
         ></div>
       </div>
 
       <div
-        class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6"
+        class="flex flex-col items-start justify-between gap-4 mb-6 md:flex-row md:items-center"
       >
-        <h2 class="font-bold text-gray-800 text-xl">Product Performance</h2>
+        <h2 class="text-xl font-bold text-gray-800">Product Performance</h2>
 
         <div class="flex items-center gap-4">
           <div class="flex gap-2">
             <button
               @click="exportToPDF"
               :disabled="reportData.length === 0"
-              class="flex items-center gap-2 bg-red-50 hover:bg-red-100 text-red-600 disabled:opacity-50 disabled:cursor-not-allowed px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-widest transition"
+              class="flex items-center gap-2 px-4 py-2 text-xs font-bold tracking-widest text-red-600 uppercase transition bg-red-50 hover:bg-red-100 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -348,7 +348,7 @@ onMounted(fetchReport);
             <button
               @click="exportToExcel"
               :disabled="reportData.length === 0"
-              class="flex items-center gap-2 bg-green-50 hover:bg-green-100 text-green-600 disabled:opacity-50 disabled:cursor-not-allowed px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-widest transition"
+              class="flex items-center gap-2 px-4 py-2 text-xs font-bold tracking-widest text-green-600 uppercase transition bg-green-50 hover:bg-green-100 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -368,14 +368,14 @@ onMounted(fetchReport);
             </button>
           </div>
 
-          <div class="h-6 w-px bg-gray-200 hidden md:block"></div>
+          <div class="hidden w-px h-6 bg-gray-200 md:block"></div>
 
           <div class="flex items-center gap-2">
-            <span class="text-gray-500 text-xs uppercase">Show:</span>
+            <span class="text-xs text-gray-500 uppercase">Show:</span>
             <select
               v-model="itemsPerPage"
               @change="fetchReport(1)"
-              class="bg-gray-50 px-2 py-1 border rounded-lg text-sm outline-none"
+              class="px-2 py-1 text-sm border rounded-lg outline-none bg-gray-50"
             >
               <option :value="5">5</option>
               <option :value="10">10</option>
@@ -388,9 +388,9 @@ onMounted(fetchReport);
       </div>
 
       <div class="overflow-x-auto" id="exportable-table">
-        <div class="hidden export-header mb-4">
+        <div class="hidden mb-4 export-header">
           <h2 class="text-2xl font-bold text-black">Sales Report</h2>
-          <p class="text-gray-500 text-sm">
+          <p class="text-sm text-gray-500">
             Period:
             {{ filters.month ? months[filters.month - 1] : "All Months" }}
             {{ filters.year }}
@@ -400,7 +400,7 @@ onMounted(fetchReport);
         <table class="w-full text-left bg-white">
           <thead>
             <tr
-              class="border-b text-gray-400 text-xs uppercase tracking-widest"
+              class="text-xs tracking-widest text-gray-400 uppercase border-b"
             >
               <th class="pb-4">Product Info</th>
               <th class="pb-4">Category</th>
@@ -415,19 +415,19 @@ onMounted(fetchReport);
             <tr
               v-for="(item, index) in reportData"
               :key="index"
-              class="hover:bg-gray-50 border-gray-50 border-b transition"
+              class="transition border-b hover:bg-gray-50 border-gray-50"
             >
               <td class="py-4">
                 <div class="flex items-center gap-4">
                   <img
                     :src="`${item.image}?t=${new Date().getTime()}`"
                     alt="Product"
-                    class="bg-gray-100 shadow-sm rounded-lg w-12 h-12 object-cover"
+                    class="object-cover w-12 h-12 bg-gray-100 rounded-lg shadow-sm"
                     crossorigin="anonymous"
                   />
                   <div>
                     <p class="font-bold text-gray-900">{{ item.name }}</p>
-                    <p class="font-mono text-gray-400 text-xs">
+                    <p class="font-mono text-xs text-gray-400">
                       {{ item.code }}
                     </p>
                   </div>
@@ -442,7 +442,7 @@ onMounted(fetchReport);
               </td>
             </tr>
             <tr v-if="!isLoading && reportData.length === 0">
-              <td colspan="4" class="py-12 text-center text-gray-400 italic">
+              <td colspan="4" class="py-12 italic text-center text-gray-400">
                 No sales data found for this period.
               </td>
             </tr>
@@ -450,11 +450,11 @@ onMounted(fetchReport);
 
           <tfoot v-if="reportData.length > 0 && !isLoading">
             <tr
-              class="bg-gray-50/50 font-bold text-gray-800 border-gray-100 border-t-2"
+              class="font-bold text-gray-800 border-t-2 border-gray-100 bg-gray-50/50"
             >
               <td
                 colspan="2"
-                class="py-4 pl-4 text-right text-gray-500 text-xs uppercase tracking-widest"
+                class="py-4 pl-4 text-xs tracking-widest text-right text-gray-500 uppercase"
               >
                 Total (This Page)
               </td>
@@ -470,7 +470,7 @@ onMounted(fetchReport);
       </div>
       <div
         v-if="lastPage > 0 || reportData.length > 0"
-        class="flex flex-col md:flex-row justify-between items-center gap-4 mt-6 pt-4 border-t"
+        class="flex flex-col items-center justify-between gap-4 pt-4 mt-6 border-t md:flex-row"
       >
         <p class="text-sm text-gray-400">
           Showing
@@ -483,7 +483,7 @@ onMounted(fetchReport);
           <button
             @click="changePage(currentPage - 1)"
             :disabled="currentPage === 1"
-            class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+            class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
           >
             Prev
           </button>
@@ -502,7 +502,7 @@ onMounted(fetchReport);
                   ? 'cursor-default border-transparent hover:bg-transparent'
                   : 'border',
               ]"
-              class="w-10 h-10 rounded-xl font-medium transition flex items-center justify-center text-sm"
+              class="flex items-center justify-center w-10 h-10 text-sm font-medium transition rounded-xl"
             >
               {{ page }}
             </button>
@@ -511,7 +511,7 @@ onMounted(fetchReport);
           <button
             @click="changePage(currentPage + 1)"
             :disabled="currentPage === lastPage || lastPage === 0"
-            class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+            class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
           >
             Next
           </button>
@@ -753,28 +753,28 @@ onMounted(fetchReport);
 <!-- Updated Pagination & Data Load -->
 <!-- <template>
   <div class="space-y-8 animate-fade-in">
-    <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
+    <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
       <div class="flex flex-wrap items-end gap-4">
         <div class="w-full sm:w-auto">
           <label
-            class="block mb-1 font-bold text-gray-500 text-xs uppercase tracking-wide"
+            class="block mb-1 text-xs font-bold tracking-wide text-gray-500 uppercase"
             >Year</label
           >
           <select
             v-model="filters.year"
-            class="bg-gray-50 px-4 py-2 border rounded-xl w-full sm:w-32 focus:ring-2 focus:ring-black outline-none font-bold"
+            class="w-full px-4 py-2 font-bold border outline-none bg-gray-50 rounded-xl sm:w-32 focus:ring-2 focus:ring-black"
           >
             <option v-for="y in years" :key="y" :value="y">{{ y }}</option>
           </select>
         </div>
         <div class="w-full sm:w-auto">
           <label
-            class="block mb-1 font-bold text-gray-500 text-xs uppercase tracking-wide"
+            class="block mb-1 text-xs font-bold tracking-wide text-gray-500 uppercase"
             >Month</label
           >
           <select
             v-model="filters.month"
-            class="bg-gray-50 px-4 py-2 border rounded-xl w-full sm:w-40 focus:ring-2 focus:ring-black outline-none"
+            class="w-full px-4 py-2 border outline-none bg-gray-50 rounded-xl sm:w-40 focus:ring-2 focus:ring-black"
           >
             <option value="">All Months</option>
             <option v-for="(m, i) in months" :key="i" :value="i + 1">
@@ -784,7 +784,7 @@ onMounted(fetchReport);
         </div>
         <div class="flex-grow w-full sm:w-auto">
           <label
-            class="block mb-1 font-bold text-gray-500 text-xs uppercase tracking-wide"
+            class="block mb-1 text-xs font-bold tracking-wide text-gray-500 uppercase"
             >Search Product</label
           >
           <div class="relative">
@@ -792,7 +792,7 @@ onMounted(fetchReport);
               v-model="filters.search"
               type="text"
               placeholder="Search by product name or code..."
-              class="bg-gray-50 pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none w-full transition"
+              class="w-full py-2 pl-10 pr-4 transition border border-gray-200 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
             />
             <svg
               class="top-2.5 left-3 absolute w-5 h-5 text-gray-400"
@@ -818,20 +818,20 @@ onMounted(fetchReport);
       </div>
     </div>
 
-    <div class="gap-6 grid grid-cols-1 md:grid-cols-3">
-      <div class="bg-blue-50 p-6 border border-blue-100 rounded-2xl">
-        <p class="font-bold text-blue-600 text-xs uppercase">Total Revenue</p>
-        <p class="font-black text-2xl">{{ formatPrice(grandTotalRevenue) }}</p>
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+      <div class="p-6 border border-blue-100 bg-blue-50 rounded-2xl">
+        <p class="text-xs font-bold text-blue-600 uppercase">Total Revenue</p>
+        <p class="text-2xl font-black">{{ formatPrice(grandTotalRevenue) }}</p>
       </div>
-      <div class="bg-green-50 p-6 border border-green-100 rounded-2xl">
-        <p class="font-bold text-green-600 text-xs uppercase">
+      <div class="p-6 border border-green-100 bg-green-50 rounded-2xl">
+        <p class="text-xs font-bold text-green-600 uppercase">
           Total Units Sold
         </p>
-        <p class="font-black text-2xl">{{ totalUnitsSold }} pcs</p>
+        <p class="text-2xl font-black">{{ totalUnitsSold }} pcs</p>
       </div>
-      <div class="bg-purple-50 p-6 border border-purple-100 rounded-2xl">
-        <p class="font-bold text-purple-600 text-xs uppercase">Best Seller</p>
-        <p class="font-black text-lg truncate">{{ bestSellerName }}</p>
+      <div class="p-6 border border-purple-100 bg-purple-50 rounded-2xl">
+        <p class="text-xs font-bold text-purple-600 uppercase">Best Seller</p>
+        <p class="text-lg font-black truncate">{{ bestSellerName }}</p>
       </div>
     </div>
 
@@ -840,24 +840,24 @@ onMounted(fetchReport);
     >
       <div
         v-if="isInitialLoading"
-        class="z-10 absolute inset-0 flex justify-center items-center bg-white/80 backdrop-blur-sm rounded-2xl"
+        class="absolute inset-0 z-10 flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-2xl"
       >
         <div
-          class="border-4 border-gray-200 border-t-black rounded-full w-10 h-10 animate-spin"
+          class="w-10 h-10 border-4 border-gray-200 rounded-full border-t-black animate-spin"
         ></div>
       </div>
 
       <div
-        class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6"
+        class="flex flex-col items-start justify-between gap-4 mb-6 md:flex-row md:items-center"
       >
-        <h2 class="font-bold text-gray-800 text-xl">Product Performance</h2>
+        <h2 class="text-xl font-bold text-gray-800">Product Performance</h2>
 
         <div class="flex items-center gap-4">
           <div class="flex gap-2">
             <button
               @click="exportToPDF"
               :disabled="allReportData.length === 0"
-              class="flex items-center gap-2 bg-red-50 hover:bg-red-100 text-red-600 disabled:opacity-50 disabled:cursor-not-allowed px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-widest transition"
+              class="flex items-center gap-2 px-4 py-2 text-xs font-bold tracking-widest text-red-600 uppercase transition bg-red-50 hover:bg-red-100 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -878,7 +878,7 @@ onMounted(fetchReport);
             <button
               @click="exportToExcel"
               :disabled="allReportData.length === 0"
-              class="flex items-center gap-2 bg-green-50 hover:bg-green-100 text-green-600 disabled:opacity-50 disabled:cursor-not-allowed px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-widest transition"
+              class="flex items-center gap-2 px-4 py-2 text-xs font-bold tracking-widest text-green-600 uppercase transition bg-green-50 hover:bg-green-100 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -898,13 +898,13 @@ onMounted(fetchReport);
             </button>
           </div>
 
-          <div class="h-6 w-px bg-gray-200 hidden md:block"></div>
+          <div class="hidden w-px h-6 bg-gray-200 md:block"></div>
 
           <div class="flex items-center gap-2">
-            <span class="text-gray-500 text-xs uppercase">Show:</span>
+            <span class="text-xs text-gray-500 uppercase">Show:</span>
             <select
               v-model="itemsPerPage"
-              class="bg-gray-50 px-2 py-1 border rounded-lg text-sm outline-none"
+              class="px-2 py-1 text-sm border rounded-lg outline-none bg-gray-50"
             >
               <option :value="5">5</option>
               <option :value="10">10</option>
@@ -917,9 +917,9 @@ onMounted(fetchReport);
       </div>
 
       <div class="overflow-x-auto" id="exportable-table">
-        <div class="hidden export-header mb-4">
+        <div class="hidden mb-4 export-header">
           <h2 class="text-2xl font-bold text-black">Sales Report</h2>
-          <p class="text-gray-500 text-sm">
+          <p class="text-sm text-gray-500">
             Period:
             {{ filters.month ? months[filters.month - 1] : "All Months" }}
             {{ filters.year }}
@@ -929,7 +929,7 @@ onMounted(fetchReport);
         <table class="w-full text-left bg-white">
           <thead>
             <tr
-              class="border-b text-gray-400 text-xs uppercase tracking-widest"
+              class="text-xs tracking-widest text-gray-400 uppercase border-b"
             >
               <th class="pb-4">Product Info</th>
               <th class="pb-4">Category</th>
@@ -944,19 +944,19 @@ onMounted(fetchReport);
             <tr
               v-for="(item, index) in paginatedData"
               :key="index"
-              class="hover:bg-gray-50 border-gray-50 border-b transition"
+              class="transition border-b hover:bg-gray-50 border-gray-50"
             >
               <td class="py-4">
                 <div class="flex items-center gap-4">
                   <img
                     :src="`${item.image}?t=${new Date().getTime()}`"
                     alt="Product"
-                    class="bg-gray-100 shadow-sm rounded-lg w-12 h-12 object-cover"
+                    class="object-cover w-12 h-12 bg-gray-100 rounded-lg shadow-sm"
                     crossorigin="anonymous"
                   />
                   <div>
                     <p class="font-bold text-gray-900">{{ item.name }}</p>
-                    <p class="font-mono text-gray-400 text-xs">
+                    <p class="font-mono text-xs text-gray-400">
                       {{ item.code }}
                     </p>
                   </div>
@@ -971,7 +971,7 @@ onMounted(fetchReport);
               </td>
             </tr>
             <tr v-if="!isLoading && allReportData.length === 0">
-              <td colspan="4" class="py-12 text-center text-gray-400 italic">
+              <td colspan="4" class="py-12 italic text-center text-gray-400">
                 No sales data found for this period.
               </td>
             </tr>
@@ -979,11 +979,11 @@ onMounted(fetchReport);
 
           <tfoot v-if="allReportData.length > 0 && !isLoading">
             <tr
-              class="bg-gray-50/50 font-bold text-gray-800 border-gray-100 border-t-2"
+              class="font-bold text-gray-800 border-t-2 border-gray-100 bg-gray-50/50"
             >
               <td
                 colspan="2"
-                class="py-4 pl-4 text-right text-gray-500 text-xs uppercase tracking-widest"
+                class="py-4 pl-4 text-xs tracking-widest text-right text-gray-500 uppercase"
               >
                 Grand Total (All Pages)
               </td>
@@ -998,7 +998,7 @@ onMounted(fetchReport);
 
       <div
         v-if="totalPages > 0 || allReportData.length > 0"
-        class="flex flex-col md:flex-row justify-between items-center gap-4 mt-6 pt-4 border-t"
+        class="flex flex-col items-center justify-between gap-4 pt-4 mt-6 border-t md:flex-row"
       >
         <p class="text-sm text-gray-400">
           Showing
@@ -1011,7 +1011,7 @@ onMounted(fetchReport);
           <button
             @click="changePage(currentPage - 1)"
             :disabled="currentPage === 1"
-            class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+            class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
           >
             Prev
           </button>
@@ -1030,7 +1030,7 @@ onMounted(fetchReport);
                   ? 'cursor-default border-transparent hover:bg-transparent'
                   : 'border',
               ]"
-              class="w-10 h-10 rounded-xl font-medium transition flex items-center justify-center text-sm"
+              class="flex items-center justify-center w-10 h-10 text-sm font-medium transition rounded-xl"
             >
               {{ page }}
             </button>
@@ -1039,7 +1039,7 @@ onMounted(fetchReport);
           <button
             @click="changePage(currentPage + 1)"
             :disabled="currentPage === totalPages"
-            class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+            class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
           >
             Next
           </button>
@@ -1299,27 +1299,27 @@ onMounted(fetchReport);
 </style> -->
 
 <template>
-  <div class="space-y-8 animate-fade-in pb-10">
-    <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
+  <div class="pb-10 space-y-8 animate-fade-in">
+    <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
       <div class="flex flex-wrap items-end gap-4">
         <div class="w-full sm:w-auto">
-          <label class="block mb-1 font-bold text-gray-500 text-xs uppercase tracking-wide">
+          <label class="block mb-1 text-xs font-bold tracking-wide text-gray-500 uppercase">
             Year
           </label>
           <select
             v-model="filters.year"
-            class="bg-gray-50 px-4 py-2 border border-gray-200 rounded-xl w-full sm:w-32 focus:ring-2 focus:ring-black outline-none font-bold transition"
+            class="w-full px-4 py-2 font-bold transition border border-gray-200 outline-none bg-gray-50 rounded-xl sm:w-32 focus:ring-2 focus:ring-black"
           >
             <option v-for="y in years" :key="y" :value="y">{{ y }}</option>
           </select>
         </div>
         <div class="w-full sm:w-auto">
-          <label class="block mb-1 font-bold text-gray-500 text-xs uppercase tracking-wide">
+          <label class="block mb-1 text-xs font-bold tracking-wide text-gray-500 uppercase">
             Month
           </label>
           <select
             v-model="filters.month"
-            class="bg-gray-50 px-4 py-2 border border-gray-200 rounded-xl w-full sm:w-40 focus:ring-2 focus:ring-black outline-none transition"
+            class="w-full px-4 py-2 transition border border-gray-200 outline-none bg-gray-50 rounded-xl sm:w-40 focus:ring-2 focus:ring-black"
           >
             <option value="">All Months</option>
             <option v-for="(m, i) in months" :key="i" :value="i + 1">
@@ -1328,7 +1328,7 @@ onMounted(fetchReport);
           </select>
         </div>
         <div class="flex-grow w-full sm:w-auto">
-          <label class="block mb-1 font-bold text-gray-500 text-xs uppercase tracking-wide">
+          <label class="block mb-1 text-xs font-bold tracking-wide text-gray-500 uppercase">
             Search Product
           </label>
           <div class="relative">
@@ -1336,7 +1336,7 @@ onMounted(fetchReport);
               v-model="filters.search"
               type="text"
               placeholder="Search by product name or code..."
-              class="bg-gray-50 pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none w-full transition"
+              class="w-full py-2 pl-10 pr-4 transition border border-gray-200 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
             />
             <svg
               class="top-2.5 left-3 absolute w-5 h-5 text-gray-400"
@@ -1357,35 +1357,35 @@ onMounted(fetchReport);
       </div>
     </div>
 
-    <div class="gap-6 grid grid-cols-1 md:grid-cols-3">
-      <div class="bg-blue-50 p-6 border border-blue-100 rounded-2xl relative overflow-hidden">
-        <p class="font-bold text-blue-600 text-xs uppercase tracking-widest mb-1">Total Revenue</p>
-        <p v-if="!isLoading" class="font-black text-3xl text-blue-900">{{ formatPrice(grandTotalRevenue) }}</p>
-        <div v-else class="h-8 w-3/4 bg-blue-200 rounded animate-pulse mt-1"></div>
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+      <div class="relative p-6 overflow-hidden border border-blue-100 bg-blue-50 rounded-2xl">
+        <p class="mb-1 text-xs font-bold tracking-widest text-blue-600 uppercase">Total Revenue</p>
+        <p v-if="!isLoading" class="text-3xl font-black text-blue-900">{{ formatPrice(grandTotalRevenue) }}</p>
+        <div v-else class="w-3/4 h-8 mt-1 bg-blue-200 rounded animate-pulse"></div>
       </div>
-      <div class="bg-green-50 p-6 border border-green-100 rounded-2xl relative overflow-hidden">
-        <p class="font-bold text-green-600 text-xs uppercase tracking-widest mb-1">Total Units Sold</p>
-        <p v-if="!isLoading" class="font-black text-3xl text-green-900">{{ totalUnitsSold }} pcs</p>
-        <div v-else class="h-8 w-1/2 bg-green-200 rounded animate-pulse mt-1"></div>
+      <div class="relative p-6 overflow-hidden border border-green-100 bg-green-50 rounded-2xl">
+        <p class="mb-1 text-xs font-bold tracking-widest text-green-600 uppercase">Total Units Sold</p>
+        <p v-if="!isLoading" class="text-3xl font-black text-green-900">{{ totalUnitsSold }} pcs</p>
+        <div v-else class="w-1/2 h-8 mt-1 bg-green-200 rounded animate-pulse"></div>
       </div>
-      <div class="bg-purple-50 p-6 border border-purple-100 rounded-2xl relative overflow-hidden">
-        <p class="font-bold text-purple-600 text-xs uppercase tracking-widest mb-1">Top Best Seller</p>
-        <p v-if="!isLoading" class="font-black text-xl text-purple-900 truncate">{{ bestSellerName }}</p>
-        <div v-else class="h-6 w-3/4 bg-purple-200 rounded animate-pulse mt-2"></div>
+      <div class="relative p-6 overflow-hidden border border-purple-100 bg-purple-50 rounded-2xl">
+        <p class="mb-1 text-xs font-bold tracking-widest text-purple-600 uppercase">Top Best Seller</p>
+        <p v-if="!isLoading" class="text-xl font-black text-purple-900 truncate">{{ bestSellerName }}</p>
+        <div v-else class="w-3/4 h-6 mt-2 bg-purple-200 rounded animate-pulse"></div>
       </div>
     </div>
 
     <div class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[400px]">
       
-      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-        <h2 class="font-bold text-gray-800 text-xl">Product Performance</h2>
+      <div class="flex flex-col items-start justify-between gap-4 mb-6 md:flex-row md:items-center">
+        <h2 class="text-xl font-bold text-gray-800">Product Performance</h2>
 
         <div class="flex items-center gap-4">
           <div class="flex gap-2">
             <button
               @click="exportToPDF"
               :disabled="allReportData.length === 0 || isLoading"
-              class="flex items-center gap-2 bg-red-50 hover:bg-red-100 text-red-600 disabled:opacity-50 disabled:cursor-not-allowed px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-widest transition"
+              class="flex items-center gap-2 px-4 py-2 text-xs font-bold tracking-widest text-red-600 uppercase transition bg-red-50 hover:bg-red-100 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl"
             >
               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -1395,7 +1395,7 @@ onMounted(fetchReport);
             <button
               @click="exportToExcel"
               :disabled="allReportData.length === 0 || isLoading"
-              class="flex items-center gap-2 bg-green-50 hover:bg-green-100 text-green-600 disabled:opacity-50 disabled:cursor-not-allowed px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-widest transition"
+              class="flex items-center gap-2 px-4 py-2 text-xs font-bold tracking-widest text-green-600 uppercase transition bg-green-50 hover:bg-green-100 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl"
             >
               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -1404,13 +1404,13 @@ onMounted(fetchReport);
             </button>
           </div>
 
-          <div class="h-6 w-px bg-gray-200 hidden md:block"></div>
+          <div class="hidden w-px h-6 bg-gray-200 md:block"></div>
 
           <div class="flex items-center gap-2">
-            <span class="text-gray-500 text-xs uppercase">Show:</span>
+            <span class="text-xs text-gray-500 uppercase">Show:</span>
             <select
               v-model="itemsPerPage"
-              class="bg-gray-50 px-2 py-1 border border-gray-200 rounded-lg text-sm outline-none cursor-pointer"
+              class="px-2 py-1 text-sm border border-gray-200 rounded-lg outline-none cursor-pointer bg-gray-50"
             >
               <option :value="5">5</option>
               <option :value="10">10</option>
@@ -1423,9 +1423,9 @@ onMounted(fetchReport);
       </div>
 
       <div class="overflow-x-auto" id="exportable-table">
-        <div class="hidden export-header mb-4">
+        <div class="hidden mb-4 export-header">
           <h2 class="text-2xl font-bold text-black">Sales Report</h2>
-          <p class="text-gray-500 text-sm">
+          <p class="text-sm text-gray-500">
             Period:
             {{ filters.month ? months[filters.month - 1] : "All Months" }}
             {{ filters.year }}
@@ -1434,11 +1434,11 @@ onMounted(fetchReport);
 
         <table class="w-full text-left bg-white border-collapse">
           <thead>
-            <tr class="border-b border-gray-100 text-gray-400 text-xs uppercase tracking-widest">
-              <th class="pb-4 font-medium pl-2">Product Info</th>
+            <tr class="text-xs tracking-widest text-gray-400 uppercase border-b border-gray-100">
+              <th class="pb-4 pl-2 font-medium">Product Info</th>
               <th class="pb-4 font-medium">Category</th>
               <th class="pb-4 font-medium text-right">Units Sold</th>
-              <th class="pb-4 font-medium text-right pr-2">Revenue</th>
+              <th class="pb-4 pr-2 font-medium text-right">Revenue</th>
             </tr>
           </thead>
           
@@ -1448,14 +1448,14 @@ onMounted(fetchReport);
                 <div class="flex items-center gap-4">
                   <div class="w-12 h-12 bg-gray-200 rounded-lg animate-pulse shrink-0"></div>
                   <div class="space-y-2">
-                    <div class="h-4 w-32 bg-gray-200 rounded animate-pulse"></div>
-                    <div class="h-3 w-20 bg-gray-100 rounded animate-pulse"></div>
+                    <div class="w-32 h-4 bg-gray-200 rounded animate-pulse"></div>
+                    <div class="w-20 h-3 bg-gray-100 rounded animate-pulse"></div>
                   </div>
                 </div>
               </td>
-              <td class="py-4"><div class="h-4 w-24 bg-gray-200 rounded animate-pulse"></div></td>
-              <td class="py-4"><div class="h-4 w-12 bg-gray-200 rounded animate-pulse ml-auto"></div></td>
-              <td class="py-4 pr-2"><div class="h-4 w-24 bg-gray-200 rounded animate-pulse ml-auto"></div></td>
+              <td class="py-4"><div class="w-24 h-4 bg-gray-200 rounded animate-pulse"></div></td>
+              <td class="py-4"><div class="w-12 h-4 ml-auto bg-gray-200 rounded animate-pulse"></div></td>
+              <td class="py-4 pr-2"><div class="w-24 h-4 ml-auto bg-gray-200 rounded animate-pulse"></div></td>
             </tr>
           </tbody>
 
@@ -1463,15 +1463,20 @@ onMounted(fetchReport);
             <tr
               v-for="(item, index) in paginatedData"
               :key="index"
-              class="hover:bg-gray-50 border-gray-50 border-b transition"
+              class="transition border-b hover:bg-gray-50 border-gray-50"
             >
               <td class="py-4 pl-2">
                 <div class="flex items-center gap-4">
-                  <img
+                  <!-- <img
                     :src="`${item.image}?t=${new Date().getTime()}`"
                     alt="Product"
-                    class="bg-gray-100 shadow-sm rounded-lg w-12 h-12 object-cover border border-gray-100"
+                    class="object-cover w-12 h-12 bg-gray-100 border border-gray-100 rounded-lg shadow-sm"
                     crossorigin="anonymous"
+                  /> -->
+                  <img
+                    :src="item.image"
+                    alt="Product"
+                    class="object-cover w-12 h-12 bg-gray-100 border border-gray-100 rounded-lg shadow-sm"
                   />
                   <div>
                     <p class="font-bold text-gray-900">{{ item.name }}</p>
@@ -1483,24 +1488,24 @@ onMounted(fetchReport);
               <td class="py-4 font-medium text-right text-gray-900">
                 {{ item.total_sold }}
               </td>
-              <td class="py-4 font-bold text-right text-green-600 pr-2">
+              <td class="py-4 pr-2 font-bold text-right text-green-600">
                 {{ formatPrice(item.total_revenue) }}
               </td>
             </tr>
             <tr v-if="allReportData.length === 0">
-              <td colspan="4" class="py-16 text-center text-gray-400 italic text-sm">
+              <td colspan="4" class="py-16 text-sm italic text-center text-gray-400">
                 No sales data found for this period.
               </td>
             </tr>
           </tbody>
 
           <tfoot v-if="allReportData.length > 0 && !isLoading">
-            <tr class="bg-gray-50/50 font-bold text-gray-800 border-gray-100 border-t-2">
-              <td colspan="2" class="py-4 pl-4 text-right text-gray-500 text-xs uppercase tracking-widest">
+            <tr class="font-bold text-gray-800 border-t-2 border-gray-100 bg-gray-50/50">
+              <td colspan="2" class="py-4 pl-4 text-xs tracking-widest text-right text-gray-500 uppercase">
                 Grand Total (All Pages)
               </td>
-              <td class="py-4 text-right text-lg">{{ totalUnitsSold }}</td>
-              <td class="py-4 text-right text-green-700 text-xl pr-2">
+              <td class="py-4 text-lg text-right">{{ totalUnitsSold }}</td>
+              <td class="py-4 pr-2 text-xl text-right text-green-700">
                 {{ formatPrice(grandTotalRevenue) }}
               </td>
             </tr>
@@ -1510,7 +1515,7 @@ onMounted(fetchReport);
 
       <div
         v-if="!isLoading && (totalPages > 0 || allReportData.length > 0)"
-        class="flex flex-col md:flex-row justify-between items-center gap-4 mt-6 pt-4 border-t border-gray-100"
+        class="flex flex-col items-center justify-between gap-4 pt-4 mt-6 border-t border-gray-100 md:flex-row"
       >
         <p class="text-sm text-gray-400">
           Showing
@@ -1523,12 +1528,12 @@ onMounted(fetchReport);
           <button
             @click="changePage(currentPage - 1)"
             :disabled="currentPage === 1"
-            class="px-4 py-2 border border-gray-200 rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+            class="px-4 py-2 text-sm font-medium transition border border-gray-200 rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
           >
             Prev
           </button>
 
-          <div class="flex gap-1 hidden sm:flex">
+          <div class="flex hidden gap-1 sm:flex">
             <button
               v-for="(page, index) in visiblePages"
               :key="index"
@@ -1542,7 +1547,7 @@ onMounted(fetchReport);
                   ? 'cursor-default border-transparent hover:bg-transparent'
                   : 'border',
               ]"
-              class="w-10 h-10 rounded-xl font-medium transition flex items-center justify-center text-sm"
+              class="flex items-center justify-center w-10 h-10 text-sm font-medium transition rounded-xl"
             >
               {{ page }}
             </button>
@@ -1551,7 +1556,7 @@ onMounted(fetchReport);
           <button
             @click="changePage(currentPage + 1)"
             :disabled="currentPage === totalPages"
-            class="px-4 py-2 border border-gray-200 rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+            class="px-4 py-2 text-sm font-medium transition border border-gray-200 rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
           >
             Next
           </button>
