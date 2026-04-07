@@ -4,36 +4,36 @@
     class="z-[100] fixed inset-0 flex flex-col justify-center items-center bg-white"
   >
     <div
-      class="border-4 border-gray-100 border-t-black rounded-full w-12 h-12 animate-spin"
+      class="w-12 h-12 border-4 border-gray-100 rounded-full border-t-black animate-spin"
     ></div>
-    <p class="mt-4 font-serif text-gray-400 italic animate-pulse">
+    <p class="mt-4 font-serif italic text-gray-400 animate-pulse">
       Loading Solher piece...
     </p>
   </div>
 
   <div
     v-else-if="product"
-    class="mx-auto px-6 py-12 md:py-24 max-w-7xl animate-fade-in"
+    class="px-6 py-12 mx-auto md:py-24 max-w-7xl animate-fade-in"
   >
-    <div class="flex md:flex-row flex-col gap-12 lg:gap-24">
-      <div class="w-full md:w-1/2 flex flex-col gap-4 select-none">
+    <div class="flex flex-col gap-12 md:flex-row lg:gap-24">
+      <div class="flex flex-col w-full gap-4 select-none md:w-1/2">
         <div class="relative bg-gray-100 aspect-[4/5] overflow-hidden group">
           <div
             class="flex w-full h-full transition-transform duration-500 ease-in-out"
             :style="{ transform: `translateX(-${activeSlide * 100}%)` }"
           >
             <template v-for="(media, index) in allMedia" :key="index">
-              <div class="w-full h-full flex-shrink-0 relative">
+              <div class="relative flex-shrink-0 w-full h-full">
                 <img
                   v-if="media.type === 'image'"
                   :src="media.url"
-                  class="w-full h-full object-cover main-product-image"
+                  class="object-cover w-full h-full main-product-image"
                   alt="Product Image"
                 />
                 <video
                   v-else-if="media.type === 'video'"
                   :src="media.url"
-                  class="w-full h-full object-cover bg-black main-product-image"
+                  class="object-cover w-full h-full bg-black main-product-image"
                   autoplay
                   loop
                   muted
@@ -54,7 +54,7 @@
           <button
             v-if="allMedia.length > 1"
             @click="prevSlide"
-            class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white flex justify-center items-center rounded-full opacity-0 group-hover:opacity-100 transition shadow-lg text-black z-10"
+            class="absolute z-10 flex items-center justify-center w-10 h-10 text-black transition -translate-y-1/2 rounded-full shadow-lg opacity-0 left-4 top-1/2 bg-white/80 hover:bg-white group-hover:opacity-100"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -75,7 +75,7 @@
           <button
             v-if="allMedia.length > 1"
             @click="nextSlide"
-            class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white flex justify-center items-center rounded-full opacity-0 group-hover:opacity-100 transition shadow-lg text-black z-10"
+            class="absolute z-10 flex items-center justify-center w-10 h-10 text-black transition -translate-y-1/2 rounded-full shadow-lg opacity-0 right-4 top-1/2 bg-white/80 hover:bg-white group-hover:opacity-100"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -94,7 +94,7 @@
           </button>
 
           <div
-            class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-10"
+            class="absolute left-0 right-0 z-10 flex justify-center gap-2 bottom-4"
             v-if="allMedia.length > 1"
           >
             <button
@@ -102,14 +102,14 @@
               :key="idx"
               @click="activeSlide = idx"
               :class="activeSlide === idx ? 'w-6 bg-black' : 'w-2 bg-white/80'"
-              class="h-2 rounded-full transition-all duration-300 shadow-sm"
+              class="h-2 transition-all duration-300 rounded-full shadow-sm"
             ></button>
           </div>
         </div>
 
         <div
           v-if="allMedia.length > 1"
-          class="flex gap-3 overflow-x-auto pb-2 custom-scrollbar"
+          class="flex gap-3 pb-2 overflow-x-auto custom-scrollbar"
         >
           <div
             v-for="(media, idx) in allMedia"
@@ -120,20 +120,20 @@
                 ? 'ring-2 ring-black border-transparent opacity-100'
                 : 'border-gray-200 opacity-60 hover:opacity-100'
             "
-            class="w-20 h-24 shrink-0 overflow-hidden cursor-pointer border-2 transition-all relative bg-gray-50"
+            class="relative w-20 h-24 overflow-hidden transition-all border-2 cursor-pointer shrink-0 bg-gray-50"
           >
             <img
               v-if="media.type === 'image'"
               :src="media.url"
-              class="w-full h-full object-cover"
+              class="object-cover w-full h-full"
             />
             <div
               v-else
-              class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500 relative"
+              class="relative flex items-center justify-center w-full h-full text-gray-500 bg-gray-200"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="w-8 h-8 absolute z-10"
+                class="absolute z-10 w-8 h-8"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -156,21 +156,21 @@
         </div>
       </div>
 
-      <div class="space-y-8 w-full md:w-1/2">
-        <div class="space-y-4 md:text-left text-center">
+      <div class="w-full space-y-8 md:w-1/2">
+        <div class="space-y-4 text-center md:text-left">
           <h1
-            class="font-serif text-3xl md:text-5xl uppercase tracking-tighter"
+            class="font-serif text-3xl tracking-tighter uppercase md:text-5xl"
           >
             {{ product.name }}
           </h1>
           <button
             @click="toggleWishlist(product.id)"
-            class="p-3 bg-gray-50 hover:bg-red-50 rounded-full transition-colors flex-shrink-0"
+            class="flex-shrink-0 p-3 transition-colors rounded-full bg-gray-50 hover:bg-red-50"
           >
             <svg
               v-if="isFavorited"
               xmlns="http://www.w3.org/2000/svg"
-              class="w-6 h-6 text-red-500 transform hover:scale-110 transition-transform"
+              class="w-6 h-6 text-red-500 transition-transform transform hover:scale-110"
               fill="currentColor"
               viewBox="0 0 24 24"
               stroke="none"
@@ -182,7 +182,7 @@
             <svg
               v-else
               xmlns="http://www.w3.org/2000/svg"
-              class="w-6 h-6 text-gray-400 hover:text-red-500 transform hover:scale-110 transition-transform"
+              class="w-6 h-6 text-gray-400 transition-transform transform hover:text-red-500 hover:scale-110"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -195,44 +195,44 @@
               />
             </svg>
           </button>
-          <div class="flex justify-center md:justify-start items-center gap-4">
+          <div class="flex items-center justify-center gap-4 md:justify-start">
             <template v-if="product.discount_price">
-              <p class="font-bold text-red-600 text-2xl">
+              <p class="text-2xl font-bold text-red-600">
                 {{ formatPrice(product.discount_price) }}
               </p>
-              <p class="text-gray-400 text-lg line-through">
+              <p class="text-lg text-gray-400 line-through">
                 {{ formatPrice(product.price) }}
               </p>
               <span
-                class="bg-red-100 px-2 py-1 rounded font-bold text-red-600 text-xs"
+                class="px-2 py-1 text-xs font-bold text-red-600 bg-red-100 rounded"
                 >SAVE
                 {{
                   calculateDiscount(product.price, product.discount_price)
                 }}%</span
               >
             </template>
-            <p v-else class="text-gray-600 text-2xl">
+            <p v-else class="text-2xl text-gray-600">
               {{ formatPrice(product.price) }}
             </p>
           </div>
         </div>
 
-        <div class="flex sm:flex-row flex-col gap-4 pt-4">
+        <div class="flex flex-col gap-4 pt-4 sm:flex-row">
           <button
             @click="handleAction('cart')"
-            class="flex-1 hover:bg-black py-4 border-2 border-black font-bold hover:text-white text-xs uppercase tracking-widest transition"
+            class="flex-1 py-4 text-xs font-bold tracking-widest uppercase transition border-2 border-black hover:bg-black hover:text-white"
           >
             Add to Cart
           </button>
           <button
             @click="handleAction('buy')"
-            class="flex-1 bg-black hover:bg-gray-800 py-4 font-bold text-white text-xs uppercase tracking-widest transition"
+            class="flex-1 py-4 text-xs font-bold tracking-widest text-white uppercase transition bg-black hover:bg-gray-800"
           >
             Buy It Now
           </button>
         </div>
 
-        <div class="pt-8 border-gray-200 border-t divide-y divide-gray-200">
+        <div class="pt-8 border-t border-gray-200 divide-y divide-gray-200">
           <div
             v-for="section in ['Description', 'Care', 'Design']"
             :key="section"
@@ -242,9 +242,9 @@
               @click="
                 activeSection = activeSection === section ? null : section
               "
-              class="group flex justify-between items-center w-full font-medium text-xs text-left uppercase tracking-widest"
+              class="flex items-center justify-between w-full text-xs font-medium tracking-widest text-left uppercase group"
             >
-              <span class="group-hover:text-gray-500 transition">{{
+              <span class="transition group-hover:text-gray-500">{{
                 section
               }}</span>
               <span>{{ activeSection === section ? "−" : "+" }}</span>
@@ -252,7 +252,7 @@
             <transition name="fade">
               <div
                 v-show="activeSection === section"
-                class="mt-4 text-gray-600 text-sm leading-relaxed whitespace-pre-wrap"
+                class="mt-4 text-sm leading-relaxed text-gray-600 whitespace-pre-wrap"
               >
                 {{
                   product[section.toLowerCase()] || "No information available."
@@ -769,36 +769,36 @@ onMounted(fetchProductDetail);
     class="z-[100] fixed inset-0 flex flex-col justify-center items-center bg-white"
   >
     <div
-      class="border-4 border-gray-100 border-t-black rounded-full w-12 h-12 animate-spin"
+      class="w-12 h-12 border-4 border-gray-100 rounded-full border-t-black animate-spin"
     ></div>
-    <p class="mt-4 font-serif text-gray-400 italic animate-pulse">
+    <p class="mt-4 font-serif italic text-gray-400 animate-pulse">
       Loading Solher piece...
     </p>
   </div>
 
   <div
     v-else-if="product"
-    class="mx-auto px-6 py-12 md:py-24 max-w-7xl animate-fade-in"
+    class="px-6 py-12 mx-auto md:py-24 max-w-7xl animate-fade-in"
   >
-    <div class="flex md:flex-row flex-col gap-12 lg:gap-24">
-      <div class="w-full md:w-1/2 flex flex-col gap-4 select-none">
+    <div class="flex flex-col gap-12 md:flex-row lg:gap-24">
+      <div class="flex flex-col w-full gap-4 select-none md:w-1/2">
         <div class="relative bg-gray-100 aspect-[4/5] overflow-hidden group">
           <div
             class="flex w-full h-full transition-transform duration-500 ease-in-out"
             :style="{ transform: `translateX(-${activeSlide * 100}%)` }"
           >
             <template v-for="(media, index) in allMedia" :key="index">
-              <div class="w-full h-full flex-shrink-0 relative">
+              <div class="relative flex-shrink-0 w-full h-full">
                 <img
                   v-if="media.type === 'image'"
                   :src="media.url"
-                  class="w-full h-full object-cover main-product-image"
+                  class="object-cover w-full h-full main-product-image"
                   alt="Product Image"
                 />
                 <video
                   v-else-if="media.type === 'video'"
                   :src="media.url"
-                  class="w-full h-full object-cover bg-black main-product-image"
+                  class="object-cover w-full h-full bg-black main-product-image"
                   autoplay
                   loop
                   muted
@@ -819,7 +819,7 @@ onMounted(fetchProductDetail);
           <button
             v-if="allMedia.length > 1"
             @click="prevSlide"
-            class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white flex justify-center items-center rounded-full opacity-0 group-hover:opacity-100 transition shadow-lg text-black z-10"
+            class="absolute z-10 flex items-center justify-center w-10 h-10 text-black transition -translate-y-1/2 rounded-full shadow-lg opacity-0 left-4 top-1/2 bg-white/80 hover:bg-white group-hover:opacity-100"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -840,7 +840,7 @@ onMounted(fetchProductDetail);
           <button
             v-if="allMedia.length > 1"
             @click="nextSlide"
-            class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white flex justify-center items-center rounded-full opacity-0 group-hover:opacity-100 transition shadow-lg text-black z-10"
+            class="absolute z-10 flex items-center justify-center w-10 h-10 text-black transition -translate-y-1/2 rounded-full shadow-lg opacity-0 right-4 top-1/2 bg-white/80 hover:bg-white group-hover:opacity-100"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -859,7 +859,7 @@ onMounted(fetchProductDetail);
           </button>
 
           <div
-            class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-10"
+            class="absolute left-0 right-0 z-10 flex justify-center gap-2 bottom-4"
             v-if="allMedia.length > 1"
           >
             <button
@@ -867,14 +867,14 @@ onMounted(fetchProductDetail);
               :key="idx"
               @click="activeSlide = idx"
               :class="activeSlide === idx ? 'w-6 bg-black' : 'w-2 bg-white/80'"
-              class="h-2 rounded-full transition-all duration-300 shadow-sm"
+              class="h-2 transition-all duration-300 rounded-full shadow-sm"
             ></button>
           </div>
         </div>
 
         <div
           v-if="allMedia.length > 1"
-          class="flex gap-3 overflow-x-auto pb-2 custom-scrollbar"
+          class="flex gap-3 pb-2 overflow-x-auto custom-scrollbar"
         >
           <div
             v-for="(media, idx) in allMedia"
@@ -885,20 +885,20 @@ onMounted(fetchProductDetail);
                 ? 'ring-2 ring-black border-transparent opacity-100'
                 : 'border-gray-200 opacity-60 hover:opacity-100'
             "
-            class="w-20 h-24 shrink-0 overflow-hidden cursor-pointer border-2 transition-all relative bg-gray-50"
+            class="relative w-20 h-24 overflow-hidden transition-all border-2 cursor-pointer shrink-0 bg-gray-50"
           >
             <img
               v-if="media.type === 'image'"
               :src="media.url"
-              class="w-full h-full object-cover"
+              class="object-cover w-full h-full"
             />
             <div
               v-else
-              class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500 relative"
+              class="relative flex items-center justify-center w-full h-full text-gray-500 bg-gray-200"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="w-8 h-8 absolute z-10"
+                class="absolute z-10 w-8 h-8"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -921,23 +921,23 @@ onMounted(fetchProductDetail);
         </div>
       </div>
 
-      <div class="space-y-8 w-full md:w-1/2">
-        <div class="space-y-4 md:text-left text-center">
-          <div class="flex justify-center md:justify-between items-start gap-4">
+      <div class="w-full space-y-8 md:w-1/2">
+        <div class="space-y-4 text-center md:text-left">
+          <div class="flex items-start justify-center gap-4 md:justify-between">
             <h1
-              class="font-serif text-3xl md:text-5xl uppercase tracking-tighter"
+              class="font-serif text-3xl tracking-tighter uppercase md:text-5xl"
             >
               {{ product.name }}
             </h1>
 
             <button
               @click="toggleWishlist(product.id)"
-              class="p-3 bg-gray-50 hover:bg-red-50 rounded-full transition-colors flex-shrink-0"
+              class="flex-shrink-0 p-3 transition-colors rounded-full bg-gray-50 hover:bg-red-50"
             >
               <svg
                 v-if="isFavorited"
                 xmlns="http://www.w3.org/2000/svg"
-                class="w-6 h-6 text-red-500 transform hover:scale-110 transition-transform"
+                class="w-6 h-6 text-red-500 transition-transform transform hover:scale-110"
                 fill="currentColor"
                 viewBox="0 0 24 24"
                 stroke="none"
@@ -949,7 +949,7 @@ onMounted(fetchProductDetail);
               <svg
                 v-else
                 xmlns="http://www.w3.org/2000/svg"
-                class="w-6 h-6 text-gray-400 hover:text-red-500 transform hover:scale-110 transition-transform"
+                class="w-6 h-6 text-gray-400 transition-transform transform hover:text-red-500 hover:scale-110"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -963,23 +963,23 @@ onMounted(fetchProductDetail);
               </svg>
             </button>
           </div>
-          <div class="flex justify-center md:justify-start items-center gap-4">
+          <div class="flex items-center justify-center gap-4 md:justify-start">
             <template v-if="product.discount_price">
-              <p class="font-bold text-red-600 text-2xl">
+              <p class="text-2xl font-bold text-red-600">
                 {{ formatPrice(product.discount_price) }}
               </p>
-              <p class="text-gray-400 text-lg line-through">
+              <p class="text-lg text-gray-400 line-through">
                 {{ formatPrice(product.price) }}
               </p>
               <span
-                class="bg-red-100 px-2 py-1 rounded font-bold text-red-600 text-xs"
+                class="px-2 py-1 text-xs font-bold text-red-600 bg-red-100 rounded"
                 >SAVE
                 {{
                   calculateDiscount(product.price, product.discount_price)
                 }}%</span
               >
             </template>
-            <p v-else class="text-gray-600 text-2xl">
+            <p v-else class="text-2xl text-gray-600">
               {{ formatPrice(product.price) }}
             </p>
           </div>
@@ -987,25 +987,25 @@ onMounted(fetchProductDetail);
 
         <!-- <div 
           v-if="product.material || product.weight || product.length" 
-          class="bg-gray-50/50 border border-gray-100 p-4 rounded-xl space-y-3"
+          class="p-4 space-y-3 border border-gray-100 bg-gray-50/50 rounded-xl"
         >
-          <div v-if="product.material" class="flex justify-between items-start text-sm">
+          <div v-if="product.material" class="flex items-start justify-between text-sm">
             <span class="text-gray-500 font-bold uppercase tracking-widest text-[10px] w-24 shrink-0">Material</span>
-            <span class="text-gray-900 font-medium text-right">{{ product.material }}</span>
+            <span class="font-medium text-right text-gray-900">{{ product.material }}</span>
           </div>
           
-          <div v-if="product.length || product.width || product.height" class="flex justify-between items-start text-sm border-t border-gray-100 pt-3">
+          <div v-if="product.length || product.width || product.height" class="flex items-start justify-between pt-3 text-sm border-t border-gray-100">
             <span class="text-gray-500 font-bold uppercase tracking-widest text-[10px] w-24 shrink-0">Dimensions</span>
-            <span class="text-gray-900 font-mono text-right">
-              {{ product.length || '-' }} <span class="text-gray-400 text-xs">x</span> 
-              {{ product.width || '-' }} <span class="text-gray-400 text-xs">x</span> 
+            <span class="font-mono text-right text-gray-900">
+              {{ product.length || '-' }} <span class="text-xs text-gray-400">x</span> 
+              {{ product.width || '-' }} <span class="text-xs text-gray-400">x</span> 
               {{ product.height || '-' }} <span class="text-xs">cm</span>
             </span>
           </div>
           
-          <div v-if="product.weight" class="flex justify-between items-start text-sm border-t border-gray-100 pt-3">
+          <div v-if="product.weight" class="flex items-start justify-between pt-3 text-sm border-t border-gray-100">
             <span class="text-gray-500 font-bold uppercase tracking-widest text-[10px] w-24 shrink-0">Weight</span>
-            <span class="text-gray-900 font-medium text-right">{{ product.weight }} <span class="text-xs">gram</span></span>
+            <span class="font-medium text-right text-gray-900">{{ product.weight }} <span class="text-xs">gram</span></span>
           </div>
         </div> -->
 
@@ -1016,67 +1016,67 @@ onMounted(fetchProductDetail);
             product.length ||
             (product.color && product.color.length > 0)
           "
-          class="bg-gray-50/50 border border-gray-100 p-4 rounded-xl space-y-3"
+          class="p-4 space-y-3 border border-gray-100 bg-gray-50/50 rounded-xl"
         >
           <div
             v-if="product.material"
-            class="flex justify-between items-start text-sm"
+            class="flex items-start justify-between text-sm"
           >
             <span
               class="text-gray-500 font-bold uppercase tracking-widest text-[10px] w-24 shrink-0"
               >Material</span
             >
-            <span class="text-gray-900 font-medium text-right">{{
+            <span class="font-medium text-right text-gray-900">{{
               product.material
             }}</span>
           </div>
 
           <div
             v-if="product.strap_length"
-            class="flex justify-between items-start text-sm border-t border-gray-100 pt-3"
+            class="flex items-start justify-between pt-3 text-sm border-t border-gray-100"
           >
             <span
               class="text-gray-500 font-bold uppercase tracking-widest text-[10px] w-24 shrink-0"
               >Strap Length</span
             >
-            <span class="text-gray-900 font-medium text-right">{{
+            <span class="font-medium text-right text-gray-900">{{
               product.strap_length
             }}</span>
           </div>
 
           <div
             v-if="product.length || product.width || product.height"
-            class="flex justify-between items-start text-sm border-t border-gray-100 pt-3"
+            class="flex items-start justify-between pt-3 text-sm border-t border-gray-100"
           >
             <span
               class="text-gray-500 font-bold uppercase tracking-widest text-[10px] w-24 shrink-0"
               >Dimensions</span
             >
-            <span class="text-gray-900 font-mono text-right">
+            <span class="font-mono text-right text-gray-900">
               {{ product.length || "-" }}
-              <span class="text-gray-400 text-xs">x</span>
+              <span class="text-xs text-gray-400">x</span>
               {{ product.width || "-" }}
-              <span class="text-gray-400 text-xs">x</span>
+              <span class="text-xs text-gray-400">x</span>
               {{ product.height || "-" }} <span class="text-xs">cm</span>
             </span>
           </div>
 
           <div
             v-if="product.weight"
-            class="flex justify-between items-start text-sm border-t border-gray-100 pt-3"
+            class="flex items-start justify-between pt-3 text-sm border-t border-gray-100"
           >
             <span
               class="text-gray-500 font-bold uppercase tracking-widest text-[10px] w-24 shrink-0"
               >Weight</span
             >
-            <span class="text-gray-900 font-medium text-right"
+            <span class="font-medium text-right text-gray-900"
               >{{ product.weight }} <span class="text-xs">gram</span></span
             >
           </div>
 
           <!-- <div
             v-if="product.color && product.color.length > 0"
-            class="flex justify-between items-start text-sm border-t border-gray-100 pt-3"
+            class="flex items-start justify-between pt-3 text-sm border-t border-gray-100"
           >
             <span
               class="text-gray-500 font-bold uppercase tracking-widest text-[10px] w-24 shrink-0 mt-1"
@@ -1089,7 +1089,7 @@ onMounted(fetchProductDetail);
                 class="flex items-center gap-1.5 bg-white border border-gray-200 px-2 py-1 rounded-lg shadow-sm"
               >
                 <div
-                  class="w-3 h-3 rounded-full border border-gray-300"
+                  class="w-3 h-3 border border-gray-300 rounded-full"
                   :style="{ backgroundColor: getColorHex(c) }"
                 ></div>
                 <span
@@ -1101,7 +1101,7 @@ onMounted(fetchProductDetail);
           </div> -->
           <div
             v-if="product.color && product.color.length > 0"
-            class="flex justify-between items-start text-sm border-t border-gray-100 pt-3"
+            class="flex items-start justify-between pt-3 text-sm border-t border-gray-100"
           >
             <span
               class="text-gray-500 font-bold uppercase tracking-widest text-[10px] w-24 shrink-0 mt-1"
@@ -1117,7 +1117,7 @@ onMounted(fetchProductDetail);
                   class="flex items-center gap-1.5 bg-white border px-2 py-1 rounded-lg cursor-pointer transition-all duration-200"
                 >
                   <div
-                    class="w-3 h-3 rounded-full border border-gray-300"
+                    class="w-3 h-3 border border-gray-300 rounded-full"
                     :style="{ backgroundColor: getColorHex(c) }"
                   ></div>
                   <span
@@ -1135,18 +1135,18 @@ onMounted(fetchProductDetail);
 
         <div
           v-if="product.stock > 0"
-          class="flex items-center gap-6 pt-4 border-t border-gray-100 mt-2"
+          class="flex items-center gap-6 pt-4 mt-2 border-t border-gray-100"
         >
           <span
             class="text-[10px] font-bold text-gray-500 uppercase tracking-widest w-24 shrink-0"
             >Quantity</span
           >
           <div
-            class="flex items-center bg-gray-50 border border-gray-200 rounded-xl overflow-hidden shadow-sm"
+            class="flex items-center overflow-hidden border border-gray-200 shadow-sm bg-gray-50 rounded-xl"
           >
             <button
               @click="decreaseQuantity"
-              class="hover:bg-gray-200 px-4 py-2 transition-colors font-bold text-lg text-gray-600"
+              class="px-4 py-2 text-lg font-bold text-gray-600 transition-colors hover:bg-gray-200"
             >
               -
             </button>
@@ -1154,11 +1154,11 @@ onMounted(fetchProductDetail);
               type="number"
               v-model.number="selectedQuantity"
               @change="validateQuantity"
-              class="bg-transparent border-none focus:ring-0 w-12 font-bold text-sm text-center p-0"
+              class="w-12 p-0 text-sm font-bold text-center bg-transparent border-none focus:ring-0"
             />
             <button
               @click="increaseQuantity"
-              class="hover:bg-gray-200 px-4 py-2 transition-colors font-bold text-lg text-gray-600"
+              class="px-4 py-2 text-lg font-bold text-gray-600 transition-colors hover:bg-gray-200"
             >
               +
             </button>
@@ -1169,22 +1169,22 @@ onMounted(fetchProductDetail);
           >
         </div>
 
-        <!-- <div class="flex sm:flex-row flex-col gap-4 pt-4">
+        <!-- <div class="flex flex-col gap-4 pt-4 sm:flex-row">
           <button
             @click="handleAction('cart')"
-            class="flex-1 hover:bg-black py-4 border-2 border-black font-bold hover:text-white text-xs uppercase tracking-widest transition"
+            class="flex-1 py-4 text-xs font-bold tracking-widest uppercase transition border-2 border-black hover:bg-black hover:text-white"
           >
             Add to Cart
           </button>
           <button
             @click="handleAction('buy')"
-            class="flex-1 bg-black hover:bg-gray-800 py-4 font-bold text-white text-xs uppercase tracking-widest transition"
+            class="flex-1 py-4 text-xs font-bold tracking-widest text-white uppercase transition bg-black hover:bg-gray-800"
           >
             Buy It Now
           </button>
         </div> -->
 
-        <!-- <div class="flex sm:flex-row flex-col gap-4 pt-4">
+        <!-- <div class="flex flex-col gap-4 pt-4 sm:flex-row">
           <button
             @click="handleAction('cart')"
             :disabled="isInCart || product.stock === 0"
@@ -1211,7 +1211,7 @@ onMounted(fetchProductDetail);
           </button>
         </div> -->
 
-        <div class="flex sm:flex-row flex-col gap-4 pt-4">
+        <div class="flex flex-col gap-4 pt-4 sm:flex-row">
           <button
             @click="handleAction('cart')"
             :disabled="isInCart || product.stock === 0"
@@ -1246,7 +1246,7 @@ onMounted(fetchProductDetail);
           </button>
         </div>
 
-        <!-- <div class="pt-8 border-gray-200 border-t divide-y divide-gray-200">
+        <!-- <div class="pt-8 border-t border-gray-200 divide-y divide-gray-200">
           <div
             v-for="section in ['Description', 'Care', 'Design']"
             :key="section"
@@ -1256,9 +1256,9 @@ onMounted(fetchProductDetail);
               @click="
                 activeSection = activeSection === section ? null : section
               "
-              class="group flex justify-between items-center w-full font-medium text-xs text-left uppercase tracking-widest"
+              class="flex items-center justify-between w-full text-xs font-medium tracking-widest text-left uppercase group"
             >
-              <span class="group-hover:text-gray-500 transition">{{
+              <span class="transition group-hover:text-gray-500">{{
                 section
               }}</span>
               <span>{{ activeSection === section ? "−" : "+" }}</span>
@@ -1266,7 +1266,7 @@ onMounted(fetchProductDetail);
             <transition name="fade">
               <div
                 v-show="activeSection === section"
-                class="mt-4 text-gray-600 text-sm leading-relaxed whitespace-pre-wrap"
+                class="mt-4 text-sm leading-relaxed text-gray-600 whitespace-pre-wrap"
               >
                 {{
                   product[section.toLowerCase()] || "No information available."
@@ -1275,7 +1275,7 @@ onMounted(fetchProductDetail);
             </transition>
           </div>
         </div> -->
-        <div class="pt-8 border-gray-200 border-t divide-y divide-gray-200">
+        <div class="pt-8 border-t border-gray-200 divide-y divide-gray-200">
           <div
             v-for="section in [
               'Description',
@@ -1289,9 +1289,9 @@ onMounted(fetchProductDetail);
               @click="
                 activeSection = activeSection === section ? null : section
               "
-              class="group flex justify-between items-center w-full font-medium text-xs text-left uppercase tracking-widest"
+              class="flex items-center justify-between w-full text-xs font-medium tracking-widest text-left uppercase group"
             >
-              <span class="group-hover:text-gray-500 transition">{{
+              <span class="transition group-hover:text-gray-500">{{
                 section
               }}</span>
               <span>{{ activeSection === section ? "−" : "+" }}</span>
@@ -1299,7 +1299,7 @@ onMounted(fetchProductDetail);
             <transition name="fade">
               <div
                 v-show="activeSection === section"
-                class="mt-4 text-gray-600 text-sm leading-relaxed whitespace-pre-wrap"
+                class="mt-4 text-sm leading-relaxed text-gray-600 whitespace-pre-wrap"
               >
                 <template v-if="section !== 'Shipping & Returns'">
                   {{
@@ -1890,8 +1890,27 @@ const validateQuantity = () => {
 };
 
 // Mengecek apakah produk ini sudah ada di keranjang user
+// const isInCart = computed(() => {
+//   if (!product.value || !cartItems.value) return false;
+//   return cartItems.value.some((item) => item.product_id === product.value.id);
+// });
+
+// Mengecek apakah produk dengan warna spesifik ini sudah ada di keranjang user
 const isInCart = computed(() => {
   if (!product.value || !cartItems.value) return false;
+  
+  // [PERBAIKAN KUNCI] Jika produk memiliki varian warna
+  if (product.value.color && product.value.color.length > 0) {
+    // Jika belum ada warna yang dipilih, biarkan tombol "Add to Cart" tetap muncul
+    if (!selectedColor.value) return false;
+    
+    // Tombol baru akan berubah menjadi "Already in Bag" JIKA kombinasi ID dan Warnanya sudah ada
+    return cartItems.value.some(
+      (item) => item.product_id === product.value.id && item.color === selectedColor.value
+    );
+  }
+
+  // Jika produk tidak punya varian warna, cukup cek ID produk
   return cartItems.value.some((item) => item.product_id === product.value.id);
 });
 // ==========================================
