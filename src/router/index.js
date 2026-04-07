@@ -1383,7 +1383,7 @@ const resetIdleTimer = () => {
 
     // Lempar ke halaman login
     window.location.href = '/loginadmin'; 
-  }, 15 * 60 * 1000);
+  }, 15 * 1000);
 };
 
 // Pasang pendeteksi pergerakan user
