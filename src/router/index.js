@@ -1214,7 +1214,7 @@ router.beforeEach((to, from, next) => {
       
       // Jika ternyata beda waktunya sudah lewat 15 menit (misal dia tutup laptop lalu buka lagi)
       // if (diff > 15 * 60 * 1000) {
-      if (diff > 59 * 1000) {
+      if (diff > 5 * 1000) {
         localStorage.removeItem("admin_token");
         localStorage.removeItem("admin");
         localStorage.removeItem("admin_last_activity");
