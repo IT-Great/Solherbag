@@ -966,8 +966,11 @@ onMounted(initData);
         class="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm px-4"
         @click.self="closePopup"
       >
-        <div
+        <!-- <div
           class="bg-[#F8F8F8] w-full max-w-3xl flex flex-col md:flex-row relative shadow-2xl overflow-hidden"
+        > -->
+        <div
+          class="relative flex flex-col w-full max-w-3xl overflow-hidden bg-white shadow-2xl md:flex-row"
         >
           <button
             @click="closePopup"
