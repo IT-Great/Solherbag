@@ -1,5 +1,5 @@
 <!-- <template>
-  <section class="bg-white w-full">
+  <section class="w-full bg-white">
     <div
       class="w-full overflow-hidden cursor-pointer"
       @click="navigateToSpecificProduct('ETERNA RED')"
@@ -7,38 +7,38 @@
       <img
         src="../../assets/home_firstimage.jpeg"
         alt="SolHer Product"
-        class="w-full h-auto object-cover hover:scale-105 transition-transform duration-1000"
+        class="object-cover w-full h-auto transition-transform duration-1000 hover:scale-105"
       />
     </div>
 
-    <div class="mx-auto px-6 py-16 md:py-24 max-w-4xl text-center">
+    <div class="max-w-4xl px-6 py-16 mx-auto text-center md:py-24">
       <h2
-        class="mb-6 font-medium text-black text-2xl md:text-3xl tracking-tight"
+        class="mb-6 text-2xl font-medium tracking-tight text-black md:text-3xl"
       >
         Crafted from Premium Selected Leatherty
       </h2>
-      <p class="font-light text-gray-700 text-sm md:text-base leading-relaxed">
+      <p class="text-sm font-light leading-relaxed text-gray-700 md:text-base">
         Crafted from carefully selected genuine leather, each SolHer piece
         reflects timeless elegance and refined craftsmanship — a seamless blend
         of beauty, quality, and modern sophistication.
       </p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 w-full overflow-hidden">
+    <div class="grid w-full grid-cols-1 overflow-hidden md:grid-cols-2">
       <img
         src="../../assets/DSCF5814.jpg"
         @click="navigateToSpecificProduct('IMPERIAL RED')"
-        class="w-full h-full object-cover hover:scale-105 transition-transform duration-700 cursor-pointer"
+        class="object-cover w-full h-full transition-transform duration-700 cursor-pointer hover:scale-105"
       />
       <img
         src="../../assets/DSCF5186.jpg"
         @click="navigateToSpecificProduct('MAN TANG HONG')"
-        class="w-full h-full object-cover hover:scale-105 transition-transform duration-700 cursor-pointer"
+        class="object-cover w-full h-full transition-transform duration-700 cursor-pointer hover:scale-105"
       />
     </div>
 
-    <div class="mx-auto px-6 py-16 md:py-24 max-w-4xl text-center">
-      <h2 class="mb-8 font-medium text-black text-xl md:text-2xl leading-snug">
+    <div class="max-w-4xl px-6 py-16 mx-auto text-center md:py-24">
+      <h2 class="mb-8 text-xl font-medium leading-snug text-black md:text-2xl">
         Embrace the possibilities with <br />go everywhere bags
       </h2>
 
@@ -50,10 +50,10 @@
       </router-link>
     </div>
 
-    <div class="px-6 py-24 w-full">
+    <div class="w-full px-6 py-24">
       <div class="mx-auto max-w-[1600px]">
         <h3
-          class="mb-10 font-serif font-light text-gray-800 text-3xl md:text-4xl italic"
+          class="mb-10 font-serif text-3xl italic font-light text-gray-800 md:text-4xl"
         >
           Volume 1 - Goddess Of The Sun
         </h3>
@@ -65,8 +65,8 @@
             class="flex-shrink-0 w-[300px] md:w-[380px] animate-pulse"
           >
             <div class="bg-gray-200 mb-4 w-full h-[350px] md:h-[450px]"></div>
-            <div class="bg-gray-200 mb-2 w-1/2 h-3"></div>
-            <div class="bg-gray-200 w-1/4 h-3"></div>
+            <div class="w-1/2 h-3 mb-2 bg-gray-200"></div>
+            <div class="w-1/4 h-3 bg-gray-200"></div>
           </div>
         </div>
 
@@ -77,7 +77,7 @@
             @click="$router.push(`/product/${p.id}`)"
             class="group flex-shrink-0 w-[300px] md:w-[380px] cursor-pointer"
           >
-            <div class="bg-gray-100 mb-4 overflow-hidden">
+            <div class="mb-4 overflow-hidden bg-gray-100">
               <img
                 :src="p.image"
                 class="w-full h-[350px] md:h-[450px] object-cover group-hover:scale-110 transition-transform duration-700"
@@ -93,10 +93,10 @@
       </div>
     </div>
 
-    <div class="px-6 pb-24 w-full">
+    <div class="w-full px-6 pb-24">
       <div class="mx-auto max-w-[1600px]">
         <h3
-          class="mb-10 font-serif font-light text-gray-800 text-3xl md:text-4xl italic"
+          class="mb-10 font-serif text-3xl italic font-light text-gray-800 md:text-4xl"
         >
           Volume 2 - The Red Chapter Collection
         </h3>
@@ -108,8 +108,8 @@
             class="flex-shrink-0 w-[300px] md:w-[380px] animate-pulse"
           >
             <div class="bg-gray-200 mb-4 w-full h-[350px] md:h-[450px]"></div>
-            <div class="bg-gray-200 mb-2 w-1/2 h-3"></div>
-            <div class="bg-gray-200 w-1/4 h-3"></div>
+            <div class="w-1/2 h-3 mb-2 bg-gray-200"></div>
+            <div class="w-1/4 h-3 bg-gray-200"></div>
           </div>
         </div>
 
@@ -120,7 +120,7 @@
             @click="$router.push(`/product/${p.id}`)"
             class="group flex-shrink-0 w-[300px] md:w-[380px] cursor-pointer"
           >
-            <div class="bg-gray-100 mb-4 overflow-hidden">
+            <div class="mb-4 overflow-hidden bg-gray-100">
               <img
                 :src="p.image"
                 class="w-full h-[350px] md:h-[450px] object-cover group-hover:scale-110 transition-transform duration-700"
@@ -143,11 +143,11 @@
       <img
         src="../../assets/home_lastimage.jpg"
         alt="Premium Materials"
-        class="w-full h-full object-cover"
+        class="object-cover w-full h-full"
       />
-      <div class="absolute inset-0 flex items-end bg-black/10 p-8 md:p-16">
+      <div class="absolute inset-0 flex items-end p-8 bg-black/10 md:p-16">
         <h2
-          class="max-w-md font-serif font-light text-white text-2xl md:text-5xl"
+          class="max-w-md font-serif text-2xl font-light text-white md:text-5xl"
         >
           Premium materials and <br />hand-selected finishing touches
         </h2>
@@ -234,53 +234,53 @@ onMounted(initData);
 </style> -->
 
 <!-- <template>
-  <section class="bg-white w-full">
+  <section class="w-full bg-white">
     <div
-      class="w-full overflow-hidden cursor-pointer relative"
+      class="relative w-full overflow-hidden cursor-pointer"
       @click="navigateToSpecificProduct('ETERNA RED')"
     >
       <img
         src="../../assets/home_firstimage.jpeg"
         alt="SolHer Product"
-        class="w-full h-auto object-cover hover:scale-105 transition-transform duration-1000"
+        class="object-cover w-full h-auto transition-transform duration-1000 hover:scale-105"
       />
-      <div class="absolute bottom-10 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-sm px-6 py-3 rounded-full shadow-2xl flex items-center gap-3 animate-bounce">
-        <span class="relative flex h-3 w-3">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+      <div class="absolute flex items-center gap-3 px-6 py-3 -translate-x-1/2 rounded-full shadow-2xl bottom-10 left-1/2 bg-white/90 backdrop-blur-sm animate-bounce">
+        <span class="relative flex w-3 h-3">
+          <span class="absolute inline-flex w-full h-full bg-red-400 rounded-full opacity-75 animate-ping"></span>
+          <span class="relative inline-flex w-3 h-3 bg-red-500 rounded-full"></span>
         </span>
-        <p class="font-bold text-xs uppercase tracking-widest text-black">Eterna Red is selling fast!</p>
+        <p class="text-xs font-bold tracking-widest text-black uppercase">Eterna Red is selling fast!</p>
       </div>
     </div>
 
-    <div class="mx-auto px-6 py-16 md:py-24 max-w-4xl text-center">
-      <h2 class="mb-6 font-medium text-black text-2xl md:text-3xl tracking-tight">
+    <div class="max-w-4xl px-6 py-16 mx-auto text-center md:py-24">
+      <h2 class="mb-6 text-2xl font-medium tracking-tight text-black md:text-3xl">
         Crafted from Premium Selected Leatherty
       </h2>
-      <p class="font-light text-gray-700 text-sm md:text-base leading-relaxed">
+      <p class="text-sm font-light leading-relaxed text-gray-700 md:text-base">
         Crafted from carefully selected genuine leather, each SolHer piece
         reflects timeless elegance and refined craftsmanship — a seamless blend
         of beauty, quality, and modern sophistication.
       </p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 w-full overflow-hidden">
-      <div class="relative overflow-hidden group cursor-pointer" @click="navigateToSpecificProduct('IMPERIAL RED')">
-        <img src="../../assets/DSCF5814.jpg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-        <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-          <span class="bg-white text-black px-6 py-3 rounded-full font-bold text-xs uppercase tracking-widest">Discover Imperial</span>
+    <div class="grid w-full grid-cols-1 overflow-hidden md:grid-cols-2">
+      <div class="relative overflow-hidden cursor-pointer group" @click="navigateToSpecificProduct('IMPERIAL RED')">
+        <img src="../../assets/DSCF5814.jpg" class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105" />
+        <div class="absolute inset-0 flex items-center justify-center transition-opacity opacity-0 bg-black/20 group-hover:opacity-100">
+          <span class="px-6 py-3 text-xs font-bold tracking-widest text-black uppercase bg-white rounded-full">Discover Imperial</span>
         </div>
       </div>
-      <div class="relative overflow-hidden group cursor-pointer" @click="navigateToSpecificProduct('MAN TANG HONG')">
-        <img src="../../assets/DSCF5186.jpg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-        <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-          <span class="bg-white text-black px-6 py-3 rounded-full font-bold text-xs uppercase tracking-widest">Shop Man Tang</span>
+      <div class="relative overflow-hidden cursor-pointer group" @click="navigateToSpecificProduct('MAN TANG HONG')">
+        <img src="../../assets/DSCF5186.jpg" class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105" />
+        <div class="absolute inset-0 flex items-center justify-center transition-opacity opacity-0 bg-black/20 group-hover:opacity-100">
+          <span class="px-6 py-3 text-xs font-bold tracking-widest text-black uppercase bg-white rounded-full">Shop Man Tang</span>
         </div>
       </div>
     </div>
 
-    <div class="mx-auto px-6 py-16 md:py-24 max-w-4xl text-center border-b border-gray-100">
-      <h2 class="mb-8 font-medium text-black text-xl md:text-2xl leading-snug">
+    <div class="max-w-4xl px-6 py-16 mx-auto text-center border-b border-gray-100 md:py-24">
+      <h2 class="mb-8 text-xl font-medium leading-snug text-black md:text-2xl">
         Embrace the possibilities with <br />go everywhere bags
       </h2>
 
@@ -292,26 +292,26 @@ onMounted(initData);
       </router-link>
     </div>
 
-    <div v-if="!isLoading && state.trendingProducts?.length > 0" class="px-6 py-20 w-full bg-gray-50 border-b border-gray-200">
+    <div v-if="!isLoading && state.trendingProducts?.length > 0" class="w-full px-6 py-20 border-b border-gray-200 bg-gray-50">
       <div class="mx-auto max-w-[1600px]">
-        <div class="flex justify-between items-end mb-10">
+        <div class="flex items-end justify-between mb-10">
           <div>
-            <h3 class="font-serif font-light text-red-700 text-3xl md:text-4xl italic">
+            <h3 class="font-serif text-3xl italic font-light text-red-700 md:text-4xl">
               Trending Now
             </h3>
-            <p class="text-xs text-gray-500 uppercase tracking-widest mt-2 font-bold">Our most loved pieces this week</p>
+            <p class="mt-2 text-xs font-bold tracking-widest text-gray-500 uppercase">Our most loved pieces this week</p>
           </div>
-          <router-link to="/collections" class="hidden md:block text-xs font-bold uppercase tracking-widest underline hover:text-red-600 transition">View All</router-link>
+          <router-link to="/collections" class="hidden text-xs font-bold tracking-widest underline uppercase transition md:block hover:text-red-600">View All</router-link>
         </div>
 
-        <div class="flex gap-4 overflow-x-auto scrollbar-hide pb-4">
+        <div class="flex gap-4 pb-4 overflow-x-auto scrollbar-hide">
           <div
             v-for="p in state.trendingProducts"
             :key="'trend-'+p.id"
             @click="$router.push(`/product/${p.id}`)"
             class="group flex-shrink-0 w-[240px] md:w-[300px] cursor-pointer"
           >
-            <div class="relative bg-white mb-4 overflow-hidden rounded-xl shadow-sm border border-gray-100">
+            <div class="relative mb-4 overflow-hidden bg-white border border-gray-100 shadow-sm rounded-xl">
               <img
                 :src="p.image"
                 class="w-full h-[300px] md:h-[380px] object-cover group-hover:scale-105 transition-transform duration-700"
@@ -321,11 +321,11 @@ onMounted(initData);
                 Hot
               </div>
             </div>
-            <h4 class="font-bold text-xs text-gray-900 uppercase tracking-widest truncate">
+            <h4 class="text-xs font-bold tracking-widest text-gray-900 uppercase truncate">
               {{ p.name }}
             </h4>
             <div class="flex items-center gap-2 mt-1">
-              <p v-if="p.discount_price" class="font-bold text-red-600 text-sm">{{ formatPrice(p.discount_price) }}</p>
+              <p v-if="p.discount_price" class="text-sm font-bold text-red-600">{{ formatPrice(p.discount_price) }}</p>
               <p :class="p.discount_price ? 'text-[10px] text-gray-400 line-through' : 'font-bold text-sm text-gray-600'">
                 {{ formatPrice(p.price) }}
               </p>
@@ -335,17 +335,17 @@ onMounted(initData);
       </div>
     </div>
 
-    <div class="px-6 py-24 w-full">
+    <div class="w-full px-6 py-24">
       <div class="mx-auto max-w-[1600px]">
-        <h3 class="mb-10 font-serif font-light text-gray-800 text-3xl md:text-4xl italic">
+        <h3 class="mb-10 font-serif text-3xl italic font-light text-gray-800 md:text-4xl">
           Volume 1 - Goddess Of The Sun
         </h3>
 
         <div v-if="isLoading" class="flex gap-4 overflow-hidden">
           <div v-for="n in 4" :key="n" class="flex-shrink-0 w-[300px] md:w-[380px] animate-pulse">
             <div class="bg-gray-200 mb-4 w-full h-[350px] md:h-[450px]"></div>
-            <div class="bg-gray-200 mb-2 w-1/2 h-3"></div>
-            <div class="bg-gray-200 w-1/4 h-3"></div>
+            <div class="w-1/2 h-3 mb-2 bg-gray-200"></div>
+            <div class="w-1/4 h-3 bg-gray-200"></div>
           </div>
         </div>
 
@@ -356,7 +356,7 @@ onMounted(initData);
             @click="$router.push(`/product/${p.id}`)"
             class="group flex-shrink-0 w-[300px] md:w-[380px] cursor-pointer"
           >
-            <div class="bg-gray-100 mb-4 overflow-hidden relative">
+            <div class="relative mb-4 overflow-hidden bg-gray-100">
               <img
                 :src="p.image"
                 class="w-full h-[350px] md:h-[450px] object-cover group-hover:scale-110 transition-transform duration-700"
@@ -373,17 +373,17 @@ onMounted(initData);
       </div>
     </div>
 
-    <div class="px-6 pb-24 w-full">
+    <div class="w-full px-6 pb-24">
       <div class="mx-auto max-w-[1600px]">
-        <h3 class="mb-10 font-serif font-light text-gray-800 text-3xl md:text-4xl italic">
+        <h3 class="mb-10 font-serif text-3xl italic font-light text-gray-800 md:text-4xl">
           Volume 2 - The Red Chapter Collection
         </h3>
 
         <div v-if="isLoading" class="flex gap-4 overflow-hidden">
           <div v-for="n in 4" :key="n" class="flex-shrink-0 w-[300px] md:w-[380px] animate-pulse">
             <div class="bg-gray-200 mb-4 w-full h-[350px] md:h-[450px]"></div>
-            <div class="bg-gray-200 mb-2 w-1/2 h-3"></div>
-            <div class="bg-gray-200 w-1/4 h-3"></div>
+            <div class="w-1/2 h-3 mb-2 bg-gray-200"></div>
+            <div class="w-1/4 h-3 bg-gray-200"></div>
           </div>
         </div>
 
@@ -394,7 +394,7 @@ onMounted(initData);
             @click="$router.push(`/product/${p.id}`)"
             class="group flex-shrink-0 w-[300px] md:w-[380px] cursor-pointer"
           >
-            <div class="bg-gray-100 mb-4 overflow-hidden relative">
+            <div class="relative mb-4 overflow-hidden bg-gray-100">
               <img
                 :src="p.image"
                 class="w-full h-[350px] md:h-[450px] object-cover group-hover:scale-110 transition-transform duration-700"
@@ -417,10 +417,10 @@ onMounted(initData);
       <img
         src="../../assets/home_lastimage.jpg"
         alt="Premium Materials"
-        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
+        class="object-cover w-full h-full transition-transform duration-1000 group-hover:scale-105"
       />
-      <div class="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 to-transparent p-8 md:p-16">
-        <h2 class="max-w-md font-serif font-light text-white text-2xl md:text-5xl translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+      <div class="absolute inset-0 flex items-end p-8 bg-gradient-to-t from-black/60 to-transparent md:p-16">
+        <h2 class="max-w-md font-serif text-2xl font-light text-white transition-transform duration-500 translate-y-4 md:text-5xl group-hover:translate-y-0">
           Premium materials and <br />hand-selected finishing touches
         </h2>
       </div>
@@ -488,41 +488,41 @@ onMounted(initData);
 </style> -->
 
 <template>
-  <section class="bg-white w-full overflow-x-hidden">
+  <section class="w-full overflow-x-hidden bg-white">
     <div
       v-reveal
-      class="w-full overflow-hidden cursor-pointer relative"
+      class="relative w-full overflow-hidden cursor-pointer"
       @click="navigateToSpecificProduct('ETERNA RED')"
     >
       <img
         src="../../assets/home_firstimage.jpeg"
         alt="SolHer Product"
-        class="w-full h-auto object-cover hover:scale-105 transition-transform duration-1000"
+        class="object-cover w-full h-auto transition-transform duration-1000 hover:scale-105"
       />
       <div
-        class="absolute bottom-10 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-sm px-6 py-3 rounded-full shadow-2xl flex items-center gap-3 animate-bounce"
+        class="absolute flex items-center gap-3 px-6 py-3 -translate-x-1/2 rounded-full shadow-2xl bottom-10 left-1/2 bg-white/90 backdrop-blur-sm animate-bounce"
       >
-        <span class="relative flex h-3 w-3">
+        <span class="relative flex w-3 h-3">
           <span
-            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"
+            class="absolute inline-flex w-full h-full bg-red-400 rounded-full opacity-75 animate-ping"
           ></span>
           <span
-            class="relative inline-flex rounded-full h-3 w-3 bg-red-500"
+            class="relative inline-flex w-3 h-3 bg-red-500 rounded-full"
           ></span>
         </span>
-        <p class="font-bold text-xs uppercase tracking-widest text-black">
+        <p class="text-xs font-bold tracking-widest text-black uppercase">
           Eterna Red is selling fast!
         </p>
       </div>
     </div>
 
-    <div v-reveal class="mx-auto px-6 py-16 md:py-24 max-w-4xl text-center">
+    <div v-reveal class="max-w-4xl px-6 py-16 mx-auto text-center md:py-24">
       <h2
-        class="mb-6 font-medium text-black text-2xl md:text-3xl tracking-tight"
+        class="mb-6 text-2xl font-medium tracking-tight text-black md:text-3xl"
       >
         Crafted from Premium Selected Leatherty
       </h2>
-      <p class="font-light text-gray-700 text-sm md:text-base leading-relaxed">
+      <p class="text-sm font-light leading-relaxed text-gray-700 md:text-base">
         Crafted from carefully selected genuine leather, each SolHer piece
         reflects timeless elegance and refined craftsmanship — a seamless blend
         of beauty, quality, and modern sophistication.
@@ -531,10 +531,10 @@ onMounted(initData);
 
     <!-- <div
       v-reveal
-      class="grid grid-cols-1 md:grid-cols-2 w-full overflow-hidden"
+      class="grid w-full grid-cols-1 overflow-hidden md:grid-cols-2"
     >
       <div
-        class="relative overflow-hidden group cursor-pointer"
+        class="relative overflow-hidden cursor-pointer group"
         @click="navigateToSpecificProduct('IMPERIAL RED')"
       >
         <img
@@ -542,16 +542,16 @@ onMounted(initData);
           class="w-full h-[400px] md:h-full object-cover group-hover:scale-105 transition-transform duration-700"
         />
         <div
-          class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+          class="absolute inset-0 flex items-center justify-center transition-opacity opacity-0 bg-black/20 group-hover:opacity-100"
         >
           <span
-            class="bg-white text-black px-6 py-3 rounded-full font-bold text-xs uppercase tracking-widest shadow-lg"
+            class="px-6 py-3 text-xs font-bold tracking-widest text-black uppercase bg-white rounded-full shadow-lg"
             >Discover Imperial</span
           >
         </div>
       </div>
       <div
-        class="relative overflow-hidden group cursor-pointer"
+        class="relative overflow-hidden cursor-pointer group"
         @click="navigateToSpecificProduct('MAN TANG HONG')"
       >
         <img
@@ -559,10 +559,10 @@ onMounted(initData);
           class="w-full h-[400px] md:h-full object-cover group-hover:scale-105 transition-transform duration-700"
         />
         <div
-          class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+          class="absolute inset-0 flex items-center justify-center transition-opacity opacity-0 bg-black/20 group-hover:opacity-100"
         >
           <span
-            class="bg-white text-black px-6 py-3 rounded-full font-bold text-xs uppercase tracking-widest shadow-lg"
+            class="px-6 py-3 text-xs font-bold tracking-widest text-black uppercase bg-white rounded-full shadow-lg"
             >Shop Man Tang</span
           >
         </div>
@@ -571,10 +571,10 @@ onMounted(initData);
 
     <div
       v-reveal
-      class="grid grid-cols-1 md:grid-cols-2 w-full overflow-hidden"
+      class="grid w-full grid-cols-1 overflow-hidden md:grid-cols-2"
     >
       <div
-        class="relative overflow-hidden group cursor-pointer"
+        class="relative overflow-hidden cursor-pointer group"
         @click="navigateToSpecificProduct('ZAHARA')"
       >
         <img
@@ -582,10 +582,10 @@ onMounted(initData);
           class="w-full h-[400px] md:h-full object-cover group-hover:scale-105 transition-transform duration-700"
         />
         <div
-          class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+          class="absolute inset-0 flex items-center justify-center transition-opacity opacity-0 bg-black/20 group-hover:opacity-100"
         >
           <span
-            class="bg-white text-black px-6 py-3 rounded-full font-bold text-xs uppercase tracking-widest shadow-lg"
+            class="px-6 py-3 text-xs font-bold tracking-widest text-black uppercase bg-white rounded-full shadow-lg"
             >Discover Zahara</span
           >
         </div>
@@ -599,10 +599,10 @@ onMounted(initData);
           class="w-full h-[400px] md:h-full object-cover group-hover:scale-105 transition-transform duration-700"
         />
         <div
-          class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+          class="absolute inset-0 flex items-center justify-center transition-opacity opacity-0 bg-black/20 group-hover:opacity-100"
         >
           <span
-            class="bg-white text-black px-6 py-3 rounded-full font-bold text-xs uppercase tracking-widest shadow-lg"
+            class="px-6 py-3 text-xs font-bold tracking-widest text-black uppercase bg-white rounded-full shadow-lg"
             >Coming Soon</span
           >
         </div>
@@ -611,9 +611,9 @@ onMounted(initData);
 
     <div
       v-reveal
-      class="mx-auto px-6 py-16 md:py-24 max-w-4xl text-center border-b border-gray-100"
+      class="max-w-4xl px-6 py-16 mx-auto text-center border-b border-gray-100 md:py-24"
     >
-      <h2 class="mb-8 font-medium text-black text-xl md:text-2xl leading-snug">
+      <h2 class="mb-8 text-xl font-medium leading-snug text-black md:text-2xl">
         Embrace the possibilities with <br />go everywhere bags
       </h2>
 
@@ -628,30 +628,30 @@ onMounted(initData);
     <div
       v-if="!isLoading && state.trendingProducts?.length > 0"
       v-reveal
-      class="px-6 py-20 w-full bg-gray-50 border-b border-gray-200"
+      class="w-full px-6 py-20 border-b border-gray-200 bg-gray-50"
     >
       <div class="mx-auto max-w-[1600px]">
-        <div class="flex justify-between items-end mb-10">
+        <div class="flex items-end justify-between mb-10">
           <div>
             <h3
-              class="font-serif font-light text-red-700 text-3xl md:text-4xl italic"
+              class="font-serif text-3xl italic font-light text-red-700 md:text-4xl"
             >
               Trending Now
             </h3>
             <p
-              class="text-xs text-gray-500 uppercase tracking-widest mt-2 font-bold"
+              class="mt-2 text-xs font-bold tracking-widest text-gray-500 uppercase"
             >
               Our most loved pieces this week
             </p>
           </div>
           <router-link
             to="/collections"
-            class="hidden md:block text-xs font-bold uppercase tracking-widest underline hover:text-red-600 transition"
+            class="hidden text-xs font-bold tracking-widest underline uppercase transition md:block hover:text-red-600"
             >View All</router-link
           >
         </div>
 
-        <div class="flex gap-4 overflow-x-auto scrollbar-hide pb-4">
+        <div class="flex gap-4 pb-4 overflow-x-auto scrollbar-hide">
           <div
             v-for="p in state.trendingProducts"
             :key="'trend-' + p.id"
@@ -659,7 +659,7 @@ onMounted(initData);
             class="group flex-shrink-0 w-[240px] md:w-[300px] cursor-pointer"
           >
             <div
-              class="relative bg-white mb-4 overflow-hidden rounded-xl shadow-sm border border-gray-100"
+              class="relative mb-4 overflow-hidden bg-white border border-gray-100 shadow-sm rounded-xl"
             >
               <img
                 :src="p.image"
@@ -673,12 +673,12 @@ onMounted(initData);
               </div>
             </div>
             <h4
-              class="font-bold text-xs text-gray-900 uppercase tracking-widest truncate"
+              class="text-xs font-bold tracking-widest text-gray-900 uppercase truncate"
             >
               {{ p.name }}
             </h4>
             <div class="flex items-center gap-2 mt-1">
-              <p v-if="p.discount_price" class="font-bold text-red-600 text-sm">
+              <p v-if="p.discount_price" class="text-sm font-bold text-red-600">
                 {{ formatPrice(p.discount_price) }}
               </p>
               <p
@@ -696,11 +696,11 @@ onMounted(initData);
       </div>
     </div>
 
-    <div class="px-6 py-24 w-full">
+    <div class="w-full px-6 py-24">
       <div class="mx-auto max-w-[1600px]">
         <h3
           v-reveal
-          class="mb-10 font-serif font-light text-gray-800 text-3xl md:text-4xl italic"
+          class="mb-10 font-serif text-3xl italic font-light text-gray-800 md:text-4xl"
         >
           Volume 1 - Goddess Of The Sun
         </h3>
@@ -712,8 +712,8 @@ onMounted(initData);
             class="flex-shrink-0 w-[300px] md:w-[380px] animate-pulse"
           >
             <div class="bg-gray-200 mb-4 w-full h-[350px] md:h-[450px]"></div>
-            <div class="bg-gray-200 mb-2 w-1/2 h-3"></div>
-            <div class="bg-gray-200 w-1/4 h-3"></div>
+            <div class="w-1/2 h-3 mb-2 bg-gray-200"></div>
+            <div class="w-1/4 h-3 bg-gray-200"></div>
           </div>
         </div>
 
@@ -724,7 +724,7 @@ onMounted(initData);
             @click="$router.push(`/product/${p.id}`)"
             class="group flex-shrink-0 w-[300px] md:w-[380px] cursor-pointer"
           >
-            <div class="bg-gray-100 mb-4 overflow-hidden relative">
+            <div class="relative mb-4 overflow-hidden bg-gray-100">
               <img
                 :src="p.image"
                 class="w-full h-[350px] md:h-[450px] object-cover group-hover:scale-110 transition-transform duration-700"
@@ -748,11 +748,11 @@ onMounted(initData);
       </div>
     </div>
 
-    <div class="px-6 pb-24 w-full">
+    <div class="w-full px-6 pb-24">
       <div class="mx-auto max-w-[1600px]">
         <h3
           v-reveal
-          class="mb-10 font-serif font-light text-gray-800 text-3xl md:text-4xl italic"
+          class="mb-10 font-serif text-3xl italic font-light text-gray-800 md:text-4xl"
         >
           Volume 2 - The Red Chapter Collection
         </h3>
@@ -764,8 +764,8 @@ onMounted(initData);
             class="flex-shrink-0 w-[300px] md:w-[380px] animate-pulse"
           >
             <div class="bg-gray-200 mb-4 w-full h-[350px] md:h-[450px]"></div>
-            <div class="bg-gray-200 mb-2 w-1/2 h-3"></div>
-            <div class="bg-gray-200 w-1/4 h-3"></div>
+            <div class="w-1/2 h-3 mb-2 bg-gray-200"></div>
+            <div class="w-1/4 h-3 bg-gray-200"></div>
           </div>
         </div>
 
@@ -776,7 +776,7 @@ onMounted(initData);
             @click="$router.push(`/product/${p.id}`)"
             class="group flex-shrink-0 w-[300px] md:w-[380px] cursor-pointer"
           >
-            <div class="bg-gray-100 mb-4 overflow-hidden relative">
+            <div class="relative mb-4 overflow-hidden bg-gray-100">
               <img
                 :src="p.image"
                 class="w-full h-[350px] md:h-[450px] object-cover group-hover:scale-110 transition-transform duration-700"
@@ -794,11 +794,11 @@ onMounted(initData);
       </div>
     </div>
 
-    <div class="px-6 pb-24 w-full">
+    <div class="w-full px-6 pb-24">
       <div class="mx-auto max-w-[1600px]">
         <h3
           v-reveal
-          class="mb-10 font-serif font-light text-gray-800 text-3xl md:text-4xl italic"
+          class="mb-10 font-serif text-3xl italic font-light text-gray-800 md:text-4xl"
         >
           Volume 3 - The Raya Heirloom
         </h3>
@@ -810,8 +810,8 @@ onMounted(initData);
             class="flex-shrink-0 w-[300px] md:w-[380px] animate-pulse"
           >
             <div class="bg-gray-200 mb-4 w-full h-[350px] md:h-[450px]"></div>
-            <div class="bg-gray-200 mb-2 w-1/2 h-3"></div>
-            <div class="bg-gray-200 w-1/4 h-3"></div>
+            <div class="w-1/2 h-3 mb-2 bg-gray-200"></div>
+            <div class="w-1/4 h-3 bg-gray-200"></div>
           </div>
         </div>
 
@@ -822,7 +822,7 @@ onMounted(initData);
             @click="$router.push(`/product/${p.id}`)"
             class="group flex-shrink-0 w-[300px] md:w-[380px] cursor-pointer"
           >
-            <div class="bg-gray-100 mb-4 overflow-hidden relative">
+            <div class="relative mb-4 overflow-hidden bg-gray-100">
               <img
                 :src="p.image"
                 class="w-full h-[350px] md:h-[450px] object-cover group-hover:scale-110 transition-transform duration-700"
@@ -854,25 +854,25 @@ onMounted(initData);
       <img
         src="../../assets/home_lastimage.jpg"
         alt="Premium Materials"
-        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
+        class="object-cover w-full h-full transition-transform duration-1000 group-hover:scale-105"
       />
       <div
-        class="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 to-transparent p-8 md:p-16"
+        class="absolute inset-0 flex items-end p-8 bg-gradient-to-t from-black/60 to-transparent md:p-16"
       >
         <h2
-          class="max-w-md font-serif font-light text-white text-2xl md:text-5xl translate-y-4 group-hover:translate-y-0 transition-transform duration-500"
+          class="max-w-md font-serif text-2xl font-light text-white transition-transform duration-500 translate-y-4 md:text-5xl group-hover:translate-y-0"
         >
           Premium materials and <br />hand-selected finishing touches
         </h2>
       </div>
     </div>
     <!-- <Transition
-      enter-active-class="transition ease-out duration-700"
-      enter-from-class="opacity-0 scale-95 translate-y-10"
-      enter-to-class="opacity-100 scale-100 translate-y-0"
-      leave-active-class="transition ease-in duration-500"
-      leave-from-class="opacity-100 scale-100"
-      leave-to-class="opacity-0 scale-95"
+      enter-active-class="transition duration-700 ease-out"
+      enter-from-class="scale-95 translate-y-10 opacity-0"
+      enter-to-class="scale-100 translate-y-0 opacity-100"
+      leave-active-class="transition duration-500 ease-in"
+      leave-from-class="scale-100 opacity-100"
+      leave-to-class="scale-95 opacity-0"
     >
       <div
         v-if="showPromoPopup"
@@ -880,11 +880,11 @@ onMounted(initData);
         @click.self="closePopup"
       >
         <div
-          class="bg-white w-full max-w-4xl flex flex-col md:flex-row relative shadow-2xl overflow-hidden rounded-sm"
+          class="relative flex flex-col w-full max-w-4xl overflow-hidden bg-white rounded-sm shadow-2xl md:flex-row"
         >
           <button
             @click="closePopup"
-            class="absolute top-4 right-4 z-10 text-gray-400 hover:text-black transition"
+            class="absolute z-10 text-gray-400 transition top-4 right-4 hover:text-black"
           >
             <svg
               class="w-6 h-6"
@@ -901,11 +901,11 @@ onMounted(initData);
             </svg>
           </button>
 
-          <div class="hidden md:block md:w-1/2 relative bg-gray-100">
+          <div class="relative hidden bg-gray-100 md:block md:w-1/2">
             <img
               src="../../assets/DSCF5814.jpg"
               alt="Promo Bags"
-              class="w-full h-full object-cover"
+              class="object-cover w-full h-full"
             />
           </div>
 
@@ -919,25 +919,25 @@ onMounted(initData);
             </h4>
 
             <h2
-              class="text-4xl md:text-5xl font-extrabold text-black mb-2 tracking-tight"
+              class="mb-2 text-4xl font-extrabold tracking-tight text-black md:text-5xl"
             >
               GET 25.000 PTS
             </h2>
-            <p class="text-lg md:text-xl italic font-serif text-gray-600 mb-8">
+            <p class="mb-8 font-serif text-lg italic text-gray-600 md:text-xl">
               for your first order
             </p>
 
-            <p class="text-xs text-gray-500 leading-relaxed mb-8 max-w-xs">
+            <p class="max-w-xs mb-8 text-xs leading-relaxed text-gray-500">
               Register now and get 25.000 Loyalty Points (worth Rp 25.000)
               automatically applied to your account.
             </p>
 
             <div
-              class="w-full bg-white border border-gray-300 px-4 py-3 mb-4 text-left shadow-inner"
+              class="w-full px-4 py-3 mb-4 text-left bg-white border border-gray-300 shadow-inner"
             >
-              <p class="text-gray-400 text-sm font-light">
+              <p class="text-sm font-light text-gray-400">
                 Claim Code:
-                <span class="font-bold text-black tracking-widest"
+                <span class="font-bold tracking-widest text-black"
                   >SOLHERBARU</span
                 >
               </p>
@@ -945,7 +945,7 @@ onMounted(initData);
 
             <button
               @click="claimPromo"
-              class="w-full bg-black text-white font-bold uppercase tracking-widest text-xs py-4 hover:bg-gray-800 hover:shadow-lg transition-all"
+              class="w-full py-4 text-xs font-bold tracking-widest text-white uppercase transition-all bg-black hover:bg-gray-800 hover:shadow-lg"
             >
               CLAIM REWARD NOW
             </button>
@@ -954,12 +954,12 @@ onMounted(initData);
       </div>
     </Transition> -->
     <Transition
-      enter-active-class="transition ease-out duration-700"
-      enter-from-class="opacity-0 scale-95 translate-y-10"
-      enter-to-class="opacity-100 scale-100 translate-y-0"
-      leave-active-class="transition ease-in duration-500"
-      leave-from-class="opacity-100 scale-100"
-      leave-to-class="opacity-0 scale-95"
+      enter-active-class="transition duration-700 ease-out"
+      enter-from-class="scale-95 translate-y-10 opacity-0"
+      enter-to-class="scale-100 translate-y-0 opacity-100"
+      leave-active-class="transition duration-500 ease-in"
+      leave-from-class="scale-100 opacity-100"
+      leave-to-class="scale-95 opacity-0"
     >
       <div
         v-if="showPromoPopup"
@@ -971,22 +971,22 @@ onMounted(initData);
         >
           <button
             @click="closePopup"
-            class="absolute top-3 right-3 z-10 text-gray-500 hover:text-black transition"
+            class="absolute z-10 text-gray-500 transition top-3 right-3 hover:text-black"
           >
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
           </button>
 
-          <div class="hidden md:block md:w-1/2 relative bg-gray-200">
+          <div class="relative hidden bg-gray-200 md:block md:w-1/2">
             <img
               src="../../assets/DSCF2551.jpg"
               alt="Solher Bags"
-              class="w-full h-full object-cover"
+              class="object-cover w-full h-full"
             />
           </div>
 
-          <div class="w-full md:w-1/2 px-8 py-12 flex flex-col justify-center items-center text-center">
+          <!-- <div class="flex flex-col items-center justify-center w-full px-8 py-12 text-center md:w-1/2">
             
             <h4 class="font-bold tracking-[0.2em] text-xs uppercase text-[#333] mb-1">
               S O L H E R
@@ -996,7 +996,7 @@ onMounted(initData);
             <h2 class="text-[34px] md:text-[38px] font-extrabold text-[#111] mb-2 tracking-tight whitespace-nowrap">
               GET 25.000 OFF
             </h2>
-            <p class="text-base text-gray-800 mb-8 font-serif">
+            <p class="mb-8 font-serif text-base text-gray-800">
               your first order
             </p>
 
@@ -1017,6 +1017,47 @@ onMounted(initData);
             >
               GET 25.000 OFF
             </button>
+          </div> -->
+
+          <div class="flex flex-col items-center justify-center w-full px-8 py-10 text-center md:w-1/2 md:py-12">
+            
+            <h4 class="font-bold tracking-[0.2em] text-xs uppercase text-[#333] mb-1">
+              S O L H E R
+            </h4>
+            <p class="text-[9px] tracking-widest text-gray-500 uppercase mb-6">Indonesia</p>
+
+            <h2 class="text-[28px] md:text-[34px] font-serif font-bold text-[#111] mb-2 tracking-tight leading-tight">
+              ✨ Enjoy <span class="font-extrabold">Rp 250.000 OFF</span><br />Your First Order
+            </h2>
+            
+            <p class="text-[16px] md:text-[18px] text-gray-800 mb-6 font-serif">
+              with minimum purchase of <span class="font-bold">Rp 499.000</span> <br/>
+              <span class="text-sm font-bold text-red-600">(Up to 50% OFF)</span>
+            </p>
+
+            <p class="text-[13px] md:text-[14px] font-sans text-[#444] leading-relaxed mb-8 max-w-[280px]">
+              Join our inner circle and be the first to access curated drops, private offers, and elevated essentials made just for you.
+            </p>
+
+            <div class="w-full max-w-[320px]">
+              <input
+                type="email"
+                v-model="promoEmail"
+                placeholder="Enter your email to unlock your offer…"
+                class="w-full border border-black bg-white px-4 py-[14px] mb-3 text-[13px] font-sans focus:outline-none focus:ring-1 focus:ring-black placeholder-gray-400"
+              />
+
+              <button
+                @click="claimPromo"
+                class="w-full bg-black text-white font-bold uppercase tracking-widest text-[14px] md:text-[15px] py-4 hover:bg-gray-800 transition-colors shadow-md"
+              >
+                Claim My Rp 250.000 OFF
+              </button>
+
+              <p class="text-[11px] md:text-[12px] font-sans text-gray-500 mt-3 opacity-70">
+                No spam. Only the good stuff.
+              </p>
+            </div>
           </div>
         </div>
       </div>
