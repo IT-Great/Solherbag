@@ -1,32 +1,32 @@
 <!-- <template>
   <header
-    class="top-0 left-0 z-50 fixed bg-white px-6 py-4 border-gray-200 border-b w-full"
+    class="fixed top-0 left-0 z-50 w-full px-6 py-4 bg-white border-b border-gray-200"
   >
-    <div class="flex justify-between items-center mx-auto max-w-7xl">
+    <div class="flex items-center justify-between mx-auto max-w-7xl">
       <div class="flex items-center">
         <nav
-          class="hidden md:flex space-x-6 font-medium text-xs uppercase tracking-widest"
+          class="hidden space-x-6 text-xs font-medium tracking-widest uppercase md:flex"
         >
           <router-link
             to="/"
-            class="hover:text-gray-500 transition cursor-pointer"
+            class="transition cursor-pointer hover:text-gray-500"
             >Home</router-link
           >
           <router-link
             to="/collections"
-            class="hover:text-gray-500 transition cursor-pointer"
+            class="transition cursor-pointer hover:text-gray-500"
             >Collections</router-link
           >
           <router-link
             to="/contact"
-            class="hover:text-gray-500 transition cursor-pointer"
+            class="transition cursor-pointer hover:text-gray-500"
             >Contact</router-link
           >
         </nav>
 
         <button
           @click="isMobileMenuOpen = true"
-          class="md:hidden flex justify-center items-center focus:outline-none text-gray-700 hover:text-black"
+          class="flex items-center justify-center text-gray-700 md:hidden focus:outline-none hover:text-black"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -49,14 +49,14 @@
         <img
           src="../../../assets/solherbrandbook.png"
           alt="Solher Logo"
-          class="w-auto h-8 md:h-12 object-contain"
+          class="object-contain w-auto h-8 md:h-12"
         />
       </div>
 
-      <div class="flex items-center space-x-4 md:space-x-5 text-gray-700">
+      <div class="flex items-center space-x-4 text-gray-700 md:space-x-5">
         <button
           @click="openSearch"
-          class="flex justify-center items-center focus:outline-none hover:text-black transition-colors"
+          class="flex items-center justify-center transition-colors focus:outline-none hover:text-black"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -73,7 +73,7 @@
             />
           </svg>
         </button>
-        <div class="relative flex justify-center items-center">
+        <div class="relative flex items-center justify-center">
           <button @click="toggleDropdown">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -96,32 +96,32 @@
           >
             <div v-if="isAuthenticated" class="text-left">
               <h3
-                class="font-bold text-black text-sm truncate uppercase tracking-tight"
+                class="text-sm font-bold tracking-tight text-black uppercase truncate"
               >
                 HI {{ userData?.first_name }} {{ userData?.last_name }}
               </h3>
-              <p class="mb-4 text-gray-500 text-xs truncate">
+              <p class="mb-4 text-xs text-gray-500 truncate">
                 {{ userData?.email }}
               </p>
             </div>
             <div v-else>
               <h3
-                class="mb-4 font-bold text-black text-xs text-left uppercase tracking-widest"
+                class="mb-4 text-xs font-bold tracking-widest text-left text-black uppercase"
               >
                 Account
               </h3>
               <router-link
                 to="/login"
                 @click="isDropdownOpen = false"
-                class="block bg-black hover:bg-gray-800 mb-4 py-3 w-full font-bold text-white text-xs text-center uppercase tracking-widest transition"
+                class="block w-full py-3 mb-4 text-xs font-bold tracking-widest text-center text-white uppercase transition bg-black hover:bg-gray-800"
                 >Sign In</router-link
               >
             </div>
-            <div class="gap-2 grid grid-cols-2">
+            <div class="grid grid-cols-2 gap-2">
               <router-link
                 to="/orderpage"
                 @click="isDropdownOpen = false"
-                class="flex justify-center items-center space-x-2 bg-gray-100 hover:bg-gray-200 py-3 transition"
+                class="flex items-center justify-center py-3 space-x-2 transition bg-gray-100 hover:bg-gray-200"
                 ><span class="font-bold text-[10px] uppercase tracking-wider"
                   >Orders</span
                 ></router-link
@@ -129,7 +129,7 @@
               <router-link
                 to="/profilepage"
                 @click="isDropdownOpen = false"
-                class="flex justify-center items-center space-x-2 bg-gray-100 hover:bg-gray-200 py-3 transition"
+                class="flex items-center justify-center py-3 space-x-2 transition bg-gray-100 hover:bg-gray-200"
                 ><span class="font-bold text-[10px] uppercase tracking-wider"
                   >Profile</span
                 ></router-link
@@ -140,7 +140,7 @@
 
         <button
           @click="openCart"
-          class="relative hover:text-black transition-colors cart-icon-header"
+          class="relative transition-colors hover:text-black cart-icon-header"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -172,19 +172,19 @@
       <div v-if="isMobileMenuOpen" class="z-[200] fixed inset-0 flex">
         <div
           @click="isMobileMenuOpen = false"
-          class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity"
+          class="absolute inset-0 transition-opacity bg-black/50 backdrop-blur-sm"
         ></div>
 
         <div
           class="relative flex flex-col bg-white shadow-2xl p-8 w-[80%] max-w-sm h-full overflow-y-auto"
         >
           <div
-            class="flex justify-between items-center mb-10 pb-6 border-gray-100 border-b"
+            class="flex items-center justify-between pb-6 mb-10 border-b border-gray-100"
           >
             <img
               src="../../../assets/solherbrandbook.png"
               alt="Logo"
-              class="w-auto h-6 object-contain"
+              class="object-contain w-auto h-6"
             />
             <button
               @click="isMobileMenuOpen = false"
@@ -210,26 +210,26 @@
           <nav class="flex flex-col space-y-6 font-serif text-2xl">
             <router-link
               to="/"
-              class="pb-4 border-gray-50 border-b hover:text-gray-500 transition-colors"
+              class="pb-4 transition-colors border-b border-gray-50 hover:text-gray-500"
               @click="isMobileMenuOpen = false"
               >Home</router-link
             >
             <router-link
               to="/collections"
-              class="pb-4 border-gray-50 border-b hover:text-gray-500 transition-colors"
+              class="pb-4 transition-colors border-b border-gray-50 hover:text-gray-500"
               @click="isMobileMenuOpen = false"
               >Collections</router-link
             >
             <router-link
               to="/contact"
-              class="pb-4 border-gray-50 border-b hover:text-gray-500 transition-colors"
+              class="pb-4 transition-colors border-b border-gray-50 hover:text-gray-500"
               @click="isMobileMenuOpen = false"
               >Contact</router-link
             >
           </nav>
 
           <div
-            class="mt-auto pt-10 text-gray-400 text-xs uppercase tracking-widest"
+            class="pt-10 mt-auto text-xs tracking-widest text-gray-400 uppercase"
           >
             <p>© 2026 Solher</p>
           </div>
@@ -243,31 +243,31 @@
     >
       <div
         @click="isCartOpen = false"
-        class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+        class="absolute inset-0 transition-opacity bg-black/60 backdrop-blur-sm"
       ></div>
 
       <div
         class="relative flex flex-col bg-white shadow-2xl rounded-3xl w-full max-w-xl max-h-[85vh] overflow-hidden animate-modal-in"
       >
-        <div class="flex justify-between items-center p-8 border-b">
+        <div class="flex items-center justify-between p-8 border-b">
           <h2 class="font-serif text-3xl">
             Your Bag
-            <span class="ml-2 font-sans text-gray-400 text-lg"
+            <span class="ml-2 font-sans text-lg text-gray-400"
               >({{ cartItems.length }} items)</span
             >
           </h2>
           <button
             @click="isCartOpen = false"
-            class="focus:outline-none text-3xl text-gray-400 hover:text-black transition-colors"
+            class="text-3xl text-gray-400 transition-colors focus:outline-none hover:text-black"
           >
             &times;
           </button>
         </div>
 
-        <div class="flex-grow space-y-6 p-8 overflow-y-auto custom-scrollbar">
+        <div class="flex-grow p-8 space-y-6 overflow-y-auto custom-scrollbar">
           <div
             v-if="cartItems.length === 0"
-            class="py-20 font-serif text-gray-400 text-xl text-center italic"
+            class="py-20 font-serif text-xl italic text-center text-gray-400"
           >
             Your bag is currently empty.
           </div>
@@ -275,17 +275,17 @@
           <div
             v-for="item in cartItems"
             :key="item.id"
-            class="flex sm:flex-row flex-col gap-6 pb-6 last:border-0 border-b"
+            class="flex flex-col gap-6 pb-6 border-b sm:flex-row last:border-0"
           >
             <img
               :src="item.product.image"
-              class="bg-gray-100 shadow-sm rounded-2xl w-full sm:w-32 h-32 object-cover"
+              class="object-cover w-full h-32 bg-gray-100 shadow-sm rounded-2xl sm:w-32"
             />
 
-            <div class="flex flex-col flex-grow justify-between">
+            <div class="flex flex-col justify-between flex-grow">
               <div>
                 <div
-                  class="flex justify-between items-start font-bold text-base uppercase"
+                  class="flex items-start justify-between text-base font-bold uppercase"
                 >
                   <h3 class="max-w-[200px] truncate leading-tight">
                     {{ item.product.name }}
@@ -301,7 +301,7 @@
                     {{ formatPrice(item.gross_amount) }}
                   </p>
                 </div>
-                <p class="mt-1 text-gray-400 text-xs italic tracking-widest">
+                <p class="mt-1 text-xs italic tracking-widest text-gray-400">
                   {{
                     formatPrice(
                       item.product.discount_price ?? item.product.price,
@@ -311,13 +311,13 @@
                 </p>
               </div>
 
-              <div class="flex justify-between items-center mt-6">
+              <div class="flex items-center justify-between mt-6">
                 <div
-                  class="flex items-center bg-gray-50 border border-gray-100 rounded-xl overflow-hidden"
+                  class="flex items-center overflow-hidden border border-gray-100 bg-gray-50 rounded-xl"
                 >
                   <button
                     @click="handleQtyChange(item, item.quantity - 1)"
-                    class="hover:bg-gray-200 px-4 py-2 transition-colors"
+                    class="px-4 py-2 transition-colors hover:bg-gray-200"
                   >
                     -
                   </button>
@@ -325,11 +325,11 @@
                     type="number"
                     v-model.number="item.quantity"
                     @input="handleQtyInput(item)"
-                    class="bg-transparent border-none focus:ring-0 w-12 font-bold text-sm text-center"
+                    class="w-12 text-sm font-bold text-center bg-transparent border-none focus:ring-0"
                   />
                   <button
                     @click="handleQtyChange(item, item.quantity + 1)"
-                    class="hover:bg-gray-200 px-4 py-2 transition-colors"
+                    class="px-4 py-2 transition-colors hover:bg-gray-200"
                   >
                     +
                   </button>
@@ -337,7 +337,7 @@
 
                 <button
                   @click="handleOptimisticDelete(item.id)"
-                  class="group flex items-center gap-2 font-bold text-gray-400 hover:text-red-500 text-xs uppercase tracking-tighter transition-colors"
+                  class="flex items-center gap-2 text-xs font-bold tracking-tighter text-gray-400 uppercase transition-colors group hover:text-red-500"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -375,14 +375,14 @@
           </div>
         </div>
 
-        <div class="bg-gray-50 p-8 border-t">
-          <div class="flex justify-between items-end mb-6">
+        <div class="p-8 border-t bg-gray-50">
+          <div class="flex items-end justify-between mb-6">
             <span
               class="font-bold text-gray-500 text-xs uppercase tracking-[0.2em]"
               >Estimated Total</span
             >
             <div class="text-right">
-              <span class="block font-bold text-black text-2xl"
+              <span class="block text-2xl font-bold text-black"
                 >{{ formatPrice(totalCartAmount) }} IDR</span
               >
               <p class="mt-1 text-[10px] text-gray-400 italic leading-relaxed">
@@ -1057,33 +1057,33 @@ watch(
 
 <!-- <template>
   <header
-    class="top-0 left-0 z-50 fixed bg-white px-6 py-4 border-gray-200 border-b w-full"
+    class="fixed top-0 left-0 z-50 w-full px-6 py-4 bg-white border-b border-gray-200"
   >
-    <div class="flex justify-between items-center mx-auto max-w-7xl">
+    <div class="flex items-center justify-between mx-auto max-w-7xl">
       <div class="flex items-center">
         <nav
-          class="hidden md:flex space-x-6 font-medium text-xs uppercase tracking-widest"
+          class="hidden space-x-6 text-xs font-medium tracking-widest uppercase md:flex"
         >
           <router-link
             to="/"
-            class="hover:text-gray-500 transition cursor-pointer"
+            class="transition cursor-pointer hover:text-gray-500"
             >Home</router-link
           >
           <router-link
             to="/collections"
-            class="hover:text-gray-500 transition cursor-pointer"
+            class="transition cursor-pointer hover:text-gray-500"
             >Collections</router-link
           >
           <router-link
             to="/contact"
-            class="hover:text-gray-500 transition cursor-pointer"
+            class="transition cursor-pointer hover:text-gray-500"
             >Contact</router-link
           >
         </nav>
 
         <button
           @click="isMobileMenuOpen = true"
-          class="md:hidden flex justify-center items-center focus:outline-none text-gray-700 hover:text-black"
+          class="flex items-center justify-center text-gray-700 md:hidden focus:outline-none hover:text-black"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -1106,14 +1106,14 @@ watch(
         <img
           src="../../../assets/solherbrandbook.png"
           alt="Solher Logo"
-          class="w-auto h-8 md:h-12 object-contain"
+          class="object-contain w-auto h-8 md:h-12"
         />
       </div>
 
-      <div class="flex items-center space-x-4 md:space-x-5 text-gray-700">
+      <div class="flex items-center space-x-4 text-gray-700 md:space-x-5">
         <button
           @click="openSearch"
-          class="flex justify-center items-center focus:outline-none hover:text-black transition-colors"
+          class="flex items-center justify-center transition-colors focus:outline-none hover:text-black"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -1130,7 +1130,7 @@ watch(
             />
           </svg>
         </button>
-        <div class="relative flex justify-center items-center">
+        <div class="relative flex items-center justify-center">
           <button @click="toggleDropdown">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -1153,32 +1153,32 @@ watch(
           >
             <div v-if="isAuthenticated" class="text-left">
               <h3
-                class="font-bold text-black text-sm truncate uppercase tracking-tight"
+                class="text-sm font-bold tracking-tight text-black uppercase truncate"
               >
                 HI {{ userData?.first_name }} {{ userData?.last_name }}
               </h3>
-              <p class="mb-4 text-gray-500 text-xs truncate">
+              <p class="mb-4 text-xs text-gray-500 truncate">
                 {{ userData?.email }}
               </p>
             </div>
             <div v-else>
               <h3
-                class="mb-4 font-bold text-black text-xs text-left uppercase tracking-widest"
+                class="mb-4 text-xs font-bold tracking-widest text-left text-black uppercase"
               >
                 Account
               </h3>
               <router-link
                 to="/login"
                 @click="isDropdownOpen = false"
-                class="block bg-black hover:bg-gray-800 mb-4 py-3 w-full font-bold text-white text-xs text-center uppercase tracking-widest transition"
+                class="block w-full py-3 mb-4 text-xs font-bold tracking-widest text-center text-white uppercase transition bg-black hover:bg-gray-800"
                 >Sign In</router-link
               >
             </div>
-            <div class="gap-2 grid grid-cols-2">
+            <div class="grid grid-cols-2 gap-2">
               <router-link
                 to="/orderpage"
                 @click="isDropdownOpen = false"
-                class="flex justify-center items-center space-x-2 bg-gray-100 hover:bg-gray-200 py-3 transition"
+                class="flex items-center justify-center py-3 space-x-2 transition bg-gray-100 hover:bg-gray-200"
                 ><span class="font-bold text-[10px] uppercase tracking-wider"
                   >Orders</span
                 ></router-link
@@ -1186,7 +1186,7 @@ watch(
               <router-link
                 to="/profilepage"
                 @click="isDropdownOpen = false"
-                class="flex justify-center items-center space-x-2 bg-gray-100 hover:bg-gray-200 py-3 transition"
+                class="flex items-center justify-center py-3 space-x-2 transition bg-gray-100 hover:bg-gray-200"
                 ><span class="font-bold text-[10px] uppercase tracking-wider"
                   >Profile</span
                 ></router-link
@@ -1197,7 +1197,7 @@ watch(
 
         <button
           @click="openCart"
-          class="relative hover:text-black transition-colors cart-icon-header"
+          class="relative transition-colors hover:text-black cart-icon-header"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -1229,19 +1229,19 @@ watch(
       <div v-if="isMobileMenuOpen" class="z-[200] fixed inset-0 flex">
         <div
           @click="isMobileMenuOpen = false"
-          class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity"
+          class="absolute inset-0 transition-opacity bg-black/50 backdrop-blur-sm"
         ></div>
 
         <div
           class="relative flex flex-col bg-white shadow-2xl p-8 w-[80%] max-w-sm h-full overflow-y-auto"
         >
           <div
-            class="flex justify-between items-center mb-10 pb-6 border-gray-100 border-b"
+            class="flex items-center justify-between pb-6 mb-10 border-b border-gray-100"
           >
             <img
               src="../../../assets/solherbrandbook.png"
               alt="Logo"
-              class="w-auto h-6 object-contain"
+              class="object-contain w-auto h-6"
             />
             <button
               @click="isMobileMenuOpen = false"
@@ -1267,26 +1267,26 @@ watch(
           <nav class="flex flex-col space-y-6 font-serif text-2xl">
             <router-link
               to="/"
-              class="pb-4 border-gray-50 border-b hover:text-gray-500 transition-colors"
+              class="pb-4 transition-colors border-b border-gray-50 hover:text-gray-500"
               @click="isMobileMenuOpen = false"
               >Home</router-link
             >
             <router-link
               to="/collections"
-              class="pb-4 border-gray-50 border-b hover:text-gray-500 transition-colors"
+              class="pb-4 transition-colors border-b border-gray-50 hover:text-gray-500"
               @click="isMobileMenuOpen = false"
               >Collections</router-link
             >
             <router-link
               to="/contact"
-              class="pb-4 border-gray-50 border-b hover:text-gray-500 transition-colors"
+              class="pb-4 transition-colors border-b border-gray-50 hover:text-gray-500"
               @click="isMobileMenuOpen = false"
               >Contact</router-link
             >
           </nav>
 
           <div
-            class="mt-auto pt-10 text-gray-400 text-xs uppercase tracking-widest"
+            class="pt-10 mt-auto text-xs tracking-widest text-gray-400 uppercase"
           >
             <p>© 2026 Solher</p>
           </div>
@@ -1300,31 +1300,31 @@ watch(
     >
       <div
         @click="isCartOpen = false"
-        class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+        class="absolute inset-0 transition-opacity bg-black/60 backdrop-blur-sm"
       ></div>
 
       <div
         class="relative flex flex-col bg-white shadow-2xl rounded-3xl w-full max-w-xl max-h-[85vh] overflow-hidden animate-modal-in"
       >
-        <div class="flex justify-between items-center p-8 border-b">
+        <div class="flex items-center justify-between p-8 border-b">
           <h2 class="font-serif text-3xl">
             Your Bag
-            <span class="ml-2 font-sans text-gray-400 text-lg"
+            <span class="ml-2 font-sans text-lg text-gray-400"
               >({{ cartItems.length }} items)</span
             >
           </h2>
           <button
             @click="isCartOpen = false"
-            class="focus:outline-none text-3xl text-gray-400 hover:text-black transition-colors"
+            class="text-3xl text-gray-400 transition-colors focus:outline-none hover:text-black"
           >
             &times;
           </button>
         </div>
 
-        <div class="flex-grow space-y-6 p-8 overflow-y-auto custom-scrollbar">
+        <div class="flex-grow p-8 space-y-6 overflow-y-auto custom-scrollbar">
           <div
             v-if="cartItems.length === 0"
-            class="py-20 font-serif text-gray-400 text-xl text-center italic"
+            class="py-20 font-serif text-xl italic text-center text-gray-400"
           >
             Your bag is currently empty.
           </div>
@@ -1332,17 +1332,17 @@ watch(
           <div
             v-for="item in cartItems"
             :key="item.id"
-            class="flex sm:flex-row flex-col gap-6 pb-6 last:border-0 border-b"
+            class="flex flex-col gap-6 pb-6 border-b sm:flex-row last:border-0"
           >
             <img
               :src="item.product.image"
-              class="bg-gray-100 shadow-sm rounded-2xl w-full sm:w-32 h-32 object-cover"
+              class="object-cover w-full h-32 bg-gray-100 shadow-sm rounded-2xl sm:w-32"
             />
 
-            <div class="flex flex-col flex-grow justify-between">
+            <div class="flex flex-col justify-between flex-grow">
               <div>
                 <div
-                  class="flex justify-between items-start font-bold text-base uppercase"
+                  class="flex items-start justify-between text-base font-bold uppercase"
                 >
                   <h3 class="max-w-[200px] truncate leading-tight">
                     {{ item.product.name }}
@@ -1358,7 +1358,7 @@ watch(
                     {{ formatPrice(item.gross_amount) }}
                   </p>
                 </div>
-                <p class="mt-1 text-gray-400 text-xs italic tracking-widest">
+                <p class="mt-1 text-xs italic tracking-widest text-gray-400">
                   {{
                     formatPrice(
                       item.product.discount_price ?? item.product.price,
@@ -1368,13 +1368,13 @@ watch(
                 </p>
               </div>
 
-              <div class="flex justify-between items-center mt-6">
+              <div class="flex items-center justify-between mt-6">
                 <div
-                  class="flex items-center bg-gray-50 border border-gray-100 rounded-xl overflow-hidden"
+                  class="flex items-center overflow-hidden border border-gray-100 bg-gray-50 rounded-xl"
                 >
                   <button
                     @click="handleQtyChange(item, item.quantity - 1)"
-                    class="hover:bg-gray-200 px-4 py-2 transition-colors"
+                    class="px-4 py-2 transition-colors hover:bg-gray-200"
                   >
                     -
                   </button>
@@ -1382,11 +1382,11 @@ watch(
                     type="number"
                     v-model.number="item.quantity"
                     @input="handleQtyInput(item)"
-                    class="bg-transparent border-none focus:ring-0 w-12 font-bold text-sm text-center"
+                    class="w-12 text-sm font-bold text-center bg-transparent border-none focus:ring-0"
                   />
                   <button
                     @click="handleQtyChange(item, item.quantity + 1)"
-                    class="hover:bg-gray-200 px-4 py-2 transition-colors"
+                    class="px-4 py-2 transition-colors hover:bg-gray-200"
                   >
                     +
                   </button>
@@ -1394,7 +1394,7 @@ watch(
 
                 <button
                   @click="handleOptimisticDelete(item.id)"
-                  class="group flex items-center gap-2 font-bold text-gray-400 hover:text-red-500 text-xs uppercase tracking-tighter transition-colors"
+                  class="flex items-center gap-2 text-xs font-bold tracking-tighter text-gray-400 uppercase transition-colors group hover:text-red-500"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -1432,14 +1432,14 @@ watch(
           </div>
         </div>
 
-        <div class="bg-gray-50 p-8 border-t">
-          <div class="flex justify-between items-end mb-6">
+        <div class="p-8 border-t bg-gray-50">
+          <div class="flex items-end justify-between mb-6">
             <span
               class="font-bold text-gray-500 text-xs uppercase tracking-[0.2em]"
               >Estimated Total</span
             >
             <div class="text-right">
-              <span class="block font-bold text-black text-2xl"
+              <span class="block text-2xl font-bold text-black"
                 >{{ formatPrice(totalCartAmount) }} IDR</span
               >
               <p class="mt-1 text-[10px] text-gray-400 italic leading-relaxed">
@@ -1948,39 +1948,39 @@ watch(
 
 <!-- <template>
   <header
-    class="top-0 left-0 z-50 fixed bg-white px-6 py-4 border-gray-200 border-b w-full"
+    class="fixed top-0 left-0 z-50 w-full px-6 py-4 bg-white border-b border-gray-200"
   >
     <div
-      class="relative flex justify-between items-center mx-auto max-w-7xl h-8 md:h-12"
+      class="relative flex items-center justify-between h-8 mx-auto max-w-7xl md:h-12"
     >
-      <div class="flex items-center flex-1 justify-start">
+      <div class="flex items-center justify-start flex-1">
         <nav
-          class="hidden md:flex space-x-6 font-medium text-xs uppercase tracking-widest"
+          class="hidden space-x-6 text-xs font-medium tracking-widest uppercase md:flex"
         >
           <router-link
             to="/"
-            class="hover:text-gray-500 transition cursor-pointer"
+            class="transition cursor-pointer hover:text-gray-500"
             >Home</router-link
           >
           <router-link
             to="/best-sellers"
-            class="hover:text-gray-500 transition cursor-pointer text-red-600 font-bold"
+            class="font-bold text-red-600 transition cursor-pointer hover:text-gray-500"
             >Best Sellers</router-link
           >
           <router-link
             to="/collections"
-            class="hover:text-gray-500 transition cursor-pointer"
+            class="transition cursor-pointer hover:text-gray-500"
             >Collections</router-link
           >
           <router-link
             to="/contact"
-            class="hover:text-gray-500 transition cursor-pointer"
+            class="transition cursor-pointer hover:text-gray-500"
             >Contact</router-link
           >
         </nav>
         <button
           @click="isMobileMenuOpen = true"
-          class="md:hidden flex justify-center items-center focus:outline-none text-gray-700 hover:text-black"
+          class="flex items-center justify-center text-gray-700 md:hidden focus:outline-none hover:text-black"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -2000,22 +2000,22 @@ watch(
       </div>
 
       <div
-        class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex-shrink-0 flex justify-center pointer-events-none"
+        class="absolute flex justify-center flex-shrink-0 -translate-x-1/2 -translate-y-1/2 pointer-events-none left-1/2 top-1/2"
       >
         <img
           src="../../../assets/solherbrandbook.png"
           alt="Solher Logo"
-          class="w-auto h-8 md:h-12 object-contain pointer-events-auto cursor-pointer"
+          class="object-contain w-auto h-8 cursor-pointer pointer-events-auto md:h-12"
           @click="$router.push('/')"
         />
       </div>
 
       <div
-        class="flex items-center space-x-4 md:space-x-5 text-gray-700 flex-1 justify-end"
+        class="flex items-center justify-end flex-1 space-x-4 text-gray-700 md:space-x-5"
       >
         <button
           @click="openSearch"
-          class="flex justify-center items-center focus:outline-none hover:text-black transition-colors"
+          class="flex items-center justify-center transition-colors focus:outline-none hover:text-black"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -2033,7 +2033,7 @@ watch(
           </svg>
         </button>
 
-        <div class="relative flex justify-center items-center">
+        <div class="relative flex items-center justify-center">
           <button @click="toggleDropdown">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -2057,32 +2057,32 @@ watch(
           >
             <div v-if="isAuthenticated" class="text-left">
               <h3
-                class="font-bold text-black text-sm truncate uppercase tracking-tight"
+                class="text-sm font-bold tracking-tight text-black uppercase truncate"
               >
                 HI {{ userData?.first_name }} {{ userData?.last_name }}
               </h3>
-              <p class="mb-4 text-gray-500 text-xs truncate">
+              <p class="mb-4 text-xs text-gray-500 truncate">
                 {{ userData?.email }}
               </p>
             </div>
             <div v-else>
               <h3
-                class="mb-4 font-bold text-black text-xs text-left uppercase tracking-widest"
+                class="mb-4 text-xs font-bold tracking-widest text-left text-black uppercase"
               >
                 Account
               </h3>
               <router-link
                 to="/login"
                 @click="isDropdownOpen = false"
-                class="block bg-black hover:bg-gray-800 mb-4 py-3 w-full font-bold text-white text-xs text-center uppercase tracking-widest transition"
+                class="block w-full py-3 mb-4 text-xs font-bold tracking-widest text-center text-white uppercase transition bg-black hover:bg-gray-800"
                 >Sign In</router-link
               >
             </div>
-            <div class="gap-2 grid grid-cols-2">
+            <div class="grid grid-cols-2 gap-2">
               <router-link
                 to="/orderpage"
                 @click="isDropdownOpen = false"
-                class="flex justify-center items-center space-x-2 bg-gray-100 hover:bg-gray-200 py-3 transition"
+                class="flex items-center justify-center py-3 space-x-2 transition bg-gray-100 hover:bg-gray-200"
                 ><span class="font-bold text-[10px] uppercase tracking-wider"
                   >Orders</span
                 ></router-link
@@ -2090,7 +2090,7 @@ watch(
               <router-link
                 to="/profilepage"
                 @click="isDropdownOpen = false"
-                class="flex justify-center items-center space-x-2 bg-gray-100 hover:bg-gray-200 py-3 transition"
+                class="flex items-center justify-center py-3 space-x-2 transition bg-gray-100 hover:bg-gray-200"
                 ><span class="font-bold text-[10px] uppercase tracking-wider"
                   >Profile</span
                 ></router-link
@@ -2101,7 +2101,7 @@ watch(
 
         <button
           @click="openCartPage"
-          class="relative hover:text-black transition-colors cart-icon-header"
+          class="relative transition-colors hover:text-black cart-icon-header"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -2133,18 +2133,18 @@ watch(
       <div v-if="isMobileMenuOpen" class="z-[200] fixed inset-0 flex">
         <div
           @click="isMobileMenuOpen = false"
-          class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity"
+          class="absolute inset-0 transition-opacity bg-black/50 backdrop-blur-sm"
         ></div>
         <div
           class="relative flex flex-col bg-white shadow-2xl p-8 w-[80%] max-w-sm h-full overflow-y-auto"
         >
           <div
-            class="flex justify-between items-center mb-10 pb-6 border-gray-100 border-b"
+            class="flex items-center justify-between pb-6 mb-10 border-b border-gray-100"
           >
             <img
               src="../../../assets/solherbrandbook.png"
               alt="Logo"
-              class="w-auto h-6 object-contain"
+              class="object-contain w-auto h-6"
             />
             <button
               @click="isMobileMenuOpen = false"
@@ -2169,31 +2169,31 @@ watch(
           <nav class="flex flex-col space-y-6 font-serif text-2xl">
             <router-link
               to="/"
-              class="pb-4 border-gray-50 border-b hover:text-gray-500 transition-colors"
+              class="pb-4 transition-colors border-b border-gray-50 hover:text-gray-500"
               @click="isMobileMenuOpen = false"
               >Home</router-link
             >
             <router-link
               to="/best-sellers"
-              class="pb-4 border-gray-50 border-b text-red-600 font-bold hover:text-red-800 transition-colors"
+              class="pb-4 font-bold text-red-600 transition-colors border-b border-gray-50 hover:text-red-800"
               @click="isMobileMenuOpen = false"
               >Best Sellers</router-link
             >
             <router-link
               to="/collections"
-              class="pb-4 border-gray-50 border-b hover:text-gray-500 transition-colors"
+              class="pb-4 transition-colors border-b border-gray-50 hover:text-gray-500"
               @click="isMobileMenuOpen = false"
               >Collections</router-link
             >
             <router-link
               to="/contact"
-              class="pb-4 border-gray-50 border-b hover:text-gray-500 transition-colors"
+              class="pb-4 transition-colors border-b border-gray-50 hover:text-gray-500"
               @click="isMobileMenuOpen = false"
               >Contact</router-link
             >
           </nav>
           <div
-            class="mt-auto pt-10 text-gray-400 text-xs uppercase tracking-widest"
+            class="pt-10 mt-auto text-xs tracking-widest text-gray-400 uppercase"
           >
             <p>© 2026 Solher</p>
           </div>
@@ -2317,36 +2317,36 @@ watch(
 }
 </style> -->
 
-<template>
+<!-- <template>
   <header
-    class="top-0 left-0 z-50 fixed bg-white px-6 py-4 border-gray-200 border-b w-full"
+    class="fixed top-0 left-0 z-50 w-full px-6 py-4 bg-white border-b border-gray-200"
   >
     <div
-      class="relative flex justify-between items-center mx-auto max-w-7xl h-8 md:h-12"
+      class="relative flex items-center justify-between h-8 mx-auto max-w-7xl md:h-12"
     >
-      <div class="flex items-center flex-1 justify-start">
+      <div class="flex items-center justify-start flex-1">
         <nav
-          class="hidden md:flex space-x-6 font-medium text-xs uppercase tracking-widest h-full items-center"
+          class="items-center hidden h-full space-x-6 text-xs font-medium tracking-widest uppercase md:flex"
         >
           <router-link
             to="/"
-            class="hover:text-gray-500 transition cursor-pointer"
+            class="transition cursor-pointer hover:text-gray-500"
             >Home</router-link
           >
           <router-link
             to="/best-sellers"
-            class="hover:text-gray-500 transition cursor-pointer text-red-600 font-bold"
+            class="font-bold text-red-600 transition cursor-pointer hover:text-gray-500"
             >Best Sellers</router-link
           >
           
           <div 
-            class="relative h-full flex items-center"
+            class="relative flex items-center h-full"
             @mouseenter="openMegaMenu"
             @mouseleave="closeMegaMenu"
           >
             <router-link
               to="/collections"
-              class="hover:text-gray-500 transition cursor-pointer"
+              class="transition cursor-pointer hover:text-gray-500"
               :class="{'text-gray-500': isMegaMenuOpen}"
               >Collections</router-link
             >
@@ -2354,14 +2354,14 @@ watch(
 
           <router-link
             to="/contact"
-            class="hover:text-gray-500 transition cursor-pointer"
+            class="transition cursor-pointer hover:text-gray-500"
             >Contact</router-link
           >
         </nav>
         
         <button
           @click="isMobileMenuOpen = true"
-          class="md:hidden flex justify-center items-center focus:outline-none text-gray-700 hover:text-black"
+          class="flex items-center justify-center text-gray-700 md:hidden focus:outline-none hover:text-black"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
@@ -2369,37 +2369,37 @@ watch(
         </button>
       </div>
 
-      <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex-shrink-0 flex justify-center pointer-events-none">
-        <img src="../../../assets/solherbrandbook.png" alt="Solher Logo" class="w-auto h-8 md:h-12 object-contain pointer-events-auto cursor-pointer" @click="$router.push('/')" />
+      <div class="absolute flex justify-center flex-shrink-0 -translate-x-1/2 -translate-y-1/2 pointer-events-none left-1/2 top-1/2">
+        <img src="../../../assets/solherbrandbook.png" alt="Solher Logo" class="object-contain w-auto h-8 cursor-pointer pointer-events-auto md:h-12" @click="$router.push('/')" />
       </div>
 
-      <div class="flex items-center space-x-4 md:space-x-5 text-gray-700 flex-1 justify-end">
-         <button @click="openSearch" class="flex justify-center items-center focus:outline-none hover:text-black transition-colors">
+      <div class="flex items-center justify-end flex-1 space-x-4 text-gray-700 md:space-x-5">
+         <button @click="openSearch" class="flex items-center justify-center transition-colors focus:outline-none hover:text-black">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
         </button>
 
-        <div class="relative flex justify-center items-center">
+        <div class="relative flex items-center justify-center">
           <button @click="toggleDropdown">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" /></svg>
           </button>
           
           <div v-if="isDropdownOpen" class="top-full right-0 z-[60] absolute bg-white shadow-xl mt-4 p-6 border border-gray-100 w-64 animate-fade-in">
              <div v-if="isAuthenticated" class="text-left">
-              <h3 class="font-bold text-black text-sm truncate uppercase tracking-tight">HI {{ userData?.first_name }} {{ userData?.last_name }}</h3>
-              <p class="mb-4 text-gray-500 text-xs truncate">{{ userData?.email }}</p>
+              <h3 class="text-sm font-bold tracking-tight text-black uppercase truncate">HI {{ userData?.first_name }} {{ userData?.last_name }}</h3>
+              <p class="mb-4 text-xs text-gray-500 truncate">{{ userData?.email }}</p>
             </div>
             <div v-else>
-              <h3 class="mb-4 font-bold text-black text-xs text-left uppercase tracking-widest">Account</h3>
-              <router-link to="/login" @click="isDropdownOpen = false" class="block bg-black hover:bg-gray-800 mb-4 py-3 w-full font-bold text-white text-xs text-center uppercase tracking-widest transition">Sign In</router-link>
+              <h3 class="mb-4 text-xs font-bold tracking-widest text-left text-black uppercase">Account</h3>
+              <router-link to="/login" @click="isDropdownOpen = false" class="block w-full py-3 mb-4 text-xs font-bold tracking-widest text-center text-white uppercase transition bg-black hover:bg-gray-800">Sign In</router-link>
             </div>
-            <div class="gap-2 grid grid-cols-2">
-              <router-link to="/orderpage" @click="isDropdownOpen = false" class="flex justify-center items-center space-x-2 bg-gray-100 hover:bg-gray-200 py-3 transition"><span class="font-bold text-[10px] uppercase tracking-wider">Orders</span></router-link>
-              <router-link to="/profilepage" @click="isDropdownOpen = false" class="flex justify-center items-center space-x-2 bg-gray-100 hover:bg-gray-200 py-3 transition"><span class="font-bold text-[10px] uppercase tracking-wider">Profile</span></router-link>
+            <div class="grid grid-cols-2 gap-2">
+              <router-link to="/orderpage" @click="isDropdownOpen = false" class="flex items-center justify-center py-3 space-x-2 transition bg-gray-100 hover:bg-gray-200"><span class="font-bold text-[10px] uppercase tracking-wider">Orders</span></router-link>
+              <router-link to="/profilepage" @click="isDropdownOpen = false" class="flex items-center justify-center py-3 space-x-2 transition bg-gray-100 hover:bg-gray-200"><span class="font-bold text-[10px] uppercase tracking-wider">Profile</span></router-link>
             </div>
           </div>
         </div>
 
-        <button @click="openCartPage" class="relative hover:text-black transition-colors cart-icon-header">
+        <button @click="openCartPage" class="relative transition-colors hover:text-black cart-icon-header">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" /></svg>
           <span v-if="cartCount > 0" :class="[isBadgePopping ? 'scale-150 bg-red-600' : 'scale-100 bg-black']" class="-top-2 -right-2 absolute flex justify-center items-center rounded-full w-4 h-4 text-[10px] text-white transition-all duration-300 pointer-events-none">{{ cartCount }}</span>
         </button>
@@ -2409,13 +2409,13 @@ watch(
     <transition name="mega-menu-fade">
       <div 
         v-if="isMegaMenuOpen" 
-        class="absolute left-0 top-full w-full bg-white border-t border-gray-100 shadow-xl overflow-hidden hidden md:block"
+        class="absolute left-0 hidden w-full overflow-hidden bg-white border-t border-gray-100 shadow-xl top-full md:block"
         @mouseenter="keepMegaMenuOpen"
         @mouseleave="closeMegaMenu"
       >
         <div class="mx-auto max-w-7xl flex h-[400px]">
           
-          <div class="w-1/4 border-r border-gray-100 bg-gray-50/50 py-8 px-6 overflow-y-auto">
+          <div class="w-1/4 px-6 py-8 overflow-y-auto border-r border-gray-100 bg-gray-50/50">
             <h3 class="font-bold text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-6">Categories</h3>
             <ul class="space-y-4">
               <li>
@@ -2423,7 +2423,7 @@ watch(
                   @click="selectMegaMenuCategory('all')"
                   @mouseenter="selectMegaMenuCategory('all')"
                   :class="activeMegaCategory === 'all' ? 'text-black font-bold' : 'text-gray-500 hover:text-black'"
-                  class="text-xs uppercase tracking-widest transition-colors w-full text-left"
+                  class="w-full text-xs tracking-widest text-left uppercase transition-colors"
                 >
                   All Bags
                 </button>
@@ -2433,7 +2433,7 @@ watch(
                   @click="selectMegaMenuCategory(cat.id)"
                   @mouseenter="selectMegaMenuCategory(cat.id)"
                   :class="activeMegaCategory === cat.id ? 'text-black font-bold' : 'text-gray-500 hover:text-black'"
-                  class="text-xs uppercase tracking-widest transition-colors w-full text-left"
+                  class="w-full text-xs tracking-widest text-left uppercase transition-colors"
                 >
                   {{ cat.category_name }}
                 </button>
@@ -2441,8 +2441,8 @@ watch(
             </ul>
           </div>
 
-          <div class="w-3/4 py-8 px-10 relative">
-            <div class="flex justify-between items-center mb-6">
+          <div class="relative w-3/4 px-10 py-8">
+            <div class="flex items-center justify-between mb-6">
               <h3 class="font-bold text-[10px] uppercase tracking-[0.2em] text-gray-400">
                 {{ activeMegaCategory === 'all' ? 'Featured Picks' : 'Category Highlights' }}
               </h3>
@@ -2451,8 +2451,8 @@ watch(
               </router-link>
             </div>
 
-            <div v-if="isMegaMenuLoading" class="absolute inset-0 flex justify-center items-center bg-white/80 z-10">
-              <div class="w-8 h-8 border-2 border-gray-200 border-t-black rounded-full animate-spin"></div>
+            <div v-if="isMegaMenuLoading" class="absolute inset-0 z-10 flex items-center justify-center bg-white/80">
+              <div class="w-8 h-8 border-2 border-gray-200 rounded-full border-t-black animate-spin"></div>
             </div>
 
             <div class="grid grid-cols-4 gap-x-6 gap-y-8">
@@ -2460,10 +2460,10 @@ watch(
                 v-for="product in randomMegaProducts" 
                 :key="product.id"
                 @click="navigateToProduct(product.id)"
-                class="group cursor-pointer"
+                class="cursor-pointer group"
               >
-                <div class="bg-gray-100 aspect-square mb-3 overflow-hidden rounded-lg relative">
-                  <img :src="product.image || defaultBagIcon" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div class="relative mb-3 overflow-hidden bg-gray-100 rounded-lg aspect-square">
+                  <img :src="product.image || defaultBagIcon" class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105" />
                   <div v-if="product.discount_price" class="absolute top-2 left-2 bg-red-600 text-white px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-widest rounded-sm">Sale</div>
                 </div>
                 <h4 class="font-bold text-[10px] uppercase tracking-widest text-gray-900 truncate">{{ product.name }}</h4>
@@ -2471,7 +2471,7 @@ watch(
               </div>
             </div>
 
-            <div v-if="!isMegaMenuLoading && randomMegaProducts.length === 0" class="flex flex-col items-center justify-center h-48 text-gray-400 italic font-serif">
+            <div v-if="!isMegaMenuLoading && randomMegaProducts.length === 0" class="flex flex-col items-center justify-center h-48 font-serif italic text-gray-400">
               No products found in this category.
             </div>
 
@@ -2484,7 +2484,7 @@ watch(
       <div v-if="isMobileMenuOpen" class="z-[200] fixed inset-0 flex">
         <div
           @click="isMobileMenuOpen = false"
-          class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity"
+          class="absolute inset-0 transition-opacity bg-black/50 backdrop-blur-sm"
         ></div>
         <div
           class="relative flex flex-col bg-white shadow-2xl p-8 w-[80%] max-w-sm h-full overflow-y-auto"
@@ -2806,4 +2806,505 @@ watch(
   opacity: 0;
   transform: translateY(-5px) scaleY(0.98);
 }
-</style> 
+</style> -->
+
+<template>
+  <div
+    :class="isAtTop ? 'translate-y-0' : '-translate-y-full'"
+    class="fixed top-0 left-0 w-full h-[40px] bg-[#111] text-white z-[60] flex items-center justify-center transition-transform duration-300"
+  >
+    <button 
+      @click="prevAnnouncement" 
+      class="absolute p-2 text-gray-400 transition left-4 hover:text-white focus:outline-none"
+    >
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7" />
+      </svg>
+    </button>
+    
+    <transition name="fade-slide" mode="out-in">
+      <p 
+        :key="currentAnnouncement" 
+        @click="$router.push('/collections')" 
+        class="text-[10px] md:text-xs font-serif tracking-widest text-center px-12 cursor-pointer hover:text-gray-300 transition-colors truncate w-full max-w-3xl"
+      >
+        {{ announcements[currentAnnouncement] }}
+      </p>
+    </transition>
+
+    <button 
+      @click="nextAnnouncement" 
+      class="absolute p-2 text-gray-400 transition right-4 hover:text-white focus:outline-none"
+    >
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+  </div>
+
+  <header
+    :class="isAtTop ? 'top-[40px]' : 'top-0'"
+    class="fixed left-0 z-50 w-full px-6 py-4 transition-all duration-300 bg-white border-b border-gray-200"
+  >
+    <div
+      class="relative flex items-center justify-between h-8 mx-auto max-w-7xl md:h-12"
+    >
+      <div class="flex items-center justify-start flex-1">
+        <nav
+          class="items-center hidden h-full space-x-6 text-xs font-medium tracking-widest uppercase md:flex"
+        >
+          <router-link
+            to="/"
+            class="transition cursor-pointer hover:text-gray-500"
+            >Home</router-link
+          >
+          <router-link
+            to="/best-sellers"
+            class="font-bold text-red-600 transition cursor-pointer hover:text-gray-500"
+            >Best Sellers</router-link
+          >
+          
+          <div 
+            class="relative flex items-center h-full"
+            @mouseenter="openMegaMenu"
+            @mouseleave="closeMegaMenu"
+          >
+            <router-link
+              to="/collections"
+              class="transition cursor-pointer hover:text-gray-500"
+              :class="{'text-gray-500': isMegaMenuOpen}"
+              >Collections</router-link
+            >
+          </div>
+
+          <router-link
+            to="/contact"
+            class="transition cursor-pointer hover:text-gray-500"
+            >Contact</router-link
+          >
+        </nav>
+        
+        <button
+          @click="isMobileMenuOpen = true"
+          class="flex items-center justify-center text-gray-700 md:hidden focus:outline-none hover:text-black"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="absolute flex justify-center flex-shrink-0 -translate-x-1/2 -translate-y-1/2 pointer-events-none left-1/2 top-1/2">
+        <img src="../../../assets/solherbrandbook.png" alt="Solher Logo" class="object-contain w-auto h-8 cursor-pointer pointer-events-auto md:h-12" @click="$router.push('/')" />
+      </div>
+
+      <div class="flex items-center justify-end flex-1 space-x-4 text-gray-700 md:space-x-5">
+         <button @click="openSearch" class="flex items-center justify-center transition-colors focus:outline-none hover:text-black">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
+        </button>
+
+        <div class="relative flex items-center justify-center">
+          <button @click="toggleDropdown">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" /></svg>
+          </button>
+          
+          <div v-if="isDropdownOpen" class="top-full right-0 z-[60] absolute bg-white shadow-xl mt-4 p-6 border border-gray-100 w-64 animate-fade-in">
+             <div v-if="isAuthenticated" class="text-left">
+              <h3 class="text-sm font-bold tracking-tight text-black uppercase truncate">HI {{ userData?.first_name }} {{ userData?.last_name }}</h3>
+              <p class="mb-4 text-xs text-gray-500 truncate">{{ userData?.email }}</p>
+            </div>
+            <div v-else>
+              <h3 class="mb-4 text-xs font-bold tracking-widest text-left text-black uppercase">Account</h3>
+              <router-link to="/login" @click="isDropdownOpen = false" class="block w-full py-3 mb-4 text-xs font-bold tracking-widest text-center text-white uppercase transition bg-black hover:bg-gray-800">Sign In</router-link>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <router-link to="/orderpage" @click="isDropdownOpen = false" class="flex items-center justify-center py-3 space-x-2 transition bg-gray-100 hover:bg-gray-200"><span class="font-bold text-[10px] uppercase tracking-wider">Orders</span></router-link>
+              <router-link to="/profilepage" @click="isDropdownOpen = false" class="flex items-center justify-center py-3 space-x-2 transition bg-gray-100 hover:bg-gray-200"><span class="font-bold text-[10px] uppercase tracking-wider">Profile</span></router-link>
+            </div>
+          </div>
+        </div>
+
+        <button @click="openCartPage" class="relative transition-colors hover:text-black cart-icon-header">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" /></svg>
+          <span v-if="cartCount > 0" :class="[isBadgePopping ? 'scale-150 bg-red-600' : 'scale-100 bg-black']" class="-top-2 -right-2 absolute flex justify-center items-center rounded-full w-4 h-4 text-[10px] text-white transition-all duration-300 pointer-events-none">{{ cartCount }}</span>
+        </button>
+      </div>
+    </div>
+
+    <transition name="mega-menu-fade">
+      <div 
+        v-if="isMegaMenuOpen" 
+        class="absolute left-0 hidden w-full overflow-hidden bg-white border-t border-gray-100 shadow-xl top-full md:block"
+        @mouseenter="keepMegaMenuOpen"
+        @mouseleave="closeMegaMenu"
+      >
+        <div class="mx-auto max-w-7xl flex h-[400px]">
+          
+          <div class="w-1/4 px-6 py-8 overflow-y-auto border-r border-gray-100 bg-gray-50/50">
+            <h3 class="font-bold text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-6">Categories</h3>
+            <ul class="space-y-4">
+              <li>
+                <button 
+                  @click="selectMegaMenuCategory('all')"
+                  @mouseenter="selectMegaMenuCategory('all')"
+                  :class="activeMegaCategory === 'all' ? 'text-black font-bold' : 'text-gray-500 hover:text-black'"
+                  class="w-full text-xs tracking-widest text-left uppercase transition-colors"
+                >
+                  All Bags
+                </button>
+              </li>
+              <li v-for="cat in categories" :key="cat.id">
+                <button 
+                  @click="selectMegaMenuCategory(cat.id)"
+                  @mouseenter="selectMegaMenuCategory(cat.id)"
+                  :class="activeMegaCategory === cat.id ? 'text-black font-bold' : 'text-gray-500 hover:text-black'"
+                  class="w-full text-xs tracking-widest text-left uppercase transition-colors"
+                >
+                  {{ cat.category_name }}
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <div class="relative w-3/4 px-10 py-8">
+            <div class="flex items-center justify-between mb-6">
+              <h3 class="font-bold text-[10px] uppercase tracking-[0.2em] text-gray-400">
+                {{ activeMegaCategory === 'all' ? 'Featured Picks' : 'Category Highlights' }}
+              </h3>
+              <router-link to="/collections" class="text-[10px] font-bold uppercase tracking-widest border-b border-black pb-0.5 hover:text-gray-500 transition-colors">
+                View All Collection
+              </router-link>
+            </div>
+
+            <div v-if="isMegaMenuLoading" class="absolute inset-0 z-10 flex items-center justify-center bg-white/80">
+              <div class="w-8 h-8 border-2 border-gray-200 rounded-full border-t-black animate-spin"></div>
+            </div>
+
+            <div class="grid grid-cols-4 gap-x-6 gap-y-8">
+              <div 
+                v-for="product in randomMegaProducts" 
+                :key="product.id"
+                @click="navigateToProduct(product.id)"
+                class="cursor-pointer group"
+              >
+                <div class="relative mb-3 overflow-hidden bg-gray-100 rounded-lg aspect-square">
+                  <img :src="product.image || defaultBagIcon" class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105" />
+                  <div v-if="product.discount_price" class="absolute top-2 left-2 bg-red-600 text-white px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-widest rounded-sm">Sale</div>
+                </div>
+                <h4 class="font-bold text-[10px] uppercase tracking-widest text-gray-900 truncate">{{ product.name }}</h4>
+                <p class="text-[10px] text-gray-500 mt-0.5">{{ formatPrice(product.discount_price ?? product.price) }}</p>
+              </div>
+            </div>
+
+            <div v-if="!isMegaMenuLoading && randomMegaProducts.length === 0" class="flex flex-col items-center justify-center h-48 font-serif italic text-gray-400">
+              No products found in this category.
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </transition>
+    <transition name="slide-fade">
+      <div v-if="isMobileMenuOpen" class="z-[200] fixed inset-0 flex">
+        <div
+          @click="isMobileMenuOpen = false"
+          class="absolute inset-0 transition-opacity bg-black/50 backdrop-blur-sm"
+        ></div>
+        <div
+          class="relative flex flex-col bg-white shadow-2xl p-8 w-[80%] max-w-sm h-full overflow-y-auto"
+        >
+          </div>
+      </div>
+    </transition>
+
+  </header>
+  <SearchModal v-if="isSearchOpen" @close="closeSearch" />
+</template>
+
+<script setup>
+import { ref, onMounted, onUnmounted, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import Swal from "sweetalert2";
+import axios from "axios";
+import SearchModal from "../../User/Layout/SearchModal.vue";
+
+import defaultBagIcon from "../../../assets/products/bag_icon.jpg";
+import { useCart } from "../../../composables/useCart";
+import { BASE_URL } from "../../../config/api"; 
+import { useProductStore } from "../../../composables/useProductStore";
+
+const route = useRoute();
+const router = useRouter();
+
+const isSearchOpen = ref(false);
+const openSearch = () => (isSearchOpen.value = true);
+const closeSearch = () => (isSearchOpen.value = false);
+
+const isDropdownOpen = ref(false);
+const isAuthenticated = ref(false);
+const userData = ref(null);
+const isMobileMenuOpen = ref(false);
+
+const { cartCount, fetchCarts, handleOptimisticAdd } = useCart();
+const { state: productState, fetchCollectionsData } = useProductStore();
+const isBadgePopping = ref(false);
+
+// =======================================================
+// [BARU] STATE & LOGIKA ANNOUNCEMENT BAR
+// =======================================================
+const isAtTop = ref(true);
+const currentAnnouncement = ref(0);
+let announcementTimer = null;
+
+// Teks yang diberikan oleh bos Anda
+const announcements = [
+  "An Exclusive Welcome Gift: Rp 250K OFF your first order →",
+  "A Little Extra, On Us — Complimentary Shipping Across Indonesia (Min. Rp 1.000.000) →"
+];
+
+// Pindah ke pesan selanjutnya
+const nextAnnouncement = () => {
+  currentAnnouncement.value = (currentAnnouncement.value + 1) % announcements.length;
+  resetAnnouncementTimer();
+};
+
+// Pindah ke pesan sebelumnya
+const prevAnnouncement = () => {
+  currentAnnouncement.value = (currentAnnouncement.value - 1 + announcements.length) % announcements.length;
+  resetAnnouncementTimer();
+};
+
+// Timer shuffle otomatis 3 detik
+const startAnnouncementTimer = () => {
+  announcementTimer = setInterval(() => {
+    currentAnnouncement.value = (currentAnnouncement.value + 1) % announcements.length;
+  }, 3000);
+};
+
+// Reset timer agar tidak double hit saat user menekan tombol manual
+const resetAnnouncementTimer = () => {
+  clearInterval(announcementTimer);
+  startAnnouncementTimer();
+};
+
+// Logika Deteksi Scroll untuk hide/show Bar
+const handleScroll = () => {
+  // Jika posisi scroll benar-benar di paling atas (titik nol)
+  isAtTop.value = window.scrollY <= 0;
+};
+// =======================================================
+
+const isMegaMenuOpen = ref(false);
+const megaMenuTimer = ref(null);
+const activeMegaCategory = ref('all');
+const categories = ref([]);
+const isMegaMenuLoading = ref(false);
+const randomMegaProducts = ref([]);
+
+const formatPrice = (v) => new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(v);
+
+const shuffleArray = (array) => {
+  let currentIndex = array.length, randomIndex;
+  while (currentIndex > 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+  }
+  return array;
+};
+
+const generateRandomProducts = () => {
+  if (!productState.collectionsProducts || productState.collectionsProducts.length === 0) {
+    console.warn("Mega Menu: productState.collectionsProducts is empty even after fetching.");
+    isMegaMenuLoading.value = false;
+    randomMegaProducts.value = [];
+    return;
+  }
+  
+  isMegaMenuLoading.value = true;
+  
+  setTimeout(() => {
+    let filtered = [];
+    if (activeMegaCategory.value === 'all') {
+      filtered = [...productState.collectionsProducts];
+    } else {
+      filtered = productState.collectionsProducts.filter(p => p.category_id == activeMegaCategory.value);
+    }
+
+    randomMegaProducts.value = shuffleArray(filtered).slice(0, 4);
+    isMegaMenuLoading.value = false;
+  }, 100);
+};
+
+const fetchCategoriesForMegaMenu = async () => {
+  if (categories.value.length > 0) return;
+  try {
+    const res = await axios.get(`${BASE_URL}/guest/categories`);
+    categories.value = res.data.data || res.data;
+  } catch (error) {
+    console.error("Failed to load categories for Mega Menu", error);
+  }
+};
+
+const openMegaMenu = async () => {
+  clearTimeout(megaMenuTimer.value);
+  isMegaMenuOpen.value = true;
+  isDropdownOpen.value = false;
+  
+  isMegaMenuLoading.value = true;
+  fetchCategoriesForMegaMenu();
+
+  if (!productState.isCollectionsLoaded || !productState.collectionsProducts || productState.collectionsProducts.length === 0) {
+    try {
+      await fetchCollectionsData();
+    } catch (e) {
+      console.error("Failed to fetch collections data for Mega Menu", e);
+    }
+  }
+  
+  generateRandomProducts();
+};
+
+const keepMegaMenuOpen = () => {
+  clearTimeout(megaMenuTimer.value);
+};
+
+const closeMegaMenu = () => {
+  megaMenuTimer.value = setTimeout(() => {
+    isMegaMenuOpen.value = false;
+  }, 150); 
+};
+
+const selectMegaMenuCategory = (catId) => {
+  if (activeMegaCategory.value !== catId) {
+    activeMegaCategory.value = catId;
+    generateRandomProducts();
+  }
+};
+
+const navigateToProduct = (id) => {
+  closeMegaMenu(); 
+  router.push(`/product/${id}`);
+};
+
+const openCartPage = () => {
+  if (!isAuthenticated.value) {
+    Swal.fire({
+      icon: "info",
+      title: "Sign In Required",
+      text: "Please login to see your shopping bag.",
+      confirmButtonColor: "#000",
+    });
+    return;
+  }
+  router.push("/cart");
+};
+
+const checkAuth = () => {
+  const token = localStorage.getItem("token");
+  const user = localStorage.getItem("user");
+  if (token && user) {
+    isAuthenticated.value = true;
+    userData.value = JSON.parse(user);
+  } else {
+    isAuthenticated.value = false;
+    userData.value = null;
+  }
+};
+
+const toggleDropdown = () => {
+  checkAuth();
+  isDropdownOpen.value = !isDropdownOpen.value;
+  isMegaMenuOpen.value = false; 
+};
+
+const onAddToCartEvent = (e) => {
+  handleOptimisticAdd(e.detail, () => {
+    isBadgePopping.value = true;
+    setTimeout(() => (isBadgePopping.value = false), 300);
+  });
+};
+
+onMounted(() => {
+  checkAuth();
+  if (isAuthenticated.value) fetchCarts();
+
+  // Mengaktifkan Event Listeners
+  window.addEventListener("optimistic-add-to-cart", onAddToCartEvent);
+  window.addEventListener("click", (e) => {
+    if (!e.target.closest(".relative")) isDropdownOpen.value = false;
+  });
+  window.addEventListener("refresh-cart", fetchCarts);
+  
+  // Mengaktifkan Scroll Listener untuk Announcement Bar
+  window.addEventListener('scroll', handleScroll);
+  // Mulai Timer Shuffle
+  startAnnouncementTimer();
+});
+
+onUnmounted(() => {
+  window.removeEventListener("optimistic-add-to-cart", onAddToCartEvent);
+  window.removeEventListener('scroll', handleScroll);
+  clearInterval(announcementTimer);
+});
+
+watch(
+  () => route.path,
+  () => {
+    isDropdownOpen.value = false;
+    isMobileMenuOpen.value = false;
+    checkAuth();
+  },
+);
+</script>
+
+<style scoped>
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Transisi untuk teks Announcement Bar agar soft */
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.fade-slide-enter-from {
+  opacity: 0;
+  transform: translateY(5px);
+}
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-5px);
+}
+
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: all 0.3s ease;
+}
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+.mega-menu-fade-enter-active,
+.mega-menu-fade-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  transform-origin: top;
+}
+.mega-menu-fade-enter-from,
+.mega-menu-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-5px) scaleY(0.98);
+}
+</style>
