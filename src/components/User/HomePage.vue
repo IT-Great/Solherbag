@@ -1019,7 +1019,7 @@ onMounted(initData);
             </button>
           </div> -->
 
-          <div class="flex flex-col items-center justify-center w-full px-8 py-10 text-center md:w-1/2 md:py-12">
+          <!-- <div class="flex flex-col items-center justify-center w-full px-8 py-10 text-center md:w-1/2 md:py-12">
             
             <h4 class="font-bold tracking-[0.2em] text-xs uppercase text-[#333] mb-1">
               S O L H E R
@@ -1032,7 +1032,6 @@ onMounted(initData);
             
             <p class="text-[16px] md:text-[18px] text-gray-800 mb-6 font-serif">
               with minimum purchase of <span class="font-bold">Rp 499.000</span> <br/>
-              <!-- <span class="text-sm font-bold text-red-600">(Up to 50% OFF)</span> -->
             </p>
 
             <p class="text-[13px] md:text-[14px] font-sans text-[#444] leading-relaxed mb-8 max-w-[280px]">
@@ -1055,6 +1054,50 @@ onMounted(initData);
               </button>
 
               <p class="text-[11px] md:text-[12px] font-sans text-gray-500 mt-3 opacity-70">
+                No spam. Only the good stuff.
+              </p>
+            </div>
+          </div> -->
+
+          <div class="flex flex-col items-center justify-center w-full px-6 py-8 overflow-y-auto text-center md:px-8 md:py-10 md:w-1/2 custom-scrollbar">
+            
+            <img 
+              src="../../assets/solherbrandbook.png" 
+              alt="Solher Logo" 
+              class="object-contain h-5 mb-8 md:h-6 opacity-90"
+            />
+
+            <h2 class="text-[28px] md:text-[32px] font-serif font-bold text-[#111] mb-3 tracking-tight leading-snug">
+              ✨ Enjoy <br />
+              <span class="font-extrabold whitespace-nowrap">Rp 250.000 OFF</span><br />
+              Your First Order
+            </h2>
+            
+            <p class="text-[15px] md:text-[16px] text-gray-800 mb-5 font-serif">
+              with minimum purchase of <span class="font-bold whitespace-nowrap">Rp 499.000</span> <br/>
+              <!-- <span class="text-sm font-bold text-red-600">(Up to 50% OFF)</span> -->
+            </p>
+
+            <p class="text-[12px] md:text-[13px] font-sans text-[#444] leading-relaxed mb-6 max-w-[280px]">
+              Join our inner circle and be the first to access curated drops, private offers, and elevated essentials made just for you.
+            </p>
+
+            <div class="w-full max-w-[320px]">
+              <input
+                type="email"
+                v-model="promoEmail"
+                placeholder="Enter your email to unlock your offer…"
+                class="w-full border border-black bg-white px-4 py-[12px] mb-3 text-[13px] font-sans focus:outline-none focus:ring-1 focus:ring-black placeholder-gray-400"
+              />
+
+              <button
+                @click="claimPromo"
+                class="w-full bg-black text-white font-bold uppercase tracking-widest text-[13px] md:text-[14px] py-3.5 hover:bg-gray-800 transition-colors shadow-md"
+              >
+                Claim My Rp 250.000 OFF
+              </button>
+
+              <p class="text-[11px] font-sans text-gray-500 mt-3 opacity-70">
                 No spam. Only the good stuff.
               </p>
             </div>
