@@ -966,9 +966,6 @@ onMounted(initData);
         class="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm px-4"
         @click.self="closePopup"
       >
-        <!-- <div
-          class="bg-[#F8F8F8] w-full max-w-3xl flex flex-col md:flex-row relative shadow-2xl overflow-hidden"
-        > -->
         <div
           class="relative flex flex-col w-full max-w-3xl overflow-hidden bg-white shadow-2xl md:flex-row"
         >
@@ -1062,7 +1059,7 @@ onMounted(initData);
             </div>
           </div> -->
 
-          <div class="flex flex-col items-center justify-center w-full px-6 py-8 overflow-y-auto text-center md:px-8 md:py-10 md:w-1/2 custom-scrollbar">
+          <!-- <div class="flex flex-col items-center justify-center w-full px-6 py-8 overflow-y-auto text-center md:px-8 md:py-10 md:w-1/2 custom-scrollbar">
             
             <img 
               src="../../assets/solherbrandbook.png" 
@@ -1078,7 +1075,6 @@ onMounted(initData);
             
             <p class="text-[15px] md:text-[16px] text-gray-800 mb-5 font-serif">
               with minimum purchase of <span class="font-bold whitespace-nowrap">Rp 499.000</span> <br/>
-              <!-- <span class="text-sm font-bold text-red-600">(Up to 50% OFF)</span> -->
             </p>
 
             <p class="text-[12px] md:text-[13px] font-sans text-[#444] leading-relaxed mb-6 max-w-[280px]">
@@ -1096,6 +1092,49 @@ onMounted(initData);
               <button
                 @click="claimPromo"
                 class="w-full bg-black text-white font-bold uppercase tracking-widest text-[13px] md:text-[14px] py-3.5 hover:bg-gray-800 transition-colors shadow-md"
+              >
+                Claim My Rp 250.000 OFF
+              </button>
+
+              <p class="text-[11px] font-sans text-gray-500 mt-3 opacity-70">
+                No spam. Only the good stuff.
+              </p>
+            </div> 
+          </div> -->
+
+          <div class="flex flex-col items-center justify-center w-full px-6 py-8 overflow-y-auto text-center md:px-8 md:py-10 md:w-1/2 custom-scrollbar">
+            
+            <img 
+              src="../../assets/solherbrandbook.png" 
+              alt="Solher Logo" 
+              class="object-contain h-8 mb-8 md:h-10 opacity-90"
+            />
+
+            <h2 class="text-[28px] md:text-[34px] font-serif text-[#111] mb-4 tracking-tight leading-tight">
+              <span class="font-bold">✨ Enjoy</span> <br />
+              <span class="font-extrabold whitespace-nowrap">Rp&nbsp;250.000&nbsp;OFF</span><br />
+              <span class="font-bold">Your First Order</span>
+            </h2>
+            
+            <p class="text-[15px] md:text-[16px] text-gray-800 mb-6 font-serif">
+              with minimum purchase of <span class="font-bold whitespace-nowrap">Rp&nbsp;499.000</span>
+            </p>
+
+            <p class="text-[12px] md:text-[13px] font-sans text-[#444] leading-relaxed mb-6 max-w-[280px]">
+              Join our inner circle and be the first to access curated drops, private offers, and elevated essentials made just for you.
+            </p>
+
+            <div class="w-full max-w-[320px]">
+              <input
+                type="email"
+                v-model="promoEmail"
+                placeholder="Enter your email to unlock your offer…"
+                class="w-full border border-black bg-white px-4 py-[14px] mb-3 text-[13px] font-sans focus:outline-none focus:ring-1 focus:ring-black placeholder-gray-400"
+              />
+
+              <button
+                @click="claimPromo"
+                class="w-full bg-black text-white font-bold uppercase tracking-widest text-[13px] md:text-[14px] py-4 hover:bg-gray-800 transition-colors shadow-md"
               >
                 Claim My Rp 250.000 OFF
               </button>
