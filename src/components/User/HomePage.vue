@@ -1032,7 +1032,7 @@ onMounted(initData);
             
             <p class="text-[16px] md:text-[18px] text-gray-800 mb-6 font-serif">
               with minimum purchase of <span class="font-bold">Rp 499.000</span> <br/>
-              <span class="text-sm font-bold text-red-600">(Up to 50% OFF)</span>
+              <!-- <span class="text-sm font-bold text-red-600">(Up to 50% OFF)</span> -->
             </p>
 
             <p class="text-[13px] md:text-[14px] font-sans text-[#444] leading-relaxed mb-8 max-w-[280px]">
