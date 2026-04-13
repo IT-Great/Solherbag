@@ -733,10 +733,18 @@ const formatDate = (dateString) => {
 };
 
 // [BARU] Fungsi melempar State Data Produk secara Instan
+// const goToEditPage = () => {
+//   router.push({
+//     path: `/admin/products/edit/${product.value.id}`,
+//     state: { productData: JSON.stringify(product.value) }, // Lempar data mentah ke halaman tujuan
+//   });
+// };
+
+// [PERBAIKAN] Melempar data instan tanpa JSON.stringify
 const goToEditPage = () => {
   router.push({
     path: `/admin/products/edit/${product.value.id}`,
-    state: { productData: JSON.stringify(product.value) }, // Lempar data mentah ke halaman tujuan
+    state: { productData: product.value }, 
   });
 };
 

@@ -473,132 +473,11 @@ onMounted(async () => {
         <div
           class="col-span-1 p-6 mt-4 mb-2 border border-gray-200 md:col-span-2 rounded-2xl bg-gray-50/50"
         >
-          <h3
+          <!-- <h3
             class="pb-2 mb-4 text-sm font-bold tracking-widest text-gray-800 uppercase border-b"
           >
             Physical Attributes
           </h3>
-
-          < class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-5">
-          <!-- <div>
-              <label class="block mb-1 text-xs font-bold text-gray-600"
-                >Weight (Grams) <span class="text-red-500">*</span></label
-              >
-              <input
-                v-model="form.weight"
-                type="number"
-                placeholder="e.g. 1000"
-                class="w-full p-3 text-sm bg-white border border-gray-200 rounded-xl"
-                required
-              />
-            </div>
-            <div class="mt-2 md:col-span-2">
-              <label class="block mb-1 text-xs font-bold text-gray-600"
-                >Strap Length (Optional)</label
-              >
-              <input
-                v-model="form.strap_length"
-                type="text"
-                placeholder="e.g. 100 - 120 cm Adjustable"
-                class="w-full p-3 text-sm bg-white border border-gray-200 rounded-xl"
-              />
-            </div>
-            <div>
-              <label class="block mb-1 text-xs font-bold text-gray-600"
-                >Length (cm)</label
-              >
-              <input
-                v-model="form.length"
-                type="number"
-                step="0.01"
-                class="w-full p-3 text-sm bg-white border border-gray-200 rounded-xl"
-              />
-            </div>
-            <div>
-              <label class="block mb-1 text-xs font-bold text-gray-600"
-                >Width (cm)</label
-              >
-              <input
-                v-model="form.width"
-                type="number"
-                step="0.01"
-                class="w-full p-3 text-sm bg-white border border-gray-200 rounded-xl"
-              />
-            </div>
-            <div>
-              <label class="block mb-1 text-xs font-bold text-gray-600"
-                >Height (cm)</label
-              >
-              <input
-                v-model="form.height"
-                type="number"
-                step="0.01"
-                class="w-full p-3 text-sm bg-white border border-gray-200 rounded-xl"
-              />
-            </div>
-            <div class="relative md:col-span-4">
-              <label class="block mb-1 text-xs font-bold text-gray-600">Colors</label>
-              <div 
-                @click="toggleColorDropdown"
-                class="bg-white p-3 rounded-xl w-full border border-gray-200 min-h-[46px] text-sm cursor-pointer flex justify-between items-center"
-              >
-                <div class="flex flex-wrap items-center gap-2">
-                  <template v-if="form.color.length > 0">
-                    <div 
-                      v-for="(selColor, idx) in form.color" :key="idx"
-                      class="w-5 h-5 border border-gray-300 rounded-full shadow-sm"
-                      :style="{ backgroundColor: colorOptions.find(c => c.name === selColor)?.hex || '#ccc' }"
-                      :title="selColor"
-                    ></div>
-                  </template>
-                  <span v-else class="text-gray-400">Select Colors</span>
-                </div>
-                <span class="text-xs text-gray-400">▼</span>
-              </div>
-
-              <div 
-                v-if="isColorDropdownOpen" 
-                class="absolute z-10 w-full mt-1 overflow-y-auto bg-white border border-gray-200 shadow-xl rounded-xl max-h-56"
-              >
-                <div 
-                  @click="selectColor('')"
-                  class="flex items-center justify-center p-3 text-sm font-bold text-red-500 border-b border-gray-100 cursor-pointer hover:bg-red-50"
-                >
-                  Clear All Colors
-                </div>
-                <div 
-                  v-for="color in colorOptions" 
-                  :key="color.name"
-                  @click="selectColor(color.name)"
-                  class="flex items-center justify-between p-3 transition-colors border-b cursor-pointer hover:bg-gray-50 border-gray-50 last:border-0"
-                  :class="form.color.includes(color.name) ? 'bg-blue-50/50' : ''"
-                >
-                  <div class="flex items-center gap-3">
-                    <div 
-                      class="w-5 h-5 border border-gray-300 rounded-full shadow-sm" 
-                      :style="{ backgroundColor: color.hex }"
-                    ></div>
-                    <span class="text-sm font-medium" :class="form.color.includes(color.name) ? 'text-blue-700' : 'text-gray-700'">
-                      {{ color.name }}
-                    </span>
-                  </div>
-                  <svg v-if="form.color.includes(color.name)" class="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-              </div>
-            </div>
-            <div class="mt-2 md:col-span-5">
-              <label class="block mb-1 text-xs font-bold text-gray-600"
-                >Material (Optional)</label
-              >
-              <input
-                v-model="form.material"
-                type="text"
-                placeholder="e.g. 100% Genuine Cowhide Leather"
-                class="w-full p-3 text-sm bg-white border border-gray-200 rounded-xl"
-              />
-            </div> -->
           <div>
             <label class="block mb-1 text-xs font-bold text-gray-600"
               >Weight (Grams) <span class="text-red-500">*</span></label
@@ -750,6 +629,166 @@ onMounted(async () => {
                     />
                   </svg>
                 </button>
+              </div>
+            </div>
+          </div> -->
+          <h3
+            class="pb-2 mb-4 text-sm font-bold tracking-widest text-gray-800 uppercase border-b"
+          >
+            Physical Attributes
+          </h3>
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-5">
+            <div>
+              <label class="block mb-1 text-xs font-bold text-gray-600"
+                >Weight (Grams) <span class="text-red-500">*</span></label
+              >
+              <input
+                v-model="form.weight"
+                type="number"
+                placeholder="e.g. 1000"
+                class="w-full p-3 text-sm bg-white border border-gray-200 rounded-xl"
+                required
+              />
+            </div>
+            <div class="mt-2 md:col-span-2">
+              <label class="block mb-1 text-xs font-bold text-gray-600"
+                >Strap Length (Optional)</label
+              >
+              <input
+                v-model="form.strap_length"
+                type="text"
+                placeholder="e.g. 100 - 120 cm Adjustable"
+                class="w-full p-3 text-sm bg-white border border-gray-200 rounded-xl"
+              />
+            </div>
+            <div>
+              <label class="block mb-1 text-xs font-bold text-gray-600"
+                >Length (cm)</label
+              >
+              <input
+                v-model="form.length"
+                type="number"
+                step="0.01"
+                class="w-full p-3 text-sm bg-white border border-gray-200 rounded-xl"
+              />
+            </div>
+            <div>
+              <label class="block mb-1 text-xs font-bold text-gray-600"
+                >Width (cm)</label
+              >
+              <input
+                v-model="form.width"
+                type="number"
+                step="0.01"
+                class="w-full p-3 text-sm bg-white border border-gray-200 rounded-xl"
+              />
+            </div>
+            <div>
+              <label class="block mb-1 text-xs font-bold text-gray-600"
+                >Height (cm)</label
+              >
+              <input
+                v-model="form.height"
+                type="number"
+                step="0.01"
+                class="w-full p-3 text-sm bg-white border border-gray-200 rounded-xl"
+              />
+            </div>
+            <div class="mt-2 md:col-span-5">
+              <label class="block mb-1 text-xs font-bold text-gray-600"
+                >Material (Optional)</label
+              >
+              <input
+                v-model="form.material"
+                type="text"
+                placeholder="e.g. 100% Genuine Cowhide Leather"
+                class="w-full p-3 text-sm bg-white border border-gray-200 rounded-xl"
+              />
+            </div>
+
+            <div class="pt-4 mt-2 border-t border-gray-200 md:col-span-5">
+              <label
+                class="block mb-2 text-xs font-bold tracking-widest text-gray-600 uppercase"
+                >Product Colors</label
+              >
+              <div
+                class="flex items-center gap-3 p-3 mb-4 border border-gray-200 bg-gray-50 rounded-xl"
+              >
+                <div class="flex flex-col">
+                  <label class="text-[10px] font-bold text-gray-500 mb-1"
+                    >Pick Color</label
+                  >
+                  <input
+                    type="color"
+                    v-model="newColorHex"
+                    class="w-10 h-10 p-0 bg-transparent border-0 rounded cursor-pointer"
+                  />
+                </div>
+                <div class="flex flex-col flex-1">
+                  <label class="text-[10px] font-bold text-gray-500 mb-1"
+                    >Color Name</label
+                  >
+                  <input
+                    type="text"
+                    v-model="newColorName"
+                    placeholder="e.g. Midnight Blue"
+                    class="bg-white p-2.5 rounded-lg w-full text-sm border border-gray-200 outline-none focus:ring-2 focus:ring-black"
+                    @keyup.enter.prevent="addColor"
+                  />
+                </div>
+                <div class="flex flex-col justify-end h-full mt-auto">
+                  <button
+                    type="button"
+                    @click="addColor"
+                    class="bg-black text-white px-4 py-2.5 rounded-lg font-bold text-xs uppercase tracking-widest hover:bg-gray-800 transition"
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+
+              <div
+                class="flex flex-wrap gap-2 p-4 bg-white border border-gray-200 rounded-xl min-h-[60px]"
+              >
+                <p
+                  v-if="parsedColors.length === 0"
+                  class="w-full my-auto text-xs italic text-center text-gray-400"
+                >
+                  No colors added yet.
+                </p>
+                <div
+                  v-for="(c, idx) in parsedColors"
+                  :key="idx"
+                  class="flex items-center gap-2 px-3 py-1.5 border border-gray-200 shadow-sm bg-gray-50 rounded-lg"
+                >
+                  <div
+                    class="w-4 h-4 border border-gray-300 rounded-full"
+                    :style="{ backgroundColor: c.hex }"
+                  ></div>
+                  <span class="text-xs font-bold text-gray-800">{{
+                    c.name
+                  }}</span>
+                  <button
+                    type="button"
+                    @click="removeColor(idx)"
+                    class="ml-1 font-bold text-gray-400 hover:text-red-500 focus:outline-none"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
