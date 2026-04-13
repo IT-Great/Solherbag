@@ -3373,8 +3373,11 @@ onMounted(fetchData);
                   >
                     {{ item.product.name }}
                   </p>
-                  <p v-if="item.color" class="text-gray-500 text-[9px] uppercase tracking-widest mt-0.5">
+                  <!-- <p v-if="item.color" class="text-gray-500 text-[9px] uppercase tracking-widest mt-0.5">
                     Color: <span class="font-bold text-gray-700">{{ item.color }}</span>
+                  </p> -->
+                  <p v-if="item.color" class="text-gray-500 text-[9px] uppercase tracking-widest mt-0.5">
+                    Color: <span class="font-bold text-gray-700">{{ parseColorName(item.color) }}</span>
                   </p>
                   <p class="text-gray-400 text-[10px]">
                     Qty: {{ item.quantity }}
@@ -5410,6 +5413,12 @@ watch(pointsToUse, (newVal) => { if (newVal < 0) pointsToUse.value = 0; if (newV
 const grandTotalWithDiscount = computed(() => {
   return grandTotal.value - promoDiscountAmount.value - pointDiscountAmount.value;
 });
+
+// [BARU] Fungsi pemecah string warna untuk Order Summary di Payment
+const parseColorName = (colorString) => {
+  if (!colorString) return "";
+  return colorString.includes('|') ? colorString.split('|')[0] : colorString;
+};
 
 const handlePayment = async () => {
   isProcessing.value = true;

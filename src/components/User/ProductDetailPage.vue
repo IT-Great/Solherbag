@@ -1108,7 +1108,7 @@ onMounted(fetchProductDetail);
               >Colors</span
             >
             <div class="flex flex-col items-end">
-              <div class="flex flex-wrap justify-end gap-2">
+              <!-- <div class="flex flex-wrap justify-end gap-2">
                 <div
                   v-for="(c, idx) in product.color"
                   :key="idx"
@@ -1123,6 +1123,24 @@ onMounted(fetchProductDetail);
                   <span
                     class="font-bold text-gray-800 text-[10px] uppercase tracking-wider"
                     >{{ c }}</span
+                  >
+                </div>
+              </div> -->
+              <div class="flex flex-wrap justify-end gap-2">
+                <div
+                  v-for="(c, idx) in product.color"
+                  :key="idx"
+                  @click="selectedColor = c"
+                  :class="selectedColor === c ? 'ring-2 ring-black border-transparent scale-110 shadow-md' : 'border-gray-200 hover:border-gray-400'"
+                  class="flex items-center gap-1.5 bg-white border px-2 py-1 rounded-lg cursor-pointer transition-all duration-200"
+                >
+                  <div
+                    class="w-3 h-3 border border-gray-300 rounded-full"
+                    :style="{ backgroundColor: getParsedColorHex(c) }"
+                  ></div>
+                  <span
+                    class="font-bold text-gray-800 text-[10px] uppercase tracking-wider"
+                    >{{ getColorName(c) }}</span
                   >
                 </div>
               </div>
@@ -2211,6 +2229,20 @@ const colorMap = {
 
 const getColorHex = (colorName) => {
   return colorMap[colorName] || "#cccccc";
+};
+
+// [BARU] Fungsi pemecah string warna ("Red|#d10000" -> "Red")
+const getColorName = (colorString) => {
+  if (!colorString) return "";
+  if (colorString.includes('|')) return colorString.split('|')[0];
+  return colorString;
+};
+
+// [BARU] Fungsi pemecah kode HEX ("Red|#d10000" -> "#d10000")
+const getParsedColorHex = (colorString) => {
+  if (!colorString) return "#cccccc"; // Fallback abu-abu
+  if (colorString.includes('|')) return colorString.split('|')[1];
+  return getColorHex(colorString); // Fallback ke colorMap lama jika masih ada data lama
 };
 
 onMounted(fetchProductDetail);

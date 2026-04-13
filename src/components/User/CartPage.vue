@@ -1,9 +1,9 @@
 <!-- <template>
-  <div class="mx-auto px-6 py-24 max-w-7xl min-h-screen">
+  <div class="min-h-screen px-6 py-24 mx-auto max-w-7xl">
     <div class="flex items-center gap-4 mb-10">
       <button
         @click="$router.push('/collections')"
-        class="p-2 bg-white rounded-full shadow-sm hover:bg-gray-50 transition"
+        class="p-2 transition bg-white rounded-full shadow-sm hover:bg-gray-50"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -20,23 +20,23 @@
           />
         </svg>
       </button>
-      <h1 class="font-serif text-4xl md:text-5xl uppercase tracking-tighter">
+      <h1 class="font-serif text-4xl tracking-tighter uppercase md:text-5xl">
         Your Bag
       </h1>
-      <span class="font-sans text-gray-400 text-xl ml-2"
+      <span class="ml-2 font-sans text-xl text-gray-400"
         >({{ cartCount }} items)</span
       >
     </div>
 
-    <div class="flex flex-col lg:flex-row gap-12 lg:gap-20">
-      <div class="lg:w-2/3 flex-grow">
+    <div class="flex flex-col gap-12 lg:flex-row lg:gap-20">
+      <div class="flex-grow lg:w-2/3">
         <div
           v-if="cartItems.length === 0"
           class="py-20 text-center border-t border-gray-100"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="w-16 h-16 mx-auto text-gray-200 mb-4"
+            class="w-16 h-16 mx-auto mb-4 text-gray-200"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -48,12 +48,12 @@
               d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
             />
           </svg>
-          <p class="font-serif text-gray-400 text-2xl italic mb-6">
+          <p class="mb-6 font-serif text-2xl italic text-gray-400">
             Your bag is currently empty.
           </p>
           <button
             @click="$router.push('/collections')"
-            class="bg-black text-white px-8 py-4 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-gray-800 transition"
+            class="px-8 py-4 text-xs font-bold tracking-widest text-white uppercase transition bg-black rounded-full hover:bg-gray-800"
           >
             Continue Shopping
           </button>
@@ -64,40 +64,40 @@
             <div
               v-for="item in cartItems"
               :key="item.id"
-              class="flex sm:flex-row flex-col gap-8 pb-8 border-b border-gray-100 last:border-0 relative"
+              class="relative flex flex-col gap-8 pb-8 border-b border-gray-100 sm:flex-row last:border-0"
             >
               <div
-                class="relative w-full sm:w-48 h-48 shrink-0 cursor-pointer"
+                class="relative w-full h-48 cursor-pointer sm:w-48 shrink-0"
                 @click="$router.push(`/product/${item.product.id}`)"
               >
                 <img
                   :src="item.product.image"
-                  class="bg-gray-50 shadow-sm rounded-2xl w-full h-full object-cover"
+                  class="object-cover w-full h-full shadow-sm bg-gray-50 rounded-2xl"
                 />
                 <div
                   v-if="item.isSyncing"
                   class="absolute inset-0 bg-white/50 backdrop-blur-[2px] rounded-2xl flex justify-center items-center"
                 >
                   <div
-                    class="w-6 h-6 border-2 border-gray-300 border-t-black rounded-full animate-spin"
+                    class="w-6 h-6 border-2 border-gray-300 rounded-full border-t-black animate-spin"
                   ></div>
                 </div>
               </div>
 
-              <div class="flex flex-col flex-grow justify-between">
+              <div class="flex flex-col justify-between flex-grow">
                 <div>
-                  <div class="flex justify-between items-start">
+                  <div class="flex items-start justify-between">
                     <h3
-                      class="font-bold text-xl uppercase tracking-tight w-2/3 cursor-pointer hover:text-gray-600 transition-colors"
+                      class="w-2/3 text-xl font-bold tracking-tight uppercase transition-colors cursor-pointer hover:text-gray-600"
                       @click="$router.push(`/product/${item.product.id}`)"
                     >
                       {{ item.product.name }}
                     </h3>
-                    <p class="font-bold text-xl text-right">
+                    <p class="text-xl font-bold text-right">
                       {{ formatPrice(item.gross_amount) }}
                     </p>
                   </div>
-                  <p class="mt-1 text-gray-400 text-sm italic tracking-widest">
+                  <p class="mt-1 text-sm italic tracking-widest text-gray-400">
                     {{
                       formatPrice(
                         item.product.discount_price ?? item.product.price,
@@ -107,13 +107,13 @@
                   </p>
                 </div>
 
-                <div class="flex justify-between items-end mt-6">
+                <div class="flex items-end justify-between mt-6">
                   <div
-                    class="flex items-center bg-gray-50 border border-gray-200 rounded-xl overflow-hidden shadow-sm"
+                    class="flex items-center overflow-hidden border border-gray-200 shadow-sm bg-gray-50 rounded-xl"
                   >
                     <button
                       @click="handleQtyChange(item, item.quantity - 1)"
-                      class="hover:bg-gray-200 px-5 py-3 transition-colors font-bold text-lg"
+                      class="px-5 py-3 text-lg font-bold transition-colors hover:bg-gray-200"
                     >
                       -
                     </button>
@@ -121,11 +121,11 @@
                       type="number"
                       v-model.number="item.quantity"
                       @input="handleQtyInput(item)"
-                      class="bg-transparent border-none focus:ring-0 w-14 font-bold text-base text-center"
+                      class="text-base font-bold text-center bg-transparent border-none focus:ring-0 w-14"
                     />
                     <button
                       @click="handleQtyChange(item, item.quantity + 1)"
-                      class="hover:bg-gray-200 px-5 py-3 transition-colors font-bold text-lg"
+                      class="px-5 py-3 text-lg font-bold transition-colors hover:bg-gray-200"
                     >
                       +
                     </button>
@@ -133,11 +133,11 @@
 
                   <button
                     @click="handleOptimisticDelete(item.id)"
-                    class="group flex items-center gap-2 font-bold text-gray-400 hover:text-red-500 text-xs uppercase tracking-widest transition-colors"
+                    class="flex items-center gap-2 text-xs font-bold tracking-widest text-gray-400 uppercase transition-colors group hover:text-red-500"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      class="w-5 h-5 group-hover:rotate-12 transition-transform"
+                      class="w-5 h-5 transition-transform group-hover:rotate-12"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -178,24 +178,24 @@
           class="bg-gray-50 p-8 rounded-[2rem] border border-gray-100 sticky top-32"
         >
           <h2
-            class="mb-8 font-bold text-gray-900 text-lg uppercase tracking-widest border-b border-gray-200 pb-4"
+            class="pb-4 mb-8 text-lg font-bold tracking-widest text-gray-900 uppercase border-b border-gray-200"
           >
             Order Summary
           </h2>
 
-          <div class="space-y-4 mb-8">
-            <div class="flex justify-between text-gray-600 text-sm">
+          <div class="mb-8 space-y-4">
+            <div class="flex justify-between text-sm text-gray-600">
               <span>Total Items</span>
               <span class="font-bold text-black">{{ cartCount }}</span>
             </div>
             <div
-              class="flex justify-between items-end pt-4 border-t border-gray-200"
+              class="flex items-end justify-between pt-4 border-t border-gray-200"
             >
               <span
                 class="font-bold text-gray-500 text-xs uppercase tracking-[0.2em]"
                 >Estimated Total</span
               >
-              <span class="font-black text-black text-2xl">{{
+              <span class="text-2xl font-black text-black">{{
                 formatPrice(totalCartAmount)
               }}</span>
             </div>
@@ -212,7 +212,7 @@
             <span v-if="!isProcessingCheckout">Checkout</span>
             <span v-else class="flex items-center gap-2">
               <div
-                class="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin"
+                class="w-4 h-4 border-2 rounded-full border-white/40 border-t-white animate-spin"
               ></div>
               Processing...
             </span>
@@ -300,11 +300,11 @@ const handleCheckout = () => {
 </style> -->
 
 <!-- <template>
-  <div class="mx-auto px-6 py-24 max-w-7xl min-h-screen">
+  <div class="min-h-screen px-6 py-24 mx-auto max-w-7xl">
     <div class="flex items-center gap-4 mb-10">
       <button
         @click="$router.push('/collections')"
-        class="p-2 bg-white rounded-full shadow-sm hover:bg-gray-50 transition"
+        class="p-2 transition bg-white rounded-full shadow-sm hover:bg-gray-50"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -321,23 +321,23 @@ const handleCheckout = () => {
           />
         </svg>
       </button>
-      <h1 class="font-serif text-4xl md:text-5xl uppercase tracking-tighter">
+      <h1 class="font-serif text-4xl tracking-tighter uppercase md:text-5xl">
         Your Bag
       </h1>
-      <span class="font-sans text-gray-400 text-xl ml-2"
+      <span class="ml-2 font-sans text-xl text-gray-400"
         >({{ cartCount }} items)</span
       >
     </div>
 
-    <div class="flex flex-col lg:flex-row gap-12 lg:gap-20">
-      <div class="lg:w-2/3 flex-grow">
+    <div class="flex flex-col gap-12 lg:flex-row lg:gap-20">
+      <div class="flex-grow lg:w-2/3">
         <div
           v-if="cartItems.length === 0"
           class="py-20 text-center border-t border-gray-100"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="w-16 h-16 mx-auto text-gray-200 mb-4"
+            class="w-16 h-16 mx-auto mb-4 text-gray-200"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -349,12 +349,12 @@ const handleCheckout = () => {
               d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
             />
           </svg>
-          <p class="font-serif text-gray-400 text-2xl italic mb-6">
+          <p class="mb-6 font-serif text-2xl italic text-gray-400">
             Your bag is currently empty.
           </p>
           <button
             @click="$router.push('/collections')"
-            class="bg-black text-white px-8 py-4 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-gray-800 transition"
+            class="px-8 py-4 text-xs font-bold tracking-widest text-white uppercase transition bg-black rounded-full hover:bg-gray-800"
           >
             Continue Shopping
           </button>
@@ -365,40 +365,40 @@ const handleCheckout = () => {
             <div
               v-for="item in cartItems"
               :key="item.id"
-              class="flex sm:flex-row flex-col gap-8 pb-8 border-b border-gray-100 last:border-0 relative"
+              class="relative flex flex-col gap-8 pb-8 border-b border-gray-100 sm:flex-row last:border-0"
             >
               <div
-                class="relative w-full sm:w-48 h-48 shrink-0 cursor-pointer"
+                class="relative w-full h-48 cursor-pointer sm:w-48 shrink-0"
                 @click="$router.push(`/product/${item.product.id}`)"
               >
                 <img
                   :src="item.product.image"
-                  class="bg-gray-50 shadow-sm rounded-2xl w-full h-full object-cover"
+                  class="object-cover w-full h-full shadow-sm bg-gray-50 rounded-2xl"
                 />
                 <div
                   v-if="item.isSyncing"
                   class="absolute inset-0 bg-white/50 backdrop-blur-[2px] rounded-2xl flex justify-center items-center"
                 >
                   <div
-                    class="w-6 h-6 border-2 border-gray-300 border-t-black rounded-full animate-spin"
+                    class="w-6 h-6 border-2 border-gray-300 rounded-full border-t-black animate-spin"
                   ></div>
                 </div>
               </div>
 
-              <div class="flex flex-col flex-grow justify-between">
+              <div class="flex flex-col justify-between flex-grow">
                 <div>
-                  <div class="flex justify-between items-start">
+                  <div class="flex items-start justify-between">
                     <h3
-                      class="font-bold text-xl uppercase tracking-tight w-2/3 cursor-pointer hover:text-gray-600 transition-colors"
+                      class="w-2/3 text-xl font-bold tracking-tight uppercase transition-colors cursor-pointer hover:text-gray-600"
                       @click="$router.push(`/product/${item.product.id}`)"
                     >
                       {{ item.product.name }}
                     </h3>
-                    <p class="font-bold text-xl text-right">
+                    <p class="text-xl font-bold text-right">
                       {{ formatPrice(item.gross_amount) }}
                     </p>
                   </div>
-                  <p class="mt-1 text-gray-400 text-sm italic tracking-widest">
+                  <p class="mt-1 text-sm italic tracking-widest text-gray-400">
                     {{
                       formatPrice(
                         item.product.discount_price ?? item.product.price,
@@ -408,13 +408,13 @@ const handleCheckout = () => {
                   </p>
                 </div>
 
-                <div class="flex justify-between items-end mt-6">
+                <div class="flex items-end justify-between mt-6">
                   <div
-                    class="flex items-center bg-gray-50 border border-gray-200 rounded-xl overflow-hidden shadow-sm"
+                    class="flex items-center overflow-hidden border border-gray-200 shadow-sm bg-gray-50 rounded-xl"
                   >
                     <button
                       @click="handleQtyChange(item, item.quantity - 1)"
-                      class="hover:bg-gray-200 px-5 py-3 transition-colors font-bold text-lg"
+                      class="px-5 py-3 text-lg font-bold transition-colors hover:bg-gray-200"
                     >
                       -
                     </button>
@@ -422,11 +422,11 @@ const handleCheckout = () => {
                       type="number"
                       v-model.number="item.quantity"
                       @input="handleQtyInput(item)"
-                      class="bg-transparent border-none focus:ring-0 w-14 font-bold text-base text-center"
+                      class="text-base font-bold text-center bg-transparent border-none focus:ring-0 w-14"
                     />
                     <button
                       @click="handleQtyChange(item, item.quantity + 1)"
-                      class="hover:bg-gray-200 px-5 py-3 transition-colors font-bold text-lg"
+                      class="px-5 py-3 text-lg font-bold transition-colors hover:bg-gray-200"
                     >
                       +
                     </button>
@@ -434,11 +434,11 @@ const handleCheckout = () => {
 
                   <button
                     @click="handleOptimisticDelete(item.id)"
-                    class="group flex items-center gap-2 font-bold text-gray-400 hover:text-red-500 text-xs uppercase tracking-widest transition-colors"
+                    class="flex items-center gap-2 text-xs font-bold tracking-widest text-gray-400 uppercase transition-colors group hover:text-red-500"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      class="w-5 h-5 group-hover:rotate-12 transition-transform"
+                      class="w-5 h-5 transition-transform group-hover:rotate-12"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -473,23 +473,23 @@ const handleCheckout = () => {
           </TransitionGroup>
 
           <div v-if="suggestedProducts.length > 0" class="pt-12 border-t border-gray-100">
-            <h3 class="font-bold text-sm uppercase tracking-widest text-gray-800 mb-6">
+            <h3 class="mb-6 text-sm font-bold tracking-widest text-gray-800 uppercase">
               You May Also Like
             </h3>
             
-            <TransitionGroup name="list" tag="div" class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <TransitionGroup name="list" tag="div" class="grid grid-cols-2 gap-6 md:grid-cols-4">
               <div 
                 v-for="product in suggestedProducts" 
                 :key="product.id" 
-                class="group flex flex-col"
+                class="flex flex-col group"
               >
                 <div 
-                  class="relative aspect-square overflow-hidden rounded-2xl bg-gray-50 mb-3 cursor-pointer"
+                  class="relative mb-3 overflow-hidden cursor-pointer aspect-square rounded-2xl bg-gray-50"
                   @click="$router.push(`/product/${product.id}`)"
                 >
                   <img 
                     :src="product.image" 
-                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                    class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110" 
                     alt="Suggested Product"
                   />
                   <div v-if="product.discount_price" class="absolute top-2 left-2 bg-red-600 text-white px-2 py-0.5 text-[8px] font-bold uppercase tracking-widest rounded-sm">
@@ -500,7 +500,7 @@ const handleCheckout = () => {
                 <h4 class="font-bold text-[10px] uppercase truncate tracking-wide text-gray-900 mb-1">
                   {{ product.name }}
                 </h4>
-                <p class="text-xs font-medium text-gray-600 mb-3">
+                <p class="mb-3 text-xs font-medium text-gray-600">
                   {{ formatPrice(product.discount_price ?? product.price) }}
                 </p>
                 
@@ -518,18 +518,18 @@ const handleCheckout = () => {
 
       <div v-if="cartItems.length > 0" class="lg:w-1/3">
         <div class="bg-gray-50 p-8 rounded-[2rem] border border-gray-100 sticky top-32">
-          <h2 class="mb-8 font-bold text-gray-900 text-lg uppercase tracking-widest border-b border-gray-200 pb-4">
+          <h2 class="pb-4 mb-8 text-lg font-bold tracking-widest text-gray-900 uppercase border-b border-gray-200">
             Order Summary
           </h2>
 
-          <div class="space-y-4 mb-8">
-            <div class="flex justify-between text-gray-600 text-sm">
+          <div class="mb-8 space-y-4">
+            <div class="flex justify-between text-sm text-gray-600">
               <span>Total Items</span>
               <span class="font-bold text-black">{{ cartCount }}</span>
             </div>
-            <div class="flex justify-between items-end pt-4 border-t border-gray-200">
+            <div class="flex items-end justify-between pt-4 border-t border-gray-200">
               <span class="font-bold text-gray-500 text-xs uppercase tracking-[0.2em]">Estimated Total</span>
-              <span class="font-black text-black text-2xl">{{ formatPrice(totalCartAmount) }}</span>
+              <span class="text-2xl font-black text-black">{{ formatPrice(totalCartAmount) }}</span>
             </div>
             <p class="text-[10px] text-gray-400 italic text-right mt-1">
               Tax and shipping calculated at checkout.
@@ -543,7 +543,7 @@ const handleCheckout = () => {
           >
             <span v-if="!isProcessingCheckout">Checkout</span>
             <span v-else class="flex items-center gap-2">
-              <div class="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin"></div>
+              <div class="w-4 h-4 border-2 rounded-full border-white/40 border-t-white animate-spin"></div>
               Processing...
             </span>
           </button>
@@ -673,11 +673,11 @@ onMounted(() => {
 </style> -->
 
 <!-- <template>
-  <div class="mx-auto px-6 py-24 max-w-7xl min-h-screen">
+  <div class="min-h-screen px-6 py-24 mx-auto max-w-7xl">
     <div class="flex items-center gap-4 mb-10">
       <button
         @click="$router.push('/collections')"
-        class="p-2 bg-white rounded-full shadow-sm hover:bg-gray-50 transition"
+        class="p-2 transition bg-white rounded-full shadow-sm hover:bg-gray-50"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -694,26 +694,26 @@ onMounted(() => {
           />
         </svg>
       </button>
-      <h1 class="font-serif text-4xl md:text-5xl uppercase tracking-tighter">
+      <h1 class="font-serif text-4xl tracking-tighter uppercase md:text-5xl">
         Your Bag
       </h1>
-      <span class="font-sans text-gray-400 text-xl ml-2"
+      <span class="ml-2 font-sans text-xl text-gray-400"
         >({{ cartCount }} items)</span
       >
     </div>
 
-    <div class="flex flex-col lg:flex-row gap-12 lg:gap-20">
-      <div class="lg:w-2/3 flex-grow">
+    <div class="flex flex-col gap-12 lg:flex-row lg:gap-20">
+      <div class="flex-grow lg:w-2/3">
         <div
           v-if="cartItems.length === 0"
           class="py-20 text-center border-t border-gray-100"
         >
-          <p class="font-serif text-gray-400 text-2xl italic mb-6">
+          <p class="mb-6 font-serif text-2xl italic text-gray-400">
             Your bag is currently empty.
           </p>
           <button
             @click="$router.push('/collections')"
-            class="bg-black text-white px-8 py-4 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-gray-800 transition"
+            class="px-8 py-4 text-xs font-bold tracking-widest text-white uppercase transition bg-black rounded-full hover:bg-gray-800"
           >
             Continue Shopping
           </button>
@@ -721,17 +721,17 @@ onMounted(() => {
 
         <div v-else class="space-y-4">
           <div
-            class="flex items-center gap-4 pb-4 border-b border-gray-200 mb-4 px-2"
+            class="flex items-center gap-4 px-2 pb-4 mb-4 border-b border-gray-200"
           >
             <input
               type="checkbox"
               v-model="isAllSelected"
               id="selectAll"
-              class="w-5 h-5 rounded border-gray-300 text-black focus:ring-black cursor-pointer shadow-sm transition"
+              class="w-5 h-5 text-black transition border-gray-300 rounded shadow-sm cursor-pointer focus:ring-black"
             />
             <label
               for="selectAll"
-              class="font-bold text-xs uppercase tracking-widest cursor-pointer select-none text-gray-800"
+              class="text-xs font-bold tracking-widest text-gray-800 uppercase cursor-pointer select-none"
               >Select All Items</label
             >
           </div>
@@ -740,31 +740,31 @@ onMounted(() => {
             <div
               v-for="item in cartItems"
               :key="item.id"
-              class="flex items-start gap-4 sm:gap-6 pb-8 border-b border-gray-100 last:border-0 relative"
+              class="relative flex items-start gap-4 pb-8 border-b border-gray-100 sm:gap-6 last:border-0"
             >
               <div class="pt-3 sm:pt-16">
                 <input
                   type="checkbox"
                   :value="item.id"
                   v-model="selectedItemIds"
-                  class="w-5 h-5 rounded border-gray-300 text-black focus:ring-black cursor-pointer shadow-sm transition"
+                  class="w-5 h-5 text-black transition border-gray-300 rounded shadow-sm cursor-pointer focus:ring-black"
                 />
               </div>
 
               <div
-                class="relative w-24 h-24 sm:w-48 sm:h-48 shrink-0 cursor-pointer"
+                class="relative w-24 h-24 cursor-pointer sm:w-48 sm:h-48 shrink-0"
                 @click="$router.push(`/product/${item.product.id}`)"
               >
                 <img
                   :src="item.product.image"
-                  class="bg-gray-50 shadow-sm rounded-2xl w-full h-full object-cover"
+                  class="object-cover w-full h-full shadow-sm bg-gray-50 rounded-2xl"
                 />
                 <div
                   v-if="item.isSyncing"
                   class="absolute inset-0 bg-white/50 backdrop-blur-[2px] rounded-2xl flex justify-center items-center"
                 >
                   <div
-                    class="w-6 h-6 border-2 border-gray-300 border-t-black rounded-full animate-spin"
+                    class="w-6 h-6 border-2 border-gray-300 rounded-full border-t-black animate-spin"
                   ></div>
                 </div>
               </div>
@@ -773,20 +773,20 @@ onMounted(() => {
                 class="flex flex-col flex-grow justify-between min-h-[6rem] sm:min-h-[12rem]"
               >
                 <div>
-                  <div class="flex justify-between items-start gap-2">
+                  <div class="flex items-start justify-between gap-2">
                     <h3
-                      class="font-bold text-sm sm:text-xl uppercase tracking-tight w-2/3 cursor-pointer hover:text-gray-600 transition-colors line-clamp-2"
+                      class="w-2/3 text-sm font-bold tracking-tight uppercase transition-colors cursor-pointer sm:text-xl hover:text-gray-600 line-clamp-2"
                       @click="$router.push(`/product/${item.product.id}`)"
                     >
                       {{ item.product.name }}
                     </h3>
                     <p
-                      class="font-bold text-sm sm:text-xl text-right whitespace-nowrap"
+                      class="text-sm font-bold text-right sm:text-xl whitespace-nowrap"
                     >
                       {{ formatPrice(item.gross_amount) }}
                     </p>
                   </div>
-                  <p class="mt-1 text-gray-400 text-xs italic tracking-widest">
+                  <p class="mt-1 text-xs italic tracking-widest text-gray-400">
                     {{
                       formatPrice(
                         item.product.discount_price ?? item.product.price,
@@ -797,14 +797,14 @@ onMounted(() => {
                 </div>
 
                 <div
-                  class="flex flex-col sm:flex-row sm:justify-between items-start sm:items-end gap-4 mt-4 sm:mt-6"
+                  class="flex flex-col items-start gap-4 mt-4 sm:flex-row sm:justify-between sm:items-end sm:mt-6"
                 >
                   <div
-                    class="flex items-center bg-gray-50 border border-gray-200 rounded-xl overflow-hidden shadow-sm"
+                    class="flex items-center overflow-hidden border border-gray-200 shadow-sm bg-gray-50 rounded-xl"
                   >
                     <button
                       @click="handleQtyChange(item, item.quantity - 1)"
-                      class="hover:bg-gray-200 px-4 py-2 sm:px-5 sm:py-3 transition-colors font-bold text-base sm:text-lg"
+                      class="px-4 py-2 text-base font-bold transition-colors hover:bg-gray-200 sm:px-5 sm:py-3 sm:text-lg"
                     >
                       -
                     </button>
@@ -812,11 +812,11 @@ onMounted(() => {
                       type="number"
                       v-model.number="item.quantity"
                       @input="handleQtyInput(item)"
-                      class="bg-transparent border-none focus:ring-0 w-10 sm:w-14 font-bold text-sm sm:text-base text-center"
+                      class="w-10 text-sm font-bold text-center bg-transparent border-none focus:ring-0 sm:w-14 sm:text-base"
                     />
                     <button
                       @click="handleQtyChange(item, item.quantity + 1)"
-                      class="hover:bg-gray-200 px-4 py-2 sm:px-5 sm:py-3 transition-colors font-bold text-base sm:text-lg"
+                      class="px-4 py-2 text-base font-bold transition-colors hover:bg-gray-200 sm:px-5 sm:py-3 sm:text-lg"
                     >
                       +
                     </button>
@@ -827,7 +827,7 @@ onMounted(() => {
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      class="w-4 h-4 sm:w-5 sm:h-5 group-hover:rotate-12 transition-transform"
+                      class="w-4 h-4 transition-transform sm:w-5 sm:h-5 group-hover:rotate-12"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -865,7 +865,7 @@ onMounted(() => {
             class="pt-12 border-t border-gray-100"
           >
             <h3
-              class="font-bold text-sm uppercase tracking-widest text-gray-800 mb-6"
+              class="mb-6 text-sm font-bold tracking-widest text-gray-800 uppercase"
             >
               You May Also Like
             </h3>
@@ -873,20 +873,20 @@ onMounted(() => {
             <TransitionGroup
               name="list"
               tag="div"
-              class="grid grid-cols-2 md:grid-cols-4 gap-6"
+              class="grid grid-cols-2 gap-6 md:grid-cols-4"
             >
               <div
                 v-for="product in suggestedProducts"
                 :key="product.id"
-                class="group flex flex-col"
+                class="flex flex-col group"
               >
                 <div
-                  class="relative aspect-square overflow-hidden rounded-2xl bg-gray-50 mb-3 cursor-pointer"
+                  class="relative mb-3 overflow-hidden cursor-pointer aspect-square rounded-2xl bg-gray-50"
                   @click="$router.push(`/product/${product.id}`)"
                 >
                   <img
                     :src="product.image"
-                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
                     alt="Suggested Product"
                   />
                   <div
@@ -902,7 +902,7 @@ onMounted(() => {
                 >
                   {{ product.name }}
                 </h4>
-                <p class="text-xs font-medium text-gray-600 mb-3">
+                <p class="mb-3 text-xs font-medium text-gray-600">
                   {{ formatPrice(product.discount_price ?? product.price) }}
                 </p>
 
@@ -923,24 +923,24 @@ onMounted(() => {
           class="bg-gray-50 p-8 rounded-[2rem] border border-gray-100 sticky top-32"
         >
           <h2
-            class="mb-8 font-bold text-gray-900 text-lg uppercase tracking-widest border-b border-gray-200 pb-4"
+            class="pb-4 mb-8 text-lg font-bold tracking-widest text-gray-900 uppercase border-b border-gray-200"
           >
             Order Summary
           </h2>
 
-          <div class="space-y-4 mb-8">
-            <div class="flex justify-between text-gray-600 text-sm">
+          <div class="mb-8 space-y-4">
+            <div class="flex justify-between text-sm text-gray-600">
               <span>Selected Items</span>
               <span class="font-bold text-black">{{ checkoutCount }}</span>
             </div>
             <div
-              class="flex justify-between items-end pt-4 border-t border-gray-200"
+              class="flex items-end justify-between pt-4 border-t border-gray-200"
             >
               <span
                 class="font-bold text-gray-500 text-xs uppercase tracking-[0.2em]"
                 >Estimated Total</span
               >
-              <span class="font-black text-black text-2xl">{{
+              <span class="text-2xl font-black text-black">{{
                 formatPrice(checkoutTotalAmount)
               }}</span>
             </div>
@@ -959,7 +959,7 @@ onMounted(() => {
             >
             <span v-else class="flex items-center gap-2"
               ><div
-                class="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin"
+                class="w-4 h-4 border-2 rounded-full border-white/40 border-t-white animate-spin"
               ></div>
               Processing...</span
             >
@@ -1068,11 +1068,11 @@ onMounted(() => {
 </script> -->
 
 <template>
-  <div class="mx-auto px-6 py-24 max-w-7xl min-h-screen">
+  <div class="min-h-screen px-6 py-24 mx-auto max-w-7xl">
     <div class="flex items-center gap-4 mb-10">
       <button
         @click="$router.push('/collections')"
-        class="p-2 bg-white rounded-full shadow-sm hover:bg-gray-50 transition"
+        class="p-2 transition bg-white rounded-full shadow-sm hover:bg-gray-50"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -1089,26 +1089,26 @@ onMounted(() => {
           />
         </svg>
       </button>
-      <h1 class="font-serif text-4xl md:text-5xl uppercase tracking-tighter">
+      <h1 class="font-serif text-4xl tracking-tighter uppercase md:text-5xl">
         Your Bag
       </h1>
-      <span class="font-sans text-gray-400 text-xl ml-2"
+      <span class="ml-2 font-sans text-xl text-gray-400"
         >({{ cartCount }} items)</span
       >
     </div>
 
-    <div class="flex flex-col lg:flex-row gap-12 lg:gap-20">
-      <div class="lg:w-2/3 flex-grow">
+    <div class="flex flex-col gap-12 lg:flex-row lg:gap-20">
+      <div class="flex-grow lg:w-2/3">
         <div
           v-if="cartItems.length === 0"
           class="py-20 text-center border-t border-gray-100"
         >
-          <p class="font-serif text-gray-400 text-2xl italic mb-6">
+          <p class="mb-6 font-serif text-2xl italic text-gray-400">
             Your bag is currently empty.
           </p>
           <button
             @click="$router.push('/collections')"
-            class="bg-black text-white px-8 py-4 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-gray-800 transition"
+            class="px-8 py-4 text-xs font-bold tracking-widest text-white uppercase transition bg-black rounded-full hover:bg-gray-800"
           >
             Continue Shopping
           </button>
@@ -1116,17 +1116,17 @@ onMounted(() => {
 
         <div v-else class="space-y-4">
           <div
-            class="flex items-center gap-4 pb-4 border-b border-gray-200 mb-4 px-2"
+            class="flex items-center gap-4 px-2 pb-4 mb-4 border-b border-gray-200"
           >
             <input
               type="checkbox"
               v-model="isAllSelected"
               id="selectAll"
-              class="w-5 h-5 rounded border-gray-300 text-black focus:ring-black cursor-pointer shadow-sm transition"
+              class="w-5 h-5 text-black transition border-gray-300 rounded shadow-sm cursor-pointer focus:ring-black"
             />
             <label
               for="selectAll"
-              class="font-bold text-xs uppercase tracking-widest cursor-pointer select-none text-gray-800"
+              class="text-xs font-bold tracking-widest text-gray-800 uppercase cursor-pointer select-none"
               >Select All Items</label
             >
           </div>
@@ -1135,31 +1135,31 @@ onMounted(() => {
             <div
               v-for="item in cartItems"
               :key="item.id"
-              class="flex items-start gap-4 sm:gap-6 pb-8 border-b border-gray-100 last:border-0 relative"
+              class="relative flex items-start gap-4 pb-8 border-b border-gray-100 sm:gap-6 last:border-0"
             >
               <div class="pt-3 sm:pt-16">
                 <input
                   type="checkbox"
                   :value="item.id"
                   v-model="selectedItemIds"
-                  class="w-5 h-5 rounded border-gray-300 text-black focus:ring-black cursor-pointer shadow-sm transition"
+                  class="w-5 h-5 text-black transition border-gray-300 rounded shadow-sm cursor-pointer focus:ring-black"
                 />
               </div>
 
               <div
-                class="relative w-24 h-24 sm:w-48 sm:h-48 shrink-0 cursor-pointer"
+                class="relative w-24 h-24 cursor-pointer sm:w-48 sm:h-48 shrink-0"
                 @click="$router.push(`/product/${item.product.id}`)"
               >
                 <img
-                  :src="item.product.image|| defaultBagIcon"
-                  class="bg-gray-50 shadow-sm rounded-2xl w-full h-full object-cover"
+                  :src="item.product.image || defaultBagIcon"
+                  class="object-cover w-full h-full shadow-sm bg-gray-50 rounded-2xl"
                 />
                 <div
                   v-if="item.isSyncing"
                   class="absolute inset-0 bg-white/50 backdrop-blur-[2px] rounded-2xl flex justify-center items-center"
                 >
                   <div
-                    class="w-6 h-6 border-2 border-gray-300 border-t-black rounded-full animate-spin"
+                    class="w-6 h-6 border-2 border-gray-300 rounded-full border-t-black animate-spin"
                   ></div>
                 </div>
               </div>
@@ -1168,20 +1168,20 @@ onMounted(() => {
                 class="flex flex-col flex-grow justify-between min-h-[6rem] sm:min-h-[12rem]"
               >
                 <!-- <div>
-                  <div class="flex justify-between items-start gap-2">
+                  <div class="flex items-start justify-between gap-2">
                     <h3
-                      class="font-bold text-sm sm:text-xl uppercase tracking-tight w-2/3 cursor-pointer hover:text-gray-600 transition-colors line-clamp-2"
+                      class="w-2/3 text-sm font-bold tracking-tight uppercase transition-colors cursor-pointer sm:text-xl hover:text-gray-600 line-clamp-2"
                       @click="$router.push(`/product/${item.product.id}`)"
                     >
                       {{ item.product.name }}
                     </h3>
                     <p
-                      class="font-bold text-sm sm:text-xl text-right whitespace-nowrap"
+                      class="text-sm font-bold text-right sm:text-xl whitespace-nowrap"
                     >
                       {{ formatPrice(item.gross_amount) }}
                     </p>
                   </div>
-                  <p class="mt-1 text-gray-400 text-xs italic tracking-widest">
+                  <p class="mt-1 text-xs italic tracking-widest text-gray-400">
                     {{
                       formatPrice(
                         item.product.discount_price ?? item.product.price,
@@ -1192,25 +1192,43 @@ onMounted(() => {
                 </div> -->
 
                 <div>
-                  <div class="flex justify-between items-start gap-2">
+                  <div class="flex items-start justify-between gap-2">
                     <h3
-                      class="font-bold text-sm sm:text-xl uppercase tracking-tight w-2/3 cursor-pointer hover:text-gray-600 transition-colors line-clamp-2"
+                      class="w-2/3 text-sm font-bold tracking-tight uppercase transition-colors cursor-pointer sm:text-xl hover:text-gray-600 line-clamp-2"
                       @click="$router.push(`/product/${item.product.id}`)"
                     >
                       {{ item.product.name }}
                     </h3>
-                    <p v-if="item.color" class="text-[10px] sm:text-xs text-gray-500 uppercase tracking-widest mt-1">
+                    <!-- <p v-if="item.color" class="text-[10px] sm:text-xs text-gray-500 uppercase tracking-widest mt-1">
                       Color: <span class="font-bold text-gray-800">{{ item.color }}</span>
+                    </p> -->
+                    <!-- <p
+                      v-if="item.color"
+                      class="text-[10px] sm:text-xs text-gray-500 uppercase tracking-widest mt-1"
+                    >
+                      Color:
+                      <span class="font-bold text-gray-800">{{
+                        getColorName(item.color)
+                      }}</span>
+                    </p> -->
+                    <p
+                      v-if="item.color"
+                      class="text-[10px] sm:text-xs text-gray-500 uppercase tracking-widest mt-1"
+                    >
+                      Color:
+                      <span class="font-bold text-gray-800">{{
+                        parseColorName(item.color)
+                      }}</span>
                     </p>
                     <p
-                      class="font-bold text-sm sm:text-xl text-right whitespace-nowrap"
+                      class="text-sm font-bold text-right sm:text-xl whitespace-nowrap"
                     >
                       {{ formatPrice(item.gross_amount) }}
                     </p>
                   </div>
-                  
-                  <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1">
-                    <p class="text-gray-400 text-xs italic tracking-widest">
+
+                  <div class="flex flex-wrap items-center mt-1 gap-x-3 gap-y-1">
+                    <p class="text-xs italic tracking-widest text-gray-400">
                       {{
                         formatPrice(
                           item.product.discount_price ?? item.product.price,
@@ -1218,24 +1236,29 @@ onMounted(() => {
                       }}
                       / pc
                     </p>
-                    
-                    <span class="w-1 h-1 bg-gray-300 rounded-full hidden sm:block"></span>
-                    
-                    <p class="text-gray-500 text-[10px] font-bold uppercase tracking-widest">
-                      Avail. Stock: <span class="text-black">{{ item.product.stock }}</span>
+
+                    <span
+                      class="hidden w-1 h-1 bg-gray-300 rounded-full sm:block"
+                    ></span>
+
+                    <p
+                      class="text-gray-500 text-[10px] font-bold uppercase tracking-widest"
+                    >
+                      Avail. Stock:
+                      <span class="text-black">{{ item.product.stock }}</span>
                     </p>
                   </div>
                 </div>
 
                 <div
-                  class="flex flex-col sm:flex-row sm:justify-between items-start sm:items-end gap-4 mt-4 sm:mt-6"
+                  class="flex flex-col items-start gap-4 mt-4 sm:flex-row sm:justify-between sm:items-end sm:mt-6"
                 >
                   <div
-                    class="flex items-center bg-gray-50 border border-gray-200 rounded-xl overflow-hidden shadow-sm"
+                    class="flex items-center overflow-hidden border border-gray-200 shadow-sm bg-gray-50 rounded-xl"
                   >
                     <button
                       @click="handleQtyChange(item, item.quantity - 1)"
-                      class="hover:bg-gray-200 px-4 py-2 sm:px-5 sm:py-3 transition-colors font-bold text-base sm:text-lg"
+                      class="px-4 py-2 text-base font-bold transition-colors hover:bg-gray-200 sm:px-5 sm:py-3 sm:text-lg"
                     >
                       -
                     </button>
@@ -1243,11 +1266,11 @@ onMounted(() => {
                       type="number"
                       v-model.number="item.quantity"
                       @input="handleQtyInput(item)"
-                      class="bg-transparent border-none focus:ring-0 w-10 sm:w-14 font-bold text-sm sm:text-base text-center"
+                      class="w-10 text-sm font-bold text-center bg-transparent border-none focus:ring-0 sm:w-14 sm:text-base"
                     />
                     <button
                       @click="handleQtyChange(item, item.quantity + 1)"
-                      class="hover:bg-gray-200 px-4 py-2 sm:px-5 sm:py-3 transition-colors font-bold text-base sm:text-lg"
+                      class="px-4 py-2 text-base font-bold transition-colors hover:bg-gray-200 sm:px-5 sm:py-3 sm:text-lg"
                     >
                       +
                     </button>
@@ -1258,7 +1281,7 @@ onMounted(() => {
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      class="w-4 h-4 sm:w-5 sm:h-5 group-hover:rotate-12 transition-transform"
+                      class="w-4 h-4 transition-transform sm:w-5 sm:h-5 group-hover:rotate-12"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -1291,22 +1314,33 @@ onMounted(() => {
               </div>
             </div>
           </TransitionGroup>
-          
-          <div
-            class="pt-12 border-t border-gray-100"
-          >
+
+          <div class="pt-12 border-t border-gray-100">
             <h3
-              class="font-bold text-sm uppercase tracking-widest text-gray-800 mb-6"
+              class="mb-6 text-sm font-bold tracking-widest text-gray-800 uppercase"
             >
               You May Also Like
             </h3>
 
-            <div v-if="isLoadingProducts" class="grid grid-cols-2 md:grid-cols-4 gap-6">
-              <div v-for="i in 4" :key="`skel-${i}`" class="flex flex-col gap-2">
-                <div class="bg-gray-200 aspect-square rounded-2xl animate-pulse"></div>
-                <div class="bg-gray-200 h-3 w-3/4 rounded animate-pulse mt-1"></div>
-                <div class="bg-gray-200 h-3 w-1/2 rounded animate-pulse"></div>
-                <div class="bg-gray-200 h-8 w-full rounded-xl animate-pulse mt-auto pt-2"></div>
+            <div
+              v-if="isLoadingProducts"
+              class="grid grid-cols-2 gap-6 md:grid-cols-4"
+            >
+              <div
+                v-for="i in 4"
+                :key="`skel-${i}`"
+                class="flex flex-col gap-2"
+              >
+                <div
+                  class="bg-gray-200 aspect-square rounded-2xl animate-pulse"
+                ></div>
+                <div
+                  class="w-3/4 h-3 mt-1 bg-gray-200 rounded animate-pulse"
+                ></div>
+                <div class="w-1/2 h-3 bg-gray-200 rounded animate-pulse"></div>
+                <div
+                  class="w-full h-8 pt-2 mt-auto bg-gray-200 rounded-xl animate-pulse"
+                ></div>
               </div>
             </div>
 
@@ -1314,20 +1348,20 @@ onMounted(() => {
               v-else-if="suggestedProducts.length > 0"
               name="list"
               tag="div"
-              class="grid grid-cols-2 md:grid-cols-4 gap-6"
+              class="grid grid-cols-2 gap-6 md:grid-cols-4"
             >
               <div
                 v-for="product in suggestedProducts"
                 :key="product.id"
-                class="group flex flex-col"
+                class="flex flex-col group"
               >
                 <div
-                  class="relative aspect-square overflow-hidden rounded-2xl bg-gray-50 mb-3 cursor-pointer"
+                  class="relative mb-3 overflow-hidden cursor-pointer aspect-square rounded-2xl bg-gray-50"
                   @click="$router.push(`/product/${product.id}`)"
                 >
                   <img
                     :src="product.image || defaultBagIcon"
-                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
                     alt="Suggested Product"
                   />
                   <div
@@ -1343,7 +1377,7 @@ onMounted(() => {
                 >
                   {{ product.name }}
                 </h4>
-                <p class="text-xs font-medium text-gray-600 mb-3">
+                <p class="mb-3 text-xs font-medium text-gray-600">
                   {{ formatPrice(product.discount_price ?? product.price) }}
                 </p>
 
@@ -1364,24 +1398,24 @@ onMounted(() => {
           class="bg-gray-50 p-8 rounded-[2rem] border border-gray-100 sticky top-32"
         >
           <h2
-            class="mb-8 font-bold text-gray-900 text-lg uppercase tracking-widest border-b border-gray-200 pb-4"
+            class="pb-4 mb-8 text-lg font-bold tracking-widest text-gray-900 uppercase border-b border-gray-200"
           >
             Order Summary
           </h2>
 
-          <div class="space-y-4 mb-8">
-            <div class="flex justify-between text-gray-600 text-sm">
+          <div class="mb-8 space-y-4">
+            <div class="flex justify-between text-sm text-gray-600">
               <span>Selected Items</span>
               <span class="font-bold text-black">{{ checkoutCount }}</span>
             </div>
             <div
-              class="flex justify-between items-end pt-4 border-t border-gray-200"
+              class="flex items-end justify-between pt-4 border-t border-gray-200"
             >
               <span
                 class="font-bold text-gray-500 text-xs uppercase tracking-[0.2em]"
                 >Estimated Total</span
               >
-              <span class="font-black text-black text-2xl">{{
+              <span class="text-2xl font-black text-black">{{
                 formatPrice(checkoutTotalAmount)
               }}</span>
             </div>
@@ -1400,7 +1434,7 @@ onMounted(() => {
             >
             <span v-else class="flex items-center gap-2"
               ><div
-                class="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin"
+                class="w-4 h-4 border-2 rounded-full border-white/40 border-t-white animate-spin"
               ></div>
               Processing...</span
             >
@@ -1429,9 +1463,9 @@ const {
   cartItems,
   cartCount,
   checkoutCount,
-  checkoutTotalAmount, 
-  selectedItemIds, 
-  isAllSelected, 
+  checkoutTotalAmount,
+  selectedItemIds,
+  isAllSelected,
   handleQtyChange,
   handleQtyInput,
   handleOptimisticDelete,
@@ -1472,6 +1506,12 @@ const suggestedProducts = computed(() => {
 
   return availableProducts.slice(0, 4);
 });
+
+// [BARU] Fungsi pemecah string warna untuk tampilan Cart
+const parseColorName = (colorString) => {
+  if (!colorString) return "";
+  return colorString.includes("|") ? colorString.split("|")[0] : colorString;
+};
 
 const addSuggestedProduct = (product) => {
   handleOptimisticAdd({ product: product, cartId: null }, () => {
