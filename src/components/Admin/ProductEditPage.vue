@@ -1,12 +1,12 @@
 <!-- <template>
   <div
-    class="bg-white shadow-sm mx-auto p-8 border border-gray-100 rounded-2xl max-w-4xl"
+    class="max-w-4xl p-8 mx-auto bg-white border border-gray-100 shadow-sm rounded-2xl"
   >
-    <div class="flex justify-between items-center mb-8">
-      <h1 class="font-bold text-gray-800 text-2xl">Edit Product</h1>
+    <div class="flex items-center justify-between mb-8">
+      <h1 class="text-2xl font-bold text-gray-800">Edit Product</h1>
       <button
         @click="$router.back()"
-        class="text-gray-500 hover:text-black transition"
+        class="text-gray-500 transition hover:text-black"
       >
         Back
       </button>
@@ -14,65 +14,65 @@
 
     <form
       @submit.prevent="handleSubmit"
-      class="gap-6 grid grid-cols-1 md:grid-cols-2"
+      class="grid grid-cols-1 gap-6 md:grid-cols-2"
     >
       <div class="space-y-4">
         <div>
-          <label class="block mb-1 font-bold text-sm">Product Name</label>
+          <label class="block mb-1 text-sm font-bold">Product Name</label>
           <input
             v-model="form.name"
             type="text"
-            class="bg-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 w-full"
+            class="w-full p-3 bg-gray-100 outline-none rounded-xl focus:ring-2 focus:ring-blue-500"
             required
           />
         </div>
         <div>
-          <label class="block mb-1 font-bold text-sm">Product Code</label>
+          <label class="block mb-1 text-sm font-bold">Product Code</label>
           <input
             v-model="form.code"
             type="text"
-            class="bg-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 w-full"
+            class="w-full p-3 bg-gray-100 outline-none rounded-xl focus:ring-2 focus:ring-blue-500"
             required
           />
         </div>
-        <div class="gap-4 grid grid-cols-2">
-          <div class="gap-4 grid grid-cols-2">
+        <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block mb-1 font-bold text-sm">Original Price</label>
+              <label class="block mb-1 text-sm font-bold">Original Price</label>
               <input
                 v-model="form.price"
                 type="number"
-                class="bg-gray-100 p-3 rounded-xl w-full"
+                class="w-full p-3 bg-gray-100 rounded-xl"
                 required
               />
             </div>
             <div>
-              <label class="block mb-1 font-bold text-sm"
+              <label class="block mb-1 text-sm font-bold"
                 >Discount Price (Optional)</label
               >
               <input
                 v-model="form.discount_price"
                 type="number"
                 placeholder="Set if on sale"
-                class="bg-gray-100 p-3 rounded-xl w-full"
+                class="w-full p-3 bg-gray-100 rounded-xl"
               />
             </div>
           </div>
           <div>
-            <label class="block mb-1 font-bold text-sm">Stock</label>
+            <label class="block mb-1 text-sm font-bold">Stock</label>
             <input
               v-model="form.stock"
               type="number"
-              class="bg-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 w-full"
+              class="w-full p-3 bg-gray-100 outline-none rounded-xl focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
         </div>
         <div>
-          <label class="block mb-1 font-bold text-sm">Category</label>
+          <label class="block mb-1 text-sm font-bold">Category</label>
           <select
             v-model="form.category_id"
-            class="bg-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 w-full"
+            class="w-full p-3 bg-gray-100 outline-none rounded-xl focus:ring-2 focus:ring-blue-500"
             required
           >
             <option value="" disabled>Select Category</option>
@@ -82,11 +82,11 @@
           </select>
         </div>
         <div>
-          <label class="block mb-1 font-bold text-sm"
+          <label class="block mb-1 text-sm font-bold"
             >Product Image (Leave blank to keep current)</label
           >
           <div>
-            <label class="block mb-1 font-bold text-sm"
+            <label class="block mb-1 text-sm font-bold"
               >Main Image (Required)</label
             >
             <input
@@ -99,7 +99,7 @@
           </div>
 
           <div>
-            <label class="block mb-1 font-bold text-sm"
+            <label class="block mb-1 text-sm font-bold"
               >Variant Images (Max 5, 2MB each)</label
             >
             <input
@@ -115,7 +115,7 @@
           </div>
 
           <div>
-            <label class="block mb-1 font-bold text-sm"
+            <label class="block mb-1 text-sm font-bold"
               >Product Video (Max 5MB)</label
             >
             <input
@@ -125,7 +125,7 @@
               class="w-full text-sm"
             />
           </div>
-          <p v-if="currentImage" class="mt-2 text-gray-400 text-xs">
+          <p v-if="currentImage" class="mt-2 text-xs text-gray-400">
             Current: {{ currentImage }}
           </p>
         </div>
@@ -133,32 +133,32 @@
 
       <div class="space-y-4">
         <div>
-          <label class="block mb-1 font-bold text-sm">Description</label>
+          <label class="block mb-1 text-sm font-bold">Description</label>
           <textarea
             v-model="form.description"
-            class="bg-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 w-full h-24"
+            class="w-full h-24 p-3 bg-gray-100 outline-none rounded-xl focus:ring-2 focus:ring-blue-500"
           ></textarea>
         </div>
         <div>
-          <label class="block mb-1 font-bold text-sm">Care Instructions</label>
+          <label class="block mb-1 text-sm font-bold">Care Instructions</label>
           <textarea
             v-model="form.care"
-            class="bg-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 w-full h-24"
+            class="w-full h-24 p-3 bg-gray-100 outline-none rounded-xl focus:ring-2 focus:ring-blue-500"
           ></textarea>
         </div>
         <div>
-          <label class="block mb-1 font-bold text-sm">Design Details</label>
+          <label class="block mb-1 text-sm font-bold">Design Details</label>
           <textarea
             v-model="form.design"
-            class="bg-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 w-full h-24"
+            class="w-full h-24 p-3 bg-gray-100 outline-none rounded-xl focus:ring-2 focus:ring-blue-500"
           ></textarea>
         </div>
       </div>
 
-      <div class="md:col-span-2 pt-4">
+      <div class="pt-4 md:col-span-2">
         <button
           type="submit"
-          class="bg-black hover:bg-gray-800 shadow-lg p-4 rounded-xl w-full font-bold text-white transition-all duration-300"
+          class="w-full p-4 font-bold text-white transition-all duration-300 bg-black shadow-lg hover:bg-gray-800 rounded-xl"
         >
           Update Product Information
         </button>
@@ -317,13 +317,13 @@ const handleSubmit = async () => {
 
 <!-- <template>
   <div
-    class="bg-white shadow-sm mx-auto p-8 border border-gray-100 rounded-2xl max-w-4xl"
+    class="max-w-4xl p-8 mx-auto bg-white border border-gray-100 shadow-sm rounded-2xl"
   >
-    <div class="flex justify-between items-center mb-8">
-      <h1 class="font-bold text-gray-800 text-2xl">Edit Product</h1>
+    <div class="flex items-center justify-between mb-8">
+      <h1 class="text-2xl font-bold text-gray-800">Edit Product</h1>
       <button
         @click="$router.back()"
-        class="text-gray-500 hover:text-black transition"
+        class="text-gray-500 transition hover:text-black"
       >
         Back
       </button>
@@ -331,66 +331,66 @@ const handleSubmit = async () => {
 
     <form
       @submit.prevent="handleSubmit"
-      class="gap-6 grid grid-cols-1 md:grid-cols-2"
+      class="grid grid-cols-1 gap-6 md:grid-cols-2"
     >
       <div class="space-y-6">
         <div>
-          <label class="block mb-1 font-bold text-sm">Product Name</label>
+          <label class="block mb-1 text-sm font-bold">Product Name</label>
           <input
             v-model="form.name"
             type="text"
-            class="bg-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 w-full"
+            class="w-full p-3 bg-gray-100 outline-none rounded-xl focus:ring-2 focus:ring-blue-500"
             required
           />
         </div>
         <div>
-          <label class="block mb-1 font-bold text-sm">Product Code</label>
+          <label class="block mb-1 text-sm font-bold">Product Code</label>
           <input
             v-model="form.code"
             type="text"
-            class="bg-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 w-full"
+            class="w-full p-3 bg-gray-100 outline-none rounded-xl focus:ring-2 focus:ring-blue-500"
             required
           />
         </div>
 
-        <div class="gap-4 grid grid-cols-2">
+        <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="block mb-1 font-bold text-sm">Original Price</label>
+            <label class="block mb-1 text-sm font-bold">Original Price</label>
             <input
               v-model="form.price"
               type="number"
-              class="bg-gray-100 p-3 rounded-xl w-full"
+              class="w-full p-3 bg-gray-100 rounded-xl"
               required
             />
           </div>
           <div>
-            <label class="block mb-1 font-bold text-sm"
+            <label class="block mb-1 text-sm font-bold"
               >Discount Price (Optional)</label
             >
             <input
               v-model="form.discount_price"
               type="number"
               placeholder="Set if on sale"
-              class="bg-gray-100 p-3 rounded-xl w-full"
+              class="w-full p-3 bg-gray-100 rounded-xl"
             />
           </div>
         </div>
 
-        <div class="gap-4 grid grid-cols-2">
+        <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="block mb-1 font-bold text-sm">Stock</label>
+            <label class="block mb-1 text-sm font-bold">Stock</label>
             <input
               v-model="form.stock"
               type="number"
-              class="bg-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 w-full"
+              class="w-full p-3 bg-gray-100 outline-none rounded-xl focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
           <div>
-            <label class="block mb-1 font-bold text-sm">Category</label>
+            <label class="block mb-1 text-sm font-bold">Category</label>
             <select
               v-model="form.category_id"
-              class="bg-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 w-full"
+              class="w-full p-3 bg-gray-100 outline-none rounded-xl focus:ring-2 focus:ring-blue-500"
               required
             >
               <option value="" disabled>Select Category</option>
@@ -402,10 +402,10 @@ const handleSubmit = async () => {
         </div>
 
         <div
-          class="p-4 border border-gray-200 rounded-2xl bg-gray-50/50 space-y-6"
+          class="p-4 space-y-6 border border-gray-200 rounded-2xl bg-gray-50/50"
         >
           <div>
-            <label class="block mb-1 font-bold text-sm">Main Image</label>
+            <label class="block mb-1 text-sm font-bold">Main Image</label>
             <p class="text-[10px] text-gray-500 mb-2">
               Leave blank to keep current image.
             </p>
@@ -413,7 +413,7 @@ const handleSubmit = async () => {
               <img
                 v-if="currentImage"
                 :src="currentImage"
-                class="w-16 h-16 object-cover rounded-lg border shadow-sm"
+                class="object-cover w-16 h-16 border rounded-lg shadow-sm"
                 alt="Current Main Image"
               />
               <div
@@ -427,13 +427,13 @@ const handleSubmit = async () => {
                 type="file"
                 @change="handleFile"
                 accept="image/*"
-                class="w-full text-sm flex-1"
+                class="flex-1 w-full text-sm"
               />
             </div>
           </div>
 
-          <div class="border-t border-gray-200 pt-4">
-            <label class="block mb-1 font-bold text-sm"
+          <div class="pt-4 border-t border-gray-200">
+            <label class="block mb-1 text-sm font-bold"
               >Variant Images (Max 5)</label
             >
             <p class="text-[10px] text-gray-500 mb-2">
@@ -445,7 +445,7 @@ const handleSubmit = async () => {
               @change="handleVariantImages"
               accept="image/*"
               multiple
-              class="w-full text-sm mb-3"
+              class="w-full mb-3 text-sm"
             />
 
             <div
@@ -457,19 +457,19 @@ const handleSubmit = async () => {
               >
                 Current Variants:
               </p>
-              <div class="flex gap-2 overflow-x-auto pb-2">
+              <div class="flex gap-2 pb-2 overflow-x-auto">
                 <img
                   v-for="(img, idx) in currentVariantImages"
                   :key="idx"
                   :src="img"
-                  class="w-12 h-12 object-cover rounded-lg border border-gray-300 shadow-sm shrink-0"
+                  class="object-cover w-12 h-12 border border-gray-300 rounded-lg shadow-sm shrink-0"
                 />
               </div>
             </div>
           </div>
 
-          <div class="border-t border-gray-200 pt-4">
-            <label class="block mb-1 font-bold text-sm"
+          <div class="pt-4 border-t border-gray-200">
+            <label class="block mb-1 text-sm font-bold"
               >Product Video (Max 5MB)</label
             >
             <p class="text-[10px] text-gray-500 mb-2">
@@ -480,12 +480,12 @@ const handleSubmit = async () => {
               type="file"
               @change="handleVideo"
               accept="video/mp4,video/quicktime"
-              class="w-full text-sm mb-3"
+              class="w-full mb-3 text-sm"
             />
 
             <div
               v-if="currentVideo"
-              class="mt-2 flex items-center gap-2 bg-blue-50 text-blue-700 px-3 py-2 rounded-lg text-xs font-medium border border-blue-100 w-fit"
+              class="flex items-center gap-2 px-3 py-2 mt-2 text-xs font-medium text-blue-700 border border-blue-100 rounded-lg bg-blue-50 w-fit"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -509,32 +509,32 @@ const handleSubmit = async () => {
 
       <div class="space-y-4">
         <div>
-          <label class="block mb-1 font-bold text-sm">Description</label>
+          <label class="block mb-1 text-sm font-bold">Description</label>
           <textarea
             v-model="form.description"
-            class="bg-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 w-full h-32"
+            class="w-full h-32 p-3 bg-gray-100 outline-none rounded-xl focus:ring-2 focus:ring-blue-500"
           ></textarea>
         </div>
         <div>
-          <label class="block mb-1 font-bold text-sm">Care Instructions</label>
+          <label class="block mb-1 text-sm font-bold">Care Instructions</label>
           <textarea
             v-model="form.care"
-            class="bg-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 w-full h-32"
+            class="w-full h-32 p-3 bg-gray-100 outline-none rounded-xl focus:ring-2 focus:ring-blue-500"
           ></textarea>
         </div>
         <div>
-          <label class="block mb-1 font-bold text-sm">Design Details</label>
+          <label class="block mb-1 text-sm font-bold">Design Details</label>
           <textarea
             v-model="form.design"
-            class="bg-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 w-full h-32"
+            class="w-full h-32 p-3 bg-gray-100 outline-none rounded-xl focus:ring-2 focus:ring-blue-500"
           ></textarea>
         </div>
       </div>
 
-      <div class="md:col-span-2 pt-4">
+      <div class="pt-4 md:col-span-2">
         <button
           type="submit"
-          class="bg-black hover:bg-gray-800 shadow-lg p-4 rounded-xl w-full font-bold text-white transition-all duration-300"
+          class="w-full p-4 font-bold text-white transition-all duration-300 bg-black shadow-lg hover:bg-gray-800 rounded-xl"
         >
           Update Product Information
         </button>
@@ -769,13 +769,13 @@ const handleSubmit = async () => {
 
 <template>
   <div
-    class="bg-white shadow-sm mx-auto p-8 border border-gray-100 rounded-2xl max-w-4xl"
+    class="max-w-4xl p-8 mx-auto bg-white border border-gray-100 shadow-sm rounded-2xl"
   >
-    <div class="flex justify-between items-center mb-8">
-      <h1 class="font-bold text-gray-800 text-2xl">Edit Product</h1>
+    <div class="flex items-center justify-between mb-8">
+      <h1 class="text-2xl font-bold text-gray-800">Edit Product</h1>
       <button
         @click="$router.back()"
-        class="text-gray-500 hover:text-black transition"
+        class="text-gray-500 transition hover:text-black"
       >
         Back
       </button>
@@ -783,76 +783,76 @@ const handleSubmit = async () => {
 
     <form
       @submit.prevent="handleSubmit"
-      class="gap-6 grid grid-cols-1 md:grid-cols-2"
+      class="grid grid-cols-1 gap-6 md:grid-cols-2"
     >
       <div class="space-y-6">
         <div>
-          <label class="block mb-1 font-bold text-sm"
+          <label class="block mb-1 text-sm font-bold"
             >Product Name <span class="text-red-500">*</span></label
           >
           <input
             v-model="form.name"
             type="text"
-            class="bg-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 w-full"
+            class="w-full p-3 bg-gray-100 outline-none rounded-xl focus:ring-2 focus:ring-blue-500"
             required
           />
         </div>
         <div>
-          <label class="block mb-1 font-bold text-sm"
+          <label class="block mb-1 text-sm font-bold"
             >Product Code <span class="text-red-500">*</span></label
           >
           <input
             v-model="form.code"
             type="text"
-            class="bg-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 w-full"
+            class="w-full p-3 bg-gray-100 outline-none rounded-xl focus:ring-2 focus:ring-blue-500"
             required
           />
         </div>
 
-        <div class="gap-4 grid grid-cols-2">
+        <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="block mb-1 font-bold text-sm"
+            <label class="block mb-1 text-sm font-bold"
               >Original Price <span class="text-red-500">*</span></label
             >
             <input
               v-model="form.price"
               type="number"
-              class="bg-gray-100 p-3 rounded-xl w-full"
+              class="w-full p-3 bg-gray-100 rounded-xl"
               required
             />
           </div>
           <div>
-            <label class="block mb-1 font-bold text-sm"
+            <label class="block mb-1 text-sm font-bold"
               >Discount Price (Optional)</label
             >
             <input
               v-model="form.discount_price"
               type="number"
               placeholder="Set if on sale"
-              class="bg-gray-100 p-3 rounded-xl w-full"
+              class="w-full p-3 bg-gray-100 rounded-xl"
             />
           </div>
         </div>
 
-        <div class="gap-4 grid grid-cols-2">
+        <div class="grid grid-cols-2 gap-4">
           <!-- <div>
-            <label class="block mb-1 font-bold text-sm">Stock <span class="text-red-500">*</span></label>
+            <label class="block mb-1 text-sm font-bold">Stock <span class="text-red-500">*</span></label>
             <input
               v-model="form.stock"
               type="number"
-              class="bg-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 w-full"
+              class="w-full p-3 bg-gray-100 outline-none rounded-xl focus:ring-2 focus:ring-blue-500"
               required
             />
           </div> -->
           <div>
-            <label class="block mb-1 font-bold text-sm"
+            <label class="block mb-1 text-sm font-bold"
               >Stock <span class="text-red-500">*</span></label
             >
             <div class="relative">
               <input
                 v-model="form.stock"
                 type="number"
-                class="bg-gray-200 text-gray-500 p-3 rounded-xl w-full cursor-not-allowed"
+                class="w-full p-3 text-gray-500 bg-gray-200 cursor-not-allowed rounded-xl"
                 readonly
                 title="Stock must be managed via Stock Management Menu"
               />
@@ -864,12 +864,12 @@ const handleSubmit = async () => {
             </div>
           </div>
           <div>
-            <label class="block mb-1 font-bold text-sm"
+            <label class="block mb-1 text-sm font-bold"
               >Category <span class="text-red-500">*</span></label
             >
             <select
               v-model="form.category_id"
-              class="bg-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 w-full"
+              class="w-full p-3 bg-gray-100 outline-none rounded-xl focus:ring-2 focus:ring-blue-500"
               required
             >
               <option value="" disabled>Select Category</option>
@@ -881,10 +881,10 @@ const handleSubmit = async () => {
         </div>
 
         <div
-          class="p-4 border border-gray-200 rounded-2xl bg-gray-50/50 space-y-6"
+          class="p-4 space-y-6 border border-gray-200 rounded-2xl bg-gray-50/50"
         >
           <div>
-            <label class="block mb-1 font-bold text-sm">Main Image</label>
+            <label class="block mb-1 text-sm font-bold">Main Image</label>
             <p class="text-[10px] text-gray-500 mb-2">
               Leave blank to keep current image.
             </p>
@@ -892,7 +892,7 @@ const handleSubmit = async () => {
               <!-- <img
                 v-if="currentImage"
                 :src="currentImage"
-                class="w-16 h-16 object-cover rounded-lg border shadow-sm"
+                class="object-cover w-16 h-16 border rounded-lg shadow-sm"
                 alt="Current Main Image"
               />
               <div
@@ -904,7 +904,7 @@ const handleSubmit = async () => {
 
               <img
                 :src="currentImage || defaultBagIcon"
-                class="w-16 h-16 object-cover rounded-lg border shadow-sm"
+                class="object-cover w-16 h-16 border rounded-lg shadow-sm"
                 alt="Main Image Preview"
               />
 
@@ -912,13 +912,13 @@ const handleSubmit = async () => {
                 type="file"
                 @change="handleFile"
                 accept="image/*"
-                class="w-full text-sm flex-1"
+                class="flex-1 w-full text-sm"
               />
             </div>
           </div>
 
-          <div class="border-t border-gray-200 pt-4">
-            <label class="block mb-1 font-bold text-sm"
+          <div class="pt-4 border-t border-gray-200">
+            <label class="block mb-1 text-sm font-bold"
               >Variant Images (Max 5)</label
             >
             <p class="text-[10px] text-gray-500 mb-2">
@@ -930,7 +930,7 @@ const handleSubmit = async () => {
               @change="handleVariantImages"
               accept="image/*"
               multiple
-              class="w-full text-sm mb-3"
+              class="w-full mb-3 text-sm"
             />
 
             <div
@@ -942,19 +942,19 @@ const handleSubmit = async () => {
               >
                 Current Variants:
               </p>
-              <div class="flex gap-2 overflow-x-auto pb-2">
+              <div class="flex gap-2 pb-2 overflow-x-auto">
                 <img
                   v-for="(img, idx) in currentVariantImages"
                   :key="idx"
                   :src="img"
-                  class="w-12 h-12 object-cover rounded-lg border border-gray-300 shadow-sm shrink-0"
+                  class="object-cover w-12 h-12 border border-gray-300 rounded-lg shadow-sm shrink-0"
                 />
               </div>
             </div>
           </div>
 
-          <div class="border-t border-gray-200 pt-4">
-            <label class="block mb-1 font-bold text-sm"
+          <div class="pt-4 border-t border-gray-200">
+            <label class="block mb-1 text-sm font-bold"
               >Product Video (Max 5MB)</label
             >
             <p class="text-[10px] text-gray-500 mb-2">
@@ -965,12 +965,12 @@ const handleSubmit = async () => {
               type="file"
               @change="handleVideo"
               accept="video/mp4,video/quicktime"
-              class="w-full text-sm mb-3"
+              class="w-full mb-3 text-sm"
             />
 
             <div
               v-if="currentVideo"
-              class="mt-2 flex items-center gap-2 bg-blue-50 text-blue-700 px-3 py-2 rounded-lg text-xs font-medium border border-blue-100 w-fit"
+              class="flex items-center gap-2 px-3 py-2 mt-2 text-xs font-medium text-blue-700 border border-blue-100 rounded-lg bg-blue-50 w-fit"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -994,39 +994,39 @@ const handleSubmit = async () => {
 
       <div class="space-y-4">
         <div
-          class="col-span-1 md:col-span-2 p-6 border border-gray-200 rounded-2xl bg-gray-50/50 mt-4 mb-2"
+          class="col-span-1 p-6 mt-4 mb-2 border border-gray-200 md:col-span-2 rounded-2xl bg-gray-50/50"
         >
           <h3
-            class="font-bold text-gray-800 text-sm mb-4 uppercase tracking-widest border-b pb-2"
+            class="pb-2 mb-4 text-sm font-bold tracking-widest text-gray-800 uppercase border-b"
           >
             Physical Attributes
           </h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            <div>
-              <label class="block mb-1 font-bold text-xs text-gray-600"
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
+            <!-- <div>
+              <label class="block mb-1 text-xs font-bold text-gray-600"
                 >Weight (Grams) <span class="text-red-500">*</span></label
               >
               <input
                 v-model="form.weight"
                 type="number"
                 placeholder="e.g. 1000"
-                class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm"
+                class="w-full p-3 text-sm bg-white border border-gray-200 rounded-xl"
                 required
               />
             </div>
-            <div class="md:col-span-2 mt-2">
-              <label class="block mb-1 font-bold text-xs text-gray-600"
+            <div class="mt-2 md:col-span-2">
+              <label class="block mb-1 text-xs font-bold text-gray-600"
                 >Strap Length (Optional)</label
               >
               <input
                 v-model="form.strap_length"
                 type="text"
                 placeholder="e.g. 100 - 120 cm Adjustable"
-                class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm"
+                class="w-full p-3 text-sm bg-white border border-gray-200 rounded-xl"
               />
             </div>
             <div>
-              <label class="block mb-1 font-bold text-xs text-gray-600"
+              <label class="block mb-1 text-xs font-bold text-gray-600"
                 >Length (cm)</label
               >
               <input
@@ -1034,11 +1034,11 @@ const handleSubmit = async () => {
                 type="number"
                 step="0.01"
                 placeholder="e.g. 25.5"
-                class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm"
+                class="w-full p-3 text-sm bg-white border border-gray-200 rounded-xl"
               />
             </div>
             <div>
-              <label class="block mb-1 font-bold text-xs text-gray-600"
+              <label class="block mb-1 text-xs font-bold text-gray-600"
                 >Width (cm)</label
               >
               <input
@@ -1046,11 +1046,11 @@ const handleSubmit = async () => {
                 type="number"
                 step="0.01"
                 placeholder="e.g. 10"
-                class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm"
+                class="w-full p-3 text-sm bg-white border border-gray-200 rounded-xl"
               />
             </div>
             <div>
-              <label class="block mb-1 font-bold text-xs text-gray-600"
+              <label class="block mb-1 text-xs font-bold text-gray-600"
                 >Height (cm)</label
               >
               <input
@@ -1058,62 +1058,11 @@ const handleSubmit = async () => {
                 type="number"
                 step="0.01"
                 placeholder="e.g. 15"
-                class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm"
+                class="w-full p-3 text-sm bg-white border border-gray-200 rounded-xl"
               />
             </div>
-            <!-- <div class="relative">
-              <label class="block mb-1 font-bold text-xs text-gray-600"
-                >Color</label
-              >
-              <div
-                @click="toggleColorDropdown"
-                class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm cursor-pointer flex justify-between items-center"
-              >
-                <div class="flex items-center gap-2">
-                  <div
-                    v-if="form.color"
-                    class="w-4 h-4 rounded-full border border-gray-300 shadow-sm"
-                    :style="{
-                      backgroundColor:
-                        colorOptions.find((c) => c.name === form.color)?.hex ||
-                        '#ccc',
-                    }"
-                  ></div>
-                  <span :class="form.color ? 'text-gray-900' : 'text-gray-400'">
-                    {{ form.color || "Select Color" }}
-                  </span>
-                </div>
-                <span class="text-gray-400 text-xs">▼</span>
-              </div>
-
-              <div
-                v-if="isColorDropdownOpen"
-                class="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg max-h-48 overflow-y-auto"
-              >
-                <div
-                  @click="selectColor('')"
-                  class="p-3 hover:bg-gray-50 cursor-pointer text-sm text-gray-500 border-b border-gray-100"
-                >
-                  None / Unspecified
-                </div>
-                <div
-                  v-for="color in colorOptions"
-                  :key="color.name"
-                  @click="selectColor(color.name)"
-                  class="p-3 hover:bg-gray-50 cursor-pointer flex items-center gap-3 border-b border-gray-50 last:border-0"
-                >
-                  <div
-                    class="w-5 h-5 rounded-full border border-gray-300 shadow-sm"
-                    :style="{ backgroundColor: color.hex }"
-                  ></div>
-                  <span class="text-sm font-medium text-gray-700">{{
-                    color.name
-                  }}</span>
-                </div>
-              </div>
-            </div> -->
             <div class="relative md:col-span-4">
-              <label class="block mb-1 font-bold text-xs text-gray-600">Colors</label>
+              <label class="block mb-1 text-xs font-bold text-gray-600">Colors</label>
               <div 
                 @click="toggleColorDropdown"
                 class="bg-white p-3 rounded-xl w-full border border-gray-200 min-h-[46px] text-sm cursor-pointer flex justify-between items-center"
@@ -1122,23 +1071,23 @@ const handleSubmit = async () => {
                   <template v-if="form.color.length > 0">
                     <div 
                       v-for="(selColor, idx) in form.color" :key="idx"
-                      class="w-5 h-5 rounded-full border border-gray-300 shadow-sm"
+                      class="w-5 h-5 border border-gray-300 rounded-full shadow-sm"
                       :style="{ backgroundColor: colorOptions.find(c => c.name === selColor)?.hex || '#ccc' }"
                       :title="selColor"
                     ></div>
                   </template>
                   <span v-else class="text-gray-400">Select Colors</span>
                 </div>
-                <span class="text-gray-400 text-xs">▼</span>
+                <span class="text-xs text-gray-400">▼</span>
               </div>
 
               <div 
                 v-if="isColorDropdownOpen" 
-                class="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-xl max-h-56 overflow-y-auto"
+                class="absolute z-10 w-full mt-1 overflow-y-auto bg-white border border-gray-200 shadow-xl rounded-xl max-h-56"
               >
                 <div 
                   @click="selectColor('')"
-                  class="p-3 hover:bg-red-50 cursor-pointer text-sm font-bold text-red-500 border-b border-gray-100 flex items-center justify-center"
+                  class="flex items-center justify-center p-3 text-sm font-bold text-red-500 border-b border-gray-100 cursor-pointer hover:bg-red-50"
                 >
                   Clear All Colors
                 </div>
@@ -1146,12 +1095,12 @@ const handleSubmit = async () => {
                   v-for="color in colorOptions" 
                   :key="color.name"
                   @click="selectColor(color.name)"
-                  class="p-3 hover:bg-gray-50 cursor-pointer flex justify-between items-center border-b border-gray-50 last:border-0 transition-colors"
+                  class="flex items-center justify-between p-3 transition-colors border-b cursor-pointer hover:bg-gray-50 border-gray-50 last:border-0"
                   :class="form.color.includes(color.name) ? 'bg-blue-50/50' : ''"
                 >
                   <div class="flex items-center gap-3">
                     <div 
-                      class="w-5 h-5 rounded-full border border-gray-300 shadow-sm" 
+                      class="w-5 h-5 border border-gray-300 rounded-full shadow-sm" 
                       :style="{ backgroundColor: color.hex }"
                     ></div>
                     <span class="text-sm font-medium" :class="form.color.includes(color.name) ? 'text-blue-700' : 'text-gray-700'">
@@ -1164,46 +1113,193 @@ const handleSubmit = async () => {
                 </div>
               </div>
             </div>
-            <div class="md:col-span-4 mt-2">
-              <label class="block mb-1 font-bold text-xs text-gray-600"
+            <div class="mt-2 md:col-span-4">
+              <label class="block mb-1 text-xs font-bold text-gray-600"
                 >Material (Optional)</label
               >
               <input
                 v-model="form.material"
                 type="text"
                 placeholder="e.g. 100% Genuine Cowhide Leather"
-                class="bg-white p-3 rounded-xl w-full border border-gray-200 text-sm"
+                class="w-full p-3 text-sm bg-white border border-gray-200 rounded-xl"
+              />
+            </div> -->
+            <div>
+              <label class="block mb-1 text-xs font-bold text-gray-600"
+                >Weight (Grams) <span class="text-red-500">*</span></label
+              >
+              <input
+                v-model="form.weight"
+                type="number"
+                placeholder="e.g. 1000"
+                class="w-full p-3 text-sm bg-white border border-gray-200 rounded-xl"
+                required
               />
             </div>
+            <div class="mt-2 md:col-span-2">
+              <label class="block mb-1 text-xs font-bold text-gray-600"
+                >Strap Length (Optional)</label
+              >
+              <input
+                v-model="form.strap_length"
+                type="text"
+                placeholder="e.g. 100 - 120 cm Adjustable"
+                class="w-full p-3 text-sm bg-white border border-gray-200 rounded-xl"
+              />
+            </div>
+            <div>
+              <label class="block mb-1 text-xs font-bold text-gray-600"
+                >Length (cm)</label
+              >
+              <input
+                v-model="form.length"
+                type="number"
+                step="0.01"
+                class="w-full p-3 text-sm bg-white border border-gray-200 rounded-xl"
+              />
+            </div>
+            <div>
+              <label class="block mb-1 text-xs font-bold text-gray-600"
+                >Width (cm)</label
+              >
+              <input
+                v-model="form.width"
+                type="number"
+                step="0.01"
+                class="w-full p-3 text-sm bg-white border border-gray-200 rounded-xl"
+              />
+            </div>
+            <div>
+              <label class="block mb-1 text-xs font-bold text-gray-600"
+                >Height (cm)</label
+              >
+              <input
+                v-model="form.height"
+                type="number"
+                step="0.01"
+                class="w-full p-3 text-sm bg-white border border-gray-200 rounded-xl"
+              />
+            </div>
+            <div class="mt-2 md:col-span-5">
+              <label class="block mb-1 text-xs font-bold text-gray-600"
+                >Material (Optional)</label
+              >
+              <input
+                v-model="form.material"
+                type="text"
+                placeholder="e.g. 100% Genuine Cowhide Leather"
+                class="w-full p-3 text-sm bg-white border border-gray-200 rounded-xl"
+              />
+            </div>
+
+            <div class="pt-4 mt-2 border-t border-gray-200 md:col-span-5">
+              <label
+                class="block mb-2 text-xs font-bold tracking-widest text-gray-600 uppercase"
+                >Product Colors</label
+              >
+
+              <div
+                class="flex items-center gap-3 p-3 mb-4 border border-gray-200 bg-gray-50 rounded-xl"
+              >
+                <div class="flex flex-col">
+                  <label class="text-[10px] font-bold text-gray-500 mb-1"
+                    >Pick Color</label
+                  >
+                  <input
+                    type="color"
+                    v-model="newColorHex"
+                    class="w-10 h-10 p-0 bg-transparent border-0 rounded cursor-pointer"
+                  />
+                </div>
+                <div class="flex flex-col flex-1">
+                  <label class="text-[10px] font-bold text-gray-500 mb-1"
+                    >Color Name</label
+                  >
+                  <input
+                    type="text"
+                    v-model="newColorName"
+                    placeholder="e.g. Midnight Blue"
+                    class="bg-white p-2.5 rounded-lg w-full text-sm border border-gray-200 outline-none focus:ring-2 focus:ring-black"
+                    @keyup.enter.prevent="addColor"
+                  />
+                </div>
+                <div class="flex flex-col justify-end h-full mt-auto">
+                  <button
+                    type="button"
+                    @click="addColor"
+                    class="bg-black text-white px-4 py-2.5 rounded-lg font-bold text-xs uppercase tracking-widest hover:bg-gray-800 transition"
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            < class="flex flex-wrap gap-2 p-4 bg-white border border-gray-200
+            rounded-xl min-h-[60px]">
+            <p
+              v-if="parsedColors.length === 0"
+              class="w-full my-auto text-xs italic text-center text-gray-400"
+            >
+              No colors added yet.
+            </p>
+            < v-for="(c, idx) in parsedColors" :key="idx" class="flex
+            items-center gap-2 bg-gray-50 border border-gray-200 px-3 py-1.5
+            rounded-lg shadow-sm" >
+            <div
+              class="w-4 h-4 border border-gray-300 rounded-full"
+              :style="{ backgroundColor: c.hex }"
+            ></div>
+            <span class="text-xs font-bold text-gray-800">{{ c.name }}</span>
+            <button
+              type="button"
+              @click="removeColor(idx)"
+              class="ml-1 font-bold text-gray-400 hover:text-red-500 focus:outline-none"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
           </div>
         </div>
         <div>
-          <label class="block mb-1 font-bold text-sm">Description</label>
+          <label class="block mb-1 text-sm font-bold">Description</label>
           <textarea
             v-model="form.description"
-            class="bg-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 w-full h-32"
+            class="w-full h-32 p-3 bg-gray-100 outline-none rounded-xl focus:ring-2 focus:ring-blue-500"
           ></textarea>
         </div>
         <!-- <div>
-          <label class="block mb-1 font-bold text-sm">Care Instructions</label>
+          <label class="block mb-1 text-sm font-bold">Care Instructions</label>
           <textarea
             v-model="form.care"
-            class="bg-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 w-full h-32"
+            class="w-full h-32 p-3 bg-gray-100 outline-none rounded-xl focus:ring-2 focus:ring-blue-500"
           ></textarea>
         </div> -->
         <div>
-          <label class="block mb-1 font-bold text-sm">Design Details</label>
+          <label class="block mb-1 text-sm font-bold">Design Details</label>
           <textarea
             v-model="form.design"
-            class="bg-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 w-full h-32"
+            class="w-full h-32 p-3 bg-gray-100 outline-none rounded-xl focus:ring-2 focus:ring-blue-500"
           ></textarea>
         </div>
       </div>
 
-      <div class="md:col-span-2 pt-4">
+      <div class="pt-4 md:col-span-2">
         <button
           type="submit"
-          class="bg-black hover:bg-gray-800 shadow-lg p-4 rounded-xl w-full font-bold text-white transition-all duration-300"
+          class="w-full p-4 font-bold text-white transition-all duration-300 bg-black shadow-lg hover:bg-gray-800 rounded-xl"
         >
           Update Product Information
         </button>
@@ -1471,51 +1567,81 @@ const form = ref({
 // ];
 
 // [BARU] Daftar Warna Standar
-const colorOptions = [
-  { name: "Black", hex: "#000000" },
-  { name: "White", hex: "#FFFFFF" },
-  { name: "Brown", hex: "#8B4513" },
-  { name: "Beige", hex: "#F5F5DC" },
-  { name: "Red", hex: "#DC143C" },
-  { name: "Navy", hex: "#000080" },
-  { name: "Green", hex: "#008000" },
-  { name: "Grey", hex: "#808080" },
-  { name: "Pink", hex: "#FFC0CB" },
-  { name: "Yellow", hex: "#FFD700" },
-  { name: "Blue", hex: "#4169E1" },
-  { name: "Cream", hex: "#FFFDD0" }, // <--- Warna Baru
-  { name: "Sage", hex: "#9DC183" },  // <--- Warna Baru
-  { name: "Mocca", hex: "#967969" }, // <--- WARNA BARU
-];
+// const colorOptions = [
+//   { name: "Black", hex: "#000000" },
+//   { name: "White", hex: "#FFFFFF" },
+//   { name: "Brown", hex: "#8B4513" },
+//   { name: "Beige", hex: "#F5F5DC" },
+//   { name: "Red", hex: "#DC143C" },
+//   { name: "Navy", hex: "#000080" },
+//   { name: "Green", hex: "#008000" },
+//   { name: "Grey", hex: "#808080" },
+//   { name: "Pink", hex: "#FFC0CB" },
+//   { name: "Yellow", hex: "#FFD700" },
+//   { name: "Blue", hex: "#4169E1" },
+//   { name: "Cream", hex: "#FFFDD0" }, // <--- Warna Baru
+//   { name: "Sage", hex: "#9DC183" },  // <--- Warna Baru
+//   { name: "Mocca", hex: "#967969" }, // <--- WARNA BARU
+// ];
 
-const isColorDropdownOpen = ref(false);
+// const isColorDropdownOpen = ref(false);
 
-const toggleColorDropdown = () => {
-  isColorDropdownOpen.value = !isColorDropdownOpen.value;
-};
-
-// const selectColor = (colorName) => {
-//   form.value.color = colorName;
-//   isColorDropdownOpen.value = false;
+// const toggleColorDropdown = () => {
+//   isColorDropdownOpen.value = !isColorDropdownOpen.value;
 // };
 
-// 2. Ubah fungsi selectColor menjadi toggle (bisa tambah/hapus)
-const selectColor = (colorName) => {
-  // Jika "None" dipilih, kosongkan semua
-  if (colorName === "") {
-    form.value.color = [];
-    isColorDropdownOpen.value = false;
-    return;
-  }
+// // const selectColor = (colorName) => {
+// //   form.value.color = colorName;
+// //   isColorDropdownOpen.value = false;
+// // };
 
-  // Jika warna sudah ada, hapus. Jika belum, tambahkan.
-  const index = form.value.color.indexOf(colorName);
-  if (index > -1) {
-    form.value.color.splice(index, 1);
-  } else {
-    form.value.color.push(colorName);
+// // 2. Ubah fungsi selectColor menjadi toggle (bisa tambah/hapus)
+// const selectColor = (colorName) => {
+//   // Jika "None" dipilih, kosongkan semua
+//   if (colorName === "") {
+//     form.value.color = [];
+//     isColorDropdownOpen.value = false;
+//     return;
+//   }
+
+//   // Jika warna sudah ada, hapus. Jika belum, tambahkan.
+//   const index = form.value.color.indexOf(colorName);
+//   if (index > -1) {
+//     form.value.color.splice(index, 1);
+//   } else {
+//     form.value.color.push(colorName);
+//   }
+//   // Catatan: isColorDropdownOpen tidak di-false-kan agar admin bisa pilih warna lain sekaligus
+// };
+
+// [BARU] State untuk Dynamic Color
+const newColorName = ref("");
+const newColorHex = ref("#000000");
+
+const parsedColors = computed(() => {
+  return form.value.color.map((c) => {
+    if (typeof c === "string" && c.includes("|")) {
+      const [name, hex] = c.split("|");
+      return { name, hex, original: c };
+    }
+    // Fallback aman untuk data lama yang sudah ada di database
+    return { name: c, hex: "#cccccc", original: c };
+  });
+});
+
+const addColor = () => {
+  if (!newColorName.value.trim()) return;
+  // Format penyimpanan rahasia ke backend: "NamaWarna|#HexCode"
+  const colorString = `${newColorName.value.trim()}|${newColorHex.value}`;
+  if (!form.value.color.includes(colorString)) {
+    form.value.color.push(colorString);
   }
-  // Catatan: isColorDropdownOpen tidak di-false-kan agar admin bisa pilih warna lain sekaligus
+  newColorName.value = "";
+  newColorHex.value = "#000000";
+};
+
+const removeColor = (index) => {
+  form.value.color.splice(index, 1);
 };
 
 const axiosConfig = {
@@ -1618,8 +1744,10 @@ const handleSubmit = async () => {
     if (form.value.width) formData.append("width", form.value.width);
     if (form.value.height) formData.append("height", form.value.height);
     if (form.value.material) formData.append("material", form.value.material);
-    if (form.value.strap_length) formData.append("strap_length", form.value.strap_length); // <--- BARU
-    if (form.value.strap_length) formData.append("strap_length", form.value.strap_length); // <--- BARU
+    if (form.value.strap_length)
+      formData.append("strap_length", form.value.strap_length); // <--- BARU
+    if (form.value.strap_length)
+      formData.append("strap_length", form.value.strap_length); // <--- BARU
     // formData.append("color", form.value.color || "");
     // [BARU] Cara mengirim Array Color ke Laravel
     if (form.value.color && form.value.color.length > 0) {

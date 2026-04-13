@@ -8,10 +8,10 @@
     >
       <div class="flex flex-col items-center">
         <div
-          class="border-4 border-gray-200 border-t-black rounded-full w-12 h-12 animate-spin"
+          class="w-12 h-12 border-4 border-gray-200 rounded-full border-t-black animate-spin"
         ></div>
         <p
-          class="mt-4 font-bold text-black text-xs uppercase tracking-widest animate-pulse"
+          class="mt-4 text-xs font-bold tracking-widest text-black uppercase animate-pulse"
         >
           Loading Product...
         </p>
@@ -19,12 +19,12 @@
     </div>
 
     <div
-      class="flex justify-between items-center mb-10 pb-6 border-b border-gray-100"
+      class="flex items-center justify-between pb-6 mb-10 border-b border-gray-100"
     >
       <div class="flex items-center gap-4">
         <button
           @click="$router.back()"
-          class="text-gray-400 hover:text-black transition-colors p-2 rounded-full hover:bg-gray-50"
+          class="p-2 text-gray-400 transition-colors rounded-full hover:text-black hover:bg-gray-50"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -42,22 +42,22 @@
           </svg>
         </button>
         <div>
-          <h1 class="font-bold text-gray-800 text-2xl">Product Details</h1>
+          <h1 class="text-2xl font-bold text-gray-800">Product Details</h1>
           <p
-            class="text-gray-500 text-xs mt-1 uppercase tracking-widest font-mono"
+            class="mt-1 font-mono text-xs tracking-widest text-gray-500 uppercase"
           >
             SKU: {{ product?.code || "..." }}
           </p>
         </div>
       </div>
       <div class="flex gap-3">
-        <!-- <router-link :to="`/admin/products/edit/${product?.id}`" v-if="product" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-2 rounded-xl font-bold text-xs uppercase tracking-widest transition">
+        <!-- <router-link :to="`/admin/products/edit/${product?.id}`" v-if="product" class="px-6 py-2 text-xs font-bold tracking-widest text-gray-700 uppercase transition bg-gray-100 hover:bg-gray-200 rounded-xl">
           Edit Product
         </router-link> -->
         <button
           @click="goToEditPage"
           v-if="product"
-          class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-2 rounded-xl font-bold text-xs uppercase tracking-widest transition"
+          class="px-6 py-2 text-xs font-bold tracking-widest text-gray-700 uppercase transition bg-gray-100 hover:bg-gray-200 rounded-xl"
         >
           Edit Product
         </button>
@@ -66,7 +66,7 @@
 
     <div
       v-if="product"
-      class="grid grid-cols-1 md:grid-cols-2 gap-12 animate-fade-in"
+      class="grid grid-cols-1 gap-12 md:grid-cols-2 animate-fade-in"
     >
       <div class="space-y-4">
         <div
@@ -75,21 +75,21 @@
           <img
             v-if="currentMediaType === 'image'"
             :src="currentMediaUrl"
-            class="w-full h-full object-cover transition-opacity duration-300"
+            class="object-cover w-full h-full transition-opacity duration-300"
             alt="Product View"
           />
 
           <video
             v-else-if="currentMediaType === 'video'"
             :src="currentMediaUrl"
-            class="w-full h-full object-cover bg-black"
+            class="object-cover w-full h-full bg-black"
             controls
             autoplay
             muted
             loop
           ></video>
 
-          <div class="absolute top-4 left-4 flex flex-col gap-2">
+          <div class="absolute flex flex-col gap-2 top-4 left-4">
             <span
               :class="
                 product.status === 'active'
@@ -111,7 +111,7 @@
           <button
             v-if="allMedia.length > 1"
             @click="prevSlide"
-            class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white flex justify-center items-center rounded-full opacity-0 group-hover:opacity-100 transition shadow-lg text-gray-800"
+            class="absolute flex items-center justify-center w-10 h-10 text-gray-800 transition -translate-y-1/2 rounded-full shadow-lg opacity-0 left-4 top-1/2 bg-white/90 hover:bg-white group-hover:opacity-100"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -131,7 +131,7 @@
           <button
             v-if="allMedia.length > 1"
             @click="nextSlide"
-            class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white flex justify-center items-center rounded-full opacity-0 group-hover:opacity-100 transition shadow-lg text-gray-800"
+            class="absolute flex items-center justify-center w-10 h-10 text-gray-800 transition -translate-y-1/2 rounded-full shadow-lg opacity-0 right-4 top-1/2 bg-white/90 hover:bg-white group-hover:opacity-100"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -152,7 +152,7 @@
 
         <div
           v-if="allMedia.length > 1"
-          class="flex gap-3 overflow-x-auto pb-2 custom-scrollbar"
+          class="flex gap-3 pb-2 overflow-x-auto custom-scrollbar"
         >
           <div
             v-for="(media, idx) in allMedia"
@@ -163,20 +163,20 @@
                 ? 'ring-2 ring-black border-transparent'
                 : 'border-gray-200 opacity-60 hover:opacity-100'
             "
-            class="w-20 h-24 shrink-0 rounded-xl overflow-hidden cursor-pointer border-2 transition-all relative bg-gray-50"
+            class="relative w-20 h-24 overflow-hidden transition-all border-2 cursor-pointer shrink-0 rounded-xl bg-gray-50"
           >
             <img
               v-if="media.type === 'image'"
               :src="media.url"
-              class="w-full h-full object-cover"
+              class="object-cover w-full h-full"
             />
             <div
               v-else
-              class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500 relative"
+              class="relative flex items-center justify-center w-full h-full text-gray-500 bg-gray-200"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="w-8 h-8 absolute z-10"
+                class="absolute z-10 w-8 h-8"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -202,12 +202,12 @@
       <div class="space-y-8">
         <div>
           <p
-            class="text-blue-600 font-bold text-xs uppercase tracking-widest mb-2"
+            class="mb-2 text-xs font-bold tracking-widest text-blue-600 uppercase"
           >
             {{ product.category?.name || "Uncategorized" }}
           </p>
           <h2
-            class="text-3xl font-black text-gray-900 uppercase tracking-tight"
+            class="text-3xl font-black tracking-tight text-gray-900 uppercase"
           >
             {{ product.name }}
           </h2>
@@ -217,7 +217,7 @@
               <span class="text-3xl font-black text-red-600">{{
                 formatPrice(product.discount_price)
               }}</span>
-              <span class="text-lg text-gray-400 line-through mb-1">{{
+              <span class="mb-1 text-lg text-gray-400 line-through">{{
                 formatPrice(product.price)
               }}</span>
             </template>
@@ -228,7 +228,7 @@
         </div>
 
         <div
-          class="bg-gray-50 p-6 rounded-2xl border border-gray-100 flex flex-wrap gap-6 mb-6"
+          class="flex flex-wrap gap-6 p-6 mb-6 border border-gray-100 bg-gray-50 rounded-2xl"
         >
           <div>
             <p
@@ -246,7 +246,7 @@
             >
               Dimensions (L x W x H)
             </p>
-            <p class="font-bold text-gray-900 font-mono">
+            <p class="font-mono font-bold text-gray-900">
               {{ product.length || "-" }}
               <span class="text-xs text-gray-400">x</span>
               {{ product.width || "-" }}
@@ -261,7 +261,7 @@
             >
               Dimensions (L x W x H)
             </p>
-            <p class="font-bold text-gray-900 font-mono">
+            <p class="font-mono font-bold text-gray-900">
               {{ product.length || "-" }}
               <span class="text-xs text-gray-400">x</span>
               {{ product.width || "-" }}
@@ -280,13 +280,13 @@
           </div>
           <div
             v-if="product.strap_length"
-            class="flex justify-between items-start text-sm border-t border-gray-100 pt-3"
+            class="flex items-start justify-between pt-3 text-sm border-t border-gray-100"
           >
             <span
               class="text-gray-500 font-bold uppercase tracking-widest text-[10px] w-24 shrink-0"
               >Strap Length</span
             >
-            <span class="text-gray-900 font-medium text-right">{{
+            <span class="font-medium text-right text-gray-900">{{
               product.strap_length
             }}</span>
           </div>
@@ -299,13 +299,13 @@
             </p>
             <div class="flex items-center gap-2">
               <div
-                class="w-4 h-4 rounded-full border border-gray-300 shadow-sm"
+                class="w-4 h-4 border border-gray-300 rounded-full shadow-sm"
                 :style="{ backgroundColor: getColorHex(product.color) }"
               ></div>
               <p class="font-bold text-gray-900">{{ product.color }}</p>
             </div>
           </div> -->
-          <div v-if="product.color && product.color.length > 0">
+          <!-- <div v-if="product.color && product.color.length > 0">
             <p
               class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2"
             >
@@ -318,7 +318,7 @@
                 class="flex items-center gap-1.5 bg-white border border-gray-200 px-2 py-1 rounded-lg shadow-sm"
               >
                 <div
-                  class="w-3 h-3 rounded-full border border-gray-300"
+                  class="w-3 h-3 border border-gray-300 rounded-full"
                   :style="{ backgroundColor: getColorHex(c) }"
                 ></div>
                 <span
@@ -327,15 +327,38 @@
                 >
               </div>
             </div>
+          </div> -->
+          <div v-if="parsedProductColors && parsedProductColors.length > 0">
+            <p
+              class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2"
+            >
+              Colors
+            </p>
+            <div class="flex flex-wrap items-center gap-3">
+              <div
+                v-for="(c, idx) in parsedProductColors"
+                :key="idx"
+                class="flex items-center gap-1.5 bg-white border border-gray-200 px-2 py-1 rounded-lg shadow-sm"
+              >
+                <div
+                  class="w-3 h-3 border border-gray-300 rounded-full"
+                  :style="{ backgroundColor: c.hex }"
+                ></div>
+                <span
+                  class="font-bold text-gray-800 text-[10px] uppercase tracking-wider"
+                  >{{ c.name }}</span
+                >
+              </div>
+            </div>
           </div>
         </div>
 
         <!-- <div
-          class="bg-gray-50 p-6 rounded-2xl border border-gray-100 flex justify-between items-center"
+          class="flex items-center justify-between p-6 border border-gray-100 bg-gray-50 rounded-2xl"
         >
           <div>
             <p
-              class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1"
+              class="mb-1 text-xs font-bold tracking-widest text-gray-500 uppercase"
             >
               Current Stock
             </p>
@@ -347,11 +370,11 @@
             </p>
           </div>
           <div
-            class="bg-gray-50 p-6 rounded-2xl border border-gray-100 flex justify-between items-center"
+            class="flex items-center justify-between p-6 border border-gray-100 bg-gray-50 rounded-2xl"
           >
             <div>
               <p
-                class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1"
+                class="mb-1 text-xs font-bold tracking-widest text-gray-500 uppercase"
               >
                 Current Total Stock
               </p>
@@ -364,7 +387,7 @@
             </div>
             <router-link
               to="/admin/stocks"
-              class="text-xs font-bold text-blue-600 hover:underline flex items-center gap-1"
+              class="flex items-center gap-1 text-xs font-bold text-blue-600 hover:underline"
             >
               Manage Batches <span>→</span>
             </router-link>
@@ -372,9 +395,9 @@
 
           <div
             v-if="product.stocks && product.stocks.length > 0"
-            class="mt-4 border border-gray-200 rounded-xl overflow-hidden"
+            class="mt-4 overflow-hidden border border-gray-200 rounded-xl"
           >
-            <div class="bg-gray-100 px-4 py-2 border-b border-gray-200">
+            <div class="px-4 py-2 bg-gray-100 border-b border-gray-200">
               <p
                 class="text-[10px] font-bold text-gray-600 uppercase tracking-widest"
               >
@@ -382,19 +405,19 @@
               </p>
             </div>
             <div
-              class="p-4 space-y-3 max-h-40 overflow-y-auto custom-scrollbar"
+              class="p-4 space-y-3 overflow-y-auto max-h-40 custom-scrollbar"
             >
               <div
                 v-for="batch in product.stocks"
                 :key="batch.id"
-                class="flex justify-between items-center text-sm"
+                class="flex items-center justify-between text-sm"
               >
                 <div class="flex items-center gap-3">
                   <div
                     class="w-2 h-2 bg-green-500 rounded-full animate-pulse"
                   ></div>
                   <div>
-                    <p class="font-mono font-bold text-gray-800 text-xs">
+                    <p class="font-mono text-xs font-bold text-gray-800">
                       {{ batch.batch_code }}
                     </p>
                     <p class="text-[10px] text-gray-400">
@@ -403,7 +426,7 @@
                   </div>
                 </div>
                 <span
-                  class="font-black text-gray-700 bg-gray-50 px-2 py-1 rounded"
+                  class="px-2 py-1 font-black text-gray-700 rounded bg-gray-50"
                   >{{ batch.quantity }} pcs</span
                 >
               </div>
@@ -411,7 +434,7 @@
           </div>
           <div class="text-right">
             <p
-              class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1"
+              class="mb-1 text-xs font-bold tracking-widest text-gray-500 uppercase"
             >
               Created At
             </p>
@@ -421,77 +444,116 @@
           </div>
         </div> -->
 
-        <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 flex flex-col gap-5 mb-6">
-          <div class="flex justify-between items-start sm:items-center flex-col sm:flex-row gap-4">
+        <div
+          class="flex flex-col gap-5 p-6 mb-6 border border-gray-100 bg-gray-50 rounded-2xl"
+        >
+          <div
+            class="flex flex-col items-start justify-between gap-4 sm:items-center sm:flex-row"
+          >
             <div>
-              <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">
+              <p
+                class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1"
+              >
                 Total Available Stock
               </p>
-              <p :class="product.stock <= 5 ? 'text-red-600' : 'text-gray-900'" class="text-3xl font-black">
-                {{ product.stock }} <span class="text-sm font-medium text-gray-500">pcs</span>
+              <p
+                :class="product.stock <= 5 ? 'text-red-600' : 'text-gray-900'"
+                class="text-3xl font-black"
+              >
+                {{ product.stock }}
+                <span class="text-sm font-medium text-gray-500">pcs</span>
               </p>
             </div>
             <router-link
               to="/admin/stocks"
               class="bg-white border border-gray-200 hover:border-blue-500 hover:text-blue-600 px-4 py-2.5 rounded-xl text-xs font-bold text-gray-700 transition-all flex items-center gap-2 shadow-sm group"
             >
-              Manage Batches 
-              <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
+              Manage Batches
+              <span class="transition-transform group-hover:translate-x-1"
+                >&rarr;</span
+              >
             </router-link>
           </div>
 
           <div
             v-if="product.stocks && product.stocks.length > 0"
-            class="border border-gray-200 rounded-xl bg-white overflow-hidden shadow-sm"
+            class="overflow-hidden bg-white border border-gray-200 shadow-sm rounded-xl"
           >
-            <div class="bg-gray-100/50 px-5 py-3 border-b border-gray-200 flex justify-between items-center">
-              <p class="text-[10px] font-bold text-gray-600 uppercase tracking-widest">
+            <div
+              class="flex items-center justify-between px-5 py-3 border-b border-gray-200 bg-gray-100/50"
+            >
+              <p
+                class="text-[10px] font-bold text-gray-600 uppercase tracking-widest"
+              >
                 Active Stock Batches (FIFO)
               </p>
-              <span class="text-[10px] font-bold text-gray-400 bg-gray-200 px-2 py-0.5 rounded-md">
+              <span
+                class="text-[10px] font-bold text-gray-400 bg-gray-200 px-2 py-0.5 rounded-md"
+              >
                 {{ product.stocks.length }} Batch
               </span>
             </div>
-            
-            <div class="p-2 max-h-48 overflow-y-auto custom-scrollbar">
+
+            <div class="p-2 overflow-y-auto max-h-48 custom-scrollbar">
               <div
                 v-for="batch in product.stocks"
                 :key="batch.id"
-                class="flex justify-between items-center p-3 hover:bg-gray-50 rounded-lg transition-colors border border-transparent hover:border-gray-100"
+                class="flex items-center justify-between p-3 transition-colors border border-transparent rounded-lg hover:bg-gray-50 hover:border-gray-100"
               >
                 <div class="flex items-center gap-4">
-                  <div class="relative flex items-center justify-center w-3 h-3">
-                    <span class="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-green-400"></span>
-                    <span class="relative inline-flex w-2 h-2 rounded-full bg-green-500"></span>
+                  <div
+                    class="relative flex items-center justify-center w-3 h-3"
+                  >
+                    <span
+                      class="absolute inline-flex w-full h-full bg-green-400 rounded-full opacity-75 animate-ping"
+                    ></span>
+                    <span
+                      class="relative inline-flex w-2 h-2 bg-green-500 rounded-full"
+                    ></span>
                   </div>
-                  
+
                   <div>
-                    <p class="font-mono font-bold text-gray-800 text-sm">
+                    <p class="font-mono text-sm font-bold text-gray-800">
                       {{ batch.batch_code }}
                     </p>
-                    <p class="text-[10px] font-medium text-gray-400 mt-0.5 uppercase tracking-wide">
+                    <p
+                      class="text-[10px] font-medium text-gray-400 mt-0.5 uppercase tracking-wide"
+                    >
                       Added: {{ formatDate(batch.created_at) }}
                     </p>
                   </div>
                 </div>
-                
-                <span class="font-black text-blue-700 bg-blue-50 border border-blue-100 px-3 py-1.5 rounded-lg text-xs shadow-sm">
+
+                <span
+                  class="font-black text-blue-700 bg-blue-50 border border-blue-100 px-3 py-1.5 rounded-lg text-xs shadow-sm"
+                >
                   {{ batch.quantity }} pcs
                 </span>
               </div>
             </div>
           </div>
-          
-          <div v-else class="text-center py-6 bg-white rounded-xl border border-gray-200 border-dashed">
-            <p class="text-xs text-gray-500 font-medium">No active stock batches found.</p>
+
+          <div
+            v-else
+            class="py-6 text-center bg-white border border-gray-200 border-dashed rounded-xl"
+          >
+            <p class="text-xs font-medium text-gray-500">
+              No active stock batches found.
+            </p>
           </div>
 
-          <div class="flex justify-between items-center border-t border-gray-200 pt-4 mt-2">
-            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+          <div
+            class="flex items-center justify-between pt-4 mt-2 border-t border-gray-200"
+          >
+            <p
+              class="text-[10px] font-bold text-gray-400 uppercase tracking-widest"
+            >
               Data Record
             </p>
             <div class="text-right">
-              <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-0.5">
+              <p
+                class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-0.5"
+              >
                 Created At
               </p>
               <p class="text-xs font-bold text-gray-700">
@@ -505,10 +567,10 @@
           <div class="py-4">
             <button
               @click="toggleSection('description')"
-              class="w-full flex justify-between items-center text-left focus:outline-none"
+              class="flex items-center justify-between w-full text-left focus:outline-none"
             >
               <span
-                class="font-bold text-sm uppercase tracking-widest text-gray-800"
+                class="text-sm font-bold tracking-widest text-gray-800 uppercase"
                 >Description</span
               >
               <span class="text-gray-400">{{
@@ -517,7 +579,7 @@
             </button>
             <div
               v-show="activeSection === 'description'"
-              class="mt-4 text-sm text-gray-600 leading-relaxed whitespace-pre-wrap"
+              class="mt-4 text-sm leading-relaxed text-gray-600 whitespace-pre-wrap"
             >
               {{ product.description || "No description provided." }}
             </div>
@@ -526,10 +588,10 @@
           <!-- <div class="py-4">
             <button
               @click="toggleSection('care')"
-              class="w-full flex justify-between items-center text-left focus:outline-none"
+              class="flex items-center justify-between w-full text-left focus:outline-none"
             >
               <span
-                class="font-bold text-sm uppercase tracking-widest text-gray-800"
+                class="text-sm font-bold tracking-widest text-gray-800 uppercase"
                 >Care Instructions</span
               >
               <span class="text-gray-400">{{
@@ -538,7 +600,7 @@
             </button>
             <div
               v-show="activeSection === 'care'"
-              class="mt-4 text-sm text-gray-600 leading-relaxed whitespace-pre-wrap"
+              class="mt-4 text-sm leading-relaxed text-gray-600 whitespace-pre-wrap"
             >
               {{ product.care || "No care instructions provided." }}
             </div>
@@ -547,10 +609,10 @@
           <div class="py-4">
             <button
               @click="toggleSection('design')"
-              class="w-full flex justify-between items-center text-left focus:outline-none"
+              class="flex items-center justify-between w-full text-left focus:outline-none"
             >
               <span
-                class="font-bold text-sm uppercase tracking-widest text-gray-800"
+                class="text-sm font-bold tracking-widest text-gray-800 uppercase"
                 >Design Details</span
               >
               <span class="text-gray-400">{{
@@ -559,7 +621,7 @@
             </button>
             <div
               v-show="activeSection === 'design'"
-              class="mt-4 text-sm text-gray-600 leading-relaxed whitespace-pre-wrap"
+              class="mt-4 text-sm leading-relaxed text-gray-600 whitespace-pre-wrap"
             >
               {{ product.design || "No design details provided." }}
             </div>
@@ -678,27 +740,47 @@ const goToEditPage = () => {
   });
 };
 
-// [BARU] Array warna yang sama untuk mencari kode HEX
-const colorMap = {
-  Black: "#000000",
-  White: "#FFFFFF",
-  Brown: "#8B4513",
-  Beige: "#F5F5DC",
-  Red: "#DC143C",
-  Navy: "#000080",
-  Green: "#008000",
-  Grey: "#808080",
-  Pink: "#FFC0CB",
-  Yellow: "#FFD700",
-  Blue: "#4169E1",
-  Cream: '#FFFDD0', // <--- Warna Baru
-  Sage: '#9DC183',   // <--- Warna Baru
-  Mocca: '#967969', // <--- WARNA BARU
-};
+// // [BARU] Array warna yang sama untuk mencari kode HEX
+// const colorMap = {
+//   Black: "#000000",
+//   White: "#FFFFFF",
+//   Brown: "#8B4513",
+//   Beige: "#F5F5DC",
+//   Red: "#DC143C",
+//   Navy: "#000080",
+//   Green: "#008000",
+//   Grey: "#808080",
+//   Pink: "#FFC0CB",
+//   Yellow: "#FFD700",
+//   Blue: "#4169E1",
+//   Cream: '#FFFDD0', // <--- Warna Baru
+//   Sage: '#9DC183',   // <--- Warna Baru
+//   Mocca: '#967969', // <--- WARNA BARU
+// };
 
-const getColorHex = (colorName) => {
-  return colorMap[colorName] || "#cccccc"; // Default abu-abu jika warna tidak dikenali
-};
+// const getColorHex = (colorName) => {
+//   return colorMap[colorName] || "#cccccc"; // Default abu-abu jika warna tidak dikenali
+// };
+
+// [BARU] Parsing data warna dari format "Name|#Hex"
+const parsedProductColors = computed(() => {
+  if (
+    !product.value ||
+    !product.value.color ||
+    !Array.isArray(product.value.color)
+  )
+    return [];
+
+  return product.value.color.map((c) => {
+    // Jika format baru (ada tanda pipa '|')
+    if (typeof c === "string" && c.includes("|")) {
+      const [name, hex] = c.split("|");
+      return { name, hex };
+    }
+    // Jika format data lama di database yang cuma menyimpan nama
+    return { name: c, hex: "#cccccc" };
+  });
+});
 
 onMounted(fetchData);
 </script>
