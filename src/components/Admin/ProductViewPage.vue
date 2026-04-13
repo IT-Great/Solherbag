@@ -979,18 +979,53 @@ const goToEditPage = () => {
   });
 };
 
-// [BARU] Logika Parsing Warna yang Menyesuaikan dengan Format "Name|#Hex"
+// // [BARU] Logika Parsing Warna yang Menyesuaikan dengan Format "Name|#Hex"
+// const parsedProductColors = computed(() => {
+//   if (!product.value || !product.value.color || !Array.isArray(product.value.color)) return [];
+
+//   return product.value.color.map((c) => {
+//     // Jika format baru (ada pipa '|')
+//     if (typeof c === "string" && c.includes("|")) {
+//       const [name, hex] = c.split("|");
+//       return { name, hex };
+//     }
+//     // Fallback untuk data lawas yang tidak punya kode Hex
+//     return { name: c, hex: "#cccccc" };
+//   });
+// });
+
+// [PERBAIKAN] Kamus Penerjemah untuk Data Lawas
+const legacyColorMap = {
+  Black: "#000000",
+  White: "#FFFFFF",
+  Brown: "#8B4513",
+  Beige: "#F5F5DC",
+  Red: "#DC143C",
+  Navy: "#000080",
+  Green: "#008000",
+  Grey: "#808080",
+  Pink: "#FFC0CB",
+  Yellow: "#FFD700",
+  Blue: "#4169E1",
+  Cream: '#FFFDD0',
+  Sage: '#9DC183',
+  Mocca: '#967969',
+};
+
+// Logika Parsing Warna
 const parsedProductColors = computed(() => {
   if (!product.value || !product.value.color || !Array.isArray(product.value.color)) return [];
 
   return product.value.color.map((c) => {
-    // Jika format baru (ada pipa '|')
+    // 1. Jika format baru (ada pipa '|'), pisahkan dan gunakan hex-nya
     if (typeof c === "string" && c.includes("|")) {
       const [name, hex] = c.split("|");
       return { name, hex };
     }
-    // Fallback untuk data lawas yang tidak punya kode Hex
-    return { name: c, hex: "#cccccc" };
+    
+    // 2. Jika format lawas, cari di legacyColorMap. Kalau tidak ketemu, baru pakai abu-abu.
+    const fallbackHex = legacyColorMap[c] || "#cccccc";
+    return { name: c, hex: fallbackHex };
   });
 });
 

@@ -2225,6 +2225,8 @@ const colorMap = {
   Yellow: "#FFD700",
   Blue: "#4169E1",
   Mocca: '#967969', // <--- WARNA BARU
+  Cream: '#FFAC68',
+  Sage: '#00B46F'
 };
 
 const getColorHex = (colorName) => {
