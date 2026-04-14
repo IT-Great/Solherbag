@@ -1,13 +1,13 @@
 <!-- <template>
   <div class="bg-[#F3F4F6] px-6 md:px-12 pt-12 pb-24 min-h-screen">
     <div class="mx-auto mb-10 max-w-7xl">
-      <h1 class="mb-8 font-bold text-black text-3xl uppercase tracking-tight">
+      <h1 class="mb-8 text-3xl font-bold tracking-tight text-black uppercase">
         Products
       </h1>
 
-      <div class="flex md:flex-row flex-col justify-between gap-6 mb-12">
+      <div class="flex flex-col justify-between gap-6 mb-12 md:flex-row">
         <div class="relative w-full md:w-80">
-          <span class="left-0 absolute inset-y-0 flex items-center pl-3 text-gray-400">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
@@ -16,7 +16,7 @@
             v-model="searchQuery"
             type="text" 
             placeholder="Search our collection..." 
-            class="bg-white shadow-sm py-3 pr-4 pl-10 border-none rounded-full outline-none focus:ring-2 focus:ring-black w-full text-sm transition"
+            class="w-full py-3 pl-10 pr-4 text-sm transition bg-white border-none rounded-full shadow-sm outline-none focus:ring-2 focus:ring-black"
           />
         </div>
 
@@ -24,7 +24,7 @@
           <button 
             @click="resetAllFilters"
             :class="[selectedCategory === '' && !showOnlySale ? 'bg-black text-white' : 'bg-white text-gray-600 hover:bg-gray-100']"
-            class="shadow-sm px-6 py-2 rounded-full font-bold text-xs uppercase tracking-widest whitespace-nowrap transition"
+            class="px-6 py-2 text-xs font-bold tracking-widest uppercase transition rounded-full shadow-sm whitespace-nowrap"
           >
             All
           </button>
@@ -32,7 +32,7 @@
           <button 
             @click="toggleSaleFilter"
             :class="[showOnlySale ? 'bg-red-600 text-white' : 'bg-white text-red-500 hover:bg-red-50']"
-            class="shadow-sm px-6 py-2 border border-red-100 rounded-full font-bold text-xs uppercase tracking-widest whitespace-nowrap transition"
+            class="px-6 py-2 text-xs font-bold tracking-widest uppercase transition border border-red-100 rounded-full shadow-sm whitespace-nowrap"
           >
             % Sale
           </button>
@@ -42,7 +42,7 @@
             :key="cat.id"
             @click="selectCategory(cat.name)"
             :class="[selectedCategory === cat.name && !showOnlySale ? 'bg-black text-white' : 'bg-white text-gray-600 hover:bg-gray-100']"
-            class="shadow-sm px-6 py-2 rounded-full font-bold text-xs uppercase tracking-widest whitespace-nowrap transition"
+            class="px-6 py-2 text-xs font-bold tracking-widest uppercase transition rounded-full shadow-sm whitespace-nowrap"
           >
             {{ cat.name }}
           </button>
@@ -51,17 +51,17 @@
     </div>
 
     <div v-if="paginatedProducts.length > 0">
-      <div class="gap-x-4 gap-y-10 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 mx-auto max-w-7xl">
+      <div class="grid grid-cols-2 mx-auto gap-x-4 gap-y-10 md:grid-cols-4 lg:grid-cols-6 max-w-7xl">
         <div
           v-for="product in paginatedProducts"
           :key="product.id"
-          class="group cursor-pointer"
+          class="cursor-pointer group"
           @click="$router.push(`/product/${product.id}`)"
         >
-          <div class="relative bg-white shadow-sm mb-4 rounded-sm aspect-square overflow-hidden">
+          <div class="relative mb-4 overflow-hidden bg-white rounded-sm shadow-sm aspect-square">
             <img
               :src="product.image"
-              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+              class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
               alt="Product Image"
             />
             
@@ -81,14 +81,14 @@
             
             <div class="flex items-center gap-2">
               <template v-if="product.discount_price">
-                <p class="font-bold text-red-600 text-xs md:text-sm">
+                <p class="text-xs font-bold text-red-600 md:text-sm">
                   {{ formatPrice(product.discount_price) }}
                 </p>
                 <p class="text-[10px] text-gray-400 md:text-xs line-through">
                   {{ formatPrice(product.price) }}
                 </p>
               </template>
-              <p v-else class="font-semibold text-gray-600 text-xs md:text-sm">
+              <p v-else class="text-xs font-semibold text-gray-600 md:text-sm">
                 {{ formatPrice(product.price) }}
               </p>
             </div>
@@ -96,14 +96,14 @@
         </div>
       </div>
 
-      <div class="flex justify-center items-center gap-4 mt-20">
-        <button @click="currentPage--" :disabled="currentPage === 1" class="bg-white hover:bg-gray-50 disabled:opacity-30 shadow-sm p-2 rounded-full transition disabled:cursor-not-allowed">
+      <div class="flex items-center justify-center gap-4 mt-20">
+        <button @click="currentPage--" :disabled="currentPage === 1" class="p-2 transition bg-white rounded-full shadow-sm hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <span class="font-bold text-xs uppercase tracking-widest">Page {{ currentPage }} of {{ totalPages || 1 }}</span>
-        <button @click="currentPage++" :disabled="currentPage === totalPages || totalPages === 0" class="bg-white hover:bg-gray-50 disabled:opacity-30 shadow-sm p-2 rounded-full transition disabled:cursor-not-allowed">
+        <span class="text-xs font-bold tracking-widest uppercase">Page {{ currentPage }} of {{ totalPages || 1 }}</span>
+        <button @click="currentPage++" :disabled="currentPage === totalPages || totalPages === 0" class="p-2 transition bg-white rounded-full shadow-sm hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
           </svg>
@@ -112,8 +112,8 @@
     </div>
 
     <div v-else class="py-24 text-center">
-      <p class="font-serif text-gray-400 text-xl italic">No items found matching your selection.</p>
-      <button @click="resetAllFilters" class="mt-4 font-bold text-black text-sm underline uppercase tracking-widest">Reset All Filters</button>
+      <p class="font-serif text-xl italic text-gray-400">No items found matching your selection.</p>
+      <button @click="resetAllFilters" class="mt-4 text-sm font-bold tracking-widest text-black underline uppercase">Reset All Filters</button>
     </div>
   </div>
 </template>
@@ -204,24 +204,24 @@ onMounted(fetchInitialData);
       class="z-40 fixed inset-0 flex flex-col justify-center items-center bg-[#F3F4F6]/60 backdrop-blur-[2px]"
     >
       <div
-        class="border-4 border-gray-200 border-t-black rounded-full w-12 h-12 animate-spin"
+        class="w-12 h-12 border-4 border-gray-200 rounded-full border-t-black animate-spin"
       ></div>
       <p
-        class="mt-4 font-bold text-black text-xs uppercase tracking-widest animate-pulse"
+        class="mt-4 text-xs font-bold tracking-widest text-black uppercase animate-pulse"
       >
         Loading Collection
       </p>
     </div>
 
     <div class="mx-auto mb-10 max-w-7xl">
-      <h1 class="mb-8 font-bold text-black text-3xl uppercase tracking-tight">
+      <h1 class="mb-8 text-3xl font-bold tracking-tight text-black uppercase">
         Products
       </h1>
 
-      <div class="flex md:flex-row flex-col justify-between gap-6 mb-12">
+      <div class="flex flex-col justify-between gap-6 mb-12 md:flex-row">
         <div class="relative w-full md:w-80">
           <span
-            class="left-0 absolute inset-y-0 flex items-center pl-3 text-gray-400"
+            class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -242,7 +242,7 @@ onMounted(fetchInitialData);
             v-model="searchQuery"
             type="text"
             placeholder="Search our collection..."
-            class="bg-white shadow-sm py-3 pr-4 pl-10 border-none rounded-full outline-none focus:ring-2 focus:ring-black w-full text-sm transition"
+            class="w-full py-3 pl-10 pr-4 text-sm transition bg-white border-none rounded-full shadow-sm outline-none focus:ring-2 focus:ring-black"
           />
         </div>
 
@@ -254,7 +254,7 @@ onMounted(fetchInitialData);
                 ? 'bg-black text-white'
                 : 'bg-white text-gray-600 hover:bg-gray-100',
             ]"
-            class="shadow-sm px-6 py-2 rounded-full font-bold text-xs uppercase tracking-widest whitespace-nowrap transition"
+            class="px-6 py-2 text-xs font-bold tracking-widest uppercase transition rounded-full shadow-sm whitespace-nowrap"
           >
             All
           </button>
@@ -266,7 +266,7 @@ onMounted(fetchInitialData);
                 ? 'bg-red-600 text-white'
                 : 'bg-white text-red-500 hover:bg-red-50',
             ]"
-            class="shadow-sm px-6 py-2 border border-red-100 rounded-full font-bold text-xs uppercase tracking-widest whitespace-nowrap transition"
+            class="px-6 py-2 text-xs font-bold tracking-widest uppercase transition border border-red-100 rounded-full shadow-sm whitespace-nowrap"
           >
             % Sale
           </button>
@@ -280,7 +280,7 @@ onMounted(fetchInitialData);
                 ? 'bg-black text-white'
                 : 'bg-white text-gray-600 hover:bg-gray-100',
             ]"
-            class="shadow-sm px-6 py-2 rounded-full font-bold text-xs uppercase tracking-widest whitespace-nowrap transition"
+            class="px-6 py-2 text-xs font-bold tracking-widest uppercase transition rounded-full shadow-sm whitespace-nowrap"
           >
             {{ cat.category_name }}
           </button>
@@ -289,12 +289,12 @@ onMounted(fetchInitialData);
     </div>
     <div v-if="paginatedProducts.length > 0">
       <div
-        class="gap-x-6 gap-y-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mx-auto max-w-7xl"
+        class="grid grid-cols-2 mx-auto gap-x-6 gap-y-12 md:grid-cols-3 lg:grid-cols-4 max-w-7xl"
       >
         <div
           v-for="product in paginatedProducts"
           :key="product.id"
-          class="group cursor-pointer"
+          class="cursor-pointer group"
           @click="$router.push(`/product/${product.id}`)"
         >
           <div
@@ -302,7 +302,7 @@ onMounted(fetchInitialData);
           >
             <img
               :src="product.image"
-              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+              class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
               alt="Product Image"
             />
 
@@ -323,25 +323,25 @@ onMounted(fetchInitialData);
 
           <div class="space-y-2 text-center md:text-left">
             <h3
-              class="font-medium text-xs text-gray-900 md:text-sm truncate uppercase tracking-widest"
+              class="text-xs font-medium tracking-widest text-gray-900 uppercase truncate md:text-sm"
             >
               {{ product.name }}
             </h3>
 
             <div
-              class="flex justify-center md:justify-start items-center gap-2"
+              class="flex items-center justify-center gap-2 md:justify-start"
             >
               <template v-if="product.discount_price">
-                <p class="font-bold text-red-600 text-sm md:text-base">
+                <p class="text-sm font-bold text-red-600 md:text-base">
                   {{ formatPrice(product.discount_price) }}
                 </p>
-                <p class="text-xs text-gray-400 md:text-sm line-through">
+                <p class="text-xs text-gray-400 line-through md:text-sm">
                   {{ formatPrice(product.price) }}
                 </p>
               </template>
               <p
                 v-else
-                class="font-semibold text-gray-600 text-sm md:text-base"
+                class="text-sm font-semibold text-gray-600 md:text-base"
               >
                 {{ formatPrice(product.price) }}
               </p>
@@ -349,11 +349,11 @@ onMounted(fetchInitialData);
           </div>
         </div>
       </div>
-      <div class="flex justify-center items-center gap-4 mt-20">
+      <div class="flex items-center justify-center gap-4 mt-20">
         <button
           @click="currentPage--"
           :disabled="currentPage === 1"
-          class="bg-white hover:bg-gray-50 disabled:opacity-30 shadow-sm p-2 rounded-full transition disabled:cursor-not-allowed"
+          class="p-2 transition bg-white rounded-full shadow-sm hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -370,13 +370,13 @@ onMounted(fetchInitialData);
             />
           </svg>
         </button>
-        <span class="font-bold text-xs uppercase tracking-widest"
+        <span class="text-xs font-bold tracking-widest uppercase"
           >Page {{ currentPage }} of {{ totalPages || 1 }}</span
         >
         <button
           @click="currentPage++"
           :disabled="currentPage === totalPages || totalPages === 0"
-          class="bg-white hover:bg-gray-50 disabled:opacity-30 shadow-sm p-2 rounded-full transition disabled:cursor-not-allowed"
+          class="p-2 transition bg-white rounded-full shadow-sm hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -397,12 +397,12 @@ onMounted(fetchInitialData);
     </div>
 
     <div v-else-if="!isLoading" class="py-24 text-center">
-      <p class="font-serif text-gray-400 text-xl italic">
+      <p class="font-serif text-xl italic text-gray-400">
         No items found matching your selection.
       </p>
       <button
         @click="resetAllFilters"
-        class="mt-4 font-bold text-black text-sm underline uppercase tracking-widest"
+        class="mt-4 text-sm font-bold tracking-widest text-black underline uppercase"
       >
         Reset All Filters
       </button>
@@ -565,24 +565,24 @@ onMounted(initCollections);
       class="z-40 fixed inset-0 flex flex-col justify-center items-center bg-[#F3F4F6]/60 backdrop-blur-[2px]"
     >
       <div
-        class="border-4 border-gray-200 border-t-black rounded-full w-12 h-12 animate-spin"
+        class="w-12 h-12 border-4 border-gray-200 rounded-full border-t-black animate-spin"
       ></div>
       <p
-        class="mt-4 font-bold text-black text-xs uppercase tracking-widest animate-pulse"
+        class="mt-4 text-xs font-bold tracking-widest text-black uppercase animate-pulse"
       >
         Loading Collection
       </p>
     </div>
 
     <div class="mx-auto mb-10 max-w-7xl">
-      <h1 class="mb-8 font-bold text-black text-3xl uppercase tracking-tight">
+      <h1 class="mb-8 text-3xl font-bold tracking-tight text-black uppercase">
         Products
       </h1>
 
-      <div class="flex md:flex-row flex-col justify-between gap-6 mb-12">
+      <div class="flex flex-col justify-between gap-6 mb-12 md:flex-row">
         <div class="relative w-full md:w-80">
           <span
-            class="left-0 absolute inset-y-0 flex items-center pl-3 text-gray-400"
+            class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -603,7 +603,7 @@ onMounted(initCollections);
             v-model="searchQuery"
             type="text"
             placeholder="Search our collection..."
-            class="bg-white shadow-sm py-3 pr-4 pl-10 border-none rounded-full outline-none focus:ring-2 focus:ring-black w-full text-sm transition"
+            class="w-full py-3 pl-10 pr-4 text-sm transition bg-white border-none rounded-full shadow-sm outline-none focus:ring-2 focus:ring-black"
           />
         </div>
 
@@ -615,7 +615,7 @@ onMounted(initCollections);
                 ? 'bg-black text-white'
                 : 'bg-white text-gray-600 hover:bg-gray-100',
             ]"
-            class="shadow-sm px-6 py-2 rounded-full font-bold text-xs uppercase tracking-widest whitespace-nowrap transition"
+            class="px-6 py-2 text-xs font-bold tracking-widest uppercase transition rounded-full shadow-sm whitespace-nowrap"
           >
             All
           </button>
@@ -626,7 +626,7 @@ onMounted(initCollections);
                 ? 'bg-red-600 text-white'
                 : 'bg-white text-red-500 hover:bg-red-50',
             ]"
-            class="shadow-sm px-6 py-2 border border-red-100 rounded-full font-bold text-xs uppercase tracking-widest whitespace-nowrap transition"
+            class="px-6 py-2 text-xs font-bold tracking-widest uppercase transition border border-red-100 rounded-full shadow-sm whitespace-nowrap"
           >
             % Sale
           </button>
@@ -639,7 +639,7 @@ onMounted(initCollections);
                 ? 'bg-black text-white'
                 : 'bg-white text-gray-600 hover:bg-gray-100',
             ]"
-            class="shadow-sm px-6 py-2 rounded-full font-bold text-xs uppercase tracking-widest whitespace-nowrap transition"
+            class="px-6 py-2 text-xs font-bold tracking-widest uppercase transition rounded-full shadow-sm whitespace-nowrap"
           >
             {{ cat.category_name }}
           </button>
@@ -649,12 +649,12 @@ onMounted(initCollections);
 
     <div v-if="paginatedProducts.length > 0">
       <div
-        class="gap-x-6 gap-y-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mx-auto max-w-7xl"
+        class="grid grid-cols-2 mx-auto gap-x-6 gap-y-12 md:grid-cols-3 lg:grid-cols-4 max-w-7xl"
       >
         <div
           v-for="product in paginatedProducts"
           :key="product.id"
-          class="group cursor-pointer"
+          class="cursor-pointer group"
           @click="goToDetail(product)"
         >
           <div
@@ -671,18 +671,18 @@ onMounted(initCollections);
                 :key="index"
               >
                 <div
-                  class="w-full h-full flex-shrink-0 relative overflow-hidden"
+                  class="relative flex-shrink-0 w-full h-full overflow-hidden"
                 >
                   <img
                     v-if="media.type === 'image'"
                     :src="media.url"
-                    class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    class="absolute inset-0 object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
                     alt="Product Image"
                   />
                   <video
                     v-else-if="media.type === 'video'"
                     :src="media.url"
-                    class="absolute inset-0 w-full h-full object-cover bg-black"
+                    class="absolute inset-0 object-cover w-full h-full bg-black"
                     autoplay
                     loop
                     muted
@@ -739,7 +739,7 @@ onMounted(initCollections);
             </button>
 
             <div
-              class="absolute bottom-2 left-0 right-0 flex justify-center gap-1 z-10"
+              class="absolute left-0 right-0 z-10 flex justify-center gap-1 bottom-2"
               v-if="getMediaArray(product).length > 1"
             >
               <div
@@ -750,7 +750,7 @@ onMounted(initCollections);
                     ? 'w-3 bg-black'
                     : 'w-1 bg-white/80'
                 "
-                class="h-1 rounded-full transition-all duration-300 shadow-sm"
+                class="h-1 transition-all duration-300 rounded-full shadow-sm"
               ></div>
             </div>
 
@@ -802,24 +802,24 @@ onMounted(initCollections);
 
           <div class="space-y-2 text-center md:text-left">
             <h3
-              class="font-medium text-xs text-gray-900 md:text-sm truncate uppercase tracking-widest"
+              class="text-xs font-medium tracking-widest text-gray-900 uppercase truncate md:text-sm"
             >
               {{ product.name }}
             </h3>
             <div
-              class="flex justify-center md:justify-start items-center gap-2"
+              class="flex items-center justify-center gap-2 md:justify-start"
             >
               <template v-if="product.discount_price">
-                <p class="font-bold text-red-600 text-sm md:text-base">
+                <p class="text-sm font-bold text-red-600 md:text-base">
                   {{ formatPrice(product.discount_price) }}
                 </p>
-                <p class="text-xs text-gray-400 md:text-sm line-through">
+                <p class="text-xs text-gray-400 line-through md:text-sm">
                   {{ formatPrice(product.price) }}
                 </p>
               </template>
               <p
                 v-else
-                class="font-semibold text-gray-600 text-sm md:text-base"
+                class="text-sm font-semibold text-gray-600 md:text-base"
               >
                 {{ formatPrice(product.price) }}
               </p>
@@ -828,11 +828,11 @@ onMounted(initCollections);
         </div>
       </div>
 
-      <div class="flex justify-center items-center gap-4 mt-20">
+      <div class="flex items-center justify-center gap-4 mt-20">
         <button
           @click="currentPage--"
           :disabled="currentPage === 1"
-          class="bg-white hover:bg-gray-50 disabled:opacity-30 shadow-sm p-2 rounded-full transition disabled:cursor-not-allowed"
+          class="p-2 transition bg-white rounded-full shadow-sm hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -849,13 +849,13 @@ onMounted(initCollections);
             />
           </svg>
         </button>
-        <span class="font-bold text-xs uppercase tracking-widest"
+        <span class="text-xs font-bold tracking-widest uppercase"
           >Page {{ currentPage }} of {{ totalPages || 1 }}</span
         >
         <button
           @click="currentPage++"
           :disabled="currentPage === totalPages || totalPages === 0"
-          class="bg-white hover:bg-gray-50 disabled:opacity-30 shadow-sm p-2 rounded-full transition disabled:cursor-not-allowed"
+          class="p-2 transition bg-white rounded-full shadow-sm hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -876,12 +876,12 @@ onMounted(initCollections);
     </div>
 
     <div v-else-if="!isLoading" class="py-24 text-center">
-      <p class="font-serif text-gray-400 text-xl italic">
+      <p class="font-serif text-xl italic text-gray-400">
         No items found matching your selection.
       </p>
       <button
         @click="resetAllFilters"
-        class="mt-4 font-bold text-black text-sm underline uppercase tracking-widest"
+        class="mt-4 text-sm font-bold tracking-widest text-black underline uppercase"
       >
         Reset All Filters
       </button>
@@ -1110,20 +1110,20 @@ onUnmounted(() => {
         <div class="w-3 h-3 bg-black rounded-full animate-bounce-2"></div>
         <div class="w-3 h-3 bg-black rounded-full animate-bounce-3"></div>
       </div>
-      <p class="font-serif text-gray-500 italic tracking-widest text-sm animate-pulse">
+      <p class="font-serif text-sm italic tracking-widest text-gray-500 animate-pulse">
         Loading Collection...
       </p>
     </div>
 
     <div class="mx-auto mb-10 max-w-7xl">
-      <h1 class="mb-8 font-bold text-black text-3xl uppercase tracking-tight">
+      <h1 class="mb-8 text-3xl font-bold tracking-tight text-black uppercase">
         Products
       </h1>
 
-      <div class="flex md:flex-row flex-col justify-between gap-6 mb-12">
+      <div class="flex flex-col justify-between gap-6 mb-12 md:flex-row">
         <div class="relative w-full md:w-80">
           <span
-            class="left-0 absolute inset-y-0 flex items-center pl-3 text-gray-400"
+            class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -1144,7 +1144,7 @@ onUnmounted(() => {
             v-model="searchQuery"
             type="text"
             placeholder="Search our collection..."
-            class="bg-white shadow-sm py-3 pr-4 pl-10 border-none rounded-full outline-none focus:ring-2 focus:ring-black w-full text-sm transition"
+            class="w-full py-3 pl-10 pr-4 text-sm transition bg-white border-none rounded-full shadow-sm outline-none focus:ring-2 focus:ring-black"
           />
         </div>
 
@@ -1156,7 +1156,7 @@ onUnmounted(() => {
                 ? 'bg-black text-white'
                 : 'bg-white text-gray-600 hover:bg-gray-100',
             ]"
-            class="shadow-sm px-6 py-2 rounded-full font-bold text-xs uppercase tracking-widest whitespace-nowrap transition"
+            class="px-6 py-2 text-xs font-bold tracking-widest uppercase transition rounded-full shadow-sm whitespace-nowrap"
           >
             All
           </button>
@@ -1167,7 +1167,7 @@ onUnmounted(() => {
                 ? 'bg-red-600 text-white'
                 : 'bg-white text-red-500 hover:bg-red-50',
             ]"
-            class="shadow-sm px-6 py-2 border border-red-100 rounded-full font-bold text-xs uppercase tracking-widest whitespace-nowrap transition"
+            class="px-6 py-2 text-xs font-bold tracking-widest uppercase transition border border-red-100 rounded-full shadow-sm whitespace-nowrap"
           >
             % Sale
           </button>
@@ -1180,7 +1180,7 @@ onUnmounted(() => {
                 ? 'bg-black text-white'
                 : 'bg-white text-gray-600 hover:bg-gray-100',
             ]"
-            class="shadow-sm px-6 py-2 rounded-full font-bold text-xs uppercase tracking-widest whitespace-nowrap transition"
+            class="px-6 py-2 text-xs font-bold tracking-widest uppercase transition rounded-full shadow-sm whitespace-nowrap"
           >
             {{ cat.category_name }}
           </button>
@@ -1190,12 +1190,12 @@ onUnmounted(() => {
 
     <div v-if="paginatedProducts.length > 0">
       <div
-        class="gap-x-6 gap-y-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mx-auto max-w-7xl"
+        class="grid grid-cols-2 mx-auto gap-x-6 gap-y-12 md:grid-cols-3 lg:grid-cols-4 max-w-7xl"
       >
         <div
           v-for="product in paginatedProducts"
           :key="product.id"
-          class="group cursor-pointer"
+          class="cursor-pointer group"
           @click="goToDetail(product)"
         >
           <div
@@ -1212,18 +1212,18 @@ onUnmounted(() => {
                 :key="index"
               >
                 <div
-                  class="w-full h-full flex-shrink-0 relative overflow-hidden"
+                  class="relative flex-shrink-0 w-full h-full overflow-hidden"
                 >
                   <img
                     v-if="media.type === 'image'"
                     :src="media.url || defaultBagIcon"
-                    class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    class="absolute inset-0 object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
                     alt="Product Image"
                   />
                   <video
                     v-else-if="media.type === 'video'"
                     :src="media.url"
-                    class="absolute inset-0 w-full h-full object-cover bg-black"
+                    class="absolute inset-0 object-cover w-full h-full bg-black"
                     autoplay
                     loop
                     muted
@@ -1280,7 +1280,7 @@ onUnmounted(() => {
             </button>
 
             <div
-              class="absolute bottom-2 left-0 right-0 flex justify-center gap-1 z-10"
+              class="absolute left-0 right-0 z-10 flex justify-center gap-1 bottom-2"
               v-if="getMediaArray(product).length > 1"
             >
               <div
@@ -1291,7 +1291,7 @@ onUnmounted(() => {
                     ? 'w-3 bg-black'
                     : 'w-1 bg-white/80'
                 "
-                class="h-1 rounded-full transition-all duration-300 shadow-sm"
+                class="h-1 transition-all duration-300 rounded-full shadow-sm"
               ></div>
             </div>
 
@@ -1346,7 +1346,7 @@ onUnmounted(() => {
               v-else-if="product.stock <= 0"
               class="absolute inset-0 bg-white/60 backdrop-blur-[1px] flex justify-center items-center z-20"
             >
-              <span class="bg-black text-white px-4 py-1 rounded font-bold text-xs uppercase tracking-widest transform -rotate-12 shadow-lg">
+              <span class="px-4 py-1 text-xs font-bold tracking-widest text-white uppercase transform bg-black rounded shadow-lg -rotate-12">
                 Sold Out
               </span>
             </div>
@@ -1355,24 +1355,24 @@ onUnmounted(() => {
 
           <div class="space-y-2 text-center md:text-left">
             <h3
-              class="font-medium text-xs text-gray-900 md:text-sm truncate uppercase tracking-widest"
+              class="text-xs font-medium tracking-widest text-gray-900 uppercase truncate md:text-sm"
             >
               {{ product.name }}
             </h3>
             <div
-              class="flex justify-center md:justify-start items-center gap-2"
+              class="flex items-center justify-center gap-2 md:justify-start"
             >
               <template v-if="product.discount_price">
-                <p class="font-bold text-red-600 text-sm md:text-base">
+                <p class="text-sm font-bold text-red-600 md:text-base">
                   {{ formatPrice(product.discount_price) }}
                 </p>
-                <p class="text-xs text-gray-400 md:text-sm line-through">
+                <p class="text-xs text-gray-400 line-through md:text-sm">
                   {{ formatPrice(product.price) }}
                 </p>
               </template>
               <p
                 v-else
-                class="font-semibold text-gray-600 text-sm md:text-base"
+                class="text-sm font-semibold text-gray-600 md:text-base"
               >
                 {{ formatPrice(product.price) }}
               </p>
@@ -1381,11 +1381,11 @@ onUnmounted(() => {
         </div>
       </div>
 
-      <div class="flex justify-center items-center gap-4 mt-20">
+      <div class="flex items-center justify-center gap-4 mt-20">
         <button
           @click="currentPage--"
           :disabled="currentPage === 1"
-          class="bg-white hover:bg-gray-50 disabled:opacity-30 shadow-sm p-2 rounded-full transition disabled:cursor-not-allowed"
+          class="p-2 transition bg-white rounded-full shadow-sm hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -1402,13 +1402,13 @@ onUnmounted(() => {
             />
           </svg>
         </button>
-        <span class="font-bold text-xs uppercase tracking-widest"
+        <span class="text-xs font-bold tracking-widest uppercase"
           >Page {{ currentPage }} of {{ totalPages || 1 }}</span
         >
         <button
           @click="currentPage++"
           :disabled="currentPage === totalPages || totalPages === 0"
-          class="bg-white hover:bg-gray-50 disabled:opacity-30 shadow-sm p-2 rounded-full transition disabled:cursor-not-allowed"
+          class="p-2 transition bg-white rounded-full shadow-sm hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -1429,12 +1429,12 @@ onUnmounted(() => {
     </div>
 
     <div v-else-if="!isLoading" class="py-24 text-center">
-      <p class="font-serif text-gray-400 text-xl italic">
+      <p class="font-serif text-xl italic text-gray-400">
         No items found matching your selection.
       </p>
       <button
         @click="resetAllFilters"
-        class="mt-4 font-bold text-black text-sm underline uppercase tracking-widest"
+        class="mt-4 text-sm font-bold tracking-widest text-black underline uppercase"
       >
         Reset All Filters
       </button>
@@ -1833,9 +1833,34 @@ const goToDetail = (product) => {
   });
 };
 
+// onMounted(async () => {
+//   if (route.query.search) {
+//     searchQuery.value = route.query.search;
+//   }
+
+//   initCollections();
+//   fetchWishlists();
+//   window.addEventListener("wishlist-updated", fetchWishlists);
+// });
+
+// watch(
+//   () => route.query.search,
+//   (newSearch) => {
+//     if (newSearch !== undefined) {
+//       searchQuery.value = newSearch;
+//     }
+//   },
+// );
+
 onMounted(async () => {
   if (route.query.search) {
     searchQuery.value = route.query.search;
+  }
+
+  // [BARU] Tangkap query category saat halaman pertama kali dimuat
+  if (route.query.category) {
+    selectedCategory.value = route.query.category;
+    showOnlySale.value = false;
   }
 
   initCollections();
@@ -1850,6 +1875,22 @@ watch(
       searchQuery.value = newSearch;
     }
   },
+);
+
+// [BARU] Pantau perubahan URL kategori
+// Ini berguna jika user sudah berada di halaman Collection, lalu dia menekan 
+// kategori lain dari Header Mega Menu. Sistem akan otomatis memindahkan filternya.
+watch(
+  () => route.query.category,
+  (newCategory) => {
+    if (newCategory) {
+      selectedCategory.value = newCategory;
+      showOnlySale.value = false; // Matikan filter sale jika berpindah kategori
+    } else {
+      // Jika user klik "All Bags" dari header, reset filter
+      selectedCategory.value = "";
+    }
+  }
 );
 
 onUnmounted(() => {

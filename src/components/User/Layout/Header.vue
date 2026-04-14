@@ -2813,31 +2813,51 @@ watch(
     :class="isAtTop ? 'translate-y-0' : '-translate-y-full'"
     class="fixed top-0 left-0 w-full h-[40px] bg-[#111] text-white z-[60] flex items-center justify-center transition-transform duration-300"
   >
-    <button 
-      @click="prevAnnouncement" 
+    <button
+      @click="prevAnnouncement"
       class="absolute p-2 text-gray-400 transition left-4 hover:text-white focus:outline-none"
     >
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7" />
+      <svg
+        class="w-4 h-4"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="1.5"
+          d="M15 19l-7-7 7-7"
+        />
       </svg>
     </button>
-    
+
     <transition name="fade-slide" mode="out-in">
-      <p 
-        :key="currentAnnouncement" 
-        @click="$router.push('/collections')" 
+      <p
+        :key="currentAnnouncement"
+        @click="$router.push('/collections')"
         class="text-[10px] md:text-xs font-serif tracking-widest text-center px-12 cursor-pointer hover:text-gray-300 transition-colors truncate w-full max-w-3xl"
       >
         {{ announcements[currentAnnouncement] }}
       </p>
     </transition>
 
-    <button 
-      @click="nextAnnouncement" 
+    <button
+      @click="nextAnnouncement"
       class="absolute p-2 text-gray-400 transition right-4 hover:text-white focus:outline-none"
     >
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
+      <svg
+        class="w-4 h-4"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="1.5"
+          d="M9 5l7 7-7 7"
+        />
       </svg>
     </button>
   </div>
@@ -2863,8 +2883,8 @@ watch(
             class="font-bold text-red-600 transition cursor-pointer hover:text-gray-500"
             >Best Sellers</router-link
           >
-          
-          <div 
+
+          <div
             class="relative flex items-center h-full"
             @mouseenter="openMegaMenu"
             @mouseleave="closeMegaMenu"
@@ -2872,7 +2892,7 @@ watch(
             <router-link
               to="/collections"
               class="transition cursor-pointer hover:text-gray-500"
-              :class="{'text-gray-500': isMegaMenuOpen}"
+              :class="{ 'text-gray-500': isMegaMenuOpen }"
               >Collections</router-link
             >
           </div>
@@ -2883,66 +2903,175 @@ watch(
             >Contact</router-link
           >
         </nav>
-        
+
         <button
           @click="isMobileMenuOpen = true"
           class="flex items-center justify-center text-gray-700 md:hidden focus:outline-none hover:text-black"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-6 h-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+            />
           </svg>
         </button>
       </div>
 
-      <div class="absolute flex justify-center flex-shrink-0 -translate-x-1/2 -translate-y-1/2 pointer-events-none left-1/2 top-1/2">
-        <img src="../../../assets/solherbrandbook.png" alt="Solher Logo" class="object-contain w-auto h-8 cursor-pointer pointer-events-auto md:h-12" @click="$router.push('/')" />
+      <div
+        class="absolute flex justify-center flex-shrink-0 -translate-x-1/2 -translate-y-1/2 pointer-events-none left-1/2 top-1/2"
+      >
+        <img
+          src="../../../assets/solherbrandbook.png"
+          alt="Solher Logo"
+          class="object-contain w-auto h-8 cursor-pointer pointer-events-auto md:h-12"
+          @click="$router.push('/')"
+        />
       </div>
 
-      <div class="flex items-center justify-end flex-1 space-x-4 text-gray-700 md:space-x-5">
-         <button @click="openSearch" class="flex items-center justify-center transition-colors focus:outline-none hover:text-black">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
+      <div
+        class="flex items-center justify-end flex-1 space-x-4 text-gray-700 md:space-x-5"
+      >
+        <button
+          @click="openSearch"
+          class="flex items-center justify-center transition-colors focus:outline-none hover:text-black"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+            />
+          </svg>
         </button>
 
         <div class="relative flex items-center justify-center">
           <button @click="toggleDropdown">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" /></svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+              />
+            </svg>
           </button>
-          
-          <div v-if="isDropdownOpen" class="top-full right-0 z-[60] absolute bg-white shadow-xl mt-4 p-6 border border-gray-100 w-64 animate-fade-in">
-             <div v-if="isAuthenticated" class="text-left">
-              <h3 class="text-sm font-bold tracking-tight text-black uppercase truncate">HI {{ userData?.first_name }} {{ userData?.last_name }}</h3>
-              <p class="mb-4 text-xs text-gray-500 truncate">{{ userData?.email }}</p>
+
+          <div
+            v-if="isDropdownOpen"
+            class="top-full right-0 z-[60] absolute bg-white shadow-xl mt-4 p-6 border border-gray-100 w-64 animate-fade-in"
+          >
+            <div v-if="isAuthenticated" class="text-left">
+              <h3
+                class="text-sm font-bold tracking-tight text-black uppercase truncate"
+              >
+                HI {{ userData?.first_name }} {{ userData?.last_name }}
+              </h3>
+              <p class="mb-4 text-xs text-gray-500 truncate">
+                {{ userData?.email }}
+              </p>
             </div>
             <div v-else>
-              <h3 class="mb-4 text-xs font-bold tracking-widest text-left text-black uppercase">Account</h3>
-              <router-link to="/login" @click="isDropdownOpen = false" class="block w-full py-3 mb-4 text-xs font-bold tracking-widest text-center text-white uppercase transition bg-black hover:bg-gray-800">Sign In</router-link>
+              <h3
+                class="mb-4 text-xs font-bold tracking-widest text-left text-black uppercase"
+              >
+                Account
+              </h3>
+              <router-link
+                to="/login"
+                @click="isDropdownOpen = false"
+                class="block w-full py-3 mb-4 text-xs font-bold tracking-widest text-center text-white uppercase transition bg-black hover:bg-gray-800"
+                >Sign In</router-link
+              >
             </div>
             <div class="grid grid-cols-2 gap-2">
-              <router-link to="/orderpage" @click="isDropdownOpen = false" class="flex items-center justify-center py-3 space-x-2 transition bg-gray-100 hover:bg-gray-200"><span class="font-bold text-[10px] uppercase tracking-wider">Orders</span></router-link>
-              <router-link to="/profilepage" @click="isDropdownOpen = false" class="flex items-center justify-center py-3 space-x-2 transition bg-gray-100 hover:bg-gray-200"><span class="font-bold text-[10px] uppercase tracking-wider">Profile</span></router-link>
+              <router-link
+                to="/orderpage"
+                @click="isDropdownOpen = false"
+                class="flex items-center justify-center py-3 space-x-2 transition bg-gray-100 hover:bg-gray-200"
+                ><span class="font-bold text-[10px] uppercase tracking-wider"
+                  >Orders</span
+                ></router-link
+              >
+              <router-link
+                to="/profilepage"
+                @click="isDropdownOpen = false"
+                class="flex items-center justify-center py-3 space-x-2 transition bg-gray-100 hover:bg-gray-200"
+                ><span class="font-bold text-[10px] uppercase tracking-wider"
+                  >Profile</span
+                ></router-link
+              >
             </div>
           </div>
         </div>
 
-        <button @click="openCartPage" class="relative transition-colors hover:text-black cart-icon-header">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" /></svg>
-          <span v-if="cartCount > 0" :class="[isBadgePopping ? 'scale-150 bg-red-600' : 'scale-100 bg-black']" class="-top-2 -right-2 absolute flex justify-center items-center rounded-full w-4 h-4 text-[10px] text-white transition-all duration-300 pointer-events-none">{{ cartCount }}</span>
+        <button
+          @click="openCartPage"
+          class="relative transition-colors hover:text-black cart-icon-header"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+            />
+          </svg>
+          <span
+            v-if="cartCount > 0"
+            :class="[
+              isBadgePopping ? 'scale-150 bg-red-600' : 'scale-100 bg-black',
+            ]"
+            class="-top-2 -right-2 absolute flex justify-center items-center rounded-full w-4 h-4 text-[10px] text-white transition-all duration-300 pointer-events-none"
+            >{{ cartCount }}</span
+          >
         </button>
       </div>
     </div>
 
     <transition name="mega-menu-fade">
-      <div 
-        v-if="isMegaMenuOpen" 
+      <div
+        v-if="isMegaMenuOpen"
         class="absolute left-0 hidden w-full overflow-hidden bg-white border-t border-gray-100 shadow-xl top-full md:block"
         @mouseenter="keepMegaMenuOpen"
         @mouseleave="closeMegaMenu"
       >
         <div class="mx-auto max-w-7xl flex h-[400px]">
-          
-          <div class="w-1/4 px-6 py-8 overflow-y-auto border-r border-gray-100 bg-gray-50/50">
-            <h3 class="font-bold text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-6">Categories</h3>
-            <ul class="space-y-4">
+          <div
+            class="w-1/4 px-6 py-8 overflow-y-auto border-r border-gray-100 bg-gray-50/50"
+          >
+            <h3
+              class="font-bold text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-6"
+            >
+              Categories
+            </h3>
+            <!-- <ul class="space-y-4">
               <li>
                 <button 
                   @click="selectMegaMenuCategory('all')"
@@ -2963,45 +3092,106 @@ watch(
                   {{ cat.category_name }}
                 </button>
               </li>
+            </ul> -->
+            <ul class="space-y-4">
+              <li>
+                <button
+                  @click="goToCollection('all')"
+                  @mouseenter="selectMegaMenuCategory('all')"
+                  :class="
+                    activeMegaCategory === 'all'
+                      ? 'text-black font-bold'
+                      : 'text-gray-500 hover:text-black'
+                  "
+                  class="w-full text-xs tracking-widest text-left uppercase transition-colors"
+                >
+                  All Bags
+                </button>
+              </li>
+              <li v-for="cat in categories" :key="cat.id">
+                <button
+                  @click="goToCollection(cat.category_name)"
+                  @mouseenter="selectMegaMenuCategory(cat.id)"
+                  :class="
+                    activeMegaCategory === cat.id
+                      ? 'text-black font-bold'
+                      : 'text-gray-500 hover:text-black'
+                  "
+                  class="w-full text-xs tracking-widest text-left uppercase transition-colors"
+                >
+                  {{ cat.category_name }}
+                </button>
+              </li>
             </ul>
           </div>
 
           <div class="relative w-3/4 px-10 py-8">
             <div class="flex items-center justify-between mb-6">
-              <h3 class="font-bold text-[10px] uppercase tracking-[0.2em] text-gray-400">
-                {{ activeMegaCategory === 'all' ? 'Featured Picks' : 'Category Highlights' }}
+              <h3
+                class="font-bold text-[10px] uppercase tracking-[0.2em] text-gray-400"
+              >
+                {{
+                  activeMegaCategory === "all"
+                    ? "Featured Picks"
+                    : "Category Highlights"
+                }}
               </h3>
-              <router-link to="/collections" class="text-[10px] font-bold uppercase tracking-widest border-b border-black pb-0.5 hover:text-gray-500 transition-colors">
+              <router-link
+                to="/collections"
+                class="text-[10px] font-bold uppercase tracking-widest border-b border-black pb-0.5 hover:text-gray-500 transition-colors"
+              >
                 View All Collection
               </router-link>
             </div>
 
-            <div v-if="isMegaMenuLoading" class="absolute inset-0 z-10 flex items-center justify-center bg-white/80">
-              <div class="w-8 h-8 border-2 border-gray-200 rounded-full border-t-black animate-spin"></div>
+            <div
+              v-if="isMegaMenuLoading"
+              class="absolute inset-0 z-10 flex items-center justify-center bg-white/80"
+            >
+              <div
+                class="w-8 h-8 border-2 border-gray-200 rounded-full border-t-black animate-spin"
+              ></div>
             </div>
 
             <div class="grid grid-cols-4 gap-x-6 gap-y-8">
-              <div 
-                v-for="product in randomMegaProducts" 
+              <div
+                v-for="product in randomMegaProducts"
                 :key="product.id"
                 @click="navigateToProduct(product.id)"
                 class="cursor-pointer group"
               >
-                <div class="relative mb-3 overflow-hidden bg-gray-100 rounded-lg aspect-square">
-                  <img :src="product.image || defaultBagIcon" class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105" />
-                  <div v-if="product.discount_price" class="absolute top-2 left-2 bg-red-600 text-white px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-widest rounded-sm">Sale</div>
+                <div
+                  class="relative mb-3 overflow-hidden bg-gray-100 rounded-lg aspect-square"
+                >
+                  <img
+                    :src="product.image || defaultBagIcon"
+                    class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div
+                    v-if="product.discount_price"
+                    class="absolute top-2 left-2 bg-red-600 text-white px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-widest rounded-sm"
+                  >
+                    Sale
+                  </div>
                 </div>
-                <h4 class="font-bold text-[10px] uppercase tracking-widest text-gray-900 truncate">{{ product.name }}</h4>
-                <p class="text-[10px] text-gray-500 mt-0.5">{{ formatPrice(product.discount_price ?? product.price) }}</p>
+                <h4
+                  class="font-bold text-[10px] uppercase tracking-widest text-gray-900 truncate"
+                >
+                  {{ product.name }}
+                </h4>
+                <p class="text-[10px] text-gray-500 mt-0.5">
+                  {{ formatPrice(product.discount_price ?? product.price) }}
+                </p>
               </div>
             </div>
 
-            <div v-if="!isMegaMenuLoading && randomMegaProducts.length === 0" class="flex flex-col items-center justify-center h-48 font-serif italic text-gray-400">
+            <div
+              v-if="!isMegaMenuLoading && randomMegaProducts.length === 0"
+              class="flex flex-col items-center justify-center h-48 font-serif italic text-gray-400"
+            >
               No products found in this category.
             </div>
-
           </div>
-
         </div>
       </div>
     </transition>
@@ -3013,11 +3203,9 @@ watch(
         ></div>
         <div
           class="relative flex flex-col bg-white shadow-2xl p-8 w-[80%] max-w-sm h-full overflow-y-auto"
-        >
-          </div>
+        ></div>
       </div>
     </transition>
-
   </header>
   <SearchModal v-if="isSearchOpen" @close="closeSearch" />
 </template>
@@ -3031,7 +3219,7 @@ import SearchModal from "../../User/Layout/SearchModal.vue";
 
 import defaultBagIcon from "../../../assets/products/bag_icon.jpg";
 import { useCart } from "../../../composables/useCart";
-import { BASE_URL } from "../../../config/api"; 
+import { BASE_URL } from "../../../config/api";
 import { useProductStore } from "../../../composables/useProductStore";
 
 const route = useRoute();
@@ -3060,25 +3248,29 @@ let announcementTimer = null;
 // Teks yang diberikan oleh bos Anda
 const announcements = [
   "An Exclusive Welcome Gift: Rp 250K OFF your first order →",
-  "A Little Extra, On Us — Complimentary Shipping Across Indonesia (Min. Rp 1.000.000) →"
+  "A Little Extra, On Us — Complimentary Shipping Across Indonesia (Min. Rp 1.000.000) →",
 ];
 
 // Pindah ke pesan selanjutnya
 const nextAnnouncement = () => {
-  currentAnnouncement.value = (currentAnnouncement.value + 1) % announcements.length;
+  currentAnnouncement.value =
+    (currentAnnouncement.value + 1) % announcements.length;
   resetAnnouncementTimer();
 };
 
 // Pindah ke pesan sebelumnya
 const prevAnnouncement = () => {
-  currentAnnouncement.value = (currentAnnouncement.value - 1 + announcements.length) % announcements.length;
+  currentAnnouncement.value =
+    (currentAnnouncement.value - 1 + announcements.length) %
+    announcements.length;
   resetAnnouncementTimer();
 };
 
 // Timer shuffle otomatis 3 detik
 const startAnnouncementTimer = () => {
   announcementTimer = setInterval(() => {
-    currentAnnouncement.value = (currentAnnouncement.value + 1) % announcements.length;
+    currentAnnouncement.value =
+      (currentAnnouncement.value + 1) % announcements.length;
   }, 3000);
 };
 
@@ -3097,39 +3289,55 @@ const handleScroll = () => {
 
 const isMegaMenuOpen = ref(false);
 const megaMenuTimer = ref(null);
-const activeMegaCategory = ref('all');
+const activeMegaCategory = ref("all");
 const categories = ref([]);
 const isMegaMenuLoading = ref(false);
 const randomMegaProducts = ref([]);
 
-const formatPrice = (v) => new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(v);
+const formatPrice = (v) =>
+  new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0,
+  }).format(v);
 
 const shuffleArray = (array) => {
-  let currentIndex = array.length, randomIndex;
+  let currentIndex = array.length,
+    randomIndex;
   while (currentIndex > 0) {
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex--;
-    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
   }
   return array;
 };
 
 const generateRandomProducts = () => {
-  if (!productState.collectionsProducts || productState.collectionsProducts.length === 0) {
-    console.warn("Mega Menu: productState.collectionsProducts is empty even after fetching.");
+  if (
+    !productState.collectionsProducts ||
+    productState.collectionsProducts.length === 0
+  ) {
+    console.warn(
+      "Mega Menu: productState.collectionsProducts is empty even after fetching.",
+    );
     isMegaMenuLoading.value = false;
     randomMegaProducts.value = [];
     return;
   }
-  
+
   isMegaMenuLoading.value = true;
-  
+
   setTimeout(() => {
     let filtered = [];
-    if (activeMegaCategory.value === 'all') {
+    if (activeMegaCategory.value === "all") {
       filtered = [...productState.collectionsProducts];
     } else {
-      filtered = productState.collectionsProducts.filter(p => p.category_id == activeMegaCategory.value);
+      filtered = productState.collectionsProducts.filter(
+        (p) => p.category_id == activeMegaCategory.value,
+      );
     }
 
     randomMegaProducts.value = shuffleArray(filtered).slice(0, 4);
@@ -3151,18 +3359,22 @@ const openMegaMenu = async () => {
   clearTimeout(megaMenuTimer.value);
   isMegaMenuOpen.value = true;
   isDropdownOpen.value = false;
-  
+
   isMegaMenuLoading.value = true;
   fetchCategoriesForMegaMenu();
 
-  if (!productState.isCollectionsLoaded || !productState.collectionsProducts || productState.collectionsProducts.length === 0) {
+  if (
+    !productState.isCollectionsLoaded ||
+    !productState.collectionsProducts ||
+    productState.collectionsProducts.length === 0
+  ) {
     try {
       await fetchCollectionsData();
     } catch (e) {
       console.error("Failed to fetch collections data for Mega Menu", e);
     }
   }
-  
+
   generateRandomProducts();
 };
 
@@ -3173,7 +3385,18 @@ const keepMegaMenuOpen = () => {
 const closeMegaMenu = () => {
   megaMenuTimer.value = setTimeout(() => {
     isMegaMenuOpen.value = false;
-  }, 150); 
+  }, 150);
+};
+
+// [BARU] Navigasi ke halaman Collection beserta Parameter Kategori
+const goToCollection = (categoryName) => {
+  closeMegaMenu(); 
+  if (categoryName === 'all') {
+    router.push('/collections');
+  } else {
+    // Lempar nama kategori ke URL
+    router.push({ path: '/collections', query: { category: categoryName } });
+  }
 };
 
 const selectMegaMenuCategory = (catId) => {
@@ -3184,7 +3407,7 @@ const selectMegaMenuCategory = (catId) => {
 };
 
 const navigateToProduct = (id) => {
-  closeMegaMenu(); 
+  closeMegaMenu();
   router.push(`/product/${id}`);
 };
 
@@ -3216,7 +3439,7 @@ const checkAuth = () => {
 const toggleDropdown = () => {
   checkAuth();
   isDropdownOpen.value = !isDropdownOpen.value;
-  isMegaMenuOpen.value = false; 
+  isMegaMenuOpen.value = false;
 };
 
 const onAddToCartEvent = (e) => {
@@ -3236,16 +3459,16 @@ onMounted(() => {
     if (!e.target.closest(".relative")) isDropdownOpen.value = false;
   });
   window.addEventListener("refresh-cart", fetchCarts);
-  
+
   // Mengaktifkan Scroll Listener untuk Announcement Bar
-  window.addEventListener('scroll', handleScroll);
+  window.addEventListener("scroll", handleScroll);
   // Mulai Timer Shuffle
   startAnnouncementTimer();
 });
 
 onUnmounted(() => {
   window.removeEventListener("optimistic-add-to-cart", onAddToCartEvent);
-  window.removeEventListener('scroll', handleScroll);
+  window.removeEventListener("scroll", handleScroll);
   clearInterval(announcementTimer);
 });
 
@@ -3277,7 +3500,9 @@ watch(
 /* Transisi untuk teks Announcement Bar agar soft */
 .fade-slide-enter-active,
 .fade-slide-leave-active {
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
 }
 .fade-slide-enter-from {
   opacity: 0;
@@ -3299,7 +3524,9 @@ watch(
 }
 .mega-menu-fade-enter-active,
 .mega-menu-fade-leave-active {
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
   transform-origin: top;
 }
 .mega-menu-fade-enter-from,
