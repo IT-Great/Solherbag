@@ -1229,7 +1229,7 @@ onMounted(fetchProductDetail);
           </button>
         </div> -->
 
-        <div class="flex flex-col gap-4 pt-4 sm:flex-row">
+        <!-- <div class="flex flex-col gap-4 pt-4 sm:flex-row">
           <button
             @click="handleAction('cart')"
             :disabled="isInCart || product.stock === 0"
@@ -1251,6 +1251,34 @@ onMounted(fetchProductDetail);
 
           <button
             v-if="!isInCart"
+            @click="handleAction('buy')"
+            :disabled="product.stock === 0"
+            :class="[
+              product.stock === 0
+                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                : 'bg-black hover:bg-gray-800 text-white',
+              'flex-1 py-4 font-bold text-xs uppercase tracking-widest transition border-2 border-transparent',
+            ]"
+          >
+            Buy It Now
+          </button>
+        </div> -->
+
+        <div class="flex flex-col gap-4 pt-4 sm:flex-row">
+          <button
+            @click="handleAction('cart')"
+            :disabled="product.stock === 0"
+            :class="[
+              product.stock === 0
+                ? 'bg-gray-100 text-gray-400 border-gray-100 cursor-not-allowed'
+                : 'hover:bg-black hover:text-white border-black text-black',
+              'flex-1 py-4 border-2 font-bold text-xs uppercase tracking-widest transition',
+            ]"
+          >
+            {{ product.stock === 0 ? "Out of Stock" : "Add to Cart" }}
+          </button>
+
+          <button
             @click="handleAction('buy')"
             :disabled="product.stock === 0"
             :class="[
@@ -1914,23 +1942,23 @@ const validateQuantity = () => {
 // });
 
 // Mengecek apakah produk dengan warna spesifik ini sudah ada di keranjang user
-const isInCart = computed(() => {
-  if (!product.value || !cartItems.value) return false;
+// const isInCart = computed(() => {
+//   if (!product.value || !cartItems.value) return false;
   
-  // [PERBAIKAN KUNCI] Jika produk memiliki varian warna
-  if (product.value.color && product.value.color.length > 0) {
-    // Jika belum ada warna yang dipilih, biarkan tombol "Add to Cart" tetap muncul
-    if (!selectedColor.value) return false;
+//   // [PERBAIKAN KUNCI] Jika produk memiliki varian warna
+//   if (product.value.color && product.value.color.length > 0) {
+//     // Jika belum ada warna yang dipilih, biarkan tombol "Add to Cart" tetap muncul
+//     if (!selectedColor.value) return false;
     
-    // Tombol baru akan berubah menjadi "Already in Bag" JIKA kombinasi ID dan Warnanya sudah ada
-    return cartItems.value.some(
-      (item) => item.product_id === product.value.id && item.color === selectedColor.value
-    );
-  }
+//     // Tombol baru akan berubah menjadi "Already in Bag" JIKA kombinasi ID dan Warnanya sudah ada
+//     return cartItems.value.some(
+//       (item) => item.product_id === product.value.id && item.color === selectedColor.value
+//     );
+//   }
 
-  // Jika produk tidak punya varian warna, cukup cek ID produk
-  return cartItems.value.some((item) => item.product_id === product.value.id);
-});
+//   // Jika produk tidak punya varian warna, cukup cek ID produk
+//   return cartItems.value.some((item) => item.product_id === product.value.id);
+// });
 // ==========================================
 
 const allMedia = computed(() => {
