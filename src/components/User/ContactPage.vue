@@ -399,7 +399,7 @@ const handleSubmit = async () => {
   <section class="min-h-screen px-4 py-16 bg-[#E5E7EB] md:px-6 md:py-24">
     <div class="relative max-w-2xl mx-auto">
       
-      <div v-if="isLoggedIn" class="flex justify-end mb-8 md:absolute md:top-0 md:right-0 md:mb-0">
+      <div v-if="isLoggedIn" class="flex justify-end mb-6 md:mb-8">
         <button 
           @click="showHistoryModal = true" 
           class="flex items-center gap-2 px-5 py-2.5 text-[10px] font-bold tracking-widest text-black uppercase transition-all duration-300 bg-white border border-gray-200 rounded-full shadow-sm hover:shadow-md hover:border-black group"
@@ -411,7 +411,7 @@ const handleSubmit = async () => {
         </button>
       </div>
 
-      <h1 class="mb-10 font-serif text-4xl tracking-wide text-center text-black uppercase md:text-5xl md:mb-16">
+      <h1 class="mb-10 font-serif text-4xl tracking-wide text-center text-black uppercase md:text-5xl md:mb-12">
         Contact Us
       </h1>
 
