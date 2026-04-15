@@ -1241,12 +1241,12 @@ onMounted(() => {
                       class="hidden w-1 h-1 bg-gray-300 rounded-full sm:block"
                     ></span>
 
-                    <p
+                    <!-- <p
                       class="text-gray-500 text-[10px] font-bold uppercase tracking-widest"
                     >
                       Avail. Stock:
                       <span class="text-black">{{ item.product.stock }}</span>
-                    </p>
+                    </p> -->
                   </div>
                 </div>
 

@@ -1181,10 +1181,10 @@ onMounted(fetchProductDetail);
               +
             </button>
           </div>
-          <span
+          <!-- <span
             class="text-[10px] text-gray-400 uppercase tracking-widest font-medium"
             >{{ product.stock }} Available</span
-          >
+          > -->
         </div>
 
         <!-- <div class="flex flex-col gap-4 pt-4 sm:flex-row">
