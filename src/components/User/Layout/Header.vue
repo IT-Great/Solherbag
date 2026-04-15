@@ -3195,7 +3195,7 @@ watch(
         </div>
       </div>
     </transition>
-    <transition name="slide-fade">
+    <!-- <transition name="slide-fade">
       <div v-if="isMobileMenuOpen" class="z-[200] fixed inset-0 flex">
         <div
           @click="isMobileMenuOpen = false"
@@ -3204,6 +3204,107 @@ watch(
         <div
           class="relative flex flex-col bg-white shadow-2xl p-8 w-[80%] max-w-sm h-full overflow-y-auto"
         ></div>
+      </div>
+    </transition> -->
+    <transition name="slide-fade">
+      <div v-if="isMobileMenuOpen" class="z-[200] fixed inset-0 flex">
+        <div
+          @click="isMobileMenuOpen = false"
+          class="absolute inset-0 transition-opacity bg-black/50 backdrop-blur-sm"
+        ></div>
+        
+        <div
+          class="relative flex flex-col bg-white shadow-2xl p-8 w-[80%] max-w-sm h-full overflow-y-auto"
+        >
+          <div class="flex items-center justify-between mb-10">
+            <img src="../../../assets/solherbrandbook.png" alt="Solher Logo" class="object-contain w-auto h-6" />
+            <button @click="isMobileMenuOpen = false" class="text-gray-400 transition-colors hover:text-black focus:outline-none">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <nav class="flex flex-col space-y-6">
+            <router-link
+              to="/"
+              @click="isMobileMenuOpen = false"
+              class="pb-4 text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors border-b border-gray-100 hover:text-gray-500"
+            >
+              Home
+            </router-link>
+            <router-link
+              to="/best-sellers"
+              @click="isMobileMenuOpen = false"
+              class="pb-4 text-sm font-black tracking-widest text-red-600 uppercase transition-colors border-b border-gray-100 hover:text-red-800"
+            >
+              Best Sellers
+            </router-link>
+            
+            <div class="pb-4 border-b border-gray-100">
+              <div class="flex items-center justify-between w-full">
+                <router-link
+                  to="/collections"
+                  @click="isMobileMenuOpen = false"
+                  class="text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors hover:text-gray-500"
+                >
+                  Collections
+                </router-link>
+              </div>
+              <ul class="pl-4 mt-4 space-y-4 border-l-2 border-gray-100">
+                <li>
+                  <button 
+                    @click="goToCollection('all'); isMobileMenuOpen = false"
+                    class="w-full text-xs font-medium tracking-widest text-left text-gray-500 uppercase transition-colors hover:text-black"
+                  >
+                    All Bags
+                  </button>
+                </li>
+                <li v-for="cat in categories" :key="cat.id">
+                  <button 
+                    @click="goToCollection(cat.category_name); isMobileMenuOpen = false"
+                    class="w-full text-xs font-medium tracking-widest text-left text-gray-500 uppercase transition-colors hover:text-black"
+                  >
+                    {{ cat.category_name }}
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            <router-link
+              to="/contact"
+              @click="isMobileMenuOpen = false"
+              class="pb-4 text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors border-b border-gray-100 hover:text-gray-500"
+            >
+              Contact
+            </router-link>
+          </nav>
+
+          <div class="pt-8 mt-auto">
+            <div v-if="isAuthenticated" class="p-4 mb-4 bg-gray-50 rounded-xl">
+               <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Logged in as</p>
+               <p class="text-sm font-bold text-gray-900 truncate">{{ userData?.first_name }} {{ userData?.last_name }}</p>
+               <div class="flex gap-4 mt-3">
+                 <router-link to="/orderpage" @click="isMobileMenuOpen = false" class="text-xs font-bold text-blue-600 hover:underline">Orders</router-link>
+                 <router-link to="/profilepage" @click="isMobileMenuOpen = false" class="text-xs font-bold text-blue-600 hover:underline">Profile</router-link>
+               </div>
+            </div>
+            <div v-else class="mb-6">
+              <router-link 
+                to="/login" 
+                @click="isMobileMenuOpen = false"
+                class="block w-full py-3 text-xs font-bold tracking-widest text-center text-white uppercase transition bg-black rounded-lg hover:bg-gray-800"
+              >
+                Sign In / Register
+              </router-link>
+            </div>
+            
+            <p class="text-[9px] text-center text-gray-400 uppercase tracking-widest">
+              © {{ new Date().getFullYear() }} Solher Official
+            </p>
+          </div>
+
+        </div>
       </div>
     </transition>
   </header>
@@ -3452,6 +3553,9 @@ const onAddToCartEvent = (e) => {
 onMounted(() => {
   checkAuth();
   if (isAuthenticated.value) fetchCarts();
+
+  // [BARU] Ambil kategori sejak awal untuk mengisi menu Mobile
+  fetchCategoriesForMegaMenu();
 
   // Mengaktifkan Event Listeners
   window.addEventListener("optimistic-add-to-cart", onAddToCartEvent);
