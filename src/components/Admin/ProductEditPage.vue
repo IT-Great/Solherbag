@@ -1637,33 +1637,65 @@ const handleSubmit = async () => {
     // Penting di Laravel jika ingin PUT lewat FormData
     formData.append("_method", "PUT");
 
+    // formData.append("name", form.value.name);
+    // formData.append("code", form.value.code);
+    // formData.append("price", form.value.price);
+    // formData.append("category_id", form.value.category_id);
+    // formData.append("description", form.value.description || "");
+    // // formData.append("care", form.value.care || "");
+    // formData.append("design", form.value.design || "");
+
+    // formData.append("weight", form.value.weight);
+    // if (form.value.length) formData.append("length", form.value.length);
+    // if (form.value.width) formData.append("width", form.value.width);
+    // if (form.value.height) formData.append("height", form.value.height);
+    // if (form.value.material) formData.append("material", form.value.material);
+    // if (form.value.strap_length)
+    //   formData.append("strap_length", form.value.strap_length); // <--- BARU
+    // if (form.value.strap_length)
+    //   formData.append("strap_length", form.value.strap_length); // <--- BARU
+    // // formData.append("color", form.value.color || "");
+    // // [BARU] Cara mengirim Array Color ke Laravel
+    // if (form.value.color && form.value.color.length > 0) {
+    //   form.value.color.forEach((c, index) => {
+    //     formData.append(`color[${index}]`, c);
+    //   });
+    // }
+
+    // if (form.value.discount_price) {
+    //   formData.append("discount_price", form.value.discount_price);
+    // }
+
+    // if (form.value.image instanceof File) {
+    //   formData.append("image", form.value.image);
+    // }
+
     formData.append("name", form.value.name);
     formData.append("code", form.value.code);
     formData.append("price", form.value.price);
     formData.append("category_id", form.value.category_id);
     formData.append("description", form.value.description || "");
-    // formData.append("care", form.value.care || "");
     formData.append("design", form.value.design || "");
-
     formData.append("weight", form.value.weight);
-    if (form.value.length) formData.append("length", form.value.length);
-    if (form.value.width) formData.append("width", form.value.width);
-    if (form.value.height) formData.append("height", form.value.height);
-    if (form.value.material) formData.append("material", form.value.material);
-    if (form.value.strap_length)
-      formData.append("strap_length", form.value.strap_length); // <--- BARU
-    if (form.value.strap_length)
-      formData.append("strap_length", form.value.strap_length); // <--- BARU
-    // formData.append("color", form.value.color || "");
+
+    // [PERBAIKAN] HAPUS SEMUA IF. Paksa kirim string kosong jika user menghapus isinya.
+    formData.append("length", form.value.length || "");
+    formData.append("width", form.value.width || "");
+    formData.append("height", form.value.height || "");
+    formData.append("material", form.value.material || "");
+    formData.append("strap_length", form.value.strap_length || "");
+    
+    // [PERBAIKAN] Paksa kirim string kosong agar Laravel mengubahnya jadi NULL di database
+    formData.append("discount_price", form.value.discount_price || "");
+
     // [BARU] Cara mengirim Array Color ke Laravel
     if (form.value.color && form.value.color.length > 0) {
       form.value.color.forEach((c, index) => {
         formData.append(`color[${index}]`, c);
       });
-    }
-
-    if (form.value.discount_price) {
-      formData.append("discount_price", form.value.discount_price);
+    } else {
+      // Jika semua warna dihapus, kirim array kosong agar backend tahu warna dikosongkan
+      formData.append('color', ""); 
     }
 
     if (form.value.image instanceof File) {
