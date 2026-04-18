@@ -1,5 +1,5 @@
 <template>
-  <div class="h-[100dvh] overflow-hidden bg-[#F9FAFB] flex flex-col max-w-3xl mx-auto pt-20 animate-fade-in">
+  <div class="flex flex-col w-full max-w-4xl mx-auto bg-[#F9FAFB] border border-gray-200 shadow-sm rounded-2xl overflow-hidden animate-fade-in mt-4 mb-8 h-[calc(100dvh-130px)]">
     
     <div class="relative z-10 flex items-center px-6 py-4 bg-white border-b border-gray-200 shadow-sm shrink-0">
       <button @click="$router.back()" class="p-2 mr-4 text-gray-400 transition rounded-full bg-gray-50 hover:text-black hover:bg-gray-200">
