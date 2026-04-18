@@ -53,6 +53,115 @@
 </template>
 
 <script setup>
+// import { ref, onMounted, onUnmounted, nextTick } from 'vue';
+// import { useRoute } from 'vue-router';
+// import axios from 'axios';
+// import { BASE_URL } from '../../config/api';
+// import Echo from 'laravel-echo';
+// import Pusher from 'pusher-js';
+
+// const route = useRoute();
+// const receiverId = route.params.id; // ID Admin / Lawan bicara
+// const messages = ref([]);
+// const newMessage = ref('');
+// const isLoading = ref(true);
+// const isSending = ref(false);
+// const chatContainer = ref(null);
+
+// // Ambil ID User yang sedang login
+// const myId = ref(JSON.parse(localStorage.getItem('user'))?.id);
+// const token = localStorage.getItem('token'); // Gunakan 'admin_token' untuk versi AdminChatPage
+
+// const scrollToBottom = () => {
+//   nextTick(() => {
+//     if (chatContainer.value) {
+//       chatContainer.value.scrollTop = chatContainer.value.scrollHeight;
+//     }
+//   });
+// };
+
+// const fetchMessages = async () => {
+//   try {
+//     const res = await axios.get(`${BASE_URL}/chat/messages/${receiverId}`, {
+//       headers: { Authorization: `Bearer ${token}` }
+//     });
+//     messages.value = res.data;
+//     scrollToBottom();
+//   } catch (error) {
+//     console.error(error);
+//   } finally {
+//     isLoading.value = false;
+//   }
+// };
+
+// const sendMessage = async () => {
+//   if (!newMessage.value.trim()) return;
+//   isSending.value = true;
+  
+//   // Optimistic UI Update (Langsung tampil di layar)
+//   const tempMessage = {
+//     id: Date.now(),
+//     sender_id: myId.value,
+//     message: newMessage.value,
+//     created_at: new Date().toISOString()
+//   };
+//   messages.value.push(tempMessage);
+//   const sentMessage = newMessage.value;
+//   newMessage.value = '';
+//   scrollToBottom();
+
+//   try {
+//     const res = await axios.post(`${BASE_URL}/chat/send`, {
+//       receiver_id: receiverId,
+//       message: sentMessage
+//     }, {
+//       headers: { Authorization: `Bearer ${token}` }
+//     });
+//     // Ganti ID temp dengan ID asli dari server
+//     const index = messages.value.findIndex(m => m.id === tempMessage.id);
+//     if (index !== -1) messages.value[index] = res.data;
+//   } catch (error) {
+//     console.error("Gagal mengirim pesan", error);
+//   } finally {
+//     isSending.value = false;
+//   }
+// };
+
+// onMounted(() => {
+//   fetchMessages();
+
+//   // Inisialisasi Laravel Echo & Pusher untuk Real-Time
+//   window.Pusher = Pusher;
+//   window.Echo = new Echo({
+//     broadcaster: 'pusher',
+//     key: import.meta.env.VITE_PUSHER_APP_KEY, // Pastikan ada di .env Vue Anda
+//     cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
+//     forceTLS: true,
+//     authEndpoint: `${BASE_URL}/broadcasting/auth`,
+//     auth: {
+//       headers: {
+//         Authorization: `Bearer ${token}`
+//       }
+//     }
+//   });
+
+//   // Mendengarkan channel privat
+//   window.Echo.private(`chat.${myId.value}`)
+//     .listen('.message.sent', (e) => {
+//       // Jika pesan masuk dari user yang sedang kita buka chat-nya
+//       if (e.message.sender_id == receiverId) {
+//         messages.value.push(e.message);
+//         scrollToBottom();
+//       }
+//     });
+// });
+
+// onUnmounted(() => {
+//   if (window.Echo) {
+//     window.Echo.leave(`chat.${myId.value}`);
+//   }
+// });
+
 import { ref, onMounted, onUnmounted, nextTick } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
@@ -61,16 +170,19 @@ import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
 
 const route = useRoute();
-const receiverId = route.params.id; // ID Admin / Lawan bicara
+// [PERBAIKAN] Pastikan konversi ke Number
+const receiverId = Number(route.params.id); 
+
 const messages = ref([]);
 const newMessage = ref('');
 const isLoading = ref(true);
 const isSending = ref(false);
 const chatContainer = ref(null);
 
-// Ambil ID User yang sedang login
-const myId = ref(JSON.parse(localStorage.getItem('user'))?.id);
-const token = localStorage.getItem('token'); // Gunakan 'admin_token' untuk versi AdminChatPage
+// [PERBAIKAN] Pastikan konversi ke Number
+const userData = JSON.parse(localStorage.getItem('user'));
+const myId = ref(userData ? Number(userData.id) : null);
+const token = localStorage.getItem('token'); 
 
 const scrollToBottom = () => {
   nextTick(() => {
@@ -98,7 +210,6 @@ const sendMessage = async () => {
   if (!newMessage.value.trim()) return;
   isSending.value = true;
   
-  // Optimistic UI Update (Langsung tampil di layar)
   const tempMessage = {
     id: Date.now(),
     sender_id: myId.value,
@@ -117,7 +228,6 @@ const sendMessage = async () => {
     }, {
       headers: { Authorization: `Bearer ${token}` }
     });
-    // Ganti ID temp dengan ID asli dari server
     const index = messages.value.findIndex(m => m.id === tempMessage.id);
     if (index !== -1) messages.value[index] = res.data;
   } catch (error) {
@@ -130,11 +240,10 @@ const sendMessage = async () => {
 onMounted(() => {
   fetchMessages();
 
-  // Inisialisasi Laravel Echo & Pusher untuk Real-Time
   window.Pusher = Pusher;
   window.Echo = new Echo({
     broadcaster: 'pusher',
-    key: import.meta.env.VITE_PUSHER_APP_KEY, // Pastikan ada di .env Vue Anda
+    key: import.meta.env.VITE_PUSHER_APP_KEY, 
     cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
     forceTLS: true,
     authEndpoint: `${BASE_URL}/broadcasting/auth`,
@@ -145,10 +254,8 @@ onMounted(() => {
     }
   });
 
-  // Mendengarkan channel privat
   window.Echo.private(`chat.${myId.value}`)
     .listen('.message.sent', (e) => {
-      // Jika pesan masuk dari user yang sedang kita buka chat-nya
       if (e.message.sender_id == receiverId) {
         messages.value.push(e.message);
         scrollToBottom();
@@ -157,7 +264,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  if (window.Echo) {
+  if (window.Echo && myId.value) {
     window.Echo.leave(`chat.${myId.value}`);
   }
 });
