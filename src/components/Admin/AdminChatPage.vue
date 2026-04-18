@@ -1,7 +1,7 @@
 <template>
-  <div class="min-h-screen bg-[#F9FAFB] flex flex-col max-w-3xl mx-auto pt-20 animate-fade-in">
+  <div class="h-[100dvh] overflow-hidden bg-[#F9FAFB] flex flex-col max-w-3xl mx-auto pt-20 animate-fade-in">
     
-    <div class="flex items-center px-6 py-4 bg-white border-b border-gray-200 shadow-sm shrink-0">
+    <div class="relative z-10 flex items-center px-6 py-4 bg-white border-b border-gray-200 shadow-sm shrink-0">
       <button @click="$router.back()" class="p-2 mr-4 text-gray-400 transition rounded-full bg-gray-50 hover:text-black hover:bg-gray-200">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
