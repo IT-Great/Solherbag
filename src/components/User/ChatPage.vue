@@ -170,7 +170,7 @@ import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
 
 const route = useRoute();
-// [PERBAIKAN] Pastikan konversi ke Number
+// Konversi ID rute menjadi Number
 const receiverId = Number(route.params.id); 
 
 const messages = ref([]);
@@ -179,10 +179,14 @@ const isLoading = ref(true);
 const isSending = ref(false);
 const chatContainer = ref(null);
 
-// [PERBAIKAN] Pastikan konversi ke Number
+// =====================================================================
+// [PERBAIKAN FATAL] KEMBALIKAN KE SISI CUSTOMER
+// Ambil data dari 'user' dan 'token', BUKAN 'admin'
+// =====================================================================
 const userData = JSON.parse(localStorage.getItem('user'));
 const myId = ref(userData ? Number(userData.id) : null);
 const token = localStorage.getItem('token'); 
+// =====================================================================
 
 const scrollToBottom = () => {
   nextTick(() => {
@@ -193,6 +197,7 @@ const scrollToBottom = () => {
 };
 
 const fetchMessages = async () => {
+  if (!token) return; // Keamanan tambahan
   try {
     const res = await axios.get(`${BASE_URL}/chat/messages/${receiverId}`, {
       headers: { Authorization: `Bearer ${token}` }
@@ -200,14 +205,14 @@ const fetchMessages = async () => {
     messages.value = res.data;
     scrollToBottom();
   } catch (error) {
-    console.error(error);
+    console.error("Gagal mengambil pesan", error);
   } finally {
     isLoading.value = false;
   }
 };
 
 const sendMessage = async () => {
-  if (!newMessage.value.trim()) return;
+  if (!newMessage.value.trim() || !myId.value) return;
   isSending.value = true;
   
   const tempMessage = {
@@ -228,6 +233,7 @@ const sendMessage = async () => {
     }, {
       headers: { Authorization: `Bearer ${token}` }
     });
+    
     const index = messages.value.findIndex(m => m.id === tempMessage.id);
     if (index !== -1) messages.value[index] = res.data;
   } catch (error) {
@@ -240,27 +246,31 @@ const sendMessage = async () => {
 onMounted(() => {
   fetchMessages();
 
-  window.Pusher = Pusher;
-  window.Echo = new Echo({
-    broadcaster: 'pusher',
-    key: import.meta.env.VITE_PUSHER_APP_KEY, 
-    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
-    forceTLS: true,
-    authEndpoint: `${BASE_URL}/broadcasting/auth`,
-    auth: {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }
-  });
-
-  window.Echo.private(`chat.${myId.value}`)
-    .listen('.message.sent', (e) => {
-      if (e.message.sender_id == receiverId) {
-        messages.value.push(e.message);
-        scrollToBottom();
+  if (myId.value && token) {
+    window.Pusher = Pusher;
+    window.Echo = new Echo({
+      broadcaster: 'pusher',
+      key: import.meta.env.VITE_PUSHER_APP_KEY, 
+      cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
+      forceTLS: true,
+      authEndpoint: `${BASE_URL}/broadcasting/auth`,
+      auth: {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       }
     });
+
+    // Mendaftar ke channel milik Customer itu sendiri
+    window.Echo.private(`chat.${myId.value}`)
+      .listen('.message.sent', (e) => {
+        // Jika pesan datang dari Admin yang sedang dibuka chat-nya
+        if (e.message.sender_id === receiverId) {
+          messages.value.push(e.message);
+          scrollToBottom();
+        }
+      });
+  }
 });
 
 onUnmounted(() => {
