@@ -57,22 +57,62 @@
       </table>
     </div>
 
-    <div v-if="selectedLog" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" @click="selectedLog = null">
-      <div class="w-full max-w-2xl p-6 bg-white rounded-2xl shadow-xl max-h-[80vh] overflow-y-auto" @click.stop>
-        <div class="flex items-center justify-between mb-6">
-          <h3 class="text-lg font-bold">Data Payload Analysis</h3>
-          <button @click="selectedLog = null" class="text-gray-400 hover:text-black">✖</button>
+    <div v-if="selectedLog" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" @click="selectedLog = null">
+      <div class="w-full max-w-4xl p-6 bg-white rounded-2xl shadow-xl max-h-[85vh] flex flex-col" @click.stop>
+        
+        <div class="flex items-center justify-between mb-6 shrink-0">
+          <div>
+            <h3 class="text-lg font-bold text-gray-900">Data Change Analysis</h3>
+            <p class="mt-1 text-xs text-gray-500">
+              Module: <span class="font-bold text-black">{{ selectedLog.model_type }} #{{ selectedLog.model_id }}</span> | 
+              Action: <span class="font-bold tracking-wider text-black uppercase">{{ selectedLog.action }}</span>
+            </p>
+          </div>
+          <button @click="selectedLog = null" class="p-2 text-gray-400 transition-colors bg-gray-100 rounded-full hover:text-black hover:bg-gray-200">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
         </div>
         
-        <div class="grid grid-cols-2 gap-4">
-          <div class="p-4 border border-red-100 bg-red-50 rounded-xl">
-            <h4 class="mb-3 text-xs font-bold tracking-widest text-red-800 uppercase">Old Values</h4>
-            <pre class="text-[10px] overflow-x-auto text-red-900">{{ formatJson(selectedLog.old_values) }}</pre>
+        <div class="grid grid-cols-1 gap-6 pr-2 overflow-y-auto md:grid-cols-2 custom-scrollbar grow">
+          
+          <div class="p-5 border border-red-100 bg-red-50/50 rounded-xl h-fit">
+            <h4 class="flex items-center gap-2 pb-3 mb-4 text-xs font-black tracking-widest text-red-800 uppercase border-b border-red-100">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              Previous Data
+            </h4>
+            
+            <div v-if="isEmpty(selectedLog.old_values)" class="py-4 text-sm italic text-center text-red-400">
+              No previous data recorded.
+            </div>
+            
+            <ul v-else class="space-y-4">
+              <li v-for="(value, key) in selectedLog.old_values" :key="key" class="flex flex-col">
+                <span class="text-[10px] font-bold text-red-800/60 uppercase tracking-widest mb-1">{{ formatKey(key) }}</span>
+                <span class="text-sm font-medium leading-relaxed break-words text-red-950">{{ formatValue(value) }}</span>
+              </li>
+            </ul>
           </div>
-          <div class="p-4 border border-green-100 bg-green-50 rounded-xl">
-            <h4 class="mb-3 text-xs font-bold tracking-widest text-green-800 uppercase">New Values</h4>
-            <pre class="text-[10px] overflow-x-auto text-green-900">{{ formatJson(selectedLog.new_values) }}</pre>
+
+          <div class="p-5 border border-green-100 bg-green-50/50 rounded-xl h-fit">
+            <h4 class="flex items-center gap-2 pb-3 mb-4 text-xs font-black tracking-widest text-green-800 uppercase border-b border-green-100">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              Updated Data
+            </h4>
+            
+            <div v-if="isEmpty(selectedLog.new_values)" class="py-4 text-sm italic text-center text-green-400">
+              No new data recorded.
+            </div>
+            
+            <ul v-else class="space-y-4">
+              <li v-for="(value, key) in selectedLog.new_values" :key="key" class="flex flex-col">
+                <span class="text-[10px] font-bold text-green-800/60 uppercase tracking-widest mb-1">{{ formatKey(key) }}</span>
+                <span class="text-sm font-medium leading-relaxed break-words text-green-950">{{ formatValue(value) }}</span>
+              </li>
+            </ul>
           </div>
+
         </div>
       </div>
     </div>
@@ -95,7 +135,7 @@ const fetchLogs = async () => {
     const res = await axios.get(`${BASE_URL}/admin/audit-logs`, {
       headers: { Authorization: `Bearer ${localStorage.getItem('admin_token')}` }
     });
-    logs.value = res.data.data; // Karena kita pakai paginate di backend
+    logs.value = res.data.data; 
   } catch (error) {
     console.error("Gagal mengambil audit log", error);
   } finally {
@@ -107,12 +147,39 @@ const viewDetails = (log) => {
   selectedLog.value = log;
 };
 
-const formatJson = (data) => {
-  if (!data) return 'No data recorded.';
-  return JSON.stringify(data, null, 2);
+// [BARU] Helper untuk mengecek objek kosong
+const isEmpty = (obj) => {
+  return !obj || Object.keys(obj).length === 0;
+};
+
+// [BARU] Helper penerjemah bahasa mesin (Key) ke bahasa manusia
+const formatKey = (key) => {
+  if (!key) return '';
+  // Mengubah 'discount_price' menjadi 'Discount Price'
+  return key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+};
+
+// [BARU] Helper penerjemah nilai data (Value)
+const formatValue = (val) => {
+  if (val === null || val === undefined || val === '') return '-';
+  if (typeof val === 'boolean') return val ? 'Yes' : 'No';
+  // Jika nilainya ternyata array atau object bersarang, kita stringify agar tidak error
+  if (typeof val === 'object') return JSON.stringify(val); 
+  return val;
 };
 
 onMounted(() => {
   fetchLogs();
 });
 </script>
+
+<style scoped>
+.animate-fade-in { animation: fadeIn 0.3s ease-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Scrollbar Custom untuk di dalam Modal */
+.custom-scrollbar::-webkit-scrollbar { width: 6px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
+.custom-scrollbar:hover::-webkit-scrollbar-thumb { background: #d1d5db; }
+</style>
