@@ -1,11 +1,11 @@
 <!-- <template>
   <aside
     :class="[isCollapsed ? 'w-20' : 'w-64']"
-    class="top-0 z-40 relative sticky flex flex-col bg-white shadow-lg border-gray-200 border-r h-screen transition-all duration-300 ease-in-out"
+    class="relative sticky top-0 z-40 flex flex-col h-screen transition-all duration-300 ease-in-out bg-white border-r border-gray-200 shadow-lg"
   >
     <button
       @click="toggleSidebar"
-      class="top-6 -right-3 absolute bg-white hover:bg-gray-100 shadow-md p-1 border border-gray-200 rounded-full text-gray-600 transition"
+      class="absolute p-1 text-gray-600 transition bg-white border border-gray-200 rounded-full shadow-md top-6 -right-3 hover:bg-gray-100"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -25,7 +25,7 @@
     </button>
 
     <div
-      class="flex justify-center p-6 border-gray-100 border-b overflow-hidden"
+      class="flex justify-center p-6 overflow-hidden border-b border-gray-100"
     >
       <img
         src="../../../assets/solherbrandbook.png"
@@ -39,24 +39,24 @@
       v-show="!isCollapsed"
       class="mt-4 text-center transition-opacity duration-300"
     >
-      <p class="text-gray-400 text-xs uppercase tracking-widest">
+      <p class="text-xs tracking-widest text-gray-400 uppercase">
         Administrator
       </p>
-      <h4 class="font-bold text-black text-sm">Hi, {{ userName }}</h4>
+      <h4 class="text-sm font-bold text-black">Hi, {{ userName }}</h4>
     </div>
 
     <nav class="flex-grow mt-6">
-      <ul class="space-y-2 px-3">
+      <ul class="px-3 space-y-2">
         <li v-for="item in menuItems" :key="item.path">
           <router-link
             :to="item.path"
-            class="group flex items-center hover:bg-gray-100 p-3 rounded-xl text-gray-700 transition-colors"
-            active-class="bg-blue-50 text-blue-600"
+            class="flex items-center p-3 text-gray-700 transition-colors group hover:bg-gray-100 rounded-xl"
+            active-class="text-blue-600 bg-blue-50"
           >
             <div class="flex-shrink-0" v-html="item.icon"></div>
             <span
               v-show="!isCollapsed"
-              class="ml-4 font-medium whitespace-nowrap transition-opacity duration-300"
+              class="ml-4 font-medium transition-opacity duration-300 whitespace-nowrap"
             >
               {{ item.name }}
             </span>
@@ -65,10 +65,10 @@
       </ul>
     </nav>
 
-    <div class="p-4 border-gray-100 border-t">
+    <div class="p-4 border-t border-gray-100">
       <button
         @click="handleLogout"
-        class="group flex items-center hover:bg-red-50 p-3 rounded-xl w-full text-red-500 transition-colors"
+        class="flex items-center w-full p-3 text-red-500 transition-colors group hover:bg-red-50 rounded-xl"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -221,10 +221,10 @@ const handleLogout = () => {
 <!-- <template>
   <aside
     :class="[isCollapsed ? 'w-20' : 'w-64']"
-    class="top-0 z-40 relative sticky flex flex-col bg-white shadow-lg border-gray-200 border-r h-screen transition-all duration-300 ease-in-out overflow-hidden"
+    class="relative sticky top-0 z-40 flex flex-col h-screen overflow-hidden transition-all duration-300 ease-in-out bg-white border-r border-gray-200 shadow-lg"
   >
     <div
-      class="flex justify-center p-6 border-gray-100 border-b overflow-hidden shrink-0"
+      class="flex justify-center p-6 overflow-hidden border-b border-gray-100 shrink-0"
     >
       <img
         src="../../../assets/solherbrandbook.png"
@@ -238,14 +238,14 @@ const handleLogout = () => {
       v-show="!isCollapsed"
       class="mt-4 text-center transition-opacity duration-300 shrink-0"
     >
-      <p class="text-gray-400 text-xs uppercase tracking-widest">
+      <p class="text-xs tracking-widest text-gray-400 uppercase">
         Administrator
       </p>
-      <h4 class="font-bold text-black text-sm">Hi, {{ userName }}</h4>
+      <h4 class="text-sm font-bold text-black">Hi, {{ userName }}</h4>
     </div>
 
-    <nav class="flex-grow mt-6 overflow-y-auto custom-scrollbar pb-4">
-      <ul class="space-y-1 px-3">
+    <nav class="flex-grow pb-4 mt-6 overflow-y-auto custom-scrollbar">
+      <ul class="px-3 space-y-1">
         <template v-for="(item, index) in menuItems" :key="index">
           <li v-if="item.type === 'label'" class="pt-4 pb-1 pl-3">
             <span
@@ -254,19 +254,19 @@ const handleLogout = () => {
             >
               {{ item.name }}
             </span>
-            <div v-show="isCollapsed" class="h-px bg-gray-200 mx-2 mt-4"></div>
+            <div v-show="isCollapsed" class="h-px mx-2 mt-4 bg-gray-200"></div>
           </li>
 
           <li v-else>
             <router-link
               :to="item.path"
-              class="group flex items-center hover:bg-gray-100 p-3 rounded-xl text-gray-700 transition-colors"
-              active-class="bg-blue-50 text-blue-600 font-semibold"
+              class="flex items-center p-3 text-gray-700 transition-colors group hover:bg-gray-100 rounded-xl"
+              active-class="font-semibold text-blue-600 bg-blue-50"
             >
               <div class="flex-shrink-0" v-html="item.icon"></div>
               <span
                 v-show="!isCollapsed"
-                class="ml-4 text-sm whitespace-nowrap transition-opacity duration-300"
+                class="ml-4 text-sm transition-opacity duration-300 whitespace-nowrap"
               >
                 {{ item.name }}
               </span>
@@ -276,10 +276,10 @@ const handleLogout = () => {
       </ul>
     </nav>
 
-    <div class="p-4 border-gray-100 border-t shrink-0">
+    <div class="p-4 border-t border-gray-100 shrink-0">
       <button
         @click="handleLogout"
-        class="group flex items-center hover:bg-red-50 p-3 rounded-xl w-full text-red-500 transition-colors"
+        class="flex items-center w-full p-3 text-red-500 transition-colors group hover:bg-red-50 rounded-xl"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -461,10 +461,10 @@ const handleLogout = () => {
 <template>
   <aside
     :class="[isCollapsed ? 'w-20' : 'w-64']"
-    class="top-0 z-40 relative sticky flex flex-col bg-white shadow-lg border-gray-200 border-r h-screen transition-all duration-300 ease-in-out overflow-hidden"
+    class="relative sticky top-0 z-40 flex flex-col h-screen overflow-hidden transition-all duration-300 ease-in-out bg-white border-r border-gray-200 shadow-lg"
   >
     <div
-      class="flex justify-center p-6 border-gray-100 border-b overflow-hidden shrink-0"
+      class="flex justify-center p-6 overflow-hidden border-b border-gray-100 shrink-0"
     >
       <img
         src="../../../assets/solherbrandbook.png"
@@ -478,14 +478,14 @@ const handleLogout = () => {
       v-show="!isCollapsed"
       class="mt-4 text-center transition-opacity duration-300 shrink-0"
     >
-      <p class="text-gray-400 text-xs uppercase tracking-widest">
+      <p class="text-xs tracking-widest text-gray-400 uppercase">
         Administrator
       </p>
-      <h4 class="font-bold text-black text-sm">Hi, {{ userName }}</h4>
+      <h4 class="text-sm font-bold text-black">Hi, {{ userName }}</h4>
     </div>
 
-    <nav class="flex-grow mt-6 overflow-y-auto custom-scrollbar pb-4">
-      <ul class="space-y-1 px-3">
+    <nav class="flex-grow pb-4 mt-6 overflow-y-auto custom-scrollbar">
+      <ul class="px-3 space-y-1">
         <template v-for="(item, index) in filteredMenuItems" :key="index">
           
           <li v-if="item.type === 'label'" class="pt-4 pb-1 pl-3">
@@ -495,7 +495,7 @@ const handleLogout = () => {
             >
               {{ item.name }}
             </span>
-            <div v-show="isCollapsed" class="h-px bg-gray-200 mx-2 mt-4"></div>
+            <div v-show="isCollapsed" class="h-px mx-2 mt-4 bg-gray-200"></div>
           </li>
 
           <li v-else-if="item.children">
@@ -510,7 +510,7 @@ const handleLogout = () => {
                 <div class="flex-shrink-0" v-html="item.icon"></div>
                 <span
                   v-show="!isCollapsed"
-                  class="ml-4 text-sm whitespace-nowrap transition-opacity duration-300 font-medium"
+                  class="ml-4 text-sm font-medium transition-opacity duration-300 whitespace-nowrap"
                 >
                   {{ item.name }}
                 </span>
@@ -529,16 +529,16 @@ const handleLogout = () => {
             
             <ul 
               v-show="!isCollapsed && isDropdownOpen(item.name)" 
-              class="mt-1 mb-2 space-y-1 pl-11 pr-2 relative"
+              class="relative pr-2 mt-1 mb-2 space-y-1 pl-11"
             >
-              <div class="absolute left-6 top-0 bottom-2 w-px bg-gray-200"></div>
+              <div class="absolute top-0 w-px bg-gray-200 left-6 bottom-2"></div>
 
               <li v-for="(child, childIndex) in item.children" :key="childIndex" class="relative">
                 <div class="absolute left-[-20px] top-1/2 w-3 h-px bg-gray-200"></div>
                 <router-link
                   :to="child.path"
-                  class="flex items-center py-2 px-3 rounded-lg text-xs text-gray-500 hover:text-black hover:bg-gray-100 transition-colors"
-                  active-class="bg-blue-50 text-blue-600 font-bold"
+                  class="flex items-center px-3 py-2 text-xs text-gray-500 transition-colors rounded-lg hover:text-black hover:bg-gray-100"
+                  active-class="font-bold text-blue-600 bg-blue-50"
                 >
                   {{ child.name }}
                 </router-link>
@@ -549,13 +549,13 @@ const handleLogout = () => {
           <li v-else>
             <router-link
               :to="item.path"
-              class="group flex items-center hover:bg-gray-100 p-3 rounded-xl text-gray-700 transition-colors"
-              active-class="bg-blue-50 text-blue-600 font-semibold"
+              class="flex items-center p-3 text-gray-700 transition-colors group hover:bg-gray-100 rounded-xl"
+              active-class="font-semibold text-blue-600 bg-blue-50"
             >
               <div class="flex-shrink-0" v-html="item.icon"></div>
               <span
                 v-show="!isCollapsed"
-                class="ml-4 text-sm whitespace-nowrap transition-opacity duration-300"
+                class="ml-4 text-sm transition-opacity duration-300 whitespace-nowrap"
               >
                 {{ item.name }}
               </span>
@@ -566,10 +566,10 @@ const handleLogout = () => {
       </ul>
     </nav>
 
-    <div class="p-4 border-gray-100 border-t shrink-0">
+    <div class="p-4 border-t border-gray-100 shrink-0">
       <button
         @click="handleLogout"
-        class="group flex items-center hover:bg-red-50 p-3 rounded-xl w-full text-red-500 transition-colors"
+        class="flex items-center w-full p-3 text-red-500 transition-colors group hover:bg-red-50 rounded-xl"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -859,6 +859,13 @@ const menuItems = [
     name: "Subscribers",
     path: "/admin/subscribers",
     icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>',
+    roles: ['superadmin', 'admin']
+  },
+  // [BARU] MENU AUDIT TRAIL
+  {
+    name: "Audit Trail",
+    path: "/admin/audit-logs",
+    icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>',
     roles: ['superadmin', 'admin']
   },
 

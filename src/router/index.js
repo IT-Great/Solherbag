@@ -1564,6 +1564,7 @@ import PrivacyPolicy from "../components/User/PrivacyPolicy.vue";
 import ChatListPage from "../components/User/ChatListPage.vue";
 import ChatPage from "../components/User/ChatPage.vue";
 import AdminChatPage from "../components/Admin/AdminChatPage.vue";
+import AuditLogPage from "../components/Admin/AuditLogPage.vue";
 
 const routes = [
   { path: "/", name: "Home", component: HomePage },
@@ -1626,6 +1627,8 @@ const routes = [
   
   // [BARU] ADMIN CHAT ROUTE
   { path: "/admin/chat/:id", name: "AdminChat", component: AdminChatPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+
+  { path: "/admin/audit-logs", name: "AuditLogs", component: AuditLogPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
 ];
 
 const router = createRouter({
