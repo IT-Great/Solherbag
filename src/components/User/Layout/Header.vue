@@ -3454,11 +3454,25 @@ const generateRandomProducts = () => {
   }, 100);
 };
 
+// const fetchCategoriesForMegaMenu = async () => {
+//   if (categories.value.length > 0) return;
+//   try {
+//     const res = await axios.get(`${BASE_URL}/guest/categories`);
+//     categories.value = res.data.data || res.data;
+//   } catch (error) {
+//     console.error("Failed to load categories for Mega Menu", error);
+//   }
+// };
+
 const fetchCategoriesForMegaMenu = async () => {
   if (categories.value.length > 0) return;
   try {
     const res = await axios.get(`${BASE_URL}/guest/categories`);
-    categories.value = res.data.data || res.data;
+    
+    // [PERBAIKAN] Mengurutkan kategori berdasarkan ID dari terkecil ke terbesar
+    const data = res.data.data || res.data;
+    categories.value = data.sort((a, b) => a.id - b.id);
+    
   } catch (error) {
     console.error("Failed to load categories for Mega Menu", error);
   }
