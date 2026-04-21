@@ -3169,7 +3169,7 @@ onMounted(() => {
 });
 </script> -->
 
-<template>
+<!-- <template>
   <div class="mx-auto px-6 py-20 max-w-4xl">
     <div class="bg-white shadow-sm p-8 border border-gray-200 rounded-2xl">
       <h1 class="mb-8 font-bold text-3xl">Your Profile</h1>
@@ -4246,4 +4246,774 @@ onMounted(() => {
   fetchProvinces();
   fetchUserProfile();
 });
+</script> -->
+
+<template>
+  <div class="max-w-5xl px-4 py-12 mx-auto sm:px-6 lg:py-16 animate-fade-in">
+    
+    <div class="mb-10">
+      <h1 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">My Account</h1>
+      <p class="mt-2 text-sm text-gray-500">Manage your personal information, security, and addresses.</p>
+    </div>
+
+    <div v-if="userData" class="grid grid-cols-1 gap-8 lg:grid-cols-12">
+      
+      <div class="lg:col-span-4 space-y-6">
+        
+        <div class="p-8 text-center bg-white border border-gray-100 shadow-sm rounded-3xl">
+          <div class="relative inline-block group">
+            <div class="absolute inset-0 transition-transform duration-300 transform scale-105 rounded-full bg-gradient-to-tr from-blue-100 to-blue-50 opacity-20 group-hover:scale-110"></div>
+            <img
+              :key="userData.profile_image || 'default'"
+              :src="userData.profile_image || defaultProfile"
+              class="relative object-cover w-32 h-32 border-4 border-white rounded-full shadow-md"
+              alt="Profile Avatar"
+              @error="handleImageError"
+            />
+            <label class="absolute inset-0 flex items-center justify-center transition-all duration-300 rounded-full opacity-0 cursor-pointer bg-black/50 group-hover:opacity-100 backdrop-blur-sm">
+              <div class="flex flex-col items-center text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                <span class="text-xs font-semibold tracking-wider uppercase">Change</span>
+              </div>
+              <input type="file" class="hidden" @change="handleImageUpdate" accept="image/*" />
+            </label>
+          </div>
+          
+          <h2 class="mt-5 text-xl font-bold text-gray-900">{{ userData.first_name }} {{ userData.last_name }}</h2>
+          <p class="text-sm text-gray-500">{{ userData.email }}</p>
+          
+          <div class="flex justify-center gap-3 mt-6">
+            <button @click="openInfoModal" class="flex items-center justify-center w-10 h-10 text-blue-600 transition-colors bg-blue-50 rounded-xl hover:bg-blue-100" title="Edit Info">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+            </button>
+            <button @click="showPasswordModal = true" class="flex items-center justify-center w-10 h-10 text-gray-600 transition-colors bg-gray-100 rounded-xl hover:bg-gray-200" title="Change Password">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+            </button>
+            <button @click="handleLogout" class="flex items-center justify-center w-10 h-10 text-red-600 transition-colors bg-red-50 rounded-xl hover:bg-red-100" title="Logout">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="relative overflow-hidden text-white shadow-xl bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-7">
+          <svg class="absolute w-32 h-32 text-yellow-500 opacity-10 -right-8 -top-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          </svg>
+
+          <div class="relative z-10">
+            <div class="flex items-start justify-between">
+              <div>
+                <h3 class="text-sm font-black tracking-widest text-yellow-400 uppercase">Solher Club</h3>
+                <div class="inline-block px-3 py-1 mt-2 text-[10px] font-bold tracking-widest uppercase rounded-full shadow-inner" :class="userData.is_membership ? 'bg-yellow-500 text-black' : 'bg-gray-700/50 border border-gray-600 text-gray-300'">
+                  {{ userData.is_membership ? "Active Member" : "Locked" }}
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-8">
+              <template v-if="userData.is_membership">
+                <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">Available Points</p>
+                <div class="flex items-baseline gap-1">
+                  <p class="text-4xl font-black text-white">{{ userData.point || 0 }}</p>
+                  <span class="text-sm font-bold text-yellow-500">Pts</span>
+                </div>
+              </template>
+
+              <template v-else>
+                <p class="text-xs leading-relaxed text-gray-300">
+                  Spend a total of <strong class="text-white">Rp 100.000</strong> to automatically unlock your membership and start earning points!
+                </p>
+              </template>
+            </div>
+          </div>
+        </div>
+
+        <router-link to="/favorites" class="flex items-center justify-between p-5 transition-all bg-white border border-gray-100 shadow-sm group hover:border-red-100 hover:shadow-md rounded-2xl">
+          <div class="flex items-center gap-4">
+            <div class="flex items-center justify-center w-10 h-10 text-red-500 transition-colors bg-red-50 rounded-xl group-hover:bg-red-100">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" stroke="none"><path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" /></svg>
+            </div>
+            <div>
+              <h2 class="text-sm font-bold text-gray-900 transition-colors group-hover:text-red-600">My Wishlist</h2>
+              <p class="text-xs text-gray-500">View saved items</p>
+            </div>
+          </div>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-300 transition-all group-hover:text-red-500 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+        </router-link>
+      </div>
+
+      <div class="lg:col-span-8">
+        <div class="p-8 bg-white border border-gray-100 shadow-sm rounded-3xl min-h-[500px]">
+          
+          <div class="flex items-center justify-between pb-6 mb-6 border-b border-gray-100">
+            <div>
+              <h2 class="text-xl font-bold text-gray-900">Shipping Addresses</h2>
+              <p class="text-xs text-gray-500 mt-0.5">Manage where your orders are delivered.</p>
+            </div>
+            <button @click="openModal()" class="flex items-center gap-2 px-4 py-2 text-sm font-bold text-blue-600 transition-colors bg-blue-50 rounded-xl hover:bg-blue-100">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+              Add New
+            </button>
+          </div>
+
+          <div v-if="isLoadingAddresses" class="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div v-for="i in 4" :key="i" class="p-5 border border-gray-100 bg-gray-50/50 rounded-2xl animate-pulse">
+              <div class="w-20 h-3 mb-3 bg-gray-200 rounded"></div>
+              <div class="w-32 h-4 mb-2 bg-gray-300 rounded"></div>
+              <div class="w-full h-3 mb-1 bg-gray-200 rounded"></div>
+              <div class="w-2/3 h-3 bg-gray-200 rounded"></div>
+            </div>
+          </div>
+
+          <div v-else-if="addresses.length > 0" class="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div
+              v-for="addr in addresses"
+              :key="addr.id"
+              class="relative p-5 transition-all bg-white border rounded-2xl group hover:shadow-md"
+              :class="addr.is_default ? 'border-blue-200 shadow-sm ring-1 ring-blue-50' : 'border-gray-200'"
+            >
+              <div v-if="addr.is_default" class="absolute px-2 py-1 text-[9px] font-bold tracking-widest text-blue-700 uppercase bg-blue-100 rounded-lg top-4 right-4">
+                Default
+              </div>
+              
+              <button @click="openModal(addr)" class="absolute p-2 text-gray-400 transition-colors bg-gray-100 rounded-lg opacity-0 top-4 right-4 group-hover:opacity-100 hover:text-blue-600 hover:bg-blue-50" :class="{'right-16': addr.is_default}">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+              </button>
+
+              <div class="flex items-center gap-2 mb-3">
+                <div class="flex items-center justify-center w-8 h-8 text-gray-500 bg-gray-100 rounded-full">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                </div>
+                <h3 class="text-sm font-bold text-gray-900">{{ addr.receiver.first_name }} {{ addr.receiver.last_name }}</h3>
+              </div>
+              
+              <div class="pl-10 space-y-1 text-xs text-gray-600">
+                <p class="font-medium text-gray-800">{{ addr.details.location }}</p>
+                <p>{{ addr.details.city }}, {{ addr.details.province }} {{ addr.details.postal_code }}</p>
+                
+                <div v-if="addr.details.latitude && addr.details.longitude" class="inline-flex items-center gap-1 px-2 py-1 mt-2 text-[9px] font-bold tracking-widest text-green-700 uppercase bg-green-50 rounded-md border border-green-100">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                  Map Pinned
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div v-else class="flex flex-col items-center justify-center py-16 text-center border-2 border-gray-200 border-dashed rounded-2xl bg-gray-50/50">
+            <div class="flex items-center justify-center w-12 h-12 mb-3 text-gray-400 bg-white rounded-full shadow-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+            </div>
+            <h3 class="text-sm font-bold text-gray-900">No addresses found</h3>
+            <p class="mt-1 text-xs text-gray-500">Add an address to ensure smooth delivery.</p>
+            <button @click="openModal()" class="px-4 py-2 mt-4 text-xs font-bold text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">Add First Address</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="showInfoModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/40 backdrop-blur-sm">
+      <div class="w-full max-w-md p-8 bg-white shadow-2xl rounded-3xl animate-fade-in">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-xl font-bold text-gray-900">Update Profile</h3>
+          <button @click="showInfoModal = false" class="p-2 text-gray-400 rounded-full hover:bg-gray-100 hover:text-gray-600">✕</button>
+        </div>
+        <form @submit.prevent="submitInfoUpdate" class="space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block mb-1.5 text-xs font-bold text-gray-500">First Name</label>
+              <input v-model="infoForm.first_name" class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none" required />
+            </div>
+            <div>
+              <label class="block mb-1.5 text-xs font-bold text-gray-500">Last Name</label>
+              <input v-model="infoForm.last_name" class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none" required />
+            </div>
+          </div>
+          <div>
+            <label class="block mb-1.5 text-xs font-bold text-gray-500">Email Address</label>
+            <input v-model="infoForm.email" type="email" class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none" required />
+          </div>
+          <div>
+            <label class="block mb-1.5 text-xs font-bold text-gray-500">Phone Number</label>
+            <input v-model="infoForm.phone" type="tel" class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none" />
+          </div>
+          <button type="submit" class="w-full py-3.5 mt-2 font-bold text-white transition-colors bg-gray-900 rounded-xl hover:bg-black">Save Changes</button>
+        </form>
+      </div>
+    </div>
+
+    <div v-if="showPasswordModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/40 backdrop-blur-sm">
+      <div class="w-full max-w-md p-8 bg-white shadow-2xl rounded-3xl animate-fade-in">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-xl font-bold text-gray-900">Change Password</h3>
+          <button @click="showPasswordModal = false" class="p-2 text-gray-400 rounded-full hover:bg-gray-100 hover:text-gray-600">✕</button>
+        </div>
+        <form @submit.prevent="submitPasswordUpdate" class="space-y-4">
+          <div>
+            <label class="block mb-1.5 text-xs font-bold text-gray-500">Current Password</label>
+            <input v-model="passForm.old_password" type="password" class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none" required />
+          </div>
+          <div>
+            <label class="block mb-1.5 text-xs font-bold text-gray-500">New Password</label>
+            <input v-model="passForm.password" type="password" class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none" required />
+          </div>
+          <div>
+            <label class="block mb-1.5 text-xs font-bold text-gray-500">Confirm New Password</label>
+            <input v-model="passForm.password_confirmation" type="password" class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none" required />
+          </div>
+          <button type="submit" class="w-full py-3.5 mt-2 font-bold text-white transition-colors bg-blue-600 rounded-xl hover:bg-blue-700 shadow-md shadow-blue-500/20">Update Password</button>
+        </form>
+      </div>
+    </div>
+
+    <div v-if="showModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 overflow-y-auto bg-gray-900/40 backdrop-blur-sm">
+      <div class="relative w-full max-w-2xl p-6 bg-white shadow-2xl md:p-8 rounded-3xl my-8 animate-fade-in">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-xl font-bold text-gray-900">{{ isEdit ? "Edit Address" : "Add New Address" }}</h3>
+          <button @click="showModal = false" class="p-2 text-gray-400 rounded-full hover:bg-gray-100 hover:text-gray-600">✕</button>
+        </div>
+
+        <form @submit.prevent="saveAddress" class="space-y-4">
+          <div class="flex items-center gap-3 p-3 mb-2 border border-blue-100 bg-blue-50 rounded-xl">
+            <input type="checkbox" v-model="form.is_default" id="def" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" />
+            <label for="def" class="text-sm font-medium text-blue-900 cursor-pointer">Set as default shipping address</label>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block mb-1 text-[10px] font-bold tracking-widest text-gray-500 uppercase">First Name</label>
+              <input v-model="form.first_name_address" class="w-full px-4 py-2.5 text-sm border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 outline-none" required />
+            </div>
+            <div>
+              <label class="block mb-1 text-[10px] font-bold tracking-widest text-gray-500 uppercase">Last Name</label>
+              <input v-model="form.last_name_address" class="w-full px-4 py-2.5 text-sm border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 outline-none" required />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block mb-1 text-[10px] font-bold tracking-widest text-gray-500 uppercase">Province</label>
+              <select v-model="form.province" class="w-full px-4 py-2.5 text-sm border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 outline-none" required>
+                <option value="" disabled>Select Province</option>
+                <option v-for="p in filteredProvinces" :key="p" :value="p">{{ p }}</option>
+              </select>
+            </div>
+            <div>
+              <label class="block mb-1 text-[10px] font-bold tracking-widest text-gray-500 uppercase">City</label>
+              <input v-model="form.city" class="w-full px-4 py-2.5 text-sm border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 outline-none" required />
+            </div>
+          </div>
+
+          <div class="relative mt-2 overflow-hidden border border-gray-200 rounded-2xl">
+            <div class="flex items-start gap-2 px-4 py-2.5 bg-amber-50 border-b border-amber-100">
+              <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 w-4 h-4 mt-0.5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+              <p class="text-[11px] text-amber-800 leading-relaxed">
+                <span class="font-bold">Pin Location:</span> Drag the map marker exactly to your location to ensure accurate delivery.
+              </p>
+            </div>
+
+            <div class="flex items-center justify-between gap-2 p-2 border-b border-gray-200 bg-gray-50">
+              <div class="relative flex-1">
+                <input type="text" v-model="searchQuery" @input="handleSearchInput" placeholder="Search area (e.g. Tunjungan Plaza)" class="w-full px-3 py-2 text-xs border border-gray-300 outline-none rounded-xl focus:ring-1 focus:ring-blue-500" />
+                <div v-if="searchResults.length > 0" class="absolute z-[999] mt-1 w-full bg-white border border-gray-200 rounded-xl shadow-lg max-h-40 overflow-y-auto">
+                  <div v-for="(result, idx) in searchResults" :key="idx" @click="selectSearchResult(result)" class="px-3 py-2.5 text-xs text-gray-700 border-b cursor-pointer hover:bg-blue-50 last:border-0">
+                    {{ result.display_name }}
+                  </div>
+                </div>
+              </div>
+              <button type="button" @click="getCurrentLocation" class="px-3 py-2 text-[10px] font-bold text-blue-700 whitespace-nowrap transition-colors bg-blue-100 rounded-xl hover:bg-blue-200">
+                Current Loc
+              </button>
+            </div>
+
+            <div class="relative z-0 w-full h-48 sm:h-56">
+              <l-map ref="map" v-model:zoom="zoom" :center="center" :use-global-leaflet="false" @click="onMapClick">
+                <l-tile-layer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" layer-type="base" name="OpenStreetMap"></l-tile-layer>
+                <l-marker :lat-lng="markerLatLng" draggable @update:latLng="onMarkerDrag"></l-marker>
+              </l-map>
+              <div class="absolute z-[400] px-2 py-1 font-mono text-[9px] text-gray-600 bg-white/90 rounded shadow bottom-2 right-2 backdrop-blur pointer-events-none border border-gray-200">
+                {{ form.latitude ? parseFloat(form.latitude).toFixed(5) : "-" }}, {{ form.longitude ? parseFloat(form.longitude).toFixed(5) : "-" }}
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label class="block mb-1 text-[10px] font-bold tracking-widest text-gray-500 uppercase">Complete Address</label>
+            <textarea v-model="form.address_location" rows="3" placeholder="Street name, building, house number..." class="w-full px-4 py-3 text-sm border border-gray-200 resize-none bg-gray-50 rounded-xl focus:border-blue-500 outline-none" required></textarea>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block mb-1 text-[10px] font-bold tracking-widest text-gray-500 uppercase">Details (Opt)</label>
+              <input v-model="form.location_type" placeholder="Apartment, suite, block" class="w-full px-4 py-2.5 text-sm border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 outline-none" />
+            </div>
+            <div>
+              <label class="block mb-1 text-[10px] font-bold tracking-widest text-gray-500 uppercase">Postal Code</label>
+              <input v-model="form.postal_code" placeholder="Postal code" class="w-full px-4 py-2.5 text-sm border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 outline-none" required />
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between pt-4 mt-2 border-t border-gray-100">
+            <button v-if="isEdit" type="button" @click="deleteAddress" class="text-xs font-bold text-red-500 transition-colors hover:text-red-700">Delete Address</button>
+            <div class="flex gap-3 ml-auto">
+              <button type="submit" class="px-6 py-2.5 text-sm font-bold text-white transition-colors bg-blue-600 rounded-xl hover:bg-blue-700 shadow-md shadow-blue-500/20">
+                Save Address
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import { useRouter } from "vue-router";
+import Swal from "sweetalert2";
+import { Country, State } from "country-state-city";
+import { BASE_URL } from "../../config/api.js";
+
+import defaultProfile from "../../../src/assets/profile.png";
+
+// Import Leaflet
+import "leaflet/dist/leaflet.css";
+import { LMap, LTileLayer, LMarker } from "@vue-leaflet/vue-leaflet";
+import L from "leaflet";
+
+delete L.Icon.Default.prototype._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: new URL(
+    "leaflet/dist/images/marker-icon-2x.png",
+    import.meta.url,
+  ).href,
+  iconUrl: new URL("leaflet/dist/images/marker-icon.png", import.meta.url).href,
+  shadowUrl: new URL("leaflet/dist/images/marker-shadow.png", import.meta.url)
+    .href,
+});
+
+// State Umum
+const addresses = ref([]);
+const showModal = ref(false);
+const isEdit = ref(false);
+const countries = ref(Country.getAllCountries());
+const filteredProvinces = ref([]);
+const router = useRouter();
+const userData = ref(null);
+const showInfoModal = ref(false);
+const showPasswordModal = ref(false);
+
+// [BARU] State loading khusus untuk alamat
+const isLoadingAddresses = ref(true);
+
+const form = ref({
+  id: null,
+  region: "Indonesia",
+  first_name_address: "",
+  last_name_address: "",
+  address_location: "",
+  location_type: "",
+  city: "",
+  province: "",
+  postal_code: "",
+  latitude: null,
+  longitude: null,
+  is_default: false,
+});
+
+// Deklarasikan ref untuk elemen l-map
+const map = ref(null);
+
+// --- LEAFLET MAP STATE & LOGIC ---
+const zoom = ref(13);
+const center = ref([-7.250445, 112.768845]); // Default Surabaya
+const markerLatLng = ref([-7.250445, 112.768845]);
+const searchQuery = ref("");
+const searchResults = ref([]);
+let debounceTimeout = null;
+
+// 1. REVERSE GEOCODING (Nominatim API - FREE)
+const reverseGeocode = async (lat, lng) => {
+  try {
+    const res = await axios.get(
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`,
+    );
+    if (res.data && res.data.display_name) {
+      form.value.address_location = res.data.display_name;
+
+      if (res.data.address && res.data.address.postcode) {
+        form.value.postal_code = res.data.address.postcode;
+      }
+    }
+  } catch (error) {
+    console.error("Reverse Geocode Error", error);
+  }
+};
+
+// 2. SEARCH / AUTOCOMPLETE (Nominatim API - FREE)
+const handleSearchInput = () => {
+  if (debounceTimeout) clearTimeout(debounceTimeout);
+
+  if (searchQuery.value.length < 3) {
+    searchResults.value = [];
+    return;
+  }
+
+  debounceTimeout = setTimeout(async () => {
+    try {
+      const res = await axios.get(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${searchQuery.value}&countrycodes=id&limit=5`,
+      );
+      searchResults.value = res.data;
+    } catch (error) {
+      console.error("Search Error", error);
+    }
+  }, 500);
+};
+
+const selectSearchResult = (result) => {
+  const lat = parseFloat(result.lat);
+  const lng = parseFloat(result.lon);
+
+  if (map.value && map.value.leafletObject) {
+    map.value.leafletObject.flyTo([lat, lng], 16);
+  } else {
+    center.value = [lat, lng];
+    zoom.value = 16;
+  }
+
+  markerLatLng.value = [lat, lng];
+
+  form.value.latitude = lat.toString();
+  form.value.longitude = lng.toString();
+  form.value.address_location = result.display_name;
+
+  searchResults.value = [];
+  searchQuery.value = "";
+};
+
+// 3. MAP EVENTS
+const onMapClick = (event) => {
+  const { lat, lng } = event.latlng;
+  updateLocation(lat, lng);
+};
+
+const onMarkerDrag = (event) => {
+  const { lat, lng } = event.target.getLatLng();
+  updateLocation(lat, lng);
+};
+
+const updateLocation = (lat, lng) => {
+  markerLatLng.value = [lat, lng];
+  form.value.latitude = lat.toString();
+  form.value.longitude = lng.toString();
+  reverseGeocode(lat, lng);
+};
+
+const getCurrentLocation = () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+
+        if (map.value && map.value.leafletObject) {
+          map.value.leafletObject.flyTo([lat, lng], 16);
+        } else {
+          center.value = [lat, lng];
+          zoom.value = 16;
+        }
+
+        updateLocation(lat, lng);
+      },
+      () => {
+        Swal.fire("Error", "Please allow location access.", "error");
+      },
+    );
+  }
+};
+
+// --- CORE LOGIC ---
+const openModal = (data = null) => {
+  isEdit.value = !!data;
+  if (data) {
+    form.value = {
+      id: data.id,
+      region: data.details.region,
+      first_name_address: data.receiver.first_name,
+      last_name_address: data.receiver.last_name,
+      address_location: data.details.location,
+      location_type: data.details.type === "other" ? "" : data.details.type,
+      city: data.details.city,
+      province: data.details.province,
+      postal_code: data.details.postal_code,
+      latitude: data.details.latitude,
+      longitude: data.details.longitude,
+      is_default: data.is_default,
+    };
+
+    if (data.details.latitude && data.details.longitude) {
+      const lat = parseFloat(data.details.latitude);
+      const lng = parseFloat(data.details.longitude);
+      center.value = [lat, lng];
+      markerLatLng.value = [lat, lng];
+    }
+    fetchProvinces();
+  } else {
+    form.value = {
+      region: "Indonesia",
+      is_default: false,
+      first_name_address: "",
+      last_name_address: "",
+      address_location: "",
+      location_type: "",
+      city: "",
+      province: "",
+      postal_code: "",
+      latitude: null,
+      longitude: null,
+    };
+    center.value = [-7.250445, 112.768845];
+    markerLatLng.value = [-7.250445, 112.768845];
+  }
+  showModal.value = true;
+};
+
+// [PERBAIKAN] Modifikasi fungsi fetchAddresses untuk menambahkan delay animasi Skeleton
+const fetchAddresses = async () => {
+  isLoadingAddresses.value = true;
+  try {
+    const res = await axios.get(`${BASE_URL}/addresses`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    addresses.value = res.data.data;
+  } catch (error) {
+    console.error("Failed to fetch addresses");
+  } finally {
+    // Sedikit delay agar skeleton loading terasa lebih alami / smooth
+    setTimeout(() => {
+      isLoadingAddresses.value = false;
+    }, 400); 
+  }
+};
+
+const fetchProvinces = () => {
+  const selectedCountry = countries.value.find(
+    (c) => c.name === form.value.region,
+  );
+  if (selectedCountry) {
+    filteredProvinces.value = State.getStatesOfCountry(
+      selectedCountry.isoCode,
+    ).map((s) => s.name);
+  }
+};
+
+const saveAddress = async () => {
+  const url = isEdit.value
+    ? `${BASE_URL}/addresses/${form.value.id}`
+    : `${BASE_URL}/addresses`;
+  const method = isEdit.value ? "put" : "post";
+  try {
+    await axios[method](url, form.value, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    showModal.value = false;
+    fetchAddresses();
+    Swal.fire({
+      toast: true,
+      position: "top-end",
+      icon: "success",
+      title: "Address saved!",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  } catch (e) {
+    Swal.fire("Error", "Failed to save address", "error");
+  }
+};
+
+const deleteAddress = async () => {
+  if (!confirm("Delete this address?")) return;
+  try {
+    await axios.delete(`${BASE_URL}/addresses/${form.value.id}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    showModal.value = false;
+    fetchAddresses();
+    Swal.fire({
+      toast: true,
+      position: "top-end",
+      icon: "success",
+      title: "Address deleted",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  } catch (e) {
+    Swal.fire("Error", "Failed to delete", "error");
+  }
+};
+
+const handleLogout = () => {
+  Swal.fire({
+    title: "Are you sure?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#000",
+    confirmButtonText: "Yes, Logout",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      router.push("/");
+    }
+  });
+};
+
+const fetchUserProfile = async () => {
+  try {
+    const res = await axios.get(`${BASE_URL}/user`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    updateUserData(res.data);
+  } catch (err) {
+    if (err.response && err.response.status === 401) handleLogout();
+  }
+};
+
+const updateUserData = (user) => {
+  if (!user) return;
+
+  if (user.hasOwnProperty("is_membership")) {
+    user.is_membership = !!user.is_membership;
+  }
+
+  userData.value = Object.assign({}, userData.value, user);
+  localStorage.setItem("user", JSON.stringify(userData.value));
+};
+
+const openInfoModal = () => {
+  infoForm.value = {
+    first_name: userData.value.first_name,
+    last_name: userData.value.last_name,
+    email: userData.value.email,
+    phone: userData.value.phone || "",
+  };
+  showInfoModal.value = true;
+};
+
+const submitInfoUpdate = async () => {
+  try {
+    const res = await axios.post(
+      `${BASE_URL}/user/update-info`,
+      infoForm.value,
+      { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } },
+    );
+    updateUserData(res.data.user);
+    showInfoModal.value = false;
+    Swal.fire("Success", "Info updated!", "success");
+  } catch (err) {
+    Swal.fire("Error", "Failed update", "error");
+  }
+};
+
+const submitPasswordUpdate = async () => {
+  try {
+    await axios.post(`${BASE_URL}/user/update-password`, passForm.value, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    showPasswordModal.value = false;
+    passForm.value = {
+      old_password: "",
+      password: "",
+      password_confirmation: "",
+    };
+    Swal.fire("Success", "Password updated!", "success");
+  } catch (err) {
+    Swal.fire("Error", err.response.data.message, "error");
+  }
+};
+
+const infoForm = ref({ first_name: "", last_name: "", email: "", phone: "" });
+const passForm = ref({
+  old_password: "",
+  password: "",
+  password_confirmation: "",
+});
+
+const handleImageUpdate = async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const objectUrl = URL.createObjectURL(file);
+  const oldImage = userData.value.profile_image;
+  userData.value.profile_image = objectUrl;
+
+  const formData = new FormData();
+  formData.append("image", file);
+
+  try {
+    const res = await axios.post(`${BASE_URL}/user/update-image`, formData, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    if (res.data.user) {
+      const newUser = res.data.user;
+      if (newUser.profile_image) {
+        const separator = newUser.profile_image.includes("?") ? "&" : "?";
+        newUser.profile_image = `${newUser.profile_image}${separator}t=${new Date().getTime()}`;
+      }
+
+      updateUserData(newUser);
+      URL.revokeObjectURL(objectUrl);
+
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "success",
+        title: "Foto profil diperbarui!",
+        showConfirmButton: false,
+        timer: 3000,
+      });
+    }
+  } catch (err) {
+    console.error("Upload failed", err);
+    userData.value.profile_image = oldImage; 
+    URL.revokeObjectURL(objectUrl); 
+    Swal.fire(
+      "Gagal",
+      "Tidak dapat mengunggah foto. Silakan coba lagi.",
+      "error",
+    );
+  }
+};
+
+const handleImageError = (e) => {
+  if (e.target.src !== new URL(defaultProfile, import.meta.url).href) {
+    e.target.src = defaultProfile;
+  }
+};
+
+onMounted(() => {
+  const user = localStorage.getItem("user");
+  if (user) {
+    userData.value = JSON.parse(user);
+  }
+  fetchAddresses();
+  fetchProvinces();
+  fetchUserProfile();
+});
 </script>
+
+<style scoped>
+.animate-fade-in { animation: fadeIn 0.3s ease-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Hindari map leaflet bentrok dengan modal z-index */
+:deep(.leaflet-container) {
+  z-index: 1 !important;
+}
+</style>
