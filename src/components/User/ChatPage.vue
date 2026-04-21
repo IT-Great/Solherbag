@@ -506,20 +506,76 @@ const fetchMessages = async () => {
   }
 };
 
+// const sendMessage = async () => {
+//   // Boleh kirim jika ada teks ATAU ada file
+//   if ((!newMessage.value.trim() && !selectedFile.value) || !myId.value) return;
+//   isSending.value = true;
+
+//   // [PERBAIKAN] Menggunakan FormData untuk mengirim File
+//   const formData = new FormData();
+//   formData.append('receiver_id', receiverId);
+//   if (newMessage.value.trim()) formData.append('message', newMessage.value);
+//   if (selectedFile.value) formData.append('attachment', selectedFile.value);
+
+//   // Optimistic Update khusus teks (karena file sulit dirender sebelum diupload)
+//   const tempId = Date.now();
+//   if (newMessage.value.trim() && !selectedFile.value) {
+//       messages.value.push({
+//         id: tempId,
+//         sender_id: myId.value,
+//         message: newMessage.value,
+//         created_at: new Date().toISOString(),
+//         is_read: false
+//       });
+//       scrollToBottom();
+//   }
+
+//   const sentMessage = newMessage.value;
+//   newMessage.value = "";
+
+//   try {
+//     const res = await axios.post(`${BASE_URL}/chat/send`, formData, { 
+//       headers: { 
+//         Authorization: `Bearer ${token}`,
+//         'Content-Type': 'multipart/form-data'
+//       } 
+//     });
+    
+//     // Hapus file dari preview
+//     removeFile();
+
+//     if (sentMessage && !selectedFile.value) {
+//       const index = messages.value.findIndex((m) => m.id === tempId);
+//       if (index !== -1) messages.value[index] = res.data;
+//     } else {
+//       // Jika mengirim file, kita push response asli dari server agar gambarnya muncul
+//       messages.value.push(res.data);
+//       scrollToBottom();
+//     }
+    
+//   } catch (error) {
+//     console.error("Gagal mengirim pesan", error);
+//   } finally {
+//     isSending.value = false;
+//   }
+// };
+
 const sendMessage = async () => {
   // Boleh kirim jika ada teks ATAU ada file
   if ((!newMessage.value.trim() && !selectedFile.value) || !myId.value) return;
   isSending.value = true;
 
-  // [PERBAIKAN] Menggunakan FormData untuk mengirim File
   const formData = new FormData();
   formData.append('receiver_id', receiverId);
   if (newMessage.value.trim()) formData.append('message', newMessage.value);
   if (selectedFile.value) formData.append('attachment', selectedFile.value);
 
-  // Optimistic Update khusus teks (karena file sulit dirender sebelum diupload)
+  // [PERBAIKAN KRUSIAL] Tangkap status apakah ada file yang dikirim saat ini
+  const isSendingFile = !!selectedFile.value;
+
+  // Optimistic Update khusus pesan teks murni (tanpa file)
   const tempId = Date.now();
-  if (newMessage.value.trim() && !selectedFile.value) {
+  if (newMessage.value.trim() && !isSendingFile) {
       messages.value.push({
         id: tempId,
         sender_id: myId.value,
@@ -541,14 +597,16 @@ const sendMessage = async () => {
       } 
     });
     
-    // Hapus file dari preview
+    // Hapus file dari state setelah dikirim ke server
     removeFile();
 
-    if (sentMessage && !selectedFile.value) {
+    // [PERBAIKAN KRUSIAL] Gunakan variabel isSendingFile yang ditangkap di atas
+    if (!isSendingFile) {
+      // Jika murni teks, timpa data Optimistic Update dengan data asli dari server
       const index = messages.value.findIndex((m) => m.id === tempId);
       if (index !== -1) messages.value[index] = res.data;
     } else {
-      // Jika mengirim file, kita push response asli dari server agar gambarnya muncul
+      // Jika ada file (gambar/video), langsung masukkan respons dari server ke layar
       messages.value.push(res.data);
       scrollToBottom();
     }
