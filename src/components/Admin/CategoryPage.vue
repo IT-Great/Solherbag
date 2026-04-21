@@ -823,11 +823,30 @@ watch([searchQuery, itemsPerPage], () => {
   currentPage.value = 1;
 });
 
+// const fetchCategories = async () => {
+//   isLoading.value = true;
+//   try {
+//     const res = await axios.get(`${BASE_URL}/categories`, axiosConfig);
+//     categories.value = res.data.data;
+//   } catch (err) {
+//     console.error(err);
+//   } finally {
+//     setTimeout(() => {
+//       isLoading.value = false;
+//     }, 500);
+//   }
+// };
+
 const fetchCategories = async () => {
   isLoading.value = true;
   try {
     const res = await axios.get(`${BASE_URL}/categories`, axiosConfig);
-    categories.value = res.data.data;
+    
+    // [PERBAIKAN] Mengurutkan data berdasarkan ID dari terkecil ke terbesar (Ascending)
+    // Jika Anda ingin mengurutkan berdasarkan nama (abjad), ganti menjadi: 
+    // .sort((a, b) => a.category_name.localeCompare(b.category_name))
+    categories.value = res.data.data.sort((a, b) => a.id - b.id);
+    
   } catch (err) {
     console.error(err);
   } finally {
