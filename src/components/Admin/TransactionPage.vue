@@ -4,23 +4,23 @@
   >
     <div v-if="isLoading" class="z-20 absolute inset-0 flex justify-center items-center bg-white/60 backdrop-blur-[2px] rounded-2xl transition-all duration-300">
       <div class="flex flex-col items-center">
-        <div class="border-4 border-gray-200 border-t-black rounded-full w-12 h-12 animate-spin"></div>
-        <p class="mt-4 font-bold text-black text-xs uppercase tracking-widest animate-pulse">Processing Data...</p>
+        <div class="w-12 h-12 border-4 border-gray-200 rounded-full border-t-black animate-spin"></div>
+        <p class="mt-4 text-xs font-bold tracking-widest text-black uppercase animate-pulse">Processing Data...</p>
       </div>
     </div>
 
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+    <div class="flex flex-col items-start justify-between gap-4 mb-8 md:flex-row md:items-center">
       <div>
-        <h1 class="font-bold text-gray-800 text-2xl">Transaction Monitoring</h1>
-        <p class="text-gray-500 text-sm">Manage and track all customer orders in real-time.</p>
+        <h1 class="text-2xl font-bold text-gray-800">Transaction Monitoring</h1>
+        <p class="text-sm text-gray-500">Manage and track all customer orders in real-time.</p>
       </div>
-      <div class="bg-gray-50 px-6 py-3 border border-gray-100 rounded-2xl">
+      <div class="px-6 py-3 border border-gray-100 bg-gray-50 rounded-2xl">
         <span class="block font-black text-[10px] text-gray-400 uppercase tracking-widest">Total Revenue</span>
-        <span class="font-bold text-green-600 text-xl">{{ formatPrice(totalRevenue) }}</span>
+        <span class="text-xl font-bold text-green-600">{{ formatPrice(totalRevenue) }}</span>
       </div>
     </div>
 
-    <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+    <div class="flex flex-col items-center justify-between gap-4 mb-6 md:flex-row">
       <div class="relative w-full md:w-80">
         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -31,15 +31,15 @@
           v-model="searchQuery" 
           type="text" 
           placeholder="Search Order ID, Name, or Email..." 
-          class="bg-gray-50 pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none w-full text-sm transition"
+          class="w-full py-2 pl-10 pr-4 text-sm transition border border-gray-200 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
         />
       </div>
 
       <div class="flex items-center gap-3">
-        <span class="text-xs font-bold text-gray-400 uppercase tracking-wide">Rows:</span>
+        <span class="text-xs font-bold tracking-wide text-gray-400 uppercase">Rows:</span>
         <select 
           v-model="itemsPerPage" 
-          class="bg-gray-50 px-3 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none text-sm font-bold cursor-pointer"
+          class="px-3 py-2 text-sm font-bold border border-gray-200 outline-none cursor-pointer bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
         >
           <option :value="5">5</option>
           <option :value="10">10</option>
@@ -52,7 +52,7 @@
     <div class="overflow-x-auto">
       <table class="w-full text-left">
         <thead>
-          <tr class="border-b text-gray-400 text-xs uppercase tracking-widest">
+          <tr class="text-xs tracking-widest text-gray-400 uppercase border-b">
             <th class="pb-4">Order ID & Date</th>
             <th class="pb-4">Customer</th>
             <th class="pb-4">Items</th>
@@ -66,17 +66,17 @@
             v-for="trx in paginatedTransactions"
             :key="trx.id"
             @click="goToDetail(trx)"
-            class="group hover:bg-gray-50 border-gray-50 border-b transition cursor-pointer"
+            class="transition border-b cursor-pointer group hover:bg-gray-50 border-gray-50"
           >
             <td class="py-6">
-              <span class="block font-mono font-bold text-black group-hover:text-blue-600 text-sm uppercase transition-colors">
+              <span class="block font-mono text-sm font-bold text-black uppercase transition-colors group-hover:text-blue-600">
                 {{ trx.order_id }}
               </span>
-              <span class="text-gray-400 text-xs">{{ formatDate(trx.created_at) }}</span>
+              <span class="text-xs text-gray-400">{{ formatDate(trx.created_at) }}</span>
             </td>
             <td class="py-6">
-              <span class="block font-bold text-gray-800 text-sm">{{ trx.user.first_name }} {{ trx.user.last_name }}</span>
-              <span class="text-gray-400 text-xs">{{ trx.user.email }}</span>
+              <span class="block text-sm font-bold text-gray-800">{{ trx.user.first_name }} {{ trx.user.last_name }}</span>
+              <span class="text-xs text-gray-400">{{ trx.user.email }}</span>
             </td>
             <td class="py-6">
               <div class="flex -space-x-2">
@@ -84,7 +84,7 @@
                   v-for="detail in trx.details.slice(0, 3)"
                   :key="detail.id"
                   :src="detail.product.image"
-                  class="shadow-sm border-2 border-white rounded-full w-8 h-8 object-cover"
+                  class="object-cover w-8 h-8 border-2 border-white rounded-full shadow-sm"
                   :title="detail.product.name"
                 />
                 <div
@@ -118,7 +118,7 @@
           </tr>
           
           <tr v-if="!isLoading && paginatedTransactions.length === 0">
-            <td colspan="6" class="py-20 font-serif text-gray-400 text-center italic">
+            <td colspan="6" class="py-20 font-serif italic text-center text-gray-400">
               {{ searchQuery ? 'No transactions match your search.' : 'No transactions found.' }}
             </td>
           </tr>
@@ -126,7 +126,7 @@
       </table>
     </div>
 
-    <div v-if="!isLoading && filteredTransactions.length > 0" class="flex flex-col md:flex-row justify-between items-center gap-4 mt-8 pt-6 border-t border-gray-50">
+    <div v-if="!isLoading && filteredTransactions.length > 0" class="flex flex-col items-center justify-between gap-4 pt-6 mt-8 border-t md:flex-row border-gray-50">
       <p class="text-sm text-gray-400">
         Showing <span class="font-bold text-black">{{ showingStart }}</span> to <span class="font-bold text-black">{{ showingEnd }}</span> of <span class="font-bold text-black">{{ filteredTransactions.length }}</span> orders
       </p>
@@ -135,7 +135,7 @@
         <button 
           @click="currentPage--" 
           :disabled="currentPage === 1"
-          class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+          class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           Previous
         </button>
@@ -144,14 +144,14 @@
           :key="page" 
           @click="currentPage = page"
           :class="currentPage === page ? 'bg-black text-white border-black' : 'hover:bg-gray-50 border-gray-200'"
-          class="w-10 h-10 border rounded-xl font-medium transition flex items-center justify-center text-sm"
+          class="flex items-center justify-center w-10 h-10 text-sm font-medium transition border rounded-xl"
         >
           {{ page }}
         </button>
         <button 
           @click="currentPage++" 
           :disabled="currentPage === totalPages"
-          class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+          class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           Next
         </button>
@@ -322,7 +322,7 @@ tr {
     <div class="overflow-x-auto">
       <table class="w-full text-left">
         <thead>
-          <tr class="border-b text-gray-400 text-xs uppercase tracking-widest">
+          <tr class="text-xs tracking-widest text-gray-400 uppercase border-b">
             <th class="pb-4">Order ID & Date</th>
             <th class="pb-4">Customer</th>
             <th class="pb-4">Items</th>
@@ -332,15 +332,15 @@ tr {
         </thead>
         <tbody class="text-gray-600">
           <tr v-for="trx in paginatedTransactions" :key="trx.id" 
-              class="group hover:bg-gray-50 border-gray-50 border-b transition cursor-pointer"
+              class="transition border-b cursor-pointer group hover:bg-gray-50 border-gray-50"
               @click="goToDetail(trx)">
             
             <td class="py-6">
                 <span class="block font-mono font-bold text-black">{{ trx.order_id }}</span>
-                <span class="text-gray-400 text-xs">{{ formatDate(trx.created_at) }}</span>
+                <span class="text-xs text-gray-400">{{ formatDate(trx.created_at) }}</span>
             </td>
             <td class="py-6">
-                <span class="block font-bold text-gray-800 text-sm">{{ trx.user.first_name }}</span>
+                <span class="block text-sm font-bold text-gray-800">{{ trx.user.first_name }}</span>
             </td>
             <td class="py-6">
                <span class="text-xs">{{ trx.details.length }} items</span>
@@ -360,7 +360,7 @@ tr {
               <div v-if="trx.status === 'refund_requested'" class="flex justify-center gap-2">
                 <button 
                   @click="handleRefundAction(trx.id, 'approve')"
-                  class="bg-green-100 hover:bg-green-200 p-2 rounded-lg text-green-600 transition" 
+                  class="p-2 text-green-600 transition bg-green-100 rounded-lg hover:bg-green-200" 
                   title="Approve Refund"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -369,7 +369,7 @@ tr {
                 </button>
                 <button 
                   @click="handleRefundAction(trx.id, 'reject')"
-                  class="bg-red-100 hover:bg-red-200 p-2 rounded-lg text-red-600 transition"
+                  class="p-2 text-red-600 transition bg-red-100 rounded-lg hover:bg-red-200"
                   title="Reject Refund"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -589,10 +589,10 @@ tr {
     >
       <div class="flex flex-col items-center">
         <div
-          class="border-4 border-gray-200 border-t-black rounded-full w-12 h-12 animate-spin"
+          class="w-12 h-12 border-4 border-gray-200 rounded-full border-t-black animate-spin"
         ></div>
         <p
-          class="mt-4 font-bold text-black text-xs uppercase tracking-widest animate-pulse"
+          class="mt-4 text-xs font-bold tracking-widest text-black uppercase animate-pulse"
         >
           Processing Data...
         </p>
@@ -600,27 +600,27 @@ tr {
     </div>
 
     <div
-      class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8"
+      class="flex flex-col items-start justify-between gap-4 mb-8 md:flex-row md:items-center"
     >
       <div>
-        <h1 class="font-bold text-gray-800 text-2xl">Transaction Monitoring</h1>
-        <p class="text-gray-500 text-sm">
+        <h1 class="text-2xl font-bold text-gray-800">Transaction Monitoring</h1>
+        <p class="text-sm text-gray-500">
           Manage and track all customer orders in real-time.
         </p>
       </div>
-      <div class="bg-gray-50 px-6 py-3 border border-gray-100 rounded-2xl">
+      <div class="px-6 py-3 border border-gray-100 bg-gray-50 rounded-2xl">
         <span
           class="block font-black text-[10px] text-gray-400 uppercase tracking-widest"
           >Total Revenue</span
         >
-        <span class="font-bold text-green-600 text-xl">{{
+        <span class="text-xl font-bold text-green-600">{{
           formatPrice(totalRevenue)
         }}</span>
       </div>
     </div>
 
     <div
-      class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6"
+      class="flex flex-col items-center justify-between gap-4 mb-6 md:flex-row"
     >
       <div class="relative w-full md:w-80">
         <span
@@ -645,17 +645,17 @@ tr {
           v-model="searchQuery"
           type="text"
           placeholder="Search Order ID, Name, or Email..."
-          class="bg-gray-50 pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none w-full text-sm transition"
+          class="w-full py-2 pl-10 pr-4 text-sm transition border border-gray-200 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
         />
       </div>
 
       <div class="flex items-center gap-3">
-        <span class="text-xs font-bold text-gray-400 uppercase tracking-wide"
+        <span class="text-xs font-bold tracking-wide text-gray-400 uppercase"
           >Show:</span
         >
         <select
           v-model="itemsPerPage"
-          class="bg-gray-50 px-3 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none text-sm font-bold cursor-pointer"
+          class="px-3 py-2 text-sm font-bold border border-gray-200 outline-none cursor-pointer bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
         >
           <option :value="5">5</option>
           <option :value="10">10</option>
@@ -668,7 +668,7 @@ tr {
     <div class="overflow-x-auto">
       <table class="w-full text-left">
         <thead>
-          <tr class="border-b text-gray-400 text-xs uppercase tracking-widest">
+          <tr class="text-xs tracking-widest text-gray-400 uppercase border-b">
             <th class="pb-4">Order ID & Date</th>
             <th class="pb-4">Customer</th>
             <th class="pb-4">Items</th>
@@ -681,19 +681,19 @@ tr {
           <tr
             v-for="trx in paginatedTransactions"
             :key="trx.id"
-            class="group hover:bg-gray-50 border-gray-50 border-b transition cursor-pointer"
+            class="transition border-b cursor-pointer group hover:bg-gray-50 border-gray-50"
             @click="goToDetail(trx)"
           >
             <td class="py-6">
               <span class="block font-mono font-bold text-black">{{
                 trx.order_id
               }}</span>
-              <span class="text-gray-400 text-xs">{{
+              <span class="text-xs text-gray-400">{{
                 formatDate(trx.created_at)
               }}</span>
             </td>
             <td class="py-6">
-              <span class="block font-bold text-gray-800 text-sm">{{
+              <span class="block text-sm font-bold text-gray-800">{{
                 trx.user.first_name
               }}</span>
             </td>
@@ -722,7 +722,7 @@ tr {
               >
                 <button
                   @click="handleRefundAction(trx.id, 'approve')"
-                  class="bg-green-100 hover:bg-green-200 p-2 rounded-lg text-green-600 transition"
+                  class="p-2 text-green-600 transition bg-green-100 rounded-lg hover:bg-green-200"
                   title="Approve Refund"
                 >
                   <svg
@@ -742,7 +742,7 @@ tr {
                 </button>
                 <button
                   @click="handleRefundAction(trx.id, 'reject')"
-                  class="bg-red-100 hover:bg-red-200 p-2 rounded-lg text-red-600 transition"
+                  class="p-2 text-red-600 transition bg-red-100 rounded-lg hover:bg-red-200"
                   title="Reject Refund"
                 >
                   <svg
@@ -770,7 +770,7 @@ tr {
           <tr v-if="!isLoading && paginatedTransactions.length === 0">
             <td
               colspan="6"
-              class="py-20 font-serif text-gray-400 text-center italic"
+              class="py-20 font-serif italic text-center text-gray-400"
             >
               {{
                 searchQuery
@@ -785,7 +785,7 @@ tr {
 
     <div
       v-if="!isLoading && filteredTransactions.length > 0"
-      class="flex flex-col md:flex-row justify-between items-center gap-4 mt-8 pt-6 border-t border-gray-50"
+      class="flex flex-col items-center justify-between gap-4 pt-6 mt-8 border-t md:flex-row border-gray-50"
     >
       <p class="text-sm text-gray-400">
         Showing <span class="font-bold text-black">{{ showingStart }}</span> to
@@ -800,7 +800,7 @@ tr {
         <button
           @click="currentPage--"
           :disabled="currentPage === 1"
-          class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+          class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           Previous
         </button>
@@ -814,7 +814,7 @@ tr {
               ? 'bg-black text-white border-black'
               : 'hover:bg-gray-50 border-gray-200'
           "
-          class="w-10 h-10 border rounded-xl font-medium transition flex items-center justify-center text-sm"
+          class="flex items-center justify-center w-10 h-10 text-sm font-medium transition border rounded-xl"
         >
           {{ page }}
         </button>
@@ -822,7 +822,7 @@ tr {
         <button
           @click="currentPage++"
           :disabled="currentPage === totalPages"
-          class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+          class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           Next
         </button>
@@ -1017,10 +1017,10 @@ tr {
     >
       <div class="flex flex-col items-center">
         <div
-          class="border-4 border-gray-200 border-t-black rounded-full w-12 h-12 animate-spin"
+          class="w-12 h-12 border-4 border-gray-200 rounded-full border-t-black animate-spin"
         ></div>
         <p
-          class="mt-4 font-bold text-black text-xs uppercase tracking-widest animate-pulse"
+          class="mt-4 text-xs font-bold tracking-widest text-black uppercase animate-pulse"
         >
           Processing Data...
         </p>
@@ -1028,27 +1028,27 @@ tr {
     </div>
 
     <div
-      class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8"
+      class="flex flex-col items-start justify-between gap-4 mb-8 md:flex-row md:items-center"
     >
       <div>
-        <h1 class="font-bold text-gray-800 text-2xl">Transaction Monitoring</h1>
-        <p class="text-gray-500 text-sm">
+        <h1 class="text-2xl font-bold text-gray-800">Transaction Monitoring</h1>
+        <p class="text-sm text-gray-500">
           Manage and track all customer orders in real-time.
         </p>
       </div>
-      <div class="bg-gray-50 px-6 py-3 border border-gray-100 rounded-2xl">
+      <div class="px-6 py-3 border border-gray-100 bg-gray-50 rounded-2xl">
         <span
           class="block font-black text-[10px] text-gray-400 uppercase tracking-widest"
           >Total Revenue</span
         >
-        <span class="font-bold text-green-600 text-xl">{{
+        <span class="text-xl font-bold text-green-600">{{
           formatPrice(totalRevenue)
         }}</span>
       </div>
     </div>
 
     <div
-      class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6"
+      class="flex flex-col items-center justify-between gap-4 mb-6 md:flex-row"
     >
       <div class="relative w-full md:w-80">
         <span
@@ -1073,17 +1073,17 @@ tr {
           v-model="searchQuery"
           type="text"
           placeholder="Search Order ID, Name, or Email..."
-          class="bg-gray-50 pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none w-full text-sm transition"
+          class="w-full py-2 pl-10 pr-4 text-sm transition border border-gray-200 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
         />
       </div>
 
       <div class="flex items-center gap-3">
-        <span class="text-xs font-bold text-gray-400 uppercase tracking-wide"
+        <span class="text-xs font-bold tracking-wide text-gray-400 uppercase"
           >Show:</span
         >
         <select
           v-model="itemsPerPage"
-          class="bg-gray-50 px-3 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none text-sm font-bold cursor-pointer"
+          class="px-3 py-2 text-sm font-bold border border-gray-200 outline-none cursor-pointer bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
         >
           <option :value="5">5</option>
           <option :value="10">10</option>
@@ -1107,22 +1107,22 @@ tr {
             <th class="pb-4 text-center">Action</th>
           </tr>
         </thead>
-        <tbody class="text-gray-600 text-sm">
+        <tbody class="text-sm text-gray-600">
           <tr
             v-for="trx in paginatedTransactions"
             :key="trx.id"
-            class="group hover:bg-gray-50 border-b border-gray-50 transition cursor-pointer align-top"
+            class="align-top transition border-b cursor-pointer group hover:bg-gray-50 border-gray-50"
             @click="goToDetail(trx)"
           >
             <td class="py-6 pl-2 w-[15%]">
               <div class="flex flex-col gap-1">
-                <span class="font-mono font-bold text-black text-sm">{{
+                <span class="font-mono text-sm font-bold text-black">{{
                   trx.order_id
                 }}</span>
-                <span class="text-gray-400 text-xs">{{
+                <span class="text-xs text-gray-400">{{
                   formatDate(trx.created_at)
                 }}</span>
-                <span class="font-bold text-gray-800 text-xs mt-1"
+                <span class="mt-1 text-xs font-bold text-gray-800"
                   >{{ trx.user.first_name }} {{ trx.user.last_name }}</span
                 >
 
@@ -1131,7 +1131,7 @@ tr {
                     ['pending', 'awaiting_payment'].includes(trx.status) &&
                     countdowns[trx.id] !== 'Expired'
                   "
-                  class="mt-2 flex items-center gap-1 text-red-600 bg-red-50 w-fit px-2 py-1 rounded-md"
+                  class="flex items-center gap-1 px-2 py-1 mt-2 text-red-600 rounded-md bg-red-50 w-fit"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -1156,12 +1156,12 @@ tr {
 
             <td class="py-6 w-[20%]">
               <div class="flex flex-col gap-2">
-                <div class="flex -space-x-3 overflow-hidden py-1 pl-1">
+                <div class="flex py-1 pl-1 -space-x-3 overflow-hidden">
                   <img
                     v-for="(detail, idx) in trx.details.slice(0, 3)"
                     :key="idx"
                     :src="detail.product.image"
-                    class="inline-block h-10 w-10 rounded-full border-2 border-white object-cover bg-gray-100 shadow-sm"
+                    class="inline-block object-cover w-10 h-10 bg-gray-100 border-2 border-white rounded-full shadow-sm"
                     :alt="detail.product.name"
                   />
                   <div
@@ -1171,7 +1171,7 @@ tr {
                     +{{ trx.details.length - 3 }}
                   </div>
                 </div>
-                <span class="text-xs text-gray-500 font-medium"
+                <span class="text-xs font-medium text-gray-500"
                   >{{ trx.details.length }} Items purchased</span
                 >
               </div>
@@ -1186,7 +1186,7 @@ tr {
                     <img
                       v-if="getPaymentLogo(trx.payment_method)"
                       :src="getPaymentLogo(trx.payment_method)"
-                      class="w-full h-full object-contain"
+                      class="object-contain w-full h-full"
                     />
                     <span v-else class="text-[8px] font-bold text-gray-400"
                       >PAY</span
@@ -1219,7 +1219,7 @@ tr {
                     <img
                       v-if="getCourierLogo(trx.courier_company)"
                       :src="getCourierLogo(trx.courier_company)"
-                      class="w-full h-full object-contain"
+                      class="object-contain w-full h-full"
                     />
                     <span v-else class="text-[8px] font-bold text-gray-400"
                       >SHIP</span
@@ -1242,7 +1242,7 @@ tr {
                 </div>
                 <div v-else class="flex items-center gap-3">
                   <div
-                    class="w-10 h-7 bg-black text-white rounded flex justify-center items-center p-1 shrink-0"
+                    class="flex items-center justify-center w-10 p-1 text-white bg-black rounded h-7 shrink-0"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -1278,7 +1278,7 @@ tr {
                   <span>{{ formatPrice(trx.shipping_cost) }}</span>
                 </div>
                 <div
-                  class="flex justify-between text-sm font-bold text-black border-t border-dashed border-gray-200 pt-1 mt-1"
+                  class="flex justify-between pt-1 mt-1 text-sm font-bold text-black border-t border-gray-200 border-dashed"
                 >
                   <span>Total:</span>
                   <span>{{ formatPrice(trx.total_amount) }}</span>
@@ -1302,7 +1302,7 @@ tr {
               >
                 <button
                   @click="handleRefundAction(trx.id, 'approve')"
-                  class="bg-green-100 hover:bg-green-200 p-2 rounded-lg text-green-600 transition shadow-sm"
+                  class="p-2 text-green-600 transition bg-green-100 rounded-lg shadow-sm hover:bg-green-200"
                   title="Approve Refund"
                 >
                   <svg
@@ -1322,7 +1322,7 @@ tr {
                 </button>
                 <button
                   @click="handleRefundAction(trx.id, 'reject')"
-                  class="bg-red-100 hover:bg-red-200 p-2 rounded-lg text-red-600 transition shadow-sm"
+                  class="p-2 text-red-600 transition bg-red-100 rounded-lg shadow-sm hover:bg-red-200"
                   title="Reject Refund"
                 >
                   <svg
@@ -1361,7 +1361,7 @@ tr {
           <tr v-if="!isLoading && paginatedTransactions.length === 0">
             <td
               colspan="6"
-              class="py-20 font-serif text-gray-400 text-center italic"
+              class="py-20 font-serif italic text-center text-gray-400"
             >
               {{
                 searchQuery
@@ -1376,7 +1376,7 @@ tr {
 
     <div
       v-if="!isLoading && filteredTransactions.length > 0"
-      class="flex flex-col md:flex-row justify-between items-center gap-4 mt-8 pt-6 border-t border-gray-50"
+      class="flex flex-col items-center justify-between gap-4 pt-6 mt-8 border-t md:flex-row border-gray-50"
     >
       <p class="text-sm text-gray-400">
         Showing <span class="font-bold text-black">{{ showingStart }}</span> to
@@ -1390,7 +1390,7 @@ tr {
         <button
           @click="currentPage--"
           :disabled="currentPage === 1"
-          class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+          class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           Previous
         </button>
@@ -1403,14 +1403,14 @@ tr {
               ? 'bg-black text-white border-black'
               : 'hover:bg-gray-50 border-gray-200'
           "
-          class="w-10 h-10 border rounded-xl font-medium transition flex items-center justify-center text-sm"
+          class="flex items-center justify-center w-10 h-10 text-sm font-medium transition border rounded-xl"
         >
           {{ page }}
         </button>
         <button
           @click="currentPage++"
           :disabled="currentPage === totalPages"
-          class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+          class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           Next
         </button>
@@ -1714,10 +1714,10 @@ tr {
     >
       <div class="flex flex-col items-center">
         <div
-          class="border-4 border-gray-200 border-t-black rounded-full w-12 h-12 animate-spin"
+          class="w-12 h-12 border-4 border-gray-200 rounded-full border-t-black animate-spin"
         ></div>
         <p
-          class="mt-4 font-bold text-black text-xs uppercase tracking-widest animate-pulse"
+          class="mt-4 text-xs font-bold tracking-widest text-black uppercase animate-pulse"
         >
           Processing Data...
         </p>
@@ -1725,27 +1725,27 @@ tr {
     </div>
 
     <div
-      class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8"
+      class="flex flex-col items-start justify-between gap-4 mb-8 md:flex-row md:items-center"
     >
       <div>
-        <h1 class="font-bold text-gray-800 text-2xl">Transaction Monitoring</h1>
-        <p class="text-gray-500 text-sm">
+        <h1 class="text-2xl font-bold text-gray-800">Transaction Monitoring</h1>
+        <p class="text-sm text-gray-500">
           Manage and track all customer orders in real-time.
         </p>
       </div>
-      <div class="bg-gray-50 px-6 py-3 border border-gray-100 rounded-2xl">
+      <div class="px-6 py-3 border border-gray-100 bg-gray-50 rounded-2xl">
         <span
           class="block font-black text-[10px] text-gray-400 uppercase tracking-widest"
           >Total Revenue</span
         >
-        <span class="font-bold text-green-600 text-xl">{{
+        <span class="text-xl font-bold text-green-600">{{
           formatPrice(totalRevenue)
         }}</span>
       </div>
     </div>
 
     <div
-      class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6"
+      class="flex flex-col items-center justify-between gap-4 mb-6 md:flex-row"
     >
       <div class="relative w-full md:w-80">
         <span
@@ -1770,17 +1770,17 @@ tr {
           v-model="searchQuery"
           type="text"
           placeholder="Search Order ID, Name, or Email..."
-          class="bg-gray-50 pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none w-full text-sm transition"
+          class="w-full py-2 pl-10 pr-4 text-sm transition border border-gray-200 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
         />
       </div>
 
       <div class="flex items-center gap-3">
-        <span class="text-xs font-bold text-gray-400 uppercase tracking-wide"
+        <span class="text-xs font-bold tracking-wide text-gray-400 uppercase"
           >Show:</span
         >
         <select
           v-model="itemsPerPage"
-          class="bg-gray-50 px-3 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none text-sm font-bold cursor-pointer"
+          class="px-3 py-2 text-sm font-bold border border-gray-200 outline-none cursor-pointer bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
         >
           <option :value="5">5</option>
           <option :value="10">10</option>
@@ -1804,19 +1804,19 @@ tr {
             <th class="pb-4 text-center">Action</th>
           </tr>
         </thead>
-        <tbody class="text-gray-600 text-sm">
+        <tbody class="text-sm text-gray-600">
           <tr
             v-for="trx in paginatedTransactions"
             :key="trx.id"
-            class="group hover:bg-gray-50 border-b border-gray-50 transition cursor-pointer align-top"
+            class="align-top transition border-b cursor-pointer group hover:bg-gray-50 border-gray-50"
             @click="goToDetail(trx)"
           >
             <td class="py-6 pl-2 w-[15%]">
               <div class="flex flex-col gap-1">
-                <span class="font-mono font-bold text-black text-sm">{{
+                <span class="font-mono text-sm font-bold text-black">{{
                   trx.order_id
                 }}</span>
-                <span class="text-gray-400 text-xs">{{
+                <span class="text-xs text-gray-400">{{
                   formatDate(trx.created_at)
                 }}</span>
 
@@ -1840,7 +1840,7 @@ tr {
                     ['pending'].includes(trx.status) &&
                     countdowns[trx.id] !== 'Expired'
                   "
-                  class="mt-2 flex items-center gap-1 text-red-600 bg-red-50 w-fit px-2 py-1 rounded-md"
+                  class="flex items-center gap-1 px-2 py-1 mt-2 text-red-600 rounded-md bg-red-50 w-fit"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -1865,12 +1865,12 @@ tr {
 
             <td class="py-6 w-[20%]">
               <div class="flex flex-col gap-2">
-                <div class="flex -space-x-3 overflow-hidden py-1 pl-1">
+                <div class="flex py-1 pl-1 -space-x-3 overflow-hidden">
                   <img
                     v-for="(detail, idx) in trx.details.slice(0, 3)"
                     :key="idx"
                     :src="detail.product.image"
-                    class="inline-block h-10 w-10 rounded-full border-2 border-white object-cover bg-gray-100 shadow-sm"
+                    class="inline-block object-cover w-10 h-10 bg-gray-100 border-2 border-white rounded-full shadow-sm"
                     :alt="detail.product.name"
                   />
                   <div
@@ -1880,7 +1880,7 @@ tr {
                     +{{ trx.details.length - 3 }}
                   </div>
                 </div>
-                <span class="text-xs text-gray-500 font-medium"
+                <span class="text-xs font-medium text-gray-500"
                   >{{ trx.details.length }} Items purchased</span
                 >
               </div>
@@ -1895,7 +1895,7 @@ tr {
                     <img
                       v-if="getPaymentLogo(trx.payment_method)"
                       :src="getPaymentLogo(trx.payment_method)"
-                      class="w-full h-full object-contain"
+                      class="object-contain w-full h-full"
                     />
                     <span v-else class="text-[8px] font-bold text-gray-400"
                       >PAY</span
@@ -1928,7 +1928,7 @@ tr {
                     <img
                       v-if="getCourierLogo(trx.courier_company)"
                       :src="getCourierLogo(trx.courier_company)"
-                      class="w-full h-full object-contain"
+                      class="object-contain w-full h-full"
                     />
                     <span v-else class="text-[8px] font-bold text-gray-400"
                       >SHIP</span
@@ -1952,7 +1952,7 @@ tr {
 
                 <div v-else class="flex items-center gap-3">
                   <div
-                    class="w-10 h-7 bg-black text-white rounded flex justify-center items-center p-1 shrink-0"
+                    class="flex items-center justify-center w-10 p-1 text-white bg-black rounded h-7 shrink-0"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -2016,7 +2016,7 @@ tr {
               >
                 <button
                   @click="handleRefundAction(trx.id, 'approve')"
-                  class="bg-green-100 hover:bg-green-200 p-2 rounded-lg text-green-600 transition shadow-sm"
+                  class="p-2 text-green-600 transition bg-green-100 rounded-lg shadow-sm hover:bg-green-200"
                   title="Approve Refund"
                 >
                   <svg
@@ -2036,7 +2036,7 @@ tr {
                 </button>
                 <button
                   @click="handleRefundAction(trx.id, 'reject')"
-                  class="bg-red-100 hover:bg-red-200 p-2 rounded-lg text-red-600 transition shadow-sm"
+                  class="p-2 text-red-600 transition bg-red-100 rounded-lg shadow-sm hover:bg-red-200"
                   title="Reject Refund"
                 >
                   <svg
@@ -2075,7 +2075,7 @@ tr {
           <tr v-if="!isLoading && paginatedTransactions.length === 0">
             <td
               colspan="6"
-              class="py-20 font-serif text-gray-400 text-center italic"
+              class="py-20 font-serif italic text-center text-gray-400"
             >
               {{
                 searchQuery
@@ -2090,7 +2090,7 @@ tr {
 
     <div
       v-if="!isLoading && filteredTransactions.length > 0"
-      class="flex flex-col md:flex-row justify-between items-center gap-4 mt-8 pt-6 border-t border-gray-50"
+      class="flex flex-col items-center justify-between gap-4 pt-6 mt-8 border-t md:flex-row border-gray-50"
     >
       <p class="text-sm text-gray-400">
         Showing <span class="font-bold text-black">{{ showingStart }}</span> to
@@ -2104,7 +2104,7 @@ tr {
         <button
           @click="currentPage--"
           :disabled="currentPage === 1"
-          class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+          class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           Previous
         </button>
@@ -2117,14 +2117,14 @@ tr {
               ? 'bg-black text-white border-black'
               : 'hover:bg-gray-50 border-gray-200'
           "
-          class="w-10 h-10 border rounded-xl font-medium transition flex items-center justify-center text-sm"
+          class="flex items-center justify-center w-10 h-10 text-sm font-medium transition border rounded-xl"
         >
           {{ page }}
         </button>
         <button
           @click="currentPage++"
           :disabled="currentPage === totalPages"
-          class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+          class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           Next
         </button>
@@ -2426,10 +2426,10 @@ tr {
     >
       <div class="flex flex-col items-center">
         <div
-          class="border-4 border-gray-200 border-t-black rounded-full w-12 h-12 animate-spin"
+          class="w-12 h-12 border-4 border-gray-200 rounded-full border-t-black animate-spin"
         ></div>
         <p
-          class="mt-4 font-bold text-black text-xs uppercase tracking-widest animate-pulse"
+          class="mt-4 text-xs font-bold tracking-widest text-black uppercase animate-pulse"
         >
           Processing Data...
         </p>
@@ -2437,20 +2437,20 @@ tr {
     </div>
 
     <div
-      class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8"
+      class="flex flex-col items-start justify-between gap-4 mb-8 md:flex-row md:items-center"
     >
       <div>
-        <h1 class="font-bold text-gray-800 text-2xl">Transaction Monitoring</h1>
-        <p class="text-gray-500 text-sm">
+        <h1 class="text-2xl font-bold text-gray-800">Transaction Monitoring</h1>
+        <p class="text-sm text-gray-500">
           Manage and track all customer orders in real-time.
         </p>
       </div>
-      <div class="bg-gray-50 px-6 py-3 border border-gray-100 rounded-2xl">
+      <div class="px-6 py-3 border border-gray-100 bg-gray-50 rounded-2xl">
         <span
           class="block font-black text-[10px] text-gray-400 uppercase tracking-widest"
           >Total Revenue</span
         >
-        <span class="font-bold text-green-600 text-xl">{{
+        <span class="text-xl font-bold text-green-600">{{
           formatPrice(totalRevenue)
         }}</span>
       </div>
@@ -2458,7 +2458,7 @@ tr {
 
     <div class="mb-8 space-y-4">
       <div
-        class="flex items-center gap-4 overflow-x-auto pb-2 border-b border-gray-100"
+        class="flex items-center gap-4 pb-2 overflow-x-auto border-b border-gray-100"
       >
         <span
           class="text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap"
@@ -2480,7 +2480,7 @@ tr {
       </div>
 
       <div
-        class="flex items-center gap-4 overflow-x-auto pb-2 border-b border-gray-100"
+        class="flex items-center gap-4 pb-2 overflow-x-auto border-b border-gray-100"
       >
         <span
           class="text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap"
@@ -2503,7 +2503,7 @@ tr {
     </div>
 
     <div
-      class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6"
+      class="flex flex-col items-center justify-between gap-4 mb-6 md:flex-row"
     >
       <div class="relative w-full md:w-80">
         <span
@@ -2528,17 +2528,17 @@ tr {
           v-model="searchQuery"
           type="text"
           placeholder="Search Order ID, Name, or Email..."
-          class="bg-gray-50 pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none w-full text-sm transition"
+          class="w-full py-2 pl-10 pr-4 text-sm transition border border-gray-200 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
         />
       </div>
 
       <div class="flex items-center gap-3">
-        <span class="text-xs font-bold text-gray-400 uppercase tracking-wide"
+        <span class="text-xs font-bold tracking-wide text-gray-400 uppercase"
           >Show:</span
         >
         <select
           v-model="itemsPerPage"
-          class="bg-gray-50 px-3 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none text-sm font-bold cursor-pointer"
+          class="px-3 py-2 text-sm font-bold border border-gray-200 outline-none cursor-pointer bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
         >
           <option :value="5">5</option>
           <option :value="10">10</option>
@@ -2563,19 +2563,19 @@ tr {
             <th class="pb-4 text-center">Action</th>
           </tr>
         </thead>
-        <tbody class="text-gray-600 text-sm">
+        <tbody class="text-sm text-gray-600">
           <tr
             v-for="trx in paginatedTransactions"
             :key="trx.id"
-            class="group hover:bg-gray-50 border-b border-gray-50 transition cursor-pointer align-top"
+            class="align-top transition border-b cursor-pointer group hover:bg-gray-50 border-gray-50"
             @click="goToDetail(trx)"
           >
             <td class="py-6 pl-2 w-[15%]">
               <div class="flex flex-col gap-1">
-                <span class="font-mono font-bold text-black text-sm">{{
+                <span class="font-mono text-sm font-bold text-black">{{
                   trx.order_id
                 }}</span>
-                <span class="text-gray-400 text-xs">{{
+                <span class="text-xs text-gray-400">{{
                   formatDate(trx.created_at)
                 }}</span>
 
@@ -2599,7 +2599,7 @@ tr {
                     ['pending'].includes(trx.status) &&
                     countdowns[trx.id] !== 'Expired'
                   "
-                  class="mt-2 flex items-center gap-1 text-red-600 bg-red-50 w-fit px-2 py-1 rounded-md"
+                  class="flex items-center gap-1 px-2 py-1 mt-2 text-red-600 rounded-md bg-red-50 w-fit"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -2624,12 +2624,12 @@ tr {
 
             <td class="py-6 w-[15%]">
               <div class="flex flex-col gap-2">
-                <div class="flex -space-x-3 overflow-hidden py-1 pl-1">
+                <div class="flex py-1 pl-1 -space-x-3 overflow-hidden">
                   <img
                     v-for="(detail, idx) in trx.details.slice(0, 3)"
                     :key="idx"
                     :src="detail.product.image"
-                    class="inline-block h-10 w-10 rounded-full border-2 border-white object-cover bg-gray-100 shadow-sm"
+                    class="inline-block object-cover w-10 h-10 bg-gray-100 border-2 border-white rounded-full shadow-sm"
                     :alt="detail.product.name"
                   />
                   <div
@@ -2639,7 +2639,7 @@ tr {
                     +{{ trx.details.length - 3 }}
                   </div>
                 </div>
-                <span class="text-xs text-gray-500 font-medium"
+                <span class="text-xs font-medium text-gray-500"
                   >{{ trx.details.length }} Items</span
                 >
               </div>
@@ -2654,7 +2654,7 @@ tr {
                     <img
                       v-if="getPaymentLogo(trx.payment_method)"
                       :src="getPaymentLogo(trx.payment_method)"
-                      class="w-full h-full object-contain"
+                      class="object-contain w-full h-full"
                     />
                     <span v-else class="text-[8px] font-bold text-gray-400"
                       >PAY</span
@@ -2687,7 +2687,7 @@ tr {
                     <img
                       v-if="getCourierLogo(trx.courier_company)"
                       :src="getCourierLogo(trx.courier_company)"
-                      class="w-full h-full object-contain"
+                      class="object-contain w-full h-full"
                     />
                     <span v-else class="text-[8px] font-bold text-gray-400"
                       >SHIP</span
@@ -2719,7 +2719,7 @@ tr {
 
                 <div v-else class="flex items-center gap-3">
                   <div
-                    class="w-10 h-7 bg-gray-100 text-gray-400 rounded flex justify-center items-center p-1 shrink-0 border border-gray-200"
+                    class="flex items-center justify-center w-10 p-1 text-gray-400 bg-gray-100 border border-gray-200 rounded h-7 shrink-0"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -2805,7 +2805,7 @@ tr {
               >
                 <button
                   @click="handleRefundAction(trx.id, 'approve')"
-                  class="bg-green-100 hover:bg-green-200 p-2 rounded-lg text-green-600 transition shadow-sm"
+                  class="p-2 text-green-600 transition bg-green-100 rounded-lg shadow-sm hover:bg-green-200"
                   title="Approve Refund"
                 >
                   <svg
@@ -2825,7 +2825,7 @@ tr {
                 </button>
                 <button
                   @click="handleRefundAction(trx.id, 'reject')"
-                  class="bg-red-100 hover:bg-red-200 p-2 rounded-lg text-red-600 transition shadow-sm"
+                  class="p-2 text-red-600 transition bg-red-100 rounded-lg shadow-sm hover:bg-red-200"
                   title="Reject Refund"
                 >
                   <svg
@@ -2864,7 +2864,7 @@ tr {
           <tr v-if="!isLoading && paginatedTransactions.length === 0">
             <td
               colspan="7"
-              class="py-20 font-serif text-gray-400 text-center italic"
+              class="py-20 font-serif italic text-center text-gray-400"
             >
               {{
                 searchQuery
@@ -2879,7 +2879,7 @@ tr {
 
     <div
       v-if="!isLoading && filteredTransactions.length > 0"
-      class="flex flex-col md:flex-row justify-between items-center gap-4 mt-8 pt-6 border-t border-gray-50"
+      class="flex flex-col items-center justify-between gap-4 pt-6 mt-8 border-t md:flex-row border-gray-50"
     >
       <p class="text-sm text-gray-400">
         Showing <span class="font-bold text-black">{{ showingStart }}</span> to
@@ -2893,7 +2893,7 @@ tr {
         <button
           @click="currentPage--"
           :disabled="currentPage === 1"
-          class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+          class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           Previous
         </button>
@@ -2906,14 +2906,14 @@ tr {
               ? 'bg-black text-white border-black'
               : 'hover:bg-gray-50 border-gray-200'
           "
-          class="w-10 h-10 border rounded-xl font-medium transition flex items-center justify-center text-sm"
+          class="flex items-center justify-center w-10 h-10 text-sm font-medium transition border rounded-xl"
         >
           {{ page }}
         </button>
         <button
           @click="currentPage++"
           :disabled="currentPage === totalPages"
-          class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+          class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           Next
         </button>
@@ -3328,26 +3328,26 @@ tr {
   <div class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[600px]">
     <div v-if="isLoading" class="z-20 absolute inset-0 flex justify-center items-center bg-white/60 backdrop-blur-[2px] rounded-2xl transition-all duration-300">
       <div class="flex flex-col items-center">
-        <div class="border-4 border-gray-200 border-t-black rounded-full w-12 h-12 animate-spin"></div>
-        <p class="mt-4 font-bold text-black text-xs uppercase tracking-widest animate-pulse">Processing Data...</p>
+        <div class="w-12 h-12 border-4 border-gray-200 rounded-full border-t-black animate-spin"></div>
+        <p class="mt-4 text-xs font-bold tracking-widest text-black uppercase animate-pulse">Processing Data...</p>
       </div>
     </div>
 
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+    <div class="flex flex-col items-start justify-between gap-4 mb-8 md:flex-row md:items-center">
       <div>
-        <h1 class="font-bold text-gray-800 text-2xl">Transaction Monitoring</h1>
-        <p class="text-gray-500 text-sm">Manage and track all customer orders in real-time.</p>
+        <h1 class="text-2xl font-bold text-gray-800">Transaction Monitoring</h1>
+        <p class="text-sm text-gray-500">Manage and track all customer orders in real-time.</p>
       </div>
-      <div class="bg-gray-50 px-6 py-3 border border-gray-100 rounded-2xl flex items-center gap-4">
+      <div class="flex items-center gap-4 px-6 py-3 border border-gray-100 bg-gray-50 rounded-2xl">
         <div>
            <span class="block font-black text-[10px] text-gray-400 uppercase tracking-widest">Total Revenue</span>
-           <span class="font-bold text-green-600 text-xl">{{ formatPrice(totalRevenue) }}</span>
+           <span class="text-xl font-bold text-green-600">{{ formatPrice(totalRevenue) }}</span>
         </div>
       </div>
     </div>
 
     <div class="mb-8 space-y-4">
-      <div class="flex items-center gap-4 overflow-x-auto pb-2 border-b border-gray-100">
+      <div class="flex items-center gap-4 pb-2 overflow-x-auto border-b border-gray-100">
         <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap">Transaction:</span>
         <button
           v-for="tab in transactionTabs"
@@ -3369,7 +3369,7 @@ tr {
         </button>
       </div>
 
-      <div class="flex items-center gap-4 overflow-x-auto pb-2 border-b border-gray-100">
+      <div class="flex items-center gap-4 pb-2 overflow-x-auto border-b border-gray-100">
         <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap">Shipping:</span>
         <button
           v-for="tab in shippingTabs"
@@ -3392,30 +3392,30 @@ tr {
       </div>
     </div>
 
-    <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+    <div class="flex flex-col items-center justify-between gap-4 mb-6 md:flex-row">
       <div class="relative w-full md:w-80">
         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
         </span>
-        <input v-model="searchQuery" type="text" placeholder="Search Order ID, Name, or Email..." class="bg-gray-50 pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none w-full text-sm transition" />
+        <input v-model="searchQuery" type="text" placeholder="Search Order ID, Name, or Email..." class="w-full py-2 pl-10 pr-4 text-sm transition border border-gray-200 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-black" />
       </div>
 
       <div class="flex flex-wrap items-center gap-3">
-        <button @click="exportToPDF" :disabled="paginatedTransactions.length === 0" class="flex items-center gap-2 bg-red-50 hover:bg-red-100 text-red-600 disabled:opacity-50 disabled:cursor-not-allowed px-3 py-2 rounded-xl font-bold text-xs uppercase tracking-widest transition">
+        <button @click="exportToPDF" :disabled="paginatedTransactions.length === 0" class="flex items-center gap-2 px-3 py-2 text-xs font-bold tracking-widest text-red-600 uppercase transition bg-red-50 hover:bg-red-100 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
           PDF
         </button>
-        <button @click="exportToExcel" :disabled="paginatedTransactions.length === 0" class="flex items-center gap-2 bg-green-50 hover:bg-green-100 text-green-600 disabled:opacity-50 disabled:cursor-not-allowed px-3 py-2 rounded-xl font-bold text-xs uppercase tracking-widest transition">
+        <button @click="exportToExcel" :disabled="paginatedTransactions.length === 0" class="flex items-center gap-2 px-3 py-2 text-xs font-bold tracking-widest text-green-600 uppercase transition bg-green-50 hover:bg-green-100 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
           Excel
         </button>
         
-        <div class="h-6 w-px bg-gray-200 mx-1"></div>
+        <div class="w-px h-6 mx-1 bg-gray-200"></div>
 
-        <span class="text-xs font-bold text-gray-400 uppercase tracking-wide">Show:</span>
-        <select v-model="itemsPerPage" class="bg-gray-50 px-3 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none text-sm font-bold cursor-pointer">
+        <span class="text-xs font-bold tracking-wide text-gray-400 uppercase">Show:</span>
+        <select v-model="itemsPerPage" class="px-3 py-2 text-sm font-bold border border-gray-200 outline-none cursor-pointer bg-gray-50 rounded-xl focus:ring-2 focus:ring-black">
           <option :value="5">5</option>
           <option :value="10">10</option>
           <option :value="20">20</option>
@@ -3425,9 +3425,9 @@ tr {
     </div>
 
     <div class="overflow-x-auto" id="exportable-table">
-      <div class="hidden export-header mb-4">
+      <div class="hidden mb-4 export-header">
         <h2 class="text-2xl font-bold text-black">Transaction Report</h2>
-        <p class="text-gray-500 text-sm">Generated on: {{ new Date().toLocaleString() }}</p>
+        <p class="text-sm text-gray-500">Generated on: {{ new Date().toLocaleString() }}</p>
       </div>
 
       <table class="w-full text-left border-collapse min-w-[900px]">
@@ -3442,17 +3442,17 @@ tr {
             <th class="pb-4 text-center no-export">Action</th>
           </tr>
         </thead>
-        <tbody class="text-gray-600 text-sm">
-          <tr v-for="trx in paginatedTransactions" :key="trx.id" class="group hover:bg-gray-50 border-b border-gray-50 transition cursor-pointer align-top" @click="goToDetail(trx)">
+        <tbody class="text-sm text-gray-600">
+          <tr v-for="trx in paginatedTransactions" :key="trx.id" class="align-top transition border-b cursor-pointer group hover:bg-gray-50 border-gray-50" @click="goToDetail(trx)">
             <td class="py-6 pl-2 w-[15%]">
               <div class="flex flex-col gap-1">
-                <span class="font-mono font-bold text-black text-sm">{{ trx.order_id }}</span>
-                <span class="text-gray-400 text-xs">{{ formatDate(trx.created_at) }}</span>
+                <span class="font-mono text-sm font-bold text-black">{{ trx.order_id }}</span>
+                <span class="text-xs text-gray-400">{{ formatDate(trx.created_at) }}</span>
                 <div class="mt-2">
                   <span class="block font-bold text-gray-800 text-xs truncate max-w-[150px]">{{ trx.user.first_name }} {{ trx.user.last_name }}</span>
                   <span class="block text-gray-400 text-[10px] truncate max-w-[150px]">{{ trx.user.email }}</span>
                 </div>
-                <div v-if="['pending'].includes(trx.status) && countdowns[trx.id] !== 'Expired'" class="no-export mt-2 flex items-center gap-1 text-red-600 bg-red-50 w-fit px-2 py-1 rounded-md">
+                <div v-if="['pending'].includes(trx.status) && countdowns[trx.id] !== 'Expired'" class="flex items-center gap-1 px-2 py-1 mt-2 text-red-600 rounded-md no-export bg-red-50 w-fit">
                   <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                   <span class="font-mono font-bold text-[10px]">{{ countdowns[trx.id] }}</span>
                 </div>
@@ -3461,11 +3461,11 @@ tr {
 
             <td class="py-6 w-[15%] no-export">
               <div class="flex flex-col gap-2">
-                <div class="flex -space-x-3 overflow-hidden py-1 pl-1">
-                  <img v-for="(detail, idx) in trx.details.slice(0, 3)" :key="idx" :src="detail.product.image" class="inline-block h-10 w-10 rounded-full border-2 border-white object-cover bg-gray-100 shadow-sm" crossorigin="anonymous" />
+                <div class="flex py-1 pl-1 -space-x-3 overflow-hidden">
+                  <img v-for="(detail, idx) in trx.details.slice(0, 3)" :key="idx" :src="detail.product.image" class="inline-block object-cover w-10 h-10 bg-gray-100 border-2 border-white rounded-full shadow-sm" crossorigin="anonymous" />
                   <div v-if="trx.details.length > 3" class="flex items-center justify-center h-10 w-10 rounded-full border-2 border-white bg-gray-100 text-[10px] font-bold text-gray-500">+{{ trx.details.length - 3 }}</div>
                 </div>
-                <span class="text-xs text-gray-500 font-medium">{{ trx.details.length }} Items</span>
+                <span class="text-xs font-medium text-gray-500">{{ trx.details.length }} Items</span>
               </div>
             </td>
 
@@ -3473,7 +3473,7 @@ tr {
               <div class="space-y-4">
                 <div class="flex items-center gap-3">
                   <div class="w-10 h-7 bg-white border border-gray-200 rounded flex justify-center items-center p-0.5 shrink-0 no-export">
-                    <img v-if="getPaymentLogo(trx.payment_method)" :src="getPaymentLogo(trx.payment_method)" class="w-full h-full object-contain" />
+                    <img v-if="getPaymentLogo(trx.payment_method)" :src="getPaymentLogo(trx.payment_method)" class="object-contain w-full h-full" />
                     <span v-else class="text-[8px] font-bold text-gray-400">PAY</span>
                   </div>
                   <div>
@@ -3484,7 +3484,7 @@ tr {
 
                 <div v-if="trx.shipping_method !== 'free'" class="flex items-center gap-3">
                   <div class="w-10 h-7 bg-white border border-gray-200 rounded flex justify-center items-center p-0.5 shrink-0 no-export">
-                    <img v-if="getCourierLogo(trx.courier_company)" :src="getCourierLogo(trx.courier_company)" class="w-full h-full object-contain" />
+                    <img v-if="getCourierLogo(trx.courier_company)" :src="getCourierLogo(trx.courier_company)" class="object-contain w-full h-full" />
                     <span v-else class="text-[8px] font-bold text-gray-400">SHIP</span>
                   </div>
                   <div>
@@ -3495,7 +3495,7 @@ tr {
                 </div>
 
                 <div v-else class="flex items-center gap-3">
-                  <div class="w-10 h-7 bg-gray-100 text-gray-400 rounded flex justify-center items-center p-1 shrink-0 border border-gray-200 no-export">
+                  <div class="flex items-center justify-center w-10 p-1 text-gray-400 bg-gray-100 border border-gray-200 rounded h-7 shrink-0 no-export">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
                   </div>
                   <div>
@@ -3532,10 +3532,10 @@ tr {
 
             <td class="py-6 text-center w-[10%] no-export" @click.stop>
               <div v-if="trx.status === 'refund_requested'" class="flex justify-center gap-2">
-                <button @click="handleRefundAction(trx.id, 'approve')" class="bg-green-100 hover:bg-green-200 p-2 rounded-lg text-green-600 transition shadow-sm" title="Approve Refund">
+                <button @click="handleRefundAction(trx.id, 'approve')" class="p-2 text-green-600 transition bg-green-100 rounded-lg shadow-sm hover:bg-green-200" title="Approve Refund">
                   <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
                 </button>
-                <button @click="handleRefundAction(trx.id, 'reject')" class="bg-red-100 hover:bg-red-200 p-2 rounded-lg text-red-600 transition shadow-sm" title="Reject Refund">
+                <button @click="handleRefundAction(trx.id, 'reject')" class="p-2 text-red-600 transition bg-red-100 rounded-lg shadow-sm hover:bg-red-200" title="Reject Refund">
                   <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
               </div>
@@ -3547,7 +3547,7 @@ tr {
           </tr>
 
           <tr v-if="!isLoading && paginatedTransactions.length === 0">
-            <td colspan="7" class="py-20 font-serif text-gray-400 text-center italic">
+            <td colspan="7" class="py-20 font-serif italic text-center text-gray-400">
               {{ searchQuery ? "No transactions match your search." : "No transactions found." }}
             </td>
           </tr>
@@ -3555,12 +3555,12 @@ tr {
       </table>
     </div>
 
-    <div v-if="!isLoading && filteredTransactions.length > 0" class="flex flex-col md:flex-row justify-between items-center gap-4 mt-8 pt-6 border-t border-gray-50">
+    <div v-if="!isLoading && filteredTransactions.length > 0" class="flex flex-col items-center justify-between gap-4 pt-6 mt-8 border-t md:flex-row border-gray-50">
       <p class="text-sm text-gray-400">Showing <span class="font-bold text-black">{{ showingStart }}</span> to <span class="font-bold text-black">{{ showingEnd }}</span> of <span class="font-bold text-black">{{ filteredTransactions.length }}</span> orders</p>
       <div class="flex gap-2">
-        <button @click="currentPage--" :disabled="currentPage === 1" class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium">Previous</button>
-        <button v-for="page in displayedPages" :key="page" @click="currentPage = page" :class="currentPage === page ? 'bg-black text-white border-black' : 'hover:bg-gray-50 border-gray-200'" class="w-10 h-10 border rounded-xl font-medium transition flex items-center justify-center text-sm">{{ page }}</button>
-        <button @click="currentPage++" :disabled="currentPage === totalPages" class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium">Next</button>
+        <button @click="currentPage--" :disabled="currentPage === 1" class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed">Previous</button>
+        <button v-for="page in displayedPages" :key="page" @click="currentPage = page" :class="currentPage === page ? 'bg-black text-white border-black' : 'hover:bg-gray-50 border-gray-200'" class="flex items-center justify-center w-10 h-10 text-sm font-medium transition border rounded-xl">{{ page }}</button>
+        <button @click="currentPage++" :disabled="currentPage === totalPages" class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed">Next</button>
       </div>
     </div>
   </div>
@@ -3917,10 +3917,10 @@ onUnmounted(() => { if (timerInterval) clearInterval(timerInterval); });
     >
       <div class="flex flex-col items-center">
         <div
-          class="border-4 border-gray-200 border-t-black rounded-full w-12 h-12 animate-spin"
+          class="w-12 h-12 border-4 border-gray-200 rounded-full border-t-black animate-spin"
         ></div>
         <p
-          class="mt-4 font-bold text-black text-xs uppercase tracking-widest animate-pulse"
+          class="mt-4 text-xs font-bold tracking-widest text-black uppercase animate-pulse"
         >
           Processing Data...
         </p>
@@ -3928,23 +3928,23 @@ onUnmounted(() => { if (timerInterval) clearInterval(timerInterval); });
     </div>
 
     <div
-      class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8"
+      class="flex flex-col items-start justify-between gap-4 mb-8 md:flex-row md:items-center"
     >
       <div>
-        <h1 class="font-bold text-gray-800 text-2xl">Transaction Monitoring</h1>
-        <p class="text-gray-500 text-sm">
+        <h1 class="text-2xl font-bold text-gray-800">Transaction Monitoring</h1>
+        <p class="text-sm text-gray-500">
           Manage and track all customer orders in real-time.
         </p>
       </div>
       <div
-        class="bg-gray-50 px-6 py-3 border border-gray-100 rounded-2xl flex items-center gap-4"
+        class="flex items-center gap-4 px-6 py-3 border border-gray-100 bg-gray-50 rounded-2xl"
       >
         <div>
           <span
             class="block font-black text-[10px] text-gray-400 uppercase tracking-widest"
             >Total Revenue</span
           >
-          <span class="font-bold text-green-600 text-xl">{{
+          <span class="text-xl font-bold text-green-600">{{
             formatPrice(totalRevenue)
           }}</span>
         </div>
@@ -3953,7 +3953,7 @@ onUnmounted(() => { if (timerInterval) clearInterval(timerInterval); });
 
     <div class="mb-8 space-y-4">
       <div
-        class="flex items-center gap-4 overflow-x-auto pb-2 border-b border-gray-100"
+        class="flex items-center gap-4 pb-2 overflow-x-auto border-b border-gray-100"
       >
         <span
           class="text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap"
@@ -3986,7 +3986,7 @@ onUnmounted(() => { if (timerInterval) clearInterval(timerInterval); });
       </div>
 
       <div
-        class="flex items-center gap-4 overflow-x-auto pb-2 border-b border-gray-100"
+        class="flex items-center gap-4 pb-2 overflow-x-auto border-b border-gray-100"
       >
         <span
           class="text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap"
@@ -4020,7 +4020,7 @@ onUnmounted(() => { if (timerInterval) clearInterval(timerInterval); });
     </div>
 
     <div
-      class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6"
+      class="flex flex-col items-center justify-between gap-4 mb-6 md:flex-row"
     >
       <div class="relative w-full md:w-80">
         <span
@@ -4045,7 +4045,7 @@ onUnmounted(() => { if (timerInterval) clearInterval(timerInterval); });
           v-model="searchQuery"
           type="text"
           placeholder="Search Order ID, Name, or Email..."
-          class="bg-gray-50 pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none w-full text-sm transition"
+          class="w-full py-2 pl-10 pr-4 text-sm transition border border-gray-200 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
         />
       </div>
 
@@ -4053,7 +4053,7 @@ onUnmounted(() => { if (timerInterval) clearInterval(timerInterval); });
         <button
           @click="exportToPDF"
           :disabled="paginatedTransactions.length === 0"
-          class="flex items-center gap-2 bg-red-50 hover:bg-red-100 text-red-600 disabled:opacity-50 disabled:cursor-not-allowed px-3 py-2 rounded-xl font-bold text-xs uppercase tracking-widest transition"
+          class="flex items-center gap-2 px-3 py-2 text-xs font-bold tracking-widest text-red-600 uppercase transition bg-red-50 hover:bg-red-100 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -4074,7 +4074,7 @@ onUnmounted(() => { if (timerInterval) clearInterval(timerInterval); });
         <button
           @click="exportToExcel"
           :disabled="paginatedTransactions.length === 0"
-          class="flex items-center gap-2 bg-green-50 hover:bg-green-100 text-green-600 disabled:opacity-50 disabled:cursor-not-allowed px-3 py-2 rounded-xl font-bold text-xs uppercase tracking-widest transition"
+          class="flex items-center gap-2 px-3 py-2 text-xs font-bold tracking-widest text-green-600 uppercase transition bg-green-50 hover:bg-green-100 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -4093,14 +4093,14 @@ onUnmounted(() => { if (timerInterval) clearInterval(timerInterval); });
           Excel
         </button>
 
-        <div class="h-6 w-px bg-gray-200 mx-1"></div>
+        <div class="w-px h-6 mx-1 bg-gray-200"></div>
 
-        <span class="text-xs font-bold text-gray-400 uppercase tracking-wide"
+        <span class="text-xs font-bold tracking-wide text-gray-400 uppercase"
           >Show:</span
         >
         <select
           v-model="itemsPerPage"
-          class="bg-gray-50 px-3 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none text-sm font-bold cursor-pointer"
+          class="px-3 py-2 text-sm font-bold border border-gray-200 outline-none cursor-pointer bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
         >
           <option :value="5">5</option>
           <option :value="10">10</option>
@@ -4111,9 +4111,9 @@ onUnmounted(() => { if (timerInterval) clearInterval(timerInterval); });
     </div>
 
     <div class="overflow-x-auto" id="exportable-table">
-      <div class="hidden export-header mb-4">
+      <div class="hidden mb-4 export-header">
         <h2 class="text-2xl font-bold text-black">Transaction Report</h2>
-        <p class="text-gray-500 text-sm">
+        <p class="text-sm text-gray-500">
           Generated on: {{ new Date().toLocaleString() }}
         </p>
       </div>
@@ -4132,19 +4132,19 @@ onUnmounted(() => { if (timerInterval) clearInterval(timerInterval); });
             <th class="pb-4 text-center no-export">Action</th>
           </tr>
         </thead>
-        <tbody class="text-gray-600 text-sm">
+        <tbody class="text-sm text-gray-600">
           <tr
             v-for="trx in paginatedTransactions"
             :key="trx.id"
-            class="group hover:bg-gray-50 border-b border-gray-50 transition cursor-pointer align-top"
+            class="align-top transition border-b cursor-pointer group hover:bg-gray-50 border-gray-50"
             @click="goToDetail(trx)"
           >
             <td class="py-6 pl-2 w-[15%]">
               <div class="flex flex-col gap-1">
-                <span class="font-mono font-bold text-black text-sm">{{
+                <span class="font-mono text-sm font-bold text-black">{{
                   trx.order_id
                 }}</span>
-                <span class="text-gray-400 text-xs">{{
+                <span class="text-xs text-gray-400">{{
                   formatDate(trx.created_at)
                 }}</span>
                 <div class="mt-2">
@@ -4164,7 +4164,7 @@ onUnmounted(() => { if (timerInterval) clearInterval(timerInterval); });
                     ['pending'].includes(trx.status) &&
                     countdowns[trx.id] !== 'Expired'
                   "
-                  class="no-export mt-2 flex items-center gap-1 text-red-600 bg-red-50 w-fit px-2 py-1 rounded-md"
+                  class="flex items-center gap-1 px-2 py-1 mt-2 text-red-600 rounded-md no-export bg-red-50 w-fit"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -4189,12 +4189,12 @@ onUnmounted(() => { if (timerInterval) clearInterval(timerInterval); });
 
             <td class="py-6 w-[15%] no-export">
               <div class="flex flex-col gap-2">
-                <div class="flex -space-x-3 overflow-hidden py-1 pl-1">
+                <div class="flex py-1 pl-1 -space-x-3 overflow-hidden">
                   <img
                     v-for="(detail, idx) in trx.details.slice(0, 3)"
                     :key="idx"
                     :src="detail.product.image"
-                    class="inline-block h-10 w-10 rounded-full border-2 border-white object-cover bg-gray-100 shadow-sm"
+                    class="inline-block object-cover w-10 h-10 bg-gray-100 border-2 border-white rounded-full shadow-sm"
                     crossorigin="anonymous"
                   />
                   <div
@@ -4204,7 +4204,7 @@ onUnmounted(() => { if (timerInterval) clearInterval(timerInterval); });
                     +{{ trx.details.length - 3 }}
                   </div>
                 </div>
-                <span class="text-xs text-gray-500 font-medium"
+                <span class="text-xs font-medium text-gray-500"
                   >{{ trx.details.length }} Items</span
                 >
               </div>
@@ -4219,7 +4219,7 @@ onUnmounted(() => { if (timerInterval) clearInterval(timerInterval); });
                     <img
                       v-if="getPaymentLogo(trx.payment_method)"
                       :src="getPaymentLogo(trx.payment_method)"
-                      class="w-full h-full object-contain"
+                      class="object-contain w-full h-full"
                     />
                     <span v-else class="text-[8px] font-bold text-gray-400"
                       >PAY</span
@@ -4252,7 +4252,7 @@ onUnmounted(() => { if (timerInterval) clearInterval(timerInterval); });
                     <img
                       v-if="getCourierLogo(trx.courier_company)"
                       :src="getCourierLogo(trx.courier_company)"
-                      class="w-full h-full object-contain"
+                      class="object-contain w-full h-full"
                     />
                     <span v-else class="text-[8px] font-bold text-gray-400"
                       >SHIP</span
@@ -4284,7 +4284,7 @@ onUnmounted(() => { if (timerInterval) clearInterval(timerInterval); });
 
                 <div v-else class="flex items-center gap-3">
                   <div
-                    class="w-10 h-7 bg-gray-100 text-gray-400 rounded flex justify-center items-center p-1 shrink-0 border border-gray-200 no-export"
+                    class="flex items-center justify-center w-10 p-1 text-gray-400 bg-gray-100 border border-gray-200 rounded h-7 shrink-0 no-export"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -4366,7 +4366,7 @@ onUnmounted(() => { if (timerInterval) clearInterval(timerInterval); });
               >
                 <button
                   @click="handleRefundAction(trx.id, 'approve')"
-                  class="bg-green-100 hover:bg-green-200 p-2 rounded-lg text-green-600 transition shadow-sm"
+                  class="p-2 text-green-600 transition bg-green-100 rounded-lg shadow-sm hover:bg-green-200"
                   title="Approve Refund"
                 >
                   <svg
@@ -4386,7 +4386,7 @@ onUnmounted(() => { if (timerInterval) clearInterval(timerInterval); });
                 </button>
                 <button
                   @click="handleRefundAction(trx.id, 'reject')"
-                  class="bg-red-100 hover:bg-red-200 p-2 rounded-lg text-red-600 transition shadow-sm"
+                  class="p-2 text-red-600 transition bg-red-100 rounded-lg shadow-sm hover:bg-red-200"
                   title="Reject Refund"
                 >
                   <svg
@@ -4425,7 +4425,7 @@ onUnmounted(() => { if (timerInterval) clearInterval(timerInterval); });
           <tr v-if="!isLoading && paginatedTransactions.length === 0">
             <td
               colspan="7"
-              class="py-20 font-serif text-gray-400 text-center italic"
+              class="py-20 font-serif italic text-center text-gray-400"
             >
               {{
                 searchQuery
@@ -4440,7 +4440,7 @@ onUnmounted(() => { if (timerInterval) clearInterval(timerInterval); });
 
     <div
       v-if="!isLoading && filteredTransactions.length > 0"
-      class="flex flex-col md:flex-row justify-between items-center gap-4 mt-8 pt-6 border-t border-gray-50"
+      class="flex flex-col items-center justify-between gap-4 pt-6 mt-8 border-t md:flex-row border-gray-50"
     >
       <p class="text-sm text-gray-400">
         Showing <span class="font-bold text-black">{{ showingStart }}</span> to
@@ -4454,7 +4454,7 @@ onUnmounted(() => { if (timerInterval) clearInterval(timerInterval); });
         <button
           @click="currentPage--"
           :disabled="currentPage === 1"
-          class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+          class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           Previous
         </button>
@@ -4467,14 +4467,14 @@ onUnmounted(() => { if (timerInterval) clearInterval(timerInterval); });
               ? 'bg-black text-white border-black'
               : 'hover:bg-gray-50 border-gray-200'
           "
-          class="w-10 h-10 border rounded-xl font-medium transition flex items-center justify-center text-sm"
+          class="flex items-center justify-center w-10 h-10 text-sm font-medium transition border rounded-xl"
         >
           {{ page }}
         </button>
         <button
           @click="currentPage++"
           :disabled="currentPage === totalPages"
-          class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+          class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           Next
         </button>
@@ -4993,10 +4993,10 @@ onUnmounted(() => {
     >
       <div class="flex flex-col items-center">
         <div
-          class="border-4 border-gray-200 border-t-black rounded-full w-12 h-12 animate-spin"
+          class="w-12 h-12 border-4 border-gray-200 rounded-full border-t-black animate-spin"
         ></div>
         <p
-          class="mt-4 font-bold text-black text-xs uppercase tracking-widest animate-pulse"
+          class="mt-4 text-xs font-bold tracking-widest text-black uppercase animate-pulse"
         >
           Processing Data...
         </p>
@@ -5004,23 +5004,23 @@ onUnmounted(() => {
     </div>
 
     <div
-      class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8"
+      class="flex flex-col items-start justify-between gap-4 mb-8 md:flex-row md:items-center"
     >
       <div>
-        <h1 class="font-bold text-gray-800 text-2xl">Transaction Monitoring</h1>
-        <p class="text-gray-500 text-sm">
+        <h1 class="text-2xl font-bold text-gray-800">Transaction Monitoring</h1>
+        <p class="text-sm text-gray-500">
           Manage and track all customer orders in real-time.
         </p>
       </div>
       <div
-        class="bg-gray-50 px-6 py-3 border border-gray-100 rounded-2xl flex items-center gap-4"
+        class="flex items-center gap-4 px-6 py-3 border border-gray-100 bg-gray-50 rounded-2xl"
       >
         <div>
           <span
             class="block font-black text-[10px] text-gray-400 uppercase tracking-widest"
             >Total Revenue</span
           >
-          <span class="font-bold text-green-600 text-xl">{{
+          <span class="text-xl font-bold text-green-600">{{
             formatPrice(totalRevenue)
           }}</span>
         </div>
@@ -5029,7 +5029,7 @@ onUnmounted(() => {
 
     <div class="mb-8 space-y-4">
       <div
-        class="flex items-center gap-4 overflow-x-auto pb-2 border-b border-gray-100"
+        class="flex items-center gap-4 pb-2 overflow-x-auto border-b border-gray-100"
       >
         <span
           class="text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap"
@@ -5062,7 +5062,7 @@ onUnmounted(() => {
       </div>
 
       <div
-        class="flex items-center gap-4 overflow-x-auto pb-2 border-b border-gray-100"
+        class="flex items-center gap-4 pb-2 overflow-x-auto border-b border-gray-100"
       >
         <span
           class="text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap"
@@ -5096,7 +5096,7 @@ onUnmounted(() => {
     </div>
 
     <div
-      class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6"
+      class="flex flex-col items-center justify-between gap-4 mb-6 md:flex-row"
     >
       <div class="relative w-full md:w-80">
         <span
@@ -5121,7 +5121,7 @@ onUnmounted(() => {
           v-model="searchQuery"
           type="text"
           placeholder="Search Order ID, Name, or Email..."
-          class="bg-gray-50 pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none w-full text-sm transition"
+          class="w-full py-2 pl-10 pr-4 text-sm transition border border-gray-200 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
         />
       </div>
 
@@ -5129,7 +5129,7 @@ onUnmounted(() => {
         <button
           @click="exportToPDF"
           :disabled="paginatedTransactions.length === 0"
-          class="flex items-center gap-2 bg-red-50 hover:bg-red-100 text-red-600 disabled:opacity-50 disabled:cursor-not-allowed px-3 py-2 rounded-xl font-bold text-xs uppercase tracking-widest transition"
+          class="flex items-center gap-2 px-3 py-2 text-xs font-bold tracking-widest text-red-600 uppercase transition bg-red-50 hover:bg-red-100 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -5150,7 +5150,7 @@ onUnmounted(() => {
         <button
           @click="exportToExcel"
           :disabled="paginatedTransactions.length === 0"
-          class="flex items-center gap-2 bg-green-50 hover:bg-green-100 text-green-600 disabled:opacity-50 disabled:cursor-not-allowed px-3 py-2 rounded-xl font-bold text-xs uppercase tracking-widest transition"
+          class="flex items-center gap-2 px-3 py-2 text-xs font-bold tracking-widest text-green-600 uppercase transition bg-green-50 hover:bg-green-100 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -5169,14 +5169,14 @@ onUnmounted(() => {
           Excel
         </button>
 
-        <div class="h-6 w-px bg-gray-200 mx-1"></div>
+        <div class="w-px h-6 mx-1 bg-gray-200"></div>
 
-        <span class="text-xs font-bold text-gray-400 uppercase tracking-wide"
+        <span class="text-xs font-bold tracking-wide text-gray-400 uppercase"
           >Show:</span
         >
         <select
           v-model="itemsPerPage"
-          class="bg-gray-50 px-3 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none text-sm font-bold cursor-pointer"
+          class="px-3 py-2 text-sm font-bold border border-gray-200 outline-none cursor-pointer bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
         >
           <option :value="5">5</option>
           <option :value="10">10</option>
@@ -5187,9 +5187,9 @@ onUnmounted(() => {
     </div>
 
     <div class="overflow-x-auto" id="exportable-table">
-      <div class="hidden export-header mb-4">
+      <div class="hidden mb-4 export-header">
         <h2 class="text-2xl font-bold text-black">Transaction Report</h2>
-        <p class="text-gray-500 text-sm">
+        <p class="text-sm text-gray-500">
           Generated on: {{ new Date().toLocaleString() }}
         </p>
       </div>
@@ -5208,19 +5208,19 @@ onUnmounted(() => {
             <th class="pb-4 text-center no-export">Action</th>
           </tr>
         </thead>
-        <tbody class="text-gray-600 text-sm">
+        <tbody class="text-sm text-gray-600">
           <tr
             v-for="trx in paginatedTransactions"
             :key="trx.id"
-            class="group hover:bg-gray-50 border-b border-gray-50 transition cursor-pointer align-top"
+            class="align-top transition border-b cursor-pointer group hover:bg-gray-50 border-gray-50"
             @click="goToDetail(trx)"
           >
             <td class="py-6 pl-2 w-[15%]">
               <div class="flex flex-col gap-1">
-                <span class="font-mono font-bold text-black text-sm">{{
+                <span class="font-mono text-sm font-bold text-black">{{
                   trx.order_id
                 }}</span>
-                <span class="text-gray-400 text-xs">{{
+                <span class="text-xs text-gray-400">{{
                   formatDate(trx.created_at)
                 }}</span>
                 <div class="mt-2">
@@ -5240,7 +5240,7 @@ onUnmounted(() => {
                     ['pending', 'awaiting_payment'].includes(trx.status) &&
                     countdowns[trx.id] !== 'Expired'
                   "
-                  class="no-export mt-2 flex items-center gap-1 text-red-600 bg-red-50 w-fit px-2 py-1 rounded-md"
+                  class="flex items-center gap-1 px-2 py-1 mt-2 text-red-600 rounded-md no-export bg-red-50 w-fit"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -5265,12 +5265,12 @@ onUnmounted(() => {
 
             <td class="py-6 w-[15%] no-export">
               <div class="flex flex-col gap-2">
-                <div class="flex -space-x-3 overflow-hidden py-1 pl-1">
+                <div class="flex py-1 pl-1 -space-x-3 overflow-hidden">
                   <img
                     v-for="(detail, idx) in trx.details.slice(0, 3)"
                     :key="idx"
                     :src="detail.product.image"
-                    class="inline-block h-10 w-10 rounded-full border-2 border-white object-cover bg-gray-100 shadow-sm"
+                    class="inline-block object-cover w-10 h-10 bg-gray-100 border-2 border-white rounded-full shadow-sm"
                   />
                   <div
                     v-if="trx.details.length > 3"
@@ -5279,7 +5279,7 @@ onUnmounted(() => {
                     +{{ trx.details.length - 3 }}
                   </div>
                 </div>
-                <span class="text-xs text-gray-500 font-medium"
+                <span class="text-xs font-medium text-gray-500"
                   >{{ trx.details.length }} Items</span
                 >
               </div>
@@ -5294,7 +5294,7 @@ onUnmounted(() => {
                     <img
                       v-if="getPaymentLogo(trx.payment_method)"
                       :src="getPaymentLogo(trx.payment_method)"
-                      class="w-full h-full object-contain"
+                      class="object-contain w-full h-full"
                     />
                     <span v-else class="text-[8px] font-bold text-gray-400"
                       >PAY</span
@@ -5327,7 +5327,7 @@ onUnmounted(() => {
                     <img
                       v-if="getCourierLogo(trx.courier_company)"
                       :src="getCourierLogo(trx.courier_company)"
-                      class="w-full h-full object-contain"
+                      class="object-contain w-full h-full"
                     />
                     <span v-else class="text-[8px] font-bold text-gray-400"
                       >SHIP</span
@@ -5351,7 +5351,7 @@ onUnmounted(() => {
 
                 <div v-else class="flex items-center gap-3">
                   <div
-                    class="w-10 h-7 bg-gray-100 text-gray-400 rounded flex justify-center items-center p-1 shrink-0 border border-gray-200 no-export"
+                    class="flex items-center justify-center w-10 p-1 text-gray-400 bg-gray-100 border border-gray-200 rounded h-7 shrink-0 no-export"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -5448,7 +5448,7 @@ onUnmounted(() => {
               >
                 <button
                   @click="handleRefundAction(trx.id, 'approve')"
-                  class="bg-green-100 hover:bg-green-200 p-2 rounded-lg text-green-600 transition shadow-sm"
+                  class="p-2 text-green-600 transition bg-green-100 rounded-lg shadow-sm hover:bg-green-200"
                   title="Approve Refund"
                 >
                   <svg
@@ -5468,7 +5468,7 @@ onUnmounted(() => {
                 </button>
                 <button
                   @click="handleRefundAction(trx.id, 'reject')"
-                  class="bg-red-100 hover:bg-red-200 p-2 rounded-lg text-red-600 transition shadow-sm"
+                  class="p-2 text-red-600 transition bg-red-100 rounded-lg shadow-sm hover:bg-red-200"
                   title="Reject Refund"
                 >
                   <svg
@@ -5507,7 +5507,7 @@ onUnmounted(() => {
           <tr v-if="!isLoading && paginatedTransactions.length === 0">
             <td
               colspan="7"
-              class="py-20 font-serif text-gray-400 text-center italic"
+              class="py-20 font-serif italic text-center text-gray-400"
             >
               {{
                 searchQuery
@@ -5522,7 +5522,7 @@ onUnmounted(() => {
 
     <div
       v-if="!isLoading && filteredTransactions.length > 0"
-      class="flex flex-col md:flex-row justify-between items-center gap-4 mt-8 pt-6 border-t border-gray-50"
+      class="flex flex-col items-center justify-between gap-4 pt-6 mt-8 border-t md:flex-row border-gray-50"
     >
       <p class="text-sm text-gray-400">
         Showing <span class="font-bold text-black">{{ showingStart }}</span> to
@@ -5536,7 +5536,7 @@ onUnmounted(() => {
         <button
           @click="currentPage--"
           :disabled="currentPage === 1"
-          class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+          class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           Previous
         </button>
@@ -5554,7 +5554,7 @@ onUnmounted(() => {
               ? 'cursor-default border-transparent hover:bg-transparent'
               : 'border',
           ]"
-          class="w-10 h-10 rounded-xl font-medium transition flex items-center justify-center text-sm"
+          class="flex items-center justify-center w-10 h-10 text-sm font-medium transition rounded-xl"
         >
           {{ page }}
         </button>
@@ -5562,7 +5562,7 @@ onUnmounted(() => {
         <button
           @click="currentPage++"
           :disabled="currentPage === totalPages"
-          class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+          class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           Next
         </button>
@@ -6615,23 +6615,23 @@ onUnmounted(() => {
     class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[600px]"
   >
     <div
-      class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8"
+      class="flex flex-col items-start justify-between gap-4 mb-8 md:flex-row md:items-center"
     >
       <div>
-        <h1 class="font-bold text-gray-800 text-2xl">Transaction Monitoring</h1>
-        <p class="text-gray-500 text-sm">
+        <h1 class="text-2xl font-bold text-gray-800">Transaction Monitoring</h1>
+        <p class="text-sm text-gray-500">
           Manage and track all customer orders in real-time.
         </p>
       </div>
       <div
-        class="bg-gray-50 px-6 py-3 border border-gray-100 rounded-2xl flex items-center gap-4"
+        class="flex items-center gap-4 px-6 py-3 border border-gray-100 bg-gray-50 rounded-2xl"
       >
         <div>
           <span
             class="block font-black text-[10px] text-gray-400 uppercase tracking-widest"
             >Total Revenue</span
           >
-          <span class="font-bold text-green-600 text-xl">{{
+          <span class="text-xl font-bold text-green-600">{{
             formatPrice(totalRevenue)
           }}</span>
         </div>
@@ -6639,7 +6639,7 @@ onUnmounted(() => {
     </div>
 
     <!-- <div class="mb-8 space-y-4">
-      <div class="flex items-center gap-4 overflow-x-auto pb-2 border-b border-gray-100">
+      <div class="flex items-center gap-4 pb-2 overflow-x-auto border-b border-gray-100">
         <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap">Transaction:</span>
         <button
           v-for="tab in transactionTabs"
@@ -6667,7 +6667,7 @@ onUnmounted(() => {
         </button>
       </div>
 
-      <div class="flex items-center gap-4 overflow-x-auto pb-2 border-b border-gray-100">
+      <div class="flex items-center gap-4 pb-2 overflow-x-auto border-b border-gray-100">
         <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap">Shipping:</span>
         <button
           v-for="tab in shippingTabs"
@@ -6697,7 +6697,7 @@ onUnmounted(() => {
     </div> -->
 
     <div class="mb-8 border-b border-gray-200">
-      <div class="flex overflow-x-auto scrollbar-hide gap-6">
+      <div class="flex gap-6 overflow-x-auto scrollbar-hide">
         <button
           v-for="tab in unifiedTabs"
           :key="tab.value"
@@ -6726,7 +6726,7 @@ onUnmounted(() => {
     </div>
 
     <div
-      class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6"
+      class="flex flex-col items-center justify-between gap-4 mb-6 md:flex-row"
     >
       <div class="relative w-full md:w-80">
         <span
@@ -6751,7 +6751,7 @@ onUnmounted(() => {
           v-model="searchQuery"
           type="text"
           placeholder="Search Order ID, Name, or Email..."
-          class="bg-gray-50 pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none w-full text-sm transition"
+          class="w-full py-2 pl-10 pr-4 text-sm transition border border-gray-200 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
         />
       </div>
 
@@ -6759,7 +6759,7 @@ onUnmounted(() => {
         <button
           @click="exportToPDF"
           :disabled="paginatedTransactions.length === 0 || isLoading"
-          class="flex items-center gap-2 bg-red-50 hover:bg-red-100 text-red-600 disabled:opacity-50 disabled:cursor-not-allowed px-3 py-2 rounded-xl font-bold text-xs uppercase tracking-widest transition"
+          class="flex items-center gap-2 px-3 py-2 text-xs font-bold tracking-widest text-red-600 uppercase transition bg-red-50 hover:bg-red-100 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -6780,7 +6780,7 @@ onUnmounted(() => {
         <button
           @click="exportToExcel"
           :disabled="paginatedTransactions.length === 0 || isLoading"
-          class="flex items-center gap-2 bg-green-50 hover:bg-green-100 text-green-600 disabled:opacity-50 disabled:cursor-not-allowed px-3 py-2 rounded-xl font-bold text-xs uppercase tracking-widest transition"
+          class="flex items-center gap-2 px-3 py-2 text-xs font-bold tracking-widest text-green-600 uppercase transition bg-green-50 hover:bg-green-100 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -6799,14 +6799,14 @@ onUnmounted(() => {
           Excel
         </button>
 
-        <div class="h-6 w-px bg-gray-200 mx-1"></div>
+        <div class="w-px h-6 mx-1 bg-gray-200"></div>
 
-        <span class="text-xs font-bold text-gray-400 uppercase tracking-wide"
+        <span class="text-xs font-bold tracking-wide text-gray-400 uppercase"
           >Show:</span
         >
         <select
           v-model="itemsPerPage"
-          class="bg-gray-50 px-3 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none text-sm font-bold cursor-pointer"
+          class="px-3 py-2 text-sm font-bold border border-gray-200 outline-none cursor-pointer bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
         >
           <option :value="5">5</option>
           <option :value="10">10</option>
@@ -6835,57 +6835,57 @@ onUnmounted(() => {
           <tr v-for="i in 5" :key="i" class="border-b border-gray-50">
             <td class="py-6 pl-2 w-[15%]">
               <div class="space-y-2">
-                <div class="h-4 w-24 bg-gray-200 rounded animate-pulse"></div>
-                <div class="h-3 w-16 bg-gray-100 rounded animate-pulse"></div>
+                <div class="w-24 h-4 bg-gray-200 rounded animate-pulse"></div>
+                <div class="w-16 h-3 bg-gray-100 rounded animate-pulse"></div>
                 <div
-                  class="h-3 w-20 bg-gray-200 rounded animate-pulse mt-4"
+                  class="w-20 h-3 mt-4 bg-gray-200 rounded animate-pulse"
                 ></div>
               </div>
             </td>
             <td class="py-6 w-[15%]">
               <div class="flex -space-x-3">
                 <div
-                  class="h-10 w-10 rounded-full bg-gray-200 border-2 border-white animate-pulse"
+                  class="w-10 h-10 bg-gray-200 border-2 border-white rounded-full animate-pulse"
                 ></div>
                 <div
-                  class="h-10 w-10 rounded-full bg-gray-200 border-2 border-white animate-pulse"
+                  class="w-10 h-10 bg-gray-200 border-2 border-white rounded-full animate-pulse"
                 ></div>
               </div>
             </td>
             <td class="py-6 w-[20%]">
               <div class="space-y-4">
-                <div class="flex gap-3 items-center">
-                  <div class="w-10 h-7 bg-gray-200 rounded animate-pulse"></div>
-                  <div class="h-3 w-16 bg-gray-200 rounded animate-pulse"></div>
+                <div class="flex items-center gap-3">
+                  <div class="w-10 bg-gray-200 rounded h-7 animate-pulse"></div>
+                  <div class="w-16 h-3 bg-gray-200 rounded animate-pulse"></div>
                 </div>
-                <div class="flex gap-3 items-center">
-                  <div class="w-10 h-7 bg-gray-200 rounded animate-pulse"></div>
-                  <div class="h-3 w-20 bg-gray-200 rounded animate-pulse"></div>
+                <div class="flex items-center gap-3">
+                  <div class="w-10 bg-gray-200 rounded h-7 animate-pulse"></div>
+                  <div class="w-20 h-3 bg-gray-200 rounded animate-pulse"></div>
                 </div>
               </div>
             </td>
             <td class="py-6 w-[15%] pr-2">
               <div class="space-y-2">
-                <div class="h-3 w-full bg-gray-100 rounded animate-pulse"></div>
-                <div class="h-3 w-full bg-gray-100 rounded animate-pulse"></div>
+                <div class="w-full h-3 bg-gray-100 rounded animate-pulse"></div>
+                <div class="w-full h-3 bg-gray-100 rounded animate-pulse"></div>
                 <div
-                  class="h-4 w-full bg-gray-200 rounded animate-pulse mt-2"
+                  class="w-full h-4 mt-2 bg-gray-200 rounded animate-pulse"
                 ></div>
               </div>
             </td>
             <td class="py-6 w-[10%]">
               <div
-                class="h-5 w-16 bg-gray-200 rounded-full animate-pulse"
+                class="w-16 h-5 bg-gray-200 rounded-full animate-pulse"
               ></div>
             </td>
             <td class="py-6 w-[10%]">
               <div
-                class="h-5 w-20 bg-gray-200 rounded-full animate-pulse"
+                class="w-20 h-5 bg-gray-200 rounded-full animate-pulse"
               ></div>
             </td>
             <td class="py-6 w-[10%]">
               <div
-                class="h-5 w-16 mx-auto bg-gray-200 rounded-full animate-pulse"
+                class="w-16 h-5 mx-auto bg-gray-200 rounded-full animate-pulse"
               ></div>
             </td>
           </tr>
@@ -6894,9 +6894,9 @@ onUnmounted(() => {
     </div>
 
     <div v-else class="overflow-x-auto" id="exportable-table">
-      <div class="hidden export-header mb-4">
+      <div class="hidden mb-4 export-header">
         <h2 class="text-2xl font-bold text-black">Transaction Report</h2>
-        <p class="text-gray-500 text-sm">
+        <p class="text-sm text-gray-500">
           Generated on: {{ new Date().toLocaleString() }}
         </p>
       </div>
@@ -6917,20 +6917,20 @@ onUnmounted(() => {
         </thead>
         <tbody
           v-if="paginatedTransactions.length > 0"
-          class="text-gray-600 text-sm"
+          class="text-sm text-gray-600"
         >
           <tr
             v-for="trx in paginatedTransactions"
             :key="trx.id"
-            class="group hover:bg-gray-50 border-b border-gray-50 transition cursor-pointer align-top"
+            class="align-top transition border-b cursor-pointer group hover:bg-gray-50 border-gray-50"
             @click="goToDetail(trx)"
           >
             <td class="py-6 pl-2 w-[15%]">
               <div class="flex flex-col gap-1">
-                <span class="font-mono font-bold text-black text-sm">{{
+                <span class="font-mono text-sm font-bold text-black">{{
                   trx.order_id
                 }}</span>
-                <span class="text-gray-400 text-xs">{{
+                <span class="text-xs text-gray-400">{{
                   formatDate(trx.created_at)
                 }}</span>
                 <div class="mt-2">
@@ -6951,7 +6951,7 @@ onUnmounted(() => {
                   v-if="
                     trx.status === 'pending' && countdowns[trx.id] !== 'Expired'
                   "
-                  class="no-export mt-2 flex items-center gap-1 text-red-600 bg-red-50 w-fit px-2 py-1 rounded-md"
+                  class="flex items-center gap-1 px-2 py-1 mt-2 text-red-600 rounded-md no-export bg-red-50 w-fit"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -6976,12 +6976,12 @@ onUnmounted(() => {
 
             <td class="py-6 w-[15%] no-export">
               <div class="flex flex-col gap-2">
-                <div class="flex -space-x-3 overflow-hidden py-1 pl-1">
+                <div class="flex py-1 pl-1 -space-x-3 overflow-hidden">
                   <img
                     v-for="(detail, idx) in trx.details.slice(0, 3)"
                     :key="idx"
                     :src="detail.product.image"
-                    class="inline-block h-10 w-10 rounded-full border-2 border-white object-cover bg-gray-100 shadow-sm"
+                    class="inline-block object-cover w-10 h-10 bg-gray-100 border-2 border-white rounded-full shadow-sm"
                   />
                   <div
                     v-if="trx.details.length > 3"
@@ -6990,7 +6990,7 @@ onUnmounted(() => {
                     +{{ trx.details.length - 3 }}
                   </div>
                 </div>
-                <span class="text-xs text-gray-500 font-medium"
+                <span class="text-xs font-medium text-gray-500"
                   >{{ trx.details.length }} Items</span
                 >
               </div>
@@ -7005,7 +7005,7 @@ onUnmounted(() => {
                     <img
                       v-if="getPaymentLogo(trx.payment_method)"
                       :src="getPaymentLogo(trx.payment_method)"
-                      class="w-full h-full object-contain"
+                      class="object-contain w-full h-full"
                     />
                     <span v-else class="text-[8px] font-bold text-gray-400"
                       >PAY</span
@@ -7038,7 +7038,7 @@ onUnmounted(() => {
                     <img
                       v-if="getCourierLogo(trx.courier_company)"
                       :src="getCourierLogo(trx.courier_company)"
-                      class="w-full h-full object-contain"
+                      class="object-contain w-full h-full"
                     />
                     <span v-else class="text-[8px] font-bold text-gray-400"
                       >SHIP</span
@@ -7062,7 +7062,7 @@ onUnmounted(() => {
 
                 <div v-else class="flex items-center gap-3">
                   <div
-                    class="w-10 h-7 bg-gray-100 text-gray-400 rounded flex justify-center items-center p-1 shrink-0 border border-gray-200 no-export"
+                    class="flex items-center justify-center w-10 p-1 text-gray-400 bg-gray-100 border border-gray-200 rounded h-7 shrink-0 no-export"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -7184,7 +7184,7 @@ onUnmounted(() => {
               >
                 <button
                   @click="handleRefundAction(trx.id, 'approve')"
-                  class="bg-green-100 hover:bg-green-200 p-2 rounded-lg text-green-600 transition shadow-sm"
+                  class="p-2 text-green-600 transition bg-green-100 rounded-lg shadow-sm hover:bg-green-200"
                   title="Approve Refund"
                 >
                   <svg
@@ -7204,7 +7204,7 @@ onUnmounted(() => {
                 </button>
                 <button
                   @click="handleRefundAction(trx.id, 'reject')"
-                  class="bg-red-100 hover:bg-red-200 p-2 rounded-lg text-red-600 transition shadow-sm"
+                  class="p-2 text-red-600 transition bg-red-100 rounded-lg shadow-sm hover:bg-red-200"
                   title="Reject Refund"
                 >
                   <svg
@@ -7242,7 +7242,7 @@ onUnmounted(() => {
               
               <div v-if="trx.status === 'refund_requested'" class="flex flex-col items-center gap-3">
                 
-                <div class="bg-red-50 border border-red-100 p-3 rounded-xl w-full text-left">
+                <div class="w-full p-3 text-left border border-red-100 bg-red-50 rounded-xl">
                   <p class="font-bold text-[9px] text-red-600 uppercase tracking-widest mb-1 border-b border-red-100 pb-1">Refund Reason</p>
                   <p class="text-[10px] text-gray-700 italic line-clamp-3 mb-2" :title="trx.refund_reason">
                     "{{ trx.refund_reason || 'No reason provided' }}"
@@ -7253,7 +7253,7 @@ onUnmounted(() => {
                   </a>
                 </div>
 
-                <div class="flex justify-center gap-2 w-full">
+                <div class="flex justify-center w-full gap-2">
                   <button
                     @click="handleRefundAction(trx.id, 'approve')"
                     class="bg-green-100 hover:bg-green-200 py-2 flex-1 rounded-lg text-green-700 transition shadow-sm font-bold text-[10px] uppercase tracking-widest flex justify-center items-center gap-1"
@@ -7294,7 +7294,7 @@ onUnmounted(() => {
           <tr>
             <td
               colspan="7"
-              class="py-20 font-serif text-gray-400 text-center italic"
+              class="py-20 font-serif italic text-center text-gray-400"
             >
               {{
                 searchQuery
@@ -7309,7 +7309,7 @@ onUnmounted(() => {
 
     <div
       v-if="!isLoading && filteredTransactions.length > 0"
-      class="flex flex-col md:flex-row justify-between items-center gap-4 mt-8 pt-6 border-t border-gray-100"
+      class="flex flex-col items-center justify-between gap-4 pt-6 mt-8 border-t border-gray-100 md:flex-row"
     >
       <p class="text-sm text-gray-400">
         Showing <span class="font-bold text-black">{{ showingStart }}</span> to
@@ -7324,7 +7324,7 @@ onUnmounted(() => {
         <button
           @click="currentPage--"
           :disabled="currentPage === 1"
-          class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+          class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           Previous
         </button>
@@ -7343,7 +7343,7 @@ onUnmounted(() => {
                 ? 'cursor-default border-transparent hover:bg-transparent'
                 : 'border',
             ]"
-            class="w-10 h-10 rounded-xl font-medium transition flex items-center justify-center text-sm"
+            class="flex items-center justify-center w-10 h-10 text-sm font-medium transition rounded-xl"
           >
             {{ page }}
           </button>
@@ -7352,7 +7352,7 @@ onUnmounted(() => {
         <button
           @click="currentPage++"
           :disabled="currentPage === totalPages"
-          class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+          class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           Next
         </button>
@@ -7920,7 +7920,7 @@ const fetchTransactions = async () => {
   try {
     const res = await axios.get(`${BASE_URL}/admin/transactions`, axiosConfig);
     // Filter dan abaikan status awaiting_payment
-    const filteredData = res.data.filter(
+    const filteredData = res.data.data.filter(
       (o) => o.status !== "awaiting_payment",
     );
     transactions.value = filteredData.map((o) => ({
