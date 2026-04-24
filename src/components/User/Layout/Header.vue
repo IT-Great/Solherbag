@@ -3052,13 +3052,27 @@ watch(
             >{{ cartCount }}</span
           >
         </button>
-        <button
+        <!-- <button
           @click="isAuthenticated ? $router.push('/chat-list') : toggleDropdown()"
           class="flex items-center justify-center transition-colors focus:outline-none hover:text-black"
         >
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.76c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.076-4.076a1.526 1.526 0 0 1 1.037-.443 48.282 48.282 0 0 0 5.68-.494c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
           </svg>
+        </button> -->
+        <button
+          @click="isAuthenticated ? $router.push('/chat-list') : toggleDropdown()"
+          class="relative flex items-center justify-center transition-colors focus:outline-none hover:text-black"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.76c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.076-4.076a1.526 1.526 0 0 1 1.037-.443 48.282 48.282 0 0 0 5.68-.494c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
+          </svg>
+          <span
+            v-if="totalUnreadChats > 0"
+            class="-top-2 -right-2 absolute flex justify-center items-center rounded-full w-4 h-4 text-[10px] font-bold text-white bg-red-600 transition-all duration-300 pointer-events-none shadow-sm"
+          >
+            {{ totalUnreadChats > 99 ? '99+' : totalUnreadChats }}
+          </span>
         </button>
       </div>
     </div>
@@ -3347,6 +3361,23 @@ const { cartCount, fetchCarts, handleOptimisticAdd } = useCart();
 const { state: productState, fetchCollectionsData } = useProductStore();
 const isBadgePopping = ref(false);
 
+// [BARU] State untuk menyimpan jumlah chat yang belum dibaca
+const totalUnreadChats = ref(0);
+
+// [BARU] Fungsi untuk mengambil data chat yang belum dibaca
+const fetchUnreadChats = async () => {
+  if (!isAuthenticated.value) return;
+  try {
+    const res = await axios.get(`${BASE_URL}/chat/admins`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    });
+    // Menjumlahkan semua unread_count dari setiap admin
+    totalUnreadChats.value = res.data.reduce((sum, admin) => sum + (admin.unread_count || 0), 0);
+  } catch (error) {
+    console.error("Gagal mengambil badge chat:", error);
+  }
+};
+
 // =======================================================
 // [BARU] STATE & LOGIKA ANNOUNCEMENT BAR
 // =======================================================
@@ -3547,15 +3578,30 @@ const openCartPage = () => {
   router.push("/cart");
 };
 
+// const checkAuth = () => {
+//   const token = localStorage.getItem("token");
+//   const user = localStorage.getItem("user");
+//   if (token && user) {
+//     isAuthenticated.value = true;
+//     userData.value = JSON.parse(user);
+//   } else {
+//     isAuthenticated.value = false;
+//     userData.value = null;
+//   }
+// };
+
 const checkAuth = () => {
   const token = localStorage.getItem("token");
   const user = localStorage.getItem("user");
   if (token && user) {
     isAuthenticated.value = true;
     userData.value = JSON.parse(user);
+    // Panggil jumlah chat jika sudah login
+    fetchUnreadChats();
   } else {
     isAuthenticated.value = false;
     userData.value = null;
+    totalUnreadChats.value = 0;
   }
 };
 
@@ -3586,6 +3632,9 @@ onMounted(() => {
   });
   window.addEventListener("refresh-cart", fetchCarts);
 
+  // [BARU] Event listener untuk mereset badge saat chat dibaca di halaman lain
+  window.addEventListener("refresh-chat-badge", fetchUnreadChats);
+
   // Mengaktifkan Scroll Listener untuk Announcement Bar
   window.addEventListener("scroll", handleScroll);
   // Mulai Timer Shuffle
@@ -3595,6 +3644,7 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener("optimistic-add-to-cart", onAddToCartEvent);
   window.removeEventListener("scroll", handleScroll);
+  window.removeEventListener("refresh-chat-badge", fetchUnreadChats); // Hapus listener
   clearInterval(announcementTimer);
 });
 

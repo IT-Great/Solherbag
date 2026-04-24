@@ -24,7 +24,15 @@
           <h3 class="text-lg font-bold tracking-widest text-gray-900 uppercase group-hover:text-black">{{ admin.first_name }} {{ admin.last_name }}</h3>
           <p class="text-xs font-bold tracking-widest text-gray-400 uppercase">{{ admin.usertype }} Support</p>
         </div>
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-300 transition-transform transform group-hover:translate-x-2 group-hover:text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        
+        <div 
+          v-if="admin.unread_count > 0" 
+          class="flex items-center justify-center w-6 h-6 mr-3 text-[10px] font-bold text-white bg-red-600 rounded-full shadow-md shrink-0"
+        >
+          {{ admin.unread_count > 99 ? '99+' : admin.unread_count }}
+        </div>
+
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-300 transition-transform transform group-hover:translate-x-2 group-hover:text-black shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
         </svg>
       </div>
