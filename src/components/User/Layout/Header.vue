@@ -2808,7 +2808,7 @@ watch(
 }
 </style> -->
 
-<template>
+<!-- <template>
   <div
     :class="isAtTop ? 'translate-y-0' : '-translate-y-full'"
     class="fixed top-0 left-0 w-full h-[40px] bg-[#111] text-white z-[60] flex items-center justify-center transition-transform duration-300"
@@ -3052,14 +3052,6 @@ watch(
             >{{ cartCount }}</span
           >
         </button>
-        <!-- <button
-          @click="isAuthenticated ? $router.push('/chat-list') : toggleDropdown()"
-          class="flex items-center justify-center transition-colors focus:outline-none hover:text-black"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.76c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.076-4.076a1.526 1.526 0 0 1 1.037-.443 48.282 48.282 0 0 0 5.68-.494c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
-          </svg>
-        </button> -->
         <button
           @click="isAuthenticated ? $router.push('/chat-list') : toggleDropdown()"
           class="relative flex items-center justify-center transition-colors focus:outline-none hover:text-black"
@@ -3093,28 +3085,6 @@ watch(
             >
               Categories
             </h3>
-            <!-- <ul class="space-y-4">
-              <li>
-                <button 
-                  @click="selectMegaMenuCategory('all')"
-                  @mouseenter="selectMegaMenuCategory('all')"
-                  :class="activeMegaCategory === 'all' ? 'text-black font-bold' : 'text-gray-500 hover:text-black'"
-                  class="w-full text-xs tracking-widest text-left uppercase transition-colors"
-                >
-                  All Bags
-                </button>
-              </li>
-              <li v-for="cat in categories" :key="cat.id">
-                <button 
-                  @click="selectMegaMenuCategory(cat.id)"
-                  @mouseenter="selectMegaMenuCategory(cat.id)"
-                  :class="activeMegaCategory === cat.id ? 'text-black font-bold' : 'text-gray-500 hover:text-black'"
-                  class="w-full text-xs tracking-widest text-left uppercase transition-colors"
-                >
-                  {{ cat.category_name }}
-                </button>
-              </li>
-            </ul> -->
             <ul class="space-y-4">
               <li>
                 <button
@@ -3217,17 +3187,6 @@ watch(
         </div>
       </div>
     </transition>
-    <!-- <transition name="slide-fade">
-      <div v-if="isMobileMenuOpen" class="z-[200] fixed inset-0 flex">
-        <div
-          @click="isMobileMenuOpen = false"
-          class="absolute inset-0 transition-opacity bg-black/50 backdrop-blur-sm"
-        ></div>
-        <div
-          class="relative flex flex-col bg-white shadow-2xl p-8 w-[80%] max-w-sm h-full overflow-y-auto"
-        ></div>
-      </div>
-    </transition> -->
     <transition name="slide-fade">
       <div v-if="isMobileMenuOpen" class="z-[200] fixed inset-0 flex">
         <div
@@ -3709,5 +3668,787 @@ watch(
 .mega-menu-fade-leave-to {
   opacity: 0;
   transform: translateY(-5px) scaleY(0.98);
+}
+</style> -->
+
+<template>
+  <div
+    :class="isAtTop ? 'translate-y-0' : '-translate-y-full'"
+    class="fixed top-0 left-0 w-full h-[40px] bg-[#111] text-white z-[60] flex items-center justify-center transition-transform duration-300"
+  >
+    <button
+      @click="prevAnnouncement"
+      class="absolute p-2 text-gray-400 transition left-4 hover:text-white focus:outline-none"
+    >
+      <svg
+        class="w-4 h-4"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="1.5"
+          d="M15 19l-7-7 7-7"
+        />
+      </svg>
+    </button>
+
+    <transition name="fade-slide" mode="out-in">
+      <p
+        :key="currentAnnouncement"
+        @click="$router.push('/collections')"
+        class="text-[10px] md:text-xs font-serif tracking-widest text-center px-12 cursor-pointer hover:text-gray-300 transition-colors truncate w-full max-w-3xl"
+      >
+        {{ announcements[currentAnnouncement] }}
+      </p>
+    </transition>
+
+    <button
+      @click="nextAnnouncement"
+      class="absolute p-2 text-gray-400 transition right-4 hover:text-white focus:outline-none"
+    >
+      <svg
+        class="w-4 h-4"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="1.5"
+          d="M9 5l7 7-7 7"
+        />
+      </svg>
+    </button>
+  </div>
+
+  <header
+    :class="isAtTop ? 'top-[40px]' : 'top-0'"
+    class="fixed left-0 z-50 w-full px-6 py-4 transition-all duration-300 bg-white border-b border-gray-200"
+  >
+    <div
+      class="relative flex items-center justify-between h-8 mx-auto max-w-7xl md:h-12"
+    >
+      <div class="flex items-center justify-start flex-1">
+        <nav
+          class="items-center hidden h-full space-x-6 text-xs font-medium tracking-widest uppercase md:flex"
+        >
+          <router-link
+            to="/"
+            class="transition cursor-pointer hover:text-gray-500"
+            >Home</router-link
+          >
+          <router-link
+            to="/best-sellers"
+            class="font-bold text-red-600 transition cursor-pointer hover:text-gray-500"
+            >Best Sellers</router-link
+          >
+
+          <div
+            class="relative flex items-center h-full"
+            @mouseenter="openMegaMenu"
+            @mouseleave="closeMegaMenu"
+          >
+            <router-link
+              to="/collections"
+              class="transition cursor-pointer hover:text-gray-500"
+              :class="{ 'text-gray-500': isMegaMenuOpen }"
+              >Collections</router-link
+            >
+          </div>
+
+          <router-link
+            to="/contact"
+            class="transition cursor-pointer hover:text-gray-500"
+            >Contact</router-link
+          >
+        </nav>
+
+        <button
+          @click="isMobileMenuOpen = true"
+          class="flex items-center justify-center text-gray-700 md:hidden focus:outline-none hover:text-black"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-6 h-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <div
+        class="absolute flex justify-center flex-shrink-0 -translate-x-1/2 -translate-y-1/2 pointer-events-none left-1/2 top-1/2"
+      >
+        <img
+          src="../../../assets/solherbrandbook.png"
+          alt="Solher Logo"
+          class="object-contain w-auto h-8 cursor-pointer pointer-events-auto md:h-12"
+          @click="$router.push('/')"
+        />
+      </div>
+
+      <div
+        class="flex items-center justify-end flex-1 space-x-4 text-gray-700 md:space-x-5"
+      >
+        <button
+          @click="openSearch"
+          class="flex items-center justify-center transition-colors focus:outline-none hover:text-black"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+            />
+          </svg>
+        </button>
+
+        <div class="relative flex items-center justify-center">
+          <button @click="toggleDropdown">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+              />
+            </svg>
+          </button>
+
+          <div
+            v-if="isDropdownOpen"
+            class="top-full right-0 z-[60] absolute bg-white shadow-xl mt-4 p-6 border border-gray-100 w-64 animate-fade-in"
+          >
+            <div v-if="isAuthenticated" class="text-left">
+              <h3
+                class="text-sm font-bold tracking-tight text-black uppercase truncate"
+              >
+                HI {{ userData?.first_name }} {{ userData?.last_name }}
+              </h3>
+              <p class="mb-4 text-xs text-gray-500 truncate">
+                {{ userData?.email }}
+              </p>
+            </div>
+            <div v-else>
+              <h3
+                class="mb-4 text-xs font-bold tracking-widest text-left text-black uppercase"
+              >
+                Account
+              </h3>
+              <router-link
+                to="/login"
+                @click="isDropdownOpen = false"
+                class="block w-full py-3 mb-4 text-xs font-bold tracking-widest text-center text-white uppercase transition bg-black hover:bg-gray-800"
+                >Sign In</router-link
+              >
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <router-link
+                to="/orderpage"
+                @click="isDropdownOpen = false"
+                class="flex items-center justify-center py-3 space-x-2 transition bg-gray-100 hover:bg-gray-200"
+                ><span class="font-bold text-[10px] uppercase tracking-wider"
+                  >Orders</span
+                ></router-link
+              >
+              <router-link
+                to="/profilepage"
+                @click="isDropdownOpen = false"
+                class="flex items-center justify-center py-3 space-x-2 transition bg-gray-100 hover:bg-gray-200"
+                ><span class="font-bold text-[10px] uppercase tracking-wider"
+                  >Profile</span
+                ></router-link
+              >
+            </div>
+          </div>
+        </div>
+
+        <button
+          @click="openCartPage"
+          class="relative transition-colors hover:text-black cart-icon-header"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+            />
+          </svg>
+          <span
+            v-if="cartCount > 0"
+            :class="[
+              isBadgePopping ? 'scale-150 bg-red-600' : 'scale-100 bg-black',
+            ]"
+            class="-top-2 -right-2 absolute flex justify-center items-center rounded-full w-4 h-4 text-[10px] text-white transition-all duration-300 pointer-events-none"
+            >{{ cartCount }}</span
+          >
+        </button>
+
+        <button
+          @click="isAuthenticated ? $router.push('/chat-list') : toggleDropdown()"
+          class="relative flex items-center justify-center transition-colors focus:outline-none hover:text-black"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.76c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.076-4.076a1.526 1.526 0 0 1 1.037-.443 48.282 48.282 0 0 0 5.68-.494c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
+          </svg>
+          <transition name="pop">
+            <span
+              v-if="totalUnreadChats > 0"
+              class="-top-2 -right-2 absolute flex justify-center items-center rounded-full w-4 h-4 text-[10px] font-bold text-white bg-red-600 shadow-sm pointer-events-none"
+            >
+              {{ totalUnreadChats > 99 ? '99+' : totalUnreadChats }}
+            </span>
+          </transition>
+        </button>
+      </div>
+    </div>
+
+    <transition name="mega-menu-fade">
+      <div
+        v-if="isMegaMenuOpen"
+        class="absolute left-0 hidden w-full overflow-hidden bg-white border-t border-gray-100 shadow-xl top-full md:block"
+        @mouseenter="keepMegaMenuOpen"
+        @mouseleave="closeMegaMenu"
+      >
+        <div class="mx-auto max-w-7xl flex h-[400px]">
+          <div
+            class="w-1/4 px-6 py-8 overflow-y-auto border-r border-gray-100 bg-gray-50/50"
+          >
+            <h3
+              class="font-bold text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-6"
+            >
+              Categories
+            </h3>
+            <ul class="space-y-4">
+              <li>
+                <button
+                  @click="goToCollection('all')"
+                  @mouseenter="selectMegaMenuCategory('all')"
+                  :class="
+                    activeMegaCategory === 'all'
+                      ? 'text-black font-bold'
+                      : 'text-gray-500 hover:text-black'
+                  "
+                  class="w-full text-xs tracking-widest text-left uppercase transition-colors"
+                >
+                  All Bags
+                </button>
+              </li>
+              <li v-for="cat in categories" :key="cat.id">
+                <button
+                  @click="goToCollection(cat.category_name)"
+                  @mouseenter="selectMegaMenuCategory(cat.id)"
+                  :class="
+                    activeMegaCategory === cat.id
+                      ? 'text-black font-bold'
+                      : 'text-gray-500 hover:text-black'
+                  "
+                  class="w-full text-xs tracking-widest text-left uppercase transition-colors"
+                >
+                  {{ cat.category_name }}
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <div class="relative w-3/4 px-10 py-8">
+            <div class="flex items-center justify-between mb-6">
+              <h3
+                class="font-bold text-[10px] uppercase tracking-[0.2em] text-gray-400"
+              >
+                {{
+                  activeMegaCategory === "all"
+                    ? "Featured Picks"
+                    : "Category Highlights"
+                }}
+              </h3>
+              <router-link
+                to="/collections"
+                class="text-[10px] font-bold uppercase tracking-widest border-b border-black pb-0.5 hover:text-gray-500 transition-colors"
+              >
+                View All Collection
+              </router-link>
+            </div>
+
+            <div
+              v-if="isMegaMenuLoading"
+              class="absolute inset-0 z-10 flex items-center justify-center bg-white/80"
+            >
+              <div
+                class="w-8 h-8 border-2 border-gray-200 rounded-full border-t-black animate-spin"
+              ></div>
+            </div>
+
+            <div class="grid grid-cols-4 gap-x-6 gap-y-8">
+              <div
+                v-for="product in randomMegaProducts"
+                :key="product.id"
+                @click="navigateToProduct(product.id)"
+                class="cursor-pointer group"
+              >
+                <div
+                  class="relative mb-3 overflow-hidden bg-gray-100 rounded-lg aspect-square"
+                >
+                  <img
+                    :src="product.image || defaultBagIcon"
+                    class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div
+                    v-if="product.discount_price"
+                    class="absolute top-2 left-2 bg-red-600 text-white px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-widest rounded-sm"
+                  >
+                    Sale
+                  </div>
+                </div>
+                <h4
+                  class="font-bold text-[10px] uppercase tracking-widest text-gray-900 truncate"
+                >
+                  {{ product.name }}
+                </h4>
+                <p class="text-[10px] text-gray-500 mt-0.5">
+                  {{ formatPrice(product.discount_price ?? product.price) }}
+                </p>
+              </div>
+            </div>
+
+            <div
+              v-if="!isMegaMenuLoading && randomMegaProducts.length === 0"
+              class="flex flex-col items-center justify-center h-48 font-serif italic text-gray-400"
+            >
+              No products found in this category.
+            </div>
+          </div>
+        </div>
+      </div>
+    </transition>
+
+    <transition name="slide-fade">
+      <div v-if="isMobileMenuOpen" class="z-[200] fixed inset-0 flex">
+        <div
+          @click="isMobileMenuOpen = false"
+          class="absolute inset-0 transition-opacity bg-black/50 backdrop-blur-sm"
+        ></div>
+        
+        <div
+          class="relative flex flex-col bg-white shadow-2xl p-8 w-[80%] max-w-sm h-full overflow-y-auto"
+        >
+          <div class="flex items-center justify-between mb-10">
+            <img src="../../../assets/solherbrandbook.png" alt="Solher Logo" class="object-contain w-auto h-6" />
+            <button @click="isMobileMenuOpen = false" class="text-gray-400 transition-colors hover:text-black focus:outline-none">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <nav class="flex flex-col space-y-6">
+            <router-link
+              to="/"
+              @click="isMobileMenuOpen = false"
+              class="pb-4 text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors border-b border-gray-100 hover:text-gray-500"
+            >
+              Home
+            </router-link>
+            <router-link
+              to="/best-sellers"
+              @click="isMobileMenuOpen = false"
+              class="pb-4 text-sm font-black tracking-widest text-red-600 uppercase transition-colors border-b border-gray-100 hover:text-red-800"
+            >
+              Best Sellers
+            </router-link>
+            
+            <div class="pb-4 border-b border-gray-100">
+              <div class="flex items-center justify-between w-full">
+                <router-link
+                  to="/collections"
+                  @click="isMobileMenuOpen = false"
+                  class="text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors hover:text-gray-500"
+                >
+                  Collections
+                </router-link>
+              </div>
+              <ul class="pl-4 mt-4 space-y-4 border-l-2 border-gray-100">
+                <li>
+                  <button 
+                    @click="goToCollection('all'); isMobileMenuOpen = false"
+                    class="w-full text-xs font-medium tracking-widest text-left text-gray-500 uppercase transition-colors hover:text-black"
+                  >
+                    All Bags
+                  </button>
+                </li>
+                <li v-for="cat in categories" :key="cat.id">
+                  <button 
+                    @click="goToCollection(cat.category_name); isMobileMenuOpen = false"
+                    class="w-full text-xs font-medium tracking-widest text-left text-gray-500 uppercase transition-colors hover:text-black"
+                  >
+                    {{ cat.category_name }}
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            <router-link
+              to="/contact"
+              @click="isMobileMenuOpen = false"
+              class="pb-4 text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors border-b border-gray-100 hover:text-gray-500"
+            >
+              Contact
+            </router-link>
+          </nav>
+
+          <div class="pt-8 mt-auto">
+            <div v-if="isAuthenticated" class="p-4 mb-4 bg-gray-50 rounded-xl">
+               <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Logged in as</p>
+               <p class="text-sm font-bold text-gray-900 truncate">{{ userData?.first_name }} {{ userData?.last_name }}</p>
+               <div class="flex gap-4 mt-3">
+                 <router-link to="/orderpage" @click="isMobileMenuOpen = false" class="text-xs font-bold text-blue-600 hover:underline">Orders</router-link>
+                 <router-link to="/profilepage" @click="isMobileMenuOpen = false" class="text-xs font-bold text-blue-600 hover:underline">Profile</router-link>
+               </div>
+            </div>
+            <div v-else class="mb-6">
+              <router-link 
+                to="/login" 
+                @click="isMobileMenuOpen = false"
+                class="block w-full py-3 text-xs font-bold tracking-widest text-center text-white uppercase transition bg-black rounded-lg hover:bg-gray-800"
+              >
+                Sign In / Register
+              </router-link>
+            </div>
+            
+            <p class="text-[9px] text-center text-gray-400 uppercase tracking-widest">
+              © {{ new Date().getFullYear() }} Solher Official
+            </p>
+          </div>
+        </div>
+      </div>
+    </transition>
+  </header>
+  <SearchModal v-if="isSearchOpen" @close="closeSearch" />
+</template>
+
+<script setup>
+import { ref, onMounted, onUnmounted, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import Swal from "sweetalert2";
+import axios from "axios";
+import SearchModal from "../../User/Layout/SearchModal.vue";
+
+import defaultBagIcon from "../../../assets/products/bag_icon.jpg";
+import { useCart } from "../../../composables/useCart";
+import { BASE_URL } from "../../../config/api";
+import { useProductStore } from "../../../composables/useProductStore";
+
+const route = useRoute();
+const router = useRouter();
+
+const isSearchOpen = ref(false);
+const openSearch = () => (isSearchOpen.value = true);
+const closeSearch = () => (isSearchOpen.value = false);
+
+const isDropdownOpen = ref(false);
+const isAuthenticated = ref(false);
+const userData = ref(null);
+const isMobileMenuOpen = ref(false);
+
+const { cartCount, fetchCarts, handleOptimisticAdd } = useCart();
+const { state: productState, fetchCollectionsData } = useProductStore();
+const isBadgePopping = ref(false);
+
+// State untuk menyimpan jumlah chat yang belum dibaca
+const totalUnreadChats = ref(0);
+
+const fetchUnreadChats = async () => {
+  if (!isAuthenticated.value) return;
+  try {
+    const res = await axios.get(`${BASE_URL}/chat/admins`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    });
+    totalUnreadChats.value = res.data.reduce((sum, admin) => sum + (admin.unread_count || 0), 0);
+  } catch (error) {
+    console.error("Gagal mengambil badge chat:", error);
+  }
+};
+
+// ====================================================================================
+// [BARU] FUNGSI SUBSCRIBE REAL-TIME WEBSOCKETS (LARAVEL ECHO)
+// ====================================================================================
+const setupRealTimeListeners = () => {
+  if (isAuthenticated.value && userData.value && window.Echo) {
+    // Berlangganan (Subscribe) ke private channel milik user ini
+    window.Echo.private(`chat.${userData.value.id}`)
+      // Harus menggunakan TITIK (.) di depan karena kita mengubah nama event di broadcastAs()
+      .listen('.message.sent', (e) => {
+        // Otomatis tambah angka di badge header
+        totalUnreadChats.value++;
+      });
+  }
+};
+
+// =======================================================
+// STATE & LOGIKA ANNOUNCEMENT BAR
+// =======================================================
+const isAtTop = ref(true);
+const currentAnnouncement = ref(0);
+let announcementTimer = null;
+
+const announcements = [
+  "An Exclusive Welcome Gift: Rp 250K OFF your first order →",
+  "A Little Extra, On Us — Complimentary Shipping Across Indonesia (Min. Rp 1.000.000) →",
+];
+
+const nextAnnouncement = () => {
+  currentAnnouncement.value = (currentAnnouncement.value + 1) % announcements.length;
+  resetAnnouncementTimer();
+};
+
+const prevAnnouncement = () => {
+  currentAnnouncement.value = (currentAnnouncement.value - 1 + announcements.length) % announcements.length;
+  resetAnnouncementTimer();
+};
+
+const startAnnouncementTimer = () => {
+  announcementTimer = setInterval(() => {
+    currentAnnouncement.value = (currentAnnouncement.value + 1) % announcements.length;
+  }, 3000);
+};
+
+const resetAnnouncementTimer = () => {
+  clearInterval(announcementTimer);
+  startAnnouncementTimer();
+};
+
+const handleScroll = () => {
+  isAtTop.value = window.scrollY <= 0;
+};
+// =======================================================
+
+const isMegaMenuOpen = ref(false);
+const megaMenuTimer = ref(null);
+const activeMegaCategory = ref("all");
+const categories = ref([]);
+const isMegaMenuLoading = ref(false);
+const randomMegaProducts = ref([]);
+
+const formatPrice = (v) =>
+  new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0,
+  }).format(v);
+
+const shuffleArray = (array) => {
+  let currentIndex = array.length, randomIndex;
+  while (currentIndex > 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+  }
+  return array;
+};
+
+const generateRandomProducts = () => {
+  if (!productState.collectionsProducts || productState.collectionsProducts.length === 0) {
+    isMegaMenuLoading.value = false;
+    randomMegaProducts.value = [];
+    return;
+  }
+
+  isMegaMenuLoading.value = true;
+
+  setTimeout(() => {
+    let filtered = [];
+    if (activeMegaCategory.value === "all") {
+      filtered = [...productState.collectionsProducts];
+    } else {
+      filtered = productState.collectionsProducts.filter(p => p.category_id == activeMegaCategory.value);
+    }
+
+    randomMegaProducts.value = shuffleArray(filtered).slice(0, 4);
+    isMegaMenuLoading.value = false;
+  }, 100);
+};
+
+const fetchCategoriesForMegaMenu = async () => {
+  if (categories.value.length > 0) return;
+  try {
+    const res = await axios.get(`${BASE_URL}/guest/categories`);
+    const data = res.data.data || res.data;
+    categories.value = data.sort((a, b) => a.id - b.id);
+  } catch (error) {
+    console.error("Failed to load categories for Mega Menu", error);
+  }
+};
+
+const openMegaMenu = async () => {
+  clearTimeout(megaMenuTimer.value);
+  isMegaMenuOpen.value = true;
+  isDropdownOpen.value = false;
+
+  isMegaMenuLoading.value = true;
+  fetchCategoriesForMegaMenu();
+
+  if (!productState.isCollectionsLoaded || !productState.collectionsProducts || productState.collectionsProducts.length === 0) {
+    try { await fetchCollectionsData(); } catch (e) {}
+  }
+
+  generateRandomProducts();
+};
+
+const keepMegaMenuOpen = () => { clearTimeout(megaMenuTimer.value); };
+const closeMegaMenu = () => { megaMenuTimer.value = setTimeout(() => { isMegaMenuOpen.value = false; }, 150); };
+
+const goToCollection = (categoryName) => {
+  closeMegaMenu(); 
+  if (categoryName === 'all') router.push('/collections');
+  else router.push({ path: '/collections', query: { category: categoryName } });
+};
+
+const selectMegaMenuCategory = (catId) => {
+  if (activeMegaCategory.value !== catId) {
+    activeMegaCategory.value = catId;
+    generateRandomProducts();
+  }
+};
+
+const navigateToProduct = (id) => {
+  closeMegaMenu();
+  router.push(`/product/${id}`);
+};
+
+const openCartPage = () => {
+  if (!isAuthenticated.value) {
+    Swal.fire({ icon: "info", title: "Sign In Required", text: "Please login to see your shopping bag.", confirmButtonColor: "#000" });
+    return;
+  }
+  router.push("/cart");
+};
+
+const checkAuth = () => {
+  const token = localStorage.getItem("token");
+  const user = localStorage.getItem("user");
+  if (token && user) {
+    isAuthenticated.value = true;
+    userData.value = JSON.parse(user);
+    
+    // Tarik notifikasi awal dari API
+    fetchUnreadChats();
+    // Nyalakan soket untuk mendengarkan perubahan secara instan
+    setupRealTimeListeners();
+  } else {
+    isAuthenticated.value = false;
+    userData.value = null;
+    totalUnreadChats.value = 0;
+  }
+};
+
+const toggleDropdown = () => {
+  checkAuth();
+  isDropdownOpen.value = !isDropdownOpen.value;
+  isMegaMenuOpen.value = false;
+};
+
+const onAddToCartEvent = (e) => {
+  handleOptimisticAdd(e.detail, () => {
+    isBadgePopping.value = true;
+    setTimeout(() => (isBadgePopping.value = false), 300);
+  });
+};
+
+onMounted(() => {
+  checkAuth();
+  if (isAuthenticated.value) fetchCarts();
+
+  fetchCategoriesForMegaMenu();
+
+  window.addEventListener("optimistic-add-to-cart", onAddToCartEvent);
+  window.addEventListener("click", (e) => {
+    if (!e.target.closest(".relative")) isDropdownOpen.value = false;
+  });
+  window.addEventListener("refresh-cart", fetchCarts);
+  window.addEventListener("refresh-chat-badge", fetchUnreadChats);
+  window.addEventListener("scroll", handleScroll);
+  startAnnouncementTimer();
+});
+
+onUnmounted(() => {
+  window.removeEventListener("optimistic-add-to-cart", onAddToCartEvent);
+  window.removeEventListener("scroll", handleScroll);
+  window.removeEventListener("refresh-chat-badge", fetchUnreadChats); 
+  clearInterval(announcementTimer);
+
+  // [BARU] Bersihkan memori dan soket saat navigasi pindah
+  if (userData.value && window.Echo) {
+    window.Echo.leave(`chat.${userData.value.id}`);
+  }
+});
+
+watch(() => route.path, () => {
+  isDropdownOpen.value = false;
+  isMobileMenuOpen.value = false;
+  checkAuth();
+});
+</script>
+
+<style scoped>
+/* Transisi Pop untuk badge */
+.pop-enter-active, .pop-leave-active {
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.pop-enter-from, .pop-leave-to {
+  transform: scale(0);
+}
+
+.animate-fade-in { animation: fadeIn 0.2s ease-out; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-slide-enter-active, .fade-slide-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.fade-slide-enter-from { opacity: 0; transform: translateY(5px); }
+.fade-slide-leave-to { opacity: 0; transform: translateY(-5px); }
+
+.slide-fade-enter-active, .slide-fade-leave-active { transition: all 0.3s ease; }
+.slide-fade-enter-from, .slide-fade-leave-to { opacity: 0; transform: translateX(-20px); }
+
+.mega-menu-fade-enter-active, .mega-menu-fade-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease; transform-origin: top;
+}
+.mega-menu-fade-enter-from, .mega-menu-fade-leave-to {
+  opacity: 0; transform: translateY(-5px) scaleY(0.98);
 }
 </style>
