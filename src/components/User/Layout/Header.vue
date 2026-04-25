@@ -4221,9 +4221,30 @@ const fetchUnreadChats = async () => {
 //   }
 // };
 
+// // ====================================================================================
+// // [PERBAIKAN] Mencegah Multiple Listeners dengan variabel penanda (flag)
+// // ====================================================================================
+// const setupRealTimeListeners = () => {
+//   if (isAuthenticated.value && userData.value && window.Echo && !isEchoConnected) {
+//     window.Echo.private(`chat.${userData.value.id}`)
+//       .listen('.message.sent', (e) => {
+//         // 1. Tambah angka di badge header
+//         totalUnreadChats.value++;
+        
+//         // 2. Pancarkan sinyal lokal ke halaman lain (misal: ChatListPage)
+//         window.dispatchEvent(new CustomEvent('new-chat-message', { detail: e.message }));
+//       });
+      
+//     isEchoConnected = true; // Tandai bahwa soket sudah menyala
+//   }
+// };
+
 // ====================================================================================
 // [PERBAIKAN] Mencegah Multiple Listeners dengan variabel penanda (flag)
 // ====================================================================================
+// ⚠️ BARIS INI WAJIB ADA! Jangan dihapus.
+let isEchoConnected = false; 
+
 const setupRealTimeListeners = () => {
   if (isAuthenticated.value && userData.value && window.Echo && !isEchoConnected) {
     window.Echo.private(`chat.${userData.value.id}`)
@@ -4378,18 +4399,43 @@ const openCartPage = () => {
   router.push("/cart");
 };
 
+// const checkAuth = () => {
+//   const token = localStorage.getItem("token");
+//   const user = localStorage.getItem("user");
+//   if (token && user) {
+//     isAuthenticated.value = true;
+//     userData.value = JSON.parse(user);
+    
+//     // Tarik notifikasi awal dari API
+//     fetchUnreadChats();
+//     // Nyalakan soket untuk mendengarkan perubahan secara instan
+//     setupRealTimeListeners();
+//   } else {
+//     isAuthenticated.value = false;
+//     userData.value = null;
+//     totalUnreadChats.value = 0;
+//   }
+// };
+
 const checkAuth = () => {
   const token = localStorage.getItem("token");
   const user = localStorage.getItem("user");
+  
   if (token && user) {
+    const wasNotAuthenticated = !isAuthenticated.value;
     isAuthenticated.value = true;
     userData.value = JSON.parse(user);
     
-    // Tarik notifikasi awal dari API
-    fetchUnreadChats();
-    // Nyalakan soket untuk mendengarkan perubahan secara instan
-    setupRealTimeListeners();
+    if (wasNotAuthenticated) {
+        fetchUnreadChats();
+        setupRealTimeListeners();
+    }
   } else {
+    // Logika Pembersihan saat Logout
+    if (typeof isEchoConnected !== 'undefined' && isEchoConnected && userData.value && window.Echo) {
+        window.Echo.leave(`chat.${userData.value.id}`);
+        isEchoConnected = false;
+    }
     isAuthenticated.value = false;
     userData.value = null;
     totalUnreadChats.value = 0;
