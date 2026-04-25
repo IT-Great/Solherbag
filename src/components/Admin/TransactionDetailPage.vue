@@ -1,36 +1,36 @@
 <!-- <template>
-  <div class="mx-auto px-6 py-12 max-w-5xl min-h-screen">
-    <div class="flex justify-between items-center mb-10">
-      <button @click="$router.back()" class="group flex items-center gap-2 text-gray-500 hover:text-black transition-colors">
+  <div class="max-w-5xl min-h-screen px-6 py-12 mx-auto">
+    <div class="flex items-center justify-between mb-10">
+      <button @click="$router.back()" class="flex items-center gap-2 text-gray-500 transition-colors group hover:text-black">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 transition-transform group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
         </svg>
-        <span class="font-bold text-sm uppercase tracking-widest">Back to List</span>
+        <span class="text-sm font-bold tracking-widest uppercase">Back to List</span>
       </button>
       
       <div class="text-right">
-        <span :class="statusClass(transaction?.status)" class="shadow-sm px-6 py-2 rounded-full font-black text-xs uppercase tracking-widest">
+        <span :class="statusClass(transaction?.status)" class="px-6 py-2 text-xs font-black tracking-widest uppercase rounded-full shadow-sm">
           {{ transaction?.status }}
         </span>
       </div>
     </div>
 
-    <div v-if="isLoading" class="py-20 font-serif text-gray-400 text-center italic animate-pulse">
+    <div v-if="isLoading" class="py-20 font-serif italic text-center text-gray-400 animate-pulse">
       Synchronizing transaction details...
     </div>
 
-    <div v-else-if="transaction" class="gap-8 grid grid-cols-1 lg:grid-cols-3 animate-fade-in">
+    <div v-else-if="transaction" class="grid grid-cols-1 gap-8 lg:grid-cols-3 animate-fade-in">
       <div class="space-y-6 lg:col-span-2">
         <div class="bg-white shadow-sm p-8 border border-gray-100 rounded-[2rem]">
-          <h2 class="mb-6 font-bold text-gray-800 text-xl tracking-tight">Order Items</h2>
+          <h2 class="mb-6 text-xl font-bold tracking-tight text-gray-800">Order Items</h2>
           <div class="divide-y divide-gray-50">
             <div v-for="item in transaction.details" :key="item.id" class="flex gap-6 py-6 first:pt-0 last:pb-0">
-              <img :src="item.product.image" class="bg-gray-50 shadow-sm rounded-2xl w-24 h-24 object-cover" />
-              <div class="flex flex-col flex-grow justify-center">
-                <h3 class="font-bold text-gray-900 text-sm uppercase tracking-wide">{{ item.product.name }}</h3>
-                <p class="mt-1 text-gray-400 text-xs">Code: {{ item.product.code }}</p>
-                <div class="flex justify-between items-end mt-4">
-                  <p class="text-gray-600 text-sm">{{ item.quantity }} x {{ formatPrice(item.price) }}</p>
+              <img :src="item.product.image" class="object-cover w-24 h-24 shadow-sm bg-gray-50 rounded-2xl" />
+              <div class="flex flex-col justify-center flex-grow">
+                <h3 class="text-sm font-bold tracking-wide text-gray-900 uppercase">{{ item.product.name }}</h3>
+                <p class="mt-1 text-xs text-gray-400">Code: {{ item.product.code }}</p>
+                <div class="flex items-end justify-between mt-4">
+                  <p class="text-sm text-gray-600">{{ item.quantity }} x {{ formatPrice(item.price) }}</p>
                   <p class="font-bold text-black">{{ formatPrice(item.quantity * item.price) }}</p>
                 </div>
               </div>
@@ -42,9 +42,9 @@
       <div class="space-y-6">
         <div class="bg-black shadow-xl p-8 rounded-[2rem] text-white">
           <h2 class="opacity-50 mb-4 font-black text-[10px] uppercase tracking-[0.3em]">Customer Details</h2>
-          <p class="font-bold text-lg leading-none">{{ transaction.user.first_name }} {{ transaction.user.last_name }}</p>
-          <p class="mt-2 text-gray-400 text-sm">{{ transaction.user.email }}</p>
-          <div class="flex items-center gap-3 mt-6 pt-6 border-white/10 border-t">
+          <p class="text-lg font-bold leading-none">{{ transaction.user.first_name }} {{ transaction.user.last_name }}</p>
+          <p class="mt-2 text-sm text-gray-400">{{ transaction.user.email }}</p>
+          <div class="flex items-center gap-3 pt-6 mt-6 border-t border-white/10">
              <div class="bg-white/10 p-2 rounded-lg font-mono text-[10px] uppercase tracking-tighter">ID: {{ transaction.order_id }}</div>
           </div>
         </div>
@@ -52,17 +52,17 @@
         <div class="bg-white shadow-sm p-8 border border-gray-100 rounded-[2rem]">
           <h2 class="mb-6 font-black text-[10px] text-gray-400 uppercase tracking-[0.2em]">Payment Summary</h2>
           <div class="space-y-4">
-            <div class="flex justify-between text-gray-500 text-sm">
+            <div class="flex justify-between text-sm text-gray-500">
               <span>Subtotal Items</span>
               <span>{{ formatPrice(transaction.total_amount) }}</span>
             </div>
-            <div class="flex justify-between text-gray-500 text-sm">
+            <div class="flex justify-between text-sm text-gray-500">
               <span>Shipping Fee</span>
               <span class="italic">Calculated at checkout</span>
             </div>
-            <div class="flex justify-between items-end pt-4 border-gray-100 border-t">
-              <span class="font-bold text-gray-900 text-xs uppercase">Total Amount</span>
-              <span class="font-bold text-blue-600 text-2xl">{{ formatPrice(transaction.total_amount) }}</span>
+            <div class="flex items-end justify-between pt-4 border-t border-gray-100">
+              <span class="text-xs font-bold text-gray-900 uppercase">Total Amount</span>
+              <span class="text-2xl font-bold text-blue-600">{{ formatPrice(transaction.total_amount) }}</span>
             </div>
           </div>
         </div>
@@ -162,13 +162,13 @@ onMounted(fetchData);
 
 <!-- Update tampilan -->
 <!-- <template>
-  <div class="mx-auto px-6 py-12 max-w-6xl min-h-screen">
+  <div class="max-w-6xl min-h-screen px-6 py-12 mx-auto">
     <div
-      class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-10"
+      class="flex flex-col justify-between gap-4 mb-10 sm:flex-row sm:items-center"
     >
       <button
         @click="$router.back()"
-        class="group flex items-center gap-2 text-gray-500 hover:text-black transition-colors w-fit"
+        class="flex items-center gap-2 text-gray-500 transition-colors group hover:text-black w-fit"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -184,7 +184,7 @@ onMounted(fetchData);
             d="M15 19l-7-7 7-7"
           />
         </svg>
-        <span class="font-bold text-sm uppercase tracking-widest"
+        <span class="text-sm font-bold tracking-widest uppercase"
           >Back to List</span
         >
       </button>
@@ -200,10 +200,10 @@ onMounted(fetchData);
             {{ formatDate(transaction?.created_at) }}
           </p>
         </div>
-        <div class="h-8 w-px bg-gray-200"></div>
+        <div class="w-px h-8 bg-gray-200"></div>
         <span
           :class="statusClass(transaction?.status)"
-          class="shadow-sm px-6 py-2 rounded-full font-black text-xs uppercase tracking-widest"
+          class="px-6 py-2 text-xs font-black tracking-widest uppercase rounded-full shadow-sm"
         >
           {{ formatStatus(transaction?.status) }}
         </span>
@@ -212,32 +212,32 @@ onMounted(fetchData);
 
     <div
       v-if="isLoading"
-      class="py-20 flex flex-col items-center justify-center animate-pulse"
+      class="flex flex-col items-center justify-center py-20 animate-pulse"
     >
       <div
-        class="border-4 border-gray-100 border-t-black rounded-full w-12 h-12 animate-spin mb-4"
+        class="w-12 h-12 mb-4 border-4 border-gray-100 rounded-full border-t-black animate-spin"
       ></div>
-      <p class="font-serif text-gray-400 text-center italic">
+      <p class="font-serif italic text-center text-gray-400">
         Loading transaction details...
       </p>
     </div>
 
     <div
       v-else-if="transaction"
-      class="gap-8 grid grid-cols-1 lg:grid-cols-3 animate-fade-in"
+      class="grid grid-cols-1 gap-8 lg:grid-cols-3 animate-fade-in"
     >
       <div class="space-y-6 lg:col-span-2">
         <div
           class="bg-white shadow-sm p-6 sm:p-8 border border-gray-100 rounded-[2rem]"
         >
           <div
-            class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4"
+            class="flex items-center justify-between pb-4 mb-6 border-b border-gray-100"
           >
-            <h2 class="font-bold text-gray-800 text-xl tracking-tight">
+            <h2 class="text-xl font-bold tracking-tight text-gray-800">
               Order Items
             </h2>
             <span
-              class="text-xs font-bold bg-gray-100 px-3 py-1 rounded-full text-gray-600"
+              class="px-3 py-1 text-xs font-bold text-gray-600 bg-gray-100 rounded-full"
             >
               {{ transaction.details.length }} Items
             </span>
@@ -251,20 +251,20 @@ onMounted(fetchData);
             >
               <img
                 :src="item.product.image"
-                class="bg-gray-50 shadow-sm border border-gray-100 rounded-2xl w-24 h-24 object-cover shrink-0"
+                class="object-cover w-24 h-24 border border-gray-100 shadow-sm bg-gray-50 rounded-2xl shrink-0"
               />
-              <div class="flex flex-col flex-grow justify-center">
+              <div class="flex flex-col justify-center flex-grow">
                 <h3
-                  class="font-bold text-gray-900 text-sm uppercase tracking-wide"
+                  class="text-sm font-bold tracking-wide text-gray-900 uppercase"
                 >
                   {{ item.product.name }}
                 </h3>
-                <p class="mt-1 text-gray-400 text-xs font-mono">
+                <p class="mt-1 font-mono text-xs text-gray-400">
                   SKU: {{ item.product.code }}
                 </p>
-                <div class="flex justify-between items-end mt-4">
+                <div class="flex items-end justify-between mt-4">
                   <p
-                    class="text-gray-600 text-sm bg-gray-50 px-3 py-1 rounded-lg"
+                    class="px-3 py-1 text-sm text-gray-600 rounded-lg bg-gray-50"
                   >
                     {{ item.quantity }} <span class="text-[10px] mx-1">x</span>
                     {{ formatPrice(item.price) }}
@@ -278,35 +278,35 @@ onMounted(fetchData);
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div
             class="bg-white shadow-sm p-6 sm:p-8 border border-gray-100 rounded-[2rem] flex flex-col"
           >
             <h2
-              class="font-bold text-gray-800 text-sm tracking-widest uppercase mb-6 border-b border-gray-100 pb-4"
+              class="pb-4 mb-6 text-sm font-bold tracking-widest text-gray-800 uppercase border-b border-gray-100"
             >
               Logistics
             </h2>
 
             <div
               v-if="transaction.shipping_method !== 'free'"
-              class="flex-grow flex flex-col justify-between"
+              class="flex flex-col justify-between flex-grow"
             >
               <div class="flex items-center gap-4 mb-4">
                 <div
-                  class="w-16 h-12 bg-white border border-gray-200 rounded-xl flex justify-center items-center p-1 shrink-0"
+                  class="flex items-center justify-center w-16 h-12 p-1 bg-white border border-gray-200 rounded-xl shrink-0"
                 >
                   <img
                     v-if="getCourierLogo(transaction.courier_company)"
                     :src="getCourierLogo(transaction.courier_company)"
-                    class="w-full h-full object-contain"
+                    class="object-contain w-full h-full"
                   />
                   <span v-else class="text-[10px] font-black text-gray-400">{{
                     transaction.courier_company?.toUpperCase()
                   }}</span>
                 </div>
                 <div>
-                  <p class="font-bold text-gray-900 text-sm uppercase">
+                  <p class="text-sm font-bold text-gray-900 uppercase">
                     {{ transaction.courier_company }}
                   </p>
                   <p class="text-xs text-gray-500 uppercase">
@@ -315,14 +315,14 @@ onMounted(fetchData);
                 </div>
               </div>
 
-              <div class="bg-gray-50 p-4 rounded-xl space-y-2 mt-auto">
+              <div class="p-4 mt-auto space-y-2 bg-gray-50 rounded-xl">
                 <p
                   class="text-[10px] font-bold text-gray-400 uppercase tracking-widest"
                 >
                   Tracking Number (Resi)
                 </p>
                 <div class="flex items-center justify-between">
-                  <p class="font-mono font-bold text-black text-sm">
+                  <p class="font-mono text-sm font-bold text-black">
                     {{ transaction.tracking_number || "Pending Allocation" }}
                   </p>
                 </div>
@@ -331,10 +331,10 @@ onMounted(fetchData);
 
             <div
               v-else
-              class="flex-grow flex flex-col justify-center items-center text-center bg-gray-50 rounded-xl p-6"
+              class="flex flex-col items-center justify-center flex-grow p-6 text-center bg-gray-50 rounded-xl"
             >
               <div
-                class="w-12 h-12 bg-black text-white rounded-full flex justify-center items-center mb-3"
+                class="flex items-center justify-center w-12 h-12 mb-3 text-white bg-black rounded-full"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -351,10 +351,10 @@ onMounted(fetchData);
                   />
                 </svg>
               </div>
-              <p class="font-bold text-gray-900 text-sm uppercase">
+              <p class="text-sm font-bold text-gray-900 uppercase">
                 Internal Courier
               </p>
-              <p class="text-xs text-green-600 font-bold mt-1">Free Shipping</p>
+              <p class="mt-1 text-xs font-bold text-green-600">Free Shipping</p>
             </div>
           </div>
 
@@ -362,30 +362,30 @@ onMounted(fetchData);
             class="bg-white shadow-sm p-6 sm:p-8 border border-gray-100 rounded-[2rem] flex flex-col"
           >
             <h2
-              class="font-bold text-gray-800 text-sm tracking-widest uppercase mb-6 border-b border-gray-100 pb-4"
+              class="pb-4 mb-6 text-sm font-bold tracking-widest text-gray-800 uppercase border-b border-gray-100"
             >
               Payment Method
             </h2>
 
             <div
               v-if="transaction.payment_method"
-              class="flex-grow flex flex-col justify-center"
+              class="flex flex-col justify-center flex-grow"
             >
               <div class="flex items-center gap-4 mb-6">
                 <div
-                  class="w-16 h-12 bg-gray-50 border border-gray-100 rounded-xl flex justify-center items-center p-1 shrink-0"
+                  class="flex items-center justify-center w-16 h-12 p-1 border border-gray-100 bg-gray-50 rounded-xl shrink-0"
                 >
                   <img
                     v-if="getPaymentLogo(transaction.payment_method)"
                     :src="getPaymentLogo(transaction.payment_method)"
-                    class="w-full h-full object-contain"
+                    class="object-contain w-full h-full"
                   />
                   <span v-else class="text-[10px] font-black text-gray-400"
                     >PAY</span
                   >
                 </div>
                 <div>
-                  <p class="font-bold text-gray-900 text-sm uppercase">
+                  <p class="text-sm font-bold text-gray-900 uppercase">
                     {{ transaction.payment_method.replace("_", " ") }}
                   </p>
                   <p
@@ -399,21 +399,21 @@ onMounted(fetchData);
 
               <div
                 v-if="transaction.payment"
-                class="bg-blue-50/50 border border-blue-100 p-4 rounded-xl mt-auto"
+                class="p-4 mt-auto border border-blue-100 bg-blue-50/50 rounded-xl"
               >
                 <p
                   class="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1"
                 >
                   Xendit Ref ID
                 </p>
-                <p class="font-mono text-blue-900 text-xs truncate">
+                <p class="font-mono text-xs text-blue-900 truncate">
                   {{ transaction.payment.external_id }}
                 </p>
               </div>
             </div>
 
-            <div v-else class="flex-grow flex justify-center items-center">
-              <p class="text-sm text-gray-400 italic">Method not selected</p>
+            <div v-else class="flex items-center justify-center flex-grow">
+              <p class="text-sm italic text-gray-400">Method not selected</p>
             </div>
           </div>
         </div>
@@ -424,7 +424,7 @@ onMounted(fetchData);
           class="bg-black shadow-xl p-8 rounded-[2rem] text-white relative overflow-hidden"
         >
           <div
-            class="absolute -right-6 -top-6 w-32 h-32 bg-white opacity-5 rounded-full blur-2xl pointer-events-none"
+            class="absolute w-32 h-32 bg-white rounded-full pointer-events-none -right-6 -top-6 opacity-5 blur-2xl"
           ></div>
 
           <h2
@@ -447,12 +447,12 @@ onMounted(fetchData);
             Customer Details
           </h2>
 
-          <p class="font-bold text-xl leading-none uppercase">
+          <p class="text-xl font-bold leading-none uppercase">
             {{ transaction.user.first_name }} {{ transaction.user.last_name }}
           </p>
 
           <div class="mt-4 space-y-2 opacity-80">
-            <p class="text-sm flex items-center gap-2">
+            <p class="flex items-center gap-2 text-sm">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="w-4 h-4"
@@ -469,7 +469,7 @@ onMounted(fetchData);
               </svg>
               {{ transaction.user.email }}
             </p>
-            <p class="text-sm flex items-center gap-2">
+            <p class="flex items-center gap-2 text-sm">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="w-4 h-4"
@@ -488,14 +488,14 @@ onMounted(fetchData);
             </p>
           </div>
 
-          <div class="mt-6 pt-6 border-white/10 border-t space-y-4">
+          <div class="pt-6 mt-6 space-y-4 border-t border-white/10">
             <div>
               <p
                 class="text-[10px] text-gray-400 uppercase tracking-widest mb-1"
               >
                 Order ID
               </p>
-              <div class="bg-white/10 px-3 py-2 rounded-lg font-mono text-xs">
+              <div class="px-3 py-2 font-mono text-xs rounded-lg bg-white/10">
                 {{ transaction.order_id }}
               </div>
             </div>
@@ -513,7 +513,7 @@ onMounted(fetchData);
 
           <div class="space-y-4">
             <div
-              class="flex justify-between items-center text-gray-600 text-sm"
+              class="flex items-center justify-between text-sm text-gray-600"
             >
               <span>Subtotal ({{ transaction.details.length }} items)</span>
               <span class="font-medium text-gray-900">{{
@@ -522,7 +522,7 @@ onMounted(fetchData);
             </div>
 
             <div
-              class="flex justify-between items-center text-gray-600 text-sm"
+              class="flex items-center justify-between text-sm text-gray-600"
             >
               <span>Shipping Fee</span>
               <span
@@ -536,18 +536,18 @@ onMounted(fetchData);
             </div>
 
             <div
-              class="flex justify-between items-end pt-4 border-gray-100 border-t border-dashed"
+              class="flex items-end justify-between pt-4 border-t border-gray-100 border-dashed"
             >
               <div>
                 <span
-                  class="block font-bold text-gray-900 text-xs uppercase tracking-widest"
+                  class="block text-xs font-bold tracking-widest text-gray-900 uppercase"
                   >Grand Total</span
                 >
                 <span class="text-[10px] text-gray-400 italic"
                   >Paid by customer</span
                 >
               </div>
-              <span class="font-bold text-black text-2xl">{{
+              <span class="text-2xl font-bold text-black">{{
                 formatPrice(getGrandTotal(transaction))
               }}</span>
             </div>
@@ -745,13 +745,13 @@ onMounted(fetchData);
 
 <!-- Sebelum Visualisasi Timeline -->
 <!-- <template>
-  <div class="mx-auto px-6 py-12 max-w-6xl min-h-screen">
+  <div class="max-w-6xl min-h-screen px-6 py-12 mx-auto">
     <div
-      class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-10"
+      class="flex flex-col justify-between gap-4 mb-10 sm:flex-row sm:items-center"
     >
       <button
         @click="$router.back()"
-        class="group flex items-center gap-2 text-gray-500 hover:text-black transition-colors w-fit"
+        class="flex items-center gap-2 text-gray-500 transition-colors group hover:text-black w-fit"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -767,7 +767,7 @@ onMounted(fetchData);
             d="M15 19l-7-7 7-7"
           />
         </svg>
-        <span class="font-bold text-sm uppercase tracking-widest"
+        <span class="text-sm font-bold tracking-widest uppercase"
           >Back to List</span
         >
       </button>
@@ -783,10 +783,10 @@ onMounted(fetchData);
             {{ formatDate(transaction?.created_at) }}
           </p>
         </div>
-        <div class="h-8 w-px bg-gray-200"></div>
+        <div class="w-px h-8 bg-gray-200"></div>
         <span
           :class="statusClass(transaction?.status)"
-          class="shadow-sm px-6 py-2 rounded-full font-black text-xs uppercase tracking-widest"
+          class="px-6 py-2 text-xs font-black tracking-widest uppercase rounded-full shadow-sm"
         >
           {{ formatStatus(transaction?.status) }}
         </span>
@@ -795,28 +795,28 @@ onMounted(fetchData);
 
     <div
       v-if="isLoading"
-      class="py-20 flex flex-col items-center justify-center animate-pulse"
+      class="flex flex-col items-center justify-center py-20 animate-pulse"
     >
       <div
-        class="border-4 border-gray-100 border-t-black rounded-full w-12 h-12 animate-spin mb-4"
+        class="w-12 h-12 mb-4 border-4 border-gray-100 rounded-full border-t-black animate-spin"
       ></div>
-      <p class="font-serif text-gray-400 text-center italic">
+      <p class="font-serif italic text-center text-gray-400">
         Loading transaction details...
       </p>
     </div>
 
     <div
       v-else-if="transaction"
-      class="gap-8 grid grid-cols-1 lg:grid-cols-3 animate-fade-in"
+      class="grid grid-cols-1 gap-8 lg:grid-cols-3 animate-fade-in"
     >
       <div class="space-y-6 lg:col-span-2">
         <div
           class="bg-white shadow-sm p-6 sm:p-8 border border-gray-100 rounded-[2rem]"
         >
           <div
-            class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4"
+            class="flex items-center justify-between pb-4 mb-6 border-b border-gray-100"
           >
-            <h2 class="font-bold text-gray-800 text-xl tracking-tight">
+            <h2 class="text-xl font-bold tracking-tight text-gray-800">
               Order Items
             </h2>
             <div class="flex items-center gap-2">
@@ -825,7 +825,7 @@ onMounted(fetchData);
                 >{{ transaction.details.length }} Variants</span
               >
               <span
-                class="text-xs font-bold bg-black text-white px-3 py-1 rounded-full"
+                class="px-3 py-1 text-xs font-bold text-white bg-black rounded-full"
               >
                 {{ totalQuantity }} Total Items
               </span>
@@ -840,20 +840,20 @@ onMounted(fetchData);
             >
               <img
                 :src="item.product.image"
-                class="bg-gray-50 shadow-sm border border-gray-100 rounded-2xl w-24 h-24 object-cover shrink-0"
+                class="object-cover w-24 h-24 border border-gray-100 shadow-sm bg-gray-50 rounded-2xl shrink-0"
               />
-              <div class="flex flex-col flex-grow justify-center">
+              <div class="flex flex-col justify-center flex-grow">
                 <h3
-                  class="font-bold text-gray-900 text-sm uppercase tracking-wide"
+                  class="text-sm font-bold tracking-wide text-gray-900 uppercase"
                 >
                   {{ item.product.name }}
                 </h3>
-                <p class="mt-1 text-gray-400 text-xs font-mono">
+                <p class="mt-1 font-mono text-xs text-gray-400">
                   SKU: {{ item.product.code }}
                 </p>
-                <div class="flex justify-between items-end mt-4">
+                <div class="flex items-end justify-between mt-4">
                   <p
-                    class="text-gray-600 text-sm bg-gray-50 px-3 py-1 rounded-lg"
+                    class="px-3 py-1 text-sm text-gray-600 rounded-lg bg-gray-50"
                   >
                     {{ item.quantity }} <span class="text-[10px] mx-1">x</span>
                     {{ formatPrice(item.price) }}
@@ -867,35 +867,35 @@ onMounted(fetchData);
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div
             class="bg-white shadow-sm p-6 sm:p-8 border border-gray-100 rounded-[2rem] flex flex-col"
           >
             <h2
-              class="font-bold text-gray-800 text-sm tracking-widest uppercase mb-6 border-b border-gray-100 pb-4"
+              class="pb-4 mb-6 text-sm font-bold tracking-widest text-gray-800 uppercase border-b border-gray-100"
             >
               Logistics
             </h2>
 
             <div
               v-if="transaction.shipping_method !== 'free'"
-              class="flex-grow flex flex-col justify-between"
+              class="flex flex-col justify-between flex-grow"
             >
               <div class="flex items-center gap-4 mb-4">
                 <div
-                  class="w-16 h-12 bg-white border border-gray-200 rounded-xl flex justify-center items-center p-1 shrink-0"
+                  class="flex items-center justify-center w-16 h-12 p-1 bg-white border border-gray-200 rounded-xl shrink-0"
                 >
                   <img
                     v-if="getCourierLogo(transaction.courier_company)"
                     :src="getCourierLogo(transaction.courier_company)"
-                    class="w-full h-full object-contain"
+                    class="object-contain w-full h-full"
                   />
                   <span v-else class="text-[10px] font-black text-gray-400">{{
                     transaction.courier_company?.toUpperCase()
                   }}</span>
                 </div>
                 <div>
-                  <p class="font-bold text-gray-900 text-sm uppercase">
+                  <p class="text-sm font-bold text-gray-900 uppercase">
                     {{ transaction.courier_company }}
                   </p>
                   <p class="text-xs text-gray-500 uppercase">
@@ -904,14 +904,14 @@ onMounted(fetchData);
                 </div>
               </div>
 
-              <div class="bg-gray-50 p-4 rounded-xl space-y-2 mt-auto">
+              <div class="p-4 mt-auto space-y-2 bg-gray-50 rounded-xl">
                 <p
                   class="text-[10px] font-bold text-gray-400 uppercase tracking-widest"
                 >
                   Tracking Number (Resi)
                 </p>
                 <div class="flex items-center justify-between">
-                  <p class="font-mono font-bold text-black text-sm">
+                  <p class="font-mono text-sm font-bold text-black">
                     {{ transaction.tracking_number || "Pending Allocation" }}
                   </p>
                 </div>
@@ -920,10 +920,10 @@ onMounted(fetchData);
 
             <div
               v-else
-              class="flex-grow flex flex-col justify-center items-center text-center bg-gray-50 rounded-xl p-6"
+              class="flex flex-col items-center justify-center flex-grow p-6 text-center bg-gray-50 rounded-xl"
             >
               <div
-                class="w-12 h-12 bg-black text-white rounded-full flex justify-center items-center mb-3"
+                class="flex items-center justify-center w-12 h-12 mb-3 text-white bg-black rounded-full"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -940,10 +940,10 @@ onMounted(fetchData);
                   />
                 </svg>
               </div>
-              <p class="font-bold text-gray-900 text-sm uppercase">
+              <p class="text-sm font-bold text-gray-900 uppercase">
                 Internal Courier
               </p>
-              <p class="text-xs text-green-600 font-bold mt-1">Free Shipping</p>
+              <p class="mt-1 text-xs font-bold text-green-600">Free Shipping</p>
             </div>
           </div>
 
@@ -951,30 +951,30 @@ onMounted(fetchData);
             class="bg-white shadow-sm p-6 sm:p-8 border border-gray-100 rounded-[2rem] flex flex-col"
           >
             <h2
-              class="font-bold text-gray-800 text-sm tracking-widest uppercase mb-6 border-b border-gray-100 pb-4"
+              class="pb-4 mb-6 text-sm font-bold tracking-widest text-gray-800 uppercase border-b border-gray-100"
             >
               Payment Method
             </h2>
 
             <div
               v-if="transaction.payment_method"
-              class="flex-grow flex flex-col justify-center"
+              class="flex flex-col justify-center flex-grow"
             >
               <div class="flex items-center gap-4 mb-6">
                 <div
-                  class="w-16 h-12 bg-gray-50 border border-gray-100 rounded-xl flex justify-center items-center p-1 shrink-0"
+                  class="flex items-center justify-center w-16 h-12 p-1 border border-gray-100 bg-gray-50 rounded-xl shrink-0"
                 >
                   <img
                     v-if="getPaymentLogo(transaction.payment_method)"
                     :src="getPaymentLogo(transaction.payment_method)"
-                    class="w-full h-full object-contain"
+                    class="object-contain w-full h-full"
                   />
                   <span v-else class="text-[10px] font-black text-gray-400"
                     >PAY</span
                   >
                 </div>
                 <div>
-                  <p class="font-bold text-gray-900 text-sm uppercase">
+                  <p class="text-sm font-bold text-gray-900 uppercase">
                     {{ transaction.payment_method.replace("_", " ") }}
                   </p>
                   <p
@@ -988,21 +988,21 @@ onMounted(fetchData);
 
               <div
                 v-if="transaction.payment"
-                class="bg-blue-50/50 border border-blue-100 p-4 rounded-xl mt-auto"
+                class="p-4 mt-auto border border-blue-100 bg-blue-50/50 rounded-xl"
               >
                 <p
                   class="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1"
                 >
                   Xendit Ref ID
                 </p>
-                <p class="font-mono text-blue-900 text-xs truncate">
+                <p class="font-mono text-xs text-blue-900 truncate">
                   {{ transaction.payment.external_id }}
                 </p>
               </div>
             </div>
 
-            <div v-else class="flex-grow flex justify-center items-center">
-              <p class="text-sm text-gray-400 italic">Method not selected</p>
+            <div v-else class="flex items-center justify-center flex-grow">
+              <p class="text-sm italic text-gray-400">Method not selected</p>
             </div>
           </div>
         </div>
@@ -1013,7 +1013,7 @@ onMounted(fetchData);
           class="bg-black shadow-xl p-8 rounded-[2rem] text-white relative overflow-hidden"
         >
           <div
-            class="absolute -right-6 -top-6 w-32 h-32 bg-white opacity-5 rounded-full blur-2xl pointer-events-none"
+            class="absolute w-32 h-32 bg-white rounded-full pointer-events-none -right-6 -top-6 opacity-5 blur-2xl"
           ></div>
 
           <h2
@@ -1036,12 +1036,12 @@ onMounted(fetchData);
             Customer Details
           </h2>
 
-          <p class="font-bold text-xl leading-none uppercase">
+          <p class="text-xl font-bold leading-none uppercase">
             {{ transaction.user.first_name }} {{ transaction.user.last_name }}
           </p>
 
           <div class="mt-4 space-y-2 opacity-80">
-            <p class="text-sm flex items-center gap-2">
+            <p class="flex items-center gap-2 text-sm">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="w-4 h-4"
@@ -1058,7 +1058,7 @@ onMounted(fetchData);
               </svg>
               {{ transaction.user.email }}
             </p>
-            <p class="text-sm flex items-center gap-2">
+            <p class="flex items-center gap-2 text-sm">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="w-4 h-4"
@@ -1077,14 +1077,14 @@ onMounted(fetchData);
             </p>
           </div>
 
-          <div class="mt-6 pt-6 border-white/10 border-t space-y-4">
+          <div class="pt-6 mt-6 space-y-4 border-t border-white/10">
             <div>
               <p
                 class="text-[10px] text-gray-400 uppercase tracking-widest mb-1"
               >
                 Order ID
               </p>
-              <div class="bg-white/10 px-3 py-2 rounded-lg font-mono text-xs">
+              <div class="px-3 py-2 font-mono text-xs rounded-lg bg-white/10">
                 {{ transaction.order_id }}
               </div>
             </div>
@@ -1102,7 +1102,7 @@ onMounted(fetchData);
 
           <div class="space-y-4">
             <div
-              class="flex justify-between items-center text-gray-600 text-sm"
+              class="flex items-center justify-between text-sm text-gray-600"
             >
               <span>Subtotal ({{ totalQuantity }} items)</span>
               <span class="font-medium text-gray-900">{{
@@ -1111,7 +1111,7 @@ onMounted(fetchData);
             </div>
 
             <div
-              class="flex justify-between items-center text-gray-600 text-sm"
+              class="flex items-center justify-between text-sm text-gray-600"
             >
               <span>Shipping Fee</span>
               <span
@@ -1125,18 +1125,18 @@ onMounted(fetchData);
             </div>
 
             <div
-              class="flex justify-between items-end pt-4 border-gray-100 border-t border-dashed"
+              class="flex items-end justify-between pt-4 border-t border-gray-100 border-dashed"
             >
               <div>
                 <span
-                  class="block font-bold text-gray-900 text-xs uppercase tracking-widest"
+                  class="block text-xs font-bold tracking-widest text-gray-900 uppercase"
                   >Grand Total</span
                 >
                 <span class="text-[10px] text-gray-400 italic"
                   >Paid by customer</span
                 >
               </div>
-              <span class="font-bold text-black text-2xl">{{
+              <span class="text-2xl font-bold text-black">{{
                 formatPrice(getGrandTotal(transaction))
               }}</span>
             </div>
@@ -1343,13 +1343,13 @@ onMounted(fetchData);
 
 <!-- Dengan Visualisasi Timeline -->
 <!-- <template>
-  <div class="mx-auto px-6 py-12 max-w-6xl min-h-screen">
+  <div class="max-w-6xl min-h-screen px-6 py-12 mx-auto">
     <div
-      class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-10"
+      class="flex flex-col justify-between gap-4 mb-10 sm:flex-row sm:items-center"
     >
       <button
         @click="$router.back()"
-        class="group flex items-center gap-2 text-gray-500 hover:text-black transition-colors w-fit"
+        class="flex items-center gap-2 text-gray-500 transition-colors group hover:text-black w-fit"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -1365,7 +1365,7 @@ onMounted(fetchData);
             d="M15 19l-7-7 7-7"
           />
         </svg>
-        <span class="font-bold text-sm uppercase tracking-widest"
+        <span class="text-sm font-bold tracking-widest uppercase"
           >Back to List</span
         >
       </button>
@@ -1381,10 +1381,10 @@ onMounted(fetchData);
             {{ formatDate(transaction?.created_at) }}
           </p>
         </div>
-        <div class="h-8 w-px bg-gray-200"></div>
+        <div class="w-px h-8 bg-gray-200"></div>
         <span
           :class="statusClass(transaction?.status)"
-          class="shadow-sm px-6 py-2 rounded-full font-black text-xs uppercase tracking-widest"
+          class="px-6 py-2 text-xs font-black tracking-widest uppercase rounded-full shadow-sm"
         >
           {{ formatStatus(transaction?.status) }}
         </span>
@@ -1393,28 +1393,28 @@ onMounted(fetchData);
 
     <div
       v-if="isLoading"
-      class="py-20 flex flex-col items-center justify-center animate-pulse"
+      class="flex flex-col items-center justify-center py-20 animate-pulse"
     >
       <div
-        class="border-4 border-gray-100 border-t-black rounded-full w-12 h-12 animate-spin mb-4"
+        class="w-12 h-12 mb-4 border-4 border-gray-100 rounded-full border-t-black animate-spin"
       ></div>
-      <p class="font-serif text-gray-400 text-center italic">
+      <p class="font-serif italic text-center text-gray-400">
         Loading transaction details...
       </p>
     </div>
 
     <div
       v-else-if="transaction"
-      class="gap-8 grid grid-cols-1 lg:grid-cols-3 animate-fade-in"
+      class="grid grid-cols-1 gap-8 lg:grid-cols-3 animate-fade-in"
     >
       <div class="space-y-6 lg:col-span-2">
         <div
           class="bg-white shadow-sm p-6 sm:p-8 border border-gray-100 rounded-[2rem]"
         >
           <div
-            class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4"
+            class="flex items-center justify-between pb-4 mb-6 border-b border-gray-100"
           >
-            <h2 class="font-bold text-gray-800 text-xl tracking-tight">
+            <h2 class="text-xl font-bold tracking-tight text-gray-800">
               Order Items
             </h2>
             <div class="flex items-center gap-2">
@@ -1423,7 +1423,7 @@ onMounted(fetchData);
                 >{{ transaction.details.length }} Variants</span
               >
               <span
-                class="text-xs font-bold bg-black text-white px-3 py-1 rounded-full"
+                class="px-3 py-1 text-xs font-bold text-white bg-black rounded-full"
               >
                 {{ totalQuantity }} Total Items
               </span>
@@ -1438,20 +1438,20 @@ onMounted(fetchData);
             >
               <img
                 :src="item.product.image"
-                class="bg-gray-50 shadow-sm border border-gray-100 rounded-2xl w-24 h-24 object-cover shrink-0"
+                class="object-cover w-24 h-24 border border-gray-100 shadow-sm bg-gray-50 rounded-2xl shrink-0"
               />
-              <div class="flex flex-col flex-grow justify-center">
+              <div class="flex flex-col justify-center flex-grow">
                 <h3
-                  class="font-bold text-gray-900 text-sm uppercase tracking-wide"
+                  class="text-sm font-bold tracking-wide text-gray-900 uppercase"
                 >
                   {{ item.product.name }}
                 </h3>
-                <p class="mt-1 text-gray-400 text-xs font-mono">
+                <p class="mt-1 font-mono text-xs text-gray-400">
                   SKU: {{ item.product.code }}
                 </p>
-                <div class="flex justify-between items-end mt-4">
+                <div class="flex items-end justify-between mt-4">
                   <p
-                    class="text-gray-600 text-sm bg-gray-50 px-3 py-1 rounded-lg"
+                    class="px-3 py-1 text-sm text-gray-600 rounded-lg bg-gray-50"
                   >
                     {{ item.quantity }} <span class="text-[10px] mx-1">x</span>
                     {{ formatPrice(item.price) }}
@@ -1465,22 +1465,22 @@ onMounted(fetchData);
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div
             class="bg-white shadow-sm p-6 sm:p-8 border border-gray-100 rounded-[2rem] flex flex-col relative overflow-hidden"
           >
             <h2
-              class="font-bold text-gray-800 text-sm tracking-widest uppercase mb-6 border-b border-gray-100 pb-4"
+              class="pb-4 mb-6 text-sm font-bold tracking-widest text-gray-800 uppercase border-b border-gray-100"
             >
               Logistics
             </h2>
 
             <div
               v-if="trackingLoading"
-              class="absolute inset-0 bg-white/80 backdrop-blur-sm z-10 flex flex-col justify-center items-center"
+              class="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm"
             >
               <div
-                class="border-2 border-gray-200 border-t-black rounded-full w-8 h-8 animate-spin"
+                class="w-8 h-8 border-2 border-gray-200 rounded-full border-t-black animate-spin"
               ></div>
               <p
                 class="text-[10px] uppercase tracking-widest text-gray-500 mt-2 font-bold"
@@ -1491,23 +1491,23 @@ onMounted(fetchData);
 
             <div
               v-if="transaction.shipping_method !== 'free'"
-              class="flex-grow flex flex-col justify-between"
+              class="flex flex-col justify-between flex-grow"
             >
               <div class="flex items-center gap-4 mb-4">
                 <div
-                  class="w-16 h-12 bg-white border border-gray-200 rounded-xl flex justify-center items-center p-1 shrink-0"
+                  class="flex items-center justify-center w-16 h-12 p-1 bg-white border border-gray-200 rounded-xl shrink-0"
                 >
                   <img
                     v-if="getCourierLogo(transaction.courier_company)"
                     :src="getCourierLogo(transaction.courier_company)"
-                    class="w-full h-full object-contain"
+                    class="object-contain w-full h-full"
                   />
                   <span v-else class="text-[10px] font-black text-gray-400">{{
                     transaction.courier_company?.toUpperCase()
                   }}</span>
                 </div>
                 <div>
-                  <p class="font-bold text-gray-900 text-sm uppercase">
+                  <p class="text-sm font-bold text-gray-900 uppercase">
                     {{ transaction.courier_company }}
                   </p>
                   <p class="text-xs text-gray-500 uppercase">
@@ -1516,14 +1516,14 @@ onMounted(fetchData);
                 </div>
               </div>
 
-              <div class="bg-gray-50 p-4 rounded-xl space-y-2 mt-auto">
+              <div class="p-4 mt-auto space-y-2 bg-gray-50 rounded-xl">
                 <p
                   class="text-[10px] font-bold text-gray-400 uppercase tracking-widest"
                 >
                   Tracking Number (Resi)
                 </p>
                 <div class="flex items-center justify-between">
-                  <p class="font-mono font-bold text-black text-sm">
+                  <p class="font-mono text-sm font-bold text-black">
                     {{
                       biteshipData?.courier?.waybill_id ||
                       transaction.tracking_number ||
@@ -1536,10 +1536,10 @@ onMounted(fetchData);
 
             <div
               v-else
-              class="flex-grow flex flex-col justify-center items-center text-center bg-gray-50 rounded-xl p-6"
+              class="flex flex-col items-center justify-center flex-grow p-6 text-center bg-gray-50 rounded-xl"
             >
               <div
-                class="w-12 h-12 bg-black text-white rounded-full flex justify-center items-center mb-3"
+                class="flex items-center justify-center w-12 h-12 mb-3 text-white bg-black rounded-full"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -1556,10 +1556,10 @@ onMounted(fetchData);
                   />
                 </svg>
               </div>
-              <p class="font-bold text-gray-900 text-sm uppercase">
+              <p class="text-sm font-bold text-gray-900 uppercase">
                 No Courier
               </p>
-              <p class="text-xs text-gray-500 font-bold mt-1">
+              <p class="mt-1 text-xs font-bold text-gray-500">
                 In-Store Pickup
               </p>
             </div>
@@ -1569,30 +1569,30 @@ onMounted(fetchData);
             class="bg-white shadow-sm p-6 sm:p-8 border border-gray-100 rounded-[2rem] flex flex-col"
           >
             <h2
-              class="font-bold text-gray-800 text-sm tracking-widest uppercase mb-6 border-b border-gray-100 pb-4"
+              class="pb-4 mb-6 text-sm font-bold tracking-widest text-gray-800 uppercase border-b border-gray-100"
             >
               Payment Method
             </h2>
 
             <div
               v-if="transaction.payment_method"
-              class="flex-grow flex flex-col justify-center"
+              class="flex flex-col justify-center flex-grow"
             >
               <div class="flex items-center gap-4 mb-6">
                 <div
-                  class="w-16 h-12 bg-gray-50 border border-gray-100 rounded-xl flex justify-center items-center p-1 shrink-0"
+                  class="flex items-center justify-center w-16 h-12 p-1 border border-gray-100 bg-gray-50 rounded-xl shrink-0"
                 >
                   <img
                     v-if="getPaymentLogo(transaction.payment_method)"
                     :src="getPaymentLogo(transaction.payment_method)"
-                    class="w-full h-full object-contain"
+                    class="object-contain w-full h-full"
                   />
                   <span v-else class="text-[10px] font-black text-gray-400"
                     >PAY</span
                   >
                 </div>
                 <div>
-                  <p class="font-bold text-gray-900 text-sm uppercase">
+                  <p class="text-sm font-bold text-gray-900 uppercase">
                     {{ transaction.payment_method.replace("_", " ") }}
                   </p>
                   <p
@@ -1606,21 +1606,21 @@ onMounted(fetchData);
 
               <div
                 v-if="transaction.payment"
-                class="bg-blue-50/50 border border-blue-100 p-4 rounded-xl mt-auto"
+                class="p-4 mt-auto border border-blue-100 bg-blue-50/50 rounded-xl"
               >
                 <p
                   class="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1"
                 >
                   Xendit Ref ID
                 </p>
-                <p class="font-mono text-blue-900 text-xs truncate">
+                <p class="font-mono text-xs text-blue-900 truncate">
                   {{ transaction.payment.external_id }}
                 </p>
               </div>
             </div>
 
-            <div v-else class="flex-grow flex justify-center items-center">
-              <p class="text-sm text-gray-400 italic">Method not selected</p>
+            <div v-else class="flex items-center justify-center flex-grow">
+              <p class="text-sm italic text-gray-400">Method not selected</p>
             </div>
           </div>
         </div>
@@ -1631,7 +1631,7 @@ onMounted(fetchData);
           class="bg-black shadow-xl p-8 rounded-[2rem] text-white relative overflow-hidden"
         >
           <div
-            class="absolute -right-6 -top-6 w-32 h-32 bg-white opacity-5 rounded-full blur-2xl pointer-events-none"
+            class="absolute w-32 h-32 bg-white rounded-full pointer-events-none -right-6 -top-6 opacity-5 blur-2xl"
           ></div>
 
           <h2
@@ -1654,12 +1654,12 @@ onMounted(fetchData);
             Customer Details
           </h2>
 
-          <p class="font-bold text-xl leading-none uppercase">
+          <p class="text-xl font-bold leading-none uppercase">
             {{ transaction.user.first_name }} {{ transaction.user.last_name }}
           </p>
 
           <div class="mt-4 space-y-2 opacity-80">
-            <p class="text-sm flex items-center gap-2">
+            <p class="flex items-center gap-2 text-sm">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="w-4 h-4"
@@ -1676,7 +1676,7 @@ onMounted(fetchData);
               </svg>
               {{ transaction.user.email }}
             </p>
-            <p class="text-sm flex items-center gap-2">
+            <p class="flex items-center gap-2 text-sm">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="w-4 h-4"
@@ -1695,14 +1695,14 @@ onMounted(fetchData);
             </p>
           </div>
 
-          <div class="mt-6 pt-6 border-white/10 border-t space-y-4">
+          <div class="pt-6 mt-6 space-y-4 border-t border-white/10">
             <div>
               <p
                 class="text-[10px] text-gray-400 uppercase tracking-widest mb-1"
               >
                 Order ID
               </p>
-              <div class="bg-white/10 px-3 py-2 rounded-lg font-mono text-xs">
+              <div class="px-3 py-2 font-mono text-xs rounded-lg bg-white/10">
                 {{ transaction.order_id }}
               </div>
             </div>
@@ -1720,7 +1720,7 @@ onMounted(fetchData);
 
           <div class="space-y-4">
             <div
-              class="flex justify-between items-center text-gray-600 text-sm"
+              class="flex items-center justify-between text-sm text-gray-600"
             >
               <span>Subtotal ({{ totalQuantity }} items)</span>
               <span class="font-medium text-gray-900">{{
@@ -1729,7 +1729,7 @@ onMounted(fetchData);
             </div>
 
             <div
-              class="flex justify-between items-center text-gray-600 text-sm"
+              class="flex items-center justify-between text-sm text-gray-600"
             >
               <span>Shipping Fee</span>
               <span
@@ -1743,18 +1743,18 @@ onMounted(fetchData);
             </div>
 
             <div
-              class="flex justify-between items-end pt-4 border-gray-100 border-t border-dashed"
+              class="flex items-end justify-between pt-4 border-t border-gray-100 border-dashed"
             >
               <div>
                 <span
-                  class="block font-bold text-gray-900 text-xs uppercase tracking-widest"
+                  class="block text-xs font-bold tracking-widest text-gray-900 uppercase"
                   >Grand Total</span
                 >
                 <span class="text-[10px] text-gray-400 italic"
                   >Paid by customer</span
                 >
               </div>
-              <span class="font-bold text-black text-2xl">{{
+              <span class="text-2xl font-bold text-black">{{
                 formatPrice(getGrandTotal(transaction))
               }}</span>
             </div>
@@ -1781,9 +1781,9 @@ onMounted(fetchData);
 
           <div
             v-if="transaction.shipping_method === 'free'"
-            class="text-center py-6"
+            class="py-6 text-center"
           >
-            <p class="text-xs text-gray-500 italic mb-2">
+            <p class="mb-2 text-xs italic text-gray-500">
               No physical shipping required.
             </p>
             <p class="text-sm font-bold text-black uppercase">
@@ -1793,13 +1793,13 @@ onMounted(fetchData);
 
           <div v-else-if="trackingLoading" class="flex justify-center py-6">
             <div
-              class="border-2 border-gray-200 border-t-black rounded-full w-6 h-6 animate-spin"
+              class="w-6 h-6 border-2 border-gray-200 rounded-full border-t-black animate-spin"
             ></div>
           </div>
 
           <div
             v-else
-            class="relative border-l-2 border-gray-100 ml-2 space-y-6"
+            class="relative ml-2 space-y-6 border-l-2 border-gray-100"
           >
             <div
               v-for="(history, index) in timelineHistory"
@@ -1815,7 +1815,7 @@ onMounted(fetchData);
 
               <div :class="index === 0 ? 'opacity-100' : 'opacity-50'">
                 <p
-                  class="font-bold text-gray-900 text-xs uppercase tracking-wide mb-1"
+                  class="mb-1 text-xs font-bold tracking-wide text-gray-900 uppercase"
                 >
                   {{ formatStatusTitle(history.status) }}
                 </p>
@@ -2116,17 +2116,17 @@ onMounted(fetchData);
 
 <!-- Tambahan Tombol untuk Cetak Resi -->
 <template>
-  <div class="mx-auto px-6 py-12 max-w-6xl min-h-screen relative">
+  <div class="relative max-w-6xl min-h-screen px-6 py-12 mx-auto">
     <div
       v-show="isPreparingPDF"
       class="fixed inset-0 z-[999999] bg-gray-900/95 overflow-y-auto"
     >
-      <div class="min-h-screen flex flex-col items-center py-10 px-4">
+      <div class="flex flex-col items-center min-h-screen px-4 py-10">
         <div
-          class="flex items-center gap-3 text-white font-bold tracking-widest uppercase mb-8 animate-pulse"
+          class="flex items-center gap-3 mb-8 font-bold tracking-widest text-white uppercase animate-pulse"
         >
           <div
-            class="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"
+            class="w-6 h-6 border-4 border-white rounded-full border-t-transparent animate-spin"
           ></div>
           Generating PDF Document...
         </div>
@@ -2137,21 +2137,21 @@ onMounted(fetchData);
         >
           <div v-if="transaction">
             <div
-              class="flex justify-between items-center border-b-2 border-black pb-4"
+              class="flex items-center justify-between pb-4 border-b-2 border-black"
             >
               <div class="w-1/3">
                 <img
                   v-if="getCourierLogo(transaction.courier_company)"
                   :src="getCourierLogo(transaction.courier_company)"
-                  class="h-12 object-contain"
+                  class="object-contain h-12"
                 />
-                <span v-else class="font-black text-2xl uppercase">{{
+                <span v-else class="text-2xl font-black uppercase">{{
                   transaction.courier_company
                 }}</span>
               </div>
               <div class="w-1/3 text-center">
                 <h1
-                  class="font-black text-3xl tracking-widest uppercase text-black"
+                  class="text-3xl font-black tracking-widest text-black uppercase"
                 >
                   SOLHER
                 </h1>
@@ -2160,21 +2160,21 @@ onMounted(fetchData);
                 </p>
               </div>
               <div class="w-1/3 text-right">
-                <p class="font-black text-xl uppercase text-black">
+                <p class="text-xl font-black text-black uppercase">
                   {{ transaction.courier_type }}
                 </p>
               </div>
             </div>
 
             <div
-              class="text-center py-6 border-b-2 border-black flex flex-col items-center"
+              class="flex flex-col items-center py-6 text-center border-b-2 border-black"
             >
               <img
                 :src="`https://bwipjs-api.metafloor.com/?bcid=code128&text=${biteshipData?.courier?.waybill_id || transaction.tracking_number || transaction.order_id}&scale=4&includetext=false`"
-                class="h-24 object-contain mb-4"
+                class="object-contain h-24 mb-4"
                 crossorigin="anonymous"
               />
-              <p class="font-black text-2xl tracking-widest text-black">
+              <p class="text-2xl font-black tracking-widest text-black">
                 Nomor Resi -
                 {{
                   biteshipData?.courier?.waybill_id ||
@@ -2186,43 +2186,43 @@ onMounted(fetchData);
 
             <div
               v-if="printSettings.shipping_fee_shown"
-              class="text-center py-4 border-b-2 border-black"
+              class="py-4 text-center border-b-2 border-black"
             >
-              <!-- <p class="font-black text-2xl text-black">
+              <!-- <p class="text-2xl font-black text-black">
                 Ongkos Kirim: {{ formatPrice(transaction.shipping_cost) }}
               </p>
-              <p class="font-bold text-lg mt-1 text-black">
+              <p class="mt-1 text-lg font-bold text-black">
                 Jenis Layanan - {{ transaction.courier_type }}
               </p> -->
-              <p class="font-black text-2xl text-black">
+              <p class="text-2xl font-black text-black">
                 Ongkos Kirim: {{ formatPrice(transaction.shipping_cost) }}
               </p>
               
-              <p v-if="transaction.promo_discount > 0" class="font-bold text-lg mt-1 text-black">
+              <p v-if="transaction.promo_discount > 0" class="mt-1 text-lg font-bold text-black">
                 Diskon Promo: - {{ formatPrice(transaction.promo_discount) }}
               </p>
 
-              <p class="font-bold text-lg mt-1 text-black">
+              <p class="mt-1 text-lg font-bold text-black">
                 Jenis Layanan - {{ transaction.courier_type }}
               </p>
             </div>
 
-            <div class="flex py-6 border-b-2 border-black gap-6">
-              <div class="w-1/2 flex flex-col border-r-2 border-black pr-6">
-                <p class="text-sm font-bold mb-3 text-black">
+            <div class="flex gap-6 py-6 border-b-2 border-black">
+              <div class="flex flex-col w-1/2 pr-6 border-r-2 border-black">
+                <p class="mb-3 text-sm font-bold text-black">
                   Reference Number:
                 </p>
                 <img
                   :src="`https://bwipjs-api.metafloor.com/?bcid=code128&text=${transaction.order_id}&scale=3&includetext=false`"
-                  class="h-16 object-contain self-start"
+                  class="self-start object-contain h-16"
                   crossorigin="anonymous"
                 />
-                <p class="text-sm font-bold mt-2 text-black">
+                <p class="mt-2 text-sm font-bold text-black">
                   {{ transaction.order_id }}
                 </p>
               </div>
               <div
-                class="w-1/2 flex flex-col justify-center text-xl space-y-3 text-black"
+                class="flex flex-col justify-center w-1/2 space-y-3 text-xl text-black"
               >
                 <p>
                   Quantity <span class="mx-2">:</span
@@ -2235,21 +2235,21 @@ onMounted(fetchData);
               </div>
             </div>
 
-            <div class="flex py-6 border-b-2 border-black gap-6">
-              <div class="w-1/2 border-r-2 border-black pr-6 text-black">
-                <p class="font-black text-sm mb-3 uppercase">
+            <div class="flex gap-6 py-6 border-b-2 border-black">
+              <div class="w-1/2 pr-6 text-black border-r-2 border-black">
+                <p class="mb-3 text-sm font-black uppercase">
                   Alamat Penerima:
                 </p>
-                <p class="font-black text-xl leading-tight">
+                <p class="text-xl font-black leading-tight">
                   {{ getCensoredName() }}
                 </p>
                 <p
                   v-if="printSettings.receiver_phone_shown"
-                  class="text-xl mt-1 font-mono font-bold"
+                  class="mt-1 font-mono text-xl font-bold"
                 >
                   {{ transaction.user.phone || "-" }}
                 </p>
-                <p class="text-lg mt-3 leading-snug">
+                <p class="mt-3 text-lg leading-snug">
                   {{
                     transaction.address?.address_location ||
                     "Alamat tidak tersedia"
@@ -2257,43 +2257,43 @@ onMounted(fetchData);
                 </p>
               </div>
               <div class="w-1/2 pr-6 text-black">
-                <p class="font-black text-sm mb-3 uppercase">
+                <p class="mb-3 text-sm font-black uppercase">
                   Alamat Pengirim:
                 </p>
-                <p class="font-black text-xl leading-tight">Solher Store</p>
+                <p class="text-xl font-black leading-tight">Solher Store</p>
                 <p
                   v-if="printSettings.origin_phone_shown"
-                  class="text-xl mt-1 font-mono font-bold"
+                  class="mt-1 font-mono text-xl font-bold"
                 >
                   08883888585
                 </p>
                 <p
                   v-if="printSettings.origin_address_shown"
-                  class="text-lg mt-3 leading-snug"
+                  class="mt-3 text-lg leading-snug"
                 >
-                  Jalan Kecilung N0. 8A, Kota Surabaya, Jawa Timur 60275, Indonesia
+                  Jalan Wijaya Kusuma No.75, Kota Surabaya, Jawa Timur 60272, Indonesia
                 </p>
               </div>
             </div>
 
             <div
               v-if="printSettings.item_description_shown"
-              class="py-6 border-b-2 border-black text-lg leading-relaxed text-black"
+              class="py-6 text-lg leading-relaxed text-black border-b-2 border-black"
             >
               <div class="flex">
-                <span class="font-black uppercase w-40 shrink-0"
+                <span class="w-40 font-black uppercase shrink-0"
                   >Jenis Barang:
                 </span>
                 <span class="font-bold">{{ getItemsDescription() }}</span>
               </div>
             </div>
 
-            <div class="text-lg flex py-4 border-b-2 border-black text-black">
-              <span class="font-black uppercase w-40 shrink-0">Catatan: </span>
+            <div class="flex py-4 text-lg text-black border-b-2 border-black">
+              <span class="w-40 font-black uppercase shrink-0">Catatan: </span>
               <span class="font-bold">Tidak Ada</span>
             </div>
 
-            <div class="text-center pt-4 text-sm font-bold text-black">
+            <div class="pt-4 text-sm font-bold text-center text-black">
               Pengiriman melalui platform Solher
             </div>
           </div>
@@ -2301,11 +2301,11 @@ onMounted(fetchData);
       </div>
     </div>
     <div
-      class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-10 relative z-10"
+      class="relative z-10 flex flex-col justify-between gap-4 mb-10 sm:flex-row sm:items-center"
     >
       <button
         @click="$router.back()"
-        class="group flex items-center gap-2 text-gray-500 hover:text-black transition-colors w-fit"
+        class="flex items-center gap-2 text-gray-500 transition-colors group hover:text-black w-fit"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -2321,7 +2321,7 @@ onMounted(fetchData);
             d="M15 19l-7-7 7-7"
           />
         </svg>
-        <span class="font-bold text-sm uppercase tracking-widest"
+        <span class="text-sm font-bold tracking-widest uppercase"
           >Back to List</span
         >
       </button>
@@ -2353,7 +2353,7 @@ onMounted(fetchData);
         </button>
 
         <div
-          class="h-8 w-px bg-gray-200"
+          class="w-px h-8 bg-gray-200"
           v-if="transaction?.shipping_method === 'biteship'"
         ></div>
 
@@ -2367,10 +2367,10 @@ onMounted(fetchData);
             {{ formatDate(transaction?.created_at) }}
           </p>
         </div>
-        <div class="h-8 w-px bg-gray-200"></div>
+        <div class="w-px h-8 bg-gray-200"></div>
         <span
           :class="statusClass(transaction?.status)"
-          class="shadow-sm px-6 py-2 rounded-full font-black text-xs uppercase tracking-widest"
+          class="px-6 py-2 text-xs font-black tracking-widest uppercase rounded-full shadow-sm"
         >
           {{ formatStatus(transaction?.status) }}
         </span>
@@ -2382,15 +2382,15 @@ onMounted(fetchData);
       class="fixed inset-0 z-[500] flex items-center justify-center bg-black/50 backdrop-blur-sm animate-fade-in px-4"
     >
       <div
-        class="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col"
+        class="flex flex-col w-full max-w-lg overflow-hidden bg-white shadow-2xl rounded-xl"
       >
         <div
-          class="flex justify-between items-center px-6 py-4 border-b border-gray-100"
+          class="flex items-center justify-between px-6 py-4 border-b border-gray-100"
         >
-          <h3 class="font-bold text-lg text-gray-800">Print Label</h3>
+          <h3 class="text-lg font-bold text-gray-800">Print Label</h3>
           <button
             @click="showPrintModal = false"
-            class="text-gray-400 hover:text-red-500 transition"
+            class="text-gray-400 transition hover:text-red-500"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -2411,8 +2411,8 @@ onMounted(fetchData);
 
         <div class="p-6 space-y-6 flex-grow overflow-y-auto max-h-[70vh]">
           <div>
-            <h4 class="font-bold text-gray-800 mb-4">Isi Detail Resi</h4>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <h4 class="mb-4 font-bold text-gray-800">Isi Detail Resi</h4>
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div class="space-y-3">
                 <label class="flex items-center gap-3 cursor-pointer group"
                   ><input
@@ -2492,7 +2492,7 @@ onMounted(fetchData);
             </div>
           </div>
           <div>
-            <h4 class="font-bold text-gray-800 mb-3">Tipe Label</h4>
+            <h4 class="mb-3 font-bold text-gray-800">Tipe Label</h4>
             <select
               v-model="printSettings.paper_size"
               class="w-full bg-white border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-[#4a148c] focus:border-[#4a148c] block p-3 outline-none cursor-pointer"
@@ -2517,28 +2517,28 @@ onMounted(fetchData);
 
     <div
       v-if="isLoading"
-      class="py-20 flex flex-col items-center justify-center animate-pulse relative z-10"
+      class="relative z-10 flex flex-col items-center justify-center py-20 animate-pulse"
     >
       <div
-        class="border-4 border-gray-100 border-t-black rounded-full w-12 h-12 animate-spin mb-4"
+        class="w-12 h-12 mb-4 border-4 border-gray-100 rounded-full border-t-black animate-spin"
       ></div>
-      <p class="font-serif text-gray-400 text-center italic">
+      <p class="font-serif italic text-center text-gray-400">
         Loading transaction details...
       </p>
     </div>
 
     <div
       v-else-if="transaction"
-      class="gap-8 grid grid-cols-1 lg:grid-cols-3 animate-fade-in relative z-10"
+      class="relative z-10 grid grid-cols-1 gap-8 lg:grid-cols-3 animate-fade-in"
     >
       <div class="space-y-6 lg:col-span-2">
         <div
           class="bg-white shadow-sm p-6 sm:p-8 border border-gray-100 rounded-[2rem]"
         >
           <div
-            class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4"
+            class="flex items-center justify-between pb-4 mb-6 border-b border-gray-100"
           >
-            <h2 class="font-bold text-gray-800 text-xl tracking-tight">
+            <h2 class="text-xl font-bold tracking-tight text-gray-800">
               Order Items
             </h2>
             <div class="flex items-center gap-2">
@@ -2547,7 +2547,7 @@ onMounted(fetchData);
                 >{{ transaction.details.length }} Variants</span
               >
               <span
-                class="text-xs font-bold bg-black text-white px-3 py-1 rounded-full"
+                class="px-3 py-1 text-xs font-bold text-white bg-black rounded-full"
                 >{{ totalQuantity }} Total Items</span
               >
             </div>
@@ -2560,23 +2560,23 @@ onMounted(fetchData);
             >
               <img
                 :src="item.product.image"
-                class="bg-gray-50 shadow-sm border border-gray-100 rounded-2xl w-24 h-24 object-cover shrink-0"
+                class="object-cover w-24 h-24 border border-gray-100 shadow-sm bg-gray-50 rounded-2xl shrink-0"
               />
-              <div class="flex flex-col flex-grow justify-center">
+              <div class="flex flex-col justify-center flex-grow">
                 <h3
-                  class="font-bold text-gray-900 text-sm uppercase tracking-wide"
+                  class="text-sm font-bold tracking-wide text-gray-900 uppercase"
                 >
                   {{ item.product.name }}
                 </h3>
                 <p v-if="item.color" class="text-[10px] text-gray-500 uppercase tracking-widest mt-1">
                   Color: <span class="font-bold text-gray-800">{{ item.color }}</span>
                 </p>
-                <p class="mt-1 text-gray-400 text-xs font-mono">
+                <p class="mt-1 font-mono text-xs text-gray-400">
                   SKU: {{ item.product.code }}
                 </p>
-                <div class="flex justify-between items-end mt-4">
+                <div class="flex items-end justify-between mt-4">
                   <p
-                    class="text-gray-600 text-sm bg-gray-50 px-3 py-1 rounded-lg"
+                    class="px-3 py-1 text-sm text-gray-600 rounded-lg bg-gray-50"
                   >
                     {{ item.quantity }} <span class="text-[10px] mx-1">x</span>
                     {{ formatPrice(item.price) }}
@@ -2590,21 +2590,21 @@ onMounted(fetchData);
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div
             class="bg-white shadow-sm p-6 sm:p-8 border border-gray-100 rounded-[2rem] flex flex-col relative overflow-hidden"
           >
             <h2
-              class="font-bold text-gray-800 text-sm tracking-widest uppercase mb-6 border-b border-gray-100 pb-4"
+              class="pb-4 mb-6 text-sm font-bold tracking-widest text-gray-800 uppercase border-b border-gray-100"
             >
               Logistics
             </h2>
             <div
               v-if="trackingLoading"
-              class="absolute inset-0 bg-white/80 backdrop-blur-sm z-10 flex flex-col justify-center items-center"
+              class="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm"
             >
               <div
-                class="border-2 border-gray-200 border-t-black rounded-full w-8 h-8 animate-spin"
+                class="w-8 h-8 border-2 border-gray-200 rounded-full border-t-black animate-spin"
               ></div>
               <p
                 class="text-[10px] uppercase tracking-widest text-gray-500 mt-2 font-bold"
@@ -2614,23 +2614,23 @@ onMounted(fetchData);
             </div>
             <div
               v-if="transaction.shipping_method !== 'free'"
-              class="flex-grow flex flex-col justify-between"
+              class="flex flex-col justify-between flex-grow"
             >
               <div class="flex items-center gap-4 mb-4">
                 <div
-                  class="w-16 h-12 bg-white border border-gray-200 rounded-xl flex justify-center items-center p-1 shrink-0"
+                  class="flex items-center justify-center w-16 h-12 p-1 bg-white border border-gray-200 rounded-xl shrink-0"
                 >
                   <img
                     v-if="getCourierLogo(transaction.courier_company)"
                     :src="getCourierLogo(transaction.courier_company)"
-                    class="w-full h-full object-contain"
+                    class="object-contain w-full h-full"
                   />
                   <span v-else class="text-[10px] font-black text-gray-400">{{
                     transaction.courier_company?.toUpperCase()
                   }}</span>
                 </div>
                 <div>
-                  <p class="font-bold text-gray-900 text-sm uppercase">
+                  <p class="text-sm font-bold text-gray-900 uppercase">
                     {{ transaction.courier_company }}
                   </p>
                   <p class="text-xs text-gray-500 uppercase">
@@ -2638,14 +2638,14 @@ onMounted(fetchData);
                   </p>
                 </div>
               </div>
-              <div class="bg-gray-50 p-4 rounded-xl space-y-2 mt-auto">
+              <div class="p-4 mt-auto space-y-2 bg-gray-50 rounded-xl">
                 <p
                   class="text-[10px] font-bold text-gray-400 uppercase tracking-widest"
                 >
                   Tracking Number (Resi)
                 </p>
                 <div class="flex items-center justify-between">
-                  <p class="font-mono font-bold text-black text-sm">
+                  <p class="font-mono text-sm font-bold text-black">
                     {{
                       biteshipData?.courier?.waybill_id ||
                       transaction.tracking_number ||
@@ -2657,10 +2657,10 @@ onMounted(fetchData);
             </div>
             <div
               v-else
-              class="flex-grow flex flex-col justify-center items-center text-center bg-gray-50 rounded-xl p-6"
+              class="flex flex-col items-center justify-center flex-grow p-6 text-center bg-gray-50 rounded-xl"
             >
               <div
-                class="w-12 h-12 bg-black text-white rounded-full flex justify-center items-center mb-3"
+                class="flex items-center justify-center w-12 h-12 mb-3 text-white bg-black rounded-full"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -2677,10 +2677,10 @@ onMounted(fetchData);
                   />
                 </svg>
               </div>
-              <p class="font-bold text-gray-900 text-sm uppercase">
+              <p class="text-sm font-bold text-gray-900 uppercase">
                 No Courier
               </p>
-              <p class="text-xs text-gray-500 font-bold mt-1">
+              <p class="mt-1 text-xs font-bold text-gray-500">
                 In-Store Pickup
               </p>
             </div>
@@ -2690,29 +2690,29 @@ onMounted(fetchData);
             class="bg-white shadow-sm p-6 sm:p-8 border border-gray-100 rounded-[2rem] flex flex-col"
           >
             <h2
-              class="font-bold text-gray-800 text-sm tracking-widest uppercase mb-6 border-b border-gray-100 pb-4"
+              class="pb-4 mb-6 text-sm font-bold tracking-widest text-gray-800 uppercase border-b border-gray-100"
             >
               Payment Method
             </h2>
             <div
               v-if="transaction.payment_method"
-              class="flex-grow flex flex-col justify-center"
+              class="flex flex-col justify-center flex-grow"
             >
               <div class="flex items-center gap-4 mb-6">
                 <div
-                  class="w-16 h-12 bg-gray-50 border border-gray-100 rounded-xl flex justify-center items-center p-1 shrink-0"
+                  class="flex items-center justify-center w-16 h-12 p-1 border border-gray-100 bg-gray-50 rounded-xl shrink-0"
                 >
                   <img
                     v-if="getPaymentLogo(transaction.payment_method)"
                     :src="getPaymentLogo(transaction.payment_method)"
-                    class="w-full h-full object-contain"
+                    class="object-contain w-full h-full"
                   />
                   <span v-else class="text-[10px] font-black text-gray-400"
                     >PAY</span
                   >
                 </div>
                 <div>
-                  <p class="font-bold text-gray-900 text-sm uppercase">
+                  <p class="text-sm font-bold text-gray-900 uppercase">
                     {{ transaction.payment_method.replace("_", " ") }}
                   </p>
                   <p
@@ -2725,20 +2725,20 @@ onMounted(fetchData);
               </div>
               <div
                 v-if="transaction.payment"
-                class="bg-blue-50/50 border border-blue-100 p-4 rounded-xl mt-auto"
+                class="p-4 mt-auto border border-blue-100 bg-blue-50/50 rounded-xl"
               >
                 <p
                   class="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-1"
                 >
                   Xendit Ref ID
                 </p>
-                <p class="font-mono text-blue-900 text-xs truncate">
+                <p class="font-mono text-xs text-blue-900 truncate">
                   {{ transaction.payment.external_id }}
                 </p>
               </div>
             </div>
-            <div v-else class="flex-grow flex justify-center items-center">
-              <p class="text-sm text-gray-400 italic">Method not selected</p>
+            <div v-else class="flex items-center justify-center flex-grow">
+              <p class="text-sm italic text-gray-400">Method not selected</p>
             </div>
           </div>
         </div>
@@ -2749,7 +2749,7 @@ onMounted(fetchData);
           class="bg-black shadow-xl p-8 rounded-[2rem] text-white relative overflow-hidden"
         >
           <div
-            class="absolute -right-6 -top-6 w-32 h-32 bg-white opacity-5 rounded-full blur-2xl pointer-events-none"
+            class="absolute w-32 h-32 bg-white rounded-full pointer-events-none -right-6 -top-6 opacity-5 blur-2xl"
           ></div>
           <h2
             class="opacity-50 mb-6 font-black text-[10px] uppercase tracking-[0.3em] flex items-center gap-2"
@@ -2770,11 +2770,11 @@ onMounted(fetchData);
             </svg>
             Customer Details
           </h2>
-          <p class="font-bold text-xl leading-none uppercase">
+          <p class="text-xl font-bold leading-none uppercase">
             {{ transaction.user.first_name }} {{ transaction.user.last_name }}
           </p>
           <div class="mt-4 space-y-2 opacity-80">
-            <p class="text-sm flex items-center gap-2">
+            <p class="flex items-center gap-2 text-sm">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="w-4 h-4"
@@ -2791,7 +2791,7 @@ onMounted(fetchData);
               </svg>
               {{ transaction.user.email }}
             </p>
-            <p class="text-sm flex items-center gap-2">
+            <p class="flex items-center gap-2 text-sm">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="w-4 h-4"
@@ -2809,14 +2809,14 @@ onMounted(fetchData);
               {{ transaction.user.phone || "No phone" }}
             </p>
           </div>
-          <div class="mt-6 pt-6 border-white/10 border-t space-y-4">
+          <div class="pt-6 mt-6 space-y-4 border-t border-white/10">
             <div>
               <p
                 class="text-[10px] text-gray-400 uppercase tracking-widest mb-1"
               >
                 Order ID
               </p>
-              <div class="bg-white/10 px-3 py-2 rounded-lg font-mono text-xs">
+              <div class="px-3 py-2 font-mono text-xs rounded-lg bg-white/10">
                 {{ transaction.order_id }}
               </div>
             </div>
@@ -2833,7 +2833,7 @@ onMounted(fetchData);
           </h2>
           <div class="space-y-4">
             <div
-              class="flex justify-between items-center text-gray-600 text-sm"
+              class="flex items-center justify-between text-sm text-gray-600"
             >
               <span>Subtotal ({{ totalQuantity }} items)</span
               ><span class="font-medium text-gray-900">{{
@@ -2841,7 +2841,7 @@ onMounted(fetchData);
               }}</span>
             </div>
             <div
-              class="flex justify-between items-center text-gray-600 text-sm"
+              class="flex items-center justify-between text-sm text-gray-600"
             >
               <span>Shipping Fee</span
               ><span
@@ -2853,17 +2853,17 @@ onMounted(fetchData);
               }}</span>
             </div>
             <div
-              class="flex justify-between items-end pt-4 border-gray-100 border-t border-dashed"
+              class="flex items-end justify-between pt-4 border-t border-gray-100 border-dashed"
             >
               <div>
                 <span
-                  class="block font-bold text-gray-900 text-xs uppercase tracking-widest"
+                  class="block text-xs font-bold tracking-widest text-gray-900 uppercase"
                   >Grand Total</span
                 ><span class="text-[10px] text-gray-400 italic"
                   >Paid by customer</span
                 >
               </div>
-              <span class="font-bold text-black text-2xl">{{
+              <span class="text-2xl font-bold text-black">{{
                 formatPrice(getGrandTotal(transaction))
               }}</span>
             </div>
@@ -2880,7 +2880,7 @@ onMounted(fetchData);
           </h2>
           <div class="space-y-4">
             <!-- <div
-              class="flex justify-between items-center text-gray-600 text-sm"
+              class="flex items-center justify-between text-sm text-gray-600"
             >
               <span>Subtotal ({{ totalQuantity }} items)</span>
               <span class="font-medium text-gray-900">{{
@@ -2888,7 +2888,7 @@ onMounted(fetchData);
               }}</span>
             </div>
             <div
-              class="flex justify-between items-center text-gray-600 text-sm"
+              class="flex items-center justify-between text-sm text-gray-600"
             >
               <span>Shipping Fee</span>
               <span
@@ -2901,24 +2901,24 @@ onMounted(fetchData);
               }}</span>
             </div>
             <div
-              class="flex justify-between items-end pt-4 border-gray-100 border-t border-dashed"
+              class="flex items-end justify-between pt-4 border-t border-gray-100 border-dashed"
             >
               <div>
                 <span
-                  class="block font-bold text-gray-900 text-xs uppercase tracking-widest"
+                  class="block text-xs font-bold tracking-widest text-gray-900 uppercase"
                   >Grand Total</span
                 >
                 <span class="text-[10px] text-gray-400 italic"
                   >Paid by customer</span
                 >
               </div>
-              <span class="font-bold text-black text-2xl">{{
+              <span class="text-2xl font-bold text-black">{{
                 formatPrice(getGrandTotal(transaction))
               }}</span>
             </div> -->
 
             <div
-              class="flex justify-between items-center text-gray-600 text-sm"
+              class="flex items-center justify-between text-sm text-gray-600"
             >
               <span>Subtotal ({{ totalQuantity }} items)</span>
               <span class="font-medium text-gray-900">{{
@@ -2926,7 +2926,7 @@ onMounted(fetchData);
               }}</span>
             </div>
             <div
-              class="flex justify-between items-center text-gray-600 text-sm"
+              class="flex items-center justify-between text-sm text-gray-600"
             >
               <span>Shipping Fee</span>
               <span
@@ -2939,38 +2939,38 @@ onMounted(fetchData);
               }}</span>
             </div>
 
-            <div v-if="transaction.promo_discount > 0" class="flex justify-between items-center text-green-600 text-sm font-medium">
+            <div v-if="transaction.promo_discount > 0" class="flex items-center justify-between text-sm font-medium text-green-600">
               <span>Promo Code ({{ transaction.promo_code }})</span>
               <span>- {{ formatPrice(transaction.promo_discount) }}</span>
             </div>
-            <div v-if="transaction.points_used > 0" class="flex justify-between items-center text-yellow-600 text-sm font-medium">
+            <div v-if="transaction.points_used > 0" class="flex items-center justify-between text-sm font-medium text-yellow-600">
               <span>Loyalty Points ({{ transaction.points_used }} Pts)</span>
               <span>- {{ formatPrice(transaction.points_used * 1000) }}</span>
             </div>
             <div
-              class="flex justify-between items-end pt-4 border-gray-100 border-t border-dashed"
+              class="flex items-end justify-between pt-4 border-t border-gray-100 border-dashed"
             >
               <div>
                 <span
-                  class="block font-bold text-gray-900 text-xs uppercase tracking-widest"
+                  class="block text-xs font-bold tracking-widest text-gray-900 uppercase"
                   >Grand Total</span
                 >
                 <span class="text-[10px] text-gray-400 italic"
                   >Paid by customer</span
                 >
               </div>
-              <span class="font-bold text-black text-2xl">{{
+              <span class="text-2xl font-bold text-black">{{
                 formatPrice(getGrandTotal(transaction))
               }}</span>
             </div>
 
             <div
               v-if="transaction.point > 0 && transaction.status === 'completed'"
-              class="mt-4 p-4 bg-gradient-to-r from-yellow-50 to-white border border-yellow-100 rounded-xl flex items-center justify-between"
+              class="flex items-center justify-between p-4 mt-4 border border-yellow-100 bg-gradient-to-r from-yellow-50 to-white rounded-xl"
             >
               <div class="flex items-center gap-3">
                 <div
-                  class="w-10 h-10 bg-yellow-400 text-white rounded-full flex justify-center items-center shadow-sm"
+                  class="flex items-center justify-center w-10 h-10 text-white bg-yellow-400 rounded-full shadow-sm"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -2998,7 +2998,7 @@ onMounted(fetchData);
                 <span class="text-2xl font-black text-yellow-600"
                   >+{{ transaction.point }}</span
                 >
-                <span class="text-xs font-bold text-yellow-800 ml-1">Pts</span>
+                <span class="ml-1 text-xs font-bold text-yellow-800">Pts</span>
               </div>
             </div>
           </div>
@@ -3022,9 +3022,9 @@ onMounted(fetchData);
           </h2>
           <div
             v-if="transaction.shipping_method === 'free'"
-            class="text-center py-6"
+            class="py-6 text-center"
           >
-            <p class="text-xs text-gray-500 italic mb-2">
+            <p class="mb-2 text-xs italic text-gray-500">
               No physical shipping required.
             </p>
             <p class="text-sm font-bold text-black uppercase">
@@ -3033,12 +3033,12 @@ onMounted(fetchData);
           </div>
           <div v-else-if="trackingLoading" class="flex justify-center py-6">
             <div
-              class="border-2 border-gray-200 border-t-black rounded-full w-6 h-6 animate-spin"
+              class="w-6 h-6 border-2 border-gray-200 rounded-full border-t-black animate-spin"
             ></div>
           </div>
           <div
             v-else
-            class="relative border-l-2 border-gray-100 ml-2 space-y-6"
+            class="relative ml-2 space-y-6 border-l-2 border-gray-100"
           >
             <div
               v-for="(history, index) in timelineHistory"
@@ -3053,7 +3053,7 @@ onMounted(fetchData);
               ></span>
               <div :class="index === 0 ? 'opacity-100' : 'opacity-50'">
                 <p
-                  class="font-bold text-gray-900 text-xs uppercase tracking-wide mb-1"
+                  class="mb-1 text-xs font-bold tracking-wide text-gray-900 uppercase"
                 >
                   {{ formatStatusTitle(history.status) }}
                 </p>
