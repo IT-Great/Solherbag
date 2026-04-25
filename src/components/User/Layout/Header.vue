@@ -4461,23 +4461,57 @@ const fetchUnreadChats = async () => {
   }
 };
 
+// // ====================================================================================
+// // [PERBAIKAN] Mencegah Multiple Listeners dengan variabel penanda (flag)
+// // ====================================================================================
+// let isEchoConnected = false;
+
+// const setupRealTimeListeners = () => {
+//   if (isAuthenticated.value && userData.value && window.Echo && !isEchoConnected) {
+//     window.Echo.private(`chat.${userData.value.id}`)
+//       .listen('.message.sent', (e) => {
+//         // 1. Tambah angka di badge header
+//         totalUnreadChats.value++;
+        
+//         // 2. Pancarkan sinyal lokal ke halaman lain (misal: ChatListPage)
+//         window.dispatchEvent(new CustomEvent('new-chat-message', { detail: e.message }));
+//       });
+      
+//     isEchoConnected = true; // Tandai bahwa soket sudah menyala
+//   }
+// };
+
 // ====================================================================================
-// [PERBAIKAN] Mencegah Multiple Listeners dengan variabel penanda (flag)
+// [PERBAIKAN] Fungsi Subscribe Real-Time dengan CCTV (Console Log)
 // ====================================================================================
 let isEchoConnected = false;
 
 const setupRealTimeListeners = () => {
+  console.log("🚦 [ECHO DETECT] Status Auth:", isAuthenticated.value);
+  console.log("🚦 [ECHO DETECT] Object Echo tersedia?:", !!window.Echo);
+
   if (isAuthenticated.value && userData.value && window.Echo && !isEchoConnected) {
-    window.Echo.private(`chat.${userData.value.id}`)
+    const channelName = `chat.${userData.value.id}`;
+    console.log(`🔌 [ECHO CONNECTING] Mencoba masuk ke Private Channel: ${channelName}`);
+
+    window.Echo.private(channelName)
       .listen('.message.sent', (e) => {
+        // CCTV: Jika baris ini tidak pernah muncul, berarti gagal nyambung ke Pusher
+        console.log("📬 [PESAN MASUK DARI PUSHER!]", e); 
+        
         // 1. Tambah angka di badge header
         totalUnreadChats.value++;
         
-        // 2. Pancarkan sinyal lokal ke halaman lain (misal: ChatListPage)
+        // 2. Pancarkan sinyal lokal ke ChatListPage
         window.dispatchEvent(new CustomEvent('new-chat-message', { detail: e.message }));
+      })
+      .error((err) => {
+        console.error("❌ [ECHO ERROR] Gagal gabung ke Private Channel (Biasanya karena Auth Token salah):", err);
       });
       
-    isEchoConnected = true; // Tandai bahwa soket sudah menyala
+    isEchoConnected = true; 
+  } else {
+    console.warn("⚠️ [ECHO SKIP] Setup dibatalkan. IsConnected:", isEchoConnected);
   }
 };
 
