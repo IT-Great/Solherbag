@@ -225,69 +225,6 @@ onUnmounted(() => {
 </template>
 
 <script setup>
-// import { ref, onMounted, onUnmounted } from 'vue';
-// import axios from 'axios';
-// import { BASE_URL } from '../../config/api';
-
-// const admins = ref([]);
-// const isLoading = ref(true);
-// const currentUser = ref(null);
-
-// const fetchAdmins = async () => {
-//   try {
-//     const res = await axios.get(`${BASE_URL}/chat/admins`, {
-//       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-//     });
-//     admins.value = res.data;
-//   } catch (e) {
-//     console.error(e);
-//   } finally {
-//     isLoading.value = false;
-//   }
-// };
-
-// onMounted(async () => {
-//   // 1. Dapatkan data user login
-//   const userStr = localStorage.getItem('user');
-//   if (userStr) {
-//     currentUser.value = JSON.parse(userStr);
-//   }
-
-//   // 2. Fetch data list admin
-//   await fetchAdmins();
-
-//   // 3. [BARU] Setup Laravel Echo Listener untuk Real-Time Badge
-//   if (currentUser.value && window.Echo) {
-//     // Dengarkan channel private milik user (Sesuai dengan di MessageSent.php)
-//     window.Echo.private(`chat.${currentUser.value.id}`)
-//       // Gunakan DOT (.) di depan nama event karena memakai fungsi broadcastAs()
-//       .listen('.message.sent', (e) => {
-        
-//         const senderId = e.message.sender_id;
-//         const targetAdminIndex = admins.value.findIndex(a => a.id === senderId);
-        
-//         if (targetAdminIndex !== -1) {
-//             // Tambah angka badge admin terkait secara otomatis (+1)
-//             admins.value[targetAdminIndex].unread_count = (admins.value[targetAdminIndex].unread_count || 0) + 1;
-            
-//             // Opsional (Bagus untuk UX): Geser admin yang baru mengirim pesan ke urutan paling atas
-//             const movedAdmin = admins.value.splice(targetAdminIndex, 1)[0];
-//             admins.value.unshift(movedAdmin);
-//         } else {
-//             // Jika ada staf admin baru yang mengirim chat dan belum ada di list, fetch ulang
-//             fetchAdmins();
-//         }
-//       });
-//   }
-// });
-
-// onUnmounted(() => {
-//   // [BARU] Tinggalkan channel untuk menghindari memori bocor (memory leak) atau double-listening
-//   if (currentUser.value && window.Echo) {
-//     window.Echo.leave(`chat.${currentUser.value.id}`);
-//   }
-// });
-
 import { ref, onMounted, onUnmounted } from 'vue';
 import axios from 'axios';
 import { BASE_URL } from '../../config/api';
@@ -309,39 +246,46 @@ const fetchAdmins = async () => {
   }
 };
 
-// [PERBAIKAN] Fungsi untuk merespons sinyal dari Header
-const handleNewMessage = (e) => {
-  const senderId = e.detail.sender_id;
-  const targetAdminIndex = admins.value.findIndex(a => a.id === senderId);
-  
-  if (targetAdminIndex !== -1) {
-      // Tambah angka badge
-      admins.value[targetAdminIndex].unread_count = (admins.value[targetAdminIndex].unread_count || 0) + 1;
-      
-      // Geser admin ke paling atas karena pesannya terbaru
-      const movedAdmin = admins.value.splice(targetAdminIndex, 1)[0];
-      admins.value.unshift(movedAdmin);
-  } else {
-      // Refresh jika itu adalah admin baru
-      fetchAdmins();
-  }
-};
-
 onMounted(async () => {
+  // 1. Dapatkan data user login
   const userStr = localStorage.getItem('user');
   if (userStr) {
     currentUser.value = JSON.parse(userStr);
   }
 
+  // 2. Fetch data list admin
   await fetchAdmins();
 
-  // Dengarkan sinyal lokal dari Header
-  window.addEventListener('new-chat-message', handleNewMessage);
+  // 3. [BARU] Setup Laravel Echo Listener untuk Real-Time Badge
+  if (currentUser.value && window.Echo) {
+    // Dengarkan channel private milik user (Sesuai dengan di MessageSent.php)
+    window.Echo.private(`chat.${currentUser.value.id}`)
+      // Gunakan DOT (.) di depan nama event karena memakai fungsi broadcastAs()
+      .listen('.message.sent', (e) => {
+        
+        const senderId = e.message.sender_id;
+        const targetAdminIndex = admins.value.findIndex(a => a.id === senderId);
+        
+        if (targetAdminIndex !== -1) {
+            // Tambah angka badge admin terkait secara otomatis (+1)
+            admins.value[targetAdminIndex].unread_count = (admins.value[targetAdminIndex].unread_count || 0) + 1;
+            
+            // Opsional (Bagus untuk UX): Geser admin yang baru mengirim pesan ke urutan paling atas
+            const movedAdmin = admins.value.splice(targetAdminIndex, 1)[0];
+            admins.value.unshift(movedAdmin);
+        } else {
+            // Jika ada staf admin baru yang mengirim chat dan belum ada di list, fetch ulang
+            fetchAdmins();
+        }
+      });
+  }
 });
 
 onUnmounted(() => {
-  // Matikan pendengaran lokal tanpa membunuh koneksi soket utama
-  window.removeEventListener('new-chat-message', handleNewMessage);
+  // [BARU] Tinggalkan channel untuk menghindari memori bocor (memory leak) atau double-listening
+  if (currentUser.value && window.Echo) {
+    window.Echo.leave(`chat.${currentUser.value.id}`);
+  }
 });
 </script>
 

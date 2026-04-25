@@ -4159,267 +4159,6 @@ watch(
 </template>
 
 <script setup>
-// import { ref, onMounted, onUnmounted, watch } from "vue";
-// import { useRoute, useRouter } from "vue-router";
-// import Swal from "sweetalert2";
-// import axios from "axios";
-// import SearchModal from "../../User/Layout/SearchModal.vue";
-
-// import defaultBagIcon from "../../../assets/products/bag_icon.jpg";
-// import { useCart } from "../../../composables/useCart";
-// import { BASE_URL } from "../../../config/api";
-// import { useProductStore } from "../../../composables/useProductStore";
-
-// const route = useRoute();
-// const router = useRouter();
-
-// const isSearchOpen = ref(false);
-// const openSearch = () => (isSearchOpen.value = true);
-// const closeSearch = () => (isSearchOpen.value = false);
-
-// const isDropdownOpen = ref(false);
-// const isAuthenticated = ref(false);
-// const userData = ref(null);
-// const isMobileMenuOpen = ref(false);
-
-// const { cartCount, fetchCarts, handleOptimisticAdd } = useCart();
-// const { state: productState, fetchCollectionsData } = useProductStore();
-// const isBadgePopping = ref(false);
-
-// // State untuk menyimpan jumlah chat yang belum dibaca
-// const totalUnreadChats = ref(0);
-
-// const fetchUnreadChats = async () => {
-//   if (!isAuthenticated.value) return;
-//   try {
-//     const res = await axios.get(`${BASE_URL}/chat/admins`, {
-//       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-//     });
-//     totalUnreadChats.value = res.data.reduce((sum, admin) => sum + (admin.unread_count || 0), 0);
-//   } catch (error) {
-//     console.error("Gagal mengambil badge chat:", error);
-//   }
-// };
-
-// // ====================================================================================
-// // [BARU] FUNGSI SUBSCRIBE REAL-TIME WEBSOCKETS (LARAVEL ECHO)
-// // ====================================================================================
-// const setupRealTimeListeners = () => {
-//   if (isAuthenticated.value && userData.value && window.Echo) {
-//     // Berlangganan (Subscribe) ke private channel milik user ini
-//     window.Echo.private(`chat.${userData.value.id}`)
-//       // Harus menggunakan TITIK (.) di depan karena kita mengubah nama event di broadcastAs()
-//       .listen('.message.sent', (e) => {
-//         // Otomatis tambah angka di badge header
-//         totalUnreadChats.value++;
-//       });
-//   }
-// };
-
-// // =======================================================
-// // STATE & LOGIKA ANNOUNCEMENT BAR
-// // =======================================================
-// const isAtTop = ref(true);
-// const currentAnnouncement = ref(0);
-// let announcementTimer = null;
-
-// const announcements = [
-//   "An Exclusive Welcome Gift: Rp 250K OFF your first order →",
-//   "A Little Extra, On Us — Complimentary Shipping Across Indonesia (Min. Rp 1.000.000) →",
-// ];
-
-// const nextAnnouncement = () => {
-//   currentAnnouncement.value = (currentAnnouncement.value + 1) % announcements.length;
-//   resetAnnouncementTimer();
-// };
-
-// const prevAnnouncement = () => {
-//   currentAnnouncement.value = (currentAnnouncement.value - 1 + announcements.length) % announcements.length;
-//   resetAnnouncementTimer();
-// };
-
-// const startAnnouncementTimer = () => {
-//   announcementTimer = setInterval(() => {
-//     currentAnnouncement.value = (currentAnnouncement.value + 1) % announcements.length;
-//   }, 3000);
-// };
-
-// const resetAnnouncementTimer = () => {
-//   clearInterval(announcementTimer);
-//   startAnnouncementTimer();
-// };
-
-// const handleScroll = () => {
-//   isAtTop.value = window.scrollY <= 0;
-// };
-// // =======================================================
-
-// const isMegaMenuOpen = ref(false);
-// const megaMenuTimer = ref(null);
-// const activeMegaCategory = ref("all");
-// const categories = ref([]);
-// const isMegaMenuLoading = ref(false);
-// const randomMegaProducts = ref([]);
-
-// const formatPrice = (v) =>
-//   new Intl.NumberFormat("id-ID", {
-//     style: "currency",
-//     currency: "IDR",
-//     minimumFractionDigits: 0,
-//   }).format(v);
-
-// const shuffleArray = (array) => {
-//   let currentIndex = array.length, randomIndex;
-//   while (currentIndex > 0) {
-//     randomIndex = Math.floor(Math.random() * currentIndex);
-//     currentIndex--;
-//     [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
-//   }
-//   return array;
-// };
-
-// const generateRandomProducts = () => {
-//   if (!productState.collectionsProducts || productState.collectionsProducts.length === 0) {
-//     isMegaMenuLoading.value = false;
-//     randomMegaProducts.value = [];
-//     return;
-//   }
-
-//   isMegaMenuLoading.value = true;
-
-//   setTimeout(() => {
-//     let filtered = [];
-//     if (activeMegaCategory.value === "all") {
-//       filtered = [...productState.collectionsProducts];
-//     } else {
-//       filtered = productState.collectionsProducts.filter(p => p.category_id == activeMegaCategory.value);
-//     }
-
-//     randomMegaProducts.value = shuffleArray(filtered).slice(0, 4);
-//     isMegaMenuLoading.value = false;
-//   }, 100);
-// };
-
-// const fetchCategoriesForMegaMenu = async () => {
-//   if (categories.value.length > 0) return;
-//   try {
-//     const res = await axios.get(`${BASE_URL}/guest/categories`);
-//     const data = res.data.data || res.data;
-//     categories.value = data.sort((a, b) => a.id - b.id);
-//   } catch (error) {
-//     console.error("Failed to load categories for Mega Menu", error);
-//   }
-// };
-
-// const openMegaMenu = async () => {
-//   clearTimeout(megaMenuTimer.value);
-//   isMegaMenuOpen.value = true;
-//   isDropdownOpen.value = false;
-
-//   isMegaMenuLoading.value = true;
-//   fetchCategoriesForMegaMenu();
-
-//   if (!productState.isCollectionsLoaded || !productState.collectionsProducts || productState.collectionsProducts.length === 0) {
-//     try { await fetchCollectionsData(); } catch (e) {}
-//   }
-
-//   generateRandomProducts();
-// };
-
-// const keepMegaMenuOpen = () => { clearTimeout(megaMenuTimer.value); };
-// const closeMegaMenu = () => { megaMenuTimer.value = setTimeout(() => { isMegaMenuOpen.value = false; }, 150); };
-
-// const goToCollection = (categoryName) => {
-//   closeMegaMenu(); 
-//   if (categoryName === 'all') router.push('/collections');
-//   else router.push({ path: '/collections', query: { category: categoryName } });
-// };
-
-// const selectMegaMenuCategory = (catId) => {
-//   if (activeMegaCategory.value !== catId) {
-//     activeMegaCategory.value = catId;
-//     generateRandomProducts();
-//   }
-// };
-
-// const navigateToProduct = (id) => {
-//   closeMegaMenu();
-//   router.push(`/product/${id}`);
-// };
-
-// const openCartPage = () => {
-//   if (!isAuthenticated.value) {
-//     Swal.fire({ icon: "info", title: "Sign In Required", text: "Please login to see your shopping bag.", confirmButtonColor: "#000" });
-//     return;
-//   }
-//   router.push("/cart");
-// };
-
-// const checkAuth = () => {
-//   const token = localStorage.getItem("token");
-//   const user = localStorage.getItem("user");
-//   if (token && user) {
-//     isAuthenticated.value = true;
-//     userData.value = JSON.parse(user);
-    
-//     // Tarik notifikasi awal dari API
-//     fetchUnreadChats();
-//     // Nyalakan soket untuk mendengarkan perubahan secara instan
-//     setupRealTimeListeners();
-//   } else {
-//     isAuthenticated.value = false;
-//     userData.value = null;
-//     totalUnreadChats.value = 0;
-//   }
-// };
-
-// const toggleDropdown = () => {
-//   checkAuth();
-//   isDropdownOpen.value = !isDropdownOpen.value;
-//   isMegaMenuOpen.value = false;
-// };
-
-// const onAddToCartEvent = (e) => {
-//   handleOptimisticAdd(e.detail, () => {
-//     isBadgePopping.value = true;
-//     setTimeout(() => (isBadgePopping.value = false), 300);
-//   });
-// };
-
-// onMounted(() => {
-//   checkAuth();
-//   if (isAuthenticated.value) fetchCarts();
-
-//   fetchCategoriesForMegaMenu();
-
-//   window.addEventListener("optimistic-add-to-cart", onAddToCartEvent);
-//   window.addEventListener("click", (e) => {
-//     if (!e.target.closest(".relative")) isDropdownOpen.value = false;
-//   });
-//   window.addEventListener("refresh-cart", fetchCarts);
-//   window.addEventListener("refresh-chat-badge", fetchUnreadChats);
-//   window.addEventListener("scroll", handleScroll);
-//   startAnnouncementTimer();
-// });
-
-// onUnmounted(() => {
-//   window.removeEventListener("optimistic-add-to-cart", onAddToCartEvent);
-//   window.removeEventListener("scroll", handleScroll);
-//   window.removeEventListener("refresh-chat-badge", fetchUnreadChats); 
-//   clearInterval(announcementTimer);
-
-//   // [BARU] Bersihkan memori dan soket saat navigasi pindah
-//   if (userData.value && window.Echo) {
-//     window.Echo.leave(`chat.${userData.value.id}`);
-//   }
-// });
-
-// watch(() => route.path, () => {
-//   isDropdownOpen.value = false;
-//   isMobileMenuOpen.value = false;
-//   checkAuth();
-// });
-
 import { ref, onMounted, onUnmounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import Swal from "sweetalert2";
@@ -4447,6 +4186,7 @@ const { cartCount, fetchCarts, handleOptimisticAdd } = useCart();
 const { state: productState, fetchCollectionsData } = useProductStore();
 const isBadgePopping = ref(false);
 
+// State untuk menyimpan jumlah chat yang belum dibaca
 const totalUnreadChats = ref(0);
 
 const fetchUnreadChats = async () => {
@@ -4482,36 +4222,20 @@ const fetchUnreadChats = async () => {
 // };
 
 // ====================================================================================
-// [PERBAIKAN] Fungsi Subscribe Real-Time dengan CCTV (Console Log)
+// [PERBAIKAN] Mencegah Multiple Listeners dengan variabel penanda (flag)
 // ====================================================================================
-let isEchoConnected = false;
-
 const setupRealTimeListeners = () => {
-  console.log("🚦 [ECHO DETECT] Status Auth:", isAuthenticated.value);
-  console.log("🚦 [ECHO DETECT] Object Echo tersedia?:", !!window.Echo);
-
   if (isAuthenticated.value && userData.value && window.Echo && !isEchoConnected) {
-    const channelName = `chat.${userData.value.id}`;
-    console.log(`🔌 [ECHO CONNECTING] Mencoba masuk ke Private Channel: ${channelName}`);
-
-    window.Echo.private(channelName)
+    window.Echo.private(`chat.${userData.value.id}`)
       .listen('.message.sent', (e) => {
-        // CCTV: Jika baris ini tidak pernah muncul, berarti gagal nyambung ke Pusher
-        console.log("📬 [PESAN MASUK DARI PUSHER!]", e); 
-        
         // 1. Tambah angka di badge header
         totalUnreadChats.value++;
         
-        // 2. Pancarkan sinyal lokal ke ChatListPage
+        // 2. Pancarkan sinyal lokal ke halaman lain (misal: ChatListPage)
         window.dispatchEvent(new CustomEvent('new-chat-message', { detail: e.message }));
-      })
-      .error((err) => {
-        console.error("❌ [ECHO ERROR] Gagal gabung ke Private Channel (Biasanya karena Auth Token salah):", err);
       });
       
-    isEchoConnected = true; 
-  } else {
-    console.warn("⚠️ [ECHO SKIP] Setup dibatalkan. IsConnected:", isEchoConnected);
+    isEchoConnected = true; // Tandai bahwa soket sudah menyala
   }
 };
 
@@ -4605,19 +4329,23 @@ const fetchCategoriesForMegaMenu = async () => {
     const res = await axios.get(`${BASE_URL}/guest/categories`);
     const data = res.data.data || res.data;
     categories.value = data.sort((a, b) => a.id - b.id);
-  } catch (error) {}
+  } catch (error) {
+    console.error("Failed to load categories for Mega Menu", error);
+  }
 };
 
 const openMegaMenu = async () => {
   clearTimeout(megaMenuTimer.value);
   isMegaMenuOpen.value = true;
   isDropdownOpen.value = false;
+
   isMegaMenuLoading.value = true;
   fetchCategoriesForMegaMenu();
 
   if (!productState.isCollectionsLoaded || !productState.collectionsProducts || productState.collectionsProducts.length === 0) {
     try { await fetchCollectionsData(); } catch (e) {}
   }
+
   generateRandomProducts();
 };
 
@@ -4653,25 +4381,15 @@ const openCartPage = () => {
 const checkAuth = () => {
   const token = localStorage.getItem("token");
   const user = localStorage.getItem("user");
-  
   if (token && user) {
-    // [PERBAIKAN] Jangan panggil API fetchUnreadChats jika user sudah dipastikan login sebelumnya
-    // Ini menghemat memori dan menstabilkan aplikasi
-    const wasNotAuthenticated = !isAuthenticated.value;
-    
     isAuthenticated.value = true;
     userData.value = JSON.parse(user);
     
-    if (wasNotAuthenticated) {
-        fetchUnreadChats();
-        setupRealTimeListeners();
-    }
+    // Tarik notifikasi awal dari API
+    fetchUnreadChats();
+    // Nyalakan soket untuk mendengarkan perubahan secara instan
+    setupRealTimeListeners();
   } else {
-    // Logika Pembersihan saat Logout
-    if (isEchoConnected && userData.value && window.Echo) {
-        window.Echo.leave(`chat.${userData.value.id}`);
-        isEchoConnected = false;
-    }
     isAuthenticated.value = false;
     userData.value = null;
     totalUnreadChats.value = 0;
@@ -4712,6 +4430,11 @@ onUnmounted(() => {
   window.removeEventListener("scroll", handleScroll);
   window.removeEventListener("refresh-chat-badge", fetchUnreadChats); 
   clearInterval(announcementTimer);
+
+  // [BARU] Bersihkan memori dan soket saat navigasi pindah
+  if (userData.value && window.Echo) {
+    window.Echo.leave(`chat.${userData.value.id}`);
+  }
 });
 
 watch(() => route.path, () => {
