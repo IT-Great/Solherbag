@@ -1552,9 +1552,7 @@ onMounted(fetchAllData);
 <!-- Tanpa Tombol Simulasi -->
 <template>
   <div class="mx-auto px-6 py-20 max-w-4xl min-h-screen">
-    <div
-      class="mb-8 flex flex-col md:flex-row md:justify-between md:items-center gap-4"
-    >
+    <div class="mb-8 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
       <div>
         <button
           @click="$router.push('/orderpage')"
@@ -1570,10 +1568,7 @@ onMounted(fetchAllData);
       </div>
     </div>
 
-    <div
-      v-if="isLoading"
-      class="flex flex-col justify-center items-center py-20"
-    >
+    <div v-if="isLoading" class="flex flex-col justify-center items-center py-20">
       <div
         class="border-4 border-gray-100 border-t-black rounded-full w-10 h-10 animate-spin"
       ></div>
@@ -1592,16 +1587,12 @@ onMounted(fetchAllData);
     </div>
 
     <div v-else-if="orderData" class="space-y-6 animate-fade-in">
-      <div
-        class="bg-white shadow-sm border border-gray-100 rounded-3xl overflow-hidden"
-      >
+      <div class="bg-white shadow-sm border border-gray-100 rounded-3xl overflow-hidden">
         <div
           class="bg-gray-50 p-6 md:p-8 border-b border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-6"
         >
           <div>
-            <p
-              class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1"
-            >
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
               Waybill / Resi
             </p>
             <p class="font-mono font-bold text-xl text-black">
@@ -1615,9 +1606,7 @@ onMounted(fetchAllData);
               <span
                 class="bg-black text-white px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-widest"
               >
-                {{
-                  formatStatusTitle(trackingData?.status || orderData.status)
-                }}
+                {{ formatStatusTitle(trackingData?.status || orderData.status) }}
               </span>
             </div>
           </div>
@@ -1666,30 +1655,23 @@ onMounted(fetchAllData);
                   <img
                     v-if="
                       getCourierLogo(
-                        trackingData?.courier?.company ||
-                          orderData.courier_company,
+                        trackingData?.courier?.company || orderData.courier_company
                       )
                     "
                     :src="
                       getCourierLogo(
-                        trackingData?.courier?.company ||
-                          orderData.courier_company,
+                        trackingData?.courier?.company || orderData.courier_company
                       )
                     "
                     class="w-full h-full object-contain p-1"
                   />
                   <span v-else class="font-black text-gray-300 text-[8px]">{{
-                    trackingData?.courier?.company ||
-                    orderData.courier_company ||
-                    "N/A"
+                    trackingData?.courier?.company || orderData.courier_company || "N/A"
                   }}</span>
                 </div>
                 <div class="text-left md:text-right">
                   <p class="font-bold text-gray-800 uppercase text-xs">
-                    {{
-                      trackingData?.courier?.company ||
-                      orderData.courier_company
-                    }}
+                    {{ trackingData?.courier?.company || orderData.courier_company }}
                   </p>
                   <p class="text-[10px] text-gray-500 font-bold uppercase">
                     {{ trackingData?.courier?.type || orderData.courier_type }}
@@ -1705,13 +1687,9 @@ onMounted(fetchAllData);
           class="p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-sm bg-white"
         >
           <div class="space-y-3">
-            <div
-              class="flex items-center gap-2 mb-4 border-b border-gray-100 pb-2"
-            >
+            <div class="flex items-center gap-2 mb-4 border-b border-gray-100 pb-2">
               <span class="w-2 h-2 rounded-full bg-gray-300"></span>
-              <p
-                class="text-[10px] font-bold text-gray-400 uppercase tracking-widest"
-              >
+              <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
                 Origin Details
               </p>
             </div>
@@ -1724,9 +1702,7 @@ onMounted(fetchAllData);
               </p>
             </div>
             <div>
-              <p class="text-[10px] text-gray-400 uppercase tracking-widest">
-                Phone
-              </p>
+              <p class="text-[10px] text-gray-400 uppercase tracking-widest">Phone</p>
               <p class="font-mono text-gray-700 text-xs">
                 {{ trackingData.origin?.contact_phone || "-" }}
               </p>
@@ -1745,13 +1721,9 @@ onMounted(fetchAllData);
           </div>
 
           <div class="space-y-3">
-            <div
-              class="flex items-center gap-2 mb-4 border-b border-gray-100 pb-2"
-            >
+            <div class="flex items-center gap-2 mb-4 border-b border-gray-100 pb-2">
               <span class="w-2 h-2 rounded-full bg-black"></span>
-              <p
-                class="text-[10px] font-bold text-black uppercase tracking-widest"
-              >
+              <p class="text-[10px] font-bold text-black uppercase tracking-widest">
                 Destination Details
               </p>
             </div>
@@ -1764,9 +1736,7 @@ onMounted(fetchAllData);
               </p>
             </div>
             <div>
-              <p class="text-[10px] text-gray-400 uppercase tracking-widest">
-                Phone
-              </p>
+              <p class="text-[10px] text-gray-400 uppercase tracking-widest">Phone</p>
               <p class="font-mono text-gray-700 text-xs">
                 {{ trackingData.destination?.contact_phone || "-" }}
               </p>
@@ -1777,9 +1747,7 @@ onMounted(fetchAllData);
               </p>
               <p class="text-gray-600 leading-relaxed text-xs">
                 {{ trackingData.destination?.address || "-" }}<br />
-                <span
-                  v-if="trackingData.destination?.postal_code"
-                  class="font-bold"
+                <span v-if="trackingData.destination?.postal_code" class="font-bold"
                   >Postal Code: {{ trackingData.destination.postal_code }}</span
                 >
               </p>
@@ -1788,20 +1756,14 @@ onMounted(fetchAllData);
               <p class="text-[10px] text-gray-400 uppercase tracking-widest">
                 Courier Note
               </p>
-              <p
-                class="text-gray-500 italic text-xs bg-gray-50 p-2 rounded border"
-              >
+              <p class="text-gray-500 italic text-xs bg-gray-50 p-2 rounded border">
                 "{{ trackingData.destination.note }}"
               </p>
             </div>
           </div>
         </div>
-        <div
-          v-else
-          class="p-6 md:p-8 text-center bg-white text-gray-400 text-xs italic"
-        >
-          Menunggu data lokasi kurir (Origin & Destination) tersedia dari
-          ekspedisi...
+        <div v-else class="p-6 md:p-8 text-center bg-white text-gray-400 text-xs italic">
+          Menunggu data lokasi kurir (Origin & Destination) tersedia dari ekspedisi...
         </div>
       </div>
 
@@ -1871,9 +1833,7 @@ onMounted(fetchAllData);
         class="bg-white shadow-sm border border-gray-100 rounded-3xl overflow-hidden"
       >
         <div class="bg-gray-50 p-4 border-b border-gray-100">
-          <h3
-            class="font-bold text-xs uppercase tracking-widest text-gray-500 ml-2"
-          >
+          <h3 class="font-bold text-xs uppercase tracking-widest text-gray-500 ml-2">
             Order Summary
           </h3>
         </div>
@@ -1886,14 +1846,17 @@ onMounted(fetchAllData);
               class="flex items-center gap-4 py-2 border-b border-gray-50 last:border-0 pb-4"
             >
               <img
-                :src="detail.product.image"
+                :src="detail.product.image || defaultBagIcon"
                 class="bg-gray-100 border border-gray-100 rounded-lg w-16 h-16 object-cover"
               />
               <div class="flex-grow">
                 <h4 class="font-bold text-gray-900 text-sm uppercase">
                   {{ detail.product.name }}
                 </h4>
-                <p v-if="detail.color" class="text-[10px] text-gray-500 uppercase tracking-widest mt-0.5">
+                <p
+                  v-if="detail.color"
+                  class="text-[10px] text-gray-500 uppercase tracking-widest mt-0.5"
+                >
                   Color: <span class="font-bold text-gray-700">{{ detail.color }}</span>
                 </p>
                 <p class="text-gray-400 text-xs mt-1">
@@ -1938,8 +1901,7 @@ onMounted(fetchAllData);
             <div
               class="flex justify-between items-center mt-4 pt-4 border-t border-gray-200 border-dashed"
             >
-              <span
-                class="font-bold text-[10px] uppercase tracking-widest text-black"
+              <span class="font-bold text-[10px] uppercase tracking-widest text-black"
                 >Grand Total</span
               >
               <span class="font-black text-xl text-black">{{
@@ -1992,9 +1954,7 @@ onMounted(fetchAllData);
         </div>
       </div>
 
-      <div
-        class="bg-white shadow-sm border border-gray-100 rounded-3xl p-6 md:p-8"
-      >
+      <div class="bg-white shadow-sm border border-gray-100 rounded-3xl p-6 md:p-8">
         <h3
           class="font-bold text-sm uppercase tracking-widest border-b border-gray-100 pb-4 mb-6"
         >
@@ -2008,16 +1968,12 @@ onMounted(fetchAllData);
             class="relative pl-8"
           >
             <span
-              :class="
-                index === 0 ? 'bg-black ring-4 ring-gray-50' : 'bg-gray-300'
-              "
+              :class="index === 0 ? 'bg-black ring-4 ring-gray-50' : 'bg-gray-300'"
               class="absolute -left-[9px] top-1 w-4 h-4 rounded-full transition-all"
             ></span>
 
             <div :class="index === 0 ? 'opacity-100' : 'opacity-50'">
-              <p
-                class="font-bold text-gray-900 text-sm uppercase tracking-wide mb-1"
-              >
+              <p class="font-bold text-gray-900 text-sm uppercase tracking-wide mb-1">
                 {{ formatStatusTitle(history.status) }}
               </p>
               <p class="text-gray-600 text-xs mb-2">{{ history.note }}</p>
@@ -2037,6 +1993,8 @@ import { ref, onMounted, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import axios from "axios";
 import { BASE_URL } from "../../config/api";
+
+import defaultBagIcon from "../../assets/products/bag_icon.jpg";
 
 const userData = ref(null);
 
@@ -2069,9 +2027,7 @@ const getCourierLogo = (company) => {
     paxel: "paxel.png",
     ninja: "ninja.png",
   };
-  return map[company.toLowerCase()]
-    ? baseUrl + map[company.toLowerCase()]
-    : null;
+  return map[company.toLowerCase()] ? baseUrl + map[company.toLowerCase()] : null;
 };
 
 const getPaymentLogo = (methodString) => {
@@ -2098,9 +2054,7 @@ const getPaymentLogo = (methodString) => {
 };
 
 const formatPrice = (v) =>
-  new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(
-    v || 0,
-  );
+  new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(v || 0);
 
 // const getGrandTotal = (order) => {
 //   if (!order) return 0;
@@ -2129,22 +2083,21 @@ const fetchAllData = async () => {
   try {
     const orderRes = await axios.get(
       `${BASE_URL}/transactions/${route.params.id}`,
-      config,
+      config
     );
     orderData.value = orderRes.data;
 
     try {
       const trackingRes = await axios.get(
         `${BASE_URL}/transactions/${route.params.id}/tracking`,
-        config,
+        config
       );
       trackingData.value = trackingRes.data;
     } catch (trackErr) {
       console.warn("Tracking data is not ready yet:", trackErr);
     }
   } catch (err) {
-    error.value =
-      err.response?.data?.message || "Failed to fetch order details.";
+    error.value = err.response?.data?.message || "Failed to fetch order details.";
   } finally {
     isLoading.value = false;
   }
@@ -2162,11 +2115,8 @@ const timelineHistory = computed(() => {
   // Default state awal jika histori kosong dari Biteship (misal: pesanan baru dibuat)
   return [
     {
-      status:
-        trackingData.value?.status || orderData.value?.status || "Processing",
-      note: getNoteFromStatus(
-        trackingData.value?.status || orderData.value?.status,
-      ),
+      status: trackingData.value?.status || orderData.value?.status || "Processing",
+      note: getNoteFromStatus(trackingData.value?.status || orderData.value?.status),
       updated_at:
         trackingData.value?.delivery?.datetime ||
         orderData.value?.created_at ||
@@ -2184,8 +2134,7 @@ const formatStatusTitle = (status) => {
 const getNoteFromStatus = (status) => {
   const map = {
     pending: "Waiting for payment.",
-    placed:
-      "Your order has been recorded and is waiting for courier allocation.",
+    placed: "Your order has been recorded and is waiting for courier allocation.",
     allocated: "Courier has been allocated to pick up your package.",
     picking_up: "Courier is on the way to pick up the package from the origin.",
     picked: "Package has been picked up by the courier.",

@@ -6409,13 +6409,9 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <div
-      class="flex flex-col items-center justify-between gap-4 mb-8 md:flex-row"
-    >
+    <div class="flex flex-col items-center justify-between gap-4 mb-8 md:flex-row">
       <div class="relative w-full md:w-80">
-        <span
-          class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400"
-        >
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="w-5 h-5"
@@ -6440,9 +6436,7 @@ onUnmounted(() => {
       </div>
 
       <div class="flex items-center w-full gap-2 md:w-auto">
-        <span class="text-xs font-bold tracking-wide text-gray-400 uppercase"
-          >Show:</span
-        >
+        <span class="text-xs font-bold tracking-wide text-gray-400 uppercase">Show:</span>
         <select
           v-model="itemsPerPage"
           class="px-3 py-2 text-sm font-bold border border-gray-200 outline-none cursor-pointer bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
@@ -6456,8 +6450,14 @@ onUnmounted(() => {
     </div>
 
     <div v-if="loading" class="space-y-8 animate-fade-in">
-      <div v-for="i in 3" :key="i" class="overflow-hidden bg-white border border-gray-100 rounded-2xl">
-        <div class="flex flex-col justify-between gap-4 px-6 py-4 border-b border-gray-100 md:flex-row bg-gray-50">
+      <div
+        v-for="i in 3"
+        :key="i"
+        class="overflow-hidden bg-white border border-gray-100 rounded-2xl"
+      >
+        <div
+          class="flex flex-col justify-between gap-4 px-6 py-4 border-b border-gray-100 md:flex-row bg-gray-50"
+        >
           <div class="flex flex-col gap-4 md:flex-row md:gap-8">
             <div>
               <div class="w-16 h-3 mb-2 bg-gray-200 rounded animate-pulse"></div>
@@ -6473,7 +6473,7 @@ onUnmounted(() => {
             <div class="h-6 bg-gray-200 rounded-full w-28 animate-pulse"></div>
           </div>
         </div>
-        
+
         <div class="px-6 py-6">
           <div class="flex items-center gap-4">
             <div class="w-16 h-16 bg-gray-200 rounded-lg animate-pulse shrink-0"></div>
@@ -6485,7 +6485,9 @@ onUnmounted(() => {
           </div>
         </div>
 
-        <div class="flex items-center justify-between px-6 py-4 border-t border-gray-100 bg-gray-50/50">
+        <div
+          class="flex items-center justify-between px-6 py-4 border-t border-gray-100 bg-gray-50/50"
+        >
           <div class="space-y-2">
             <div class="w-40 h-3 bg-gray-200 rounded animate-pulse"></div>
             <div class="w-32 h-3 bg-gray-200 rounded animate-pulse"></div>
@@ -6499,9 +6501,7 @@ onUnmounted(() => {
       v-else-if="filteredTransactions.length === 0"
       class="p-12 text-center bg-white border border-gray-100 rounded-2xl animate-fade-in"
     >
-      <p class="italic text-gray-400">
-        No orders found matching the selected filters.
-      </p>
+      <p class="italic text-gray-400">No orders found matching the selected filters.</p>
       <button
         @click="resetFilters"
         class="inline-block mt-6 text-xs font-bold tracking-widest text-black underline uppercase"
@@ -6546,8 +6546,7 @@ onUnmounted(() => {
             <div
               class="flex items-center justify-between w-full gap-3 md:justify-end md:w-auto"
             >
-              <span
-                class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
+              <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
                 >Transaction:</span
               >
               <span
@@ -6562,8 +6561,7 @@ onUnmounted(() => {
               v-if="order.shipping_method === 'biteship'"
               class="flex items-center justify-between w-full gap-3 md:justify-end md:w-auto"
             >
-              <span
-                class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
+              <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
                 >Shipping:</span
               >
               <span
@@ -6577,8 +6575,7 @@ onUnmounted(() => {
               v-else-if="order.shipping_method === 'free'"
               class="flex items-center justify-between w-full gap-3 md:justify-end md:w-auto"
             >
-              <span
-                class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
+              <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
                 >Shipping:</span
               >
               <span
@@ -6594,9 +6591,7 @@ onUnmounted(() => {
         >
           <div
             v-if="
-              userData?.is_membership &&
-              order.point > 0 &&
-              order.status === 'completed'
+              userData?.is_membership && order.point > 0 && order.status === 'completed'
             "
             class="absolute top-4 right-6 bg-gradient-to-r from-yellow-100 to-yellow-50 border border-yellow-200 px-3 py-1.5 rounded-lg flex items-center gap-2 shadow-sm"
           >
@@ -6671,9 +6666,7 @@ onUnmounted(() => {
                 >
                   UNPAID
                 </p>
-                <p class="text-[10px] text-green-600 font-bold mt-0.5" v-else>
-                  PAID
-                </p>
+                <p class="text-[10px] text-green-600 font-bold mt-0.5" v-else>PAID</p>
               </div>
             </div>
             <p v-else class="text-xs italic text-gray-400">
@@ -6687,10 +6680,7 @@ onUnmounted(() => {
             >
               Shipping Info
             </p>
-            <div
-              v-if="order.shipping_method === 'free'"
-              class="flex items-center gap-3"
-            >
+            <div v-if="order.shipping_method === 'free'" class="flex items-center gap-3">
               <div
                 class="flex items-center justify-center w-12 h-12 text-gray-400 bg-gray-100 border border-gray-200 rounded-lg shrink-0"
               >
@@ -6710,9 +6700,7 @@ onUnmounted(() => {
                 </svg>
               </div>
               <div>
-                <p class="text-xs font-bold text-gray-800 uppercase">
-                  No Courier
-                </p>
+                <p class="text-xs font-bold text-gray-800 uppercase">No Courier</p>
                 <p class="text-[10px] text-gray-500 font-medium mt-0.5">
                   In-store Payment / Pickup
                 </p>
@@ -6720,9 +6708,7 @@ onUnmounted(() => {
             </div>
 
             <div
-              v-else-if="
-                order.shipping_method === 'biteship' && order.courier_company
-              "
+              v-else-if="order.shipping_method === 'biteship' && order.courier_company"
               class="flex items-center gap-3"
             >
               <div
@@ -6778,14 +6764,17 @@ onUnmounted(() => {
             class="flex items-center gap-4 py-4 border-b border-gray-50 last:border-0"
           >
             <img
-              :src="detail.product.image"
+              :src="detail.product.image || defaultBagIcon"
               class="object-cover w-16 h-16 bg-gray-100 border border-gray-100 rounded-lg shadow-sm"
             />
             <div class="flex-grow">
               <h4 class="text-sm font-bold text-gray-900 uppercase">
                 {{ detail.product.name }}
               </h4>
-              <p v-if="detail.color" class="text-[10px] text-gray-500 uppercase tracking-widest mt-0.5">
+              <p
+                v-if="detail.color"
+                class="text-[10px] text-gray-500 uppercase tracking-widest mt-0.5"
+              >
                 Color: <span class="font-bold text-gray-800">{{ detail.color }}</span>
               </p>
               <p class="text-xs text-gray-400">
@@ -6799,9 +6788,7 @@ onUnmounted(() => {
         </div>
 
         <div class="px-6 py-4 border-t border-gray-100 bg-gray-50/50">
-          <div
-            class="flex flex-col pb-4 mb-4 space-y-1 border-b border-gray-200"
-          >
+          <div class="flex flex-col pb-4 mb-4 space-y-1 border-b border-gray-200">
             <div class="flex justify-between text-xs text-gray-500">
               <span>Subtotal for Products</span
               ><span>{{ formatPrice(getSubtotal(order)) }}</span>
@@ -6810,9 +6797,7 @@ onUnmounted(() => {
               <span
                 >Shipping Subtotal ({{
                   order.shipping_cost > 0
-                    ? formatPrice(
-                        order.shipping_cost / getOrderQuantity(order),
-                      ) +
+                    ? formatPrice(order.shipping_cost / getOrderQuantity(order)) +
                       " x " +
                       getOrderQuantity(order)
                     : "Free"
@@ -6820,30 +6805,35 @@ onUnmounted(() => {
               >
               <span>{{ formatPrice(order.shipping_cost) }}</span>
             </div>
-            <div v-if="order.promo_discount > 0" class="flex justify-between text-xs font-medium text-green-600">
-              <span>Promo Applied (<span class="font-mono uppercase">{{ order.promo_code }}</span>)</span>
+            <div
+              v-if="order.promo_discount > 0"
+              class="flex justify-between text-xs font-medium text-green-600"
+            >
+              <span
+                >Promo Applied (<span class="font-mono uppercase">{{
+                  order.promo_code
+                }}</span
+                >)</span
+              >
               <span>- {{ formatPrice(order.promo_discount) }}</span>
             </div>
 
-            <div v-if="order.points_used > 0" class="flex justify-between text-xs font-medium text-yellow-600">
+            <div
+              v-if="order.points_used > 0"
+              class="flex justify-between text-xs font-medium text-yellow-600"
+            >
               <span>Points Redeemed ({{ order.points_used }} Pts)</span>
               <span>- {{ formatPrice(order.points_used * 1000) }}</span>
             </div>
             <div
               class="flex justify-between pt-2 mt-2 text-sm font-bold text-gray-900 border-t border-gray-200 border-dashed"
             >
-              <span class="uppercase tracking-widest text-[10px] mt-1"
-                >Final Amount</span
-              >
-              <span class="text-lg">{{
-                formatPrice(getGrandTotal(order))
-              }}</span>
+              <span class="uppercase tracking-widest text-[10px] mt-1">Final Amount</span>
+              <span class="text-lg">{{ formatPrice(getGrandTotal(order)) }}</span>
             </div>
           </div>
 
-          <div
-            class="flex flex-col items-center justify-between gap-4 md:flex-row"
-          >
+          <div class="flex flex-col items-center justify-between gap-4 md:flex-row">
             <div class="w-full text-left md:w-auto">
               <div
                 v-if="canPay(order.status) && order.payment"
@@ -6900,8 +6890,7 @@ onUnmounted(() => {
                     'refund_manual_required',
                     'shipping_failed',
                     'returned',
-                  ].includes(order.status) &&
-                  order.shipping_method === 'biteship'
+                  ].includes(order.status) && order.shipping_method === 'biteship'
                 "
                 @click="
                   $router.push({
@@ -6957,9 +6946,7 @@ onUnmounted(() => {
           Showing
           <span class="font-bold text-black">{{ showingStart }}</span> to
           <span class="font-bold text-black">{{ showingEnd }}</span> of
-          <span class="font-bold text-black">{{
-            filteredTransactions.length
-          }}</span>
+          <span class="font-bold text-black">{{ filteredTransactions.length }}</span>
           orders
         </p>
 
@@ -7012,6 +6999,8 @@ import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api";
 import { useRouter } from "vue-router";
 
+import defaultBagIcon from "../../assets/products/bag_icon.jpg";
+
 const userData = ref(null);
 const router = useRouter();
 const transactions = ref([]);
@@ -7042,22 +7031,40 @@ const getUnifiedTabCount = (tabValue) => {
   return transactions.value.filter((order) => {
     if (tabValue === "all") return true;
 
-    const shipStatus = order.shipping_status ? order.shipping_status.toLowerCase() : "pending";
+    const shipStatus = order.shipping_status
+      ? order.shipping_status.toLowerCase()
+      : "pending";
 
     if (tabValue === "unpaid") return order.status === "pending";
-    
+
     if (tabValue === "to_ship") {
-      return order.status === "processing" && ["pending", "placed", "confirmed", "allocated", "picking_up", "picked"].includes(shipStatus);
+      return (
+        order.status === "processing" &&
+        ["pending", "placed", "confirmed", "allocated", "picking_up", "picked"].includes(
+          shipStatus
+        )
+      );
     }
-    
+
     if (tabValue === "shipping") return shipStatus === "dropping_off";
-    
-    if (tabValue === "completed") return order.status === "completed" || shipStatus === "delivered";
-    
+
+    if (tabValue === "completed")
+      return order.status === "completed" || shipStatus === "delivered";
+
     if (tabValue === "cancelled") return order.status === "cancelled";
-    
+
     if (tabValue === "issues") {
-      return order.status.includes("refund") || ["returned", "shipping_failed"].includes(order.status) || ["on_hold", "return_in_transit", "rejected", "disposed", "courier_not_found"].includes(shipStatus);
+      return (
+        order.status.includes("refund") ||
+        ["returned", "shipping_failed"].includes(order.status) ||
+        [
+          "on_hold",
+          "return_in_transit",
+          "rejected",
+          "disposed",
+          "courier_not_found",
+        ].includes(shipStatus)
+      );
     }
 
     return false;
@@ -7077,7 +7084,7 @@ const transactionTabs = [
 
 const shippingTabs = [
   { label: "All", value: "all" },
-  { label: "Placed / Pending / Confirmed", value: "placed" }, 
+  { label: "Placed / Pending / Confirmed", value: "placed" },
   { label: "Allocated", value: "allocated" },
   { label: "Picking Up", value: "picking_up" },
   { label: "In Transit", value: "dropping_off" },
@@ -7091,12 +7098,12 @@ const shippingTabs = [
 const getTransactionTabCount = (tabValue) => {
   return transactions.value.filter((order) => {
     if (tabValue === "all") return true;
-    
+
     // Tidak ada lagi awaiting_payment. Kita hanya cek status order.status.
     if (tabValue === "refund") return order.status.includes("refund");
     if (tabValue === "failed_returned")
       return ["returned", "shipping_failed"].includes(order.status);
-      
+
     return order.status === tabValue;
   }).length;
 };
@@ -7118,12 +7125,9 @@ const getShippingTabCount = (tabValue) => {
     if (tabValue === "returning")
       return ["return_in_transit", "returned"].includes(shipStatus);
     if (tabValue === "issues")
-      return [
-        "cancelled",
-        "rejected",
-        "disposed",
-        "courier_not_found",
-      ].includes(shipStatus);
+      return ["cancelled", "rejected", "disposed", "courier_not_found"].includes(
+        shipStatus
+      );
 
     return shipStatus === tabValue;
   }).length;
@@ -7197,7 +7201,7 @@ const getShippingTabCount = (tabValue) => {
 
 const filteredTransactions = computed(() => {
   const query = searchQuery.value.toLowerCase();
-  
+
   return transactions.value.filter((order) => {
     let matchSearch = true;
     if (query) {
@@ -7213,22 +7217,37 @@ const filteredTransactions = computed(() => {
 
     let matchTab = false;
     const tabValue = activeUnifiedTab.value;
-    const shipStatus = order.shipping_status ? order.shipping_status.toLowerCase() : "pending";
+    const shipStatus = order.shipping_status
+      ? order.shipping_status.toLowerCase()
+      : "pending";
 
     if (tabValue === "all") {
-        matchTab = true;
+      matchTab = true;
     } else if (tabValue === "unpaid") {
-        matchTab = order.status === "pending";
+      matchTab = order.status === "pending";
     } else if (tabValue === "to_ship") {
-        matchTab = order.status === "processing" && ["pending", "placed", "confirmed", "allocated", "picking_up", "picked"].includes(shipStatus);
+      matchTab =
+        order.status === "processing" &&
+        ["pending", "placed", "confirmed", "allocated", "picking_up", "picked"].includes(
+          shipStatus
+        );
     } else if (tabValue === "shipping") {
-        matchTab = shipStatus === "dropping_off";
+      matchTab = shipStatus === "dropping_off";
     } else if (tabValue === "completed") {
-        matchTab = order.status === "completed" || shipStatus === "delivered";
+      matchTab = order.status === "completed" || shipStatus === "delivered";
     } else if (tabValue === "cancelled") {
-        matchTab = order.status === "cancelled";
+      matchTab = order.status === "cancelled";
     } else if (tabValue === "issues") {
-        matchTab = order.status.includes("refund") || ["returned", "shipping_failed"].includes(order.status) || ["on_hold", "return_in_transit", "rejected", "disposed", "courier_not_found"].includes(shipStatus);
+      matchTab =
+        order.status.includes("refund") ||
+        ["returned", "shipping_failed"].includes(order.status) ||
+        [
+          "on_hold",
+          "return_in_transit",
+          "rejected",
+          "disposed",
+          "courier_not_found",
+        ].includes(shipStatus);
     }
 
     return matchSearch && matchTab;
@@ -7236,7 +7255,7 @@ const filteredTransactions = computed(() => {
 });
 
 const totalPages = computed(() =>
-  Math.ceil(filteredTransactions.value.length / itemsPerPage.value),
+  Math.ceil(filteredTransactions.value.length / itemsPerPage.value)
 );
 
 const paginatedTransactions = computed(() => {
@@ -7247,13 +7266,10 @@ const paginatedTransactions = computed(() => {
 const showingStart = computed(() =>
   filteredTransactions.value.length === 0
     ? 0
-    : (currentPage.value - 1) * itemsPerPage.value + 1,
+    : (currentPage.value - 1) * itemsPerPage.value + 1
 );
 const showingEnd = computed(() =>
-  Math.min(
-    currentPage.value * itemsPerPage.value,
-    filteredTransactions.value.length,
-  ),
+  Math.min(currentPage.value * itemsPerPage.value, filteredTransactions.value.length)
 );
 
 const visiblePages = computed(() => {
@@ -7261,20 +7277,16 @@ const visiblePages = computed(() => {
   const total = totalPages.value;
   const maxVisible = 7;
 
-  if (total <= maxVisible)
-    return Array.from({ length: total }, (_, i) => i + 1);
+  if (total <= maxVisible) return Array.from({ length: total }, (_, i) => i + 1);
   if (current <= 4) return [1, 2, 3, 4, 5, "...", total];
   if (current >= total - 3)
     return [1, "...", total - 4, total - 3, total - 2, total - 1, total];
   return [1, "...", current - 1, current, current + 1, "...", total];
 });
 
-watch(
-  [searchQuery, itemsPerPage, activeUnifiedTab],
-  () => {
-    currentPage.value = 1;
-  },
-);
+watch([searchQuery, itemsPerPage, activeUnifiedTab], () => {
+  currentPage.value = 1;
+});
 
 const resetFilters = () => {
   activeUnifiedTab.value = "all";
@@ -7349,7 +7361,9 @@ const calculateTimeLeft = (referenceDate) => {
   const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
   const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-  return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+  return `${hours.toString().padStart(2, "0")}:${minutes
+    .toString()
+    .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 };
 
 const autoCancelSilent = async (id) => {
@@ -7359,9 +7373,9 @@ const autoCancelSilent = async (id) => {
       {},
       {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      },
+      }
     );
-    fetchOrders(); 
+    fetchOrders();
   } catch (e) {
     console.error("Auto cancel failed", e);
   }
@@ -7414,12 +7428,14 @@ const fetchOrders = async () => {
     const res = await axios.get(`${BASE_URL}/transactions`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
-    
+
     // =========================================================================
     // [PERBAIKAN] BUANG DATA USANG (GHOST DATA)
     // Filter transaksi yang statusnya 'awaiting_payment' agar tidak masuk ke sistem UI
     // =========================================================================
-    const validTransactions = res.data.data.filter(order => order.status !== 'awaiting_payment');
+    const validTransactions = res.data.data.filter(
+      (order) => order.status !== "awaiting_payment"
+    );
 
     transactions.value = validTransactions.map((o) => ({ ...o, isCancelling: false }));
     startTimers();
@@ -7465,23 +7481,24 @@ const cancelOrder = async (id) => {
         {},
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        },
+        }
       );
       Swal.fire("Cancelled!", "Your order has been cancelled.", "success");
       fetchOrders();
     } catch (err) {
       Swal.fire(
         "Error",
-        `Failed to cancel order: ${err.response?.data?.message || "Something went wrong"}`,
-        "error",
+        `Failed to cancel order: ${
+          err.response?.data?.message || "Something went wrong"
+        }`,
+        "error"
       );
     }
   }
 };
 
 const canRequestRefund = (order) => {
-  if (!["completed", "shipping_failed", "returned"].includes(order.status))
-    return false;
+  if (!["completed", "shipping_failed", "returned"].includes(order.status)) return false;
   if (["shipping_failed", "returned"].includes(order.status)) return true;
   if (order.shipping_method === "free") return true;
 
@@ -7559,7 +7576,7 @@ const requestRefund = async (id) => {
         Swal.showValidationMessage("Please upload a proof file.");
         return false;
       }
-      
+
       // Batasan ukuran 10MB di Frontend
       if (file.size > 10 * 1024 * 1024) {
         Swal.showValidationMessage("File size cannot exceed 10MB.");
@@ -7567,7 +7584,7 @@ const requestRefund = async (id) => {
       }
 
       return { reason: reason, file: file };
-    }
+    },
   });
 
   if (isConfirmed && formValues) {
@@ -7577,29 +7594,29 @@ const requestRefund = async (id) => {
       allowOutsideClick: false,
       didOpen: () => {
         Swal.showLoading();
-      }
+      },
     });
 
     try {
       const formData = new FormData();
-      formData.append('reason', formValues.reason);
-      formData.append('proof_file', formValues.file);
+      formData.append("reason", formValues.reason);
+      formData.append("proof_file", formValues.file);
 
-      await axios.post(
-        `${BASE_URL}/transactions/${id}/refund-request`,
-        formData,
-        {
-          headers: { 
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            'Content-Type': 'multipart/form-data'
-          },
-        }
-      );
-      
+      await axios.post(`${BASE_URL}/transactions/${id}/refund-request`, formData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
       fetchOrders();
       Swal.fire("Requested", "Refund request sent to admin.", "success");
     } catch (err) {
-      Swal.fire("Error", err.response?.data?.message || "Failed to request refund", "error");
+      Swal.fire(
+        "Error",
+        err.response?.data?.message || "Failed to request refund",
+        "error"
+      );
     }
   }
 };
@@ -7609,7 +7626,7 @@ const processRefund = async (id) => {
     const res = await axios.post(
       `${BASE_URL}/transactions/${id}/refund-process`,
       {},
-      { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } },
+      { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
     );
     fetchOrders();
     Swal.fire("Refunded", res.data.message, "success");
@@ -7641,28 +7658,21 @@ const statusClass = (status) => {
 const shippingStatusClass = (status) => {
   if (!status) return "bg-gray-50 border-gray-200 text-gray-500";
   const str = status.toLowerCase();
-  if (["delivered"].includes(str))
-    return "bg-green-50 border-green-200 text-green-700";
+  if (["delivered"].includes(str)) return "bg-green-50 border-green-200 text-green-700";
 
   if (["cancelled", "rejected", "disposed", "courier_not_found"].includes(str))
     return "bg-red-50 border-red-200 text-red-700";
   if (["on_hold", "return_in_transit", "returned"].includes(str))
     return "bg-amber-50 border-amber-200 text-amber-700";
 
-  if (
-    ["picking_up", "picked", "dropping_off", "allocated", "confirmed"].includes(
-      str,
-    )
-  )
+  if (["picking_up", "picked", "dropping_off", "allocated", "confirmed"].includes(str))
     return "bg-blue-50 border-blue-200 text-blue-700";
 
   return "bg-gray-50 border-gray-200 text-gray-600";
 };
 
 const formatPrice = (v) =>
-  new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(
-    v,
-  );
+  new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(v);
 const formatDateTime = (date) =>
   new Date(date).toLocaleDateString("en-GB", {
     day: "numeric",
@@ -7689,8 +7699,12 @@ onUnmounted(() => {
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .leading-relaxed {
@@ -7702,7 +7716,13 @@ onUnmounted(() => {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>
