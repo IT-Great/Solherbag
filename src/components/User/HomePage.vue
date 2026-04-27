@@ -506,9 +506,7 @@ onMounted(initData);
           <span
             class="absolute inline-flex w-full h-full bg-red-400 rounded-full opacity-75 animate-ping"
           ></span>
-          <span
-            class="relative inline-flex w-3 h-3 bg-red-500 rounded-full"
-          ></span>
+          <span class="relative inline-flex w-3 h-3 bg-red-500 rounded-full"></span>
         </span>
         <p class="text-xs font-bold tracking-widest text-black uppercase">
           Eterna Red is selling fast!
@@ -517,15 +515,13 @@ onMounted(initData);
     </div>
 
     <div v-reveal class="max-w-4xl px-6 py-16 mx-auto text-center md:py-24">
-      <h2
-        class="mb-6 text-2xl font-medium tracking-tight text-black md:text-3xl"
-      >
+      <h2 class="mb-6 text-2xl font-medium tracking-tight text-black md:text-3xl">
         Crafted from Premium Selected Leatherty
       </h2>
       <p class="text-sm font-light leading-relaxed text-gray-700 md:text-base">
-        Crafted from carefully selected genuine leather, each SolHer piece
-        reflects timeless elegance and refined craftsmanship — a seamless blend
-        of beauty, quality, and modern sophistication.
+        Crafted from carefully selected genuine leather, each SolHer piece reflects
+        timeless elegance and refined craftsmanship — a seamless blend of beauty, quality,
+        and modern sophistication.
       </p>
     </div>
 
@@ -569,10 +565,7 @@ onMounted(initData);
       </div>
     </div> -->
 
-    <div
-      v-reveal
-      class="grid w-full grid-cols-1 overflow-hidden md:grid-cols-2"
-    >
+    <div v-reveal class="grid w-full grid-cols-1 overflow-hidden md:grid-cols-2">
       <div
         class="relative overflow-hidden cursor-pointer group"
         @click="navigateToSpecificProduct('ZAHARA')"
@@ -591,9 +584,7 @@ onMounted(initData);
         </div>
       </div>
 
-      <div
-        class="relative overflow-hidden group"
-      >
+      <div class="relative overflow-hidden group">
         <img
           src="../../assets/home_img_2.png"
           class="w-full h-[400px] md:h-full object-cover group-hover:scale-105 transition-transform duration-700"
@@ -621,7 +612,7 @@ onMounted(initData);
         to="/collections"
         class="inline-block bg-[#1A1A1A] hover:bg-black px-10 py-4 font-semibold text-white text-xs uppercase tracking-[0.2em] transition shadow-xl"
       >
-        Shop New Arrival
+        Shop Now
       </router-link>
     </div>
 
@@ -633,14 +624,10 @@ onMounted(initData);
       <div class="mx-auto max-w-[1600px]">
         <div class="flex items-end justify-between mb-10">
           <div>
-            <h3
-              class="font-serif text-3xl italic font-light text-red-700 md:text-4xl"
-            >
+            <h3 class="font-serif text-3xl italic font-light text-red-700 md:text-4xl">
               Trending Now
             </h3>
-            <p
-              class="mt-2 text-xs font-bold tracking-widest text-gray-500 uppercase"
-            >
+            <p class="mt-2 text-xs font-bold tracking-widest text-gray-500 uppercase">
               Our most loved pieces this week
             </p>
           </div>
@@ -974,7 +961,12 @@ onMounted(initData);
             class="absolute z-10 text-gray-500 transition top-3 right-3 hover:text-black"
           >
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
             </svg>
           </button>
 
@@ -1102,26 +1094,35 @@ onMounted(initData);
             </div> 
           </div> -->
 
-          <div class="flex flex-col items-center justify-center w-full px-6 py-8 overflow-y-auto text-center md:px-8 md:py-10 md:w-1/2 custom-scrollbar">
-            
-            <img 
-              src="../../assets/solherbrandbook.png" 
-              alt="Solher Logo" 
+          <div
+            class="flex flex-col items-center justify-center w-full px-6 py-8 overflow-y-auto text-center md:px-8 md:py-10 md:w-1/2 custom-scrollbar"
+          >
+            <img
+              src="../../assets/solherbrandbook.png"
+              alt="Solher Logo"
               class="object-contain h-8 mb-8 md:h-10 opacity-90"
             />
 
-            <h2 class="text-[28px] md:text-[34px] font-serif text-[#111] mb-4 tracking-tight leading-tight">
+            <h2
+              class="text-[28px] md:text-[34px] font-serif text-[#111] mb-4 tracking-tight leading-tight"
+            >
               <span class="font-bold">✨ Enjoy</span> <br />
-              <span class="font-extrabold whitespace-nowrap">Rp&nbsp;250.000&nbsp;OFF</span><br />
+              <span class="font-extrabold whitespace-nowrap"
+                >Rp&nbsp;250.000&nbsp;OFF</span
+              ><br />
               <span class="font-bold">Your First Order</span>
             </h2>
-            
+
             <p class="text-[15px] md:text-[16px] text-gray-800 mb-6 font-serif">
-              with minimum purchase of <span class="font-bold whitespace-nowrap">Rp&nbsp;499.000</span>
+              with minimum purchase of
+              <span class="font-bold whitespace-nowrap">Rp&nbsp;499.000</span>
             </p>
 
-            <p class="text-[12px] md:text-[13px] font-sans text-[#444] leading-relaxed mb-6 max-w-[280px]">
-              Join our inner circle and be the first to access curated drops, private offers, and elevated essentials made just for you.
+            <p
+              class="text-[12px] md:text-[13px] font-sans text-[#444] leading-relaxed mb-6 max-w-[280px]"
+            >
+              Join our inner circle and be the first to access curated drops, private
+              offers, and elevated essentials made just for you.
             </p>
 
             <div class="w-full max-w-[320px]">
@@ -1182,7 +1183,7 @@ const vReveal = {
       "translate-y-16",
       "transition-all",
       "duration-[1200ms]",
-      "ease-out",
+      "ease-out"
     );
 
     const observer = new IntersectionObserver(
@@ -1202,7 +1203,7 @@ const vReveal = {
         // Akan memicu animasi saat 15% bagian elemen sudah masuk ke layar
         threshold: 0.15,
         rootMargin: "0px 0px -50px 0px",
-      },
+      }
     );
 
     observer.observe(el);
@@ -1256,7 +1257,7 @@ const closePopup = () => {
 // const claimPromo = () => {
 //   alert("Success! The promo code has been applied to your account.");
 //   closePopup();
-//   router.push("/register"); 
+//   router.push("/register");
 // };
 
 // Ubah fungsi claimPromo Anda menjadi ini:
@@ -1268,20 +1269,20 @@ const closePopup = () => {
 //   isClaimingPromo.value = true;
 //   try {
 //     const res = await axios.post(`${BASE_URL}/promo/claim`, { email: promoEmail.value });
-    
+
 //     Swal.fire({
 //       icon: 'success',
 //       title: 'Promo Claimed!',
 //       text: `Your promo code is ${res.data.promo_code}. You can use it at checkout!`,
 //       confirmButtonColor: '#000'
 //     });
-    
+
 //     closePopup();
-    
+
 //     // Jika belum login, tawarkan untuk ke halaman register
 //     const isLoggedIn = localStorage.getItem("token");
 //     if (!isLoggedIn) {
-//       router.push("/register"); 
+//       router.push("/register");
 //     }
 //   } catch (error) {
 //     Swal.fire({ toast: true, position: 'top-end', icon: 'error', title: error.response?.data?.message || 'Failed to claim promo', showConfirmButton: false, timer: 4000 });
@@ -1292,30 +1293,46 @@ const closePopup = () => {
 
 const claimPromo = async () => {
   if (!promoEmail.value) {
-    return Swal.fire({ toast: true, position: 'top-end', icon: 'warning', title: 'Please enter your email', showConfirmButton: false, timer: 3000 });
+    return Swal.fire({
+      toast: true,
+      position: "top-end",
+      icon: "warning",
+      title: "Please enter your email",
+      showConfirmButton: false,
+      timer: 3000,
+    });
   }
 
   isClaimingPromo.value = true;
   try {
-    const res = await axios.post(`${BASE_URL}/promo/claim`, { email: promoEmail.value });
-    
+    const res = await axios.post(`${BASE_URL}/promo/claim`, {
+      email: promoEmail.value,
+    });
+
     // [PERBAIKAN] Ubah pesan untuk mengarahkan user mengecek email
     Swal.fire({
-      icon: 'success',
-      title: 'Promo Claimed!',
+      icon: "success",
+      title: "Promo Claimed!",
       text: `We've sent the exclusive promo code to ${promoEmail.value}. Check your inbox or spam folder!`,
-      confirmButtonColor: '#000'
+      confirmButtonColor: "#000",
     });
-    
+
     closePopup();
-    
+
     // Jika belum login, tawarkan untuk ke halaman register
     const isLoggedIn = localStorage.getItem("token");
     if (!isLoggedIn) {
-      router.push("/register"); 
+      router.push("/register");
     }
   } catch (error) {
-    Swal.fire({ toast: true, position: 'top-end', icon: 'error', title: error.response?.data?.message || 'Failed to claim promo', showConfirmButton: false, timer: 4000 });
+    Swal.fire({
+      toast: true,
+      position: "top-end",
+      icon: "error",
+      title: error.response?.data?.message || "Failed to claim promo",
+      showConfirmButton: false,
+      timer: 4000,
+    });
   } finally {
     isClaimingPromo.value = false;
   }
@@ -1336,12 +1353,12 @@ onMounted(() => {
   // }
 
   // LOGIKA POP-UP DI SPA:
-  // Karena 'showPromoPopup' diinisialisasi sebagai 'true', pop-up akan 
+  // Karena 'showPromoPopup' diinisialisasi sebagai 'true', pop-up akan
   // SELALU MUNCUL SECARA INSTAN saat halaman 'Home' dimuat (termasuk saat refresh).
-  
-  // TAPI, untuk mencegah pop-up muncul lagi saat user balik dari halaman '/collections' 
-  // (tanpa refresh), kita bisa memanfaatkan state Pinia/Vuex jika mau. 
-  // Namun, untuk solusi paling cepat sesuai permintaan bos (muncul tiap refresh), 
+
+  // TAPI, untuk mencegah pop-up muncul lagi saat user balik dari halaman '/collections'
+  // (tanpa refresh), kita bisa memanfaatkan state Pinia/Vuex jika mau.
+  // Namun, untuk solusi paling cepat sesuai permintaan bos (muncul tiap refresh),
   // kode sederhana ini sudah memenuhi syarat.
 
   // Memicu animasi pop-up dengan sangat cepat (seakan-akan tanpa delay)

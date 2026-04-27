@@ -4570,12 +4570,75 @@ watch(() => route.path, () => {
   >
     <div class="relative flex items-center justify-between h-8 mx-auto max-w-7xl md:h-12">
       <div class="flex items-center justify-start flex-1">
-        <nav
+        <!-- <nav
           class="items-center hidden h-full space-x-6 text-xs font-medium tracking-widest uppercase md:flex"
         >
           <router-link to="/" class="transition cursor-pointer hover:text-gray-500"
             >Home</router-link
           >
+          <router-link
+            to="/best-sellers"
+            class="font-bold text-red-600 transition cursor-pointer hover:text-gray-500"
+            >Best Sellers</router-link
+          >
+
+          <div
+            class="relative flex items-center h-full"
+            @mouseenter="openMegaMenu"
+            @mouseleave="closeMegaMenu"
+          >
+            <router-link
+              to="/collections"
+              class="transition cursor-pointer hover:text-gray-500"
+              :class="{ 'text-gray-500': isMegaMenuOpen }"
+              >Collections</router-link
+            >
+          </div>
+
+          <router-link to="/contact" class="transition cursor-pointer hover:text-gray-500"
+            >Contact</router-link
+          >
+        </nav> -->
+
+        <nav
+          class="items-center hidden h-full space-x-6 text-xs font-medium tracking-widest uppercase md:flex"
+        >
+          <div
+            class="relative flex items-center h-full"
+            @mouseenter="isHomeDropdownOpen = true"
+            @mouseleave="isHomeDropdownOpen = false"
+          >
+            <router-link
+              to="/"
+              class="transition cursor-pointer hover:text-gray-500"
+              :class="{ 'text-gray-500': isHomeDropdownOpen }"
+            >
+              Home
+            </router-link>
+
+            <transition name="fade-slide">
+              <div
+                v-if="isHomeDropdownOpen"
+                class="absolute left-0 w-48 p-4 mt-2 bg-white border border-gray-100 shadow-xl top-full"
+              >
+                <div class="flex flex-col space-y-3">
+                  <router-link
+                    to="/"
+                    class="text-[10px] font-bold tracking-widest text-gray-700 uppercase transition hover:text-black"
+                  >
+                    Main Home
+                  </router-link>
+                  <router-link
+                    to="/about-us"
+                    class="text-[10px] font-bold tracking-widest text-gray-700 uppercase transition hover:text-black"
+                  >
+                    About Us
+                  </router-link>
+                </div>
+              </div>
+            </transition>
+          </div>
+
           <router-link
             to="/best-sellers"
             class="font-bold text-red-600 transition cursor-pointer hover:text-gray-500"
@@ -5046,6 +5109,7 @@ const openSearch = () => (isSearchOpen.value = true);
 const closeSearch = () => (isSearchOpen.value = false);
 
 const isDropdownOpen = ref(false);
+const isHomeDropdownOpen = ref(false);
 const isAuthenticated = ref(false);
 const userData = ref(null);
 const isMobileMenuOpen = ref(false);
