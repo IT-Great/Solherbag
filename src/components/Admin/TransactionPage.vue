@@ -6725,13 +6725,9 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <div
-      class="flex flex-col items-center justify-between gap-4 mb-6 md:flex-row"
-    >
+    <div class="flex flex-col items-center justify-between gap-4 mb-6 md:flex-row">
       <div class="relative w-full md:w-80">
-        <span
-          class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400"
-        >
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="w-5 h-5"
@@ -6801,9 +6797,7 @@ onUnmounted(() => {
 
         <div class="w-px h-6 mx-1 bg-gray-200"></div>
 
-        <span class="text-xs font-bold tracking-wide text-gray-400 uppercase"
-          >Show:</span
-        >
+        <span class="text-xs font-bold tracking-wide text-gray-400 uppercase">Show:</span>
         <select
           v-model="itemsPerPage"
           class="px-3 py-2 text-sm font-bold border border-gray-200 outline-none cursor-pointer bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
@@ -6819,9 +6813,7 @@ onUnmounted(() => {
     <div v-if="isLoading" class="overflow-x-auto">
       <table class="w-full text-left border-collapse min-w-[900px]">
         <thead>
-          <tr
-            class="border-b text-gray-400 text-[10px] uppercase tracking-widest"
-          >
+          <tr class="border-b text-gray-400 text-[10px] uppercase tracking-widest">
             <th class="pb-4 pl-2">Order Details</th>
             <th class="pb-4">Product Sample</th>
             <th class="pb-4">Logistics (Pay & Ship)</th>
@@ -6837,9 +6829,7 @@ onUnmounted(() => {
               <div class="space-y-2">
                 <div class="w-24 h-4 bg-gray-200 rounded animate-pulse"></div>
                 <div class="w-16 h-3 bg-gray-100 rounded animate-pulse"></div>
-                <div
-                  class="w-20 h-3 mt-4 bg-gray-200 rounded animate-pulse"
-                ></div>
+                <div class="w-20 h-3 mt-4 bg-gray-200 rounded animate-pulse"></div>
               </div>
             </td>
             <td class="py-6 w-[15%]">
@@ -6868,25 +6858,17 @@ onUnmounted(() => {
               <div class="space-y-2">
                 <div class="w-full h-3 bg-gray-100 rounded animate-pulse"></div>
                 <div class="w-full h-3 bg-gray-100 rounded animate-pulse"></div>
-                <div
-                  class="w-full h-4 mt-2 bg-gray-200 rounded animate-pulse"
-                ></div>
+                <div class="w-full h-4 mt-2 bg-gray-200 rounded animate-pulse"></div>
               </div>
             </td>
             <td class="py-6 w-[10%]">
-              <div
-                class="w-16 h-5 bg-gray-200 rounded-full animate-pulse"
-              ></div>
+              <div class="w-16 h-5 bg-gray-200 rounded-full animate-pulse"></div>
             </td>
             <td class="py-6 w-[10%]">
-              <div
-                class="w-20 h-5 bg-gray-200 rounded-full animate-pulse"
-              ></div>
+              <div class="w-20 h-5 bg-gray-200 rounded-full animate-pulse"></div>
             </td>
             <td class="py-6 w-[10%]">
-              <div
-                class="w-16 h-5 mx-auto bg-gray-200 rounded-full animate-pulse"
-              ></div>
+              <div class="w-16 h-5 mx-auto bg-gray-200 rounded-full animate-pulse"></div>
             </td>
           </tr>
         </tbody>
@@ -6903,9 +6885,7 @@ onUnmounted(() => {
 
       <table class="w-full text-left border-collapse min-w-[900px]">
         <thead>
-          <tr
-            class="border-b text-gray-400 text-[10px] uppercase tracking-widest"
-          >
+          <tr class="border-b text-gray-400 text-[10px] uppercase tracking-widest">
             <th class="pb-4 pl-2">Order Details</th>
             <th class="pb-4 no-export">Product Sample</th>
             <th class="pb-4">Logistics (Pay & Ship)</th>
@@ -6915,10 +6895,7 @@ onUnmounted(() => {
             <th class="pb-4 text-center no-export">Action</th>
           </tr>
         </thead>
-        <tbody
-          v-if="paginatedTransactions.length > 0"
-          class="text-sm text-gray-600"
-        >
+        <tbody v-if="paginatedTransactions.length > 0" class="text-sm text-gray-600">
           <tr
             v-for="trx in paginatedTransactions"
             :key="trx.id"
@@ -6948,9 +6925,7 @@ onUnmounted(() => {
                   </span>
                 </div>
                 <div
-                  v-if="
-                    trx.status === 'pending' && countdowns[trx.id] !== 'Expired'
-                  "
+                  v-if="trx.status === 'pending' && countdowns[trx.id] !== 'Expired'"
                   class="flex items-center gap-1 px-2 py-1 mt-2 text-red-600 rounded-md no-export bg-red-50 w-fit"
                 >
                   <svg
@@ -6980,7 +6955,7 @@ onUnmounted(() => {
                   <img
                     v-for="(detail, idx) in trx.details.slice(0, 3)"
                     :key="idx"
-                    :src="detail.product.image"
+                    :src="detail.product.image || defaultBagIcon"
                     class="inline-block object-cover w-10 h-10 bg-gray-100 border-2 border-white rounded-full shadow-sm"
                   />
                   <div
@@ -7007,9 +6982,7 @@ onUnmounted(() => {
                       :src="getPaymentLogo(trx.payment_method)"
                       class="object-contain w-full h-full"
                     />
-                    <span v-else class="text-[8px] font-bold text-gray-400"
-                      >PAY</span
-                    >
+                    <span v-else class="text-[8px] font-bold text-gray-400">PAY</span>
                   </div>
                   <div>
                     <p class="font-bold text-gray-800 text-[11px] uppercase">
@@ -7040,9 +7013,7 @@ onUnmounted(() => {
                       :src="getCourierLogo(trx.courier_company)"
                       class="object-contain w-full h-full"
                     />
-                    <span v-else class="text-[8px] font-bold text-gray-400"
-                      >SHIP</span
-                    >
+                    <span v-else class="text-[8px] font-bold text-gray-400">SHIP</span>
                   </div>
                   <div>
                     <p
@@ -7108,19 +7079,26 @@ onUnmounted(() => {
                   ><span>{{ formatPrice(getGrandTotal(trx)) }}</span>
                 </div> -->
                 <div class="flex justify-between text-[10px] text-gray-500">
-                  <span>Subtotal:</span
-                  ><span>{{ formatPrice(trx.total_amount) }}</span>
+                  <span>Subtotal:</span><span>{{ formatPrice(trx.total_amount) }}</span>
                 </div>
                 <div class="flex justify-between text-[10px] text-gray-500">
-                  <span>Shipping:</span
-                  ><span>{{ formatPrice(trx.shipping_cost) }}</span>
+                  <span>Shipping:</span><span>{{ formatPrice(trx.shipping_cost) }}</span>
                 </div>
 
-                <div v-if="trx.promo_discount > 0" class="flex justify-between text-[9px] text-green-600 font-bold">
-                  <span>Promo (<span class="font-mono">{{ trx.promo_code }}</span>)</span>
+                <div
+                  v-if="trx.promo_discount > 0"
+                  class="flex justify-between text-[9px] text-green-600 font-bold"
+                >
+                  <span
+                    >Promo (<span class="font-mono">{{ trx.promo_code }}</span
+                    >)</span
+                  >
                   <span>-{{ formatPrice(trx.promo_discount) }}</span>
                 </div>
-                <div v-if="trx.points_used > 0" class="flex justify-between text-[9px] text-yellow-600 font-bold">
+                <div
+                  v-if="trx.points_used > 0"
+                  class="flex justify-between text-[9px] text-yellow-600 font-bold"
+                >
                   <span>Pts ({{ trx.points_used }})</span>
                   <span>-{{ formatPrice(trx.points_used * 1000) }}</span>
                 </div>
@@ -7128,8 +7106,7 @@ onUnmounted(() => {
                 <div
                   class="flex justify-between text-sm font-bold text-black border-t border-dashed border-gray-200 pt-1.5 mt-1"
                 >
-                  <span>Total:</span
-                  ><span>{{ formatPrice(getGrandTotal(trx)) }}</span>
+                  <span>Total:</span><span>{{ formatPrice(getGrandTotal(trx)) }}</span>
                 </div>
                 <div
                   v-if="trx.point > 0 && trx.status === 'completed'"
@@ -7239,16 +7216,50 @@ onUnmounted(() => {
               >
             </td> -->
             <td class="py-6 text-center w-[15%] no-export" @click.stop>
-              
-              <div v-if="trx.status === 'refund_requested'" class="flex flex-col items-center gap-3">
-                
-                <div class="w-full p-3 text-left border border-red-100 bg-red-50 rounded-xl">
-                  <p class="font-bold text-[9px] text-red-600 uppercase tracking-widest mb-1 border-b border-red-100 pb-1">Refund Reason</p>
-                  <p class="text-[10px] text-gray-700 italic line-clamp-3 mb-2" :title="trx.refund_reason">
-                    "{{ trx.refund_reason || 'No reason provided' }}"
+              <div
+                v-if="trx.status === 'refund_requested'"
+                class="flex flex-col items-center gap-3"
+              >
+                <div
+                  class="w-full p-3 text-left border border-red-100 bg-red-50 rounded-xl"
+                >
+                  <p
+                    class="font-bold text-[9px] text-red-600 uppercase tracking-widest mb-1 border-b border-red-100 pb-1"
+                  >
+                    Refund Reason
                   </p>
-                  <a v-if="trx.refund_proof_url" :href="trx.refund_proof_url" target="_blank" class="inline-flex items-center gap-1 text-[9px] font-bold text-blue-600 hover:underline bg-white px-2 py-1 rounded border border-blue-100 w-fit">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                  <p
+                    class="text-[10px] text-gray-700 italic line-clamp-3 mb-2"
+                    :title="trx.refund_reason"
+                  >
+                    "{{ trx.refund_reason || "No reason provided" }}"
+                  </p>
+                  <a
+                    v-if="trx.refund_proof_url"
+                    :href="trx.refund_proof_url"
+                    target="_blank"
+                    class="inline-flex items-center gap-1 text-[9px] font-bold text-blue-600 hover:underline bg-white px-2 py-1 rounded border border-blue-100 w-fit"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-3 h-3"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                      />
+                    </svg>
                     View Proof
                   </a>
                 </div>
@@ -7259,7 +7270,20 @@ onUnmounted(() => {
                     class="bg-green-100 hover:bg-green-200 py-2 flex-1 rounded-lg text-green-700 transition shadow-sm font-bold text-[10px] uppercase tracking-widest flex justify-center items-center gap-1"
                     title="Approve Refund"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-3 h-3"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
                     Accept
                   </button>
                   <button
@@ -7267,7 +7291,20 @@ onUnmounted(() => {
                     class="bg-red-100 hover:bg-red-200 py-2 flex-1 rounded-lg text-red-700 transition shadow-sm font-bold text-[10px] uppercase tracking-widest flex justify-center items-center gap-1"
                     title="Reject Refund"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-3 h-3"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
                     Deny
                   </button>
                 </div>
@@ -7284,18 +7321,13 @@ onUnmounted(() => {
                   View Detail
                 </button>
               </div>
-              <span v-else class="text-gray-300 text-[10px] italic"
-                >No Action</span
-              >
+              <span v-else class="text-gray-300 text-[10px] italic">No Action</span>
             </td>
           </tr>
         </tbody>
         <tbody v-else>
           <tr>
-            <td
-              colspan="7"
-              class="py-20 font-serif italic text-center text-gray-400"
-            >
+            <td colspan="7" class="py-20 font-serif italic text-center text-gray-400">
               {{
                 searchQuery
                   ? "No transactions match your search."
@@ -7314,9 +7346,7 @@ onUnmounted(() => {
       <p class="text-sm text-gray-400">
         Showing <span class="font-bold text-black">{{ showingStart }}</span> to
         <span class="font-bold text-black">{{ showingEnd }}</span> of
-        <span class="font-bold text-black">{{
-          filteredTransactions.length
-        }}</span>
+        <span class="font-bold text-black">{{ filteredTransactions.length }}</span>
         orders
       </p>
 
@@ -7370,6 +7400,8 @@ import { useRouter } from "vue-router";
 import html2pdf from "html2pdf.js";
 import * as XLSX from "xlsx";
 
+import defaultBagIcon from "../../assets/products/bag_icon.jpg";
+
 const transactions = ref([]);
 const isLoading = ref(true); // Default diubah jadi true untuk skeleton animation saat komponen dimuat
 const router = useRouter();
@@ -7415,14 +7447,9 @@ const getUnifiedTabCount = (tabValue) => {
     if (tabValue === "to_ship") {
       return (
         order.status === "processing" &&
-        [
-          "pending",
-          "placed",
-          "confirmed",
-          "allocated",
-          "picking_up",
-          "picked",
-        ].includes(shipStatus)
+        ["pending", "placed", "confirmed", "allocated", "picking_up", "picked"].includes(
+          shipStatus
+        )
       );
     }
 
@@ -7503,12 +7530,9 @@ const getShippingTabCount = (tabValue) => {
     if (tabValue === "returning")
       return ["return_in_transit", "returned"].includes(shipStatus);
     if (tabValue === "issues")
-      return [
-        "cancelled",
-        "rejected",
-        "disposed",
-        "courier_not_found",
-      ].includes(shipStatus);
+      return ["cancelled", "rejected", "disposed", "courier_not_found"].includes(
+        shipStatus
+      );
 
     return shipStatus === tabValue;
   }).length;
@@ -7672,7 +7696,7 @@ const getShippingTabCount = (tabValue) => {
 // Modifikasi Logic Filter Data dengan Custom Sorting untuk "refund_requested"
 const filteredTransactions = computed(() => {
   const query = searchQuery.value.toLowerCase();
-  
+
   // 1. Lakukan Filter Data seperti biasa
   let result = transactions.value.filter((order) => {
     let matchSearch = true;
@@ -7686,22 +7710,37 @@ const filteredTransactions = computed(() => {
 
     let matchTab = false;
     const tabValue = activeUnifiedTab.value;
-    const shipStatus = order.shipping_status ? order.shipping_status.toLowerCase() : "pending";
+    const shipStatus = order.shipping_status
+      ? order.shipping_status.toLowerCase()
+      : "pending";
 
     if (tabValue === "all") {
-        matchTab = true;
+      matchTab = true;
     } else if (tabValue === "unpaid") {
-        matchTab = order.status === "pending";
+      matchTab = order.status === "pending";
     } else if (tabValue === "to_ship") {
-        matchTab = order.status === "processing" && ["pending", "placed", "confirmed", "allocated", "picking_up", "picked"].includes(shipStatus);
+      matchTab =
+        order.status === "processing" &&
+        ["pending", "placed", "confirmed", "allocated", "picking_up", "picked"].includes(
+          shipStatus
+        );
     } else if (tabValue === "shipping") {
-        matchTab = shipStatus === "dropping_off";
+      matchTab = shipStatus === "dropping_off";
     } else if (tabValue === "completed") {
-        matchTab = order.status === "completed" || shipStatus === "delivered";
+      matchTab = order.status === "completed" || shipStatus === "delivered";
     } else if (tabValue === "cancelled") {
-        matchTab = order.status === "cancelled";
+      matchTab = order.status === "cancelled";
     } else if (tabValue === "issues") {
-        matchTab = order.status.includes("refund") || ["returned", "shipping_failed"].includes(order.status) || ["on_hold", "return_in_transit", "rejected", "disposed", "courier_not_found"].includes(shipStatus);
+      matchTab =
+        order.status.includes("refund") ||
+        ["returned", "shipping_failed"].includes(order.status) ||
+        [
+          "on_hold",
+          "return_in_transit",
+          "rejected",
+          "disposed",
+          "courier_not_found",
+        ].includes(shipStatus);
     }
 
     return matchSearch && matchTab;
@@ -7711,18 +7750,18 @@ const filteredTransactions = computed(() => {
   // Aturan: Jika statusnya "refund_requested", letakkan di atas.
   // Jika sama-sama refund_requested, atau sama-sama bukan, urutkan berdasarkan ID/Tanggal terbaru (Descending).
   result.sort((a, b) => {
-    const isARefund = a.status === 'refund_requested' ? 1 : 0;
-    const isBRefund = b.status === 'refund_requested' ? 1 : 0;
+    const isARefund = a.status === "refund_requested" ? 1 : 0;
+    const isBRefund = b.status === "refund_requested" ? 1 : 0;
 
     // Jika A adalah refund dan B bukan, A harus di atas (return -1)
     if (isARefund > isBRefund) return -1;
-    
+
     // Jika B adalah refund dan A bukan, B harus di atas (return 1)
     if (isARefund < isBRefund) return 1;
 
     // Jika keduanya sama (sama-sama refund, atau sama-sama bukan refund),
     // pertahankan urutan bawaan dari Backend (yaitu id terbesar/terbaru di atas)
-    return b.id - a.id; 
+    return b.id - a.id;
   });
 
   return result;
@@ -7736,7 +7775,7 @@ const resetFilters = () => {
 };
 
 const totalPages = computed(() =>
-  Math.ceil(filteredTransactions.value.length / itemsPerPage.value),
+  Math.ceil(filteredTransactions.value.length / itemsPerPage.value)
 );
 
 const paginatedTransactions = computed(() => {
@@ -7747,13 +7786,10 @@ const paginatedTransactions = computed(() => {
 const showingStart = computed(() =>
   filteredTransactions.value.length === 0
     ? 0
-    : (currentPage.value - 1) * itemsPerPage.value + 1,
+    : (currentPage.value - 1) * itemsPerPage.value + 1
 );
 const showingEnd = computed(() =>
-  Math.min(
-    currentPage.value * itemsPerPage.value,
-    filteredTransactions.value.length,
-  ),
+  Math.min(currentPage.value * itemsPerPage.value, filteredTransactions.value.length)
 );
 
 const visiblePages = computed(() => {
@@ -7761,20 +7797,16 @@ const visiblePages = computed(() => {
   const total = totalPages.value;
   const maxVisible = 7;
 
-  if (total <= maxVisible)
-    return Array.from({ length: total }, (_, i) => i + 1);
+  if (total <= maxVisible) return Array.from({ length: total }, (_, i) => i + 1);
   if (current <= 4) return [1, 2, 3, 4, 5, "...", total];
   if (current >= total - 3)
     return [1, "...", total - 4, total - 3, total - 2, total - 1, total];
   return [1, "...", current - 1, current, current + 1, "...", total];
 });
 
-watch(
-  [searchQuery, itemsPerPage, activeUnifiedTab],
-  () => {
-    currentPage.value = 1;
-  },
-);
+watch([searchQuery, itemsPerPage, activeUnifiedTab], () => {
+  currentPage.value = 1;
+});
 
 const goToDetail = (trx) => {
   router.push({
@@ -7834,10 +7866,10 @@ const getPaymentStatusText = (status) =>
   ].includes(status)
     ? "PAID"
     : status === "cancelled"
-      ? "CANCELLED"
-      : status === "refunded"
-        ? "REFUNDED"
-        : "UNPAID";
+    ? "CANCELLED"
+    : status === "refunded"
+    ? "REFUNDED"
+    : "UNPAID";
 
 const getPaymentStatusColor = (status) =>
   [
@@ -7849,10 +7881,10 @@ const getPaymentStatusColor = (status) =>
   ].includes(status)
     ? "text-green-600"
     : status === "cancelled"
-      ? "text-red-500"
-      : status === "refunded"
-        ? "text-teal-600"
-        : "text-orange-500";
+    ? "text-red-500"
+    : status === "refunded"
+    ? "text-teal-600"
+    : "text-orange-500";
 
 const getCourierLogo = (company) => {
   if (!company) return null;
@@ -7882,16 +7914,14 @@ const calculateTimeLeft = (referenceDate) => {
   const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
   const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-  return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+  return `${hours.toString().padStart(2, "0")}:${minutes
+    .toString()
+    .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 };
 
 const autoCancelSilent = async (id) => {
   try {
-    await axios.post(
-      `${BASE_URL}/admin/transactions/${id}/cancel`,
-      {},
-      axiosConfig,
-    );
+    await axios.post(`${BASE_URL}/admin/transactions/${id}/cancel`, {}, axiosConfig);
     fetchTransactions();
   } catch (e) {
     console.error("Auto cancel failed", e);
@@ -7920,9 +7950,7 @@ const fetchTransactions = async () => {
   try {
     const res = await axios.get(`${BASE_URL}/admin/transactions`, axiosConfig);
     // Filter dan abaikan status awaiting_payment
-    const filteredData = res.data.data.filter(
-      (o) => o.status !== "awaiting_payment",
-    );
+    const filteredData = res.data.data.filter((o) => o.status !== "awaiting_payment");
     transactions.value = filteredData.map((o) => ({
       ...o,
       isCancelling: false,
@@ -8039,7 +8067,7 @@ const exportToExcel = () => {
   XLSX.utils.book_append_sheet(workbook, worksheet, "Transactions");
   XLSX.writeFile(
     workbook,
-    `Transaction_Data_${new Date().toISOString().split("T")[0]}.xlsx`,
+    `Transaction_Data_${new Date().toISOString().split("T")[0]}.xlsx`
   );
 };
 
@@ -8063,25 +8091,18 @@ const statusClass = (status) => {
 const shippingStatusClass = (status) => {
   if (!status) return "bg-gray-50 border-gray-200 text-gray-500";
   const str = status.toLowerCase();
-  if (["delivered"].includes(str))
-    return "bg-green-50 border-green-200 text-green-700";
+  if (["delivered"].includes(str)) return "bg-green-50 border-green-200 text-green-700";
   if (["cancelled", "rejected", "disposed", "courier_not_found"].includes(str))
     return "bg-red-50 border-red-200 text-red-700";
   if (["on_hold", "return_in_transit", "returned"].includes(str))
     return "bg-amber-50 border-amber-200 text-amber-700";
-  if (
-    ["picking_up", "picked", "dropping_off", "allocated", "confirmed"].includes(
-      str,
-    )
-  )
+  if (["picking_up", "picked", "dropping_off", "allocated", "confirmed"].includes(str))
     return "bg-blue-50 border-blue-200 text-blue-700";
   return "bg-gray-50 border-gray-200 text-gray-600";
 };
 
 const formatPrice = (v) =>
-  new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(
-    v,
-  );
+  new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(v);
 
 const formatDate = (date) =>
   new Date(date).toLocaleDateString("id-ID", {
@@ -8096,9 +8117,7 @@ const formatStatus = (s) => s.replace(/_/g, " ");
 const handleRefundAction = async (id, action) => {
   const endpoint = action === "approve" ? "refund-approve" : "refund-reject";
   const confirmText =
-    action === "approve"
-      ? "Approve this refund request?"
-      : "Reject this refund request?";
+    action === "approve" ? "Approve this refund request?" : "Reject this refund request?";
   const result = await Swal.fire({
     title: "Confirm Action",
     text: confirmText,
@@ -8112,7 +8131,7 @@ const handleRefundAction = async (id, action) => {
       await axios.post(
         `${BASE_URL}/admin/transactions/${id}/${endpoint}`,
         {},
-        axiosConfig,
+        axiosConfig
       );
       Swal.fire("Success", `Refund ${action}d successfully`, "success");
       fetchTransactions();

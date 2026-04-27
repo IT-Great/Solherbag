@@ -2136,9 +2136,7 @@ onMounted(fetchData);
           class="bg-white text-black p-8 w-[800px] shrink-0 border-[3px] border-black flex flex-col gap-4"
         >
           <div v-if="transaction">
-            <div
-              class="flex items-center justify-between pb-4 border-b-2 border-black"
-            >
+            <div class="flex items-center justify-between pb-4 border-b-2 border-black">
               <div class="w-1/3">
                 <img
                   v-if="getCourierLogo(transaction.courier_company)"
@@ -2150,14 +2148,10 @@ onMounted(fetchData);
                 }}</span>
               </div>
               <div class="w-1/3 text-center">
-                <h1
-                  class="text-3xl font-black tracking-widest text-black uppercase"
-                >
+                <h1 class="text-3xl font-black tracking-widest text-black uppercase">
                   SOLHER
                 </h1>
-                <p class="text-[10px] font-bold mt-1 text-black">
-                  solher.co.id
-                </p>
+                <p class="text-[10px] font-bold mt-1 text-black">solher.co.id</p>
               </div>
               <div class="w-1/3 text-right">
                 <p class="text-xl font-black text-black uppercase">
@@ -2170,7 +2164,11 @@ onMounted(fetchData);
               class="flex flex-col items-center py-6 text-center border-b-2 border-black"
             >
               <img
-                :src="`https://bwipjs-api.metafloor.com/?bcid=code128&text=${biteshipData?.courier?.waybill_id || transaction.tracking_number || transaction.order_id}&scale=4&includetext=false`"
+                :src="`https://bwipjs-api.metafloor.com/?bcid=code128&text=${
+                  biteshipData?.courier?.waybill_id ||
+                  transaction.tracking_number ||
+                  transaction.order_id
+                }&scale=4&includetext=false`"
                 class="object-contain h-24 mb-4"
                 crossorigin="anonymous"
               />
@@ -2197,8 +2195,11 @@ onMounted(fetchData);
               <p class="text-2xl font-black text-black">
                 Ongkos Kirim: {{ formatPrice(transaction.shipping_cost) }}
               </p>
-              
-              <p v-if="transaction.promo_discount > 0" class="mt-1 text-lg font-bold text-black">
+
+              <p
+                v-if="transaction.promo_discount > 0"
+                class="mt-1 text-lg font-bold text-black"
+              >
                 Diskon Promo: - {{ formatPrice(transaction.promo_discount) }}
               </p>
 
@@ -2209,9 +2210,7 @@ onMounted(fetchData);
 
             <div class="flex gap-6 py-6 border-b-2 border-black">
               <div class="flex flex-col w-1/2 pr-6 border-r-2 border-black">
-                <p class="mb-3 text-sm font-bold text-black">
-                  Reference Number:
-                </p>
+                <p class="mb-3 text-sm font-bold text-black">Reference Number:</p>
                 <img
                   :src="`https://bwipjs-api.metafloor.com/?bcid=code128&text=${transaction.order_id}&scale=3&includetext=false`"
                   class="self-start object-contain h-16"
@@ -2237,9 +2236,7 @@ onMounted(fetchData);
 
             <div class="flex gap-6 py-6 border-b-2 border-black">
               <div class="w-1/2 pr-6 text-black border-r-2 border-black">
-                <p class="mb-3 text-sm font-black uppercase">
-                  Alamat Penerima:
-                </p>
+                <p class="mb-3 text-sm font-black uppercase">Alamat Penerima:</p>
                 <p class="text-xl font-black leading-tight">
                   {{ getCensoredName() }}
                 </p>
@@ -2250,16 +2247,12 @@ onMounted(fetchData);
                   {{ transaction.user.phone || "-" }}
                 </p>
                 <p class="mt-3 text-lg leading-snug">
-                  {{
-                    transaction.address?.address_location ||
-                    "Alamat tidak tersedia"
-                  }}, {{ transaction.address?.postal_code || "" }}
+                  {{ transaction.address?.address_location || "Alamat tidak tersedia" }},
+                  {{ transaction.address?.postal_code || "" }}
                 </p>
               </div>
               <div class="w-1/2 pr-6 text-black">
-                <p class="mb-3 text-sm font-black uppercase">
-                  Alamat Pengirim:
-                </p>
+                <p class="mb-3 text-sm font-black uppercase">Alamat Pengirim:</p>
                 <p class="text-xl font-black leading-tight">Solher Store</p>
                 <p
                   v-if="printSettings.origin_phone_shown"
@@ -2281,9 +2274,7 @@ onMounted(fetchData);
               class="py-6 text-lg leading-relaxed text-black border-b-2 border-black"
             >
               <div class="flex">
-                <span class="w-40 font-black uppercase shrink-0"
-                  >Jenis Barang:
-                </span>
+                <span class="w-40 font-black uppercase shrink-0">Jenis Barang: </span>
                 <span class="font-bold">{{ getItemsDescription() }}</span>
               </div>
             </div>
@@ -2321,16 +2312,13 @@ onMounted(fetchData);
             d="M15 19l-7-7 7-7"
           />
         </svg>
-        <span class="text-sm font-bold tracking-widest uppercase"
-          >Back to List</span
-        >
+        <span class="text-sm font-bold tracking-widest uppercase">Back to List</span>
       </button>
 
       <div class="flex items-center gap-4">
         <button
           v-if="
-            transaction?.shipping_method === 'biteship' &&
-            transaction?.biteship_order_id
+            transaction?.shipping_method === 'biteship' && transaction?.biteship_order_id
           "
           @click="showPrintModal = true"
           class="bg-[#4a148c] hover:bg-[#380e6b] text-white px-4 py-2 rounded-lg font-bold text-xs flex items-center gap-2 transition shadow-sm"
@@ -2358,9 +2346,7 @@ onMounted(fetchData);
         ></div>
 
         <div class="text-right">
-          <p
-            class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1"
-          >
+          <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
             Order Date
           </p>
           <p class="text-sm font-bold text-gray-900">
@@ -2384,9 +2370,7 @@ onMounted(fetchData);
       <div
         class="flex flex-col w-full max-w-lg overflow-hidden bg-white shadow-2xl rounded-xl"
       >
-        <div
-          class="flex items-center justify-between px-6 py-4 border-b border-gray-100"
-        >
+        <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
           <h3 class="text-lg font-bold text-gray-800">Print Label</h3>
           <button
             @click="showPrintModal = false"
@@ -2532,22 +2516,16 @@ onMounted(fetchData);
       class="relative z-10 grid grid-cols-1 gap-8 lg:grid-cols-3 animate-fade-in"
     >
       <div class="space-y-6 lg:col-span-2">
-        <div
-          class="bg-white shadow-sm p-6 sm:p-8 border border-gray-100 rounded-[2rem]"
-        >
+        <div class="bg-white shadow-sm p-6 sm:p-8 border border-gray-100 rounded-[2rem]">
           <div
             class="flex items-center justify-between pb-4 mb-6 border-b border-gray-100"
           >
-            <h2 class="text-xl font-bold tracking-tight text-gray-800">
-              Order Items
-            </h2>
+            <h2 class="text-xl font-bold tracking-tight text-gray-800">Order Items</h2>
             <div class="flex items-center gap-2">
-              <span
-                class="text-[10px] font-bold text-gray-400 uppercase tracking-widest"
+              <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest"
                 >{{ transaction.details.length }} Variants</span
               >
-              <span
-                class="px-3 py-1 text-xs font-bold text-white bg-black rounded-full"
+              <span class="px-3 py-1 text-xs font-bold text-white bg-black rounded-full"
                 >{{ totalQuantity }} Total Items</span
               >
             </div>
@@ -2559,25 +2537,24 @@ onMounted(fetchData);
               class="flex gap-6 py-6 first:pt-0 last:pb-0"
             >
               <img
-                :src="item.product.image"
+                :src="item.product.image || defaultBagIcon"
                 class="object-cover w-24 h-24 border border-gray-100 shadow-sm bg-gray-50 rounded-2xl shrink-0"
               />
               <div class="flex flex-col justify-center flex-grow">
-                <h3
-                  class="text-sm font-bold tracking-wide text-gray-900 uppercase"
-                >
+                <h3 class="text-sm font-bold tracking-wide text-gray-900 uppercase">
                   {{ item.product.name }}
                 </h3>
-                <p v-if="item.color" class="text-[10px] text-gray-500 uppercase tracking-widest mt-1">
+                <p
+                  v-if="item.color"
+                  class="text-[10px] text-gray-500 uppercase tracking-widest mt-1"
+                >
                   Color: <span class="font-bold text-gray-800">{{ item.color }}</span>
                 </p>
                 <p class="mt-1 font-mono text-xs text-gray-400">
                   SKU: {{ item.product.code }}
                 </p>
                 <div class="flex items-end justify-between mt-4">
-                  <p
-                    class="px-3 py-1 text-sm text-gray-600 rounded-lg bg-gray-50"
-                  >
+                  <p class="px-3 py-1 text-sm text-gray-600 rounded-lg bg-gray-50">
                     {{ item.quantity }} <span class="text-[10px] mx-1">x</span>
                     {{ formatPrice(item.price) }}
                   </p>
@@ -2639,9 +2616,7 @@ onMounted(fetchData);
                 </div>
               </div>
               <div class="p-4 mt-auto space-y-2 bg-gray-50 rounded-xl">
-                <p
-                  class="text-[10px] font-bold text-gray-400 uppercase tracking-widest"
-                >
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
                   Tracking Number (Resi)
                 </p>
                 <div class="flex items-center justify-between">
@@ -2677,12 +2652,8 @@ onMounted(fetchData);
                   />
                 </svg>
               </div>
-              <p class="text-sm font-bold text-gray-900 uppercase">
-                No Courier
-              </p>
-              <p class="mt-1 text-xs font-bold text-gray-500">
-                In-Store Pickup
-              </p>
+              <p class="text-sm font-bold text-gray-900 uppercase">No Courier</p>
+              <p class="mt-1 text-xs font-bold text-gray-500">In-Store Pickup</p>
             </div>
           </div>
 
@@ -2707,9 +2678,7 @@ onMounted(fetchData);
                     :src="getPaymentLogo(transaction.payment_method)"
                     class="object-contain w-full h-full"
                   />
-                  <span v-else class="text-[10px] font-black text-gray-400"
-                    >PAY</span
-                  >
+                  <span v-else class="text-[10px] font-black text-gray-400">PAY</span>
                 </div>
                 <div>
                   <p class="text-sm font-bold text-gray-900 uppercase">
@@ -2811,9 +2780,7 @@ onMounted(fetchData);
           </div>
           <div class="pt-6 mt-6 space-y-4 border-t border-white/10">
             <div>
-              <p
-                class="text-[10px] text-gray-400 uppercase tracking-widest mb-1"
-              >
+              <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">
                 Order ID
               </p>
               <div class="px-3 py-2 font-mono text-xs rounded-lg bg-white/10">
@@ -2870,9 +2837,7 @@ onMounted(fetchData);
           </div>
         </div> -->
 
-        <div
-          class="bg-white shadow-sm p-8 border border-gray-100 rounded-[2rem]"
-        >
+        <div class="bg-white shadow-sm p-8 border border-gray-100 rounded-[2rem]">
           <h2
             class="mb-6 font-black text-[10px] text-gray-400 uppercase tracking-[0.2em] border-b border-gray-50 pb-4"
           >
@@ -2917,17 +2882,13 @@ onMounted(fetchData);
               }}</span>
             </div> -->
 
-            <div
-              class="flex items-center justify-between text-sm text-gray-600"
-            >
+            <div class="flex items-center justify-between text-sm text-gray-600">
               <span>Subtotal ({{ totalQuantity }} items)</span>
               <span class="font-medium text-gray-900">{{
                 formatPrice(transaction.total_amount)
               }}</span>
             </div>
-            <div
-              class="flex items-center justify-between text-sm text-gray-600"
-            >
+            <div class="flex items-center justify-between text-sm text-gray-600">
               <span>Shipping Fee</span>
               <span
                 v-if="transaction.shipping_method === 'free'"
@@ -2939,11 +2900,17 @@ onMounted(fetchData);
               }}</span>
             </div>
 
-            <div v-if="transaction.promo_discount > 0" class="flex items-center justify-between text-sm font-medium text-green-600">
+            <div
+              v-if="transaction.promo_discount > 0"
+              class="flex items-center justify-between text-sm font-medium text-green-600"
+            >
               <span>Promo Code ({{ transaction.promo_code }})</span>
               <span>- {{ formatPrice(transaction.promo_discount) }}</span>
             </div>
-            <div v-if="transaction.points_used > 0" class="flex items-center justify-between text-sm font-medium text-yellow-600">
+            <div
+              v-if="transaction.points_used > 0"
+              class="flex items-center justify-between text-sm font-medium text-yellow-600"
+            >
               <span>Loyalty Points ({{ transaction.points_used }} Pts)</span>
               <span>- {{ formatPrice(transaction.points_used * 1000) }}</span>
             </div>
@@ -2955,9 +2922,7 @@ onMounted(fetchData);
                   class="block text-xs font-bold tracking-widest text-gray-900 uppercase"
                   >Grand Total</span
                 >
-                <span class="text-[10px] text-gray-400 italic"
-                  >Paid by customer</span
-                >
+                <span class="text-[10px] text-gray-400 italic">Paid by customer</span>
               </div>
               <span class="text-2xl font-bold text-black">{{
                 formatPrice(getGrandTotal(transaction))
@@ -2989,9 +2954,7 @@ onMounted(fetchData);
                   >
                     Loyalty Reward
                   </p>
-                  <p class="text-xs text-gray-500 mt-0.5">
-                    Points awarded to user
-                  </p>
+                  <p class="text-xs text-gray-500 mt-0.5">Points awarded to user</p>
                 </div>
               </div>
               <div class="text-right">
@@ -3004,9 +2967,7 @@ onMounted(fetchData);
           </div>
         </div>
 
-        <div
-          class="bg-white shadow-sm p-6 sm:p-8 border border-gray-100 rounded-[2rem]"
-        >
+        <div class="bg-white shadow-sm p-6 sm:p-8 border border-gray-100 rounded-[2rem]">
           <h2
             class="mb-6 font-black text-[10px] text-gray-400 uppercase tracking-[0.2em] border-b border-gray-50 pb-4 flex justify-between items-center"
           >
@@ -3014,47 +2975,33 @@ onMounted(fetchData);
             <span
               v-if="biteshipData && transaction.shipping_method === 'biteship'"
               class="flex items-center gap-1 text-[8px] text-green-600 bg-green-50 px-2 py-1 rounded"
-              ><span
-                class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"
-              ></span>
+              ><span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
               Live</span
             >
           </h2>
-          <div
-            v-if="transaction.shipping_method === 'free'"
-            class="py-6 text-center"
-          >
+          <div v-if="transaction.shipping_method === 'free'" class="py-6 text-center">
             <p class="mb-2 text-xs italic text-gray-500">
               No physical shipping required.
             </p>
-            <p class="text-sm font-bold text-black uppercase">
-              In-Store Pickup
-            </p>
+            <p class="text-sm font-bold text-black uppercase">In-Store Pickup</p>
           </div>
           <div v-else-if="trackingLoading" class="flex justify-center py-6">
             <div
               class="w-6 h-6 border-2 border-gray-200 rounded-full border-t-black animate-spin"
             ></div>
           </div>
-          <div
-            v-else
-            class="relative ml-2 space-y-6 border-l-2 border-gray-100"
-          >
+          <div v-else class="relative ml-2 space-y-6 border-l-2 border-gray-100">
             <div
               v-for="(history, index) in timelineHistory"
               :key="index"
               class="relative pl-6"
             >
               <span
-                :class="
-                  index === 0 ? 'bg-black ring-4 ring-gray-50' : 'bg-gray-300'
-                "
+                :class="index === 0 ? 'bg-black ring-4 ring-gray-50' : 'bg-gray-300'"
                 class="absolute -left-[9px] top-1 w-4 h-4 rounded-full transition-all"
               ></span>
               <div :class="index === 0 ? 'opacity-100' : 'opacity-50'">
-                <p
-                  class="mb-1 text-xs font-bold tracking-wide text-gray-900 uppercase"
-                >
+                <p class="mb-1 text-xs font-bold tracking-wide text-gray-900 uppercase">
                   {{ formatStatusTitle(history.status) }}
                 </p>
                 <p class="text-gray-600 text-[11px] mb-1.5 leading-tight">
@@ -3079,6 +3026,8 @@ import axios from "axios";
 import { BASE_URL } from "../../config/api.js";
 import Swal from "sweetalert2";
 import html2pdf from "html2pdf.js";
+
+import defaultBagIcon from "../../assets/products/bag_icon.jpg";
 
 const route = useRoute();
 const transaction = ref(null);
@@ -3110,7 +3059,7 @@ const totalQuantity = computed(() => {
   if (!transaction.value || !transaction.value.details) return 0;
   return transaction.value.details.reduce(
     (sum, item) => sum + parseInt(item.quantity),
-    0,
+    0
   );
 });
 
@@ -3119,11 +3068,8 @@ const timelineHistory = computed(() => {
   if (apiHistory.length > 0) return [...apiHistory].reverse();
   return [
     {
-      status:
-        biteshipData.value?.status || transaction.value?.status || "Processing",
-      note: getNoteFromStatus(
-        biteshipData.value?.status || transaction.value?.status,
-      ),
+      status: biteshipData.value?.status || transaction.value?.status || "Processing",
+      note: getNoteFromStatus(biteshipData.value?.status || transaction.value?.status),
       updated_at:
         biteshipData.value?.delivery?.datetime ||
         transaction.value?.created_at ||
@@ -3141,8 +3087,7 @@ const formatStatusTitle = (status) => {
 const getNoteFromStatus = (status) => {
   const map = {
     pending: "Waiting for payment.",
-    placed:
-      "Your order has been recorded and is waiting for courier allocation.",
+    placed: "Your order has been recorded and is waiting for courier allocation.",
     allocated: "Courier has been allocated to pick up your package.",
     picking_up: "Courier is on the way to pick up the package from the origin.",
     picked: "Package has been picked up by the courier.",
@@ -3164,7 +3109,7 @@ const fetchTrackingData = async (trxId) => {
   try {
     const res = await axios.get(
       `${BASE_URL}/admin/transactions/${trxId}/tracking`,
-      axiosConfig,
+      axiosConfig
     );
     biteshipData.value = res.data;
   } catch (error) {
@@ -3183,7 +3128,7 @@ const fetchData = async () => {
     try {
       const res = await axios.get(
         `${BASE_URL}/admin/transactions/${route.params.id}`,
-        axiosConfig,
+        axiosConfig
       );
       transaction.value = res.data;
     } catch (error) {
@@ -3194,7 +3139,7 @@ const fetchData = async () => {
     try {
       const res = await axios.get(
         `${BASE_URL}/admin/transactions/${route.params.id}`,
-        axiosConfig,
+        axiosConfig
       );
       transaction.value = res.data;
       fetchTrackingData(res.data.id);
@@ -3236,8 +3181,9 @@ const getCensoredName = () => {
   }
   // Jika alamat kosong, Fallback ke nama User
   else if (transaction.value?.user) {
-    name =
-      `${transaction.value.user.first_name || ""} ${transaction.value.user.last_name || ""}`.trim();
+    name = `${transaction.value.user.first_name || ""} ${
+      transaction.value.user.last_name || ""
+    }`.trim();
   }
 
   // Fallback terakhir jika kedua data entah bagaimana corrupt
@@ -3267,7 +3213,7 @@ const getItemsDescription = () => {
       let desc = `${d.quantity}x ${d.product.name}`;
       // [BARU] Masukkan warna ke deskripsi barang resi kurir
       if (d.color) {
-          desc += ` - ${d.color}`;
+        desc += ` - ${d.color}`;
       }
       if (printSettings.value.item_sku_shown && d.product.code)
         desc += ` (${d.product.code})`;
@@ -3286,10 +3232,8 @@ const generateAndDownloadPDF = () => {
     const element = document.getElementById("print-label-template");
 
     let formatSetting = "a4";
-    if (printSettings.value.paper_size === "thermal")
-      formatSetting = [3.15, 3.93];
-    if (printSettings.value.paper_size === "thermal2")
-      formatSetting = [3.93, 5.9];
+    if (printSettings.value.paper_size === "thermal") formatSetting = [3.15, 3.93];
+    if (printSettings.value.paper_size === "thermal2") formatSetting = [3.93, 5.9];
 
     const opt = {
       margin: 0.1,
@@ -3384,10 +3328,10 @@ const getPaymentStatusText = (status) =>
   ].includes(status)
     ? "PAID"
     : status === "cancelled"
-      ? "CANCELLED"
-      : status === "refunded"
-        ? "REFUNDED"
-        : "UNPAID";
+    ? "CANCELLED"
+    : status === "refunded"
+    ? "REFUNDED"
+    : "UNPAID";
 const getPaymentStatusColor = (status) =>
   [
     "completed",
@@ -3398,10 +3342,10 @@ const getPaymentStatusColor = (status) =>
   ].includes(status)
     ? "text-green-600"
     : status === "cancelled"
-      ? "text-red-500"
-      : status === "refunded"
-        ? "text-teal-600"
-        : "text-orange-500";
+    ? "text-red-500"
+    : status === "refunded"
+    ? "text-teal-600"
+    : "text-orange-500";
 const statusClass = (status) => {
   const map = {
     awaiting_payment: "bg-yellow-100 text-yellow-700",
@@ -3419,9 +3363,7 @@ const statusClass = (status) => {
 };
 const formatStatus = (s) => (s ? s.replace(/_/g, " ") : "");
 const formatPrice = (v) =>
-  new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(
-    v,
-  );
+  new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(v);
 const formatDate = (dateString) =>
   dateString
     ? new Date(dateString).toLocaleDateString("en-US", {
