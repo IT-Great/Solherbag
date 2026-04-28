@@ -24,7 +24,7 @@
             <tr
               class="text-[10px] tracking-widest text-gray-500 uppercase border-b border-gray-200 bg-gray-50/50"
             >
-              <th class="px-6 py-4 font-bold">Image</th>
+              <th class="px-6 py-4 font-bold">Cover Image</th>
               <th class="px-6 py-4 font-bold">Event Details</th>
               <th class="px-6 py-4 font-bold">Season</th>
               <th class="px-6 py-4 font-bold">Date</th>
@@ -51,14 +51,23 @@
             >
               <td class="px-6 py-4">
                 <img
-                  :src="getImgUrl(event.image)"
+                  v-if="event.images && event.images.length > 0"
+                  :src="getImgUrl(event.images[0])"
                   class="object-cover w-16 h-16 rounded-lg shadow-sm"
                 />
+                <div
+                  v-else
+                  class="flex items-center justify-center w-16 h-16 bg-gray-100 rounded-lg"
+                >
+                  <span class="text-[9px] text-gray-400 uppercase tracking-widest"
+                    >No Img</span
+                  >
+                </div>
               </td>
               <td class="px-6 py-4">
                 <p class="text-sm font-bold text-gray-900">{{ event.title }}</p>
                 <p class="text-xs text-gray-500 truncate max-w-[200px]">
-                  {{ event.description || "-" }}
+                  {{ event.images?.length || 0 }} Photos attached
                 </p>
               </td>
               <td class="px-6 py-4">
@@ -131,13 +140,16 @@
       v-if="isModalOpen"
       class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
     >
-      <div class="w-full max-w-xl overflow-hidden bg-white shadow-2xl rounded-2xl">
+      <div class="w-full max-w-2xl overflow-hidden bg-white shadow-2xl rounded-2xl">
         <div class="px-6 py-4 border-b border-gray-100">
           <h3 class="text-lg font-bold text-gray-900">
             {{ isEditing ? "Edit Event" : "Add New Event" }}
           </h3>
         </div>
-        <form @submit.prevent="saveEvent" class="p-6 space-y-4">
+        <form
+          @submit.prevent="saveEvent"
+          class="p-6 space-y-4 max-h-[80vh] overflow-y-auto custom-scrollbar"
+        >
           <div>
             <label
               class="block mb-1 text-xs font-bold tracking-widest text-gray-500 uppercase"
@@ -194,23 +206,34 @@
               placeholder="Add an elegant description..."
             ></textarea>
           </div>
-          <div>
+
+          <div class="p-4 border border-gray-200 bg-gray-50 rounded-xl">
             <label
-              class="block mb-1 text-xs font-bold tracking-widest text-gray-500 uppercase"
-              >Image</label
+              class="block mb-2 text-xs font-bold tracking-widest text-gray-500 uppercase"
+              >Event Photos (Multiple)</label
             >
             <input
               type="file"
               @change="handleFileUpload"
               accept="image/*"
-              class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg"
+              multiple
+              class="w-full px-3 py-2 mb-3 text-sm bg-white border border-gray-300 rounded-lg"
             />
-            <img
-              v-if="imagePreview"
-              :src="imagePreview"
-              class="object-cover h-32 mt-3 rounded-lg shadow-sm"
-            />
+            <p class="text-[10px] text-gray-400 italic mb-3">
+              * Photos will be automatically compressed by the server.
+            </p>
+
+            <div v-if="imagePreviews.length > 0" class="flex flex-wrap gap-2">
+              <div
+                v-for="(preview, idx) in imagePreviews"
+                :key="idx"
+                class="relative w-16 h-16 overflow-hidden rounded-lg shadow-sm group"
+              >
+                <img :src="preview" class="object-cover w-full h-full" />
+              </div>
+            </div>
           </div>
+
           <div>
             <label
               class="block mb-1 text-xs font-bold tracking-widest text-gray-500 uppercase"
@@ -257,8 +280,10 @@ const isLoading = ref(true);
 const isModalOpen = ref(false);
 const isEditing = ref(false);
 const isSaving = ref(false);
-const selectedFile = ref(null);
-const imagePreview = ref(null);
+
+// [PERBAIKAN] State untuk Multiple Files
+const selectedFiles = ref([]);
+const imagePreviews = ref([]);
 
 const form = ref({
   id: null,
@@ -284,7 +309,11 @@ const fetchEvents = async () => {
     const res = await axios.get(`${BASE_URL}/admin/events`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    events.value = res.data;
+    // Pastikan string JSON dari database di-parse jadi array
+    events.value = res.data.map((ev) => ({
+      ...ev,
+      images: typeof ev.images === "string" ? JSON.parse(ev.images) : ev.images,
+    }));
   } catch (error) {
     console.error(error);
   } finally {
@@ -292,18 +321,21 @@ const fetchEvents = async () => {
   }
 };
 
+// [PERBAIKAN] Handle Multiple File Upload
 const handleFileUpload = (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-  selectedFile.value = file;
-  imagePreview.value = URL.createObjectURL(file);
+  const files = Array.from(e.target.files);
+  if (!files.length) return;
+
+  selectedFiles.value = files;
+  imagePreviews.value = files.map((file) => URL.createObjectURL(file));
 };
 
 const openModal = (event = null) => {
   isEditing.value = !!event;
   if (event) {
     form.value = { ...event };
-    imagePreview.value = getImgUrl(event.image);
+    // Load existing images
+    imagePreviews.value = (event.images || []).map((img) => getImgUrl(img));
   } else {
     form.value = {
       id: null,
@@ -313,9 +345,9 @@ const openModal = (event = null) => {
       season: "",
       status: "published",
     };
-    imagePreview.value = null;
+    imagePreviews.value = [];
   }
-  selectedFile.value = null;
+  selectedFiles.value = [];
   isModalOpen.value = true;
 };
 
@@ -332,15 +364,18 @@ const saveEvent = async () => {
   formData.append("season", form.value.season || "");
   formData.append("status", form.value.status);
 
-  if (selectedFile.value) {
-    formData.append("image", selectedFile.value);
+  // [PERBAIKAN] Append multiple images
+  if (selectedFiles.value && selectedFiles.value.length > 0) {
+    selectedFiles.value.forEach((file, index) => {
+      formData.append(`images[${index}]`, file);
+    });
   }
 
   try {
     let url = `${BASE_URL}/admin/events`;
     if (isEditing.value) {
       url = `${BASE_URL}/admin/events/${form.value.id}`;
-      formData.append("_method", "PUT"); // Laravel requirement for form-data PUT
+      formData.append("_method", "PUT");
     }
 
     await axios.post(url, formData, {
@@ -361,7 +396,7 @@ const saveEvent = async () => {
     closeModal();
     fetchEvents();
   } catch (error) {
-    Swal.fire("Error", "Failed to save event.", "error");
+    Swal.fire("Error", error.response?.data?.message || "Failed to save event.", "error");
   } finally {
     isSaving.value = false;
   }
@@ -393,3 +428,32 @@ const deleteEvent = async (id) => {
 
 onMounted(fetchEvents);
 </script>
+
+<style scoped>
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #e5e7eb;
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #d1d5db;
+}
+</style>

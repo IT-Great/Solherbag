@@ -96,7 +96,7 @@
           class="relative overflow-hidden break-inside-avoid group rounded-xl shadow-sm bg-gray-100"
         >
           <img
-            :src="getImgUrl(event.image)"
+            :src="getImgUrl(event.images[0])"
             :alt="event.title"
             class="object-cover w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
             loading="lazy"
