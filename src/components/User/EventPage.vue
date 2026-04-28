@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen pb-24 overflow-x-hidden bg-[#FAFAFA]">
+  <div class="min-h-screen pb-32 overflow-x-hidden bg-[#FAFAFA]">
     <div
       class="px-6 pt-32 pb-16 text-center bg-white md:pt-40 md:pb-24 border-b border-gray-100"
     >
@@ -22,19 +22,19 @@
       </p>
     </div>
 
-    <div class="px-6 py-12 mx-auto max-w-7xl">
+    <div class="px-6 py-12 mx-auto max-w-[1400px]">
       <div
-        class="flex flex-col items-center justify-between gap-6 mb-12 md:flex-row md:mb-16"
+        class="flex flex-col items-center justify-between gap-6 mb-16 md:flex-row md:mb-24"
       >
-        <div class="flex flex-wrap justify-center gap-2 md:justify-start">
+        <div class="flex flex-wrap justify-center gap-3 md:justify-start">
           <button
             @click="activeSeason = 'All'"
             :class="
               activeSeason === 'All'
-                ? 'bg-black text-white border-black'
+                ? 'bg-black text-white border-black shadow-md'
                 : 'bg-transparent text-gray-500 border-gray-200 hover:border-gray-400 hover:text-black'
             "
-            class="px-5 py-2 text-[10px] font-bold tracking-widest uppercase transition-all border rounded-full"
+            class="px-6 py-2.5 text-[10px] font-bold tracking-widest uppercase transition-all border rounded-full"
           >
             All Collections
           </button>
@@ -44,10 +44,10 @@
             @click="activeSeason = season"
             :class="
               activeSeason === season
-                ? 'bg-black text-white border-black'
+                ? 'bg-black text-white border-black shadow-md'
                 : 'bg-transparent text-gray-500 border-gray-200 hover:border-gray-400 hover:text-black'
             "
-            class="px-5 py-2 text-[10px] font-bold tracking-widest uppercase transition-all border rounded-full"
+            class="px-6 py-2.5 text-[10px] font-bold tracking-widest uppercase transition-all border rounded-full"
           >
             {{ season }}
           </button>
@@ -82,41 +82,76 @@
 
       <div v-if="isLoading" class="flex items-center justify-center py-32">
         <div
-          class="w-10 h-10 border-4 border-gray-200 rounded-full border-t-black animate-spin"
+          class="w-12 h-12 border-4 border-gray-200 rounded-full border-t-black animate-spin"
         ></div>
       </div>
 
-      <div
-        v-else-if="filteredEvents.length > 0"
-        class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6 animate-fade-in"
-      >
+      <div v-else-if="filteredEvents.length > 0" class="space-y-32 md:space-y-48">
         <div
-          v-for="event in filteredEvents"
+          v-for="(event, index) in filteredEvents"
           :key="event.id"
-          class="relative overflow-hidden break-inside-avoid group rounded-xl shadow-sm bg-gray-100"
+          class="flex flex-col gap-10 md:items-center lg:gap-20"
+          :class="index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'"
         >
-          <img
-            :src="getImgUrl(event.images[0])"
-            :alt="event.title"
-            class="object-cover w-full h-auto transition-transform duration-700 ease-out group-hover:scale-105"
-            loading="lazy"
-          />
+          <div class="w-full md:w-5/12 lg:w-1/3 animate-fade-in">
+            <div class="sticky top-32">
+              <span
+                class="inline-block px-3 py-1 mb-6 text-[10px] font-bold tracking-widest text-gray-500 uppercase border border-gray-200 rounded-full"
+              >
+                {{ event.season || "Editorial" }} • {{ getYear(event.event_date) }}
+              </span>
+              <h2 class="mb-6 font-serif text-3xl leading-tight text-black md:text-5xl">
+                {{ event.title }}
+              </h2>
+              <div class="w-12 h-1 mb-8 bg-black"></div>
+              <p
+                class="text-sm font-light leading-relaxed text-gray-600 md:text-base text-justify md:text-left"
+              >
+                {{
+                  event.description ||
+                  "Explore the visual narrative of this exclusive collection."
+                }}
+              </p>
 
-          <div
-            class="absolute inset-0 flex flex-col justify-end p-6 transition-opacity duration-300 opacity-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent group-hover:opacity-100"
-          >
-            <span
-              class="inline-block px-3 py-1 mb-3 text-[9px] font-bold tracking-widest text-black uppercase bg-white rounded-full w-max"
+              <p class="mt-8 text-xs font-bold tracking-widest text-gray-400 uppercase">
+                {{ event.images.length }} Moments Captured
+              </p>
+            </div>
+          </div>
+
+          <div class="w-full md:w-7/12 lg:w-2/3 animate-fade-in">
+            <div
+              v-if="event.images.length === 1"
+              class="overflow-hidden bg-gray-100 rounded-xl shadow-lg group"
             >
-              {{ event.season || "Campaign" }} • {{ getYear(event.event_date) }}
-            </span>
-            <h3 class="font-serif text-2xl text-white md:text-3xl">{{ event.title }}</h3>
-            <p
-              v-if="event.description"
-              class="mt-2 text-xs font-light leading-relaxed text-gray-200 line-clamp-3"
+              <img
+                :src="getImgUrl(event.images[0])"
+                class="object-cover w-full h-auto min-h-[500px] transition-transform duration-1000 group-hover:scale-105"
+                loading="lazy"
+              />
+            </div>
+
+            <div
+              v-else
+              class="flex gap-4 pb-6 overflow-x-auto snap-x snap-mandatory custom-scrollbar"
             >
-              {{ event.description }}
-            </p>
+              <div
+                v-for="(img, imgIdx) in event.images"
+                :key="imgIdx"
+                class="relative flex-shrink-0 w-[85%] md:w-[70%] snap-center overflow-hidden bg-gray-100 rounded-xl shadow-md group"
+              >
+                <img
+                  :src="getImgUrl(img)"
+                  class="object-cover w-full h-[500px] md:h-[650px] transition-transform duration-1000 group-hover:scale-105"
+                  loading="lazy"
+                />
+                <div
+                  class="absolute bottom-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase"
+                >
+                  {{ imgIdx + 1 }} / {{ event.images.length }}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -147,7 +182,7 @@
             activeSeason = 'All';
             activeYear = 'All';
           "
-          class="mt-4 text-xs font-bold tracking-widest text-black underline uppercase hover:text-gray-500"
+          class="mt-6 text-xs font-bold tracking-widest text-black underline uppercase hover:text-gray-500"
         >
           Clear Filters
         </button>
@@ -182,9 +217,12 @@ const getYear = (dateString) => {
 
 const fetchEvents = async () => {
   try {
-    // Karena user biasa melihatnya, pastikan Anda membuat endpoint guest/publik untuk ini di backend Laravel Anda (misal route: /api/events)
     const res = await axios.get(`${BASE_URL}/events`);
-    events.value = res.data;
+    // Parse the JSON string to Array safely
+    events.value = res.data.map((ev) => ({
+      ...ev,
+      images: typeof ev.images === "string" ? JSON.parse(ev.images) : ev.images,
+    }));
   } catch (error) {
     console.error("Gagal menarik data event:", error);
   } finally {
@@ -192,7 +230,6 @@ const fetchEvents = async () => {
   }
 };
 
-// Computed Properties untuk Filter Dinamis
 const availableSeasons = computed(() => {
   const seasons = new Set();
   events.value.forEach((e) => {
@@ -232,11 +269,27 @@ onMounted(() => {
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(15px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Custom Scrollbar for the horizontal slider */
+.custom-scrollbar::-webkit-scrollbar {
+  height: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
 }
 </style>
