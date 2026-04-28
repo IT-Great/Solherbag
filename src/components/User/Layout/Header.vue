@@ -4658,6 +4658,10 @@ watch(() => route.path, () => {
             >
           </div>
 
+          <router-link to="/events" class="transition cursor-pointer hover:text-gray-500"
+            >Events</router-link
+          >
+
           <router-link to="/contact" class="transition cursor-pointer hover:text-gray-500"
             >Contact</router-link
           >
@@ -5035,6 +5039,13 @@ watch(() => route.path, () => {
                 </li>
               </ul>
             </div>
+
+            <router-link
+              to="/events"
+              @click="isMobileMenuOpen = false"
+              class="pb-4 text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors border-b border-gray-100 hover:text-gray-500"
+              >Events</router-link
+            >
 
             <router-link
               to="/contact"

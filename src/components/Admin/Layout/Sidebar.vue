@@ -478,16 +478,13 @@ const handleLogout = () => {
       v-show="!isCollapsed"
       class="mt-4 text-center transition-opacity duration-300 shrink-0"
     >
-      <p class="text-xs tracking-widest text-gray-400 uppercase">
-        Administrator
-      </p>
+      <p class="text-xs tracking-widest text-gray-400 uppercase">Administrator</p>
       <h4 class="text-sm font-bold text-black">Hi, {{ userName }}</h4>
     </div>
 
     <nav class="flex-grow pb-4 mt-6 overflow-y-auto custom-scrollbar">
       <ul class="px-3 space-y-1">
         <template v-for="(item, index) in filteredMenuItems" :key="index">
-          
           <li v-if="item.type === 'label'" class="pt-4 pb-1 pl-3">
             <span
               v-show="!isCollapsed"
@@ -503,7 +500,7 @@ const handleLogout = () => {
               @click="toggleDropdown(item.name)"
               :class="[
                 'group flex items-center justify-between w-full p-3 rounded-xl text-gray-700 transition-colors hover:bg-gray-100',
-                isDropdownOpen(item.name) ? 'bg-gray-50' : ''
+                isDropdownOpen(item.name) ? 'bg-gray-50' : '',
               ]"
             >
               <div class="flex items-center">
@@ -515,25 +512,34 @@ const handleLogout = () => {
                   {{ item.name }}
                 </span>
               </div>
-              <svg 
+              <svg
                 v-show="!isCollapsed"
-                :class="isDropdownOpen(item.name) ? 'rotate-180' : ''" 
-                class="w-4 h-4 text-gray-400 transition-transform duration-200" 
-                fill="none" 
-                viewBox="0 0 24 24" 
+                :class="isDropdownOpen(item.name) ? 'rotate-180' : ''"
+                class="w-4 h-4 text-gray-400 transition-transform duration-200"
+                fill="none"
+                viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
               </svg>
             </button>
-            
-            <ul 
-              v-show="!isCollapsed && isDropdownOpen(item.name)" 
+
+            <ul
+              v-show="!isCollapsed && isDropdownOpen(item.name)"
               class="relative pr-2 mt-1 mb-2 space-y-1 pl-11"
             >
               <div class="absolute top-0 w-px bg-gray-200 left-6 bottom-2"></div>
 
-              <li v-for="(child, childIndex) in item.children" :key="childIndex" class="relative">
+              <li
+                v-for="(child, childIndex) in item.children"
+                :key="childIndex"
+                class="relative"
+              >
                 <div class="absolute left-[-20px] top-1/2 w-3 h-px bg-gray-200"></div>
                 <router-link
                   :to="child.path"
@@ -561,7 +567,6 @@ const handleLogout = () => {
               </span>
             </router-link>
           </li>
-
         </template>
       </ul>
     </nav>
@@ -604,7 +609,7 @@ const handleLogout = () => {
 // const userName = ref("Admin");
 
 // // State untuk melacak dropdown mana yang terbuka (bisa diset multiple jika menggunakan array, di sini kita gunakan array of string)
-// const openDropdowns = ref([]); 
+// const openDropdowns = ref([]);
 
 // const getUserData = () => {
 //   const user = localStorage.getItem("user");
@@ -783,7 +788,7 @@ const isCollapsed = ref(false);
 const userName = ref("Admin");
 const userRole = ref(""); // Tambahkan state untuk menyimpan role user
 
-const openDropdowns = ref([]); 
+const openDropdowns = ref([]);
 
 // const getUserData = () => {
 //   const user = localStorage.getItem("user");
@@ -797,7 +802,7 @@ const openDropdowns = ref([]);
 const getUserData = () => {
   // [PERBAIKAN 1]: Ambil data dari key "admin", BUKAN "user"
   const adminData = localStorage.getItem("admin");
-  
+
   if (adminData) {
     const parsedAdmin = JSON.parse(adminData);
     userName.value = parsedAdmin.first_name;
@@ -811,93 +816,121 @@ const getUserData = () => {
 // [PERBAIKAN] Struktur Menu dengan properti 'roles'
 const menuItems = [
   // --- GRUP 1: MENU UTAMA ---
-  { 
-    type: "label", 
-    name: "Menu", 
-    roles: ['superadmin', 'admin', 'gudang'] // Label hanya muncul jika ada isi menunya
+  {
+    type: "label",
+    name: "Menu",
+    roles: ["superadmin", "admin", "gudang"], // Label hanya muncul jika ada isi menunya
   },
   {
     name: "Dashboard",
     path: "/admin/dashboard",
-    icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2v-4zM14 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2v-4z"></path></svg>',
-    roles: ['superadmin', 'admin'] // Gudang dan Accounting mungkin tidak perlu lihat dashboard utama
+    icon:
+      '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2v-4zM14 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2v-4z"></path></svg>',
+    roles: ["superadmin", "admin"], // Gudang dan Accounting mungkin tidak perlu lihat dashboard utama
   },
   {
     name: "Categories",
     path: "/admin/categories",
-    icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>',
-    roles: ['superadmin', 'admin']
+    icon:
+      '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>',
+    roles: ["superadmin", "admin"],
   },
   {
     name: "Products",
-    icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>',
-    roles: ['superadmin', 'admin', 'gudang'], // Gudang perlu akses ini
+    icon:
+      '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>',
+    roles: ["superadmin", "admin", "gudang"], // Gudang perlu akses ini
     children: [
-      { name: "Product Management", path: "/admin/products", roles: ['superadmin', 'admin'] }, // Hanya admin yang bisa tambah/edit produk
-      { name: "Stock Management", path: "/admin/stocks", roles: ['superadmin', 'admin', 'gudang'] } // Gudang bisa manajemen stok
-    ]
+      {
+        name: "Product Management",
+        path: "/admin/products",
+        roles: ["superadmin", "admin"],
+      }, // Hanya admin yang bisa tambah/edit produk
+      {
+        name: "Stock Management",
+        path: "/admin/stocks",
+        roles: ["superadmin", "admin", "gudang"],
+      }, // Gudang bisa manajemen stok
+    ],
   },
   {
     name: "Transactions",
     path: "/admin/transactions",
-    icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>',
-    roles: ['superadmin', 'admin', 'gudang'] // Gudang perlu lihat transaksi untuk pengiriman
+    icon:
+      '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>',
+    roles: ["superadmin", "admin", "gudang"], // Gudang perlu lihat transaksi untuk pengiriman
   },
   {
     name: "Sales Reports",
     path: "/admin/salesreports",
-    icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>',
-    roles: ['superadmin', 'admin', 'accounting'] // Accounting perlu akses report
+    icon:
+      '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>',
+    roles: ["superadmin", "admin", "accounting"], // Accounting perlu akses report
   },
   {
     name: "Users",
     path: "/admin/user_list",
-    icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>',
-    roles: ['superadmin', 'admin']
+    icon:
+      '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>',
+    roles: ["superadmin", "admin"],
   },
   {
     name: "Subscribers",
     path: "/admin/subscribers",
-    icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>',
-    roles: ['superadmin', 'admin']
+    icon:
+      '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>',
+    roles: ["superadmin", "admin"],
+  },
+  // [BARU] MENU EVENTS
+  {
+    name: "Events",
+    path: "/admin/events",
+    icon:
+      '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>',
+    roles: ["superadmin", "admin"],
   },
   // [BARU] MENU AUDIT TRAIL
   {
     name: "Audit Trail",
     path: "/admin/audit-logs",
-    icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>',
-    roles: ['superadmin', 'admin']
+    icon:
+      '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>',
+    roles: ["superadmin", "admin"],
   },
 
   // --- GRUP 2: ACCOUNTING ---
-  { 
-    type: "label", 
+  {
+    type: "label",
     name: "Accounting",
-    roles: ['superadmin', 'accounting'] 
+    roles: ["superadmin", "accounting"],
   },
   {
     name: "COA",
     path: "/admin/coas",
-    icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"></path></svg>',
-    roles: ['superadmin', 'accounting']
+    icon:
+      '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"></path></svg>',
+    roles: ["superadmin", "accounting"],
   },
   {
     name: "Payments",
     path: "/admin/payments",
-    icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>',
-    roles: ['superadmin', 'accounting']
+    icon:
+      '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>',
+    roles: ["superadmin", "accounting"],
   },
   {
     name: "Suppliers",
     path: "/admin/suppliers",
-    icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>',
-    roles: ['superadmin', 'accounting']
+    icon:
+      '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>',
+    roles: ["superadmin", "accounting"],
   },
   {
     name: "Invoices",
     path: "/admin/invoices",
-    icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>',
-    roles: ['superadmin', 'accounting']
+    icon:
+      '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>',
+    roles: ["superadmin", "accounting"],
   },
 ];
 
@@ -917,7 +950,7 @@ const menuItems = [
 //         return child.roles.includes(userRole.value);
 //       });
 //       // Jangan tampilkan parent jika semua anaknya disembunyikan
-//       return item.children.length > 0; 
+//       return item.children.length > 0;
 //     }
 
 //     return hasAccess;
@@ -929,7 +962,7 @@ const filteredMenuItems = computed(() => {
   // Kita harus melakukan "Deep Copy" (Kloning) array agar item.children tidak rusak permanen
   const clonedMenuItems = JSON.parse(JSON.stringify(menuItems));
 
-  return clonedMenuItems.filter(item => {
+  return clonedMenuItems.filter((item) => {
     // Jika tidak ada batasan role, tampilkan untuk semua
     if (!item.roles) return true;
 
@@ -938,12 +971,12 @@ const filteredMenuItems = computed(() => {
 
     // Jika punya akses dan memiliki children, filter juga children-nya
     if (hasAccess && item.children) {
-      item.children = item.children.filter(child => {
+      item.children = item.children.filter((child) => {
         if (!child.roles) return true;
         return child.roles.includes(userRole.value);
       });
       // Jangan tampilkan parent jika semua anaknya disembunyikan
-      return item.children.length > 0; 
+      return item.children.length > 0;
     }
 
     return hasAccess;
@@ -952,14 +985,14 @@ const filteredMenuItems = computed(() => {
 
 const toggleDropdown = (name) => {
   if (isCollapsed.value) {
-    toggleSidebar(); 
+    toggleSidebar();
   }
 
   const index = openDropdowns.value.indexOf(name);
   if (index > -1) {
-    openDropdowns.value.splice(index, 1); 
+    openDropdowns.value.splice(index, 1);
   } else {
-    openDropdowns.value.push(name); 
+    openDropdowns.value.push(name);
   }
 };
 
@@ -989,9 +1022,12 @@ const checkOrientation = () => {
 
 const checkActiveRoute = () => {
   const currentPath = route.path;
-  filteredMenuItems.value.forEach(item => { // Ganti ke filteredMenuItems
+  filteredMenuItems.value.forEach((item) => {
+    // Ganti ke filteredMenuItems
     if (item.children) {
-      const isActiveChild = item.children.some(child => currentPath.startsWith(child.path));
+      const isActiveChild = item.children.some((child) =>
+        currentPath.startsWith(child.path)
+      );
       if (isActiveChild && !openDropdowns.value.includes(item.name)) {
         openDropdowns.value.push(item.name);
       }
@@ -1002,7 +1038,7 @@ const checkActiveRoute = () => {
 onMounted(() => {
   getUserData();
   checkOrientation();
-  checkActiveRoute(); 
+  checkActiveRoute();
   window.addEventListener("resize", checkOrientation);
   window.addEventListener("toggle-admin-sidebar", handleExternalToggle);
 });
