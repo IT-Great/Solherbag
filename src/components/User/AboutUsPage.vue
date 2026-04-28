@@ -31,6 +31,12 @@
       </div>
     </div>
 
+      <div class="flex whitespace-nowrap animate-marquee">
+        <span v-for="n in 10" :key="n" class="mx-4 text-sm font-medium tracking-tighter text-gray-800 uppercase">
+          We make things that work better and last longer. &nbsp;&nbsp; •
+        </span>
+      </div> 
+
     <div class="w-full">
       <img
         src="../../../src/assets/about_us_image.png"
@@ -91,14 +97,14 @@ h1 {
     <div class="flex flex-col justify-center items-center px-6 py-24 min-h-[70vh]">
       <div class="max-w-4xl text-center animate-fade-in">
         <h1
-          class="mb-10 font-serif text-4xl tracking-tight text-gray-900 md:text-6xl leading-tight"
+          class="mb-10 font-serif text-4xl leading-tight tracking-tight text-gray-900 md:text-6xl"
         >
           The Heart of SOLHER: <br class="hidden md:block" />
           <span class="italic text-gray-700">A Love Letter to Quality.</span>
         </h1>
 
         <div
-          class="px-4 space-y-6 text-sm font-light leading-loose tracking-wide text-gray-700 md:px-12 md:text-base text-justify md:text-center"
+          class="px-4 space-y-6 text-sm font-light leading-loose tracking-wide text-justify text-gray-700 md:px-12 md:text-base md:text-center"
         >
           <p>
             SOLHER was born from a simple observation: the world moves too fast, but true
