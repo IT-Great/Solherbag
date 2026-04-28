@@ -1848,6 +1848,8 @@ import ChatListPage from "../components/User/ChatListPage.vue";
 import ChatPage from "../components/User/ChatPage.vue";
 import AdminChatPage from "../components/Admin/AdminChatPage.vue";
 import AuditLogPage from "../components/Admin/AuditLogPage.vue";
+import EventPage from "../components/User/EventPage.vue";
+import AdminEventPage from "../components/Admin/AdminEventPage.vue";
 
 const routes = [
   { path: "/", name: "Home", component: HomePage },
@@ -1882,6 +1884,8 @@ const routes = [
   // USER CHAT ROUTES 
   { path: "/chat-list", name: "ChatList", component: ChatListPage, meta: { requiresAuth: true } },
   { path: "/chat/:id", name: "UserChat", component: ChatPage, meta: { requiresAuth: true } },
+  
+  { path: "/events", name: "EventPage", component: EventPage },
 
   // ADMIN ROUTES
   { path: "/admin/dashboard", name: "Dashboard", component: DashboardPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
@@ -1909,6 +1913,7 @@ const routes = [
   { path: "/admin/invoices", name: "InvoicePage", component: InvoicePage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
   { path: "/admin/chat/:id", name: "AdminChat", component: AdminChatPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
   { path: "/admin/audit-logs", name: "AuditLogs", component: AuditLogPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+    { path: "/admin/events", name: "AdminEventPage", component: AdminEventPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
 ];
 
 const router = createRouter({
