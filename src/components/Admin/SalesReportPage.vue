@@ -1303,7 +1303,9 @@ onMounted(fetchReport);
     <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
       <div class="flex flex-wrap items-end gap-4">
         <div class="w-full sm:w-auto">
-          <label class="block mb-1 text-xs font-bold tracking-wide text-gray-500 uppercase">
+          <label
+            class="block mb-1 text-xs font-bold tracking-wide text-gray-500 uppercase"
+          >
             Year
           </label>
           <select
@@ -1314,7 +1316,9 @@ onMounted(fetchReport);
           </select>
         </div>
         <div class="w-full sm:w-auto">
-          <label class="block mb-1 text-xs font-bold tracking-wide text-gray-500 uppercase">
+          <label
+            class="block mb-1 text-xs font-bold tracking-wide text-gray-500 uppercase"
+          >
             Month
           </label>
           <select
@@ -1328,7 +1332,9 @@ onMounted(fetchReport);
           </select>
         </div>
         <div class="flex-grow w-full sm:w-auto">
-          <label class="block mb-1 text-xs font-bold tracking-wide text-gray-500 uppercase">
+          <label
+            class="block mb-1 text-xs font-bold tracking-wide text-gray-500 uppercase"
+          >
             Search Product
           </label>
           <div class="relative">
@@ -1344,7 +1350,12 @@ onMounted(fetchReport);
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
             </svg>
           </div>
         </div>
@@ -1358,26 +1369,47 @@ onMounted(fetchReport);
     </div>
 
     <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
-      <div class="relative p-6 overflow-hidden border border-blue-100 bg-blue-50 rounded-2xl">
-        <p class="mb-1 text-xs font-bold tracking-widest text-blue-600 uppercase">Total Revenue</p>
-        <p v-if="!isLoading" class="text-3xl font-black text-blue-900">{{ formatPrice(grandTotalRevenue) }}</p>
+      <div
+        class="relative p-6 overflow-hidden border border-blue-100 bg-blue-50 rounded-2xl"
+      >
+        <p class="mb-1 text-xs font-bold tracking-widest text-blue-600 uppercase">
+          Total Revenue
+        </p>
+        <p v-if="!isLoading" class="text-3xl font-black text-blue-900">
+          {{ formatPrice(grandTotalRevenue) }}
+        </p>
         <div v-else class="w-3/4 h-8 mt-1 bg-blue-200 rounded animate-pulse"></div>
       </div>
-      <div class="relative p-6 overflow-hidden border border-green-100 bg-green-50 rounded-2xl">
-        <p class="mb-1 text-xs font-bold tracking-widest text-green-600 uppercase">Total Units Sold</p>
-        <p v-if="!isLoading" class="text-3xl font-black text-green-900">{{ totalUnitsSold }} pcs</p>
+      <div
+        class="relative p-6 overflow-hidden border border-green-100 bg-green-50 rounded-2xl"
+      >
+        <p class="mb-1 text-xs font-bold tracking-widest text-green-600 uppercase">
+          Total Units Sold
+        </p>
+        <p v-if="!isLoading" class="text-3xl font-black text-green-900">
+          {{ totalUnitsSold }} pcs
+        </p>
         <div v-else class="w-1/2 h-8 mt-1 bg-green-200 rounded animate-pulse"></div>
       </div>
-      <div class="relative p-6 overflow-hidden border border-purple-100 bg-purple-50 rounded-2xl">
-        <p class="mb-1 text-xs font-bold tracking-widest text-purple-600 uppercase">Top Best Seller</p>
-        <p v-if="!isLoading" class="text-xl font-black text-purple-900 truncate">{{ bestSellerName }}</p>
+      <div
+        class="relative p-6 overflow-hidden border border-purple-100 bg-purple-50 rounded-2xl"
+      >
+        <p class="mb-1 text-xs font-bold tracking-widest text-purple-600 uppercase">
+          Top Best Seller
+        </p>
+        <p v-if="!isLoading" class="text-xl font-black text-purple-900 truncate">
+          {{ bestSellerName }}
+        </p>
         <div v-else class="w-3/4 h-6 mt-2 bg-purple-200 rounded animate-pulse"></div>
       </div>
     </div>
 
-    <div class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[400px]">
-      
-      <div class="flex flex-col items-start justify-between gap-4 mb-6 md:flex-row md:items-center">
+    <div
+      class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[400px]"
+    >
+      <div
+        class="flex flex-col items-start justify-between gap-4 mb-6 md:flex-row md:items-center"
+      >
         <h2 class="text-xl font-bold text-gray-800">Product Performance</h2>
 
         <div class="flex items-center gap-4">
@@ -1387,8 +1419,19 @@ onMounted(fetchReport);
               :disabled="allReportData.length === 0 || isLoading"
               class="flex items-center gap-2 px-4 py-2 text-xs font-bold tracking-widest text-red-600 uppercase transition bg-red-50 hover:bg-red-100 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                />
               </svg>
               PDF
             </button>
@@ -1397,8 +1440,19 @@ onMounted(fetchReport);
               :disabled="allReportData.length === 0 || isLoading"
               class="flex items-center gap-2 px-4 py-2 text-xs font-bold tracking-widest text-green-600 uppercase transition bg-green-50 hover:bg-green-100 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                />
               </svg>
               Excel
             </button>
@@ -1434,28 +1488,42 @@ onMounted(fetchReport);
 
         <table class="w-full text-left bg-white border-collapse">
           <thead>
-            <tr class="text-xs tracking-widest text-gray-400 uppercase border-b border-gray-100">
+            <tr
+              class="text-xs tracking-widest text-gray-400 uppercase border-b border-gray-100"
+            >
               <th class="pb-4 pl-2 font-medium">Product Info</th>
               <th class="pb-4 font-medium">Category</th>
               <th class="pb-4 font-medium text-right">Units Sold</th>
               <th class="pb-4 pr-2 font-medium text-right">Revenue</th>
             </tr>
           </thead>
-          
+
           <tbody v-if="isLoading">
-            <tr v-for="i in (itemsPerPage > 10 ? 10 : itemsPerPage)" :key="`skel-${i}`" class="border-b border-gray-50">
+            <tr
+              v-for="i in itemsPerPage > 10 ? 10 : itemsPerPage"
+              :key="`skel-${i}`"
+              class="border-b border-gray-50"
+            >
               <td class="py-4 pl-2">
                 <div class="flex items-center gap-4">
-                  <div class="w-12 h-12 bg-gray-200 rounded-lg animate-pulse shrink-0"></div>
+                  <div
+                    class="w-12 h-12 bg-gray-200 rounded-lg animate-pulse shrink-0"
+                  ></div>
                   <div class="space-y-2">
                     <div class="w-32 h-4 bg-gray-200 rounded animate-pulse"></div>
                     <div class="w-20 h-3 bg-gray-100 rounded animate-pulse"></div>
                   </div>
                 </div>
               </td>
-              <td class="py-4"><div class="w-24 h-4 bg-gray-200 rounded animate-pulse"></div></td>
-              <td class="py-4"><div class="w-12 h-4 ml-auto bg-gray-200 rounded animate-pulse"></div></td>
-              <td class="py-4 pr-2"><div class="w-24 h-4 ml-auto bg-gray-200 rounded animate-pulse"></div></td>
+              <td class="py-4">
+                <div class="w-24 h-4 bg-gray-200 rounded animate-pulse"></div>
+              </td>
+              <td class="py-4">
+                <div class="w-12 h-4 ml-auto bg-gray-200 rounded animate-pulse"></div>
+              </td>
+              <td class="py-4 pr-2">
+                <div class="w-24 h-4 ml-auto bg-gray-200 rounded animate-pulse"></div>
+              </td>
             </tr>
           </tbody>
 
@@ -1465,14 +1533,8 @@ onMounted(fetchReport);
               :key="index"
               class="transition border-b hover:bg-gray-50 border-gray-50"
             >
-              <td class="py-4 pl-2">
+              <!-- <td class="py-4 pl-2">
                 <div class="flex items-center gap-4">
-                  <!-- <img
-                    :src="`${item.image}?t=${new Date().getTime()}`"
-                    alt="Product"
-                    class="object-cover w-12 h-12 bg-gray-100 border border-gray-100 rounded-lg shadow-sm"
-                    crossorigin="anonymous"
-                  /> -->
                   <img
                     :src="item.image"
                     alt="Product"
@@ -1481,6 +1543,43 @@ onMounted(fetchReport);
                   <div>
                     <p class="font-bold text-gray-900">{{ item.name }}</p>
                     <p class="font-mono text-gray-400 text-xs mt-0.5">{{ item.code }}</p>
+                  </div>
+                </div>
+              </td> -->
+              <td class="py-4 pl-2">
+                <div class="flex items-center gap-4">
+                  <img
+                    v-if="item.image"
+                    :src="getImgUrl(item.image)"
+                    @error="item.image = null"
+                    alt="Product"
+                    class="object-cover w-12 h-12 bg-gray-100 border border-gray-100 rounded-lg shadow-sm"
+                  />
+                  <div
+                    v-else
+                    class="flex items-center justify-center w-12 h-12 bg-gray-100 border border-gray-200 rounded-lg shadow-sm shrink-0"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-5 h-5 text-gray-300"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      />
+                    </svg>
+                  </div>
+
+                  <div>
+                    <p class="font-bold text-gray-900">{{ item.name }}</p>
+                    <p class="font-mono text-gray-400 text-xs mt-0.5">
+                      {{ item.code }}
+                    </p>
                   </div>
                 </div>
               </td>
@@ -1501,7 +1600,10 @@ onMounted(fetchReport);
 
           <tfoot v-if="allReportData.length > 0 && !isLoading">
             <tr class="font-bold text-gray-800 border-t-2 border-gray-100 bg-gray-50/50">
-              <td colspan="2" class="py-4 pl-4 text-xs tracking-widest text-right text-gray-500 uppercase">
+              <td
+                colspan="2"
+                class="py-4 pl-4 text-xs tracking-widest text-right text-gray-500 uppercase"
+              >
                 Grand Total (All Pages)
               </td>
               <td class="py-4 text-lg text-right">{{ totalUnitsSold }}</td>
@@ -1586,8 +1688,18 @@ const bestSellerName = ref("-");
 const currentYear = new Date().getFullYear();
 const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
 const months = [
-  "January", "February", "March", "April", "May", "June", 
-  "July", "August", "September", "October", "November", "December",
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 
 const filters = ref({
@@ -1599,6 +1711,20 @@ const filters = ref({
 const axiosConfig = {
   headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
 };
+
+// ==========================================
+// [BARU] FUNGSI FORMAT URL GAMBAR
+// ==========================================
+const getImgUrl = (path) => {
+  if (!path) return "";
+  // Jika sudah URL lengkap (termasuk dari Clever Cloud), pakai langsung
+  if (path.startsWith("http")) return path;
+
+  // Jika path relatif, gabungkan dengan BASE_URL backend
+  const baseUrlFixed = BASE_URL.replace("/api", "");
+  return `${baseUrlFixed}/storage/${path}`;
+};
+// ==========================================
 
 // ==========================================
 // CLIENT-SIDE PAGINATION LOGIC
@@ -1678,12 +1804,9 @@ const calculateGlobalSummary = (data) => {
   if (data.length > 0) {
     grandTotalRevenue.value = data.reduce(
       (acc, item) => acc + parseFloat(item.total_revenue),
-      0,
+      0
     );
-    totalUnitsSold.value = data.reduce(
-      (acc, item) => acc + parseInt(item.total_sold),
-      0,
-    );
+    totalUnitsSold.value = data.reduce((acc, item) => acc + parseInt(item.total_sold), 0);
     bestSellerName.value = data[0].name; // Karena data dari backend sudah diorder by total_sold DESC
   } else {
     grandTotalRevenue.value = 0;
@@ -1713,7 +1836,7 @@ watch(
     timeout = setTimeout(() => {
       fetchReport();
     }, 600);
-  },
+  }
 );
 
 watch(itemsPerPage, () => {
@@ -1732,9 +1855,7 @@ const exportToPDF = () => {
     h.classList.add("block");
   });
 
-  const monthName = filters.value.month
-    ? months[filters.value.month - 1]
-    : "All";
+  const monthName = filters.value.month ? months[filters.value.month - 1] : "All";
   const fileName = `Sales_Report_${filters.value.year}_${monthName}.pdf`;
 
   const opt = {
@@ -1781,9 +1902,7 @@ const exportToExcel = () => {
 
   XLSX.utils.book_append_sheet(workbook, worksheet, "Sales Data");
 
-  const monthName = filters.value.month
-    ? months[filters.value.month - 1]
-    : "All";
+  const monthName = filters.value.month ? months[filters.value.month - 1] : "All";
   const fileName = `Sales_Report_${filters.value.year}_${monthName}.xlsx`;
 
   XLSX.writeFile(workbook, fileName);
@@ -1793,8 +1912,19 @@ onMounted(fetchReport);
 </script>
 
 <style scoped>
-.animate-fade-in { animation: fadeIn 0.4s ease-out; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 @media print {
   .export-header {
