@@ -1508,6 +1508,7 @@ onMounted(fetchData);
             <img
               v-if="item.image"
               :src="item.image"
+              @error="item.image = null"
               class="w-16 h-16 object-cover rounded-lg shadow-sm shrink-0 border border-gray-100"
             />
             <div
