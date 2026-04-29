@@ -7433,7 +7433,7 @@ const fetchOrders = async () => {
     // [PERBAIKAN] BUANG DATA USANG (GHOST DATA)
     // Filter transaksi yang statusnya 'awaiting_payment' agar tidak masuk ke sistem UI
     // =========================================================================
-    const validTransactions = res.data.data.filter(
+    const validTransactions = res.data.filter(
       (order) => order.status !== "awaiting_payment"
     );
 
