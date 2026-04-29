@@ -1850,6 +1850,7 @@ import AdminChatPage from "../components/Admin/AdminChatPage.vue";
 import AuditLogPage from "../components/Admin/AuditLogPage.vue";
 import EventPage from "../components/User/EventPage.vue";
 import AdminEventPage from "../components/Admin/AdminEventPage.vue";
+import AdminEventDetailPage from "../components/Admin/AdminEventDetailPage.vue";
 
 const routes = [
   { path: "/", name: "Home", component: HomePage },
@@ -1914,6 +1915,7 @@ const routes = [
   { path: "/admin/chat/:id", name: "AdminChat", component: AdminChatPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
   { path: "/admin/audit-logs", name: "AuditLogs", component: AuditLogPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
     { path: "/admin/events", name: "AdminEventPage", component: AdminEventPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+    { path: "/admin/events/:id", name: "AdminEventDetailPage", component: AdminEventDetailPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
 ];
 
 const router = createRouter({
