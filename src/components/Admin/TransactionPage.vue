@@ -7950,7 +7950,7 @@ const fetchTransactions = async () => {
   try {
     const res = await axios.get(`${BASE_URL}/admin/transactions`, axiosConfig);
     // Filter dan abaikan status awaiting_payment
-    const filteredData = res.data.data.filter((o) => o.status !== "awaiting_payment");
+    const filteredData = res.data.filter((o) => o.status !== "awaiting_payment");
     transactions.value = filteredData.map((o) => ({
       ...o,
       isCancelling: false,
