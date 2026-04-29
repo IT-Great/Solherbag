@@ -258,7 +258,7 @@ import axios from "axios";
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import { useRouter } from "vue-router";
 // Sesuaikan import BASE_URL dengan struktur folder Anda
-import { BASE_URL } from "../../../../config/api.js";
+import { BASE_URL } from "../../../config/api.js";
 import defaultProfile from "../../../../src/assets/profile.png";
 
 const router = useRouter();
