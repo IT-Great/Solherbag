@@ -295,25 +295,17 @@ const handleAdminLogin = async () => {
           />
         </div>
 
-        <!-- [BARU] Widget reCAPTCHA -->
-        <div class="flex justify-center my-4">
-          <vue-recaptcha
-            :sitekey="siteKey"
-            @verify="onCaptchaVerify"
-            @expired="onCaptchaExpired"
-            @fail="onCaptchaFailed"
-          />
-        </div>
-
         <div class="pt-4">
+          <!-- Tombol tidak lagi di-disable oleh status captcha -->
           <button
             type="submit"
-            :disabled="isLoading || !captchaToken"
+            :disabled="isLoading"
             class="bg-[#CC0000] hover:bg-red-700 disabled:bg-red-400 shadow-md px-4 py-3 rounded-sm w-full font-bold text-white transition-colors duration-300"
           >
             {{ isLoading ? "Memproses..." : "Login" }}
           </button>
         </div>
+        
         <div class="text-center mt-4">
           <router-link
             to="/admin/forgot-password"
@@ -333,39 +325,51 @@ import axios from "axios";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
-import vueRecaptcha from "vue3-recaptcha2"; // [BARU] Import reCAPTCHA
 
 const router = useRouter();
 const email = ref("");
 const password = ref("");
 const isLoading = ref(false);
 
-// [PENTING] Masukkan SITE_KEY dari Google Anda di sini
+// [PENTING] Masukkan SITE_KEY reCAPTCHA v3 Anda di sini
 const siteKey = "6LeQ4tQsAAAAAIpQBqrPw9DSjAlJBQyeuIlKQ2iu";
-const captchaToken = ref("");
 
-const onCaptchaVerify = (response) => {
-  captchaToken.value = response;
-};
-const onCaptchaExpired = () => {
-  captchaToken.value = "";
-};
-const onCaptchaFailed = () => {
-  Swal.fire("Error", "Gagal memuat reCAPTCHA. Cek koneksi Anda.", "error");
+// Fungsi Helper untuk memanggil API grecaptcha secara programatik
+const executeRecaptcha = (siteKey, actionName) => {
+  return new Promise((resolve) => {
+    if (typeof window.grecaptcha !== 'undefined') {
+      window.grecaptcha.ready(async () => {
+        try {
+          const token = await window.grecaptcha.execute(siteKey, { action: actionName });
+          resolve(token);
+        } catch (e) {
+          console.error("reCAPTCHA execution error:", e);
+          resolve(null);
+        }
+      });
+    } else {
+      console.error("reCAPTCHA script is not loaded in index.html.");
+      resolve(null);
+    }
+  });
 };
 
 const handleAdminLogin = async () => {
-  if (!captchaToken.value) {
-    Swal.fire("Peringatan", "Harap selesaikan verifikasi CAPTCHA.", "warning");
-    return;
-  }
-
   isLoading.value = true;
+  
   try {
+    // 1. Dapatkan token dari Google secara invisible
+    const token = await executeRecaptcha(siteKey, 'admin_login');
+
+    if (!token) {
+      throw new Error("Gagal menginisiasi keamanan sistem (reCAPTCHA). Silakan muat ulang halaman.");
+    }
+
+    // 2. Kirim data login beserta token reCAPTCHA v3 ke Backend
     const response = await axios.post(`${BASE_URL}/admin/login`, {
       email: email.value,
       password: password.value,
-      captcha_token: captchaToken.value, // [BARU] Kirim token ke backend
+      captcha_token: token, 
     });
 
     const user = response.data.user;
@@ -392,7 +396,7 @@ const handleAdminLogin = async () => {
     }
   } catch (error) {
     let message =
-      error.response?.data?.message ||
+      error.response?.data?.message || error.message || 
       "Akses ditolak. Email/Password salah atau Anda tidak memiliki akses ke panel ini.";
     Swal.fire({
       icon: "error",
@@ -400,7 +404,6 @@ const handleAdminLogin = async () => {
       text: message,
       confirmButtonColor: "#CC0000",
     });
-    captchaToken.value = "";
   } finally {
     isLoading.value = false;
   }
