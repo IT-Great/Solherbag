@@ -320,7 +320,7 @@ const handleAdminLogin = async () => {
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
@@ -411,6 +411,19 @@ const handleAdminLogin = async () => {
     isLoading.value = false;
   }
 };
+
+// ==========================================
+// LOGIKA SAKLAR reCAPTCHA BADGE
+// ==========================================
+onMounted(() => {
+  // Saat halaman login dimuat, tambahkan class ke body untuk memunculkan logo
+  document.body.classList.add("show-recaptcha");
+});
+
+onUnmounted(() => {
+  // Saat user pindah ke halaman lain (meninggalkan login), hapus class-nya
+  document.body.classList.remove("show-recaptcha");
+});
 </script>
 
 <style scoped>

@@ -86,6 +86,19 @@
       transform: translateY(-5px);
       box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.3);
     }
+
+    /* [BARU] Sembunyikan badge reCAPTCHA di semua halaman secara default */
+    .grecaptcha-badge {
+      visibility: hidden !important;
+      opacity: 0 !important;
+      transition: opacity 0.3s ease;
+    }
+
+    /* Tampilkan kembali HANYA jika body memiliki class ini */
+    body.show-recaptcha .grecaptcha-badge {
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
   </style>
   <link rel="icon" type="image/png" href="src/assets/solherbrandbook.png" />
   <script src="https://www.google.com/recaptcha/api.js?render=6Ldc7NQsAAAAAKyL9iRCRWG41KoOl2-lWdOTJhk0"></script>
