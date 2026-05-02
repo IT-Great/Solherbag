@@ -220,7 +220,7 @@ const password = ref("");
 const isLoading = ref(false);
 
 // [PENTING] Masukkan SITE_KEY reCAPTCHA v3 Anda di sini
-const siteKey = "6LeQ4tQsAAAAAKKsu4vQdK9iRheF06mFHPMzeeAZ";
+const siteKey = "6Ldc7NQsAAAAAKyL9iRCRWG41KoOl2-lWdOTJhk0";
 
 // Fungsi Helper untuk memanggil API grecaptcha secara programatik
 const executeRecaptcha = (siteKey, actionName) => {

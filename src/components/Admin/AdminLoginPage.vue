@@ -305,7 +305,7 @@ const handleAdminLogin = async () => {
             {{ isLoading ? "Memproses..." : "Login" }}
           </button>
         </div>
-        
+
         <div class="text-center mt-4">
           <router-link
             to="/admin/forgot-password"
@@ -332,12 +332,12 @@ const password = ref("");
 const isLoading = ref(false);
 
 // [PENTING] Masukkan SITE_KEY reCAPTCHA v3 Anda di sini
-const siteKey = "6LeQ4tQsAAAAAIpQBqrPw9DSjAlJBQyeuIlKQ2iu";
+const siteKey = "6Ldc7NQsAAAAAKyL9iRCRWG41KoOl2-lWdOTJhk0";
 
 // Fungsi Helper untuk memanggil API grecaptcha secara programatik
 const executeRecaptcha = (siteKey, actionName) => {
   return new Promise((resolve) => {
-    if (typeof window.grecaptcha !== 'undefined') {
+    if (typeof window.grecaptcha !== "undefined") {
       window.grecaptcha.ready(async () => {
         try {
           const token = await window.grecaptcha.execute(siteKey, { action: actionName });
@@ -356,20 +356,22 @@ const executeRecaptcha = (siteKey, actionName) => {
 
 const handleAdminLogin = async () => {
   isLoading.value = true;
-  
+
   try {
     // 1. Dapatkan token dari Google secara invisible
-    const token = await executeRecaptcha(siteKey, 'admin_login');
+    const token = await executeRecaptcha(siteKey, "admin_login");
 
     if (!token) {
-      throw new Error("Gagal menginisiasi keamanan sistem (reCAPTCHA). Silakan muat ulang halaman.");
+      throw new Error(
+        "Gagal menginisiasi keamanan sistem (reCAPTCHA). Silakan muat ulang halaman."
+      );
     }
 
     // 2. Kirim data login beserta token reCAPTCHA v3 ke Backend
     const response = await axios.post(`${BASE_URL}/admin/login`, {
       email: email.value,
       password: password.value,
-      captcha_token: token, 
+      captcha_token: token,
     });
 
     const user = response.data.user;
@@ -396,7 +398,8 @@ const handleAdminLogin = async () => {
     }
   } catch (error) {
     let message =
-      error.response?.data?.message || error.message || 
+      error.response?.data?.message ||
+      error.message ||
       "Akses ditolak. Email/Password salah atau Anda tidak memiliki akses ke panel ini.";
     Swal.fire({
       icon: "error",
