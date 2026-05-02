@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="flex justify-center items-center bg-[#E5E7EB] px-6 min-h-screen">
     <div
       class="bg-white shadow-sm p-10 border border-gray-300 rounded-[3rem] w-full max-w-md"
@@ -7,21 +7,19 @@
         <img
           src="../../assets/solherbrandbook.png"
           alt="SolHer Logo"
-          class="w-auto h-16 object-contain"
+          class="object-contain w-auto h-16"
         />
       </div>
 
       <h2
-        class="mb-10 font-black text-black text-xl text-center uppercase tracking-widest"
+        class="mb-10 text-xl font-black tracking-widest text-center text-black uppercase"
       >
         Login
       </h2>
 
       <form @submit.prevent="handleLogin" class="space-y-6">
         <div class="flex flex-col">
-          <label for="email" class="mb-2 font-bold text-black text-sm"
-            >Email</label
-          >
+          <label for="email" class="mb-2 text-sm font-bold text-black">Email</label>
           <input
             type="email"
             id="email"
@@ -32,9 +30,7 @@
         </div>
 
         <div class="flex flex-col">
-          <label for="password" class="mb-2 font-bold text-black text-sm"
-            >Password</label
-          >
+          <label for="password" class="mb-2 text-sm font-bold text-black">Password</label>
           <input
             type="password"
             id="password"
@@ -52,21 +48,19 @@
             Login
           </button>
         </div>
-        <div class="text-center mt-4">
+        <div class="mt-4 text-center">
           <router-link
             to="/forgot-password"
-            class="text-xs text-gray-500 hover:text-black hover:underline transition"
+            class="text-xs text-gray-500 transition hover:text-black hover:underline"
           >
             Forgot your password?
           </router-link>
         </div>
       </form>
 
-      <p class="mt-6 text-gray-600 text-xs text-center">
+      <p class="mt-6 text-xs text-center text-gray-600">
         Don't have any account?
-        <router-link
-          to="/register"
-          class="font-bold text-blue-600 hover:underline"
+        <router-link to="/register" class="font-bold text-blue-600 hover:underline"
           >Register here</router-link
         >
       </p>
@@ -135,6 +129,162 @@ const handleLogin = async () => {
 
 <style scoped>
 /* Menghilangkan padding dari main container jika LoginPage dipanggil di App.vue */
+:deep(main) {
+  padding: 0 !important;
+}
+</style> -->
+
+<template>
+  <div class="flex justify-center items-center bg-[#E5E7EB] px-6 min-h-screen">
+    <div
+      class="bg-white shadow-sm p-10 border border-gray-300 rounded-[3rem] w-full max-w-md"
+    >
+      <div class="flex justify-center mb-6">
+        <img
+          src="../../assets/solherbrandbook.png"
+          alt="SolHer Logo"
+          class="w-auto h-16 object-contain"
+        />
+      </div>
+
+      <h2
+        class="mb-10 font-black text-black text-xl text-center uppercase tracking-widest"
+      >
+        Login
+      </h2>
+
+      <form @submit.prevent="handleLogin" class="space-y-6">
+        <div class="flex flex-col">
+          <label for="email" class="mb-2 font-bold text-black text-sm">Email</label>
+          <input
+            type="email"
+            id="email"
+            v-model="email"
+            class="bg-[#D9D9D9] p-3 border-none outline-none focus:ring-1 focus:ring-blue-500 w-full transition"
+            required
+          />
+        </div>
+
+        <div class="flex flex-col">
+          <label for="password" class="mb-2 font-bold text-black text-sm">Password</label>
+          <input
+            type="password"
+            id="password"
+            v-model="password"
+            class="bg-[#D9D9D9] p-3 border-none outline-none focus:ring-1 focus:ring-blue-500 w-full transition"
+            required
+          />
+        </div>
+
+        <!-- [BARU] Widget reCAPTCHA -->
+        <div class="flex justify-center my-4">
+          <vue-recaptcha
+            :sitekey="siteKey"
+            @verify="onCaptchaVerify"
+            @expired="onCaptchaExpired"
+            @fail="onCaptchaFailed"
+          />
+        </div>
+
+        <div class="pt-4">
+          <button
+            type="submit"
+            :disabled="isLoading || !captchaToken"
+            class="bg-[#0066FF] hover:bg-blue-700 disabled:bg-blue-400 shadow-md px-4 py-3 rounded-sm w-full font-bold text-white transition-colors duration-300"
+          >
+            {{ isLoading ? "Memproses..." : "Login" }}
+          </button>
+        </div>
+        <div class="text-center mt-4">
+          <router-link
+            to="/forgot-password"
+            class="text-xs text-gray-500 hover:text-black hover:underline transition"
+          >
+            Forgot your password?
+          </router-link>
+        </div>
+      </form>
+
+      <p class="mt-6 text-gray-600 text-xs text-center">
+        Don't have any account?
+        <router-link to="/register" class="font-bold text-blue-600 hover:underline"
+          >Register here</router-link
+        >
+      </p>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref } from "vue";
+import axios from "axios";
+import { useRouter } from "vue-router";
+import Swal from "sweetalert2";
+import { BASE_URL } from "../../config/api.js";
+import vueRecaptcha from "vue3-recaptcha2"; // [BARU] Import reCAPTCHA
+
+const router = useRouter();
+const email = ref("");
+const password = ref("");
+const isLoading = ref(false);
+
+// [PENTING] Masukkan SITE_KEY dari Google Anda di sini
+const siteKey = "MASUKKAN_SITE_KEY_GOOGLE_ANDA_DISINI";
+const captchaToken = ref("");
+
+const onCaptchaVerify = (response) => {
+  captchaToken.value = response;
+};
+const onCaptchaExpired = () => {
+  captchaToken.value = "";
+};
+const onCaptchaFailed = () => {
+  Swal.fire("Error", "Gagal memuat reCAPTCHA. Cek koneksi Anda.", "error");
+};
+
+const handleLogin = async () => {
+  if (!captchaToken.value) {
+    Swal.fire("Peringatan", "Harap selesaikan verifikasi CAPTCHA.", "warning");
+    return;
+  }
+
+  isLoading.value = true;
+  try {
+    const response = await axios.post(`${BASE_URL}/login`, {
+      email: email.value,
+      password: password.value,
+      captcha_token: captchaToken.value, // [BARU] Kirim token ke backend
+    });
+
+    localStorage.setItem("token", response.data.access_token);
+    localStorage.setItem("user", JSON.stringify(response.data.user));
+
+    Swal.fire({
+      icon: "success",
+      title: "Success!",
+      text: "Login Berhasil, Selamat Datang!",
+      timer: 1500,
+      showConfirmButton: false,
+    });
+
+    router.push("/");
+  } catch (error) {
+    let message = error.response?.data?.message || "Terjadi kesalahan pada server.";
+    Swal.fire({
+      icon: "error",
+      title: "Login Gagal",
+      text: message,
+      confirmButtonColor: "#0066FF",
+    });
+    // Kosongkan token agar user harus mencentang ulang
+    captchaToken.value = "";
+  } finally {
+    isLoading.value = false;
+  }
+};
+</script>
+
+<style scoped>
 :deep(main) {
   padding: 0 !important;
 }
