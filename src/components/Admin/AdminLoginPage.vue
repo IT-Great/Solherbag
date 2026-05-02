@@ -341,7 +341,7 @@ const password = ref("");
 const isLoading = ref(false);
 
 // [PENTING] Masukkan SITE_KEY dari Google Anda di sini
-const siteKey = "MASUKKAN_SITE_KEY_GOOGLE_ANDA_DISINI";
+const siteKey = "6LeQ4tQsAAAAAIpQBqrPw9DSjAlJBQyeuIlKQ2iu";
 const captchaToken = ref("");
 
 const onCaptchaVerify = (response) => {
