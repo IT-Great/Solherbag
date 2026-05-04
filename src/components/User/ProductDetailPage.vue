@@ -4753,7 +4753,11 @@ onMounted(fetchProductDetail);
             :style="{ transform: `translateX(-${activeSlide * 100}%)` }"
           >
             <template v-for="(media, index) in allMedia" :key="index">
-              <div class="relative flex-shrink-0 w-full h-full">
+              <div
+                class="relative flex-shrink-0 w-full h-full"
+                @mousemove="handleZoom"
+                @mouseleave="resetZoom"
+              >
                 <!-- [BARU] Tambahan efek zoom di class -->
                 <img
                   v-if="media.type === 'image'"
@@ -5638,6 +5642,31 @@ const formatPrice = (value) =>
   }).format(value);
 const calculateDiscount = (price, discountPrice) =>
   Math.round(((price - discountPrice) / price) * 100);
+
+// ==========================================
+// [BARU] LOGIKA MOUSE TRACK ZOOM
+// ==========================================
+const handleZoom = (e) => {
+  // Cari gambar di dalam container yang sedang di-hover
+  const img = e.currentTarget.querySelector(".main-product-image");
+  if (!img) return;
+
+  // Dapatkan dimensi dan koordinat dari container
+  const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+
+  // Hitung persentase posisi mouse relatif terhadap gambar
+  const x = ((e.clientX - left) / width) * 100;
+  const y = ((e.clientY - top) / height) * 100;
+
+  // Pindahkan titik pusat zoom sesuai posisi mouse
+  img.style.transformOrigin = `${x}% ${y}%`;
+};
+
+const resetZoom = (e) => {
+  const img = e.currentTarget.querySelector(".main-product-image");
+  // Kembalikan ke tengah saat mouse pergi
+  if (img) img.style.transformOrigin = "center center";
+};
 
 onMounted(fetchProductDetail);
 </script>
