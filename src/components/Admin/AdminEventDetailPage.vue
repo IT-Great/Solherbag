@@ -1,5 +1,6 @@
 <template>
   <div class="p-6 md:p-10 animate-fade-in">
+    <Breadcrumb />
     <div class="flex items-center gap-4 mb-8">
       <button
         @click="$router.push('/admin/events')"
@@ -174,6 +175,7 @@ import { ref, onMounted, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import axios from "axios";
 import { BASE_URL } from "../../config/api"; // Sesuaikan path-nya
+import Breadcrumb from "./Layout/Breadcrumb.vue";
 
 const route = useRoute();
 const router = useRouter();

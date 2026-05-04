@@ -934,6 +934,7 @@ onMounted(fetchStocks);
   <div
     class="relative bg-white shadow-sm p-6 md:p-8 border border-gray-100 rounded-2xl min-h-[600px] animate-fade-in"
   >
+    <Breadcrumb />
     <!-- Header -->
     <div
       class="flex flex-col items-start justify-between gap-4 mb-8 md:flex-row md:items-center"
@@ -1372,6 +1373,7 @@ import defaultBagIcon from "../../assets/products/bag_icon.jpg";
 import * as XLSX from "xlsx";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import Breadcrumb from "./Layout/Breadcrumb.vue";
 
 // Data Utama
 const products = ref([]);

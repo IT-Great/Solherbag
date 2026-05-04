@@ -274,10 +274,13 @@ onMounted(() => {
 
 <template>
   <div class="mx-auto px-6 py-12 lg:py-20 max-w-5xl animate-fade-in">
+    <Breadcrumb />
     <div class="bg-white shadow-sm p-8 lg:p-12 border border-gray-100 rounded-3xl">
       <div class="flex justify-between items-center mb-10 border-b border-gray-100 pb-6">
         <h1 class="font-bold text-3xl text-gray-900 tracking-tight">Admin Profile</h1>
-        <span class="bg-black text-white px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest">
+        <span
+          class="bg-black text-white px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest"
+        >
           Administrator
         </span>
       </div>
@@ -297,8 +300,29 @@ onMounted(() => {
               class="absolute inset-0 flex justify-center items-center bg-black/50 opacity-0 group-hover:opacity-100 rounded-full transition-opacity cursor-pointer z-20"
             >
               <div class="flex flex-col items-center text-white">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                <span class="font-bold text-[10px] uppercase tracking-widest">Change</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-6 h-6 mb-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+                <span class="font-bold text-[10px] uppercase tracking-widest"
+                  >Change</span
+                >
               </div>
               <input
                 type="file"
@@ -310,39 +334,66 @@ onMounted(() => {
           </div>
           <div class="text-center">
             <p class="font-black text-xl text-gray-900">{{ adminData.first_name }}</p>
-            <p class="text-xs text-gray-400 uppercase tracking-widest mt-1">System Admin</p>
+            <p class="text-xs text-gray-400 uppercase tracking-widest mt-1">
+              System Admin
+            </p>
           </div>
         </div>
 
         <div class="flex-grow space-y-8">
-          
           <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100 relative">
             <button
               @click="openInfoModal"
               class="absolute top-4 right-4 hover:bg-gray-200 p-2 rounded-full text-gray-500 hover:text-black transition"
               title="Edit Personal Info"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                />
+              </svg>
             </button>
-            
-            <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-6">Personal Information</h3>
-            
+
+            <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-6">
+              Personal Information
+            </h3>
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-1">First Name</p>
+                <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-1">
+                  First Name
+                </p>
                 <p class="font-semibold text-gray-900">{{ adminData.first_name }}</p>
               </div>
               <div>
-                <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Last Name</p>
+                <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-1">
+                  Last Name
+                </p>
                 <p class="font-semibold text-gray-900">{{ adminData.last_name }}</p>
               </div>
               <div>
-                <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Email Address</p>
+                <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-1">
+                  Email Address
+                </p>
                 <p class="font-semibold text-gray-900">{{ adminData.email }}</p>
               </div>
               <div>
-                <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Phone Number</p>
-                <p class="font-semibold" :class="adminData.phone ? 'text-gray-900' : 'text-gray-400 italic'">
+                <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-1">
+                  Phone Number
+                </p>
+                <p
+                  class="font-semibold"
+                  :class="adminData.phone ? 'text-gray-900' : 'text-gray-400 italic'"
+                >
                   {{ adminData.phone || "Not provided" }}
                 </p>
               </div>
@@ -355,31 +406,63 @@ onMounted(() => {
               class="absolute top-4 right-4 hover:bg-gray-200 p-2 rounded-full text-gray-500 hover:text-black transition"
               title="Change Password"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                />
+              </svg>
             </button>
 
-            <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-6">Security Settings</h3>
-            
+            <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-6">
+              Security Settings
+            </h3>
+
             <div>
-              <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Account Password</p>
-              <p class="text-2xl tracking-[0.3em] text-gray-800 translate-y-1">••••••••</p>
+              <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-1">
+                Account Password
+              </p>
+              <p class="text-2xl tracking-[0.3em] text-gray-800 translate-y-1">
+                ••••••••
+              </p>
             </div>
           </div>
 
           <div class="flex items-center justify-between px-2">
-             <div>
-                <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">Account Status</p>
-                <div class="flex items-center gap-2">
-                  <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                  <span class="text-sm font-medium text-gray-700">Active & Verified</span>
-                </div>
-             </div>
-             <div>
-                <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-1 text-right">Joined At</p>
-                <p class="text-sm font-medium text-gray-700">{{ new Date(adminData.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) }}</p>
-             </div>
+            <div>
+              <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">
+                Account Status
+              </p>
+              <div class="flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                <span class="text-sm font-medium text-gray-700">Active & Verified</span>
+              </div>
+            </div>
+            <div>
+              <p
+                class="text-[10px] text-gray-400 uppercase tracking-widest mb-1 text-right"
+              >
+                Joined At
+              </p>
+              <p class="text-sm font-medium text-gray-700">
+                {{
+                  new Date(adminData.created_at).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })
+                }}
+              </p>
+            </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -389,42 +472,82 @@ onMounted(() => {
         @click="handleLogout"
         class="flex items-center gap-2 bg-red-50 hover:bg-red-100 text-red-600 px-6 py-3 rounded-xl font-bold uppercase tracking-widest text-xs transition duration-200 border border-red-100"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-4 h-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+          />
+        </svg>
         Sign Out
       </button>
     </div>
 
     <div v-if="showInfoModal" class="modal">
       <div class="modal-card">
-        <button @click="showInfoModal = false" class="absolute top-6 right-6 text-gray-400 hover:text-black">✕</button>
+        <button
+          @click="showInfoModal = false"
+          class="absolute top-6 right-6 text-gray-400 hover:text-black"
+        >
+          ✕
+        </button>
         <h3 class="mb-2 font-bold text-2xl text-gray-900">Edit Personal Info</h3>
-        <p class="text-gray-500 text-xs mb-6">Update your administrative contact details.</p>
+        <p class="text-gray-500 text-xs mb-6">
+          Update your administrative contact details.
+        </p>
 
         <form @submit.prevent="submitInfoUpdate" class="space-y-4">
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">First Name</label>
+              <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest"
+                >First Name</label
+              >
               <input v-model="infoForm.first_name" class="input mt-1" required />
             </div>
             <div>
-              <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Last Name</label>
+              <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest"
+                >Last Name</label
+              >
               <input v-model="infoForm.last_name" class="input mt-1" required />
             </div>
           </div>
           <div>
-            <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Email Address</label>
+            <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest"
+              >Email Address</label
+            >
             <input v-model="infoForm.email" type="email" class="input mt-1" required />
           </div>
           <div>
-            <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Phone Number</label>
-            <input v-model="infoForm.phone" type="tel" placeholder="+62..." class="input mt-1" />
+            <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest"
+              >Phone Number</label
+            >
+            <input
+              v-model="infoForm.phone"
+              type="tel"
+              placeholder="+62..."
+              class="input mt-1"
+            />
           </div>
 
           <div class="flex gap-3 pt-6">
-            <button type="button" @click="showInfoModal = false" class="flex-1 text-gray-500 font-bold hover:bg-gray-50 rounded-xl transition">
+            <button
+              type="button"
+              @click="showInfoModal = false"
+              class="flex-1 text-gray-500 font-bold hover:bg-gray-50 rounded-xl transition"
+            >
               Cancel
             </button>
-            <button type="submit" class="flex-1 bg-black py-3 rounded-xl font-bold text-white hover:bg-gray-800 transition shadow-md shadow-black/20">
+            <button
+              type="submit"
+              class="flex-1 bg-black py-3 rounded-xl font-bold text-white hover:bg-gray-800 transition shadow-md shadow-black/20"
+            >
               Save Changes
             </button>
           </div>
@@ -434,38 +557,72 @@ onMounted(() => {
 
     <div v-if="showPasswordModal" class="modal">
       <div class="modal-card">
-        <button @click="showPasswordModal = false" class="absolute top-6 right-6 text-gray-400 hover:text-black">✕</button>
+        <button
+          @click="showPasswordModal = false"
+          class="absolute top-6 right-6 text-gray-400 hover:text-black"
+        >
+          ✕
+        </button>
         <h3 class="mb-2 font-bold text-2xl text-gray-900">Security Update</h3>
-        <p class="text-gray-500 text-xs mb-6">Ensure your new password is at least 8 characters long.</p>
+        <p class="text-gray-500 text-xs mb-6">
+          Ensure your new password is at least 8 characters long.
+        </p>
 
         <form @submit.prevent="submitPasswordUpdate" class="space-y-4">
           <div>
-            <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Current Password</label>
-            <input v-model="passForm.old_password" type="password" class="input mt-1" required />
+            <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest"
+              >Current Password</label
+            >
+            <input
+              v-model="passForm.old_password"
+              type="password"
+              class="input mt-1"
+              required
+            />
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">New Password</label>
-              <input v-model="passForm.password" type="password" class="input mt-1" required />
+              <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest"
+                >New Password</label
+              >
+              <input
+                v-model="passForm.password"
+                type="password"
+                class="input mt-1"
+                required
+              />
             </div>
             <div>
-              <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Confirm Password</label>
-              <input v-model="passForm.password_confirmation" type="password" class="input mt-1" required />
+              <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest"
+                >Confirm Password</label
+              >
+              <input
+                v-model="passForm.password_confirmation"
+                type="password"
+                class="input mt-1"
+                required
+              />
             </div>
           </div>
 
           <div class="flex gap-3 pt-6">
-            <button type="button" @click="showPasswordModal = false" class="flex-1 text-gray-500 font-bold hover:bg-gray-50 rounded-xl transition">
+            <button
+              type="button"
+              @click="showPasswordModal = false"
+              class="flex-1 text-gray-500 font-bold hover:bg-gray-50 rounded-xl transition"
+            >
               Cancel
             </button>
-            <button type="submit" class="flex-1 bg-blue-600 py-3 rounded-xl font-bold text-white hover:bg-blue-700 transition shadow-md shadow-blue-500/30">
+            <button
+              type="submit"
+              class="flex-1 bg-blue-600 py-3 rounded-xl font-bold text-white hover:bg-blue-700 transition shadow-md shadow-blue-500/30"
+            >
               Update Password
             </button>
           </div>
         </form>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -475,6 +632,7 @@ import axios from "axios";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
+import Breadcrumb from "./Layout/Breadcrumb.vue";
 
 const router = useRouter();
 const adminData = ref(null);
@@ -489,10 +647,10 @@ const passForm = ref({ old_password: "", password: "", password_confirmation: ""
 const openInfoModal = () => {
   // [PERBAIKAN] Copy properti yang dibutuhkan termasuk phone
   infoForm.value = {
-      first_name: adminData.value.first_name,
-      last_name: adminData.value.last_name,
-      email: adminData.value.email,
-      phone: adminData.value.phone || ""
+    first_name: adminData.value.first_name,
+    last_name: adminData.value.last_name,
+    email: adminData.value.email,
+    phone: adminData.value.phone || "",
   };
   showInfoModal.value = true;
 };
@@ -519,12 +677,14 @@ const handleImageUpdate = async (e) => {
 
   const objectUrl = URL.createObjectURL(file);
   const oldImage = adminData.value.profile_image;
-  
+
   adminData.value.profile_image = objectUrl;
 
-  window.dispatchEvent(new CustomEvent("admin-image-updated", { 
-    detail: objectUrl 
-  }));
+  window.dispatchEvent(
+    new CustomEvent("admin-image-updated", {
+      detail: objectUrl,
+    })
+  );
 
   const formData = new FormData();
   formData.append("image", file);
@@ -539,13 +699,15 @@ const handleImageUpdate = async (e) => {
 
     if (res.data.admin) {
       updateAdminData(res.data.admin);
-      URL.revokeObjectURL(objectUrl); 
+      URL.revokeObjectURL(objectUrl);
     }
   } catch (err) {
     adminData.value.profile_image = oldImage;
-    window.dispatchEvent(new CustomEvent("admin-image-updated", { 
-      detail: oldImage 
-    }));
+    window.dispatchEvent(
+      new CustomEvent("admin-image-updated", {
+        detail: oldImage,
+      })
+    );
     Swal.fire("Error", "Failed to upload image to server", "error");
   }
 };
@@ -561,7 +723,14 @@ const submitInfoUpdate = async () => {
     });
     updateAdminData(res.data.admin);
     showInfoModal.value = false;
-    Swal.fire({ toast: true, position: 'top-end', icon: "success", title: "Profile updated!", showConfirmButton: false, timer: 2000});
+    Swal.fire({
+      toast: true,
+      position: "top-end",
+      icon: "success",
+      title: "Profile updated!",
+      showConfirmButton: false,
+      timer: 2000,
+    });
   } catch {
     Swal.fire("Error", "Failed to update profile", "error");
   }
@@ -574,9 +743,17 @@ const submitPasswordUpdate = async () => {
     });
     showPasswordModal.value = false;
     passForm.value = { old_password: "", password: "", password_confirmation: "" };
-    Swal.fire("Success", "Password updated! Please remember your new password.", "success");
+    Swal.fire(
+      "Success",
+      "Password updated! Please remember your new password.",
+      "success"
+    );
   } catch (err) {
-    Swal.fire("Error", err.response?.data?.message || "Failed to update password", "error");
+    Swal.fire(
+      "Error",
+      err.response?.data?.message || "Failed to update password",
+      "error"
+    );
   }
 };
 
@@ -595,8 +772,19 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.animate-fade-in { animation: fadeIn 0.4s ease-out; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 .modal {
   @apply fixed inset-0 z-50 flex justify-center items-center bg-black/40 backdrop-blur-sm p-4 transition-opacity;

@@ -1,7 +1,12 @@
 <template>
   <div class="flex justify-center items-center bg-[#1F2937] px-6 min-h-screen">
-    <div class="bg-white shadow-sm p-10 border border-gray-300 rounded-[3rem] w-full max-w-md">
-      <h2 class="mb-8 font-black text-black text-xl text-center uppercase tracking-widest">
+    <Breadcrumb />
+    <div
+      class="bg-white shadow-sm p-10 border border-gray-300 rounded-[3rem] w-full max-w-md"
+    >
+      <h2
+        class="mb-8 font-black text-black text-xl text-center uppercase tracking-widest"
+      >
         Create New Admin Password
       </h2>
 
@@ -16,7 +21,7 @@
             :disabled="isLoading"
           />
         </div>
-        
+
         <div class="flex flex-col">
           <label class="mb-2 font-bold text-black text-sm">Confirm Password</label>
           <input
@@ -34,7 +39,10 @@
           class="bg-[#CC0000] hover:bg-red-700 disabled:bg-gray-400 shadow-md px-4 py-3 rounded-sm w-full font-bold text-white transition flex justify-center items-center mt-8"
         >
           <span v-if="!isLoading">Update Password</span>
-          <div v-else class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+          <div
+            v-else
+            class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"
+          ></div>
         </button>
       </form>
     </div>
@@ -42,16 +50,17 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
-import axios from 'axios';
-import Swal from 'sweetalert2';
+import { ref, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import axios from "axios";
+import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
+import Breadcrumb from "./Layout/Breadcrumb.vue";
 
-const password = ref('');
-const password_confirmation = ref('');
-const email = ref('');
-const code = ref('');
+const password = ref("");
+const password_confirmation = ref("");
+const email = ref("");
+const code = ref("");
 const isLoading = ref(false);
 
 const router = useRouter();
@@ -59,7 +68,7 @@ const route = useRoute();
 
 onMounted(() => {
   if (!route.query.email || !route.query.code) {
-    router.push('/loginadmin');
+    router.push("/loginadmin");
   } else {
     email.value = route.query.email;
     code.value = route.query.code;
@@ -68,30 +77,34 @@ onMounted(() => {
 
 const handleResetPassword = async () => {
   if (password.value !== password_confirmation.value) {
-    Swal.fire('Error', 'Passwords do not match.', 'error');
+    Swal.fire("Error", "Passwords do not match.", "error");
     return;
   }
 
   isLoading.value = true;
   try {
-    await axios.post(`${BASE_URL}/admin/forgot-password/reset`, { 
+    await axios.post(`${BASE_URL}/admin/forgot-password/reset`, {
       email: email.value,
       code: code.value,
       password: password.value,
-      password_confirmation: password_confirmation.value
+      password_confirmation: password_confirmation.value,
     });
-    
+
     Swal.fire({
-      icon: 'success',
-      title: 'Success!',
-      text: 'Admin password has been changed. Please login.',
+      icon: "success",
+      title: "Success!",
+      text: "Admin password has been changed. Please login.",
       timer: 2000,
-      showConfirmButton: false
+      showConfirmButton: false,
     });
-    
-    router.push('/loginadmin');
+
+    router.push("/loginadmin");
   } catch (error) {
-    Swal.fire('Error', error.response?.data?.message || 'Failed to reset password.', 'error');
+    Swal.fire(
+      "Error",
+      error.response?.data?.message || "Failed to reset password.",
+      "error"
+    );
   } finally {
     isLoading.value = false;
   }
@@ -99,5 +112,7 @@ const handleResetPassword = async () => {
 </script>
 
 <style scoped>
-:deep(main) { padding: 0 !important; }
+:deep(main) {
+  padding: 0 !important;
+}
 </style>

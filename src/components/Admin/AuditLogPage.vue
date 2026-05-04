@@ -762,6 +762,7 @@ onMounted(() => {
   <div
     class="relative min-h-[600px] p-6 md:p-8 bg-white border border-gray-100 shadow-sm rounded-2xl animate-fade-in"
   >
+    <Breadcrumb />
     <div class="flex items-end justify-between mb-8">
       <div>
         <h1 class="text-2xl font-bold text-gray-800">System Audit Trail</h1>
@@ -1148,6 +1149,7 @@ import { BASE_URL } from "../../config/api";
 import * as XLSX from "xlsx";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import Breadcrumb from "./Layout/Breadcrumb.vue";
 
 const logs = ref([]);
 const isLoading = ref(true);

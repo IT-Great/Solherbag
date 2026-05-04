@@ -1,5 +1,6 @@
 <template>
   <div v-if="user" class="space-y-8">
+    <Breadcrumb />
     <div class="flex items-center gap-6 bg-white shadow-sm p-8 rounded-2xl">
       <!-- <img
         :src="
@@ -18,16 +19,12 @@
         class="rounded-full w-20 h-20 object-cover"
       />
       <div>
-        <h2 class="font-bold text-2xl">
-          {{ user.first_name }} {{ user.last_name }}
-        </h2>
+        <h2 class="font-bold text-2xl">{{ user.first_name }} {{ user.last_name }}</h2>
         <p class="text-gray-400">{{ user.email }}</p>
       </div>
     </div>
 
-    <h3 class="font-bold text-xl">
-      Registered Addresses ({{ user.addresses.length }})
-    </h3>
+    <h3 class="font-bold text-xl">Registered Addresses ({{ user.addresses.length }})</h3>
 
     <div class="gap-6 grid grid-cols-1 md:grid-cols-2">
       <div
@@ -54,6 +51,7 @@
 </template>
 
 <script setup>
+import Breadcrumb from "../../components/Admin/Layout/Breadcrumb.vue"; // Sesuaikan path-nya
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
@@ -66,10 +64,7 @@ const axiosConfig = {
 };
 
 onMounted(async () => {
-  const res = await axios.get(
-    `${BASE_URL}/admin/users/${route.params.id}`,
-    axiosConfig,
-  ); //
+  const res = await axios.get(`${BASE_URL}/admin/users/${route.params.id}`, axiosConfig); //
   user.value = res.data;
 });
 </script>

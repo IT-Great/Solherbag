@@ -1215,6 +1215,7 @@ onMounted(fetchData);
     </div>
   </div> -->
   <div class="space-y-8 animate-fade-in pb-10">
+    <Breadcrumb />
     <div class="gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
       <div
         class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl relative overflow-hidden"
@@ -1615,6 +1616,7 @@ import {
   ArcElement,
 } from "chart.js";
 import { Line, Pie, Bar } from "vue-chartjs"; // [BARU] Import Bar Component
+import Breadcrumb from "./Layout/Breadcrumb.vue";
 
 ChartJS.register(
   CategoryScale,

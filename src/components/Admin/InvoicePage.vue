@@ -2,16 +2,17 @@
   <div
     class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[600px]"
   >
+    <Breadcrumb />
     <div
       v-if="isLoading"
       class="z-20 absolute inset-0 flex justify-center items-center bg-white/60 backdrop-blur-[2px] rounded-2xl transition-all duration-300"
     >
       <div class="flex flex-col items-center">
         <div
-          class="border-4 border-gray-200 border-t-black rounded-full w-12 h-12 animate-spin"
+          class="w-12 h-12 border-4 border-gray-200 rounded-full border-t-black animate-spin"
         ></div>
         <p
-          class="mt-4 font-bold text-black text-xs uppercase tracking-widest animate-pulse"
+          class="mt-4 text-xs font-bold tracking-widest text-black uppercase animate-pulse"
         >
           Loading...
         </p>
@@ -19,35 +20,31 @@
     </div>
 
     <div
-      class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 border-b border-gray-100 pb-6"
+      class="flex flex-col items-start justify-between gap-4 pb-6 mb-8 border-b border-gray-100 md:flex-row md:items-center"
     >
       <div>
-        <h1 class="font-bold text-gray-800 text-2xl">Supplier Invoices</h1>
-        <p class="text-gray-500 text-sm">
-          Manage payables and upload proof of payments.
-        </p>
+        <h1 class="text-2xl font-bold text-gray-800">Supplier Invoices</h1>
+        <p class="text-sm text-gray-500">Manage payables and upload proof of payments.</p>
       </div>
       <button
         @click="openModal('add')"
-        class="bg-black hover:bg-gray-800 px-6 py-2 rounded-xl font-bold text-xs uppercase tracking-widest text-white transition"
+        class="px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-black hover:bg-gray-800 rounded-xl"
       >
         + Create Invoice
       </button>
     </div>
 
-    <div
-      class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6"
-    >
-      <div class="flex items-center gap-4 w-full md:w-auto">
+    <div class="flex flex-col items-center justify-between gap-4 mb-6 md:flex-row">
+      <div class="flex items-center w-full gap-4 md:w-auto">
         <input
           v-model="searchQuery"
           type="text"
           placeholder="Search Invoice No or Supplier..."
-          class="bg-gray-50 px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none w-full md:w-64 text-sm transition"
+          class="w-full px-4 py-2 text-sm transition border border-gray-200 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-black md:w-64"
         />
         <select
           v-model="statusFilter"
-          class="bg-gray-50 px-3 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none text-sm cursor-pointer"
+          class="px-3 py-2 text-sm border border-gray-200 outline-none cursor-pointer bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
         >
           <option value="All">All Status</option>
           <option value="Not Yet">Not Yet Paid</option>
@@ -56,12 +53,10 @@
       </div>
 
       <div class="flex items-center gap-2">
-        <span class="text-xs font-bold text-gray-400 uppercase tracking-wide"
-          >Show:</span
-        >
+        <span class="text-xs font-bold tracking-wide text-gray-400 uppercase">Show:</span>
         <select
           v-model="itemsPerPage"
-          class="bg-gray-50 px-3 py-2 border border-gray-200 rounded-xl outline-none text-sm font-bold cursor-pointer"
+          class="px-3 py-2 text-sm font-bold border border-gray-200 outline-none cursor-pointer bg-gray-50 rounded-xl"
         >
           <option :value="5">5</option>
           <option :value="10">10</option>
@@ -74,7 +69,7 @@
       <table class="w-full text-left border-collapse min-w-[900px]">
         <thead>
           <tr
-            class="border-b border-gray-200 text-gray-400 text-xs uppercase tracking-widest bg-gray-50"
+            class="text-xs tracking-widest text-gray-400 uppercase border-b border-gray-200 bg-gray-50"
           >
             <th class="p-4 rounded-tl-xl">Invoice Info</th>
             <th class="p-4">Supplier</th>
@@ -83,14 +78,14 @@
             <th class="p-4 text-center rounded-tr-xl">Action</th>
           </tr>
         </thead>
-        <tbody class="text-gray-700 text-sm">
+        <tbody class="text-sm text-gray-700">
           <tr
             v-for="inv in paginatedData"
             :key="inv.id"
-            class="border-b border-gray-50 hover:bg-gray-50 transition"
+            class="transition border-b border-gray-50 hover:bg-gray-50"
           >
             <td class="p-4">
-              <p class="font-bold text-blue-600 font-mono">
+              <p class="font-mono font-bold text-blue-600">
                 {{ inv.no_invoice }}
               </p>
               <p class="text-[10px] text-gray-400 uppercase tracking-wider">
@@ -100,7 +95,7 @@
             <td class="p-4 font-bold text-gray-800">
               {{ inv.supplier?.name }}
             </td>
-            <td class="p-4 text-right font-black text-base">
+            <td class="p-4 text-base font-black text-right">
               {{ formatPrice(inv.amount) }}
             </td>
             <td class="p-4 text-center">
@@ -115,18 +110,18 @@
                 >Not Yet</span
               >
             </td>
-            <td class="p-4 text-center space-x-3">
+            <td class="p-4 space-x-3 text-center">
               <a
                 v-if="inv.image_invoice"
                 :href="inv.image_invoice"
                 target="_blank"
-                class="text-blue-500 hover:underline font-bold text-xs uppercase"
+                class="text-xs font-bold text-blue-500 uppercase hover:underline"
                 >Doc</a
               >
               <button
                 v-if="inv.payment_status === 'Not Yet'"
                 @click="openModal('pay', inv)"
-                class="text-green-600 hover:underline font-bold text-xs uppercase"
+                class="text-xs font-bold text-green-600 uppercase hover:underline"
               >
                 Pay Now
               </button>
@@ -134,25 +129,25 @@
                 v-if="inv.payment_status === 'Paid' && inv.image_proof"
                 :href="BASE_URL_ASSET + inv.image_proof"
                 target="_blank"
-                class="text-purple-600 hover:underline font-bold text-xs uppercase"
+                class="text-xs font-bold text-purple-600 uppercase hover:underline"
                 >Proof</a
               >
               <button
                 @click="openModal('edit', inv)"
-                class="text-amber-500 hover:underline font-bold text-xs uppercase"
+                class="text-xs font-bold uppercase text-amber-500 hover:underline"
               >
                 Edit
               </button>
               <button
                 @click="confirmDelete(inv.id)"
-                class="text-red-500 hover:underline font-bold text-xs uppercase"
+                class="text-xs font-bold text-red-500 uppercase hover:underline"
               >
                 Del
               </button>
             </td>
           </tr>
           <tr v-if="paginatedData.length === 0">
-            <td colspan="5" class="text-center py-16 text-gray-400 italic">
+            <td colspan="5" class="py-16 italic text-center text-gray-400">
               No invoices found.
             </td>
           </tr>
@@ -162,7 +157,7 @@
 
     <div
       v-if="filteredData.length > 0"
-      class="flex flex-col md:flex-row justify-between items-center gap-4 mt-6 pt-4 border-t border-gray-100"
+      class="flex flex-col items-center justify-between gap-4 pt-4 mt-6 border-t border-gray-100 md:flex-row"
     >
       <p class="text-sm text-gray-400">
         Showing <span class="font-bold text-black">{{ showingStart }}</span> to
@@ -173,7 +168,7 @@
         <button
           @click="currentPage--"
           :disabled="currentPage === 1"
-          class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+          class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           Prev
         </button>
@@ -191,7 +186,7 @@
                 ? 'cursor-default border-transparent hover:bg-transparent'
                 : 'border',
             ]"
-            class="w-10 h-10 rounded-xl font-medium transition flex items-center justify-center text-sm"
+            class="flex items-center justify-center w-10 h-10 text-sm font-medium transition rounded-xl"
           >
             {{ page }}
           </button>
@@ -199,7 +194,7 @@
         <button
           @click="currentPage++"
           :disabled="currentPage === totalPages"
-          class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+          class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           Next
         </button>
@@ -208,16 +203,16 @@
 
     <div
       v-if="showModal"
-      class="z-50 fixed inset-0 flex justify-center items-center bg-black/50 backdrop-blur-sm p-4 overflow-y-auto"
+      class="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto bg-black/50 backdrop-blur-sm"
     >
-      <div class="bg-white p-8 rounded-3xl w-full max-w-2xl my-8">
-        <h2 class="mb-6 font-bold text-xl">
+      <div class="w-full max-w-2xl p-8 my-8 bg-white rounded-3xl">
+        <h2 class="mb-6 text-xl font-bold">
           {{
             modalMode === "add"
               ? "Create Invoice"
               : modalMode === "edit"
-                ? "Edit Invoice"
-                : "Process Payment"
+              ? "Edit Invoice"
+              : "Process Payment"
           }}
         </h2>
 
@@ -225,29 +220,22 @@
           <template v-if="modalMode === 'add' || modalMode === 'edit'">
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="text-xs font-bold text-gray-500 uppercase"
-                  >Invoice No</label
+                <label class="text-xs font-bold text-gray-500 uppercase">Invoice No</label
                 ><input
                   v-model="form.no_invoice"
                   type="text"
-                  class="w-full bg-gray-50 p-3 rounded-xl border outline-none"
+                  class="w-full p-3 border outline-none bg-gray-50 rounded-xl"
                   required
                 />
               </div>
               <div>
-                <label class="text-xs font-bold text-gray-500 uppercase"
-                  >Supplier</label
-                >
+                <label class="text-xs font-bold text-gray-500 uppercase">Supplier</label>
                 <select
                   v-model="form.supplier_id"
-                  class="w-full bg-gray-50 p-3 rounded-xl border outline-none"
+                  class="w-full p-3 border outline-none bg-gray-50 rounded-xl"
                   required
                 >
-                  <option
-                    v-for="sup in suppliers"
-                    :key="sup.id"
-                    :value="sup.id"
-                  >
+                  <option v-for="sup in suppliers" :key="sup.id" :value="sup.id">
                     {{ sup.name }}
                   </option>
                 </select>
@@ -255,44 +243,39 @@
             </div>
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="text-xs font-bold text-gray-500 uppercase"
-                  >Date</label
+                <label class="text-xs font-bold text-gray-500 uppercase">Date</label
                 ><input
                   v-model="form.date"
                   type="datetime-local"
-                  class="w-full bg-gray-50 p-3 rounded-xl border outline-none"
+                  class="w-full p-3 border outline-none bg-gray-50 rounded-xl"
                 />
               </div>
               <div>
-                <label class="text-xs font-bold text-gray-500 uppercase"
-                  >Due Date</label
+                <label class="text-xs font-bold text-gray-500 uppercase">Due Date</label
                 ><input
                   v-model="form.deadline_invoice"
                   type="datetime-local"
-                  class="w-full bg-gray-50 p-3 rounded-xl border outline-none"
+                  class="w-full p-3 border outline-none bg-gray-50 rounded-xl"
                 />
               </div>
             </div>
             <div>
-              <label class="text-xs font-bold text-gray-500 uppercase"
-                >Amount (Rp)</label
+              <label class="text-xs font-bold text-gray-500 uppercase">Amount (Rp)</label
               ><input
                 v-model="form.amount"
                 type="number"
-                class="w-full bg-gray-50 p-3 rounded-xl border outline-none font-black text-xl"
+                class="w-full p-3 text-xl font-black border outline-none bg-gray-50 rounded-xl"
                 required
               />
             </div>
-            <div
-              class="grid grid-cols-2 gap-4 bg-gray-50/50 p-3 border rounded-xl"
-            >
+            <div class="grid grid-cols-2 gap-4 p-3 border bg-gray-50/50 rounded-xl">
               <div>
                 <label class="text-xs font-bold text-gray-500 uppercase"
                   >Debit Account</label
                 >
                 <select
                   v-model="form.debit_coa_id"
-                  class="w-full bg-white p-2 rounded-lg border outline-none text-sm"
+                  class="w-full p-2 text-sm bg-white border rounded-lg outline-none"
                   required
                 >
                   <option v-for="coa in coasList" :key="coa.id" :value="coa.id">
@@ -306,7 +289,7 @@
                 >
                 <select
                   v-model="form.kredit_coa_id"
-                  class="w-full bg-white p-2 rounded-lg border outline-none text-sm"
+                  class="w-full p-2 text-sm bg-white border rounded-lg outline-none"
                   required
                 >
                   <option v-for="coa in coasList" :key="coa.id" :value="coa.id">
@@ -322,17 +305,15 @@
               <input
                 type="file"
                 @change="(e) => (form.image_invoice = e.target.files[0])"
-                class="w-full text-sm mt-1"
+                class="w-full mt-1 text-sm"
                 :required="modalMode === 'add'"
               />
             </div>
           </template>
 
           <template v-if="modalMode === 'pay'">
-            <div class="bg-blue-50 p-4 rounded-xl border border-blue-100 mb-4">
-              <p class="text-xs font-bold text-blue-500 uppercase">
-                Paying Invoice
-              </p>
+            <div class="p-4 mb-4 border border-blue-100 bg-blue-50 rounded-xl">
+              <p class="text-xs font-bold text-blue-500 uppercase">Paying Invoice</p>
               <p class="text-lg font-black text-blue-700">
                 {{ form.no_invoice }} - Rp {{ formatPrice(form.amount) }}
               </p>
@@ -344,7 +325,7 @@
                 ><input
                   v-model="form.payment_date"
                   type="date"
-                  class="w-full bg-gray-50 p-3 rounded-xl border outline-none"
+                  class="w-full p-3 border outline-none bg-gray-50 rounded-xl"
                   required
                 />
               </div>
@@ -355,7 +336,7 @@
                   v-model="form.payment_method"
                   type="text"
                   placeholder="Transfer BCA, Cash, etc."
-                  class="w-full bg-gray-50 p-3 rounded-xl border outline-none"
+                  class="w-full p-3 border outline-none bg-gray-50 rounded-xl"
                   required
                 />
               </div>
@@ -366,18 +347,16 @@
               ><input
                 v-model="form.reference_number"
                 type="text"
-                class="w-full bg-gray-50 p-3 rounded-xl border outline-none"
+                class="w-full p-3 border outline-none bg-gray-50 rounded-xl"
               />
             </div>
-            <div
-              class="grid grid-cols-2 gap-4 bg-gray-50/50 p-3 border rounded-xl"
-            >
+            <div class="grid grid-cols-2 gap-4 p-3 border bg-gray-50/50 rounded-xl">
               <div>
                 <label class="text-xs font-bold text-gray-500 uppercase"
                   >Debit Account</label
                 ><select
                   v-model="form.debit_coa_id"
-                  class="w-full bg-white p-2 rounded-lg border outline-none text-sm"
+                  class="w-full p-2 text-sm bg-white border rounded-lg outline-none"
                   required
                 >
                   <option v-for="coa in coasList" :key="coa.id" :value="coa.id">
@@ -390,7 +369,7 @@
                   >Credit Account</label
                 ><select
                   v-model="form.kredit_coa_id"
-                  class="w-full bg-white p-2 rounded-lg border outline-none text-sm"
+                  class="w-full p-2 text-sm bg-white border rounded-lg outline-none"
                   required
                 >
                   <option v-for="coa in coasList" :key="coa.id" :value="coa.id">
@@ -405,7 +384,7 @@
               ><input
                 type="file"
                 @change="(e) => (form.image_proof = e.target.files[0])"
-                class="w-full text-sm mt-1"
+                class="w-full mt-1 text-sm"
                 required
               />
             </div>
@@ -415,14 +394,14 @@
             <button
               type="button"
               @click="showModal = false"
-              class="flex-1 py-3 font-bold text-gray-500 hover:bg-gray-100 rounded-xl transition"
+              class="flex-1 py-3 font-bold text-gray-500 transition hover:bg-gray-100 rounded-xl"
             >
               Cancel
             </button>
             <button
               type="submit"
               :disabled="isSubmitting"
-              class="flex-1 bg-black py-3 rounded-xl font-bold text-white transition disabled:opacity-50"
+              class="flex-1 py-3 font-bold text-white transition bg-black rounded-xl disabled:opacity-50"
             >
               Submit
             </button>
@@ -486,29 +465,25 @@ const filteredData = computed(() => {
       inv.no_invoice.toLowerCase().includes(query) ||
       inv.supplier?.name.toLowerCase().includes(query);
     const matchStatus =
-      statusFilter.value === "All"
-        ? true
-        : inv.payment_status === statusFilter.value;
+      statusFilter.value === "All" ? true : inv.payment_status === statusFilter.value;
     return matchSearch && matchStatus;
   });
 });
 
 const totalPages = computed(() =>
-  Math.ceil(filteredData.value.length / itemsPerPage.value),
+  Math.ceil(filteredData.value.length / itemsPerPage.value)
 );
 const paginatedData = computed(() =>
   filteredData.value.slice(
     (currentPage.value - 1) * itemsPerPage.value,
-    currentPage.value * itemsPerPage.value,
-  ),
+    currentPage.value * itemsPerPage.value
+  )
 );
 const showingStart = computed(() =>
-  filteredData.value.length === 0
-    ? 0
-    : (currentPage.value - 1) * itemsPerPage.value + 1,
+  filteredData.value.length === 0 ? 0 : (currentPage.value - 1) * itemsPerPage.value + 1
 );
 const showingEnd = computed(() =>
-  Math.min(currentPage.value * itemsPerPage.value, filteredData.value.length),
+  Math.min(currentPage.value * itemsPerPage.value, filteredData.value.length)
 );
 
 const visiblePages = computed(() => {
@@ -608,13 +583,13 @@ const handleSubmit = async () => {
       await axios.put(
         `${BASE_URL}/admin/invoices/${form.value.id}`,
         payload,
-        axiosConfig,
+        axiosConfig
       );
     } else if (modalMode.value === "pay") {
       await axios.post(
         `${BASE_URL}/admin/invoices/${form.value.id}/pay`,
         payload,
-        axiosConfig,
+        axiosConfig
       );
     }
 

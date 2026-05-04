@@ -6614,6 +6614,7 @@ onUnmounted(() => {
   <div
     class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[600px]"
   >
+    <Breadcrumb />
     <div
       class="flex flex-col items-start justify-between gap-4 mb-8 md:flex-row md:items-center"
     >
@@ -7401,6 +7402,7 @@ import html2pdf from "html2pdf.js";
 import * as XLSX from "xlsx";
 
 import defaultBagIcon from "../../assets/products/bag_icon.jpg";
+import Breadcrumb from "./Layout/Breadcrumb.vue";
 
 const transactions = ref([]);
 const isLoading = ref(true); // Default diubah jadi true untuk skeleton animation saat komponen dimuat

@@ -2117,6 +2117,7 @@ onMounted(fetchData);
 <!-- Tambahan Tombol untuk Cetak Resi -->
 <template>
   <div class="relative max-w-6xl min-h-screen px-6 py-12 mx-auto">
+    <Breadcrumb />
     <div
       v-show="isPreparingPDF"
       class="fixed inset-0 z-[999999] bg-gray-900/95 overflow-y-auto"
@@ -2548,7 +2549,8 @@ onMounted(fetchData);
                   v-if="item.color"
                   class="text-[10px] text-gray-500 uppercase tracking-widest mt-1"
                 >
-                  Color: <span class="font-bold text-gray-800">{{ item.color }}</span>
+                  Color:
+                  <span class="font-bold text-gray-800">{{ item.color }}</span>
                 </p>
                 <p class="mt-1 font-mono text-xs text-gray-400">
                   SKU: {{ item.product.code }}
@@ -3028,6 +3030,7 @@ import Swal from "sweetalert2";
 import html2pdf from "html2pdf.js";
 
 import defaultBagIcon from "../../assets/products/bag_icon.jpg";
+import Breadcrumb from "./Layout/Breadcrumb.vue";
 
 const route = useRoute();
 const transaction = ref(null);

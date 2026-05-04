@@ -261,11 +261,9 @@ onMounted(async () => {
 
 <template>
   <div class="max-w-4xl p-8 mx-auto bg-white shadow-sm rounded-2xl">
+    <Breadcrumb />
     <h1 class="mb-8 text-2xl font-bold">Add New Product</h1>
-    <form
-      @submit.prevent="handleSubmit"
-      class="grid grid-cols-1 gap-6 md:grid-cols-2"
-    >
+    <form @submit.prevent="handleSubmit" class="grid grid-cols-1 gap-6 md:grid-cols-2">
       <div class="space-y-4">
         <div>
           <label class="block mb-1 text-sm font-bold"
@@ -304,9 +302,7 @@ onMounted(async () => {
             />
           </div>
           <div>
-            <label class="block mb-1 text-sm font-bold"
-              >Discount Price (Optional)</label
-            >
+            <label class="block mb-1 text-sm font-bold">Discount Price (Optional)</label>
             <input
               v-model="form.discount_price"
               type="number"
@@ -359,9 +355,7 @@ onMounted(async () => {
         </div> -->
 
         <div>
-          <label class="block mb-1 text-sm font-bold"
-            >Main Image (Optional)</label
-          >
+          <label class="block mb-1 text-sm font-bold">Main Image (Optional)</label>
           <input
             type="file"
             @change="handleFile"
@@ -381,15 +375,11 @@ onMounted(async () => {
             multiple
             class="w-full text-sm"
           />
-          <p class="text-[10px] text-gray-500 mt-1">
-            Select multiple files at once.
-          </p>
+          <p class="text-[10px] text-gray-500 mt-1">Select multiple files at once.</p>
         </div>
 
         <div>
-          <label class="block mb-1 text-sm font-bold"
-            >Product Video (Max 5MB)</label
-          >
+          <label class="block mb-1 text-sm font-bold">Product Video (Max 5MB)</label>
           <input
             type="file"
             @change="handleVideo"
@@ -673,9 +663,7 @@ onMounted(async () => {
               />
             </div>
             <div>
-              <label class="block mb-1 text-xs font-bold text-gray-600"
-                >Width (cm)</label
-              >
+              <label class="block mb-1 text-xs font-bold text-gray-600">Width (cm)</label>
               <input
                 v-model="form.width"
                 type="number"
@@ -765,9 +753,7 @@ onMounted(async () => {
                     class="w-4 h-4 border border-gray-300 rounded-full"
                     :style="{ backgroundColor: c.hex }"
                   ></div>
-                  <span class="text-xs font-bold text-gray-800">{{
-                    c.name
-                  }}</span>
+                  <span class="text-xs font-bold text-gray-800">{{ c.name }}</span>
                   <button
                     type="button"
                     @click="removeColor(idx)"
@@ -931,6 +917,7 @@ import axios from "axios";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
+import Breadcrumb from "./Layout/Breadcrumb.vue";
 
 const router = useRouter();
 const categories = ref([]);

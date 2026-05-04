@@ -610,21 +610,30 @@ onMounted(fetchData);
   <div
     class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[500px] animate-fade-in"
   >
+    <Breadcrumb />
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-10">
       <div class="p-6 bg-gray-50 rounded-2xl border border-gray-100">
-        <p class="text-xs text-gray-500 font-bold uppercase tracking-widest mb-1">Total Products</p>
+        <p class="text-xs text-gray-500 font-bold uppercase tracking-widest mb-1">
+          Total Products
+        </p>
         <p class="text-4xl font-black text-black">{{ products.length }}</p>
       </div>
       <div class="p-6 bg-blue-50/50 rounded-2xl border border-blue-100">
-        <p class="text-xs text-blue-500 font-bold uppercase tracking-widest mb-1">Healthy Stock</p>
+        <p class="text-xs text-blue-500 font-bold uppercase tracking-widest mb-1">
+          Healthy Stock
+        </p>
         <p class="text-4xl font-black text-blue-600">{{ healthyStockCount }}</p>
       </div>
       <div class="p-6 bg-red-50/50 rounded-2xl border border-red-100">
-        <p class="text-xs text-red-600 font-bold uppercase tracking-widest mb-1">Low Stock (under 5)</p>
+        <p class="text-xs text-red-600 font-bold uppercase tracking-widest mb-1">
+          Low Stock (under 5)
+        </p>
         <p class="text-4xl font-black text-red-700">{{ lowStockCount }}</p>
       </div>
       <div class="p-6 bg-purple-50/50 rounded-2xl border border-purple-100">
-        <p class="text-xs text-purple-600 font-bold uppercase tracking-widest mb-1">On Discount</p>
+        <p class="text-xs text-purple-600 font-bold uppercase tracking-widest mb-1">
+          On Discount
+        </p>
         <p class="text-4xl font-black text-purple-700">{{ discountedProductsCount }}</p>
       </div>
     </div>
@@ -636,9 +645,7 @@ onMounted(fetchData);
 
       <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
         <div class="relative flex-grow md:flex-grow-0">
-          <span
-            class="left-0 absolute inset-y-0 flex items-center pl-3 text-gray-400"
-          >
+          <span class="left-0 absolute inset-y-0 flex items-center pl-3 text-gray-400">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="w-5 h-5"
@@ -682,11 +689,7 @@ onMounted(fetchData);
           class="bg-gray-50 px-4 py-2 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-black h-[42px] text-gray-700 text-sm transition cursor-pointer"
         >
           <option value="">All Categories</option>
-          <option
-            v-for="cat in categories"
-            :key="cat.id"
-            :value="cat.category_name"
-          >
+          <option v-for="cat in categories" :key="cat.id" :value="cat.category_name">
             {{ cat.category_name }}
           </option>
         </select>
@@ -721,7 +724,11 @@ onMounted(fetchData);
         </thead>
 
         <tbody v-if="isLoading" class="text-gray-600">
-          <tr v-for="i in 5" :key="`skeleton-${i}`" class="animate-pulse border-b border-gray-50">
+          <tr
+            v-for="i in 5"
+            :key="`skeleton-${i}`"
+            class="animate-pulse border-b border-gray-50"
+          >
             <td class="py-4"><div class="h-16 w-16 bg-gray-200 rounded-lg"></div></td>
             <td class="py-4"><div class="h-4 bg-gray-200 rounded w-12"></div></td>
             <td class="py-4"><div class="h-4 bg-gray-200 rounded w-32"></div></td>
@@ -756,9 +763,7 @@ onMounted(fetchData);
             </td>
             <td class="py-4 font-bold">
               <div v-if="p.discount_price">
-                <span class="text-red-500">{{
-                  formatPrice(p.discount_price)
-                }}</span>
+                <span class="text-red-500">{{ formatPrice(p.discount_price) }}</span>
                 <span class="block text-gray-400 text-xs line-through">{{
                   formatPrice(p.price)
                 }}</span>
@@ -768,7 +773,13 @@ onMounted(fetchData);
               </div>
             </td>
             <td class="py-4">
-              <span :class="p.stock < 5 ? 'text-red-500 font-bold bg-red-50 px-2 py-0.5 rounded' : ''">
+              <span
+                :class="
+                  p.stock < 5
+                    ? 'text-red-500 font-bold bg-red-50 px-2 py-0.5 rounded'
+                    : ''
+                "
+              >
                 {{ p.stock }} pcs
               </span>
             </td>
@@ -795,7 +806,9 @@ onMounted(fetchData);
           </tr>
 
           <tr v-if="filteredProducts.length === 0">
-            <td colspan="7" class="py-12 text-center text-gray-400 italic">No products found matching your criteria.</td>
+            <td colspan="7" class="py-12 text-center text-gray-400 italic">
+              No products found matching your criteria.
+            </td>
           </tr>
         </tbody>
       </table>
@@ -845,7 +858,6 @@ onMounted(fetchData);
         </button>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -858,6 +870,7 @@ import { BASE_URL } from "../../config/api.js";
 
 // [BARU] Import gambar default
 import defaultBagIcon from "../../assets/products/bag_icon.jpg";
+import Breadcrumb from "./Layout/Breadcrumb.vue";
 
 const products = ref([]);
 const categories = ref([]);
@@ -875,33 +888,32 @@ const axiosConfig = {
 
 // --- COMPUTED METRICS ---
 const healthyStockCount = computed(() => {
-  return products.value.filter(p => p.stock >= 5).length;
+  return products.value.filter((p) => p.stock >= 5).length;
 });
 
 const lowStockCount = computed(() => {
-  return products.value.filter(p => p.stock < 5).length;
+  return products.value.filter((p) => p.stock < 5).length;
 });
 
 // [BARU] Menghitung produk yang memiliki discount_price (dianggap diskon/sale)
 const discountedProductsCount = computed(() => {
-  return products.value.filter(p => p.discount_price && parseFloat(p.discount_price) < parseFloat(p.price)).length;
+  return products.value.filter(
+    (p) => p.discount_price && parseFloat(p.discount_price) < parseFloat(p.price)
+  ).length;
 });
 
 // --- FILTERING & PAGINATION ---
 const filteredProducts = computed(() => {
   return products.value.filter((p) => {
     const matchesCategory =
-      selectedCategory.value === "" ||
-      p.category?.name === selectedCategory.value;
-    const matchesSearch = p.name
-      .toLowerCase()
-      .includes(searchQuery.value.toLowerCase());
+      selectedCategory.value === "" || p.category?.name === selectedCategory.value;
+    const matchesSearch = p.name.toLowerCase().includes(searchQuery.value.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 });
 
 const totalPages = computed(() =>
-  Math.ceil(filteredProducts.value.length / itemsPerPage.value),
+  Math.ceil(filteredProducts.value.length / itemsPerPage.value)
 );
 
 const visiblePages = computed(() => {
@@ -933,7 +945,7 @@ const paginatedProducts = computed(() => {
 // --- ACTIONS ---
 const goToEdit = (product) => {
   router.push({
-    name: "ProductEdit", 
+    name: "ProductEdit",
     params: { id: product.id },
     state: { productData: JSON.parse(JSON.stringify(product)) },
   });
@@ -984,14 +996,23 @@ const confirmDelete = (id) => {
 };
 
 const formatPrice = (v) =>
-  new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(
-    v,
-  );
+  new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(v);
 
 onMounted(fetchData);
 </script>
 
 <style scoped>
-.animate-fade-in { animation: fadeIn 0.4s ease-out; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 </style>

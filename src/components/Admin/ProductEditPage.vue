@@ -771,20 +771,15 @@ const handleSubmit = async () => {
   <div
     class="max-w-4xl p-8 mx-auto bg-white border border-gray-100 shadow-sm rounded-2xl"
   >
+    <Breadcrumb />
     <div class="flex items-center justify-between mb-8">
       <h1 class="text-2xl font-bold text-gray-800">Edit Product</h1>
-      <button
-        @click="$router.back()"
-        class="text-gray-500 transition hover:text-black"
-      >
+      <button @click="$router.back()" class="text-gray-500 transition hover:text-black">
         Back
       </button>
     </div>
 
-    <form
-      @submit.prevent="handleSubmit"
-      class="grid grid-cols-1 gap-6 md:grid-cols-2"
-    >
+    <form @submit.prevent="handleSubmit" class="grid grid-cols-1 gap-6 md:grid-cols-2">
       <div class="space-y-6">
         <div>
           <label class="block mb-1 text-sm font-bold"
@@ -822,9 +817,7 @@ const handleSubmit = async () => {
             />
           </div>
           <div>
-            <label class="block mb-1 text-sm font-bold"
-              >Discount Price (Optional)</label
-            >
+            <label class="block mb-1 text-sm font-bold">Discount Price (Optional)</label>
             <input
               v-model="form.discount_price"
               type="number"
@@ -880,9 +873,7 @@ const handleSubmit = async () => {
           </div>
         </div>
 
-        <div
-          class="p-4 space-y-6 border border-gray-200 rounded-2xl bg-gray-50/50"
-        >
+        <div class="p-4 space-y-6 border border-gray-200 rounded-2xl bg-gray-50/50">
           <div>
             <label class="block mb-1 text-sm font-bold">Main Image</label>
             <p class="text-[10px] text-gray-500 mb-2">
@@ -918,9 +909,7 @@ const handleSubmit = async () => {
           </div>
 
           <div class="pt-4 border-t border-gray-200">
-            <label class="block mb-1 text-sm font-bold"
-              >Variant Images (Max 5)</label
-            >
+            <label class="block mb-1 text-sm font-bold">Variant Images (Max 5)</label>
             <p class="text-[10px] text-gray-500 mb-2">
               Upload new files to REPLACE all current variant images.
             </p>
@@ -954,9 +943,7 @@ const handleSubmit = async () => {
           </div>
 
           <div class="pt-4 border-t border-gray-200">
-            <label class="block mb-1 text-sm font-bold"
-              >Product Video (Max 5MB)</label
-            >
+            <label class="block mb-1 text-sm font-bold">Product Video (Max 5MB)</label>
             <p class="text-[10px] text-gray-500 mb-2">
               Upload new video to REPLACE the current one.
             </p>
@@ -1037,9 +1024,7 @@ const handleSubmit = async () => {
               />
             </div>
             <div>
-              <label class="block mb-1 text-xs font-bold text-gray-600"
-                >Width (cm)</label
-              >
+              <label class="block mb-1 text-xs font-bold text-gray-600">Width (cm)</label>
               <input
                 v-model="form.width"
                 type="number"
@@ -1130,9 +1115,7 @@ const handleSubmit = async () => {
                     class="w-4 h-4 border border-gray-300 rounded-full"
                     :style="{ backgroundColor: c.hex }"
                   ></div>
-                  <span class="text-xs font-bold text-gray-800">{{
-                    c.name
-                  }}</span>
+                  <span class="text-xs font-bold text-gray-800">{{ c.name }}</span>
                   <button
                     type="button"
                     @click="removeColor(idx)"
@@ -1403,6 +1386,7 @@ import { BASE_URL } from "../../config/api.js";
 
 // [BARU] Import gambar default
 import defaultBagIcon from "../../assets/products/bag_icon.jpg";
+import Breadcrumb from "./Layout/Breadcrumb.vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -1684,7 +1668,7 @@ const handleSubmit = async () => {
     formData.append("height", form.value.height || "");
     formData.append("material", form.value.material || "");
     formData.append("strap_length", form.value.strap_length || "");
-    
+
     // [PERBAIKAN] Paksa kirim string kosong agar Laravel mengubahnya jadi NULL di database
     formData.append("discount_price", form.value.discount_price || "");
 
@@ -1695,7 +1679,7 @@ const handleSubmit = async () => {
       });
     } else {
       // Jika semua warna dihapus, kirim array kosong agar backend tahu warna dikosongkan
-      formData.append('color', ""); 
+      formData.append("color", "");
     }
 
     if (form.value.image instanceof File) {

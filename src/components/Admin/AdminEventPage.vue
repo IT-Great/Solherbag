@@ -1,5 +1,6 @@
 <template>
   <div class="p-6 md:p-10 animate-fade-in">
+    <Breadcrumb />
     <div class="flex items-center justify-between mb-8">
       <div>
         <h1 class="text-2xl font-bold tracking-tight text-gray-900 md:text-3xl">
@@ -342,6 +343,7 @@ import { ref, onMounted } from "vue";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api";
+import Breadcrumb from "./Layout/Breadcrumb.vue";
 
 const events = ref([]);
 const isLoading = ref(true);

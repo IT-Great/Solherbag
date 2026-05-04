@@ -8,10 +8,10 @@
     >
       <div class="flex flex-col items-center">
         <div
-          class="border-4 border-blue-100 border-t-blue-600 rounded-full w-12 h-12 animate-spin"
+          class="w-12 h-12 border-4 border-blue-100 rounded-full border-t-blue-600 animate-spin"
         ></div>
         <p
-          class="mt-4 font-bold text-blue-600 text-xs uppercase tracking-widest animate-pulse"
+          class="mt-4 text-xs font-bold tracking-widest text-blue-600 uppercase animate-pulse"
         >
           Fetching Data...
         </p>
@@ -19,24 +19,24 @@
     </div>
 
     <div
-      class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8"
+      class="flex flex-col items-start justify-between gap-4 mb-8 md:flex-row md:items-center"
     >
       <div>
-        <h1 class="font-bold text-gray-800 text-2xl">Category Management</h1>
-        <p class="text-gray-500 text-sm">
+        <h1 class="text-2xl font-bold text-gray-800">Category Management</h1>
+        <p class="text-sm text-gray-500">
           Manage your product categories here.
         </p>
       </div>
       <button
         @click="openModal()"
-        class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-xl font-semibold text-white transition"
+        class="px-6 py-2 font-semibold text-white transition bg-blue-600 hover:bg-blue-700 rounded-xl"
       >
         + Add Category
       </button>
     </div>
 
     <div
-      class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6"
+      class="flex flex-col items-center justify-between gap-4 mb-6 md:flex-row"
     >
       <div class="relative w-full md:w-64">
         <span
@@ -61,7 +61,7 @@
           v-model="searchQuery"
           type="text"
           placeholder="Search categories..."
-          class="bg-gray-50 pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none w-full text-sm transition"
+          class="w-full py-2 pl-10 pr-4 text-sm transition border border-gray-200 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
@@ -69,7 +69,7 @@
         <span class="text-sm text-gray-500">Show:</span>
         <select
           v-model="itemsPerPage"
-          class="bg-gray-50 px-3 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none text-sm cursor-pointer"
+          class="px-3 py-2 text-sm border border-gray-200 outline-none cursor-pointer bg-gray-50 rounded-xl focus:ring-2 focus:ring-blue-500"
         >
           <option :value="5">5</option>
           <option :value="10">10</option>
@@ -83,7 +83,7 @@
       <table class="w-full text-left border-collapse">
         <thead>
           <tr
-            class="border-b border-gray-100 text-gray-400 text-sm uppercase tracking-wider"
+            class="text-sm tracking-wider text-gray-400 uppercase border-b border-gray-100"
           >
             <th class="pb-4 font-medium">Code</th>
             <th class="pb-4 font-medium">Name</th>
@@ -95,22 +95,22 @@
           <tr
             v-for="cat in paginatedCategories"
             :key="cat.id"
-            class="hover:bg-gray-50 border-b border-gray-50 transition"
+            class="transition border-b hover:bg-gray-50 border-gray-50"
           >
-            <td class="py-4 font-mono text-blue-600 text-sm">
+            <td class="py-4 font-mono text-sm text-blue-600">
               {{ cat.category_code }}
             </td>
             <td class="py-4 font-medium text-gray-800">
               {{ cat.category_name }}
             </td>
-            <td class="py-4 text-sm max-w-xs truncate">
+            <td class="max-w-xs py-4 text-sm truncate">
               {{ cat.meta?.description || "-" }}
             </td>
             <td class="py-4">
               <div class="flex justify-center gap-3">
                 <router-link
                   :to="`/admin/categories/${cat.id}`"
-                  class="bg-blue-50 hover:bg-blue-100 p-2 rounded-lg text-blue-500 transition"
+                  class="p-2 text-blue-500 transition rounded-lg bg-blue-50 hover:bg-blue-100"
                   title="View Details"
                 >
                   <svg
@@ -136,7 +136,7 @@
                 </router-link>
                 <button
                   @click="openModal(cat)"
-                  class="bg-amber-50 hover:bg-amber-100 p-2 rounded-lg text-amber-500 transition"
+                  class="p-2 transition rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-500"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -155,7 +155,7 @@
                 </button>
                 <button
                   @click="confirmDelete(cat.id)"
-                  class="bg-red-50 hover:bg-red-100 p-2 rounded-lg text-red-500 transition"
+                  class="p-2 text-red-500 transition rounded-lg bg-red-50 hover:bg-red-100"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -176,7 +176,7 @@
             </td>
           </tr>
           <tr v-if="!isLoading && paginatedCategories.length === 0">
-            <td colspan="4" class="py-20 text-center text-gray-400 italic">
+            <td colspan="4" class="py-20 italic text-center text-gray-400">
               {{
                 searchQuery
                   ? "No matching categories found."
@@ -190,7 +190,7 @@
 
     <div
       v-if="!isLoading && filteredCategories.length > 0"
-      class="flex flex-col md:flex-row justify-between items-center gap-4 mt-8 pt-6 border-t border-gray-50"
+      class="flex flex-col items-center justify-between gap-4 pt-6 mt-8 border-t md:flex-row border-gray-50"
     >
       <p class="text-sm text-gray-400">
         Showing
@@ -205,7 +205,7 @@
         <button
           @click="currentPage--"
           :disabled="currentPage === 1"
-          class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+          class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           Previous
         </button>
@@ -223,7 +223,7 @@
               ? 'cursor-default border-transparent hover:bg-transparent'
               : 'border',
           ]"
-          class="w-10 h-10 rounded-xl font-medium transition flex items-center justify-center text-sm"
+          class="flex items-center justify-center w-10 h-10 text-sm font-medium transition rounded-xl"
         >
           {{ page }}
         </button>
@@ -231,7 +231,7 @@
         <button
           @click="currentPage++"
           :disabled="currentPage === totalPages"
-          class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+          class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           Next
         </button>
@@ -240,38 +240,38 @@
 
     <div
       v-if="showModal"
-      class="z-50 fixed inset-0 flex justify-center items-center bg-black/50 backdrop-blur-sm"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
     >
-      <div class="bg-white shadow-2xl p-8 rounded-3xl w-full max-w-md">
-        <h2 class="mb-6 font-bold text-xl">
+      <div class="w-full max-w-md p-8 bg-white shadow-2xl rounded-3xl">
+        <h2 class="mb-6 text-xl font-bold">
           {{ isEdit ? "Update Category" : "Create New Category" }}
         </h2>
         <form @submit.prevent="handleSubmit" class="space-y-4">
           <div>
-            <label class="block mb-1 font-bold text-sm">Category Code</label>
+            <label class="block mb-1 text-sm font-bold">Category Code</label>
             <input
               v-model="form.category_code"
               type="text"
-              class="bg-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 w-full"
+              class="w-full p-3 bg-gray-100 outline-none rounded-xl focus:ring-2 focus:ring-blue-500"
               placeholder="e.g. LTHR-BAG"
               required
             />
           </div>
           <div>
-            <label class="block mb-1 font-bold text-sm">Category Name</label>
+            <label class="block mb-1 text-sm font-bold">Category Name</label>
             <input
               v-model="form.category_name"
               type="text"
-              class="bg-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 w-full"
+              class="w-full p-3 bg-gray-100 outline-none rounded-xl focus:ring-2 focus:ring-blue-500"
               placeholder="e.g. Leather Bag"
               required
             />
           </div>
           <div>
-            <label class="block mb-1 font-bold text-sm">Description</label>
+            <label class="block mb-1 text-sm font-bold">Description</label>
             <textarea
               v-model="form.meta.description"
-              class="bg-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 w-full"
+              class="w-full p-3 bg-gray-100 outline-none rounded-xl focus:ring-2 focus:ring-blue-500"
               rows="3"
             ></textarea>
           </div>
@@ -286,7 +286,7 @@
             <button
               type="submit"
               :disabled="isSubmitting"
-              class="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 py-3 rounded-xl font-bold text-white transition"
+              class="flex-1 py-3 font-bold text-white transition bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 rounded-xl"
             >
               {{ isSubmitting ? "Saving..." : "Save Changes" }}
             </button>
@@ -504,35 +504,48 @@ onMounted(fetchCategories);
 </script> -->
 
 <template>
-  <div class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[400px]">
-    
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+  <div
+    class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[400px]"
+  >
+    <Breadcrumb />
+    <div
+      class="flex flex-col items-start justify-between gap-4 mb-8 md:flex-row md:items-center"
+    >
       <div>
-        <h1 class="font-bold text-gray-800 text-2xl">Category Management</h1>
-        <p class="text-gray-500 text-sm">
-          Manage your product categories here.
-        </p>
+        <h1 class="text-2xl font-bold text-gray-800">Category Management</h1>
+        <p class="text-sm text-gray-500">Manage your product categories here.</p>
       </div>
       <button
         @click="openModal()"
-        class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-xl font-semibold text-white transition shadow-sm shadow-blue-500/30"
+        class="px-6 py-2 font-semibold text-white transition bg-blue-600 shadow-sm hover:bg-blue-700 rounded-xl shadow-blue-500/30"
       >
         + Add Category
       </button>
     </div>
 
-    <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+    <div class="flex flex-col items-center justify-between gap-4 mb-6 md:flex-row">
       <div class="relative w-full md:w-64">
         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
           </svg>
         </span>
         <input
           v-model="searchQuery"
           type="text"
           placeholder="Search categories..."
-          class="bg-gray-50 pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none w-full text-sm transition"
+          class="w-full py-2 pl-10 pr-4 text-sm transition border border-gray-200 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
@@ -540,7 +553,7 @@ onMounted(fetchCategories);
         <span class="text-sm text-gray-500">Show:</span>
         <select
           v-model="itemsPerPage"
-          class="bg-gray-50 px-3 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none text-sm cursor-pointer"
+          class="px-3 py-2 text-sm border border-gray-200 outline-none cursor-pointer bg-gray-50 rounded-xl focus:ring-2 focus:ring-blue-500"
         >
           <option :value="5">5</option>
           <option :value="10">10</option>
@@ -553,19 +566,31 @@ onMounted(fetchCategories);
     <div class="overflow-x-auto">
       <table class="w-full text-left border-collapse">
         <thead>
-          <tr class="border-b border-gray-100 text-gray-400 text-sm uppercase tracking-wider">
-            <th class="pb-4 font-medium pl-2">Code</th>
+          <tr
+            class="text-sm tracking-wider text-gray-400 uppercase border-b border-gray-100"
+          >
+            <th class="pb-4 pl-2 font-medium">Code</th>
             <th class="pb-4 font-medium">Name</th>
             <th class="pb-4 font-medium">Description</th>
-            <th class="pb-4 font-medium text-center pr-2">Actions</th>
+            <th class="pb-4 pr-2 font-medium text-center">Actions</th>
           </tr>
         </thead>
-        
+
         <tbody v-if="isLoading" class="text-gray-600">
-          <tr v-for="i in itemsPerPage" :key="'skel-'+i" class="border-b border-gray-50">
-            <td class="py-5 pl-2"><div class="h-4 bg-gray-200 rounded w-20 animate-pulse"></div></td>
-            <td class="py-5"><div class="h-5 bg-gray-200 rounded w-32 animate-pulse"></div></td>
-            <td class="py-5"><div class="h-4 bg-gray-100 rounded w-full max-w-xs animate-pulse"></div></td>
+          <tr
+            v-for="i in itemsPerPage"
+            :key="'skel-' + i"
+            class="border-b border-gray-50"
+          >
+            <td class="py-5 pl-2">
+              <div class="w-20 h-4 bg-gray-200 rounded animate-pulse"></div>
+            </td>
+            <td class="py-5">
+              <div class="w-32 h-5 bg-gray-200 rounded animate-pulse"></div>
+            </td>
+            <td class="py-5">
+              <div class="w-full h-4 max-w-xs bg-gray-100 rounded animate-pulse"></div>
+            </td>
             <td class="py-5">
               <div class="flex justify-center gap-3">
                 <div class="w-8 h-8 bg-gray-200 rounded-lg animate-pulse"></div>
@@ -580,52 +605,90 @@ onMounted(fetchCategories);
           <tr
             v-for="cat in paginatedCategories"
             :key="cat.id"
-            class="hover:bg-gray-50 border-b border-gray-50 transition"
+            class="transition border-b hover:bg-gray-50 border-gray-50"
           >
-            <td class="py-4 font-mono text-blue-600 text-sm pl-2 font-bold">
+            <td class="py-4 pl-2 font-mono text-sm font-bold text-blue-600">
               {{ cat.category_code }}
             </td>
             <td class="py-4 font-bold text-gray-800">
               {{ cat.category_name }}
             </td>
-            <td class="py-4 text-sm max-w-xs truncate text-gray-500">
+            <td class="max-w-xs py-4 text-sm text-gray-500 truncate">
               {{ cat.meta?.description || "No description provided." }}
             </td>
             <td class="py-4 pr-2">
               <div class="flex justify-center gap-3">
                 <router-link
                   :to="`/admin/categories/${cat.id}`"
-                  class="bg-blue-50 hover:bg-blue-100 p-2 rounded-lg text-blue-500 transition"
+                  class="p-2 text-blue-500 transition rounded-lg bg-blue-50 hover:bg-blue-100"
                   title="View Details"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-4 h-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                    />
                   </svg>
                 </router-link>
                 <button
                   @click="openModal(cat)"
-                  class="bg-amber-50 hover:bg-amber-100 p-2 rounded-lg text-amber-500 transition"
+                  class="p-2 transition rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-500"
                   title="Edit Category"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-4 h-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                    />
                   </svg>
                 </button>
                 <button
                   @click="confirmDelete(cat.id)"
-                  class="bg-red-50 hover:bg-red-100 p-2 rounded-lg text-red-500 transition"
+                  class="p-2 text-red-500 transition rounded-lg bg-red-50 hover:bg-red-100"
                   title="Delete Category"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-4 h-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                    />
                   </svg>
                 </button>
               </div>
             </td>
           </tr>
           <tr v-if="!isLoading && paginatedCategories.length === 0">
-            <td colspan="4" class="py-20 text-center text-gray-400 italic">
+            <td colspan="4" class="py-20 italic text-center text-gray-400">
               {{ searchQuery ? "No matching categories found." : "No categories found." }}
             </td>
           </tr>
@@ -635,7 +698,7 @@ onMounted(fetchCategories);
 
     <div
       v-if="!isLoading && filteredCategories.length > 0"
-      class="flex flex-col md:flex-row justify-between items-center gap-4 mt-8 pt-6 border-t border-gray-50"
+      class="flex flex-col items-center justify-between gap-4 pt-6 mt-8 border-t md:flex-row border-gray-50"
     >
       <p class="text-sm text-gray-400">
         Showing
@@ -649,7 +712,7 @@ onMounted(fetchCategories);
         <button
           @click="currentPage--"
           :disabled="currentPage === 1"
-          class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+          class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           Previous
         </button>
@@ -667,7 +730,7 @@ onMounted(fetchCategories);
               ? 'cursor-default border-transparent hover:bg-transparent'
               : 'border',
           ]"
-          class="w-10 h-10 rounded-xl font-bold transition flex items-center justify-center text-sm"
+          class="flex items-center justify-center w-10 h-10 text-sm font-bold transition rounded-xl"
         >
           {{ page }}
         </button>
@@ -675,7 +738,7 @@ onMounted(fetchCategories);
         <button
           @click="currentPage++"
           :disabled="currentPage === totalPages"
-          class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+          class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           Next
         </button>
@@ -684,38 +747,47 @@ onMounted(fetchCategories);
 
     <div
       v-if="showModal"
-      class="z-50 fixed inset-0 flex justify-center items-center bg-black/50 backdrop-blur-sm"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
     >
-      <div class="bg-white shadow-2xl p-8 rounded-3xl w-full max-w-md">
-        <h2 class="mb-6 font-bold text-xl">
+      <div class="w-full max-w-md p-8 bg-white shadow-2xl rounded-3xl">
+        <h2 class="mb-6 text-xl font-bold">
           {{ isEdit ? "Update Category" : "Create New Category" }}
         </h2>
         <form @submit.prevent="handleSubmit" class="space-y-4">
           <div>
-            <label class="block mb-1 font-bold text-xs uppercase tracking-widest text-gray-500">Category Code</label>
+            <label
+              class="block mb-1 text-xs font-bold tracking-widest text-gray-500 uppercase"
+              >Category Code</label
+            >
             <input
               v-model="form.category_code"
               type="text"
-              class="bg-gray-50 p-3 border border-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 w-full font-mono text-sm"
+              class="w-full p-3 font-mono text-sm border border-gray-100 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-blue-500"
               placeholder="e.g. LTHR-BAG"
               required
             />
           </div>
           <div>
-            <label class="block mb-1 font-bold text-xs uppercase tracking-widest text-gray-500">Category Name</label>
+            <label
+              class="block mb-1 text-xs font-bold tracking-widest text-gray-500 uppercase"
+              >Category Name</label
+            >
             <input
               v-model="form.category_name"
               type="text"
-              class="bg-gray-50 p-3 border border-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 w-full text-sm"
+              class="w-full p-3 text-sm border border-gray-100 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-blue-500"
               placeholder="e.g. Leather Bag"
               required
             />
           </div>
           <div>
-            <label class="block mb-1 font-bold text-xs uppercase tracking-widest text-gray-500">Description</label>
+            <label
+              class="block mb-1 text-xs font-bold tracking-widest text-gray-500 uppercase"
+              >Description</label
+            >
             <textarea
               v-model="form.meta.description"
-              class="bg-gray-50 p-3 border border-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 w-full text-sm resize-none"
+              class="w-full p-3 text-sm border border-gray-100 outline-none resize-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-blue-500"
               rows="3"
             ></textarea>
           </div>
@@ -723,14 +795,14 @@ onMounted(fetchCategories);
             <button
               type="button"
               @click="showModal = false"
-              class="flex-1 py-3 font-bold text-gray-500 hover:bg-gray-50 rounded-xl transition"
+              class="flex-1 py-3 font-bold text-gray-500 transition hover:bg-gray-50 rounded-xl"
             >
               Cancel
             </button>
             <button
               type="submit"
               :disabled="isSubmitting"
-              class="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 py-3 rounded-xl font-bold text-white transition shadow-sm shadow-blue-500/30"
+              class="flex-1 py-3 font-bold text-white transition bg-blue-600 shadow-sm hover:bg-blue-700 disabled:bg-blue-300 rounded-xl shadow-blue-500/30"
             >
               {{ isSubmitting ? "Saving..." : "Save Changes" }}
             </button>
@@ -747,6 +819,7 @@ import { ref, onMounted, computed, watch } from "vue";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
+import Breadcrumb from "./Layout/Breadcrumb.vue";
 
 const categories = ref([]);
 const showModal = ref(false);
@@ -763,7 +836,7 @@ const form = ref({
 
 const searchQuery = ref("");
 const currentPage = ref(1);
-const itemsPerPage = ref(5); 
+const itemsPerPage = ref(5);
 
 const axiosConfig = {
   headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
@@ -780,7 +853,7 @@ const filteredCategories = computed(() => {
 });
 
 const totalPages = computed(() =>
-  Math.ceil(filteredCategories.value.length / itemsPerPage.value),
+  Math.ceil(filteredCategories.value.length / itemsPerPage.value)
 );
 
 const visiblePages = computed(() => {
@@ -809,14 +882,9 @@ const paginatedCategories = computed(() => {
   return filteredCategories.value.slice(start, end);
 });
 
-const showingStart = computed(
-  () => (currentPage.value - 1) * itemsPerPage.value + 1,
-);
+const showingStart = computed(() => (currentPage.value - 1) * itemsPerPage.value + 1);
 const showingEnd = computed(() =>
-  Math.min(
-    currentPage.value * itemsPerPage.value,
-    filteredCategories.value.length,
-  ),
+  Math.min(currentPage.value * itemsPerPage.value, filteredCategories.value.length)
 );
 
 watch([searchQuery, itemsPerPage], () => {
@@ -841,12 +909,11 @@ const fetchCategories = async () => {
   isLoading.value = true;
   try {
     const res = await axios.get(`${BASE_URL}/categories`, axiosConfig);
-    
+
     // [PERBAIKAN] Mengurutkan data berdasarkan ID dari terkecil ke terbesar (Ascending)
-    // Jika Anda ingin mengurutkan berdasarkan nama (abjad), ganti menjadi: 
+    // Jika Anda ingin mengurutkan berdasarkan nama (abjad), ganti menjadi:
     // .sort((a, b) => a.category_name.localeCompare(b.category_name))
     categories.value = res.data.data.sort((a, b) => a.id - b.id);
-    
   } catch (err) {
     console.error(err);
   } finally {
@@ -861,7 +928,7 @@ const openModal = (data = null) => {
   currentId.value = data ? data.id : null;
 
   if (data) {
-    form.value = JSON.parse(JSON.stringify(data)); 
+    form.value = JSON.parse(JSON.stringify(data));
   } else {
     form.value = {
       category_code: "",
@@ -882,17 +949,20 @@ const handleSubmit = async () => {
 
   try {
     if (isEdit.value) {
-      await axios.put(
-        `${BASE_URL}/categories/${currentId.value}`,
-        payload,
-        axiosConfig,
-      );
+      await axios.put(`${BASE_URL}/categories/${currentId.value}`, payload, axiosConfig);
     } else {
       await axios.post(`${BASE_URL}/categories`, payload, axiosConfig);
     }
     showModal.value = false;
     fetchCategories();
-    Swal.fire({ toast: true, position: 'top-end', icon: "success", title: "Category saved!", showConfirmButton: false, timer: 1500 });
+    Swal.fire({
+      toast: true,
+      position: "top-end",
+      icon: "success",
+      title: "Category saved!",
+      showConfirmButton: false,
+      timer: 1500,
+    });
   } catch (err) {
     Swal.fire("Error", "Check your data", "error");
   } finally {
@@ -914,7 +984,14 @@ const confirmDelete = (id) => {
       try {
         await axios.delete(`${BASE_URL}/categories/${id}`, axiosConfig);
         fetchCategories();
-        Swal.fire({ toast: true, position: 'top-end', icon: "success", title: "Category removed.", showConfirmButton: false, timer: 1500 });
+        Swal.fire({
+          toast: true,
+          position: "top-end",
+          icon: "success",
+          title: "Category removed.",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       } catch (err) {
         isLoading.value = false;
 
@@ -922,7 +999,8 @@ const confirmDelete = (id) => {
           Swal.fire({
             icon: "warning",
             title: "Action Blocked",
-            text: "This category contains products. Please remove or move the products first.",
+            text:
+              "This category contains products. Please remove or move the products first.",
             confirmButtonColor: "#000",
           });
         } else {
@@ -935,4 +1013,3 @@ const confirmDelete = (id) => {
 
 onMounted(fetchCategories);
 </script>
-

@@ -1300,6 +1300,7 @@ onMounted(fetchReport);
 
 <template>
   <div class="pb-10 space-y-8 animate-fade-in">
+    <Breadcrumb />
     <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
       <div class="flex flex-wrap items-end gap-4">
         <div class="w-full sm:w-auto">
@@ -1674,6 +1675,7 @@ import axios from "axios";
 import { BASE_URL } from "../../config/api.js";
 import html2pdf from "html2pdf.js";
 import * as XLSX from "xlsx";
+import Breadcrumb from "./Layout/Breadcrumb.vue";
 
 const allReportData = ref([]);
 const isLoading = ref(true); // Mulai dengan True agar skeleton muncul di awal

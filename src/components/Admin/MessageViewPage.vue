@@ -3,17 +3,17 @@
     
     <div v-if="isLoading" class="z-20 absolute inset-0 flex justify-center items-center bg-white/60 backdrop-blur-[2px] rounded-2xl transition-all duration-300">
       <div class="flex flex-col items-center">
-        <div class="border-4 border-gray-200 border-t-black rounded-full w-12 h-12 animate-spin"></div>
-        <p class="mt-4 font-bold text-black text-xs uppercase tracking-widest animate-pulse">Retrieving Messages...</p>
+        <div class="w-12 h-12 border-4 border-gray-200 rounded-full border-t-black animate-spin"></div>
+        <p class="mt-4 text-xs font-bold tracking-widest text-black uppercase animate-pulse">Retrieving Messages...</p>
       </div>
     </div>
 
-    <h1 class="mb-8 font-bold text-gray-800 text-2xl">Inbound Messages</h1>
+    <h1 class="mb-8 text-2xl font-bold text-gray-800">Inbound Messages</h1>
 
     <div class="overflow-x-auto">
       <table class="w-full text-left border-collapse">
         <thead>
-          <tr class="border-b text-gray-400 text-xs uppercase tracking-widest">
+          <tr class="text-xs tracking-widest text-gray-400 uppercase border-b">
             <th class="pb-4 font-medium">Sender</th>
             <th class="pb-4 font-medium">Contact Info</th>
             <th class="pb-4 font-medium">Message</th>
@@ -21,7 +21,7 @@
           </tr>
         </thead>
         <tbody class="text-gray-600">
-          <tr v-for="msg in messages" :key="msg.id" class="hover:bg-gray-50 border-gray-50 border-b transition">
+          <tr v-for="msg in messages" :key="msg.id" class="transition border-b hover:bg-gray-50 border-gray-50">
             <td class="py-4 align-top">
               <p class="font-bold text-gray-900">{{ msg.sender.name }}</p>
               <span v-if="msg.sender.is_registered" class="bg-blue-100 px-2 py-0.5 rounded-full font-bold text-[10px] text-blue-600 uppercase">Registered User</span>
@@ -31,18 +31,18 @@
               <p>{{ msg.sender.email }}</p>
               <p class="text-gray-400">{{ msg.sender.phone || '-' }}</p>
             </td>
-            <td class="py-4 max-w-xs align-top">
-              <p class="text-sm truncate leading-relaxed hover:whitespace-normal cursor-help">
+            <td class="max-w-xs py-4 align-top">
+              <p class="text-sm leading-relaxed truncate hover:whitespace-normal cursor-help">
                 {{ msg.content.message }}
               </p>
             </td>
-            <td class="py-4 text-gray-400 text-xs text-center align-top">
+            <td class="py-4 text-xs text-center text-gray-400 align-top">
               {{ new Date(msg.metadata.full_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) }}
             </td>
           </tr>
 
           <tr v-if="!isLoading && messages.length === 0">
-            <td colspan="4" class="py-20 font-serif text-gray-400 text-lg text-center italic">
+            <td colspan="4" class="py-20 font-serif text-lg italic text-center text-gray-400">
               No inbound messages found.
             </td>
           </tr>
@@ -102,17 +102,17 @@ onMounted(fetchMessages);
     
     <div v-if="isLoading" class="z-20 absolute inset-0 flex justify-center items-center bg-white/60 backdrop-blur-[2px] rounded-2xl transition-all duration-300">
       <div class="flex flex-col items-center">
-        <div class="border-4 border-gray-200 border-t-black rounded-full w-12 h-12 animate-spin"></div>
-        <p class="mt-4 font-bold text-black text-xs uppercase tracking-widest animate-pulse">Retrieving Messages...</p>
+        <div class="w-12 h-12 border-4 border-gray-200 rounded-full border-t-black animate-spin"></div>
+        <p class="mt-4 text-xs font-bold tracking-widest text-black uppercase animate-pulse">Retrieving Messages...</p>
       </div>
     </div>
 
     <div class="mb-8">
-      <h1 class="font-bold text-gray-800 text-2xl">Inbound Messages</h1>
-      <p class="text-gray-500 text-sm">View inquiries from customers and guests.</p>
+      <h1 class="text-2xl font-bold text-gray-800">Inbound Messages</h1>
+      <p class="text-sm text-gray-500">View inquiries from customers and guests.</p>
     </div>
 
-    <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+    <div class="flex flex-col items-center justify-between gap-4 mb-6 md:flex-row">
       <div class="relative w-full md:w-80">
         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -123,15 +123,15 @@ onMounted(fetchMessages);
           v-model="searchQuery" 
           type="text" 
           placeholder="Search sender, email, or message..." 
-          class="bg-gray-50 pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none w-full text-sm transition"
+          class="w-full py-2 pl-10 pr-4 text-sm transition border border-gray-200 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
         />
       </div>
 
       <div class="flex items-center gap-3">
-        <span class="text-xs font-bold text-gray-400 uppercase tracking-wide">Show:</span>
+        <span class="text-xs font-bold tracking-wide text-gray-400 uppercase">Show:</span>
         <select 
           v-model="itemsPerPage" 
-          class="bg-gray-50 px-3 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none text-sm font-bold cursor-pointer"
+          class="px-3 py-2 text-sm font-bold border border-gray-200 outline-none cursor-pointer bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
         >
           <option :value="5">5</option>
           <option :value="10">10</option>
@@ -144,7 +144,7 @@ onMounted(fetchMessages);
     <div class="overflow-x-auto">
       <table class="w-full text-left border-collapse">
         <thead>
-          <tr class="border-b text-gray-400 text-xs uppercase tracking-widest">
+          <tr class="text-xs tracking-widest text-gray-400 uppercase border-b">
             <th class="pb-4 font-medium">Sender</th>
             <th class="pb-4 font-medium">Contact Info</th>
             <th class="pb-4 font-medium">Message</th>
@@ -152,7 +152,7 @@ onMounted(fetchMessages);
           </tr>
         </thead>
         <tbody class="text-gray-600">
-          <tr v-for="msg in paginatedMessages" :key="msg.id" class="hover:bg-gray-50 border-gray-50 border-b transition">
+          <tr v-for="msg in paginatedMessages" :key="msg.id" class="transition border-b hover:bg-gray-50 border-gray-50">
             <td class="py-4 align-top">
               <p class="font-bold text-gray-900">{{ msg.sender.name }}</p>
               <span v-if="msg.sender.is_registered" class="bg-blue-100 px-2 py-0.5 rounded-full font-bold text-[10px] text-blue-600 uppercase">Registered User</span>
@@ -162,18 +162,18 @@ onMounted(fetchMessages);
               <p>{{ msg.sender.email }}</p>
               <p class="text-gray-400">{{ msg.sender.phone || '-' }}</p>
             </td>
-            <td class="py-4 max-w-xs align-top">
-              <p class="text-sm truncate leading-relaxed hover:whitespace-normal cursor-help">
+            <td class="max-w-xs py-4 align-top">
+              <p class="text-sm leading-relaxed truncate hover:whitespace-normal cursor-help">
                 {{ msg.content.message }}
               </p>
             </td>
-            <td class="py-4 text-gray-400 text-xs text-center align-top">
+            <td class="py-4 text-xs text-center text-gray-400 align-top">
               {{ new Date(msg.metadata.full_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) }}
             </td>
           </tr>
 
           <tr v-if="!isLoading && paginatedMessages.length === 0">
-            <td colspan="4" class="py-20 font-serif text-gray-400 text-center italic">
+            <td colspan="4" class="py-20 font-serif italic text-center text-gray-400">
               {{ searchQuery ? 'No messages match your search.' : 'No inbound messages found.' }}
             </td>
           </tr>
@@ -181,7 +181,7 @@ onMounted(fetchMessages);
       </table>
     </div>
 
-    <div v-if="!isLoading && filteredMessages.length > 0" class="flex flex-col md:flex-row justify-between items-center gap-4 mt-8 pt-6 border-t border-gray-50">
+    <div v-if="!isLoading && filteredMessages.length > 0" class="flex flex-col items-center justify-between gap-4 pt-6 mt-8 border-t md:flex-row border-gray-50">
       <p class="text-sm text-gray-400">
         Showing <span class="font-bold text-black">{{ showingStart }}</span> to <span class="font-bold text-black">{{ showingEnd }}</span> of <span class="font-bold text-black">{{ filteredMessages.length }}</span> messages
       </p>
@@ -190,7 +190,7 @@ onMounted(fetchMessages);
         <button 
           @click="currentPage--" 
           :disabled="currentPage === 1"
-          class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+          class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           Previous
         </button>
@@ -200,7 +200,7 @@ onMounted(fetchMessages);
           :key="page" 
           @click="currentPage = page"
           :class="currentPage === page ? 'bg-black text-white border-black' : 'hover:bg-gray-50 border-gray-200'"
-          class="w-10 h-10 border rounded-xl font-medium transition flex items-center justify-center text-sm"
+          class="flex items-center justify-center w-10 h-10 text-sm font-medium transition border rounded-xl"
         >
           {{ page }}
         </button>
@@ -208,7 +208,7 @@ onMounted(fetchMessages);
         <button 
           @click="currentPage++" 
           :disabled="currentPage === totalPages"
-          class="px-4 py-2 border rounded-xl hover:bg-gray-50 disabled:opacity-30 transition disabled:cursor-not-allowed text-sm font-medium"
+          class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           Next
         </button>
@@ -323,41 +323,67 @@ tr {
 </style> -->
 
 <template>
-  <div class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[600px]">
-    
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-      <div class="p-6 bg-gray-50 rounded-2xl border border-gray-100">
-        <p class="text-xs text-gray-500 font-bold uppercase tracking-widest mb-1">Total Messages</p>
+  <div
+    class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[600px]"
+  >
+    <Breadcrumb />
+    <div class="grid grid-cols-1 gap-6 mb-10 md:grid-cols-3">
+      <div class="p-6 border border-gray-100 bg-gray-50 rounded-2xl">
+        <p class="mb-1 text-xs font-bold tracking-widest text-gray-500 uppercase">
+          Total Messages
+        </p>
         <p class="text-4xl font-black text-black">{{ totalMessages }}</p>
       </div>
-      <div class="p-6 bg-blue-50/50 rounded-2xl border border-blue-100">
-        <p class="text-xs text-blue-500 font-bold uppercase tracking-widest mb-1">Unread</p>
+      <div class="p-6 border border-blue-100 bg-blue-50/50 rounded-2xl">
+        <p class="mb-1 text-xs font-bold tracking-widest text-blue-500 uppercase">
+          Unread
+        </p>
         <p class="text-4xl font-black text-blue-600">{{ unreadMessages }}</p>
       </div>
-      <div class="p-6 bg-green-50/50 rounded-2xl border border-green-100">
-        <p class="text-xs text-green-600 font-bold uppercase tracking-widest mb-1">Responded</p>
+      <div class="p-6 border border-green-100 bg-green-50/50 rounded-2xl">
+        <p class="mb-1 text-xs font-bold tracking-widest text-green-600 uppercase">
+          Responded
+        </p>
         <p class="text-4xl font-black text-green-700">{{ respondedMessages }}</p>
       </div>
     </div>
 
     <div class="mb-8">
-      <h1 class="font-bold text-gray-800 text-2xl">Inbound Messages</h1>
-      <p class="text-gray-500 text-sm">View and respond to inquiries from customers.</p>
+      <h1 class="text-2xl font-bold text-gray-800">Inbound Messages</h1>
+      <p class="text-sm text-gray-500">View and respond to inquiries from customers.</p>
     </div>
 
-    <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+    <div class="flex flex-col items-center justify-between gap-4 mb-6 md:flex-row">
       <div class="relative w-full md:w-80">
         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
         </span>
-        <input v-model="searchQuery" type="text" placeholder="Search sender or email..." class="bg-gray-50 pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black outline-none w-full text-sm transition"/>
+        <input
+          v-model="searchQuery"
+          type="text"
+          placeholder="Search sender or email..."
+          class="w-full py-2 pl-10 pr-4 text-sm transition border border-gray-200 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
+        />
       </div>
     </div>
 
     <div class="overflow-x-auto">
       <table class="w-full text-left border-collapse">
         <thead>
-          <tr class="border-b text-gray-400 text-xs uppercase tracking-widest">
+          <tr class="text-xs tracking-widest text-gray-400 uppercase border-b">
             <th class="pb-4 font-medium">Status</th>
             <th class="pb-4 font-medium">Sender</th>
             <th class="pb-4 font-medium">Message Snippet</th>
@@ -366,24 +392,44 @@ tr {
           </tr>
         </thead>
         <tbody class="text-gray-600">
-          <tr v-for="msg in paginatedMessages" :key="msg.id" :class="!msg.is_read ? 'bg-blue-50/20' : 'hover:bg-gray-50'" class="border-gray-50 border-b transition">
+          <tr
+            v-for="msg in paginatedMessages"
+            :key="msg.id"
+            :class="!msg.is_read ? 'bg-blue-50/20' : 'hover:bg-gray-50'"
+            class="transition border-b border-gray-50"
+          >
             <td class="py-4 align-middle">
-              <span v-if="msg.response" class="bg-green-100 text-green-700 px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider">Replied</span>
-              <span v-else-if="!msg.is_read" class="bg-blue-100 text-blue-700 px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider animate-pulse">New</span>
-              <span v-else class="bg-gray-100 text-gray-500 px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider">Read</span>
+              <span
+                v-if="msg.response"
+                class="bg-green-100 text-green-700 px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider"
+                >Replied</span
+              >
+              <span
+                v-else-if="!msg.is_read"
+                class="bg-blue-100 text-blue-700 px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider animate-pulse"
+                >New</span
+              >
+              <span
+                v-else
+                class="bg-gray-100 text-gray-500 px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider"
+                >Read</span
+              >
             </td>
             <td class="py-4 align-middle">
               <p class="font-bold text-gray-900">{{ msg.name }}</p>
               <p class="text-xs text-gray-500">{{ msg.email }}</p>
             </td>
-            <td class="py-4 max-w-xs align-middle">
+            <td class="max-w-xs py-4 align-middle">
               <p class="text-sm truncate">{{ msg.description }}</p>
             </td>
-            <td class="py-4 text-gray-400 text-xs text-center align-middle">
-              {{ new Date(msg.created_at).toLocaleDateString('id-ID') }}
+            <td class="py-4 text-xs text-center text-gray-400 align-middle">
+              {{ new Date(msg.created_at).toLocaleDateString("id-ID") }}
             </td>
             <td class="py-4 text-right align-middle">
-              <button @click="$router.push(`/admin/messages/${msg.id}`)" class="bg-black text-white px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest hover:bg-gray-800 transition">
+              <button
+                @click="$router.push(`/admin/messages/${msg.id}`)"
+                class="px-4 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-black rounded-lg hover:bg-gray-800"
+              >
                 Detail
               </button>
             </td>
@@ -395,9 +441,10 @@ tr {
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
-import axios from 'axios';
+import { ref, onMounted, computed } from "vue";
+import axios from "axios";
 import { BASE_URL } from "../../config/api.js";
+import Breadcrumb from "./Layout/Breadcrumb.vue";
 
 const messages = ref([]);
 const searchQuery = ref("");
@@ -407,22 +454,23 @@ const itemsPerPage = ref(10);
 const fetchMessages = async () => {
   try {
     const res = await axios.get(`${BASE_URL}/admin/messages`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('admin_token')}` }
+      headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
     });
-    messages.value = res.data; 
+    messages.value = res.data;
   } catch (error) {
     console.error(error);
   }
 };
 
 const totalMessages = computed(() => messages.value.length);
-const unreadMessages = computed(() => messages.value.filter(m => !m.is_read).length);
-const respondedMessages = computed(() => messages.value.filter(m => m.response).length);
+const unreadMessages = computed(() => messages.value.filter((m) => !m.is_read).length);
+const respondedMessages = computed(() => messages.value.filter((m) => m.response).length);
 
 const filteredMessages = computed(() => {
   const query = searchQuery.value.toLowerCase();
-  return messages.value.filter(msg => 
-    msg.name.toLowerCase().includes(query) || msg.email.toLowerCase().includes(query)
+  return messages.value.filter(
+    (msg) =>
+      msg.name.toLowerCase().includes(query) || msg.email.toLowerCase().includes(query)
   );
 });
 
