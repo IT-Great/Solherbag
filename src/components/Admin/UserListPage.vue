@@ -681,7 +681,7 @@ tr {
 
 <script setup>
 // LOGIKA SCRIPT TETAP SAMA PERSIS.
-import Breadcrumb from "./Breadcrumb.vue"; // Sesuaikan path-nya
+import Breadcrumb from "../../components/Admin/Layout/Breadcrumb.vue"; // Sesuaikan path-nya
 import { ref, onMounted, computed, watch } from "vue";
 import axios from "axios";
 import { BASE_URL } from "../../config/api.js";
