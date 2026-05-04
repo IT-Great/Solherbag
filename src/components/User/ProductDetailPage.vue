@@ -4758,7 +4758,7 @@ onMounted(fetchProductDetail);
                 <img
                   v-if="media.type === 'image'"
                   :src="media.url"
-                  class="object-cover w-full h-full main-product-image transition-transform duration-500 hover:scale-125 cursor-zoom-in"
+                  class="object-cover w-full h-full main-product-image transition-transform duration-500 hover:scale-[2] cursor-zoom-in"
                   alt="Product Image"
                 />
                 <video
