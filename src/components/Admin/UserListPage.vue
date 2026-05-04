@@ -471,20 +471,15 @@ tr {
   <div
     class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[600px]"
   >
+    <Breadcrumb />
     <div class="mb-8">
       <h1 class="text-2xl font-bold text-gray-800">Registered Users</h1>
-      <p class="text-sm text-gray-500">
-        Manage all registered members of the platform.
-      </p>
+      <p class="text-sm text-gray-500">Manage all registered members of the platform.</p>
     </div>
 
-    <div
-      class="flex flex-col items-center justify-between gap-4 mb-6 md:flex-row"
-    >
+    <div class="flex flex-col items-center justify-between gap-4 mb-6 md:flex-row">
       <div class="relative w-full md:w-80">
-        <span
-          class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400"
-        >
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="w-5 h-5"
@@ -509,9 +504,7 @@ tr {
       </div>
 
       <div class="flex items-center gap-3">
-        <span class="text-xs font-bold tracking-wide text-gray-400 uppercase"
-          >Show:</span
-        >
+        <span class="text-xs font-bold tracking-wide text-gray-400 uppercase">Show:</span>
         <select
           v-model="itemsPerPage"
           class="px-3 py-2 text-sm font-bold border border-gray-200 outline-none cursor-pointer bg-gray-50 rounded-xl focus:ring-2 focus:ring-blue-500"
@@ -621,10 +614,7 @@ tr {
           </tr>
 
           <tr v-if="paginatedUsers.length === 0">
-            <td
-              colspan="4"
-              class="py-20 text-sm italic text-center text-gray-400"
-            >
+            <td colspan="4" class="py-20 text-sm italic text-center text-gray-400">
               {{
                 searchQuery
                   ? "No users found matching your search."
@@ -691,6 +681,7 @@ tr {
 
 <script setup>
 // LOGIKA SCRIPT TETAP SAMA PERSIS.
+import Breadcrumb from "./Breadcrumb.vue"; // Sesuaikan path-nya
 import { ref, onMounted, computed, watch } from "vue";
 import axios from "axios";
 import { BASE_URL } from "../../config/api.js";
@@ -714,12 +705,12 @@ const filteredUsers = computed(() => {
     (user) =>
       user.first_name.toLowerCase().includes(query) ||
       user.last_name.toLowerCase().includes(query) ||
-      user.email.toLowerCase().includes(query),
+      user.email.toLowerCase().includes(query)
   );
 });
 
 const totalPages = computed(() =>
-  Math.ceil(filteredUsers.value.length / itemsPerPage.value),
+  Math.ceil(filteredUsers.value.length / itemsPerPage.value)
 );
 
 const paginatedUsers = computed(() => {
@@ -734,7 +725,7 @@ const showingStart = computed(() => {
 });
 
 const showingEnd = computed(() =>
-  Math.min(currentPage.value * itemsPerPage.value, filteredUsers.value.length),
+  Math.min(currentPage.value * itemsPerPage.value, filteredUsers.value.length)
 );
 
 const visiblePages = computed(() => {
