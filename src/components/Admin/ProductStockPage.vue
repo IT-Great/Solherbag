@@ -934,6 +934,7 @@ onMounted(fetchStocks);
   <div
     class="relative bg-white shadow-sm p-6 md:p-8 border border-gray-100 rounded-2xl min-h-[600px] animate-fade-in"
   >
+    <!-- Header -->
     <div
       class="flex flex-col items-start justify-between gap-4 mb-8 md:flex-row md:items-center"
     >
@@ -943,30 +944,9 @@ onMounted(fetchStocks);
           Monitor and add stock batches to your products.
         </p>
       </div>
-      <!-- [BARU] Tombol Export Excel -->
-      <button
-        @click="exportToExcel"
-        class="flex items-center gap-2 px-4 py-2 text-sm font-bold text-green-700 transition bg-green-50 border border-green-200 rounded-xl hover:bg-green-100 shadow-sm"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="w-4 h-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-          />
-        </svg>
-        Export Excel
-      </button>
     </div>
 
-    <!-- ... (Bagian Summary Cards Tetap Sama) ... -->
+    <!-- Summary Cards -->
     <div class="grid grid-cols-2 gap-4 mb-8 md:grid-cols-4 md:gap-6">
       <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100 md:p-6">
         <p
@@ -1017,8 +997,9 @@ onMounted(fetchStocks);
       </div>
     </div>
 
-    <!-- ... (Sisa Template Tetap Sama Persis) ... -->
+    <!-- Toolbar: Filters, Search & EXPORT BUTTONS -->
     <div class="flex flex-col items-center justify-between gap-4 mb-6 md:flex-row">
+      <!-- Kiri: Filters -->
       <div class="flex flex-wrap items-center w-full gap-3 md:w-auto">
         <div class="flex items-center gap-2">
           <span class="text-xs font-bold tracking-widest text-gray-400 uppercase"
@@ -1034,7 +1015,9 @@ onMounted(fetchStocks);
             <option :value="50">50</option>
           </select>
         </div>
+
         <div class="hidden w-px h-6 bg-gray-200 md:block"></div>
+
         <select
           v-model="filters.status"
           class="px-3 py-1.5 text-sm font-bold text-gray-600 border border-gray-200 rounded-lg outline-none cursor-pointer bg-gray-50 focus:ring-1 focus:ring-black"
@@ -1046,12 +1029,13 @@ onMounted(fetchStocks);
         </select>
       </div>
 
-      <div class="w-full md:w-80">
-        <div class="relative">
+      <!-- Kanan: Search & Export -->
+      <div class="flex flex-col items-center gap-3 w-full md:w-auto md:flex-row">
+        <div class="relative w-full md:w-64">
           <input
             v-model="filters.search"
             type="text"
-            placeholder="Search product code or name..."
+            placeholder="Search code or name..."
             class="w-full py-2 pl-10 pr-4 text-sm transition border border-gray-200 outline-none bg-gray-50 rounded-xl focus:ring-1 focus:ring-black"
           />
           <svg
@@ -1068,10 +1052,58 @@ onMounted(fetchStocks);
             />
           </svg>
         </div>
+
+        <!-- [BARU] Tombol Export -->
+        <div class="flex gap-2 w-full md:w-auto">
+          <button
+            @click="exportToExcel"
+            class="flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold text-green-700 transition bg-green-50 border border-green-200 rounded-xl hover:bg-green-100 w-full md:w-auto"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-4 h-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="8" y1="13" x2="16" y2="13"></line>
+              <line x1="8" y1="17" x2="16" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            Excel
+          </button>
+          <button
+            @click="exportToPDF"
+            class="flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold text-red-700 transition bg-red-50 border border-red-200 rounded-xl hover:bg-red-100 w-full md:w-auto"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-4 h-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            PDF
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- Data Table -->
+    <!-- Data Table (Sama seperti sebelumnya) -->
     <div class="overflow-x-auto border border-gray-100 rounded-xl">
       <table class="w-full text-left border-collapse bg-white/50">
         <thead>
@@ -1085,6 +1117,7 @@ onMounted(fetchStocks);
             <th class="p-4 font-medium text-center">Action</th>
           </tr>
         </thead>
+
         <tbody v-if="isLoading">
           <tr
             v-for="i in itemsPerPage > 5 ? 5 : itemsPerPage"
@@ -1115,6 +1148,7 @@ onMounted(fetchStocks);
             </td>
           </tr>
         </tbody>
+
         <tbody v-else-if="paginatedProducts.length === 0">
           <tr>
             <td colspan="5" class="py-16 text-sm italic text-center text-gray-400">
@@ -1122,6 +1156,7 @@ onMounted(fetchStocks);
             </td>
           </tr>
         </tbody>
+
         <tbody v-else class="text-gray-600">
           <tr
             v-for="product in paginatedProducts"
@@ -1143,10 +1178,12 @@ onMounted(fetchStocks);
                 </div>
               </div>
             </td>
+
             <td class="p-4 text-center w-[15%]">
               <span class="text-xl font-black text-gray-900">{{ product.stock }}</span>
               <span class="ml-1 text-xs text-gray-400">pcs</span>
             </td>
+
             <td class="p-4 w-[35%]">
               <div
                 v-if="product.display_stocks && product.display_stocks.length > 0"
@@ -1200,6 +1237,7 @@ onMounted(fetchStocks);
                 No active batches.
               </div>
             </td>
+
             <td class="p-4 w-[15%]">
               <span
                 v-if="product.stock >= 10"
@@ -1217,6 +1255,7 @@ onMounted(fetchStocks);
                 >Out of Stock</span
               >
             </td>
+
             <td class="p-4 text-center w-[10%]">
               <button
                 @click="openAddStockModal(product)"
@@ -1230,7 +1269,7 @@ onMounted(fetchStocks);
       </table>
     </div>
 
-    <!-- Pagination Footer -->
+    <!-- Pagination Footer (Sama seperti sebelumnya) -->
     <div
       v-if="!isLoading && totalItems > 0"
       class="flex flex-col items-center justify-between gap-4 pt-4 mt-6 border-t border-gray-100 md:flex-row"
@@ -1277,7 +1316,7 @@ onMounted(fetchStocks);
       </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Modal Input Batch (Sama seperti sebelumnya) -->
     <div
       v-if="showModal"
       class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
@@ -1329,15 +1368,26 @@ import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
 import defaultBagIcon from "../../assets/products/bag_icon.jpg";
 
+// [BARU] Import Library Export
+import * as XLSX from "xlsx";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+
+// Data Utama
 const products = ref([]);
 const isLoading = ref(true);
+
+// Data Filter & Pagination
 const filters = ref({ search: "", status: "All" });
 const currentPage = ref(1);
 const itemsPerPage = ref(10);
+
+// Data Modal
 const showModal = ref(false);
 const isSubmitting = ref(false);
 const selectedProduct = ref(null);
 const newQuantity = ref(1);
+
 const axiosConfig = {
   headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
 };
@@ -1363,6 +1413,7 @@ const fetchStocks = async () => {
       }
       const trackedQuantity = batches.reduce((sum, b) => sum + Number(b.quantity), 0);
       const unbatchedQuantity = Number(product.stock) - trackedQuantity;
+
       if (unbatchedQuantity > 0) {
         batches.unshift({
           id: "legacy-" + product.id,
@@ -1400,74 +1451,19 @@ const filteredProducts = computed(() => {
   return result;
 });
 
-// [BARU] Fungsi Native Export Excel (CSV)
-const exportToExcel = () => {
-  if (filteredProducts.value.length === 0) {
-    Swal.fire("Peringatan", "Tidak ada data untuk diekspor.", "warning");
-    return;
-  }
-
-  // 1. Definisikan Header
-  const headers = [
-    "Product Code",
-    "Product Name",
-    "Total Stock (pcs)",
-    "Status",
-    "Total Active Batches",
-  ];
-
-  // 2. Map Data sesuai Filter
-  const rows = filteredProducts.value.map((p) => {
-    let status = "Out of Stock";
-    if (p.stock >= 10) status = "Safe";
-    else if (p.stock > 0) status = "Low Stock";
-
-    // Escape string dengan tanda kutip untuk mencegah koma merusak kolom CSV
-    return [
-      `"${p.code}"`,
-      `"${p.name}"`,
-      p.stock,
-      `"${status}"`,
-      p.display_stocks ? p.display_stocks.length : 0,
-    ];
-  });
-
-  // 3. Gabungkan Header dan Baris Data menjadi string CSV
-  const csvContent = [headers.join(","), ...rows.map((row) => row.join(","))].join("\n");
-
-  // 4. Buat Blob dan Paksa Download
-  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-
-  const date = new Date().toISOString().split("T")[0];
-  link.setAttribute("href", url);
-  link.setAttribute("download", `Solher_Stock_Report_${date}.csv`);
-  link.style.visibility = "hidden";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-
-  Swal.fire({
-    toast: true,
-    position: "top-end",
-    icon: "success",
-    title: "Excel file downloaded!",
-    showConfirmButton: false,
-    timer: 1500,
-  });
-};
-
 const totalItems = computed(() => filteredProducts.value.length);
 const totalPages = computed(() => Math.ceil(totalItems.value / itemsPerPage.value));
+
 const paginatedProducts = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage.value;
   const end = start + itemsPerPage.value;
   return filteredProducts.value.slice(start, end);
 });
-const showingStart = computed(() =>
-  totalItems.value === 0 ? 0 : (currentPage.value - 1) * itemsPerPage.value + 1
-);
+
+const showingStart = computed(() => {
+  if (totalItems.value === 0) return 0;
+  return (currentPage.value - 1) * itemsPerPage.value + 1;
+});
 const showingEnd = computed(() =>
   Math.min(currentPage.value * itemsPerPage.value, totalItems.value)
 );
@@ -1484,15 +1480,75 @@ const visiblePages = computed(() => {
 const changePage = (page) => {
   if (page >= 1 && page <= totalPages.value) currentPage.value = page;
 };
+
 watch([() => filters.value.search, () => filters.value.status, itemsPerPage], () => {
   currentPage.value = 1;
 });
+
+// ==========================================
+// [BARU] FUNGSI EXPORT DATA
+// ==========================================
+const getExportData = () => {
+  // Kita export data yang sedang di-filter agar user bisa custom laporan
+  return filteredProducts.value.map((p) => ({
+    "Product Code": p.code,
+    "Product Name": p.name,
+    "Total Stock (pcs)": p.stock,
+    Status: p.stock >= 10 ? "Safe" : p.stock > 0 ? "Low Stock" : "Out of Stock",
+    "Active Batches": p.display_stocks
+      ? p.display_stocks.map((b) => `${b.batch_code} (${b.quantity} pcs)`).join(", ")
+      : "None",
+  }));
+};
+
+const exportToExcel = () => {
+  const data = getExportData();
+  const worksheet = XLSX.utils.json_to_sheet(data);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Stock Report");
+  XLSX.writeFile(
+    workbook,
+    `Solher_Stock_Report_${new Date().toISOString().split("T")[0]}.xlsx`
+  );
+};
+
+const exportToPDF = () => {
+  const doc = new jsPDF();
+  const data = getExportData();
+
+  doc.setFontSize(16);
+  doc.text("Solher - Stock Management Report", 14, 15);
+  doc.setFontSize(10);
+  doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, 22);
+
+  const columns = ["Code", "Product Name", "Stock", "Status", "Batches"];
+  const rows = data.map((item) => [
+    item["Product Code"],
+    item["Product Name"],
+    item["Total Stock (pcs)"],
+    item["Status"],
+    item["Active Batches"],
+  ]);
+
+  doc.autoTable({
+    startY: 28,
+    head: [columns],
+    body: rows,
+    theme: "grid",
+    styles: { fontSize: 8 },
+    headStyles: { fillColor: [0, 0, 0] }, // Black header
+  });
+
+  doc.save(`Solher_Stock_Report_${new Date().toISOString().split("T")[0]}.pdf`);
+};
+// ==========================================
 
 const openAddStockModal = (product) => {
   selectedProduct.value = product;
   newQuantity.value = 1;
   showModal.value = true;
 };
+
 const submitAddStock = async () => {
   isSubmitting.value = true;
   try {

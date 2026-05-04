@@ -769,54 +769,31 @@ onMounted(() => {
           Monitor all critical data changes in real-time.
         </p>
       </div>
-      <div class="flex items-center gap-2">
-        <!-- [BARU] Tombol Export Excel -->
-        <button
-          @click="exportToExcel"
-          class="flex items-center gap-2 px-4 py-2 text-sm font-bold text-green-700 transition bg-green-50 border border-green-200 rounded-xl hover:bg-green-100 shadow-sm"
+      <button
+        @click="fetchLogs"
+        class="p-2 transition bg-gray-100 rounded-lg hover:bg-gray-200"
+        title="Refresh Logs"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-5 h-5 text-gray-600"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="w-4 h-4"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-            />
-          </svg>
-          Export Excel
-        </button>
-
-        <button
-          @click="fetchLogs"
-          class="p-2 transition bg-gray-100 rounded-lg hover:bg-gray-200"
-          title="Refresh Logs"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="w-5 h-5 text-gray-600"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-            />
-          </svg>
-        </button>
-      </div>
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+          />
+        </svg>
+      </button>
     </div>
 
-    <!-- ... (Template filter, table, dan pagination tidak ada yang berubah, tetap sama seperti sebelumnya) ... -->
+    <!-- Toolbar: Filters, Search & EXPORT BUTTONS -->
     <div class="flex flex-col items-center justify-between gap-4 mb-6 md:flex-row">
+      <!-- Kiri: Filters -->
       <div class="flex flex-wrap items-center w-full gap-3 md:w-auto">
         <div class="flex items-center gap-2">
           <span class="text-xs font-bold tracking-widest text-gray-400 uppercase"
@@ -833,7 +810,9 @@ onMounted(() => {
             <option :value="100">100</option>
           </select>
         </div>
+
         <div class="hidden w-px h-6 bg-gray-200 md:block"></div>
+
         <select
           v-model="filters.action"
           class="px-3 py-1.5 text-sm font-bold text-gray-600 border border-gray-200 rounded-lg outline-none cursor-pointer bg-gray-50 focus:ring-1 focus:ring-black"
@@ -843,11 +822,13 @@ onMounted(() => {
           <option value="updated">Updated</option>
           <option value="deleted">Deleted</option>
         </select>
+
         <input
           type="date"
           v-model="filters.date"
           class="px-3 py-1.5 text-sm font-bold text-gray-600 border border-gray-200 rounded-lg outline-none cursor-pointer bg-gray-50 focus:ring-1 focus:ring-black"
         />
+
         <button
           v-if="filters.action !== 'All' || filters.date || filters.search"
           @click="resetFilters"
@@ -856,8 +837,10 @@ onMounted(() => {
           Clear Filter
         </button>
       </div>
-      <div class="w-full md:w-72">
-        <div class="relative">
+
+      <!-- Kanan: Search & Export -->
+      <div class="flex flex-col items-center gap-3 w-full md:w-auto md:flex-row">
+        <div class="relative w-full md:w-64">
           <input
             v-model="filters.search"
             type="text"
@@ -878,9 +861,58 @@ onMounted(() => {
             />
           </svg>
         </div>
+
+        <!-- [BARU] Tombol Export -->
+        <div class="flex gap-2 w-full md:w-auto">
+          <button
+            @click="exportToExcel"
+            class="flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold text-green-700 transition bg-green-50 border border-green-200 rounded-xl hover:bg-green-100 w-full md:w-auto"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-4 h-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="8" y1="13" x2="16" y2="13"></line>
+              <line x1="8" y1="17" x2="16" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            Excel
+          </button>
+          <button
+            @click="exportToPDF"
+            class="flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold text-red-700 transition bg-red-50 border border-red-200 rounded-xl hover:bg-red-100 w-full md:w-auto"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-4 h-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            PDF
+          </button>
+        </div>
       </div>
     </div>
 
+    <!-- Data Table (Sama seperti sebelumnya) -->
     <div class="overflow-x-auto border border-gray-100 rounded-xl">
       <table class="w-full text-left border-collapse bg-white/50">
         <thead>
@@ -894,6 +926,7 @@ onMounted(() => {
             <th class="p-4 font-bold text-right">Details</th>
           </tr>
         </thead>
+
         <tbody v-if="isLoading">
           <tr
             v-for="i in itemsPerPage > 10 ? 10 : itemsPerPage"
@@ -905,6 +938,7 @@ onMounted(() => {
             </td>
           </tr>
         </tbody>
+
         <tbody v-else-if="paginatedLogs.length === 0">
           <tr>
             <td colspan="5" class="py-16 text-sm italic text-center text-gray-400">
@@ -912,6 +946,7 @@ onMounted(() => {
             </td>
           </tr>
         </tbody>
+
         <tbody v-else class="text-gray-600">
           <tr
             v-for="log in paginatedLogs"
@@ -958,6 +993,7 @@ onMounted(() => {
       </table>
     </div>
 
+    <!-- Pagination Footer (Sama seperti sebelumnya) -->
     <div
       v-if="!isLoading && totalItems > 0"
       class="flex flex-col items-center justify-between gap-4 pt-4 mt-6 border-t border-gray-100 md:flex-row"
@@ -1004,7 +1040,7 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- Modal ... (Sama Persis dengan asli Anda) -->
+    <!-- Modal Detail Log (Sama seperti sebelumnya) -->
     <div
       v-if="selectedLog"
       class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
@@ -1106,8 +1142,12 @@ onMounted(() => {
 <script setup>
 import { ref, onMounted, computed, watch } from "vue";
 import axios from "axios";
-import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api";
+
+// [BARU] Import Library Export
+import * as XLSX from "xlsx";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 const logs = ref([]);
 const isLoading = ref(true);
@@ -1161,65 +1201,6 @@ const filteredLogs = computed(() => {
   return result;
 });
 
-// [BARU] Fungsi Native Export Excel (CSV)
-const exportToExcel = () => {
-  if (filteredLogs.value.length === 0) {
-    Swal.fire("Peringatan", "Tidak ada data untuk diekspor.", "warning");
-    return;
-  }
-
-  const headers = [
-    "Timestamp",
-    "Actor",
-    "Role",
-    "IP Address",
-    "Action",
-    "Module",
-    "Record ID",
-  ];
-
-  const rows = filteredLogs.value.map((log) => {
-    const timestamp = new Date(log.created_at).toLocaleString();
-    const actorName = log.user
-      ? `${log.user.first_name} ${log.user.last_name}`
-      : "System";
-    const role = log.user?.usertype || "system";
-
-    return [
-      `"${timestamp}"`,
-      `"${actorName}"`,
-      `"${role}"`,
-      `"${log.ip_address}"`,
-      `"${log.action.toUpperCase()}"`,
-      `"${log.model_type}"`,
-      log.model_id,
-    ];
-  });
-
-  const csvContent = [headers.join(","), ...rows.map((row) => row.join(","))].join("\n");
-
-  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-
-  const date = new Date().toISOString().split("T")[0];
-  link.setAttribute("href", url);
-  link.setAttribute("download", `Solher_Audit_Trail_${date}.csv`);
-  link.style.visibility = "hidden";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-
-  Swal.fire({
-    toast: true,
-    position: "top-end",
-    icon: "success",
-    title: "Excel file downloaded!",
-    showConfirmButton: false,
-    timer: 1500,
-  });
-};
-
 const totalItems = computed(() => filteredLogs.value.length);
 const totalPages = computed(() => Math.ceil(totalItems.value / itemsPerPage.value));
 const paginatedLogs = computed(() => {
@@ -1234,9 +1215,6 @@ const showingEnd = computed(() =>
   Math.min(currentPage.value * itemsPerPage.value, totalItems.value)
 );
 
-const changePage = (page) => {
-  if (page >= 1 && page <= totalPages.value) currentPage.value = page;
-};
 const visiblePages = computed(() => {
   const current = currentPage.value;
   const total = totalPages.value;
@@ -1246,6 +1224,9 @@ const visiblePages = computed(() => {
   return [1, "...", current - 1, current, current + 1, "...", total];
 });
 
+const changePage = (page) => {
+  if (page >= 1 && page <= totalPages.value) currentPage.value = page;
+};
 watch(
   [
     () => filters.value.action,
@@ -1257,6 +1238,64 @@ watch(
     currentPage.value = 1;
   }
 );
+
+// ==========================================
+// [BARU] FUNGSI EXPORT DATA
+// ==========================================
+const getExportData = () => {
+  return filteredLogs.value.map((log) => ({
+    "Date & Time": new Date(log.created_at).toLocaleString(),
+    Actor: log.user ? `${log.user.first_name} ${log.user.last_name}` : "System",
+    Role: log.user?.usertype || "system",
+    "IP Address": log.ip_address,
+    Action: log.action.toUpperCase(),
+    Module: log.model_type,
+    "Module ID": log.model_id,
+  }));
+};
+
+const exportToExcel = () => {
+  const data = getExportData();
+  const worksheet = XLSX.utils.json_to_sheet(data);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Audit Logs");
+  XLSX.writeFile(
+    workbook,
+    `Solher_System_Audit_${new Date().toISOString().split("T")[0]}.xlsx`
+  );
+};
+
+const exportToPDF = () => {
+  const doc = new jsPDF();
+  const data = getExportData();
+
+  doc.setFontSize(16);
+  doc.text("Solher - System Audit Trail", 14, 15);
+  doc.setFontSize(10);
+  doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, 22);
+
+  const columns = ["Date & Time", "Actor", "Role", "Action", "Module", "ID"];
+  const rows = data.map((item) => [
+    item["Date & Time"],
+    item["Actor"],
+    item["Role"],
+    item["Action"],
+    item["Module"],
+    item["Module ID"],
+  ]);
+
+  doc.autoTable({
+    startY: 28,
+    head: [columns],
+    body: rows,
+    theme: "grid",
+    styles: { fontSize: 8 },
+    headStyles: { fillColor: [0, 0, 0] }, // Black header
+  });
+
+  doc.save(`Solher_System_Audit_${new Date().toISOString().split("T")[0]}.pdf`);
+};
+// ==========================================
 
 const viewDetails = (log) => {
   selectedLog.value = log;
