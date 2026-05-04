@@ -16,6 +16,8 @@
     "country-state-city": "^3.2.1",
     "fuse.js": "^7.1.0",
     "html2pdf.js": "^0.14.0",
+    "jspdf": "^4.2.1",
+    "jspdf-autotable": "^5.0.7",
     "laravel-echo": "^2.3.4",
     "leaflet": "^1.9.4",
     "pusher-js": "^8.5.0",
