@@ -1187,7 +1187,7 @@ onMounted(() => {
     <div v-reveal class="grid w-full grid-cols-1 overflow-hidden md:grid-cols-2">
       <div
         class="relative overflow-hidden cursor-pointer group"
-        @click="navigateToSpecificProduct('ZAHARA')"
+        @click="navigateToSpecificProduct('ZAHARA MOCCA')"
       >
         <img
           src="../../assets/DSCF2648.jpg"
@@ -1205,7 +1205,7 @@ onMounted(() => {
 
       <div class="relative overflow-hidden group">
         <img
-          src="../../assets/home_img_2.png"
+          src="../../assets/DSCF7586.jpg"
           class="w-full h-[400px] md:h-full object-cover group-hover:scale-105 transition-transform duration-700"
         />
         <div
