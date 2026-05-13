@@ -1460,7 +1460,7 @@ onMounted(() => {
           v-reveal
           class="mb-10 font-serif text-3xl italic font-light text-gray-800 md:text-4xl"
         >
-          Volume 4 - The New Collection
+          Volume 4 - In Between Us
         </h3>
 
         <div v-if="isLoading" class="flex gap-4 overflow-hidden">
