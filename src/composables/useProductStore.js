@@ -57,6 +57,65 @@
 // }
 
 // src/composables/useProductStore.js
+// import { reactive } from 'vue';
+// import axios from 'axios';
+// import { BASE_URL } from '../config/api';
+
+// const state = reactive({
+//     volumeOne: [],
+//     volumeTwo: [],
+//     volumeThree: [], // <--- [BARU] Tambahkan state untuk Volume 3
+//     collectionsProducts: [],
+//     categories: [],
+//     isHomeLoaded: false,
+//     isCollectionsLoaded: false
+// });
+
+// export function useProductStore() {
+//     const fetchHomeData = async () => {
+//         if (state.isHomeLoaded) return; 
+
+//         try {
+//             // [PERBAIKAN] Panggil 3 API sekaligus secara paralel
+//             const [resV1, resV2, resV3] = await Promise.all([
+//                 axios.get(`${BASE_URL}/home/category/C001`),
+//                 axios.get(`${BASE_URL}/home/category/C002`),
+//                 axios.get(`${BASE_URL}/home/category/C003`) // <--- [BARU] API C003
+//             ]);
+            
+//             state.volumeOne = resV1.data;
+//             state.volumeTwo = resV2.data;
+//             state.volumeThree = resV3.data; // <--- [BARU] Simpan ke state
+            
+//             state.isHomeLoaded = true;
+//         } catch (err) {
+//             console.error("Failed to load home data");
+//         }
+//     };
+
+//     const fetchCollectionsData = async () => {
+//         if (state.isCollectionsLoaded) return;
+
+//         try {
+//             const [prodRes, catRes] = await Promise.all([
+//                 axios.get(`${BASE_URL}/products`),
+//                 axios.get(`${BASE_URL}/guest/categories`)
+//             ]);
+//             state.collectionsProducts = prodRes.data;
+//             state.categories = catRes.data.data;
+//             state.isCollectionsLoaded = true;
+//         } catch (error) {
+//             console.error("Error loading collections:", error);
+//         }
+//     };
+
+//     return {
+//         state,
+//         fetchHomeData,
+//         fetchCollectionsData
+//     };
+// }
+
 import { reactive } from 'vue';
 import axios from 'axios';
 import { BASE_URL } from '../config/api';
@@ -64,7 +123,8 @@ import { BASE_URL } from '../config/api';
 const state = reactive({
     volumeOne: [],
     volumeTwo: [],
-    volumeThree: [], // <--- [BARU] Tambahkan state untuk Volume 3
+    volumeThree: [],
+    volumeFour: [],
     collectionsProducts: [],
     categories: [],
     isHomeLoaded: false,
@@ -76,20 +136,22 @@ export function useProductStore() {
         if (state.isHomeLoaded) return; 
 
         try {
-            // [PERBAIKAN] Panggil 3 API sekaligus secara paralel
-            const [resV1, resV2, resV3] = await Promise.all([
+            // [PERBAIKAN] Panggil 4 API sekaligus secara paralel
+            const [resV1, resV2, resV3, resV4] = await Promise.all([
                 axios.get(`${BASE_URL}/home/category/C001`),
                 axios.get(`${BASE_URL}/home/category/C002`),
-                axios.get(`${BASE_URL}/home/category/C003`) // <--- [BARU] API C003
+                axios.get(`${BASE_URL}/home/category/C003`),
+                axios.get(`${BASE_URL}/home/category/C004`) 
             ]);
             
             state.volumeOne = resV1.data;
             state.volumeTwo = resV2.data;
-            state.volumeThree = resV3.data; // <--- [BARU] Simpan ke state
+            state.volumeThree = resV3.data;
+            state.volumeFour = resV4.data; // <--- [BARU] Simpan hasil resV4 ke state
             
             state.isHomeLoaded = true;
         } catch (err) {
-            console.error("Failed to load home data");
+            console.error("Failed to load home data", err);
         }
     };
 
