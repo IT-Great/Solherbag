@@ -1520,7 +1520,7 @@ onMounted(fetchData);
             <p class="font-bold text-gray-900">{{ product.material }}</p>
           </div>
 
-          <div
+          <!-- <div
             v-if="product.strap_length"
             class="flex items-start justify-between w-full pt-3 text-sm border-t border-gray-100"
           >
@@ -1531,6 +1531,28 @@ onMounted(fetchData);
             <span class="font-medium text-right text-gray-900">{{
               product.strap_length
             }}</span>
+          </div> -->
+
+          <div
+            v-if="product.strap_length"
+            class="flex items-start justify-between w-full pt-3 text-sm border-t border-gray-100"
+          >
+            <span
+              class="text-gray-500 font-bold uppercase tracking-widest text-[10px] w-24 shrink-0"
+              >Strap Length</span
+            >
+            <span class="font-medium text-right text-gray-900">
+              <template
+                v-if="
+                  Array.isArray(product.strap_length) && product.strap_length.length > 0
+                "
+              >
+                {{ product.strap_length.join(", ") }}
+              </template>
+              <template v-else-if="!Array.isArray(product.strap_length)">
+                {{ product.strap_length }}
+              </template>
+            </span>
           </div>
 
           <div

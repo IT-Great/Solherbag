@@ -640,7 +640,7 @@ onMounted(async () => {
                 required
               />
             </div>
-            <div class="mt-2 md:col-span-2">
+            <!-- <div class="mt-2 md:col-span-2">
               <label class="block mb-1 text-xs font-bold text-gray-600"
                 >Strap Length (Optional)</label
               >
@@ -650,6 +650,64 @@ onMounted(async () => {
                 placeholder="e.g. 100 - 120 cm Adjustable"
                 class="w-full p-3 text-sm bg-white border border-gray-200 rounded-xl"
               />
+            </div> -->
+            <div class="pt-4 mt-2 border-t border-gray-200 md:col-span-5">
+              <label
+                class="block mb-2 text-xs font-bold tracking-widest text-gray-600 uppercase"
+              >
+                Strap Length Options (Optional)
+              </label>
+
+              <div
+                class="flex items-center gap-3 p-3 mb-4 border border-gray-200 bg-gray-50 rounded-xl"
+              >
+                <div class="flex flex-col flex-1">
+                  <label class="text-[10px] font-bold text-gray-500 mb-1"
+                    >Add Strap Length</label
+                  >
+                  <input
+                    type="text"
+                    v-model="newStrapLength"
+                    placeholder="e.g. 100 cm, 120 cm Adjustable"
+                    class="bg-white p-2.5 rounded-lg w-full text-sm border border-gray-200 outline-none focus:ring-2 focus:ring-black"
+                    @keyup.enter.prevent="addStrapLength"
+                  />
+                </div>
+                <div class="flex flex-col justify-end h-full mt-auto">
+                  <button
+                    type="button"
+                    @click="addStrapLength"
+                    class="bg-black text-white px-4 py-2.5 rounded-lg font-bold text-xs uppercase tracking-widest hover:bg-gray-800 transition"
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+
+              <div
+                class="flex flex-wrap gap-2 p-4 bg-white border border-gray-200 rounded-xl min-h-[60px]"
+              >
+                <p
+                  v-if="form.strap_length.length === 0"
+                  class="w-full my-auto text-xs italic text-center text-gray-400"
+                >
+                  No strap lengths added yet.
+                </p>
+                <div
+                  v-for="(strap, idx) in form.strap_length"
+                  :key="idx"
+                  class="flex items-center gap-2 px-3 py-1.5 border border-gray-200 shadow-sm bg-gray-50 rounded-lg"
+                >
+                  <span class="text-xs font-bold text-gray-800">{{ strap }}</span>
+                  <button
+                    type="button"
+                    @click="removeStrapLength(idx)"
+                    class="ml-1 font-bold text-gray-400 hover:text-red-500 focus:outline-none"
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
             </div>
             <div>
               <label class="block mb-1 text-xs font-bold text-gray-600"
@@ -933,7 +991,8 @@ const form = ref({
   width: "",
   height: "",
   material: "",
-  strap_length: "", // <--- BARU
+  // strap_length: "", // <--- BARU
+  strap_length: [],
   color: [],
   description: "",
   // care: "",
@@ -943,6 +1002,21 @@ const form = ref({
   variant_video: null,
   discount_price: "",
 });
+
+// State & Fungsi untuk input multiple strap_length
+const newStrapLength = ref("");
+
+const addStrapLength = () => {
+  if (!newStrapLength.value.trim()) return;
+  if (!form.value.strap_length.includes(newStrapLength.value.trim())) {
+    form.value.strap_length.push(newStrapLength.value.trim());
+  }
+  newStrapLength.value = "";
+};
+
+const removeStrapLength = (index) => {
+  form.value.strap_length.splice(index, 1);
+};
 
 // // [BARU] Daftar Warna Standar
 // const colorOptions = [
@@ -1107,6 +1181,15 @@ const handleSubmit = async () => {
 
     if (form.value.variant_video) {
       formData.append("variant_video", form.value.variant_video);
+    }
+
+    // [BARU] Cara mengirim Array Strap Length ke Laravel
+    if (form.value.strap_length && form.value.strap_length.length > 0) {
+      form.value.strap_length.forEach((s, index) => {
+        formData.append(`strap_length[${index}]`, s);
+      });
+    } else {
+      formData.append("strap_length", ""); // Jika dikosongkan saat update
     }
 
     await axios.post(`${BASE_URL}/products`, formData, {
