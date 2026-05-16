@@ -1100,7 +1100,6 @@ onUnmounted(() => {
 
 <template>
   <div class="relative bg-[#F3F4F6] px-6 md:px-12 pt-12 pb-24 min-h-screen">
-    
     <div
       v-if="isLoading"
       class="z-[100] fixed inset-0 flex flex-col justify-center items-center bg-[#F3F4F6]/80 backdrop-blur-sm transition-all duration-300"
@@ -1122,9 +1121,7 @@ onUnmounted(() => {
 
       <div class="flex flex-col justify-between gap-6 mb-12 md:flex-row">
         <div class="relative w-full md:w-80">
-          <span
-            class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400"
-          >
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="w-5 h-5"
@@ -1207,13 +1204,8 @@ onUnmounted(() => {
                 transform: `translateX(-${(activeSlides[product.id] || 0) * 100}%)`,
               }"
             >
-              <template
-                v-for="(media, index) in getMediaArray(product)"
-                :key="index"
-              >
-                <div
-                  class="relative flex-shrink-0 w-full h-full overflow-hidden"
-                >
+              <template v-for="(media, index) in getMediaArray(product)" :key="index">
+                <div class="relative flex-shrink-0 w-full h-full overflow-hidden">
                   <img
                     v-if="media.type === 'image'"
                     :src="media.url || defaultBagIcon"
@@ -1235,9 +1227,7 @@ onUnmounted(() => {
 
             <button
               v-if="getMediaArray(product).length > 1"
-              @click.stop="
-                prevSlide(product.id, getMediaArray(product).length - 1)
-              "
+              @click.stop="prevSlide(product.id, getMediaArray(product).length - 1)"
               class="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-1.5 rounded-full opacity-0 group-hover/slider:opacity-100 transition z-10 shadow-sm text-black"
             >
               <svg
@@ -1258,9 +1248,7 @@ onUnmounted(() => {
 
             <button
               v-if="getMediaArray(product).length > 1"
-              @click.stop="
-                nextSlide(product.id, getMediaArray(product).length - 1)
-              "
+              @click.stop="nextSlide(product.id, getMediaArray(product).length - 1)"
               class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-1.5 rounded-full opacity-0 group-hover/slider:opacity-100 transition z-10 shadow-sm text-black"
             >
               <svg
@@ -1341,16 +1329,17 @@ onUnmounted(() => {
             >
               Only {{ product.stock }} left!
             </div>
-            
+
             <div
               v-else-if="product.stock <= 0"
               class="absolute inset-0 bg-white/60 backdrop-blur-[1px] flex justify-center items-center z-20"
             >
-              <span class="px-4 py-1 text-xs font-bold tracking-widest text-white uppercase transform bg-black rounded shadow-lg -rotate-12">
+              <span
+                class="px-4 py-1 text-xs font-bold tracking-widest text-white uppercase transform bg-black rounded shadow-lg -rotate-12"
+              >
                 Sold Out
               </span>
             </div>
-            
           </div>
 
           <div class="space-y-2 text-center md:text-left">
@@ -1359,9 +1348,7 @@ onUnmounted(() => {
             >
               {{ product.name }}
             </h3>
-            <div
-              class="flex items-center justify-center gap-2 md:justify-start"
-            >
+            <div class="flex items-center justify-center gap-2 md:justify-start">
               <template v-if="product.discount_price">
                 <p class="text-sm font-bold text-red-600 md:text-base">
                   {{ formatPrice(product.discount_price) }}
@@ -1370,10 +1357,7 @@ onUnmounted(() => {
                   {{ formatPrice(product.price) }}
                 </p>
               </template>
-              <p
-                v-else
-                class="text-sm font-semibold text-gray-600 md:text-base"
-              >
+              <p v-else class="text-sm font-semibold text-gray-600 md:text-base">
                 {{ formatPrice(product.price) }}
               </p>
             </div>
@@ -1532,7 +1516,7 @@ onUnmounted(() => {
 //       },
 //     );
 //   } catch (error) {
-//     fetchWishlists(); 
+//     fetchWishlists();
 //   }
 // };
 
@@ -1605,7 +1589,7 @@ onUnmounted(() => {
 // const goToDetail = (product) => {
 //   router.push({
 //     path: `/product/${product.id}`,
-//     state: { productData: JSON.stringify(product) } 
+//     state: { productData: JSON.stringify(product) }
 //   });
 // };
 
@@ -1671,9 +1655,7 @@ const getMediaArray = (prod) => {
   let media = [{ type: "image", url: prod.image || defaultBagIcon }];
 
   if (prod.variant_images && Array.isArray(prod.variant_images)) {
-    prod.variant_images.forEach((img) =>
-      media.push({ type: "image", url: img }),
-    );
+    prod.variant_images.forEach((img) => media.push({ type: "image", url: img }));
   }
   if (prod.variant_video) {
     media.push({ type: "video", url: prod.variant_video });
@@ -1727,10 +1709,10 @@ const toggleWishlist = async (productId) => {
       { product_id: productId },
       {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      },
+      }
     );
   } catch (error) {
-    fetchWishlists(); 
+    fetchWishlists();
   }
 };
 
@@ -1755,9 +1737,12 @@ const filteredProducts = computed(() => {
   // 1. Terapkan Filter Kategori & Diskon terlebih dahulu (Meringankan beban pencarian)
   sourceProducts = sourceProducts.filter((p) => {
     const productCategory = p.category?.name || p.category_name;
-    const matchesCategory = selectedCategory.value === "" || productCategory === selectedCategory.value;
-    const matchesSale = showOnlySale.value ? p.discount_price !== null && p.discount_price > 0 : true;
-    
+    const matchesCategory =
+      selectedCategory.value === "" || productCategory === selectedCategory.value;
+    const matchesSale = showOnlySale.value
+      ? p.discount_price !== null && p.discount_price > 0
+      : true;
+
     return matchesCategory && matchesSale;
   });
 
@@ -1766,22 +1751,22 @@ const filteredProducts = computed(() => {
     const fuseOptions = {
       // Bobot pencarian: Nama lebih penting dari kategori, kode SKU lebih penting dari kategori
       keys: [
-        { name: 'name', weight: 0.7 },
-        { name: 'code', weight: 0.2 },
-        { name: 'category.name', weight: 0.1 }
+        { name: "name", weight: 0.7 },
+        { name: "code", weight: 0.2 },
+        { name: "category.name", weight: 0.1 },
       ],
-      // Threshold: 0.0 (Sama persis), 1.0 (Cocok dengan apapun). 
+      // Threshold: 0.0 (Sama persis), 1.0 (Cocok dengan apapun).
       // 0.3 adalah angka emas (Golden Ratio) untuk menoleransi typo 1-2 huruf.
       threshold: 0.3,
       // Mengabaikan huruf besar/kecil (otomatis aktif di Fuse)
-      ignoreLocation: true 
+      ignoreLocation: true,
     };
 
     const fuse = new Fuse(sourceProducts, fuseOptions);
     const results = fuse.search(searchQuery.value);
-    
+
     // Fuse mengembalikan objek berupa { item: product, refIndex: ... }, kita ambil item-nya saja
-    return results.map(result => result.item);
+    return results.map((result) => result.item);
   }
 
   // Jika tidak ada pencarian, kembalikan produk yang sudah difilter kategori/sale
@@ -1790,7 +1775,7 @@ const filteredProducts = computed(() => {
 // ============================================================================
 
 const totalPages = computed(() =>
-  Math.ceil(filteredProducts.value.length / itemsPerPage),
+  Math.ceil(filteredProducts.value.length / itemsPerPage)
 );
 const paginatedProducts = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage;
@@ -1826,10 +1811,18 @@ const formatPrice = (value) =>
     minimumFractionDigits: 0,
   }).format(value);
 
+// const goToDetail = (product) => {
+//   router.push({
+//     path: `/product/${product.id}`,
+//     state: { productData: JSON.stringify(product) }
+//   });
+// };
+
 const goToDetail = (product) => {
   router.push({
-    path: `/product/${product.id}`,
-    state: { productData: JSON.stringify(product) } 
+    // [PERBAIKAN] Gunakan slug jika ada, jika produk lama belum punya slug, fallback ke id
+    path: `/product/${product.slug || product.id}`,
+    state: { productData: JSON.stringify(product) },
   });
 };
 
@@ -1874,11 +1867,11 @@ watch(
     if (newSearch !== undefined) {
       searchQuery.value = newSearch;
     }
-  },
+  }
 );
 
 // [BARU] Pantau perubahan URL kategori
-// Ini berguna jika user sudah berada di halaman Collection, lalu dia menekan 
+// Ini berguna jika user sudah berada di halaman Collection, lalu dia menekan
 // kategori lain dari Header Mega Menu. Sistem akan otomatis memindahkan filternya.
 watch(
   () => route.query.category,
@@ -1913,7 +1906,9 @@ onUnmounted(() => {
 }
 
 @keyframes bounceDots {
-  0%, 80%, 100% {
+  0%,
+  80%,
+  100% {
     transform: scale(0);
     opacity: 0.5;
   }

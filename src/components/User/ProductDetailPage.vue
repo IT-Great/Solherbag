@@ -5023,7 +5023,7 @@ onMounted(fetchProductDetail);
                 <div
                   v-for="sibling in siblingColors"
                   :key="sibling.id"
-                  @click="goToColorVariant(sibling.id)"
+                  @click="goToColorVariant(sibling)"
                   :class="
                     product.id === sibling.id
                       ? 'ring-2 ring-black border-transparent scale-110 shadow-md'
@@ -5156,7 +5156,7 @@ onMounted(fetchProductDetail);
         <div
           v-for="rec in recommendedProducts"
           :key="rec.id"
-          @click="goToRecommendedProduct(rec.id)"
+          @click="goToRecommendedProduct(rec)"
           class="flex flex-col cursor-pointer group"
         >
           <div
@@ -5466,16 +5466,36 @@ const fetchSiblingColors = async (productName) => {
   }
 };
 
-const goToColorVariant = async (siblingId) => {
-  if (product.value.id === siblingId) return;
+// const goToColorVariant = async (siblingId) => {
+//   if (product.value.id === siblingId) return;
+//   try {
+//     const res = await axios.get(`${BASE_URL}/products/${siblingId}`);
+//     product.value = res.data;
+//     fetchRecommendations(product.value.category_id, product.value.id);
+//     fetchWishlists();
+//     activeSlide.value = 0;
+//     selectedQuantity.value = 1;
+//     window.history.pushState({}, "", `/product/${siblingId}`);
+//   } catch (error) {
+//     console.error("Gagal berpindah warna", error);
+//   }
+// };
+
+// A. Update navigasi ke Varian Warna
+const goToColorVariant = async (sibling) => {
+  // Karena sekarang pakai slug, passing parameter 'sibling' seluruhnya, bukan id-nya saja
+  const identifier = sibling.slug || sibling.id;
+
+  if (product.value.id === sibling.id || product.value.slug === sibling.slug) return;
   try {
-    const res = await axios.get(`${BASE_URL}/products/${siblingId}`);
+    const res = await axios.get(`${BASE_URL}/products/${identifier}`);
     product.value = res.data;
     fetchRecommendations(product.value.category_id, product.value.id);
     fetchWishlists();
     activeSlide.value = 0;
     selectedQuantity.value = 1;
-    window.history.pushState({}, "", `/product/${siblingId}`);
+    // Ubah URL bar di atas tanpa me-refresh halaman
+    window.history.pushState({}, "", `/product/${identifier}`);
   } catch (error) {
     console.error("Gagal berpindah warna", error);
   }
@@ -5496,9 +5516,16 @@ const fetchRecommendations = async (categoryId, currentProductId) => {
   }
 };
 
-const goToRecommendedProduct = (id) => {
+// const goToRecommendedProduct = (id) => {
+//   isLoading.value = true;
+//   router.push(`/product/${id}`);
+// };
+
+// B. Update navigasi ke Produk Rekomendasi
+const goToRecommendedProduct = (rec) => {
   isLoading.value = true;
-  router.push(`/product/${id}`);
+  const identifier = rec.slug || rec.id;
+  router.push(`/product/${identifier}`);
 };
 
 const fetchProductDetail = async () => {
