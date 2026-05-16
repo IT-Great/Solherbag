@@ -519,11 +519,20 @@ tr {
 
     <div class="overflow-x-auto">
       <table class="w-full text-left border-collapse">
+        <!-- <thead>
+          <tr class="text-xs tracking-widest text-gray-400 uppercase border-b">
+            <th class="pb-4 pl-2 font-medium">Profile</th>
+            <th class="pb-4 font-medium">Full Name</th>
+            <th class="pb-4 font-medium">Email</th>
+            <th class="pb-4 pr-2 font-medium text-center">Action</th>
+          </tr>
+        </thead> -->
         <thead>
           <tr class="text-xs tracking-widest text-gray-400 uppercase border-b">
             <th class="pb-4 pl-2 font-medium">Profile</th>
             <th class="pb-4 font-medium">Full Name</th>
             <th class="pb-4 font-medium">Email</th>
+            <th class="pb-4 font-medium">Joined Date</th>
             <th class="pb-4 pr-2 font-medium text-center">Action</th>
           </tr>
         </thead>
@@ -577,6 +586,9 @@ tr {
               {{ user.first_name }} {{ user.last_name }}
             </td>
             <td class="py-4 text-sm">{{ user.email }}</td>
+            <td class="py-4 text-xs text-gray-500 font-medium">
+              {{ formatDate(user.created_at) }}
+            </td>
             <!-- <td class="py-4 pr-2 text-center">
               <button class="px-4 py-2 text-xs font-medium text-gray-600 transition-colors bg-gray-100 rounded-lg group-hover:bg-blue-50 group-hover:text-blue-600">
                 View Details
@@ -692,6 +704,15 @@ const isLoading = ref(true); // Pastikan ini true di awal agar skeleton langsung
 const searchQuery = ref("");
 const currentPage = ref(1);
 const itemsPerPage = ref(10);
+
+const formatDate = (dateString) => {
+  if (!dateString) return "-";
+  return new Date(dateString).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+};
 
 const axiosConfig = {
   headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },

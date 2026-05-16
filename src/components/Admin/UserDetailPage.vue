@@ -18,9 +18,23 @@
         "
         class="rounded-full w-20 h-20 object-cover"
       />
-      <div>
+      <!-- <div>
         <h2 class="font-bold text-2xl">{{ user.first_name }} {{ user.last_name }}</h2>
         <p class="text-gray-400">{{ user.email }}</p>
+      </div> -->
+      <div class="flex-1 flex justify-between items-start">
+        <div>
+          <h2 class="font-bold text-2xl">{{ user.first_name }} {{ user.last_name }}</h2>
+          <p class="text-gray-500 font-medium mt-1">{{ user.email }}</p>
+        </div>
+        <div class="text-right bg-gray-50 px-4 py-2 rounded-xl border border-gray-100">
+          <p class="text-[10px] text-gray-400 uppercase tracking-widest font-bold mb-0.5">
+            Member Since
+          </p>
+          <p class="text-xs font-semibold text-gray-800">
+            {{ formatDateLong(user.created_at) }}
+          </p>
+        </div>
       </div>
     </div>
 
@@ -61,6 +75,17 @@ const route = useRoute();
 const user = ref(null);
 const axiosConfig = {
   headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
+};
+
+const formatDateLong = (dateString) => {
+  if (!dateString) return "-";
+  return new Date(dateString).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 };
 
 onMounted(async () => {
