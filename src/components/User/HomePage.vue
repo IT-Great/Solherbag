@@ -1261,7 +1261,7 @@ onMounted(() => {
           <div
             v-for="p in state.trendingProducts"
             :key="'trend-' + p.id"
-            @click="$router.push(`/product/${p.id}`)"
+            @click="$router.push(`/product/${p.slug || p.id}`)"
             class="group flex-shrink-0 w-[240px] md:w-[300px] cursor-pointer"
           >
             <div
@@ -1327,7 +1327,7 @@ onMounted(() => {
           <div
             v-for="p in state.volumeOne"
             :key="p.id"
-            @click="$router.push(`/product/${p.id}`)"
+            @click="$router.push(`/product/${p.slug || p.id}`)"
             class="group flex-shrink-0 w-[300px] md:w-[380px] cursor-pointer"
           >
             <div class="relative mb-4 overflow-hidden bg-gray-100">
@@ -1379,7 +1379,7 @@ onMounted(() => {
           <div
             v-for="p in state.volumeTwo"
             :key="p.id"
-            @click="$router.push(`/product/${p.id}`)"
+            @click="$router.push(`/product/${p.slug || p.id}`)"
             class="group flex-shrink-0 w-[300px] md:w-[380px] cursor-pointer"
           >
             <div class="relative mb-4 overflow-hidden bg-gray-100">
@@ -1425,7 +1425,7 @@ onMounted(() => {
           <div
             v-for="p in state.volumeThree"
             :key="p.id"
-            @click="$router.push(`/product/${p.id}`)"
+            @click="$router.push(`/product/${p.slug || p.id}`)"
             class="group flex-shrink-0 w-[300px] md:w-[380px] cursor-pointer"
           >
             <div class="relative mb-4 overflow-hidden bg-gray-100">
@@ -1479,7 +1479,7 @@ onMounted(() => {
           <div
             v-for="p in state.volumeFour"
             :key="p.id"
-            @click="$router.push(`/product/${p.id}`)"
+            @click="$router.push(`/product/${p.slug || p.id}`)"
             class="group flex-shrink-0 w-[300px] md:w-[380px] cursor-pointer"
           >
             <div class="relative mb-4 overflow-hidden bg-gray-100">
@@ -1685,12 +1685,24 @@ const initData = async () => {
   }
 };
 
+// const navigateToSpecificProduct = async (query) => {
+//   try {
+//     const res = await axios.get(`${BASE_URL}/home/find-product`, {
+//       params: { query },
+//     });
+//     router.push(`/product/${res.data.id}`);
+//   } catch (err) {
+//     console.error("Product link broken or not found");
+//   }
+// };
+
 const navigateToSpecificProduct = async (query) => {
   try {
     const res = await axios.get(`${BASE_URL}/home/find-product`, {
       params: { query },
     });
-    router.push(`/product/${res.data.id}`);
+    // [PERBAIKAN] Gunakan slug sebagai prioritas URL
+    router.push(`/product/${res.data.slug || res.data.id}`);
   } catch (err) {
     console.error("Product link broken or not found");
   }

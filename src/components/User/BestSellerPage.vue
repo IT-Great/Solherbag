@@ -1,24 +1,35 @@
 <template>
-  <div class="mx-auto px-6 py-12 md:py-24 max-w-7xl min-h-screen">
-    <div class="text-center mb-12 md:mb-16 animate-fade-in">
-      <h1 class="font-serif text-4xl md:text-5xl uppercase tracking-tighter text-gray-900 mb-4">
+  <div class="min-h-screen px-6 py-12 mx-auto md:py-24 max-w-7xl">
+    <div class="mb-12 text-center md:mb-16 animate-fade-in">
+      <h1
+        class="mb-4 font-serif text-4xl tracking-tighter text-gray-900 uppercase md:text-5xl"
+      >
         Best Sellers
       </h1>
-      <p class="text-gray-500 text-sm md:text-base max-w-2xl mx-auto">
-        Discover our most loved pieces. Handcrafted perfection that defines the SolHer experience.
+      <p class="max-w-2xl mx-auto text-sm text-gray-500 md:text-base">
+        Discover our most loved pieces. Handcrafted perfection that defines the SolHer
+        experience.
       </p>
     </div>
 
-    <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 mb-10 flex flex-col md:flex-row gap-6 items-center justify-between animate-fade-in">
-      <div class="flex flex-col md:flex-row gap-4 w-full md:w-auto">
-        <select v-model="selectedCategory" class="bg-white border border-gray-200 text-gray-700 text-xs uppercase tracking-widest font-bold rounded-xl focus:ring-black focus:border-black block w-full md:w-48 p-3 outline-none cursor-pointer">
+    <div
+      class="flex flex-col items-center justify-between gap-6 p-6 mb-10 border border-gray-100 bg-gray-50 rounded-2xl md:flex-row animate-fade-in"
+    >
+      <div class="flex flex-col w-full gap-4 md:flex-row md:w-auto">
+        <select
+          v-model="selectedCategory"
+          class="block w-full p-3 text-xs font-bold tracking-widest text-gray-700 uppercase bg-white border border-gray-200 outline-none cursor-pointer rounded-xl focus:ring-black focus:border-black md:w-48"
+        >
           <option value="all">All Categories</option>
           <option v-for="cat in uniqueCategories" :key="cat" :value="cat">
             {{ cat }}
           </option>
         </select>
 
-        <select v-model="sortOption" class="bg-white border border-gray-200 text-gray-700 text-xs uppercase tracking-widest font-bold rounded-xl focus:ring-black focus:border-black block w-full md:w-48 p-3 outline-none cursor-pointer">
+        <select
+          v-model="sortOption"
+          class="block w-full p-3 text-xs font-bold tracking-widest text-gray-700 uppercase bg-white border border-gray-200 outline-none cursor-pointer rounded-xl focus:ring-black focus:border-black md:w-48"
+        >
           <option value="sales_desc">Top Sales</option>
           <option value="price_asc">Price: Low to High</option>
           <option value="price_desc">Price: High to Low</option>
@@ -26,16 +37,16 @@
         </select>
       </div>
 
-      <div class="text-xs font-bold text-gray-400 uppercase tracking-widest">
+      <div class="text-xs font-bold tracking-widest text-gray-400 uppercase">
         Showing {{ processedProducts.length }} Products
       </div>
     </div>
 
-    <div v-if="isLoading" class="grid grid-cols-2 md:grid-cols-4 gap-6">
+    <div v-if="isLoading" class="grid grid-cols-2 gap-6 md:grid-cols-4">
       <div v-for="i in 8" :key="`skel-${i}`" class="flex flex-col gap-2 animate-pulse">
         <div class="bg-gray-200 aspect-square rounded-2xl"></div>
-        <div class="bg-gray-200 h-3 w-3/4 rounded mt-1"></div>
-        <div class="bg-gray-200 h-3 w-1/2 rounded"></div>
+        <div class="w-3/4 h-3 mt-1 bg-gray-200 rounded"></div>
+        <div class="w-1/2 h-3 bg-gray-200 rounded"></div>
       </div>
     </div>
 
@@ -45,54 +56,85 @@
       tag="div"
       class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12"
     >
+      <!-- <div
+        v-for="(product, index) in processedProducts"
+        :key="product.id"
+        class="flex flex-col cursor-pointer group"
+        @click="$router.push(`/product/${product.id}`)"
+      > -->
       <div
         v-for="(product, index) in processedProducts"
         :key="product.id"
         class="group flex flex-col cursor-pointer"
-        @click="$router.push(`/product/${product.id}`)"
+        @click="$router.push(`/product/${product.slug || product.id}`)"
       >
-        <div class="relative aspect-square overflow-hidden rounded-2xl bg-gray-50 mb-4 border border-gray-100 shadow-sm transition-all duration-300 group-hover:shadow-md">
+        <div
+          class="relative mb-4 overflow-hidden transition-all duration-300 border border-gray-100 shadow-sm aspect-square rounded-2xl bg-gray-50 group-hover:shadow-md"
+        >
           <img
             :src="product.image"
-            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
             :alt="product.name"
             loading="lazy"
           />
-          
-          <div v-if="sortOption === 'sales_desc'" class="absolute top-3 left-3 w-8 h-8 bg-black text-white rounded-full flex justify-center items-center font-bold text-xs shadow-md">
+
+          <div
+            v-if="sortOption === 'sales_desc'"
+            class="absolute flex items-center justify-center w-8 h-8 text-xs font-bold text-white bg-black rounded-full shadow-md top-3 left-3"
+          >
             #{{ index + 1 }}
           </div>
-          
-          <div v-if="product.stock <= 5 && product.stock > 0" class="absolute bottom-3 left-3 bg-amber-100 text-amber-800 px-2 py-1 text-[9px] font-bold uppercase tracking-widest rounded shadow-sm">
+
+          <div
+            v-if="product.stock <= 5 && product.stock > 0"
+            class="absolute bottom-3 left-3 bg-amber-100 text-amber-800 px-2 py-1 text-[9px] font-bold uppercase tracking-widest rounded shadow-sm"
+          >
             Only {{ product.stock }} left
           </div>
-          <div v-if="product.stock === 0" class="absolute inset-0 bg-white/60 backdrop-blur-[2px] flex items-center justify-center">
-            <span class="bg-black text-white px-4 py-2 text-[10px] font-bold uppercase tracking-widest rounded-full">Out of Stock</span>
+          <div
+            v-if="product.stock === 0"
+            class="absolute inset-0 bg-white/60 backdrop-blur-[2px] flex items-center justify-center"
+          >
+            <span
+              class="bg-black text-white px-4 py-2 text-[10px] font-bold uppercase tracking-widest rounded-full"
+              >Out of Stock</span
+            >
           </div>
         </div>
 
-        <h4 class="font-bold text-xs uppercase truncate tracking-wide text-gray-900 mb-1 group-hover:text-gray-600 transition-colors">
+        <h4
+          class="mb-1 text-xs font-bold tracking-wide text-gray-900 uppercase truncate transition-colors group-hover:text-gray-600"
+        >
           {{ product.name }}
         </h4>
         <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-2 truncate">
-          {{ product.category?.name || 'Uncategorized' }}
+          {{ product.category?.name || "Uncategorized" }}
         </p>
-        
+
         <div class="flex items-center gap-2 mt-auto">
-          <p v-if="product.discount_price" class="font-bold text-red-600 text-sm">
+          <p v-if="product.discount_price" class="text-sm font-bold text-red-600">
             {{ formatPrice(product.discount_price) }}
           </p>
-          <p :class="product.discount_price ? 'text-[10px] text-gray-400 line-through' : 'font-bold text-sm text-gray-900'">
+          <p
+            :class="
+              product.discount_price
+                ? 'text-[10px] text-gray-400 line-through'
+                : 'font-bold text-sm text-gray-900'
+            "
+          >
             {{ formatPrice(product.price) }}
           </p>
         </div>
       </div>
     </TransitionGroup>
 
-    <div v-else class="text-center py-20 bg-gray-50 rounded-3xl border border-gray-100">
-      <h3 class="font-serif text-2xl text-gray-400 italic mb-2">No products found</h3>
+    <div v-else class="py-20 text-center border border-gray-100 bg-gray-50 rounded-3xl">
+      <h3 class="mb-2 font-serif text-2xl italic text-gray-400">No products found</h3>
       <p class="text-sm text-gray-500">Try adjusting your filters to see more results.</p>
-      <button @click="resetFilters" class="mt-6 font-bold text-black text-xs uppercase tracking-widest underline hover:text-gray-600">
+      <button
+        @click="resetFilters"
+        class="mt-6 text-xs font-bold tracking-widest text-black underline uppercase hover:text-gray-600"
+      >
         Reset Filters
       </button>
     </div>
@@ -118,10 +160,10 @@ const fetchProducts = async () => {
   try {
     const res = await axios.get(`${BASE_URL}/products`);
     let data = res.data?.data?.data || res.data?.data || res.data;
-    
+
     if (Array.isArray(data)) {
       // Pastikan hanya produk yang aktif yang ditampilkan
-      products.value = data.filter(p => p.status === 'active');
+      products.value = data.filter((p) => p.status === "active");
     }
   } catch (error) {
     console.error("Failed to fetch products:", error);
@@ -133,8 +175,8 @@ const fetchProducts = async () => {
 // Mengambil daftar kategori unik dari data produk
 const uniqueCategories = computed(() => {
   const categories = products.value
-    .map(p => p.category?.name)
-    .filter(name => name !== undefined && name !== null);
+    .map((p) => p.category?.name)
+    .filter((name) => name !== undefined && name !== null);
   return [...new Set(categories)].sort();
 });
 
@@ -144,7 +186,7 @@ const processedProducts = computed(() => {
 
   // 1. Filter by Category
   if (selectedCategory.value !== "all") {
-    result = result.filter(p => p.category?.name === selectedCategory.value);
+    result = result.filter((p) => p.category?.name === selectedCategory.value);
   }
 
   // 2. Sort Logic
@@ -161,11 +203,11 @@ const processedProducts = computed(() => {
         return b.stock - a.stock;
       case "sales_desc":
       default:
-        // Asumsi: Backend memiliki field 'total_sold' atau 'sales'. 
+        // Asumsi: Backend memiliki field 'total_sold' atau 'sales'.
         // Jika tidak ada, kita fallback ke random (untuk simulasi best seller) atau ID terlama
         const salesA = a.total_sold || a.sales || 0;
         const salesB = b.total_sold || b.sales || 0;
-        
+
         // Jika backend belum memiliki field sales_count pada endpoint /products,
         // pengurutan ini tidak akan memberikan efek visual yang signifikan sampai backend diperbarui.
         return salesB - salesA;
@@ -197,8 +239,14 @@ onMounted(() => {
   animation: fadeIn 0.5s ease-out forwards;
 }
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .list-enter-active,
 .list-leave-active {
