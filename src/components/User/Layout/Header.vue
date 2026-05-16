@@ -5446,7 +5446,7 @@ watch(() => route.path, () => {
                 <div
                   v-for="product in randomMegaProducts"
                   :key="product.id"
-                  @click="navigateToProduct(product.id)"
+                  @click="navigateToProduct(product)"
                   class="cursor-pointer group"
                 >
                   <div
@@ -5831,9 +5831,14 @@ const selectMegaMenuCategory = (catId) => {
   }
 };
 
-const navigateToProduct = (id) => {
+// const navigateToProduct = (id) => {
+//   closeMegaMenu();
+//   router.push(`/product/${id}`);
+// };
+
+const navigateToProduct = (product) => {
   closeMegaMenu();
-  router.push(`/product/${id}`);
+  router.push(`/product/${product.slug || product.id}`);
 };
 
 const openCartPage = () => {
