@@ -4969,7 +4969,7 @@ onMounted(fetchProductDetail);
             }}</span>
           </div>
 
-          <div
+          <!-- <div
             v-if="product.strap_length"
             class="flex items-start justify-between pt-3 text-sm border-t border-gray-100"
           >
@@ -4980,6 +4980,34 @@ onMounted(fetchProductDetail);
             <span class="font-medium text-right text-gray-900">{{
               product.strap_length
             }}</span>
+          </div> -->
+
+          <div
+            v-if="product.strap_length && product.strap_length.length > 0"
+            class="flex items-start justify-between pt-3 text-sm border-t border-gray-100"
+          >
+            <span
+              class="text-gray-500 font-bold uppercase tracking-widest text-[10px] w-24 shrink-0 mt-1"
+              >Strap Length</span
+            >
+
+            <div class="flex flex-col items-end">
+              <template v-if="Array.isArray(product.strap_length)">
+                <div class="flex flex-wrap justify-end gap-2">
+                  <span
+                    v-for="(strap, idx) in product.strap_length"
+                    :key="idx"
+                    class="px-2 py-1 text-[10px] font-bold tracking-wider text-gray-800 uppercase bg-white border border-gray-200 rounded-lg shadow-sm"
+                  >
+                    {{ strap }}
+                  </span>
+                </div>
+              </template>
+
+              <span v-else class="font-medium text-right text-gray-900">
+                {{ product.strap_length }}
+              </span>
+            </div>
           </div>
 
           <div
