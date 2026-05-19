@@ -1164,7 +1164,7 @@ onMounted(() => {
 
     <div
       v-reveal
-      class="relative w-full max-w-[1600px] mx-auto aspect-[2/1] overflow-hidden cursor-pointer bg-gray-100 mt-[40px]"
+      class="relative w-full max-w-[1600px] mx-auto aspect-[2/1] overflow-hidden cursor-pointer bg-gray-100 mt-[20px]"
       @click="$router.push('/collections')"
     >
       <Transition name="banner-fade">
