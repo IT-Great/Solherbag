@@ -5072,7 +5072,7 @@ watch(() => route.path, () => {
 
 <template>
   <div class="fixed top-0 left-0 z-[60] w-full flex flex-col">
-    <div
+    <!-- <div
       class="relative w-full min-h-[40px] py-2 md:py-0 bg-[#111] text-white flex items-center justify-center"
     >
       <button
@@ -5088,16 +5088,6 @@ watch(() => route.path, () => {
           />
         </svg>
       </button>
-
-      <!-- <transition name="fade-slide" mode="out-in">
-        <p
-          :key="currentAnnouncement"
-          @click="$router.push('/collections')"
-          class="text-xs md:text-sm leading-snug md:leading-normal font-serif tracking-widest text-center px-10 md:px-12 cursor-pointer hover:text-gray-300 transition-colors w-full max-w-3xl"
-        >
-          {{ announcements[currentAnnouncement] }}
-        </p>
-      </transition> -->
 
       <div class="flex items-center justify-center w-full min-h-[20px] md:min-h-[24px]">
         <transition name="fade-slide" mode="out-in">
@@ -5122,6 +5112,40 @@ watch(() => route.path, () => {
             stroke-width="1.5"
             d="M9 5l7 7-7 7"
           />
+        </svg>
+      </button>
+    </div> -->
+
+    <div
+      class="relative w-full h-[48px] md:h-[40px] bg-[#111] text-white flex items-center justify-center overflow-hidden"
+    >
+      <button
+        @click="prevAnnouncement"
+        class="absolute p-2 text-gray-400 transition left-2 md:left-4 hover:text-white focus:outline-none"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+
+      <div class="flex items-center justify-center w-full h-full px-10 md:px-12">
+        <transition name="fade-slide" mode="out-in">
+          <p
+            :key="currentAnnouncement"
+            @click="$router.push('/collections')"
+            class="text-[10px] md:text-sm leading-tight md:leading-normal font-serif tracking-widest text-center cursor-pointer hover:text-gray-300 transition-colors w-full max-w-3xl"
+          >
+            {{ announcements[currentAnnouncement] }}
+          </p>
+        </transition>
+      </div>
+
+      <button
+        @click="nextAnnouncement"
+        class="absolute p-2 text-gray-400 transition right-2 md:right-4 hover:text-white focus:outline-none"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
         </svg>
       </button>
     </div>
@@ -5711,9 +5735,15 @@ const setupRealTimeListeners = () => {
 const currentAnnouncement = ref(0);
 let announcementTimer = null;
 
+// const announcements = [
+//   "An Exclusive Welcome Gift: Rp 250K OFF your first order →",
+//   "A Little Extra, On Us — Complimentary Shipping Across Indonesia (Min. Rp 1.000.000) →",
+// ];
+
 const announcements = [
-  "An Exclusive Welcome Gift: Rp 250K OFF your first order →",
-  "A Little Extra, On Us — Complimentary Shipping Across Indonesia (Min. Rp 1.000.000) →",
+  // Gunakan \u00A0 sebelum tanda panah agar menempel dengan kata sebelumnya
+  "An Exclusive Welcome Gift: Rp 250K OFF your first order\u00A0→",
+  "A Little Extra, On Us — Complimentary Shipping Across Indonesia (Min. Rp 1.000.000)\u00A0→",
 ];
 
 const nextAnnouncement = () => {
