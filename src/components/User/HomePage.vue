@@ -1657,8 +1657,8 @@ let slideInterval = null;
 const { state, fetchHomeData } = useProductStore();
 const isLoading = ref(false);
 
-const banners = [banner1, banner2];
-const currentBanner = ref(banners[Math.floor(Math.random() * banners.length)]);
+// const banners = [banner1, banner2];
+// const currentBanner = ref(banners[Math.floor(Math.random() * banners.length)]);
 
 const promoEmail = ref("");
 const isClaimingPromo = ref(false);
