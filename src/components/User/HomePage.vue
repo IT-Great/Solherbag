@@ -1147,10 +1147,25 @@ onMounted(() => {
 
 <template>
   <section class="w-full overflow-x-hidden bg-white">
-    <div
+    <!-- <div
       v-reveal
       class="relative w-full max-w-[1600px] mx-auto aspect-[2/1] overflow-hidden cursor-pointer bg-gray-100"
       @click="navigateToSpecificProduct('ETERNA RED')"
+    >
+      <Transition name="banner-fade">
+        <img
+          :key="currentBanner"
+          :src="currentBanner"
+          alt="SolHer Product"
+          class="absolute inset-0 object-cover w-full h-full transition-transform duration-1000 hover:scale-105"
+        />
+      </Transition>
+    </div> -->
+
+    <div
+      v-reveal
+      class="relative w-full max-w-[1600px] mx-auto aspect-[2/1] overflow-hidden cursor-pointer bg-gray-100 mt-[40px]"
+      @click="$router.push('/collections')"
     >
       <Transition name="banner-fade">
         <img
