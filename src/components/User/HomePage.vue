@@ -1147,7 +1147,7 @@ onMounted(() => {
 
 <template>
   <section class="w-full overflow-x-hidden bg-white">
-    <div
+    <!-- <div
       v-reveal
       class="relative w-full overflow-hidden cursor-pointer"
       @click="navigateToSpecificProduct('ETERNA RED')"
@@ -1170,6 +1170,21 @@ onMounted(() => {
           Eterna Red is selling fast!
         </p>
       </div>
+    </div> -->
+
+    <div
+      v-reveal
+      class="relative w-full max-w-[1600px] mx-auto aspect-[2/1] overflow-hidden cursor-pointer bg-gray-100"
+      @click="navigateToSpecificProduct('ETERNA RED')"
+    >
+      <Transition name="banner-fade">
+        <img
+          :key="currentBanner"
+          :src="currentBanner"
+          alt="SolHer Product"
+          class="absolute inset-0 object-cover w-full h-full transition-transform duration-1000 hover:scale-105"
+        />
+      </Transition>
     </div>
 
     <div v-reveal class="max-w-4xl px-6 py-16 mx-auto text-center md:py-24">
@@ -1623,7 +1638,7 @@ onMounted(() => {
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from "vue";
+import { ref, onMounted, onUnmounted, computed, nextTick } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 import { BASE_URL } from "../../config/api.js";
@@ -1632,6 +1647,12 @@ import Swal from "sweetalert2";
 
 import banner1 from "../../assets/first_banner.png";
 import banner2 from "../../assets/second_banner.png";
+
+// [BARU] Logika Auto-Slide Banner
+const banners = [banner1, banner2];
+const currentBannerIndex = ref(0);
+const currentBanner = computed(() => banners[currentBannerIndex.value]);
+let slideInterval = null;
 
 const { state, fetchHomeData } = useProductStore();
 const isLoading = ref(false);
@@ -1773,11 +1794,21 @@ const claimPromo = async () => {
 onMounted(() => {
   initData();
 
+  // Jalankan auto-slide setiap 2000 milidetik (2 detik)
+  slideInterval = setInterval(() => {
+    currentBannerIndex.value = (currentBannerIndex.value + 1) % banners.length;
+  }, 2000);
+
   nextTick(() => {
     setTimeout(() => {
       showPromoPopup.value = true;
     }, 50);
   });
+});
+
+// Bersihkan interval saat user pindah halaman agar memori browser tidak bocor (Best Practice)
+onUnmounted(() => {
+  if (slideInterval) clearInterval(slideInterval);
 });
 </script>
 
@@ -1795,5 +1826,15 @@ onMounted(() => {
 
 .contain {
   contain: layout paint;
+}
+
+/* [BARU] Transisi halus untuk auto-slide banner */
+.banner-fade-enter-active,
+.banner-fade-leave-active {
+  transition: opacity 1s ease-in-out;
+}
+.banner-fade-enter-from,
+.banner-fade-leave-to {
+  opacity: 0;
 }
 </style>
