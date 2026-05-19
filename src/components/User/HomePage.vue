@@ -1147,31 +1147,6 @@ onMounted(() => {
 
 <template>
   <section class="w-full overflow-x-hidden bg-white">
-    <!-- <div
-      v-reveal
-      class="relative w-full overflow-hidden cursor-pointer"
-      @click="navigateToSpecificProduct('ETERNA RED')"
-    >
-      <img
-        :src="currentBanner"
-        alt="SolHer Product"
-        class="object-cover w-full h-auto transition-transform duration-1000 hover:scale-105"
-      />
-      <div
-        class="absolute flex items-center gap-3 px-6 py-3 -translate-x-1/2 rounded-full shadow-2xl bottom-10 left-1/2 bg-white/90 backdrop-blur-sm animate-bounce"
-      >
-        <span class="relative flex w-3 h-3">
-          <span
-            class="absolute inline-flex w-full h-full bg-red-400 rounded-full opacity-75 animate-ping"
-          ></span>
-          <span class="relative inline-flex w-3 h-3 bg-red-500 rounded-full"></span>
-        </span>
-        <p class="text-xs font-bold tracking-widest text-black uppercase">
-          Eterna Red is selling fast!
-        </p>
-      </div>
-    </div> -->
-
     <div
       v-reveal
       class="relative w-full max-w-[1600px] mx-auto aspect-[2/1] overflow-hidden cursor-pointer bg-gray-100"
@@ -1794,10 +1769,10 @@ const claimPromo = async () => {
 onMounted(() => {
   initData();
 
-  // Jalankan auto-slide setiap 2000 milidetik (2 detik)
+  // Jalankan auto-slide setiap 4000 milidetik (4 detik)
   slideInterval = setInterval(() => {
     currentBannerIndex.value = (currentBannerIndex.value + 1) % banners.length;
-  }, 2000);
+  }, 4000);
 
   nextTick(() => {
     setTimeout(() => {

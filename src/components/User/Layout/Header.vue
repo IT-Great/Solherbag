@@ -5089,7 +5089,7 @@ watch(() => route.path, () => {
         </svg>
       </button>
 
-      <transition name="fade-slide" mode="out-in">
+      <!-- <transition name="fade-slide" mode="out-in">
         <p
           :key="currentAnnouncement"
           @click="$router.push('/collections')"
@@ -5097,7 +5097,19 @@ watch(() => route.path, () => {
         >
           {{ announcements[currentAnnouncement] }}
         </p>
-      </transition>
+      </transition> -->
+
+      <div class="flex items-center justify-center w-full min-h-[20px] md:min-h-[24px]">
+        <transition name="fade-slide" mode="out-in">
+          <p
+            :key="currentAnnouncement"
+            @click="$router.push('/collections')"
+            class="text-xs md:text-sm leading-snug md:leading-normal font-serif tracking-widest text-center px-10 md:px-12 cursor-pointer hover:text-gray-300 transition-colors w-full max-w-3xl"
+          >
+            {{ announcements[currentAnnouncement] }}
+          </p>
+        </transition>
+      </div>
 
       <button
         @click="nextAnnouncement"
