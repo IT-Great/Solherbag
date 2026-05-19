@@ -1146,7 +1146,7 @@ onMounted(() => {
 </style> -->
 
 <template>
-  <section class="w-full overflow-x-hidden bg-white pt-[104px] md:pt-[120px]">
+  <section class="w-full overflow-x-hidden bg-white">
     <!-- <div
       v-reveal
       class="relative w-full overflow-hidden cursor-pointer"
@@ -1182,7 +1182,7 @@ onMounted(() => {
           :key="currentBanner"
           :src="currentBanner"
           alt="SolHer Product"
-          class="absolute inset-0 object-contain w-full h-full transition-transform duration-1000 hover:scale-105"
+          class="absolute inset-0 object-cover w-full h-full transition-transform duration-1000 hover:scale-105"
         />
       </Transition>
     </div>
