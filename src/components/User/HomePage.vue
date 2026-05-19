@@ -1153,7 +1153,7 @@ onMounted(() => {
       @click="navigateToSpecificProduct('ETERNA RED')"
     >
       <img
-        src="../../assets/home_firstimage.jpeg"
+        :src="currentBanner"
         alt="SolHer Product"
         class="object-cover w-full h-auto transition-transform duration-1000 hover:scale-105"
       />
@@ -1630,8 +1630,14 @@ import { BASE_URL } from "../../config/api.js";
 import { useProductStore } from "../../composables/useProductStore";
 import Swal from "sweetalert2";
 
+import banner1 from "../../assets/first_banner.png";
+import banner2 from "../../assets/second_banner.png";
+
 const { state, fetchHomeData } = useProductStore();
 const isLoading = ref(false);
+
+const banners = [banner1, banner2];
+const currentBanner = ref(banners[Math.floor(Math.random() * banners.length)]);
 
 const promoEmail = ref("");
 const isClaimingPromo = ref(false);
