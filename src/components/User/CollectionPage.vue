@@ -1145,7 +1145,7 @@ onUnmounted(() => {
           />
         </div>
 
-        <div class="flex gap-2 pb-2 overflow-x-auto scrollbar-hide">
+        <!-- <div class="flex gap-2 pb-2 overflow-x-auto scrollbar-hide">
           <button
             @click="resetAllFilters"
             :class="[
@@ -1181,6 +1181,30 @@ onUnmounted(() => {
           >
             {{ cat.category_name }}
           </button>
+        </div> -->
+        <div class="flex gap-2">
+          <button
+            @click="toggleSaleFilter"
+            :class="[
+              showOnlySale
+                ? 'bg-red-600 text-white'
+                : 'bg-white text-red-500 hover:bg-red-50',
+            ]"
+            class="px-6 py-3 text-xs font-bold tracking-widest uppercase transition border border-red-100 rounded-full shadow-sm whitespace-nowrap"
+          >
+            % Sale
+          </button>
+
+          <select
+            v-model="selectedCategory"
+            @change="handleCategoryChange"
+            class="px-6 py-3 text-xs font-bold tracking-widest uppercase transition bg-white border border-gray-200 rounded-full shadow-sm outline-none cursor-pointer text-gray-600 focus:ring-2 focus:ring-black"
+          >
+            <option value="">All Categories</option>
+            <option v-for="cat in categories" :key="cat.id" :value="cat.category_name">
+              {{ cat.category_name }}
+            </option>
+          </select>
         </div>
       </div>
     </div>
@@ -1824,6 +1848,13 @@ const goToDetail = (product) => {
     path: `/product/${product.slug || product.id}`,
     state: { productData: JSON.stringify(product) },
   });
+};
+
+const handleCategoryChange = () => {
+  // Jika kategori dipilih, pastikan filter sale mati
+  if (selectedCategory.value !== "") {
+    showOnlySale.value = false;
+  }
 };
 
 // onMounted(async () => {
