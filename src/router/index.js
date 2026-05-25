@@ -1877,7 +1877,7 @@ const routes = [
   { path: '/privacy', name: 'PrivacyPolicy', component: PrivacyPolicy },
   { path: "/favorites", name: "Favorites", component: () => import("../components/User/FavoritePage.vue") },
   { path: "/cart", name: "Cart", component: CartPage, meta: { requiresAuth: true } },
-  { path: "/product/:id", name: "ProductDetail", component: ProductDetailPage },
+  { path: "/products/:id", name: "ProductDetail", component: ProductDetailPage },
   { path: "/payment", name: "PaymentPage", component: PaymentPage, meta: { requiresAuth: true } },
   { path: "/payment-success", name: "PaymentSuccess", component: PaymentSuccessPage, meta: { requiresAuth: true, hideHeaderFooter: true } },
   { path: "/tracking/:id", name: "TrackingPage", component: TrackingPage, meta: { requiresAuth: true, hideHeaderFooter: true } },
