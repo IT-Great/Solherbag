@@ -1420,7 +1420,7 @@ import { BASE_URL } from "../../config/api.js";
 import { useCart } from "../../composables/useCart";
 
 // [BARU] Import gambar default
-import defaultBagIcon from "../../assets/productss/bag_icon.jpg";
+import defaultBagIcon from "../../assets/products/bag_icon.jpg";
 
 const router = useRouter();
 const isProcessingCheckout = ref(false);
