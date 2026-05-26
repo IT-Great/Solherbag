@@ -74,7 +74,7 @@
           <div
             v-for="p in state.volumeOne"
             :key="p.id"
-            @click="$router.push(`/product/${p.id}`)"
+            @click="$router.push(`/products/${p.id}`)"
             class="group flex-shrink-0 w-[300px] md:w-[380px] cursor-pointer"
           >
             <div class="mb-4 overflow-hidden bg-gray-100">
@@ -117,7 +117,7 @@
           <div
             v-for="p in state.volumeTwo"
             :key="p.id"
-            @click="$router.push(`/product/${p.id}`)"
+            @click="$router.push(`/products/${p.id}`)"
             class="group flex-shrink-0 w-[300px] md:w-[380px] cursor-pointer"
           >
             <div class="mb-4 overflow-hidden bg-gray-100">
@@ -187,7 +187,7 @@ const navigateToSpecificProduct = async (query) => {
     const res = await axios.get(`${BASE_URL}/home/find-product`, {
       params: { query },
     });
-    router.push(`/product/${res.data.id}`);
+    router.push(`/products/${res.data.id}`);
   } catch (err) {
     console.error("Product link broken or not found");
   }
@@ -308,7 +308,7 @@ onMounted(initData);
           <div
             v-for="p in state.trendingProducts"
             :key="'trend-'+p.id"
-            @click="$router.push(`/product/${p.id}`)"
+            @click="$router.push(`/products/${p.id}`)"
             class="group flex-shrink-0 w-[240px] md:w-[300px] cursor-pointer"
           >
             <div class="relative mb-4 overflow-hidden bg-white border border-gray-100 shadow-sm rounded-xl">
@@ -353,7 +353,7 @@ onMounted(initData);
           <div
             v-for="p in state.volumeOne"
             :key="p.id"
-            @click="$router.push(`/product/${p.id}`)"
+            @click="$router.push(`/products/${p.id}`)"
             class="group flex-shrink-0 w-[300px] md:w-[380px] cursor-pointer"
           >
             <div class="relative mb-4 overflow-hidden bg-gray-100">
@@ -391,7 +391,7 @@ onMounted(initData);
           <div
             v-for="p in state.volumeTwo"
             :key="p.id"
-            @click="$router.push(`/product/${p.id}`)"
+            @click="$router.push(`/products/${p.id}`)"
             class="group flex-shrink-0 w-[300px] md:w-[380px] cursor-pointer"
           >
             <div class="relative mb-4 overflow-hidden bg-gray-100">
@@ -454,7 +454,7 @@ const navigateToSpecificProduct = async (query) => {
     const res = await axios.get(`${BASE_URL}/home/find-product`, {
       params: { query },
     });
-    router.push(`/product/${res.data.id}`);
+    router.push(`/products/${res.data.id}`);
   } catch (err) {
     console.error("Product link broken or not found");
   }
@@ -602,7 +602,7 @@ onMounted(initData);
           <div
             v-for="p in state.trendingProducts"
             :key="'trend-' + p.id"
-            @click="$router.push(`/product/${p.id}`)"
+            @click="$router.push(`/products/${p.id}`)"
             class="group flex-shrink-0 w-[240px] md:w-[300px] cursor-pointer"
           >
             <div
@@ -668,7 +668,7 @@ onMounted(initData);
           <div
             v-for="p in state.volumeOne"
             :key="p.id"
-            @click="$router.push(`/product/${p.id}`)"
+            @click="$router.push(`/products/${p.id}`)"
             class="group flex-shrink-0 w-[300px] md:w-[380px] cursor-pointer"
           >
             <div class="relative mb-4 overflow-hidden bg-gray-100">
@@ -720,7 +720,7 @@ onMounted(initData);
           <div
             v-for="p in state.volumeTwo"
             :key="p.id"
-            @click="$router.push(`/product/${p.id}`)"
+            @click="$router.push(`/products/${p.id}`)"
             class="group flex-shrink-0 w-[300px] md:w-[380px] cursor-pointer"
           >
             <div class="relative mb-4 overflow-hidden bg-gray-100">
@@ -766,7 +766,7 @@ onMounted(initData);
           <div
             v-for="p in state.volumeThree"
             :key="p.id"
-            @click="$router.push(`/product/${p.id}`)"
+            @click="$router.push(`/products/${p.id}`)"
             class="group flex-shrink-0 w-[300px] md:w-[380px] cursor-pointer"
           >
             <div class="relative mb-4 overflow-hidden bg-gray-100">
@@ -986,7 +986,7 @@ const navigateToSpecificProduct = async (query) => {
     const res = await axios.get(`${BASE_URL}/home/find-product`, {
       params: { query },
     });
-    router.push(`/product/${res.data.id}`);
+    router.push(`/products/${res.data.id}`);
   } catch (err) {
     console.error("Product link broken or not found");
   }
@@ -1266,7 +1266,7 @@ onMounted(() => {
           <div
             v-for="p in state.trendingProducts"
             :key="'trend-' + p.id"
-            @click="$router.push(`/product/${p.slug || p.id}`)"
+            @click="$router.push(`/products/${p.slug || p.id}`)"
             class="group flex-shrink-0 w-[240px] md:w-[300px] cursor-pointer"
           >
             <div
@@ -1332,7 +1332,7 @@ onMounted(() => {
           <div
             v-for="p in state.volumeOne"
             :key="p.id"
-            @click="$router.push(`/product/${p.slug || p.id}`)"
+            @click="$router.push(`/products/${p.slug || p.id}`)"
             class="group flex-shrink-0 w-[300px] md:w-[380px] cursor-pointer"
           >
             <div class="relative mb-4 overflow-hidden bg-gray-100">
@@ -1384,7 +1384,7 @@ onMounted(() => {
           <div
             v-for="p in state.volumeTwo"
             :key="p.id"
-            @click="$router.push(`/product/${p.slug || p.id}`)"
+            @click="$router.push(`/products/${p.slug || p.id}`)"
             class="group flex-shrink-0 w-[300px] md:w-[380px] cursor-pointer"
           >
             <div class="relative mb-4 overflow-hidden bg-gray-100">
@@ -1430,7 +1430,7 @@ onMounted(() => {
           <div
             v-for="p in state.volumeThree"
             :key="p.id"
-            @click="$router.push(`/product/${p.slug || p.id}`)"
+            @click="$router.push(`/products/${p.slug || p.id}`)"
             class="group flex-shrink-0 w-[300px] md:w-[380px] cursor-pointer"
           >
             <div class="relative mb-4 overflow-hidden bg-gray-100">
@@ -1484,7 +1484,7 @@ onMounted(() => {
           <div
             v-for="p in state.volumeFour"
             :key="p.id"
-            @click="$router.push(`/product/${p.slug || p.id}`)"
+            @click="$router.push(`/products/${p.slug || p.id}`)"
             class="group flex-shrink-0 w-[300px] md:w-[380px] cursor-pointer"
           >
             <div class="relative mb-4 overflow-hidden bg-gray-100">
@@ -1707,7 +1707,7 @@ const initData = async () => {
 //     const res = await axios.get(`${BASE_URL}/home/find-product`, {
 //       params: { query },
 //     });
-//     router.push(`/product/${res.data.id}`);
+//     router.push(`/products/${res.data.id}`);
 //   } catch (err) {
 //     console.error("Product link broken or not found");
 //   }
@@ -1719,7 +1719,7 @@ const navigateToSpecificProduct = async (query) => {
       params: { query },
     });
     // [PERBAIKAN] Gunakan slug sebagai prioritas URL
-    router.push(`/product/${res.data.slug || res.data.id}`);
+    router.push(`/products/${res.data.slug || res.data.id}`);
   } catch (err) {
     console.error("Product link broken or not found");
   }

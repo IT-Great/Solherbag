@@ -68,7 +68,7 @@
             >
               <div
                 class="relative w-full h-48 cursor-pointer sm:w-48 shrink-0"
-                @click="$router.push(`/product/${item.product.id}`)"
+                @click="$router.push(`/products/${item.product.id}`)"
               >
                 <img
                   :src="item.product.image"
@@ -89,7 +89,7 @@
                   <div class="flex items-start justify-between">
                     <h3
                       class="w-2/3 text-xl font-bold tracking-tight uppercase transition-colors cursor-pointer hover:text-gray-600"
-                      @click="$router.push(`/product/${item.product.id}`)"
+                      @click="$router.push(`/products/${item.product.id}`)"
                     >
                       {{ item.product.name }}
                     </h3>
@@ -369,7 +369,7 @@ const handleCheckout = () => {
             >
               <div
                 class="relative w-full h-48 cursor-pointer sm:w-48 shrink-0"
-                @click="$router.push(`/product/${item.product.id}`)"
+                @click="$router.push(`/products/${item.product.id}`)"
               >
                 <img
                   :src="item.product.image"
@@ -390,7 +390,7 @@ const handleCheckout = () => {
                   <div class="flex items-start justify-between">
                     <h3
                       class="w-2/3 text-xl font-bold tracking-tight uppercase transition-colors cursor-pointer hover:text-gray-600"
-                      @click="$router.push(`/product/${item.product.id}`)"
+                      @click="$router.push(`/products/${item.product.id}`)"
                     >
                       {{ item.product.name }}
                     </h3>
@@ -485,7 +485,7 @@ const handleCheckout = () => {
               >
                 <div 
                   class="relative mb-3 overflow-hidden cursor-pointer aspect-square rounded-2xl bg-gray-50"
-                  @click="$router.push(`/product/${product.id}`)"
+                  @click="$router.push(`/products/${product.id}`)"
                 >
                   <img 
                     :src="product.image" 
@@ -581,7 +581,7 @@ const allProducts = ref([]);
 
 const fetchAllProducts = async () => {
   try {
-    const res = await axios.get(`${BASE_URL}/products`);
+    const res = await axios.get(`${BASE_URL}/productss`);
     // Dukung format standard laravel pagination maupun json biasa
     const data = res.data?.data?.data || res.data?.data || res.data;
     if (Array.isArray(data)) {
@@ -753,7 +753,7 @@ onMounted(() => {
 
               <div
                 class="relative w-24 h-24 cursor-pointer sm:w-48 sm:h-48 shrink-0"
-                @click="$router.push(`/product/${item.product.id}`)"
+                @click="$router.push(`/products/${item.product.id}`)"
               >
                 <img
                   :src="item.product.image"
@@ -776,7 +776,7 @@ onMounted(() => {
                   <div class="flex items-start justify-between gap-2">
                     <h3
                       class="w-2/3 text-sm font-bold tracking-tight uppercase transition-colors cursor-pointer sm:text-xl hover:text-gray-600 line-clamp-2"
-                      @click="$router.push(`/product/${item.product.id}`)"
+                      @click="$router.push(`/products/${item.product.id}`)"
                     >
                       {{ item.product.name }}
                     </h3>
@@ -882,7 +882,7 @@ onMounted(() => {
               >
                 <div
                   class="relative mb-3 overflow-hidden cursor-pointer aspect-square rounded-2xl bg-gray-50"
-                  @click="$router.push(`/product/${product.id}`)"
+                  @click="$router.push(`/products/${product.id}`)"
                 >
                   <img
                     :src="product.image"
@@ -1000,7 +1000,7 @@ const allProducts = ref([]);
 
 const fetchAllProducts = async () => {
   try {
-    const res = await axios.get(`${BASE_URL}/products`);
+    const res = await axios.get(`${BASE_URL}/productss`);
     // Dukung format standard laravel pagination maupun json biasa
     const data = res.data?.data?.data || res.data?.data || res.data;
     if (Array.isArray(data)) {
@@ -1138,7 +1138,7 @@ onMounted(() => {
 
               <div
                 class="relative w-24 h-24 cursor-pointer sm:w-48 sm:h-48 shrink-0"
-                @click="$router.push(`/product/${item.product.slug || item.product.id}`)"
+                @click="$router.push(`/products/${item.product.slug || item.product.id}`)"
               >
                 <img
                   :src="item.product.image || defaultBagIcon"
@@ -1161,7 +1161,7 @@ onMounted(() => {
                   <div class="flex items-start justify-between gap-2">
                     <h3
                       class="w-2/3 text-sm font-bold tracking-tight uppercase transition-colors cursor-pointer sm:text-xl hover:text-gray-600 line-clamp-2"
-                      @click="$router.push(`/product/${item.product.id}`)"
+                      @click="$router.push(`/products/${item.product.id}`)"
                     >
                       {{ item.product.name }}
                     </h3>
@@ -1186,7 +1186,7 @@ onMounted(() => {
                     <h3
                       class="w-2/3 text-sm font-bold tracking-tight uppercase transition-colors cursor-pointer sm:text-xl hover:text-gray-600 line-clamp-2"
                       @click="
-                        $router.push(`/product/${item.product.slug || item.product.id}`)
+                        $router.push(`/products/${item.product.slug || item.product.id}`)
                       "
                     >
                       {{ item.product.name }}
@@ -1328,7 +1328,7 @@ onMounted(() => {
               >
                 <div
                   class="relative mb-3 overflow-hidden cursor-pointer aspect-square rounded-2xl bg-gray-50"
-                  @click="$router.push(`/product/${product.slug || product.id}`)"
+                  @click="$router.push(`/products/${product.slug || product.id}`)"
                 >
                   <img
                     :src="product.image || defaultBagIcon"
@@ -1420,7 +1420,7 @@ import { BASE_URL } from "../../config/api.js";
 import { useCart } from "../../composables/useCart";
 
 // [BARU] Import gambar default
-import defaultBagIcon from "../../assets/products/bag_icon.jpg";
+import defaultBagIcon from "../../assets/productss/bag_icon.jpg";
 
 const router = useRouter();
 const isProcessingCheckout = ref(false);
@@ -1444,7 +1444,7 @@ const isLoadingProducts = ref(true); // [BARU] State loading untuk produk
 const fetchAllProducts = async () => {
   isLoadingProducts.value = true;
   try {
-    const res = await axios.get(`${BASE_URL}/products`);
+    const res = await axios.get(`${BASE_URL}/productss`);
     const data = res.data?.data?.data || res.data?.data || res.data;
     if (Array.isArray(data)) {
       allProducts.value = data;

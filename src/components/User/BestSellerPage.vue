@@ -60,13 +60,13 @@
         v-for="(product, index) in processedProducts"
         :key="product.id"
         class="flex flex-col cursor-pointer group"
-        @click="$router.push(`/product/${product.id}`)"
+        @click="$router.push(`/products/${product.id}`)"
       > -->
       <div
         v-for="(product, index) in processedProducts"
         :key="product.id"
         class="group flex flex-col cursor-pointer"
-        @click="$router.push(`/product/${product.slug || product.id}`)"
+        @click="$router.push(`/products/${product.slug || product.id}`)"
       >
         <div
           class="relative mb-4 overflow-hidden transition-all duration-300 border border-gray-100 shadow-sm aspect-square rounded-2xl bg-gray-50 group-hover:shadow-md"

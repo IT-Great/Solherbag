@@ -179,7 +179,7 @@ const clearRecentlyViewed = () => {
 ====================== */
 const navigateToProduct = (id) => {
   emit("close");
-  router.push(`/product/${id}`);
+  router.push(`/products/${id}`);
 };
 
 /* ======================
@@ -283,32 +283,62 @@ onMounted(() => {
             @click="searchInput = ''"
             class="ml-2 text-gray-300 hover:text-red-500 transition-all mr-2"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
           </button>
           <button
             @click="$emit('close')"
             class="ml-2 pl-4 border-l border-gray-200 text-gray-400 hover:text-black transition-all"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
           </button>
         </div>
       </div>
 
       <div class="flex-grow px-8 py-8 overflow-y-auto custom-scrollbar">
-        
         <div v-if="searchInput">
           <h3 class="mb-4 font-bold text-[9px] text-gray-400 uppercase tracking-[0.25em]">
             Search Results
           </h3>
-          
-          <div v-if="filteredSearchResults.length > 0" class="gap-4 grid grid-cols-3 md:grid-cols-4">
+
+          <div
+            v-if="filteredSearchResults.length > 0"
+            class="gap-4 grid grid-cols-3 md:grid-cols-4"
+          >
             <div
               v-for="product in filteredSearchResults.slice(0, 8)"
               :key="product.id"
               class="group cursor-pointer"
               @click="navigateToProduct(product.id)"
             >
-              <div class="relative bg-gray-50 shadow-sm mb-2 rounded-xl aspect-square overflow-hidden">
+              <div
+                class="relative bg-gray-50 shadow-sm mb-2 rounded-xl aspect-square overflow-hidden"
+              >
                 <img
                   :src="product.image || defaultBagIcon"
                   class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
@@ -322,13 +352,13 @@ onMounted(() => {
               </p>
             </div>
           </div>
-          
+
           <div v-else class="py-10 text-center text-gray-400 font-serif italic">
             No products found for "{{ searchInput }}".
           </div>
 
           <div class="mt-8 border-t border-gray-100 pt-6 text-center">
-            <button 
+            <button
               @click="viewAllResults"
               class="bg-black hover:bg-gray-800 text-white font-bold text-[10px] uppercase tracking-widest px-8 py-3 rounded-full transition-colors"
             >
@@ -357,7 +387,9 @@ onMounted(() => {
                 class="group cursor-pointer"
                 @click="navigateToProduct(item.id)"
               >
-                <div class="relative bg-gray-50 shadow-sm mb-2 rounded-xl aspect-square overflow-hidden">
+                <div
+                  class="relative bg-gray-50 shadow-sm mb-2 rounded-xl aspect-square overflow-hidden"
+                >
                   <img
                     :src="item.image || defaultBagIcon"
                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
@@ -371,11 +403,20 @@ onMounted(() => {
           </div>
 
           <div>
-            <h3 class="mb-4 font-bold text-[9px] text-gray-400 uppercase tracking-[0.25em]">
+            <h3
+              class="mb-4 font-bold text-[9px] text-gray-400 uppercase tracking-[0.25em]"
+            >
               You May Also Like
             </h3>
-            <div v-if="randomProducts.length === 0" class="gap-4 grid grid-cols-3 md:grid-cols-4">
-              <div v-for="i in 6" :key="i" class="animate-pulse bg-gray-100 rounded-xl aspect-square"></div>
+            <div
+              v-if="randomProducts.length === 0"
+              class="gap-4 grid grid-cols-3 md:grid-cols-4"
+            >
+              <div
+                v-for="i in 6"
+                :key="i"
+                class="animate-pulse bg-gray-100 rounded-xl aspect-square"
+              ></div>
             </div>
             <div class="gap-4 grid grid-cols-3 md:grid-cols-4">
               <div
@@ -384,7 +425,9 @@ onMounted(() => {
                 class="group cursor-pointer"
                 @click="navigateToProduct(product.id)"
               >
-                <div class="relative bg-gray-50 shadow-sm mb-2 rounded-xl aspect-square overflow-hidden">
+                <div
+                  class="relative bg-gray-50 shadow-sm mb-2 rounded-xl aspect-square overflow-hidden"
+                >
                   <img
                     :src="product.image || defaultBagIcon"
                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
@@ -400,7 +443,6 @@ onMounted(() => {
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </div>
@@ -420,15 +462,15 @@ onMounted(() => {
 
 // const recentlyViewed = ref([]);
 // const randomProducts = ref([]);
-// const allProducts = ref([]); 
+// const allProducts = ref([]);
 
 // // Logika Pencarian Lokal (Real-time)
 // const filteredSearchResults = computed(() => {
 //   if (!searchInput.value) return [];
 //   const query = searchInput.value.toLowerCase();
 //   return allProducts.value.filter(
-//     (product) => 
-//       product.name.toLowerCase().includes(query) || 
+//     (product) =>
+//       product.name.toLowerCase().includes(query) ||
 //       product.category?.name.toLowerCase().includes(query)
 //   );
 // });
@@ -450,7 +492,7 @@ onMounted(() => {
 
 // const navigateToProduct = (id) => {
 //   emit("close");
-//   router.push(`/product/${id}`);
+//   router.push(`/products/${id}`);
 // };
 
 // // [BARU] Fungsi Lempar Hasil Pencarian ke Katalog
@@ -511,15 +553,15 @@ const searchInputRef = ref(null);
 
 const recentlyViewed = ref([]);
 const randomProducts = ref([]);
-const allProducts = ref([]); 
+const allProducts = ref([]);
 
 // Logika Pencarian Lokal (Real-time)
 const filteredSearchResults = computed(() => {
   if (!searchInput.value) return [];
   const query = searchInput.value.toLowerCase();
   return allProducts.value.filter(
-    (product) => 
-      product.name.toLowerCase().includes(query) || 
+    (product) =>
+      product.name.toLowerCase().includes(query) ||
       product.category?.name.toLowerCase().includes(query)
   );
 });
@@ -536,7 +578,7 @@ const loadAndShuffleCachedProducts = () => {
       return; // Berhenti jika cache sukses
     }
   }
-  
+
   // Fallback: Jika ini kunjungan pertama kali ke web dan cache kosong
   const fallbackRandom = localStorage.getItem("random_products");
   randomProducts.value = fallbackRandom ? JSON.parse(fallbackRandom) : [];
@@ -554,19 +596,19 @@ const clearRecentlyViewed = () => {
 
 const navigateToProduct = (id) => {
   emit("close");
-  router.push(`/product/${id}`);
+  router.push(`/products/${id}`);
 };
 
 const viewAllResults = () => {
   emit("close");
-  router.push({ path: '/collections', query: { search: searchInput.value } });
+  router.push({ path: "/collections", query: { search: searchInput.value } });
 };
 
 const formatPrice = (v) =>
   new Intl.NumberFormat("id-ID", {
     style: "currency",
     currency: "IDR",
-    minimumFractionDigits: 0
+    minimumFractionDigits: 0,
   }).format(v);
 
 const fetchAllProducts = async () => {
@@ -574,22 +616,21 @@ const fetchAllProducts = async () => {
     const res = await axios.get(`${BASE_URL}/products`);
     const products = res.data?.data?.data || res.data?.data || res.data || [];
     const validProducts = Array.isArray(products) ? products : [];
-    
+
     allProducts.value = validProducts;
-    
+
     // [PERBAIKAN] Simpan seluruh produk ke cache untuk modal berikutnya
     localStorage.setItem("all_products_cache", JSON.stringify(validProducts));
 
     // CATATAN PENTING: KITA TIDAK MEMANGGIL getRandomProducts() DI SINI!
     // Agar gambar yang sudah tampil dari cache (saat dibuka) tidak berkedip/ganti tiba-tiba.
-    
+
     // Namun, jika ternyata array randomProducts masih KOSONG (misal kunjungan pertama banget),
     // barulah kita panggil fungsi acak.
     if (randomProducts.value.length === 0) {
-       const shuffled = [...validProducts].sort(() => 0.5 - Math.random());
-       randomProducts.value = shuffled.slice(0, 6);
+      const shuffled = [...validProducts].sort(() => 0.5 - Math.random());
+      randomProducts.value = shuffled.slice(0, 6);
     }
-
   } catch (err) {
     allProducts.value = [];
   }
@@ -597,13 +638,13 @@ const fetchAllProducts = async () => {
 
 onMounted(() => {
   loadRecentlyViewed();
-  
+
   // 1. Eksekusi ini dulu agar UI Instan merender dari memori lokal (0 delay)
   loadAndShuffleCachedProducts();
-  
+
   // 2. Tembak API di background hanya untuk menyiapkan search dan cache masa depan
   fetchAllProducts();
-  
+
   setTimeout(() => {
     searchInputRef.value?.focus();
   }, 100);

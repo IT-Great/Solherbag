@@ -1845,7 +1845,7 @@ const formatPrice = (value) =>
 const goToDetail = (product) => {
   router.push({
     // [PERBAIKAN] Gunakan slug jika ada, jika produk lama belum punya slug, fallback ke id
-    path: `/product/${product.slug || product.id}`,
+    path: `/products/${product.slug || product.id}`,
     state: { productData: JSON.stringify(product) },
   });
 };

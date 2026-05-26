@@ -39,7 +39,7 @@
           v-for="item in wishlists"
           :key="item.id"
           class="group cursor-pointer relative"
-          @click="$router.push(`/product/${item.product.slug || item.product.id}`)"
+          @click="$router.push(`/products/${item.product.slug || item.product.id}`)"
         >
           <div
             class="relative bg-white shadow-sm mb-4 rounded-sm aspect-[4/5] overflow-hidden"
