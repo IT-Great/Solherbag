@@ -1,40 +1,72 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <!-- Google Tag Manager -->
+    <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-W6RGZSWL");
+    </script>
+    <!-- End Google Tag Manager -->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solher - Produk Fashion Premium & Berkualitas</title>
 
-  <title>Solher - Produk Fashion Premium & Berkualitas</title>
+    <meta
+      name="description"
+      content="Solher menyediakan koleksi tas dan produk premium lainnya yang elegan, dan berkualitas tinggi. Temukan gaya terbaikmu bersama Solher sekarang!"
+    />
+    <meta
+      name="keywords"
+      content="solher, tas solher, beli tas solher, tas fashion premium, toko tas online"
+    />
+    <meta property="og:site_name" content="Solher" />
+    <meta
+      property="og:title"
+      content="Solher - Produk Fashion Premium & Berkualitas"
+    />
+    <meta
+      property="og:description"
+      content="Koleksi produk premium terbaik untuk gaya elegan Anda."
+    />
+    <meta property="og:url" content="https://solherbag.netlify.app/" />
+    <meta property="og:type" content="website" />
+    <meta
+      name="google-site-verification"
+      content="r7uU5-SKdJcsxfSCjAoux58TqkRfi2cKmJ8hdaHAELE"
+    />
 
-  <meta name="description"
-    content="Solher menyediakan koleksi tas dan produk premium lainnya yang elegan, dan berkualitas tinggi. Temukan gaya terbaikmu bersama Solher sekarang!">
-  <meta name="keywords"
-    content="solher, tas solher, beli tas solher, tas fashion premium, toko tas online">
-  <meta property="og:site_name" content="Solher">
-  <meta property="og:title" content="Solher - Produk Fashion Premium & Berkualitas">
-  <meta property="og:description" content="Koleksi produk premium terbaik untuk gaya elegan Anda.">
-  <meta property="og:url" content="https://solherbag.netlify.app/">
-  <meta property="og:type" content="website">
-  <meta name="google-site-verification" content="r7uU5-SKdJcsxfSCjAoux58TqkRfi2cKmJ8hdaHAELE" />
-
-  <!-- <link rel="icon" href="<%= BASE_URL %>favicon.ico" sizes="any">
+    <!-- <link rel="icon" href="<%= BASE_URL %>favicon.ico" sizes="any">
   <link rel="icon" href="<%= BASE_URL %>logo.png" type="image/png">
   <link rel="apple-touch-icon" href="<%= BASE_URL %>logo.png"> -->
 
-  <link rel="icon" href="/favicon.ico" sizes="any">
-  <link rel="icon" href="/logo.png" type="image/png">
-  <link rel="apple-touch-icon" href="/logo.png">
-  <!-- Include Tailwind CSS via CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <!-- Font Awesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script type="application/ld+json">
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/logo.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/logo.png" />
+    <!-- Include Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "WebSite",
@@ -42,75 +74,87 @@
         "alternateName": ["Solher Store", "Solher"],
         "url": "https://solherbag.netlify.app/"
       }
-  </script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Poppins', 'sans-serif'],
+    </script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Poppins", "sans-serif"],
+            },
+            boxShadow: {
+              custom:
+                "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+            },
           },
-          boxShadow: {
-            'custom': '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-          },
+        },
+      };
+    </script>
+    <style>
+      .bg-gradient {
+        background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+      }
+
+      .animate-fade-in {
+        animation: fadeIn 0.5s ease-in-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
       }
-    }
-  </script>
-  <style>
-    .bg-gradient {
-      background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
-    }
 
-    .animate-fade-in {
-      animation: fadeIn 0.5s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(-10px);
+      .card-hover {
+        transition: all 0.3s ease;
       }
 
-      to {
-        opacity: 1;
-        transform: translateY(0);
+      .card-hover:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.3);
       }
-    }
 
-    .card-hover {
-      transition: all 0.3s ease;
-    }
+      /* [BARU] Sembunyikan badge reCAPTCHA di semua halaman secara default */
+      .grecaptcha-badge {
+        visibility: hidden !important;
+        opacity: 0 !important;
+        transition: opacity 0.3s ease;
+      }
 
-    .card-hover:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.3);
-    }
+      /* Tampilkan kembali HANYA jika body memiliki class ini */
+      body.show-recaptcha .grecaptcha-badge {
+        visibility: visible !important;
+        opacity: 1 !important;
+      }
+    </style>
+    <link rel="icon" type="image/png" href="src/assets/solherbrandbook.png" />
+    <script src="https://www.google.com/recaptcha/api.js?render=6Ldc7NQsAAAAAKyL9iRCRWG41KoOl2-lWdOTJhk0"></script>
+  </head>
 
-    /* [BARU] Sembunyikan badge reCAPTCHA di semua halaman secara default */
-    .grecaptcha-badge {
-      visibility: hidden !important;
-      opacity: 0 !important;
-      transition: opacity 0.3s ease;
-    }
-
-    /* Tampilkan kembali HANYA jika body memiliki class ini */
-    body.show-recaptcha .grecaptcha-badge {
-      visibility: visible !important;
-      opacity: 1 !important;
-    }
-  </style>
-  <link rel="icon" type="image/png" href="src/assets/solherbrandbook.png" />
-  <script src="https://www.google.com/recaptcha/api.js?render=6Ldc7NQsAAAAAKyL9iRCRWG41KoOl2-lWdOTJhk0"></script>
-</head>
-
-<body>
-  <div id="app"></div>
-  <noscript>
-    <strong>We're sorry but Solher doesn't work properly without JavaScript enabled. Please enable it to
-      continue.</strong>
-  </noscript>
-  <script type="module" src="/src/main.js"></script>
-</body>
-
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-W6RGZSWL"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+      ></iframe
+    ></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <div id="app"></div>
+    <noscript>
+      <strong
+        >We're sorry but Solher doesn't work properly without JavaScript
+        enabled. Please enable it to continue.</strong
+      >
+    </noscript>
+    <script type="module" src="/src/main.js"></script>
+  </body>
 </html>
