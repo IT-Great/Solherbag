@@ -5250,6 +5250,15 @@ const selectedQuantity = ref(1);
 const recommendedProducts = ref([]);
 const siblingColors = ref([]);
 
+// [BARU] Helper function untuk Google Tag Manager
+const trackGtmEvent = (eventName, data) => {
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event: eventName,
+    ...data,
+  });
+};
+
 const decreaseQuantity = () => {
   if (selectedQuantity.value > 1) selectedQuantity.value--;
 };
@@ -5567,6 +5576,25 @@ const fetchProductDetail = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/products/${route.params.id}`);
       product.value = res.data;
+
+      // [BARU] 1. Event: View Product (GTM)
+      // Dipanggil setelah data produk berhasil di-fetch
+      trackGtmEvent("view_item", {
+        ecommerce: {
+          currency: "IDR",
+          value: product.value.discount_price || product.value.price,
+          items: [
+            {
+              item_id: product.value.id,
+              item_name: product.value.name,
+              price: product.value.discount_price || product.value.price,
+              item_category: product.value.category?.name || "Accessories", // Sesuaikan jika ada relasi kategori
+              quantity: 1,
+            },
+          ],
+        },
+      });
+
       fetchWishlists();
       fetchRecommendations(product.value.category_id, product.value.id);
       fetchSiblingColors(product.value.name);
@@ -5659,6 +5687,26 @@ const handleAction = async (type) => {
       });
       flyer.addEventListener("transitionend", () => flyer.remove(), { once: true });
     }
+
+    // [BARU] 2. Event: Add to Cart (GTM)
+    trackGtmEvent("add_to_cart", {
+      ecommerce: {
+        currency: "IDR",
+        value:
+          (product.value.discount_price || product.value.price) * selectedQuantity.value,
+        items: [
+          {
+            item_id: product.value.id,
+            item_name: product.value.name,
+            price: product.value.discount_price || product.value.price,
+            item_category: product.value.category?.name || "Accessories",
+            item_variant: extractColorName(product.value.name), // Ambil warna sebagai varian
+            quantity: selectedQuantity.value,
+          },
+        ],
+      },
+    });
+
     return;
   }
   try {

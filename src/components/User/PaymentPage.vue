@@ -2763,9 +2763,7 @@ onMounted(fetchData);
       <div class="w-3 h-3 bg-black rounded-full animate-bounce-2"></div>
       <div class="w-3 h-3 bg-black rounded-full animate-bounce-3"></div>
     </div>
-    <p
-      class="font-serif text-sm italic tracking-widest text-gray-500 animate-pulse"
-    >
+    <p class="font-serif text-sm italic tracking-widest text-gray-500 animate-pulse">
       Preparing your checkout...
     </p>
   </div>
@@ -2790,10 +2788,7 @@ onMounted(fetchData);
       >
         Checkout
       </h1> -->
-  <div
-    v-else
-    class="max-w-6xl min-h-screen px-6 py-12 mx-auto md:py-24 animate-fade-in"
-  >
+  <div v-else class="max-w-6xl min-h-screen px-6 py-12 mx-auto md:py-24 animate-fade-in">
     <div v-if="checkoutItems.length === 0" class="py-20 text-center">
       <h2 class="mb-4 font-serif text-3xl">Your bag is empty</h2>
       <button
@@ -2805,9 +2800,7 @@ onMounted(fetchData);
     </div>
 
     <div v-else>
-      <h1
-        class="mb-12 font-serif text-3xl tracking-tighter uppercase md:text-4xl"
-      >
+      <h1 class="mb-12 font-serif text-3xl tracking-tighter uppercase md:text-4xl">
         Checkout
       </h1>
 
@@ -2819,9 +2812,7 @@ onMounted(fetchData);
                 class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white"
                 >1</span
               >
-              <h2
-                class="text-sm font-bold tracking-widest text-gray-900 uppercase"
-              >
+              <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">
                 Shipping Address
               </h2>
             </div>
@@ -2889,9 +2880,7 @@ onMounted(fetchData);
                 class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white"
                 >2</span
               >
-              <h2
-                class="text-sm font-bold tracking-widest text-gray-900 uppercase"
-              >
+              <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">
                 Shipping Method
               </h2>
             </div>
@@ -2909,9 +2898,7 @@ onMounted(fetchData);
                 class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white"
                 >2</span
               >
-              <h2
-                class="text-sm font-bold tracking-widest text-gray-900 uppercase"
-              >
+              <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">
                 Shipping Method
               </h2>
             </div>
@@ -2933,9 +2920,7 @@ onMounted(fetchData);
                 />
                 <div class="flex items-center justify-between flex-grow ml-4">
                   <div>
-                    <p
-                      class="text-sm font-bold tracking-wide text-gray-900 uppercase"
-                    >
+                    <p class="text-sm font-bold tracking-wide text-gray-900 uppercase">
                       Free Shipping
                     </p>
                     <p class="mt-1 text-xs font-bold text-green-600">
@@ -2962,14 +2947,10 @@ onMounted(fetchData);
                 />
                 <div class="flex items-center justify-between flex-grow ml-4">
                   <div>
-                    <p
-                      class="text-sm font-bold tracking-wide text-gray-900 uppercase"
-                    >
+                    <p class="text-sm font-bold tracking-wide text-gray-900 uppercase">
                       Standard / Express
                     </p>
-                    <p class="mt-1 text-xs text-gray-500">
-                      Powered by Biteship
-                    </p>
+                    <p class="mt-1 text-xs text-gray-500">Powered by Biteship</p>
                   </div>
                 </div>
               </label>
@@ -3079,9 +3060,7 @@ onMounted(fetchData);
                         class="hidden"
                       />
                       <p class="text-xs font-bold uppercase">Standard Pickup</p>
-                      <p class="text-[10px] text-gray-500 mt-1">
-                        Pickup Now
-                      </p>
+                      <p class="text-[10px] text-gray-500 mt-1">Pickup Now</p>
                     </label>
                     <label
                       :class="
@@ -3097,9 +3076,7 @@ onMounted(fetchData);
                         v-model="deliveryType"
                         class="hidden"
                       />
-                      <p class="text-xs font-bold uppercase">
-                        Scheduled Pickup
-                      </p>
+                      <p class="text-xs font-bold uppercase">Scheduled Pickup</p>
                       <p class="text-[10px] text-gray-500 mt-1">
                         Choose specific date & time
                       </p>
@@ -3272,9 +3249,9 @@ onMounted(fetchData);
                         rate.is_disabled
                           ? 'opacity-40 bg-gray-100 border-gray-200 pointer-events-none select-none'
                           : selectedRate?.company === rate.company &&
-                              selectedRate?.type === rate.type
-                            ? 'border-black bg-gray-50 shadow-sm'
-                            : 'border-gray-200 hover:bg-gray-50 cursor-pointer transition-all',
+                            selectedRate?.type === rate.type
+                          ? 'border-black bg-gray-50 shadow-sm'
+                          : 'border-gray-200 hover:bg-gray-50 cursor-pointer transition-all',
                       ]"
                       class="relative flex flex-col p-4 border rounded-xl"
                     >
@@ -3300,8 +3277,7 @@ onMounted(fetchData);
                             />
                             <span
                               v-show="
-                                imageErrors[rate.company] ||
-                                !getCourierLogo(rate.company)
+                                imageErrors[rate.company] || !getCourierLogo(rate.company)
                               "
                               class="text-xs font-black text-gray-300"
                             >
@@ -3352,11 +3328,7 @@ onMounted(fetchData);
               class="space-y-4 mb-8 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar"
             >
               <!-- <div v-for="item in cartItems" :key="item.id" class="flex gap-4"> -->
-              <div
-                v-for="item in checkoutItems"
-                :key="item.id"
-                class="flex gap-4"
-              >
+              <div v-for="item in checkoutItems" :key="item.id" class="flex gap-4">
                 <img
                   :src="item.product.image"
                   class="object-cover w-16 h-16 bg-gray-100 rounded-xl shrink-0"
@@ -3376,17 +3348,21 @@ onMounted(fetchData);
                   <!-- <p v-if="item.color" class="text-gray-500 text-[9px] uppercase tracking-widest mt-0.5">
                     Color: <span class="font-bold text-gray-700">{{ item.color }}</span>
                   </p> -->
-                  <p v-if="item.color" class="text-gray-500 text-[9px] uppercase tracking-widest mt-0.5">
-                    Color: <span class="font-bold text-gray-700">{{ parseColorName(item.color) }}</span>
+                  <p
+                    v-if="item.color"
+                    class="text-gray-500 text-[9px] uppercase tracking-widest mt-0.5"
+                  >
+                    Color:
+                    <span class="font-bold text-gray-700">{{
+                      parseColorName(item.color)
+                    }}</span>
                   </p>
-                  <p class="text-gray-400 text-[10px]">
-                    Qty: {{ item.quantity }}
-                  </p>
+                  <p class="text-gray-400 text-[10px]">Qty: {{ item.quantity }}</p>
                   <p class="mt-1 text-xs font-medium text-gray-900">
                     {{
                       formatPrice(
                         (item.product.discount_price ?? item.product.price) *
-                          item.quantity,
+                          item.quantity
                       )
                     }}
                   </p>
@@ -3397,9 +3373,7 @@ onMounted(fetchData);
             <div class="pt-4 space-y-3 text-sm border-t border-gray-50">
               <div class="flex justify-between text-gray-500">
                 <span>Total Items</span>
-                <span class="font-bold text-gray-900"
-                  >{{ checkoutCount }} items</span
-                >
+                <span class="font-bold text-gray-900">{{ checkoutCount }} items</span>
               </div>
               <div class="flex justify-between text-gray-500">
                 <span>Subtotal</span>
@@ -3481,9 +3455,7 @@ onMounted(fetchData);
                     </svg>
                     Redeem Points
                   </span>
-                  <span class="text-xs text-gray-500"
-                    >Bal: {{ userData.point }} Pts</span
-                  >
+                  <span class="text-xs text-gray-500">Bal: {{ userData.point }} Pts</span>
                 </div>
                 <div class="flex gap-2">
                   <input
@@ -3510,9 +3482,7 @@ onMounted(fetchData);
               </div>
               <div class="flex items-start justify-between text-gray-500">
                 <span>Shipping</span>
-                <span
-                  v-if="shippingMethod === 'free'"
-                  class="font-bold text-green-600"
+                <span v-if="shippingMethod === 'free'" class="font-bold text-green-600"
                   >Free</span
                 >
                 <div
@@ -3523,8 +3493,7 @@ onMounted(fetchData);
                     formatPrice(selectedRate.price * checkoutCount)
                   }}</span>
                   <p class="text-[10px] text-gray-400 mt-1">
-                    {{ formatPrice(selectedRate.price) }} x
-                    {{ checkoutCount }} items
+                    {{ formatPrice(selectedRate.price) }} x {{ checkoutCount }} items
                   </p>
                 </div>
                 <span v-else class="italic text-[10px]">Select method</span>
@@ -3533,12 +3502,8 @@ onMounted(fetchData);
               <div
                 class="flex justify-between pt-4 font-bold text-gray-900 border-t border-gray-100"
               >
-                <span class="mt-1 text-xs tracking-widest uppercase"
-                  >Grand Total</span
-                >
-                <span class="text-xl">{{
-                  formatPrice(grandTotalWithDiscount)
-                }}</span>
+                <span class="mt-1 text-xs tracking-widest uppercase">Grand Total</span>
+                <span class="text-xl">{{ formatPrice(grandTotalWithDiscount) }}</span>
               </div>
 
               <div
@@ -3607,9 +3572,7 @@ onMounted(fetchData);
       v-if="showModal"
       class="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto bg-black/40 backdrop-blur-sm"
     >
-      <div
-        class="relative w-full max-w-2xl p-6 my-4 bg-white shadow-2xl rounded-2xl"
-      >
+      <div class="relative w-full max-w-2xl p-6 my-4 bg-white shadow-2xl rounded-2xl">
         <button
           @click="showModal = false"
           class="absolute text-xl text-gray-400 top-4 right-5 hover:text-black"
@@ -3658,9 +3621,7 @@ onMounted(fetchData);
             />
           </div>
 
-          <div
-            class="relative mt-2 overflow-hidden border border-gray-200 rounded-xl"
-          >
+          <div class="relative mt-2 overflow-hidden border border-gray-200 rounded-xl">
             <div
               class="bg-amber-50 border-b border-amber-100 py-1.5 px-3 flex items-start gap-2"
             >
@@ -3679,9 +3640,9 @@ onMounted(fetchData);
                 />
               </svg>
               <p class="text-[10px] text-amber-700 leading-tight">
-                <span class="font-bold">Important:</span> Ensure the blue pin on
-                the map is accurately placed exactly at your location to prevent
-                delivery failures.
+                <span class="font-bold">Important:</span> Ensure the blue pin on the map
+                is accurately placed exactly at your location to prevent delivery
+                failures.
               </p>
             </div>
 
@@ -3741,20 +3702,15 @@ onMounted(fetchData);
               <div
                 class="absolute bottom-2 right-2 z-[400] bg-white/90 backdrop-blur px-2 py-1 rounded shadow text-[9px] font-mono text-gray-600 pointer-events-none"
               >
-                {{
-                  form.latitude ? parseFloat(form.latitude).toFixed(5) : "-"
-                }},
-                {{
-                  form.longitude ? parseFloat(form.longitude).toFixed(5) : "-"
-                }}
+                {{ form.latitude ? parseFloat(form.latitude).toFixed(5) : "-" }},
+                {{ form.longitude ? parseFloat(form.longitude).toFixed(5) : "-" }}
               </div>
             </div>
           </div>
 
           <div class="relative pt-1">
             <div class="flex items-end justify-between mb-1">
-              <label
-                class="font-bold text-gray-700 text-[10px] uppercase tracking-widest"
+              <label class="font-bold text-gray-700 text-[10px] uppercase tracking-widest"
                 >Detail Address</label
               >
               <span
@@ -3809,1249 +3765,6 @@ onMounted(fetchData);
 </template>
 
 <script setup>
-// import { ref, onMounted, watch, computed, nextTick } from "vue";
-// import { useRouter } from "vue-router";
-// import axios from "axios";
-// import Swal from "sweetalert2";
-// import { BASE_URL } from "../../config/api.js";
-
-// // Import State dari useCart
-// import { useCart } from "../../composables/useCart.js";
-
-// // const { cartItems, cartCount, totalCartAmount, clearCart } = useCart();
-// const {
-//   cartItems,
-//   checkoutCount, // Gantikan cartCount dengan checkoutCount
-//   checkoutTotalAmount, // Gantikan totalCartAmount dengan checkoutTotalAmount
-//   selectedItemIds,
-//   clearSelectedCart, // Gantikan clearCart dengan clearSelectedCart
-// } = useCart();
-
-// import { Country, State } from "country-state-city";
-
-// // Import Leaflet (Wajib untuk Peta)
-// import "leaflet/dist/leaflet.css";
-// import { LMap, LTileLayer, LMarker } from "@vue-leaflet/vue-leaflet";
-// import L from "leaflet";
-
-// delete L.Icon.Default.prototype._getIconUrl;
-
-// L.Icon.Default.mergeOptions({
-//   iconRetinaUrl: new URL(
-//     "leaflet/dist/images/marker-icon-2x.png",
-//     import.meta.url,
-//   ).href,
-//   iconUrl: new URL("leaflet/dist/images/marker-icon.png", import.meta.url).href,
-//   shadowUrl: new URL("leaflet/dist/images/marker-shadow.png", import.meta.url)
-//     .href,
-// });
-
-// const router = useRouter();
-
-// const userData = ref(null);
-// const addresses = ref([]);
-// const selectedAddressId = ref(null);
-// const isProcessing = ref(false);
-
-// const shippingMethod = ref("free");
-// // const shippingRates = ref([]);
-// const selectedRate = ref(null);
-// const isLoadingRates = ref(false);
-
-// const deliveryType = ref("now");
-// const deliveryDate = ref("");
-// const deliveryTime = ref("");
-
-// const pointsToUse = ref(0);
-// const pointConversionRate = 1000;
-
-// // State Promo
-// const promoInput = ref("");
-// const appliedPromoCode = ref(null);
-// const promoDiscountAmount = ref(0);
-// const promoMessage = ref("");
-// const promoSuccess = ref(false);
-// const isVerifyingPromo = ref(false);
-
-// // const applyPromo = async () => {
-// //   if (!promoInput.value) return;
-// //   isVerifyingPromo.value = true;
-// //   try {
-// //     const res = await axios.post(
-// //       `${BASE_URL}/promo/verify`,
-// //       { promo_code: promoInput.value },
-// //       axiosConfig,
-// //     );
-
-// //     // Cek batas minimal belanja Rp 50.000
-// //     if (checkoutTotalAmount.value < 50000) {
-// //       throw new Error("Minimum spend for this promo is Rp 50.000");
-// //     }
-
-// //     promoSuccess.value = true;
-// //     promoMessage.value = "✅ " + res.data.message;
-// //     appliedPromoCode.value = promoInput.value.toUpperCase();
-
-// //     // Terapkan Zero-Floor (Diskon tidak boleh lebih dari total barang)
-// //     promoDiscountAmount.value = Math.min(
-// //       res.data.discount_value,
-// //       checkoutTotalAmount.value,
-// //     );
-
-// //     // Reset points jika poin melebihi sisa harga setelah promo
-// //     if (pointsToUse.value > maxUsablePoints.value) {
-// //       pointsToUse.value = maxUsablePoints.value;
-// //     }
-// //   } catch (error) {
-// //     promoSuccess.value = false;
-// //     promoMessage.value =
-// //       "❌ " +
-// //       (error.message || error.response?.data?.message || "Invalid promo");
-// //     appliedPromoCode.value = null;
-// //     promoDiscountAmount.value = 0;
-// //   } finally {
-// //     isVerifyingPromo.value = false;
-// //   }
-// // };
-
-// const applyPromo = async () => {
-//   if (!promoInput.value) return;
-//   isVerifyingPromo.value = true;
-//   try {
-//     const res = await axios.post(
-//       `${BASE_URL}/promo/verify`,
-//       { promo_code: promoInput.value },
-//       axiosConfig,
-//     );
-
-//     // Cek batas minimal belanja Rp 50.000
-//     if (checkoutTotalAmount.value < 50000) {
-//       throw new Error("Minimum spend for this promo is Rp 50.000");
-//     }
-
-//     promoSuccess.value = true;
-//     promoMessage.value = "✅ " + res.data.message;
-//     appliedPromoCode.value = promoInput.value.toUpperCase();
-
-//     // Terapkan Zero-Floor (Diskon tidak boleh lebih dari total barang)
-//     promoDiscountAmount.value = Math.min(
-//       res.data.discount_value,
-//       checkoutTotalAmount.value,
-//     );
-
-//     // Reset points jika poin melebihi sisa harga setelah promo
-//     if (pointsToUse.value > maxUsablePoints.value) {
-//       pointsToUse.value = maxUsablePoints.value;
-//     }
-//   } catch (error) {
-//     // =========================================================================
-//     // [PERBAIKAN] TAMPILKAN PESAN ERROR SPESIFIK DARI BACKEND
-//     // =========================================================================
-//     promoSuccess.value = false;
-    
-//     // Prioritas 1: Ambil pesan error spesifik dari Backend (response 404/400)
-//     // Prioritas 2: Ambil pesan error buatan Frontend (seperti "Minimum spend...")
-//     // Prioritas 3: Pesan error default
-//     let errorMessage = "Invalid promo code.";
-//     if (error.response && error.response.data && error.response.data.message) {
-//       errorMessage = error.response.data.message;
-//     } else if (error.message) {
-//       errorMessage = error.message;
-//     }
-
-//     promoMessage.value = "❌ " + errorMessage;
-//     appliedPromoCode.value = null;
-//     promoDiscountAmount.value = 0;
-//   } finally {
-//     isVerifyingPromo.value = false;
-//   }
-// };
-
-// const removePromo = () => {
-//   promoInput.value = "";
-//   appliedPromoCode.value = null;
-//   promoDiscountAmount.value = 0;
-//   promoMessage.value = "";
-//   promoSuccess.value = false;
-// };
-
-// // =========================================================================
-// // [PERBAIKAN] LOGIKA PENGIRIMAN SUPER-REAKTIF & VALIDASI KETAT
-// // =========================================================================
-// const rawShippingRates = ref([]); // Data murni dari API
-
-// // NEW STATE
-// const isPageLoading = ref(true);
-
-// const axiosConfig = {
-//   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-// };
-
-// const shipperInfo = {
-//   name: "Solher Store",
-//   phone: "08883888585",
-//   address: "Jalan Kecilung N0. 8A, Kota Surabaya, Jawa Timur 60275, Indonesia",
-//   postal_code: "60275",
-// };
-
-// // 1. Hitung Kuantitas Total Barang (Bukan jenis barang, tapi total buah)
-// const totalQuantityToCheckout = computed(() => {
-//   return checkoutItems.value.reduce((sum, item) => sum + item.quantity, 0);
-// });
-
-// // 2. Rumus Haversine: Mengukur Jarak Koordinat Asli dari Toko (Surabaya) ke Alamat User
-// const getDistanceFromOrigin = (destLat, destLng) => {
-//   if (!destLat || !destLng) return 999;
-//   const lat1 = -7.25706; // Latitude Solher Store
-//   const lon1 = 112.74549; // Longitude Solher Store
-//   const lat2 = parseFloat(destLat);
-//   const lon2 = parseFloat(destLng);
-
-//   const R = 6371; // Radius bumi dalam KM
-//   const dLat = ((lat2 - lat1) * Math.PI) / 180;
-//   const dLon = ((lon2 - lon1) * Math.PI) / 180;
-//   const a =
-//     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-//     Math.cos((lat1 * Math.PI) / 180) *
-//       Math.cos((lat2 * Math.PI) / 180) *
-//       Math.sin(dLon / 2) *
-//       Math.sin(dLon / 2);
-//   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-//   return R * c; // Hasil dalam KM
-// };
-
-// // 3. Computed Property: Akan otomatis berjalan Ulang setiap kali Jam, Tanggal, Alamat, atau Berat berubah!
-// // const processedShippingRates = computed(() => {
-// //   if (!rawShippingRates.value || rawShippingRates.value.length === 0) return [];
-
-// //   let checkHour = new Date().getHours();
-
-// //   // Validasi Waktu Dinamis
-// //   if (deliveryType.value === 'scheduled' && deliveryTime.value) {
-// //      if (deliveryDate.value === todayDate.value) {
-// //         checkHour = parseInt(deliveryTime.value.split(':')[0]);
-// //      } else {
-// //         checkHour = 12; // Jika pilih besok, jam aman dianggap jam 12 siang
-// //      }
-// //   } else {
-// //      checkHour += 1; // Jika 'now', asumsi API Backend menjadwalkan 1 jam ke depan
-// //   }
-
-// //   const totalWeightKg = totalQuantityToCheckout.value; // Asumsi 1 barang = 1 KG
-
-// //   // Validasi Jarak Dinamis
-// //   const destInfo = addresses.value.find(a => a.id === selectedAddressId.value);
-// //   const distanceKm = destInfo ? getDistanceFromOrigin(destInfo.details.latitude, destInfo.details.longitude) : 999;
-
-// //   const rates = rawShippingRates.value.map(rate => {
-// //     let is_disabled = false;
-// //     let disable_reason = "";
-// //     const type = rate.type.toLowerCase();
-// //     const company = rate.company.toLowerCase();
-
-// //     // A. Aturan Jarak (Maks 40KM untuk Ojek Online)
-// //     if (company === 'gojek' || company === 'grab') {
-// //        if (distanceKm > 40) {
-// //          is_disabled = true;
-// //          disable_reason = `Jarak > 40km (${distanceKm.toFixed(1)}km)`;
-// //        }
-// //     }
-
-// //     // B. Aturan Gojek
-// //     if (!is_disabled && company === 'gojek') {
-// //       if (type.includes('same day') || type.includes('sameday')) {
-// //         if (checkHour >= 15 || checkHour < 6) {
-// //           is_disabled = true;
-// //           disable_reason = "Tutup. Jam Operasional 06:00 - 15:00";
-// //         } else if (totalWeightKg > 7) {
-// //           is_disabled = true;
-// //           disable_reason = "Berat Maksimal 7kg";
-// //         }
-// //       }
-// //       else if (type.includes('instant')) {
-// //         if (checkHour >= 17 || checkHour < 6) {
-// //           is_disabled = true;
-// //           disable_reason = "Tutup. Jam Operasional 06:00 - 17:00";
-// //         } else if (totalWeightKg > 20) {
-// //           is_disabled = true;
-// //           disable_reason = "Berat Maksimal 20kg";
-// //         }
-// //       }
-// //     }
-// //     // C. Aturan Grab
-// //     else if (!is_disabled && company === 'grab') {
-// //       if (type.includes('same day') || type.includes('sameday')) {
-// //         if (checkHour >= 14 || checkHour < 9) { // Aturan ketat dari Error Log Anda
-// //           is_disabled = true;
-// //           disable_reason = "Tutup. Jam Operasional 09:00 - 14:00";
-// //         } else if (totalWeightKg > 7) {
-// //           is_disabled = true;
-// //           disable_reason = "Berat Maksimal 7kg";
-// //         }
-// //       }
-// //       else if (type.includes('instant')) {
-// //         if (checkHour >= 18 || checkHour < 8) {
-// //           is_disabled = true;
-// //           disable_reason = "Tutup. Jam Operasional 08:00 - 18:00";
-// //         } else if (totalWeightKg > 20) {
-// //           is_disabled = true;
-// //           disable_reason = "Berat Maksimal 20kg";
-// //         }
-// //       }
-// //     }
-
-// //     return { ...rate, is_disabled, disable_reason };
-// //   });
-
-// //   // Urutkan: Kurir yang aktif di atas, yang disabled di bawah
-// //   return rates.sort((a, b) => (a.is_disabled === b.is_disabled ? 0 : a.is_disabled ? 1 : -1));
-// // });
-
-// // 3. Computed Property: Auto-Run saat Jam, Tanggal, Alamat, atau Berat berubah
-// // const processedShippingRates = computed(() => {
-// //   // Pastikan data mentah tersedia
-// //   if (!rawShippingRates.value || rawShippingRates.value.length === 0) return [];
-
-// //   let checkHour = new Date().getHours();
-
-// //   // Validasi Waktu Dinamis
-// //   if (deliveryType.value === 'scheduled' && deliveryTime.value) {
-// //      if (deliveryDate.value === todayDate.value) {
-// //         checkHour = parseInt(deliveryTime.value.split(':')[0]);
-// //      } else {
-// //         checkHour = 12; // Jika besok, selalu aman (jam 12)
-// //      }
-// //   } else {
-// //      checkHour += 1; // Jika 'now', asumsi pickup 1 jam dari sekarang
-// //   }
-
-// //   const totalWeightKg = totalQuantityToCheckout.value || 1;
-
-// //   // Validasi Jarak Dinamis
-// //   let distanceKm = 999;
-// //   if (addresses.value && selectedAddressId.value) {
-// //       const destInfo = addresses.value.find(a => a.id === selectedAddressId.value);
-// //       if (destInfo && destInfo.details.latitude && destInfo.details.longitude) {
-// //           distanceKm = getDistanceFromOrigin(destInfo.details.latitude, destInfo.details.longitude);
-// //       }
-// //   }
-
-// //   const rates = rawShippingRates.value.map(rate => {
-// //     let is_disabled = false;
-// //     let disable_reason = "";
-
-// //     // Pastikan aman jika API Biteship mengirim data kosong
-// //     const type = rate.type ? rate.type.toLowerCase() : '';
-// //     const company = rate.company ? rate.company.toLowerCase() : '';
-
-// //     // A. Aturan Jarak (Maks 40KM untuk Ojek Online)
-// //     if (company === 'gojek' || company === 'grab') {
-// //        if (distanceKm > 40) {
-// //          is_disabled = true;
-// //          disable_reason = `Jarak > 40km (${distanceKm.toFixed(1)}km)`;
-// //        }
-// //     }
-
-// //     // B. Aturan Gojek
-// //     if (!is_disabled && company === 'gojek') {
-// //       if (type.includes('same day') || type.includes('sameday')) {
-// //         if (checkHour >= 14 || checkHour < 6) { // Tutup jam 15, batas aman jam 14
-// //           is_disabled = true;
-// //           disable_reason = "Tutup. Operasional 06:00 - 14:00";
-// //         } else if (totalWeightKg > 7) {
-// //           is_disabled = true;
-// //           disable_reason = "Berat Maks 7kg";
-// //         }
-// //       }
-// //       else if (type.includes('instant')) {
-// //         if (checkHour >= 16 || checkHour < 6) { // Tutup jam 17, batas aman jam 16
-// //           is_disabled = true;
-// //           disable_reason = "Tutup. Operasional 06:00 - 16:00";
-// //         } else if (totalWeightKg > 20) {
-// //           is_disabled = true;
-// //           disable_reason = "Berat Maks 20kg";
-// //         }
-// //       }
-// //     }
-// //     // C. Aturan Grab
-// //     else if (!is_disabled && company === 'grab') {
-// //       if (type.includes('same day') || type.includes('sameday')) {
-// //         if (checkHour >= 14 || checkHour < 9) {
-// //           is_disabled = true;
-// //           disable_reason = "Tutup. Operasional 09:00 - 14:00";
-// //         } else if (totalWeightKg > 7) {
-// //           is_disabled = true;
-// //           disable_reason = "Berat Maks 7kg";
-// //         }
-// //       }
-// //       else if (type.includes('instant')) {
-// //         if (checkHour >= 18 || checkHour < 8) {
-// //           is_disabled = true;
-// //           disable_reason = "Tutup. Operasional 08:00 - 18:00";
-// //         } else if (totalWeightKg > 20) {
-// //           is_disabled = true;
-// //           disable_reason = "Berat Maks 20kg";
-// //         }
-// //       }
-// //     }
-
-// //     return { ...rate, is_disabled, disable_reason };
-// //   });
-
-// //   // [PERBAIKAN PENTING] Jangan mengurutkan langsung pada array yang dihasilkan map() jika memori rentan.
-// //   // Buat salinan (spread operator) lalu urutkan.
-// //   return [...rates].sort((a, b) => {
-// //     if (a.is_disabled === b.is_disabled) return 0;
-// //     return a.is_disabled ? 1 : -1;
-// //   });
-// // });
-
-// // 3. Computed Property: Akan otomatis berjalan Ulang setiap kali Jam, Tanggal, Alamat, atau Berat berubah!
-// const processedShippingRates = computed(() => {
-//   // Pastikan data mentah tersedia
-//   if (!rawShippingRates.value || rawShippingRates.value.length === 0) return [];
-
-//   let checkHour = new Date().getHours();
-
-//   // Validasi Waktu Dinamis
-//   if (deliveryType.value === "scheduled" && deliveryTime.value) {
-//     if (deliveryDate.value === todayDate.value) {
-//       checkHour = parseInt(deliveryTime.value.split(":")[0]);
-//     } else {
-//       checkHour = 12; // Jika besok, selalu aman (jam 12 siang)
-//     }
-//   } else {
-//     // Jika 'now', kita gunakan jam saat ini
-//     checkHour = new Date().getHours();
-//   }
-
-//   const totalWeightKg = totalQuantityToCheckout.value || 1;
-
-//   // Validasi Jarak Dinamis
-//   let distanceKm = 999;
-//   if (addresses.value && selectedAddressId.value) {
-//     const destInfo = addresses.value.find(
-//       (a) => a.id === selectedAddressId.value,
-//     );
-//     if (destInfo && destInfo.details.latitude && destInfo.details.longitude) {
-//       distanceKm = getDistanceFromOrigin(
-//         destInfo.details.latitude,
-//         destInfo.details.longitude,
-//       );
-//     }
-//   }
-
-//   const rates = rawShippingRates.value.map((rate) => {
-//     let is_disabled = false;
-//     let disable_reason = "";
-
-//     // [PERBAIKAN KRUSIAL] Hapus underscore (_) agar "same_day" berubah jadi "same day"
-//     const type = rate.type ? rate.type.toLowerCase().replace(/_/g, " ") : "";
-//     const company = rate.company ? rate.company.toLowerCase() : "";
-
-//     // A. Aturan Jarak (Maks 40KM untuk Ojek Online)
-//     if (company === "gojek" || company === "grab") {
-//       if (distanceKm > 40) {
-//         is_disabled = true;
-//         disable_reason = `Jarak > 40km (${distanceKm.toFixed(1)}km)`;
-//       }
-//     }
-
-//     // B. Aturan Gojek
-//     if (!is_disabled && company === "gojek") {
-//       if (type.includes("same day") || type.includes("sameday")) {
-//         // Gojek Same Day: Tutup Jam 15:00
-//         if (checkHour >= 15 || checkHour < 6) {
-//           is_disabled = true;
-//           disable_reason = "Tutup. Operasional 06:00 - 15:00";
-//         } else if (totalWeightKg > 7) {
-//           is_disabled = true;
-//           disable_reason = "Berat Maks 7kg";
-//         }
-//       } else if (type.includes("instant")) {
-//         // Gojek Instant: Tutup Jam 17:00
-//         if (checkHour >= 17 || checkHour < 6) {
-//           is_disabled = true;
-//           disable_reason = "Tutup. Operasional 06:00 - 17:00";
-//         } else if (totalWeightKg > 20) {
-//           is_disabled = true;
-//           disable_reason = "Berat Maks 20kg";
-//         }
-//       }
-//     }
-//     // C. Aturan Grab
-//     else if (!is_disabled && company === "grab") {
-//       if (type.includes("same day") || type.includes("sameday")) {
-//         // Grab Same Day: Tutup Jam 14:00 (Sesuai Error Biteship)
-//         if (checkHour >= 14 || checkHour < 9) {
-//           is_disabled = true;
-//           disable_reason = "Tutup. Operasional 09:00 - 14:00";
-//         } else if (totalWeightKg > 7) {
-//           is_disabled = true;
-//           disable_reason = "Berat Maks 7kg";
-//         }
-//       } else if (type.includes("instant")) {
-//         // Grab Instant: Tutup Jam 18:00
-//         if (checkHour >= 18 || checkHour < 8) {
-//           is_disabled = true;
-//           disable_reason = "Tutup. Operasional 08:00 - 18:00";
-//         } else if (totalWeightKg > 20) {
-//           is_disabled = true;
-//           disable_reason = "Berat Maks 20kg";
-//         }
-//       }
-//     }
-
-//     return { ...rate, is_disabled, disable_reason };
-//   });
-
-//   // Urutkan agar kurir yang "Disabled" turun ke posisi paling bawah
-//   return [...rates].sort((a, b) => {
-//     if (a.is_disabled === b.is_disabled) return 0;
-//     return a.is_disabled ? 1 : -1;
-//   });
-// });
-
-// const initDateTime = () => {
-//   const now = new Date();
-//   now.setHours(now.getHours() + 1);
-//   deliveryDate.value = now.toISOString().split("T")[0];
-//   deliveryTime.value =
-//     now.toTimeString().split(":")[0] + ":" + now.toTimeString().split(":")[1];
-// };
-
-// const todayDate = computed(() => new Date().toISOString().split("T")[0]);
-
-// const destinationInfo = computed(() => {
-//   if (!selectedAddressId.value || !addresses.value) return null;
-//   const addr = addresses.value.find((a) => a.id === selectedAddressId.value);
-//   if (!addr) return null;
-//   return {
-//     name: addr.receiver.full_name,
-//     phone: userData.value?.phone || "No Phone Provided",
-//     address: `${addr.details.location}, ${addr.details.city}, ${addr.details.province}`,
-//     postal_code: addr.details.postal_code,
-//   };
-// });
-
-// const grandTotal = computed(() => {
-//   let total = checkoutTotalAmount.value;
-//   if (shippingMethod.value === "biteship" && selectedRate.value) {
-//     total += parseFloat(selectedRate.value.price) * checkoutCount.value;
-//   }
-//   return total;
-// });
-
-// const imageErrors = ref({});
-// const handleImageError = (company) => {
-//   imageErrors.value[company] = true;
-// };
-// const getCourierLogo = (company) => {
-//   const baseUrl = "/courier_images/";
-//   const map = {
-//     jne: "jne.png",
-//     sicepat: "sicepat.png",
-//     jnt: "jnt.png",
-//     anteraja: "anteraja.png",
-//     gojek: "gojek.png",
-//     grab: "grab.png",
-//     paxel: "paxel.png",
-//     ninja: "ninja.png",
-//   };
-//   const logo = map[company.toLowerCase()];
-//   return logo ? baseUrl + logo : null;
-// };
-
-// const isButtonDisabled = computed(() => {
-//   if (isProcessing.value || cartItems.value.length === 0) return true;
-//   if (!selectedAddressId.value) return true;
-//   if (shippingMethod.value === "biteship") {
-//     if (!selectedRate.value) return true;
-//     if (
-//       deliveryType.value === "scheduled" &&
-//       (!deliveryDate.value || !deliveryTime.value)
-//     )
-//       return true;
-//   }
-//   return false;
-// });
-
-// // watch(selectedAddressId, async (newVal) => {
-// //   if (newVal) {
-// //     selectedRate.value = null;
-// //     isLoadingRates.value = true;
-// //     shippingRates.value = [];
-// //     try {
-// //       const res = await axios.post(
-// //         `${BASE_URL}/shipping/rates`,
-// //         { address_id: newVal },
-// //         axiosConfig,
-// //       );
-// //       if (res.data && res.data.pricing) shippingRates.value = res.data.pricing;
-// //     } catch (error) {
-// //       Swal.fire({
-// //         toast: true,
-// //         position: "top-end",
-// //         icon: "error",
-// //         title: "Failed to calculate shipping.",
-// //         showConfirmButton: false,
-// //         timer: 4000,
-// //       });
-// //     } finally {
-// //       isLoadingRates.value = false;
-// //     }
-// //   }
-// // });
-
-// // watch(selectedAddressId, async (newVal) => {
-// //   if (newVal) {
-// //     selectedRate.value = null;
-// //     isLoadingRates.value = true;
-// //     shippingRates.value = [];
-// //     try {
-// //       const res = await axios.post(
-// //         `${BASE_URL}/shipping/rates`,
-// //         {
-// //           address_id: newVal,
-// //           total_quantity: checkoutCount.value // [PERBAIKAN] Kirim total quantity ke backend
-// //         },
-// //         axiosConfig,
-// //       );
-
-// //       if (res.data && res.data.pricing) {
-// //         const currentHour = new Date().getHours();
-// //         const totalWeightKg = checkoutCount.value; // Karena 1 item = 1kg
-
-// //         // [PERBAIKAN] Menyuntikkan aturan Validasi Lokal (Ojek Online)
-// //         const processedRates = res.data.pricing.map(rate => {
-// //           let is_disabled = false;
-// //           let disable_reason = "";
-
-// //           const type = rate.type.toLowerCase();
-// //           const company = rate.company.toLowerCase();
-
-// //           if (company === 'gojek' || company === 'grab') {
-// //             if (type.includes('same day') || type.includes('sameday')) {
-// //               // Same Day maksimal jam 15:00
-// //               if (currentHour >= 15 || currentHour < 6) {
-// //                 is_disabled = true;
-// //                 disable_reason = "Out of operational hours (06:00 - 15:00)";
-// //               } else if (totalWeightKg > 7) {
-// //                 is_disabled = true;
-// //                 disable_reason = "Weight exceeds max limit (7kg)";
-// //               }
-// //             }
-// //             else if (type.includes('instant')) {
-// //               // Instant maksimal jam 17:00
-// //               if (currentHour >= 17 || currentHour < 6) {
-// //                 is_disabled = true;
-// //                 disable_reason = "Out of operational hours (06:00 - 17:00)";
-// //               } else if (totalWeightKg > 20) {
-// //                 is_disabled = true;
-// //                 disable_reason = "Weight exceeds max limit (20kg)";
-// //               }
-// //             }
-// //           }
-
-// //           return { ...rate, is_disabled, disable_reason };
-// //         });
-
-// //         // Urutkan agar kurir yang "Disabled" turun ke posisi paling bawah
-// //         processedRates.sort((a, b) => (a.is_disabled === b.is_disabled ? 0 : a.is_disabled ? 1 : -1));
-
-// //         shippingRates.value = processedRates;
-// //       }
-// //     } catch (error) {
-// //       Swal.fire({
-// //         toast: true,
-// //         position: "top-end",
-// //         icon: "error",
-// //         title: "Failed to calculate shipping.",
-// //         showConfirmButton: false,
-// //         timer: 4000,
-// //       });
-// //     } finally {
-// //       isLoadingRates.value = false;
-// //     }
-// //   }
-// // });
-
-// // watch(selectedAddressId, async (newVal) => {
-// //   if (newVal) {
-// //     selectedRate.value = null;
-// //     isLoadingRates.value = true;
-// //     shippingRates.value = [];
-// //     try {
-// //       const res = await axios.post(
-// //         `${BASE_URL}/shipping/rates`,
-// //         {
-// //           address_id: newVal,
-// //           total_quantity: checkoutCount.value
-// //         },
-// //         axiosConfig,
-// //       );
-
-// //       if (res.data && res.data.pricing) {
-// //         const currentHour = new Date().getHours();
-// //         const totalWeightKg = checkoutCount.value;
-
-// //         const processedRates = res.data.pricing.map(rate => {
-// //           let is_disabled = false;
-// //           let disable_reason = "";
-
-// //           const type = rate.type.toLowerCase();
-// //           const company = rate.company.toLowerCase();
-
-// //           if (company === 'gojek' || company === 'grab') {
-// //             if (type.includes('same day') || type.includes('sameday')) {
-// //               // [PERBAIKAN] Same Day tutup jam 15:00. Kita blokir di jam 14:00.
-// //               if (currentHour >= 14 || currentHour < 6) {
-// //                 is_disabled = true;
-// //                 disable_reason = "Out of operational hours (06:00 - 14:00)";
-// //               } else if (totalWeightKg > 7) {
-// //                 is_disabled = true;
-// //                 disable_reason = "Weight exceeds max limit (7kg)";
-// //               }
-// //             }
-// //             else if (type.includes('instant')) {
-// //               // [PERBAIKAN] Instant tutup 17:00, kita blokir di jam 16:00
-// //               if (currentHour >= 16 || currentHour < 6) {
-// //                 is_disabled = true;
-// //                 disable_reason = "Out of operational hours (06:00 - 16:00)";
-// //               } else if (totalWeightKg > 20) {
-// //                 is_disabled = true;
-// //                 disable_reason = "Weight exceeds max limit (20kg)";
-// //               }
-// //             }
-// //           }
-
-// //           return { ...rate, is_disabled, disable_reason };
-// //         });
-
-// //         // Sort agar yang disabled pindah ke paling bawah
-// //         processedRates.sort((a, b) => (a.is_disabled === b.is_disabled ? 0 : a.is_disabled ? 1 : -1));
-
-// //         shippingRates.value = processedRates;
-// //       }
-// //     } catch (error) {
-// //       Swal.fire({
-// //         toast: true,
-// //         position: "top-end",
-// //         icon: "error",
-// //         title: "Failed to calculate shipping.",
-// //         showConfirmButton: false,
-// //         timer: 4000,
-// //       });
-// //     } finally {
-// //       isLoadingRates.value = false;
-// //     }
-// //   }
-// // });
-
-// // 4. API Fetcher
-// watch(selectedAddressId, async (newVal) => {
-//   if (newVal) {
-//     // [PERBAIKAN PENTING] Rem darurat: Jangan tembak API jika keranjang masih kosong
-//     if (!selectedItemIds.value || selectedItemIds.value.length === 0) return;
-//     selectedRate.value = null;
-//     isLoadingRates.value = true;
-//     rawShippingRates.value = [];
-//     try {
-//       const res = await axios.post(
-//         `${BASE_URL}/shipping/rates`,
-//         {
-//           address_id: newVal,
-//           // total_quantity: totalQuantityToCheckout.value, // Kuantitas akurat
-//           // [PERBAIKAN] Kirim ID barang yang dipilih, biarkan backend yang menimbang
-//           cart_ids: selectedItemIds.value,
-//         },
-//         axiosConfig,
-//       );
-//       if (res.data && res.data.pricing) {
-//         rawShippingRates.value = res.data.pricing;
-//       }
-//     } catch (error) {
-//       Swal.fire({
-//         toast: true,
-//         position: "top-end",
-//         icon: "error",
-//         title: "Failed to calculate shipping.",
-//         showConfirmButton: false,
-//         timer: 4000,
-//       });
-//     } finally {
-//       isLoadingRates.value = false;
-//     }
-//   }
-// });
-
-// // 5. [Auto-Healing] Batalkan pilihan jika user iseng mengganti jam hingga kurir tersebut expired
-// watch(
-//   processedShippingRates,
-//   (newRates) => {
-//     if (selectedRate.value) {
-//       const match = newRates.find(
-//         (r) =>
-//           r.company === selectedRate.value.company &&
-//           r.type === selectedRate.value.type,
-//       );
-//       if (match && match.is_disabled) {
-//         selectedRate.value = null; // Auto un-select!
-//       }
-//     }
-//   },
-//   { deep: true },
-// );
-
-// watch(shippingMethod, (newVal) => {
-//   if (newVal === "free") selectedRate.value = null;
-// });
-// watch(deliveryType, (newVal) => {
-//   if (newVal === "now") initDateTime();
-// });
-
-// // ==========================================
-// // [BARU] STATE & LOGIKA UNTUK MODAL ADDRESS
-// // ==========================================
-// const showModal = ref(false);
-// const countries = ref(Country.getAllCountries());
-// const filteredProvinces = ref([]);
-
-// const form = ref({
-//   id: null,
-//   region: "Indonesia",
-//   first_name_address: "",
-//   last_name_address: "",
-//   address_location: "",
-//   location_type: "",
-//   city: "",
-//   province: "",
-//   postal_code: "",
-//   latitude: null,
-//   longitude: null,
-//   is_default: true, // Default true agar mempermudah user yang baru pertama kali tambah
-// });
-
-// const map = ref(null);
-// const zoom = ref(13);
-// const center = ref([-7.250445, 112.768845]); // Default Surabaya
-// const markerLatLng = ref([-7.250445, 112.768845]);
-// const searchQuery = ref("");
-// const searchResults = ref([]);
-// let debounceTimeout = null;
-
-// // Fungsi Navigasi & Map
-// const fetchProvinces = () => {
-//   const selectedCountry = countries.value.find(
-//     (c) => c.name === form.value.region,
-//   );
-//   if (selectedCountry) {
-//     filteredProvinces.value = State.getStatesOfCountry(
-//       selectedCountry.isoCode,
-//     ).map((s) => s.name);
-//   }
-// };
-
-// const openModal = () => {
-//   form.value = {
-//     region: "Indonesia",
-//     is_default: true,
-//     first_name_address: userData.value?.first_name || "",
-//     last_name_address: userData.value?.last_name || "",
-//     address_location: "",
-//     location_type: "",
-//     city: "",
-//     province: "",
-//     postal_code: "",
-//     latitude: null,
-//     longitude: null,
-//   };
-//   center.value = [-7.250445, 112.768845];
-//   markerLatLng.value = [-7.250445, 112.768845];
-//   fetchProvinces();
-//   showModal.value = true;
-// };
-
-// const reverseGeocode = async (lat, lng) => {
-//   try {
-//     const res = await axios.get(
-//       `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`,
-//     );
-//     if (res.data && res.data.display_name) {
-//       form.value.address_location = res.data.display_name;
-//       if (res.data.address && res.data.address.postcode) {
-//         form.value.postal_code = res.data.address.postcode;
-//       }
-//     }
-//   } catch (error) {
-//     console.error("Reverse Geocode Error", error);
-//   }
-// };
-
-// const handleSearchInput = () => {
-//   if (debounceTimeout) clearTimeout(debounceTimeout);
-//   if (searchQuery.value.length < 3) {
-//     searchResults.value = [];
-//     return;
-//   }
-//   debounceTimeout = setTimeout(async () => {
-//     try {
-//       const res = await axios.get(
-//         `https://nominatim.openstreetmap.org/search?format=json&q=${searchQuery.value}&countrycodes=id&limit=5`,
-//       );
-//       searchResults.value = res.data;
-//     } catch (error) {
-//       console.error("Search Error", error);
-//     }
-//   }, 500);
-// };
-
-// const selectSearchResult = (result) => {
-//   const lat = parseFloat(result.lat);
-//   const lng = parseFloat(result.lon);
-
-//   if (map.value && map.value.leafletObject) {
-//     map.value.leafletObject.flyTo([lat, lng], 16);
-//   } else {
-//     center.value = [lat, lng];
-//     zoom.value = 16;
-//   }
-//   markerLatLng.value = [lat, lng];
-//   form.value.latitude = lat.toString();
-//   form.value.longitude = lng.toString();
-//   form.value.address_location = result.display_name;
-//   searchResults.value = [];
-//   searchQuery.value = "";
-// };
-
-// const onMapClick = (event) => {
-//   const { lat, lng } = event.latlng;
-//   updateLocation(lat, lng);
-// };
-
-// const onMarkerDrag = (event) => {
-//   const { lat, lng } = event.target.getLatLng();
-//   updateLocation(lat, lng);
-// };
-
-// const updateLocation = (lat, lng) => {
-//   markerLatLng.value = [lat, lng];
-//   form.value.latitude = lat.toString();
-//   form.value.longitude = lng.toString();
-//   reverseGeocode(lat, lng);
-// };
-
-// const getCurrentLocation = () => {
-//   if (navigator.geolocation) {
-//     navigator.geolocation.getCurrentPosition(
-//       (position) => {
-//         const lat = position.coords.latitude;
-//         const lng = position.coords.longitude;
-//         if (map.value && map.value.leafletObject) {
-//           map.value.leafletObject.flyTo([lat, lng], 16);
-//         } else {
-//           center.value = [lat, lng];
-//           zoom.value = 16;
-//         }
-//         updateLocation(lat, lng);
-//       },
-//       () => {
-//         Swal.fire("Error", "Please allow location access.", "error");
-//       },
-//     );
-//   }
-// };
-
-// const saveAddress = async () => {
-//   try {
-//     const res = await axios.post(
-//       `${BASE_URL}/addresses`,
-//       form.value,
-//       axiosConfig,
-//     );
-//     showModal.value = false;
-
-//     // Fetch ulang data alamat di halaman Checkout
-//     const resAddr = await axios.get(`${BASE_URL}/addresses`, axiosConfig);
-//     addresses.value = resAddr.data.data;
-
-//     // Otomatis pilih alamat yang baru saja dibuat
-//     const newAddressId = res.data.id || res.data.data?.id;
-//     if (newAddressId) {
-//       selectedAddressId.value = newAddressId;
-//     } else {
-//       // Fallback jika response tidak standar
-//       selectedAddressId.value = addresses.value[addresses.value.length - 1].id;
-//     }
-
-//     Swal.fire({
-//       toast: true,
-//       position: "top-end",
-//       icon: "success",
-//       title: "Address Added!",
-//       showConfirmButton: false,
-//       timer: 1500,
-//     });
-//   } catch (e) {
-//     Swal.fire("Error", "Failed to save address", "error");
-//   }
-// };
-
-// // ==========================================
-// // [AKHIR] LOGIKA MODAL ADDRESS
-// // ==========================================
-
-// // const fetchData = async () => {
-// //   try {
-// //     const user = localStorage.getItem("user");
-// //     if (user) userData.value = JSON.parse(user);
-
-// //     // KITA TIDAK FETCH TRANSAKSI DISINI LAGI. Data langsung dari cartItems.
-
-// //     const resAddr = await axios.get(`${BASE_URL}/addresses`, axiosConfig);
-// //     addresses.value = resAddr.data.data;
-
-// //     if (addresses.value.length === 0) {
-// //       Swal.fire({
-// //         title: "Address Required",
-// //         text: "You must add a shipping address before you can proceed.",
-// //         icon: "warning",
-// //         showCancelButton: true,
-// //         confirmButtonText: "Add Address Now",
-// //         cancelButtonText: "Later",
-// //         confirmButtonColor: "#000",
-// //         allowOutsideClick: false,
-// //       }).then((result) => {
-// //         if (result.isConfirmed) {
-// //           openModal(); // Function Modal Address Anda (Pastikan logic modal ada di file)
-// //         }
-// //       });
-// //     } else {
-// //       const defaultAddr = addresses.value.find((a) => a.is_default);
-// //       if (defaultAddr) {
-// //         selectedAddressId.value = defaultAddr.id;
-// //       } else {
-// //         selectedAddressId.value = addresses.value[0].id;
-// //       }
-// //     }
-
-// //     initDateTime();
-// //   } catch (error) {
-// //     Swal.fire("Error", "Failed to load checkout data", "error");
-// //   }
-// // };
-
-// const fetchData = async () => {
-//   try {
-//     const user = localStorage.getItem("user");
-//     if (user) userData.value = JSON.parse(user);
-
-//     const resAddr = await axios.get(`${BASE_URL}/addresses`, axiosConfig);
-//     addresses.value = resAddr.data.data;
-
-//     if (addresses.value.length > 0) {
-//       const defaultAddr = addresses.value.find((a) => a.is_default);
-//       if (defaultAddr) {
-//         selectedAddressId.value = defaultAddr.id;
-//       } else {
-//         selectedAddressId.value = addresses.value[0].id;
-//       }
-//     }
-
-//     initDateTime();
-
-//     // Matikan loading, DOM halaman akan me-render kerangka
-//     isPageLoading.value = false;
-
-//     // Tunggu sampai Vue selesai menggambar struktur HTML baru
-//     await nextTick();
-
-//     // Tampilkan popup SEKARANG! (akan muncul bersamaan dengan halaman secara visual)
-//     if (addresses.value.length === 0) {
-//       Swal.fire({
-//         title: "Address Required",
-//         text: "You must add a shipping address before you can proceed.",
-//         icon: "warning",
-//         showCancelButton: true,
-//         confirmButtonText: "Add Address Now",
-//         cancelButtonText: "Later",
-//         confirmButtonColor: "#000",
-//         allowOutsideClick: false,
-//       }).then((result) => {
-//         if (result.isConfirmed) {
-//           openModal();
-//         }
-//       });
-//     }
-//   } catch (error) {
-//     isPageLoading.value = false;
-//     Swal.fire("Error", "Failed to load checkout data", "error");
-//   }
-// };
-
-// // const maxUsablePoints = computed(() => {
-// //   if (!userData.value || checkoutTotalAmount.value === 0) return 0;
-// //   const userBalance = userData.value.point || 0;
-// //   const maxPointsForPrice = Math.floor(
-// //     checkoutTotalAmount.value / pointConversionRate,
-// //   );
-// //   return Math.min(userBalance, maxPointsForPrice);
-// // });
-
-// // [PERBAIKAN] Pastikan Poin tidak memotong Harga Promo
-// const maxUsablePoints = computed(() => {
-//   if (!userData.value || checkoutTotalAmount.value === 0) return 0;
-//   const userBalance = userData.value.point || 0;
-
-//   // Harga yang bisa dipotong poin = Subtotal Barang - Diskon Promo
-//   const priceAfterPromo = checkoutTotalAmount.value - promoDiscountAmount.value;
-//   const maxPointsForPrice = Math.floor(
-//     Math.max(0, priceAfterPromo) / pointConversionRate,
-//   );
-
-//   return Math.min(userBalance, maxPointsForPrice);
-// });
-
-// const pointDiscountAmount = computed(
-//   () => (pointsToUse.value || 0) * pointConversionRate,
-// );
-
-// const useAllPoints = () => {
-//   pointsToUse.value = maxUsablePoints.value;
-// };
-
-// watch(pointsToUse, (newVal) => {
-//   if (newVal < 0) pointsToUse.value = 0;
-//   if (newVal > maxUsablePoints.value) pointsToUse.value = maxUsablePoints.value;
-// });
-
-// // const grandTotalWithDiscount = computed(
-// //   () => grandTotal.value - pointDiscountAmount.value,
-// // );
-
-// // [PERBAIKAN] Grand Total Akhir
-// const grandTotalWithDiscount = computed(() => {
-//   let total = grandTotal.value; // (Subtotal + Ongkir)
-//   return total - promoDiscountAmount.value - pointDiscountAmount.value;
-// });
-
-// // ===============================================
-// // [PERBAIKAN] API POST /CHECKOUT DIPINDAH KE SINI
-// // ===============================================
-// // const handlePayment = async () => {
-// //   isProcessing.value = true;
-// //   try {
-// //     const payload = {
-// //       address_id: selectedAddressId.value,
-// //       shipping_method: shippingMethod.value,
-// //       use_points: pointsToUse.value,
-// //       courier_company:
-// //         shippingMethod.value === "biteship"
-// //           ? selectedRate.value?.company
-// //           : null,
-// //       courier_type:
-// //         shippingMethod.value === "biteship" ? selectedRate.value?.type : null,
-// //       shipping_cost:
-// //         shippingMethod.value === "biteship" ? selectedRate.value?.price : null,
-// //       delivery_type:
-// //         shippingMethod.value === "biteship" ? deliveryType.value : null,
-// //       delivery_date:
-// //         shippingMethod.value === "biteship" ? deliveryDate.value : null,
-// //       delivery_time:
-// //         shippingMethod.value === "biteship" ? deliveryTime.value : null,
-// //     };
-
-// //     // Tembak API /checkout (yang sekarang membuat Transaksi sekaligus Invoice Xendit)
-// //     const res = await axios.post(`${BASE_URL}/checkout`, payload, axiosConfig);
-
-// //     // Xendit Checkout URL didapat dari response
-// //     if (res.data.checkout_url) {
-// //       window.location.href = res.data.checkout_url;
-// //     }
-// //   } catch (error) {
-// //     Swal.fire(
-// //       "Payment Error",
-// //       error.response?.data?.message || "Failed to create invoice",
-// //       "error",
-// //     );
-// //   } finally {
-// //     isProcessing.value = false;
-// //   }
-// // };
-
-// const handlePayment = async () => {
-//   isProcessing.value = true;
-//   try {
-//     const payload = {
-//       address_id: selectedAddressId.value,
-//       shipping_method: shippingMethod.value,
-//       use_points: pointsToUse.value,
-//       cart_ids: selectedItemIds.value,
-//       courier_company:
-//         shippingMethod.value === "biteship"
-//           ? selectedRate.value?.company
-//           : null,
-//       courier_type:
-//         shippingMethod.value === "biteship" ? selectedRate.value?.type : null,
-//       shipping_cost:
-//         shippingMethod.value === "biteship" ? selectedRate.value?.price : null,
-//       delivery_type:
-//         shippingMethod.value === "biteship" ? deliveryType.value : null,
-//       delivery_date:
-//         shippingMethod.value === "biteship" ? deliveryDate.value : null,
-//       delivery_time:
-//         shippingMethod.value === "biteship" ? deliveryTime.value : null,
-//       promo_code: appliedPromoCode.value,
-//     };
-
-//     // Tembak API /checkout (yang sekarang membuat Transaksi sekaligus Invoice Xendit)
-//     const res = await axios.post(`${BASE_URL}/checkout`, payload, axiosConfig);
-
-//     // Xendit Checkout URL didapat dari response
-//     if (res.data.checkout_url) {
-//       // [PERBAIKAN] KOSONGKAN KERANJANG DI MEMORI FRONTEND
-//       // clearCart();
-
-//       // [PERBAIKAN] KOSONGKAN KERANJANG (HANYA BARANG YANG DIBELI) DI MEMORI FRONTEND
-//       clearSelectedCart();
-
-//       // Redirect ke Xendit
-//       window.location.href = res.data.checkout_url;
-//     }
-//   } catch (error) {
-//     Swal.fire(
-//       "Payment Error",
-//       error.response?.data?.message || "Failed to create invoice",
-//       "error",
-//     );
-//   } finally {
-//     isProcessing.value = false;
-//   }
-// };
-
-// const calculateEarnedPoints = computed(() => {
-//   if (!checkoutTotalAmount.value) return 0;
-//   return Math.floor(checkoutTotalAmount.value / 100000);
-// });
-
-// // Buat computed untuk menyaring barang yang benar-benar akan dibayar
-// const checkoutItems = computed(() => {
-//   return cartItems.value.filter((item) =>
-//     selectedItemIds.value.includes(item.id),
-//   );
-// });
-
-// const formatPrice = (v) =>
-//   new Intl.NumberFormat("id-ID", {
-//     style: "currency",
-//     currency: "IDR",
-//     minimumFractionDigits: 0,
-//   }).format(v);
-
-// onMounted(fetchData);
-
-// // (Pastikan Anda menyalin sisa function `openModal`, `saveAddress`, dll di bagian bawah script ini)
-
 import { ref, onMounted, watch, computed, nextTick } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
@@ -5084,7 +3797,11 @@ const getAxiosConfig = () => {
 };
 
 const {
-  cartItems, checkoutCount, checkoutTotalAmount, selectedItemIds, clearSelectedCart,
+  cartItems,
+  checkoutCount,
+  checkoutTotalAmount,
+  selectedItemIds,
+  clearSelectedCart,
 } = useCart();
 
 const userData = ref(null);
@@ -5108,6 +3825,26 @@ const isVerifyingPromo = ref(false);
 const rawShippingRates = ref([]);
 const isPageLoading = ref(true);
 
+// [BARU] Helper function untuk Google Tag Manager
+const trackGtmEvent = (eventName, data) => {
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event: eventName,
+    ...data,
+  });
+};
+
+// [BARU] Fungsi pembantu untuk mengubah format item keranjang ke format GTM
+const formatCartItemsForGtm = () => {
+  return checkoutItems.value.map((item) => ({
+    item_id: item.product.id,
+    item_name: item.product.name,
+    price: item.product.discount_price || item.product.price,
+    item_variant: parseColorName(item.color),
+    quantity: item.quantity,
+  }));
+};
+
 const shipperInfo = {
   name: "Solher Store",
   phone: "08883888585",
@@ -5121,16 +3858,21 @@ const totalQuantityToCheckout = computed(() => {
 
 const getDistanceFromOrigin = (destLat, destLng) => {
   if (!destLat || !destLng) return 999;
-  // const lat1 = -7.25706; 
-  const lat1 = -7.25653; 
-  // const lon1 = 112.74549; 
-  const lon1 = 112.74877; 
+  // const lat1 = -7.25706;
+  const lat1 = -7.25653;
+  // const lon1 = 112.74549;
+  const lon1 = 112.74877;
   const lat2 = parseFloat(destLat);
   const lon2 = parseFloat(destLng);
-  const R = 6371; 
+  const R = 6371;
   const dLat = ((lat2 - lat1) * Math.PI) / 180;
   const dLon = ((lon2 - lon1) * Math.PI) / 180;
-  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
   return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
 };
 
@@ -5141,7 +3883,7 @@ const processedShippingRates = computed(() => {
     if (deliveryDate.value === todayDate.value) {
       checkHour = parseInt(deliveryTime.value.split(":")[0]);
     } else {
-      checkHour = 12; 
+      checkHour = 12;
     }
   } else {
     checkHour = new Date().getHours();
@@ -5152,7 +3894,10 @@ const processedShippingRates = computed(() => {
   if (addresses.value && selectedAddressId.value) {
     const destInfo = addresses.value.find((a) => a.id === selectedAddressId.value);
     if (destInfo && destInfo.details.latitude && destInfo.details.longitude) {
-      distanceKm = getDistanceFromOrigin(destInfo.details.latitude, destInfo.details.longitude);
+      distanceKm = getDistanceFromOrigin(
+        destInfo.details.latitude,
+        destInfo.details.longitude
+      );
     }
   }
 
@@ -5171,30 +3916,37 @@ const processedShippingRates = computed(() => {
     if (!is_disabled && company === "gojek") {
       if (type.includes("same day") || type.includes("sameday")) {
         if (checkHour >= 15 || checkHour < 6) {
-          is_disabled = true; disable_reason = "Tutup. Operasional 06:00 - 15:00";
+          is_disabled = true;
+          disable_reason = "Tutup. Operasional 06:00 - 15:00";
         } else if (totalWeightKg > 7) {
-          is_disabled = true; disable_reason = "Berat Maks 7kg";
+          is_disabled = true;
+          disable_reason = "Berat Maks 7kg";
         }
       } else if (type.includes("instant")) {
         if (checkHour >= 17 || checkHour < 6) {
-          is_disabled = true; disable_reason = "Tutup. Operasional 06:00 - 17:00";
+          is_disabled = true;
+          disable_reason = "Tutup. Operasional 06:00 - 17:00";
         } else if (totalWeightKg > 20) {
-          is_disabled = true; disable_reason = "Berat Maks 20kg";
+          is_disabled = true;
+          disable_reason = "Berat Maks 20kg";
         }
       }
-    }
-    else if (!is_disabled && company === "grab") {
+    } else if (!is_disabled && company === "grab") {
       if (type.includes("same day") || type.includes("sameday")) {
         if (checkHour >= 14 || checkHour < 9) {
-          is_disabled = true; disable_reason = "Tutup. Operasional 09:00 - 14:00";
+          is_disabled = true;
+          disable_reason = "Tutup. Operasional 09:00 - 14:00";
         } else if (totalWeightKg > 7) {
-          is_disabled = true; disable_reason = "Berat Maks 7kg";
+          is_disabled = true;
+          disable_reason = "Berat Maks 7kg";
         }
       } else if (type.includes("instant")) {
         if (checkHour >= 18 || checkHour < 8) {
-          is_disabled = true; disable_reason = "Tutup. Operasional 08:00 - 18:00";
+          is_disabled = true;
+          disable_reason = "Tutup. Operasional 08:00 - 18:00";
         } else if (totalWeightKg > 20) {
-          is_disabled = true; disable_reason = "Berat Maks 20kg";
+          is_disabled = true;
+          disable_reason = "Berat Maks 20kg";
         }
       }
     }
@@ -5211,17 +3963,27 @@ const applyPromo = async () => {
   if (!promoInput.value) return;
   isVerifyingPromo.value = true;
   try {
-    const res = await axios.post(`${BASE_URL}/promo/verify`, { promo_code: promoInput.value }, getAxiosConfig());
-    if (checkoutTotalAmount.value < 50000) throw new Error("Minimum spend for this promo is Rp 50.000");
+    const res = await axios.post(
+      `${BASE_URL}/promo/verify`,
+      { promo_code: promoInput.value },
+      getAxiosConfig()
+    );
+    if (checkoutTotalAmount.value < 50000)
+      throw new Error("Minimum spend for this promo is Rp 50.000");
     promoSuccess.value = true;
     promoMessage.value = "✅ " + res.data.message;
     appliedPromoCode.value = promoInput.value.toUpperCase();
-    promoDiscountAmount.value = Math.min(res.data.discount_value, checkoutTotalAmount.value);
-    if (pointsToUse.value > maxUsablePoints.value) pointsToUse.value = maxUsablePoints.value;
+    promoDiscountAmount.value = Math.min(
+      res.data.discount_value,
+      checkoutTotalAmount.value
+    );
+    if (pointsToUse.value > maxUsablePoints.value)
+      pointsToUse.value = maxUsablePoints.value;
   } catch (error) {
     promoSuccess.value = false;
     let errorMessage = "Invalid promo code.";
-    if (error.response && error.response.data && error.response.data.message) errorMessage = error.response.data.message;
+    if (error.response && error.response.data && error.response.data.message)
+      errorMessage = error.response.data.message;
     else if (error.message) errorMessage = error.message;
     promoMessage.value = "❌ " + errorMessage;
     appliedPromoCode.value = null;
@@ -5232,13 +3994,19 @@ const applyPromo = async () => {
 };
 
 const removePromo = () => {
-  promoInput.value = ""; appliedPromoCode.value = null; promoDiscountAmount.value = 0; promoMessage.value = ""; promoSuccess.value = false;
+  promoInput.value = "";
+  appliedPromoCode.value = null;
+  promoDiscountAmount.value = 0;
+  promoMessage.value = "";
+  promoSuccess.value = false;
 };
 
 const initDateTime = () => {
-  const now = new Date(); now.setHours(now.getHours() + 1);
+  const now = new Date();
+  now.setHours(now.getHours() + 1);
   deliveryDate.value = now.toISOString().split("T")[0];
-  deliveryTime.value = now.toTimeString().split(":")[0] + ":" + now.toTimeString().split(":")[1];
+  deliveryTime.value =
+    now.toTimeString().split(":")[0] + ":" + now.toTimeString().split(":")[1];
 };
 
 const todayDate = computed(() => new Date().toISOString().split("T")[0]);
@@ -5248,30 +4016,50 @@ const destinationInfo = computed(() => {
   const addr = addresses.value.find((a) => a.id === selectedAddressId.value);
   if (!addr) return null;
   return {
-    name: addr.receiver.full_name, phone: userData.value?.phone || "No Phone Provided",
-    address: `${addr.details.location}, ${addr.details.city}, ${addr.details.province}`, postal_code: addr.details.postal_code,
+    name: addr.receiver.full_name,
+    phone: userData.value?.phone || "No Phone Provided",
+    address: `${addr.details.location}, ${addr.details.city}, ${addr.details.province}`,
+    postal_code: addr.details.postal_code,
   };
 });
 
 const grandTotal = computed(() => {
   let total = checkoutTotalAmount.value;
-  if (shippingMethod.value === "biteship" && selectedRate.value) total += parseFloat(selectedRate.value.price) * checkoutCount.value;
+  if (shippingMethod.value === "biteship" && selectedRate.value)
+    total += parseFloat(selectedRate.value.price) * checkoutCount.value;
   return total;
 });
 
 const imageErrors = ref({});
-const handleImageError = (company) => { imageErrors.value[company] = true; };
+const handleImageError = (company) => {
+  imageErrors.value[company] = true;
+};
 const getCourierLogo = (company) => {
   const baseUrl = "/courier_images/";
-  const map = { jne: "jne.png", sicepat: "sicepat.png", jnt: "jnt.png", anteraja: "anteraja.png", gojek: "gojek.png", grab: "grab.png", paxel: "paxel.png", ninja: "ninja.png" };
-  const logo = map[company.toLowerCase()]; return logo ? baseUrl + logo : null;
+  const map = {
+    jne: "jne.png",
+    sicepat: "sicepat.png",
+    jnt: "jnt.png",
+    anteraja: "anteraja.png",
+    gojek: "gojek.png",
+    grab: "grab.png",
+    paxel: "paxel.png",
+    ninja: "ninja.png",
+  };
+  const logo = map[company.toLowerCase()];
+  return logo ? baseUrl + logo : null;
 };
 
 const isButtonDisabled = computed(() => {
-  if (isProcessing.value || cartItems.value.length === 0 || !selectedAddressId.value) return true;
+  if (isProcessing.value || cartItems.value.length === 0 || !selectedAddressId.value)
+    return true;
   if (shippingMethod.value === "biteship") {
     if (!selectedRate.value) return true;
-    if (deliveryType.value === "scheduled" && (!deliveryDate.value || !deliveryTime.value)) return true;
+    if (
+      deliveryType.value === "scheduled" &&
+      (!deliveryDate.value || !deliveryTime.value)
+    )
+      return true;
   }
   return false;
 });
@@ -5282,83 +4070,188 @@ const isButtonDisabled = computed(() => {
 watch(selectedAddressId, async (newVal) => {
   if (newVal) {
     if (!selectedItemIds.value || selectedItemIds.value.length === 0) return;
-    selectedRate.value = null; isLoadingRates.value = true; rawShippingRates.value = [];
+    selectedRate.value = null;
+    isLoadingRates.value = true;
+    rawShippingRates.value = [];
     try {
-      const res = await axios.post(`${BASE_URL}/shipping/rates`, { address_id: newVal, cart_ids: selectedItemIds.value }, getAxiosConfig());
+      const res = await axios.post(
+        `${BASE_URL}/shipping/rates`,
+        { address_id: newVal, cart_ids: selectedItemIds.value },
+        getAxiosConfig()
+      );
       if (res.data && res.data.pricing) rawShippingRates.value = res.data.pricing;
     } catch (error) {
       if (error.response && error.response.status === 401) {
-        return Swal.fire("Session Expired", "Please login again.", "warning").then(() => router.push("/login"));
+        return Swal.fire("Session Expired", "Please login again.", "warning").then(() =>
+          router.push("/login")
+        );
       }
-      Swal.fire({ toast: true, position: "top-end", icon: "error", title: "Failed to calculate shipping.", showConfirmButton: false, timer: 4000 });
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "error",
+        title: "Failed to calculate shipping.",
+        showConfirmButton: false,
+        timer: 4000,
+      });
     } finally {
       isLoadingRates.value = false;
     }
   }
 });
 
-watch(processedShippingRates, (newRates) => {
-  if (selectedRate.value) {
-    const match = newRates.find((r) => r.company === selectedRate.value.company && r.type === selectedRate.value.type);
-    if (match && match.is_disabled) selectedRate.value = null;
-  }
-}, { deep: true });
+watch(
+  processedShippingRates,
+  (newRates) => {
+    if (selectedRate.value) {
+      const match = newRates.find(
+        (r) =>
+          r.company === selectedRate.value.company && r.type === selectedRate.value.type
+      );
+      if (match && match.is_disabled) selectedRate.value = null;
+    }
+  },
+  { deep: true }
+);
 
-watch(shippingMethod, (newVal) => { if (newVal === "free") selectedRate.value = null; });
-watch(deliveryType, (newVal) => { if (newVal === "now") initDateTime(); });
+watch(shippingMethod, (newVal) => {
+  if (newVal === "free") selectedRate.value = null;
+});
+watch(deliveryType, (newVal) => {
+  if (newVal === "now") initDateTime();
+});
 
 const showModal = ref(false);
 const countries = ref(Country.getAllCountries());
 const filteredProvinces = ref([]);
-const form = ref({ id: null, region: "Indonesia", first_name_address: "", last_name_address: "", address_location: "", location_type: "", city: "", province: "", postal_code: "", latitude: null, longitude: null, is_default: true });
-const map = ref(null); const zoom = ref(13); const center = ref([-7.250445, 112.768845]); const markerLatLng = ref([-7.250445, 112.768845]);
-const searchQuery = ref(""); const searchResults = ref([]); let debounceTimeout = null;
+const form = ref({
+  id: null,
+  region: "Indonesia",
+  first_name_address: "",
+  last_name_address: "",
+  address_location: "",
+  location_type: "",
+  city: "",
+  province: "",
+  postal_code: "",
+  latitude: null,
+  longitude: null,
+  is_default: true,
+});
+const map = ref(null);
+const zoom = ref(13);
+const center = ref([-7.250445, 112.768845]);
+const markerLatLng = ref([-7.250445, 112.768845]);
+const searchQuery = ref("");
+const searchResults = ref([]);
+let debounceTimeout = null;
 
 const fetchProvinces = () => {
   const selectedCountry = countries.value.find((c) => c.name === form.value.region);
-  if (selectedCountry) filteredProvinces.value = State.getStatesOfCountry(selectedCountry.isoCode).map((s) => s.name);
+  if (selectedCountry)
+    filteredProvinces.value = State.getStatesOfCountry(selectedCountry.isoCode).map(
+      (s) => s.name
+    );
 };
 
 const openModal = () => {
-  form.value = { region: "Indonesia", is_default: true, first_name_address: userData.value?.first_name || "", last_name_address: userData.value?.last_name || "", address_location: "", location_type: "", city: "", province: "", postal_code: "", latitude: null, longitude: null };
-  center.value = [-7.250445, 112.768845]; markerLatLng.value = [-7.250445, 112.768845]; fetchProvinces(); showModal.value = true;
+  form.value = {
+    region: "Indonesia",
+    is_default: true,
+    first_name_address: userData.value?.first_name || "",
+    last_name_address: userData.value?.last_name || "",
+    address_location: "",
+    location_type: "",
+    city: "",
+    province: "",
+    postal_code: "",
+    latitude: null,
+    longitude: null,
+  };
+  center.value = [-7.250445, 112.768845];
+  markerLatLng.value = [-7.250445, 112.768845];
+  fetchProvinces();
+  showModal.value = true;
 };
 
 const reverseGeocode = async (lat, lng) => {
   try {
-    const res = await axios.get(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
-    if (res.data && res.data.display_name) { form.value.address_location = res.data.display_name; if (res.data.address && res.data.address.postcode) form.value.postal_code = res.data.address.postcode; }
-  } catch (error) { console.error("Reverse Geocode Error", error); }
+    const res = await axios.get(
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+    );
+    if (res.data && res.data.display_name) {
+      form.value.address_location = res.data.display_name;
+      if (res.data.address && res.data.address.postcode)
+        form.value.postal_code = res.data.address.postcode;
+    }
+  } catch (error) {
+    console.error("Reverse Geocode Error", error);
+  }
 };
 
 const handleSearchInput = () => {
   if (debounceTimeout) clearTimeout(debounceTimeout);
-  if (searchQuery.value.length < 3) { searchResults.value = []; return; }
+  if (searchQuery.value.length < 3) {
+    searchResults.value = [];
+    return;
+  }
   debounceTimeout = setTimeout(async () => {
     try {
-      const res = await axios.get(`https://nominatim.openstreetmap.org/search?format=json&q=${searchQuery.value}&countrycodes=id&limit=5`);
+      const res = await axios.get(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${searchQuery.value}&countrycodes=id&limit=5`
+      );
       searchResults.value = res.data;
     } catch (error) {}
   }, 500);
 };
 
 const selectSearchResult = (result) => {
-  const lat = parseFloat(result.lat); const lng = parseFloat(result.lon);
-  if (map.value && map.value.leafletObject) map.value.leafletObject.flyTo([lat, lng], 16); else { center.value = [lat, lng]; zoom.value = 16; }
-  markerLatLng.value = [lat, lng]; form.value.latitude = lat.toString(); form.value.longitude = lng.toString(); form.value.address_location = result.display_name; searchResults.value = []; searchQuery.value = "";
+  const lat = parseFloat(result.lat);
+  const lng = parseFloat(result.lon);
+  if (map.value && map.value.leafletObject) map.value.leafletObject.flyTo([lat, lng], 16);
+  else {
+    center.value = [lat, lng];
+    zoom.value = 16;
+  }
+  markerLatLng.value = [lat, lng];
+  form.value.latitude = lat.toString();
+  form.value.longitude = lng.toString();
+  form.value.address_location = result.display_name;
+  searchResults.value = [];
+  searchQuery.value = "";
 };
 
-const onMapClick = (event) => { const { lat, lng } = event.latlng; updateLocation(lat, lng); };
-const onMarkerDrag = (event) => { const { lat, lng } = event.target.getLatLng(); updateLocation(lat, lng); };
-const updateLocation = (lat, lng) => { markerLatLng.value = [lat, lng]; form.value.latitude = lat.toString(); form.value.longitude = lng.toString(); reverseGeocode(lat, lng); };
+const onMapClick = (event) => {
+  const { lat, lng } = event.latlng;
+  updateLocation(lat, lng);
+};
+const onMarkerDrag = (event) => {
+  const { lat, lng } = event.target.getLatLng();
+  updateLocation(lat, lng);
+};
+const updateLocation = (lat, lng) => {
+  markerLatLng.value = [lat, lng];
+  form.value.latitude = lat.toString();
+  form.value.longitude = lng.toString();
+  reverseGeocode(lat, lng);
+};
 
 const getCurrentLocation = () => {
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition((position) => {
-      const lat = position.coords.latitude; const lng = position.coords.longitude;
-      if (map.value && map.value.leafletObject) map.value.leafletObject.flyTo([lat, lng], 16); else { center.value = [lat, lng]; zoom.value = 16; }
-      updateLocation(lat, lng);
-    }, () => Swal.fire("Error", "Please allow location access.", "error"));
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        if (map.value && map.value.leafletObject)
+          map.value.leafletObject.flyTo([lat, lng], 16);
+        else {
+          center.value = [lat, lng];
+          zoom.value = 16;
+        }
+        updateLocation(lat, lng);
+      },
+      () => Swal.fire("Error", "Please allow location access.", "error")
+    );
   }
 };
 
@@ -5368,14 +4261,25 @@ const saveAddress = async () => {
     showModal.value = false;
     const resAddr = await axios.get(`${BASE_URL}/addresses`, getAxiosConfig());
     addresses.value = resAddr.data.data;
-    selectedAddressId.value = res.data.id || res.data.data?.id || addresses.value[addresses.value.length - 1].id;
-    Swal.fire({ toast: true, position: "top-end", icon: "success", title: "Address Added!", showConfirmButton: false, timer: 1500 });
-  } catch (e) { Swal.fire("Error", "Failed to save address", "error"); }
+    selectedAddressId.value =
+      res.data.id || res.data.data?.id || addresses.value[addresses.value.length - 1].id;
+    Swal.fire({
+      toast: true,
+      position: "top-end",
+      icon: "success",
+      title: "Address Added!",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  } catch (e) {
+    Swal.fire("Error", "Failed to save address", "error");
+  }
 };
 
 const fetchData = async () => {
   try {
-    const user = localStorage.getItem("user"); if (user) userData.value = JSON.parse(user);
+    const user = localStorage.getItem("user");
+    if (user) userData.value = JSON.parse(user);
     const resAddr = await axios.get(`${BASE_URL}/addresses`, getAxiosConfig());
     addresses.value = resAddr.data.data;
     if (addresses.value.length > 0) {
@@ -5383,10 +4287,32 @@ const fetchData = async () => {
       selectedAddressId.value = defaultAddr ? defaultAddr.id : addresses.value[0].id;
     }
     initDateTime();
-    isPageLoading.value = false; await nextTick();
+    isPageLoading.value = false;
+    await nextTick();
+    // [BARU] 3. Event: Add Payment Info / Begin Checkout (GTM)
+    // Dipanggil saat halaman checkout selesai di-render
+    if (checkoutItems.value.length > 0) {
+      trackGtmEvent("add_payment_info", {
+        ecommerce: {
+          currency: "IDR",
+          value: checkoutTotalAmount.value,
+          items: formatCartItemsForGtm(),
+        },
+      });
+    }
     if (addresses.value.length === 0) {
-      Swal.fire({ title: "Address Required", text: "You must add a shipping address before you can proceed.", icon: "warning", showCancelButton: true, confirmButtonText: "Add Address Now", cancelButtonText: "Later", confirmButtonColor: "#000", allowOutsideClick: false })
-      .then((result) => { if (result.isConfirmed) openModal(); });
+      Swal.fire({
+        title: "Address Required",
+        text: "You must add a shipping address before you can proceed.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Add Address Now",
+        cancelButtonText: "Later",
+        confirmButtonColor: "#000",
+        allowOutsideClick: false,
+      }).then((result) => {
+        if (result.isConfirmed) openModal();
+      });
     }
   } catch (error) {
     isPageLoading.value = false;
@@ -5402,13 +4328,22 @@ const maxUsablePoints = computed(() => {
   if (!userData.value || checkoutTotalAmount.value === 0) return 0;
   const userBalance = userData.value.point || 0;
   const priceAfterPromo = checkoutTotalAmount.value - promoDiscountAmount.value;
-  const maxPointsForPrice = Math.floor(Math.max(0, priceAfterPromo) / pointConversionRate);
+  const maxPointsForPrice = Math.floor(
+    Math.max(0, priceAfterPromo) / pointConversionRate
+  );
   return Math.min(userBalance, maxPointsForPrice);
 });
 
-const pointDiscountAmount = computed(() => (pointsToUse.value || 0) * pointConversionRate);
-const useAllPoints = () => { pointsToUse.value = maxUsablePoints.value; };
-watch(pointsToUse, (newVal) => { if (newVal < 0) pointsToUse.value = 0; if (newVal > maxUsablePoints.value) pointsToUse.value = maxUsablePoints.value; });
+const pointDiscountAmount = computed(
+  () => (pointsToUse.value || 0) * pointConversionRate
+);
+const useAllPoints = () => {
+  pointsToUse.value = maxUsablePoints.value;
+};
+watch(pointsToUse, (newVal) => {
+  if (newVal < 0) pointsToUse.value = 0;
+  if (newVal > maxUsablePoints.value) pointsToUse.value = maxUsablePoints.value;
+});
 
 const grandTotalWithDiscount = computed(() => {
   return grandTotal.value - promoDiscountAmount.value - pointDiscountAmount.value;
@@ -5417,17 +4352,22 @@ const grandTotalWithDiscount = computed(() => {
 // [BARU] Fungsi pemecah string warna untuk Order Summary di Payment
 const parseColorName = (colorString) => {
   if (!colorString) return "";
-  return colorString.includes('|') ? colorString.split('|')[0] : colorString;
+  return colorString.includes("|") ? colorString.split("|")[0] : colorString;
 };
 
 const handlePayment = async () => {
   isProcessing.value = true;
   try {
     const payload = {
-      address_id: selectedAddressId.value, shipping_method: shippingMethod.value, use_points: pointsToUse.value, cart_ids: selectedItemIds.value,
-      courier_company: shippingMethod.value === "biteship" ? selectedRate.value?.company : null,
+      address_id: selectedAddressId.value,
+      shipping_method: shippingMethod.value,
+      use_points: pointsToUse.value,
+      cart_ids: selectedItemIds.value,
+      courier_company:
+        shippingMethod.value === "biteship" ? selectedRate.value?.company : null,
       courier_type: shippingMethod.value === "biteship" ? selectedRate.value?.type : null,
-      shipping_cost: shippingMethod.value === "biteship" ? selectedRate.value?.price : null,
+      shipping_cost:
+        shippingMethod.value === "biteship" ? selectedRate.value?.price : null,
       delivery_type: shippingMethod.value === "biteship" ? deliveryType.value : null,
       delivery_date: shippingMethod.value === "biteship" ? deliveryDate.value : null,
       delivery_time: shippingMethod.value === "biteship" ? deliveryTime.value : null,
@@ -5435,16 +4375,46 @@ const handlePayment = async () => {
     };
     const res = await axios.post(`${BASE_URL}/checkout`, payload, getAxiosConfig());
     if (res.data.checkout_url) {
-      clearSelectedCart(); window.location.href = res.data.checkout_url;
+      // [BARU] 4. Event: Purchase (GTM)
+      // Dipanggil sesaat sebelum redirect ke halaman payment gateway
+      trackGtmEvent("purchase", {
+        ecommerce: {
+          transaction_id: res.data.order_id || res.data.invoice_id || `ORD-${Date.now()}`, // Fallback jika backend tidak membalikkan ID
+          affiliation: "Solher Web Store",
+          value: grandTotalWithDiscount.value,
+          currency: "IDR",
+          coupon: appliedPromoCode.value || "",
+          shipping: shippingMethod.value === "biteship" ? selectedRate.value?.price : 0,
+          items: formatCartItemsForGtm(),
+        },
+      });
+
+      clearSelectedCart();
+      window.location.href = res.data.checkout_url;
     }
   } catch (error) {
-    Swal.fire("Payment Error", error.response?.data?.message || "Failed to create invoice", "error");
-  } finally { isProcessing.value = false; }
+    Swal.fire(
+      "Payment Error",
+      error.response?.data?.message || "Failed to create invoice",
+      "error"
+    );
+  } finally {
+    isProcessing.value = false;
+  }
 };
 
-const calculateEarnedPoints = computed(() => Math.floor(checkoutTotalAmount.value / 100000));
-const checkoutItems = computed(() => cartItems.value.filter((item) => selectedItemIds.value.includes(item.id)));
-const formatPrice = (v) => new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(v);
+const calculateEarnedPoints = computed(() =>
+  Math.floor(checkoutTotalAmount.value / 100000)
+);
+const checkoutItems = computed(() =>
+  cartItems.value.filter((item) => selectedItemIds.value.includes(item.id))
+);
+const formatPrice = (v) =>
+  new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0,
+  }).format(v);
 
 onMounted(fetchData);
 </script>
