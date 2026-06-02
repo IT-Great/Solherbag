@@ -5562,7 +5562,7 @@ const fetchRecommendations = async (categoryId, currentProductId) => {
 const goToRecommendedProduct = (rec) => {
   isLoading.value = true;
   const identifier = rec.slug || rec.id;
-  router.push(`/product/${identifier}`);
+  router.push(`/products/${identifier}`);
 };
 
 const fetchProductDetail = async () => {
