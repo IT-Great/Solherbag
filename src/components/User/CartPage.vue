@@ -1444,7 +1444,7 @@ const isLoadingProducts = ref(true); // [BARU] State loading untuk produk
 const fetchAllProducts = async () => {
   isLoadingProducts.value = true;
   try {
-    const res = await axios.get(`${BASE_URL}/productss`);
+    const res = await axios.get(`${BASE_URL}/products`);
     const data = res.data?.data?.data || res.data?.data || res.data;
     if (Array.isArray(data)) {
       allProducts.value = data;
