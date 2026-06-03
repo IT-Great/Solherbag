@@ -5250,6 +5250,33 @@ const selectedQuantity = ref(1);
 const recommendedProducts = ref([]);
 const siblingColors = ref([]);
 
+// Buat fungsi helper agar kode lebih bersih
+const updateRecentlyViewedAndTrack = (prod) => {
+  // 1. Update Recently Viewed di LocalStorage
+  let list = JSON.parse(localStorage.getItem("recently_viewed") || "[]");
+  list = list.filter((item) => item.id !== prod.id);
+  list.unshift(prod);
+  list = list.slice(0, 6);
+  localStorage.setItem("recently_viewed", JSON.stringify(list));
+
+  // 2. Tembakkan GTM Event (Penting agar tracking tidak bolong!)
+  trackGtmEvent("view_item", {
+    ecommerce: {
+      currency: "IDR",
+      value: prod.discount_price || prod.price,
+      items: [
+        {
+          item_id: prod.id,
+          item_name: prod.name,
+          price: prod.discount_price || prod.price,
+          item_category: prod.category?.name || "Accessories",
+          quantity: 1,
+        },
+      ],
+    },
+  });
+};
+
 // [BARU] Helper function untuk Google Tag Manager
 const trackGtmEvent = (eventName, data) => {
   window.dataLayer = window.dataLayer || [];
@@ -5565,46 +5592,86 @@ const goToRecommendedProduct = (rec) => {
   router.push(`/products/${identifier}`);
 };
 
+// const fetchProductDetail = async () => {
+//   isLoading.value = true;
+//   if (history.state && history.state.productData) {
+//     product.value = JSON.parse(history.state.productData);
+//     isLoading.value = false;
+//     fetchRecommendations(product.value.category_id, product.value.id);
+//     fetchSiblingColors(product.value.name);
+//   } else {
+//     try {
+//       const res = await axios.get(`${BASE_URL}/products/${route.params.id}`);
+//       product.value = res.data;
+
+//       // [BARU] 1. Event: View Product (GTM)
+//       // Dipanggil setelah data produk berhasil di-fetch
+//       trackGtmEvent("view_item", {
+//         ecommerce: {
+//           currency: "IDR",
+//           value: product.value.discount_price || product.value.price,
+//           items: [
+//             {
+//               item_id: product.value.id,
+//               item_name: product.value.name,
+//               price: product.value.discount_price || product.value.price,
+//               item_category: product.value.category?.name || "Accessories", // Sesuaikan jika ada relasi kategori
+//               quantity: 1,
+//             },
+//           ],
+//         },
+//       });
+
+//       fetchWishlists();
+//       fetchRecommendations(product.value.category_id, product.value.id);
+//       fetchSiblingColors(product.value.name);
+//       activeSlide.value = 0;
+//       selectedQuantity.value = 1;
+//       let list = JSON.parse(localStorage.getItem("recently_viewed") || "[]");
+//       list = list.filter((item) => item.id !== product.value.id);
+//       list.unshift(product.value);
+//       list = list.slice(0, 6);
+//       localStorage.setItem("recently_viewed", JSON.stringify(list));
+//     } catch (error) {
+//       console.error("Error fetching detail:", error);
+//       if (!product.value) router.push("/collections");
+//     } finally {
+//       isLoading.value = false;
+//     }
+//   }
+// };
+
 const fetchProductDetail = async () => {
   isLoading.value = true;
+  
   if (history.state && history.state.productData) {
+    // JALUR 1: Data dari CollectionPage (Router State)
     product.value = JSON.parse(history.state.productData);
     isLoading.value = false;
+    
     fetchRecommendations(product.value.category_id, product.value.id);
     fetchSiblingColors(product.value.name);
+    activeSlide.value = 0;
+    selectedQuantity.value = 1;
+    
+    // [PERBAIKAN] Panggil fungsi update di sini
+    updateRecentlyViewedAndTrack(product.value);
+    
   } else {
+    // JALUR 2: Data dari Fetch API (Refresh / Akses URL Langsung)
     try {
       const res = await axios.get(`${BASE_URL}/products/${route.params.id}`);
       product.value = res.data;
-
-      // [BARU] 1. Event: View Product (GTM)
-      // Dipanggil setelah data produk berhasil di-fetch
-      trackGtmEvent("view_item", {
-        ecommerce: {
-          currency: "IDR",
-          value: product.value.discount_price || product.value.price,
-          items: [
-            {
-              item_id: product.value.id,
-              item_name: product.value.name,
-              price: product.value.discount_price || product.value.price,
-              item_category: product.value.category?.name || "Accessories", // Sesuaikan jika ada relasi kategori
-              quantity: 1,
-            },
-          ],
-        },
-      });
 
       fetchWishlists();
       fetchRecommendations(product.value.category_id, product.value.id);
       fetchSiblingColors(product.value.name);
       activeSlide.value = 0;
       selectedQuantity.value = 1;
-      let list = JSON.parse(localStorage.getItem("recently_viewed") || "[]");
-      list = list.filter((item) => item.id !== product.value.id);
-      list.unshift(product.value);
-      list = list.slice(0, 6);
-      localStorage.setItem("recently_viewed", JSON.stringify(list));
+
+      // [PERBAIKAN] Panggil fungsi update di sini juga
+      updateRecentlyViewedAndTrack(product.value);
+      
     } catch (error) {
       console.error("Error fetching detail:", error);
       if (!product.value) router.push("/collections");
