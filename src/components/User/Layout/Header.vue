@@ -5124,7 +5124,12 @@ watch(() => route.path, () => {
         class="absolute p-2 text-gray-400 transition left-2 md:left-4 hover:text-white focus:outline-none"
       >
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7" />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+            d="M15 19l-7-7 7-7"
+          />
         </svg>
       </button>
 
@@ -5145,7 +5150,12 @@ watch(() => route.path, () => {
         class="absolute p-2 text-gray-400 transition right-2 md:right-4 hover:text-white focus:outline-none"
       >
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+            d="M9 5l7 7-7 7"
+          />
         </svg>
       </button>
     </div>
@@ -5880,7 +5890,7 @@ const selectMegaMenuCategory = (catId) => {
 
 const navigateToProduct = (product) => {
   closeMegaMenu();
-  router.push(`/product/${product.slug || product.id}`);
+  router.push(`/products/${product.slug || product.id}`);
 };
 
 const openCartPage = () => {
