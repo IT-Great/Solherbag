@@ -5287,6 +5287,37 @@ const selectedQuantity = ref(1);
 const recommendedProducts = ref([]);
 const siblingColors = ref([]);
 
+// ==========================================
+// [BARU] LOGIKA STATUS DISKON (TIME-BASED)
+// ==========================================
+const getDiscountStatus = (p) => {
+  if (!p || !p.discount_price) return { active: false, upcoming: false, expired: false };
+
+  const now = new Date();
+  let active = true;
+  let upcoming = false;
+  let expired = false;
+
+  if (p.discount_start_date) {
+    const startDate = new Date(p.discount_start_date);
+    if (now < startDate) { active = false; upcoming = true; }
+  }
+  if (p.discount_end_date) {
+    const endDate = new Date(p.discount_end_date);
+    if (now > endDate) { active = false; expired = true; }
+  }
+
+  return { active, upcoming, expired };
+};
+
+const formatUpcomingDate = (dateStr) => {
+  if (!dateStr) return '';
+  return new Date(dateStr).toLocaleString('id-ID', {
+    day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'
+  });
+};
+// ==========================================
+
 // Buat fungsi helper agar kode lebih bersih
 const updateRecentlyViewedAndTrack = (prod) => {
   // 1. Update Recently Viewed di LocalStorage
@@ -5795,12 +5826,12 @@ const handleAction = async (type) => {
       ecommerce: {
         currency: "IDR",
         value:
-          (product.value.discount_price || product.value.price) * selectedQuantity.value,
+          currentActivePrice.value * selectedQuantity.value,
         items: [
           {
             item_id: product.value.id,
             item_name: product.value.name,
-            price: product.value.discount_price || product.value.price,
+            price: currentActivePrice.value,
             item_category: product.value.category?.name || "Accessories",
             item_variant: extractColorName(product.value.name), // Ambil warna sebagai varian
             quantity: selectedQuantity.value,
