@@ -5319,24 +5319,54 @@ const formatUpcomingDate = (dateStr) => {
 // ==========================================
 
 // Buat fungsi helper agar kode lebih bersih
+// const updateRecentlyViewedAndTrack = (prod) => {
+//   // 1. Update Recently Viewed di LocalStorage
+//   let list = JSON.parse(localStorage.getItem("recently_viewed") || "[]");
+//   list = list.filter((item) => item.id !== prod.id);
+//   list.unshift(prod);
+//   list = list.slice(0, 6);
+//   localStorage.setItem("recently_viewed", JSON.stringify(list));
+
+//   // 2. Tembakkan GTM Event (Penting agar tracking tidak bolong!)
+//   trackGtmEvent("view_item", {
+//     ecommerce: {
+//       currency: "IDR",
+//       value: prod.discount_price || prod.price,
+//       items: [
+//         {
+//           item_id: prod.id,
+//           item_name: prod.name,
+//           price: prod.discount_price || prod.price,
+//           item_category: prod.category?.name || "Accessories",
+//           quantity: 1,
+//         },
+//       ],
+//     },
+//   });
+// };
+
 const updateRecentlyViewedAndTrack = (prod) => {
-  // 1. Update Recently Viewed di LocalStorage
   let list = JSON.parse(localStorage.getItem("recently_viewed") || "[]");
   list = list.filter((item) => item.id !== prod.id);
   list.unshift(prod);
   list = list.slice(0, 6);
   localStorage.setItem("recently_viewed", JSON.stringify(list));
 
-  // 2. Tembakkan GTM Event (Penting agar tracking tidak bolong!)
+  // [PERBAIKAN] Evaluasi harga secara dinamis berdasarkan waktu saat ini!
+  const activePrice = (prod.discount_price && getDiscountStatus(prod).active) 
+                      ? parseFloat(prod.discount_price) 
+                      : parseFloat(prod.price);
+
+  // Tembakkan GTM Event dengan harga yang sudah tervalidasi
   trackGtmEvent("view_item", {
     ecommerce: {
       currency: "IDR",
-      value: prod.discount_price || prod.price,
+      value: activePrice,
       items: [
         {
           item_id: prod.id,
           item_name: prod.name,
-          price: prod.discount_price || prod.price,
+          price: activePrice, // <--- Sudah aman
           item_category: prod.category?.name || "Accessories",
           quantity: 1,
         },
@@ -5776,16 +5806,22 @@ const handleAction = async (type) => {
       showConfirmButton: false,
       timer: 2000,
     });
+    
     window.dispatchEvent(
       new CustomEvent("optimistic-add-to-cart", {
         detail: {
-          product: product.value,
+          // [PERBAIKAN] Manipulasi objek produk sebelum dilempar ke Keranjang
+          product: {
+            ...product.value,
+            // Jika diskon BELUM AKTIF, paksa discount_price menjadi null agar Keranjang menagih harga normal!
+            discount_price: getDiscountStatus(product.value).active ? product.value.discount_price : null
+          },
           cartId: null,
           quantity: selectedQuantity.value,
           color: extractColorName(product.value.name),
         },
       })
-    );
+    );    
     const productImages = document.querySelectorAll(".main-product-image");
     const productImage = productImages[activeSlide.value];
     const cartIcon = document.querySelector(".cart-icon-header");
