@@ -1219,7 +1219,7 @@ onMounted(() => {
 
                   <div class="flex flex-wrap items-center mt-1 gap-x-3 gap-y-1">
                     <p class="text-xs italic tracking-widest text-gray-400">
-                      {{ formatPrice(item.product.discount_price ?? item.product.price) }}
+                      {{ formatPrice(getActivePrice(item.product)) }}
                       / pc
                     </p>
 
@@ -1349,7 +1349,7 @@ onMounted(() => {
                   {{ product.name }}
                 </h4>
                 <p class="mb-3 text-xs font-medium text-gray-600">
-                  {{ formatPrice(product.discount_price ?? product.price) }}
+                  {{ formatPrice(getActivePrice(item.product)) }}
                 </p>
 
                 <button
@@ -1417,7 +1417,8 @@ import { useRouter } from "vue-router";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
-import { useCart } from "../../composables/useCart";
+// import { useCart } from "../../composables/useCart";
+import { useCart, getActivePrice, getDiscountStatus } from "../../composables/useCart";
 
 // [BARU] Import gambar default
 import defaultBagIcon from "../../assets/products/bag_icon.jpg";
@@ -1440,6 +1441,50 @@ const {
 
 const allProducts = ref([]);
 const isLoadingProducts = ref(true); // [BARU] State loading untuk produk
+
+// ==========================================
+// [PERBAIKAN] LOGIKA STATUS DISKON & ZONA WAKTU
+// ==========================================
+const convertToWIB = (dateString) => {
+  if (!dateString) return null;
+  const date = new Date(dateString);
+  date.setHours(date.getHours() + 7);
+  return date;
+};
+
+const getDiscountStatus = (p) => {
+  if (!p || !p.discount_price) return { active: false, upcoming: false, expired: false };
+
+  const now = new Date();
+  let active = true;
+  let upcoming = false;
+  let expired = false;
+
+  if (p.discount_start_date) {
+    const startDate = convertToWIB(p.discount_start_date);
+    if (now < startDate) {
+      active = false;
+      upcoming = true;
+    }
+  }
+  if (p.discount_end_date) {
+    const endDate = convertToWIB(p.discount_end_date);
+    if (now > endDate) {
+      active = false;
+      expired = true;
+    }
+  }
+
+  return { active, upcoming, expired };
+};
+
+// Fungsi krusial untuk mengambil harga valid saat ini
+const getActivePrice = (product) => {
+  if (product.discount_price && getDiscountStatus(product).active) {
+    return parseFloat(product.discount_price);
+  }
+  return parseFloat(product.price);
+};
 
 const fetchAllProducts = async () => {
   isLoadingProducts.value = true;
