@@ -1405,11 +1405,16 @@ onUnmounted(() => {
                     <p class="text-sm font-semibold text-gray-600 md:text-base">
                       {{ formatPrice(product.price) }}
                     </p>
-                    <p
+                    <!-- <p
                       class="text-[9px] text-amber-600 font-bold bg-amber-50 px-2 py-0.5 rounded mt-1 uppercase tracking-widest text-center md:text-left"
                     >
                       Sale {{ formatPrice(product.discount_price) }} starts
                       {{ formatUpcomingDate(product.discount_start_date) }}
+                    </p> -->
+                    <p
+                      class="text-[9px] text-amber-600 font-bold bg-amber-50 px-2 py-0.5 rounded mt-1 uppercase tracking-widest text-center md:text-left"
+                    >
+                      Sale {{ formatPrice(product.discount_price) }} is scheduled: {{ formatUpcomingDate(product.discount_start_date, product.discount_end_date) }}
                     </p>
                   </div>
                 </template>
@@ -1916,25 +1921,82 @@ const handleCategoryChange = () => {
 //   },
 // );
 
-// Menghitung status diskon berdasarkan waktu saat ini
-const getDiscountStatus = (p) => {
-  if (!p.discount_price) return { active: false, upcoming: false, expired: false };
+// // Menghitung status diskon berdasarkan waktu saat ini
+// const getDiscountStatus = (p) => {
+//   if (!p.discount_price) return { active: false, upcoming: false, expired: false };
 
+//   const now = new Date();
+//   let active = true;
+//   let upcoming = false;
+//   let expired = false;
+
+//   // Konversi string UTC dari Laravel ke zona waktu lokal pengguna
+//   if (p.discount_start_date) {
+//     const startDate = new Date(p.discount_start_date);
+//     if (now < startDate) {
+//       active = false;
+//       upcoming = true;
+//     }
+//   }
+//   if (p.discount_end_date) {
+//     const endDate = new Date(p.discount_end_date);
+//     if (now > endDate) {
+//       active = false;
+//       expired = true;
+//     }
+//   }
+
+//   return { active, upcoming, expired };
+// };
+
+// // Format tanggal khusus untuk tampilan "Starts at..."
+// const formatUpcomingDate = (dateStr) => {
+//   if (!dateStr) return "";
+//   return new Date(dateStr).toLocaleString("id-ID", {
+//     day: "numeric",
+//     month: "short",
+//     hour: "2-digit",
+//     minute: "2-digit",
+//   });
+// };
+
+// ==========================================
+// [PERBAIKAN] LOGIKA STATUS DISKON & ZONA WAKTU
+// ==========================================
+
+// Helper internal untuk mengonversi waktu UTC ke WIB (UTC+7)
+const convertToWIB = (dateString) => {
+  if (!dateString) return null;
+  // Laravel mengirim UTC dengan format '2026-06-06T00:00:00.000000Z'
+  const date = new Date(dateString);
+  // Tambahkan 7 jam untuk menjadi WIB (karena server menyimpan UTC murni)
+  // Perhatikan: Karena Anda minta "dikurangi 7 jam", pastikan ini benar.
+  // Biasanya dari UTC ke WIB justru DITAMBAH (+7 jam).
+  // Jika database Anda terlanjur menyimpan waktu +7 sebagai UTC,
+  // dan Anda ingin menguranginya, gunakan: date.setHours(date.getHours() - 7);
+  // Di sini saya berikan contoh standar konversi UTC ke WIB (+7).
+  date.setHours(date.getHours() - 7);
+  return date;
+};
+
+const getDiscountStatus = (p) => {
+  if (!p || !p.discount_price) return { active: false, upcoming: false, expired: false };
+
+  // Waktu perangkat lokal pengguna saat membuka web
   const now = new Date();
   let active = true;
   let upcoming = false;
   let expired = false;
 
-  // Konversi string UTC dari Laravel ke zona waktu lokal pengguna
   if (p.discount_start_date) {
-    const startDate = new Date(p.discount_start_date);
+    const startDate = convertToWIB(p.discount_start_date);
     if (now < startDate) {
       active = false;
       upcoming = true;
     }
   }
   if (p.discount_end_date) {
-    const endDate = new Date(p.discount_end_date);
+    const endDate = convertToWIB(p.discount_end_date);
     if (now > endDate) {
       active = false;
       expired = true;
@@ -1944,16 +2006,31 @@ const getDiscountStatus = (p) => {
   return { active, upcoming, expired };
 };
 
-// Format tanggal khusus untuk tampilan "Starts at..."
-const formatUpcomingDate = (dateStr) => {
-  if (!dateStr) return "";
-  return new Date(dateStr).toLocaleString("id-ID", {
-    day: "numeric",
+// Format tanggal menjadi: "06 Jun, 07:00 - 07 Jun, 23:59 WIB"
+const formatUpcomingDate = (startDateStr, endDateStr) => {
+  if (!startDateStr) return "";
+
+  const start = convertToWIB(startDateStr);
+  const end = endDateStr ? convertToWIB(endDateStr) : null;
+
+  const options = {
+    day: "2-digit",
     month: "short",
     hour: "2-digit",
     minute: "2-digit",
-  });
+    hour12: false, // Memaksa format 24 jam (misal 23:59)
+  };
+
+  const startFormatted = start.toLocaleString("id-ID", options).replace(/\./g, ":");
+
+  if (end) {
+    const endFormatted = end.toLocaleString("id-ID", options).replace(/\./g, ":");
+    return `${startFormatted} to ${endFormatted} WIB`;
+  }
+
+  return `${startFormatted} WIB`;
 };
+// ==========================================
 
 onMounted(async () => {
   if (route.query.search) {
