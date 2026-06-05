@@ -4931,7 +4931,7 @@ onMounted(fetchProductDetail);
               </svg>
             </button>
           </div>
-          <div class="flex items-center justify-center gap-4 md:justify-start">
+          <!-- <div class="flex items-center justify-center gap-4 md:justify-start">
             <template v-if="product.discount_price">
               <p class="text-2xl font-bold text-red-600">
                 {{ formatPrice(product.discount_price) }}
@@ -4947,6 +4947,43 @@ onMounted(fetchProductDetail);
             <p v-else class="text-2xl text-gray-600">
               {{ formatPrice(product.price) }}
             </p>
+          </div> -->
+
+          <div class="flex flex-wrap items-center justify-center w-full gap-4 md:justify-start">
+            <template v-if="product.discount_price && !getDiscountStatus(product).expired">
+              
+              <template v-if="getDiscountStatus(product).active">
+                <p class="text-2xl font-bold text-red-600">
+                  {{ formatPrice(product.discount_price) }}
+                </p>
+                <p class="text-lg text-gray-400 line-through">
+                  {{ formatPrice(product.price) }}
+                </p>
+                <span class="px-2 py-1 text-xs font-bold text-red-600 bg-red-100 rounded">
+                  SAVE {{ calculateDiscount(product.price, product.discount_price) }}%
+                </span>
+              </template>
+
+              <template v-else-if="getDiscountStatus(product).upcoming">
+                <p class="text-2xl text-gray-600">
+                  {{ formatPrice(product.price) }}
+                </p>
+                <div class="w-full mt-2">
+                  <span class="flex items-center gap-2 px-3 py-2 text-xs font-bold border rounded-lg text-amber-700 bg-amber-50 border-amber-200 w-fit">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Upcoming Sale: {{ formatPrice(product.discount_price) }} starts on {{ formatUpcomingDate(product.discount_start_date) }}
+                  </span>
+                </div>
+              </template>
+
+            </template>
+            <template v-else>
+              <p class="text-2xl text-gray-600">
+                {{ formatPrice(product.price) }}
+              </p>
+            </template>
           </div>
         </div>
 
@@ -5643,20 +5680,19 @@ const goToRecommendedProduct = (rec) => {
 
 const fetchProductDetail = async () => {
   isLoading.value = true;
-  
+
   if (history.state && history.state.productData) {
     // JALUR 1: Data dari CollectionPage (Router State)
     product.value = JSON.parse(history.state.productData);
     isLoading.value = false;
-    
+
     fetchRecommendations(product.value.category_id, product.value.id);
     fetchSiblingColors(product.value.name);
     activeSlide.value = 0;
     selectedQuantity.value = 1;
-    
+
     // [PERBAIKAN] Panggil fungsi update di sini
     updateRecentlyViewedAndTrack(product.value);
-    
   } else {
     // JALUR 2: Data dari Fetch API (Refresh / Akses URL Langsung)
     try {
@@ -5671,7 +5707,6 @@ const fetchProductDetail = async () => {
 
       // [PERBAIKAN] Panggil fungsi update di sini juga
       updateRecentlyViewedAndTrack(product.value);
-      
     } catch (error) {
       console.error("Error fetching detail:", error);
       if (!product.value) router.push("/collections");
@@ -5837,6 +5872,14 @@ const resetZoom = (e) => {
   // Kembalikan ke tengah saat mouse pergi
   if (img) img.style.transformOrigin = "center center";
 };
+
+// Ini menentukan harga mutlak yang dipakai sistem saat ini
+const currentActivePrice = computed(() => {
+  if (product.value && product.value.discount_price && getDiscountStatus(product.value).active) {
+    return parseFloat(product.value.discount_price);
+  }
+  return parseFloat(product.value ? product.value.price : 0);
+});
 
 onMounted(fetchProductDetail);
 </script>

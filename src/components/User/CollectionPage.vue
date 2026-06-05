@@ -1198,7 +1198,7 @@ onUnmounted(() => {
           <select
             v-model="selectedCategory"
             @change="handleCategoryChange"
-            class="px-6 py-3 text-xs font-bold tracking-widest uppercase transition bg-white border border-gray-200 rounded-full shadow-sm outline-none cursor-pointer text-gray-600 focus:ring-2 focus:ring-black"
+            class="px-6 py-3 text-xs font-bold tracking-widest text-gray-600 uppercase transition bg-white border border-gray-200 rounded-full shadow-sm outline-none cursor-pointer focus:ring-2 focus:ring-black"
           >
             <option value="">All Categories</option>
             <option v-for="cat in categories" :key="cat.id" :value="cat.category_name">
@@ -1372,7 +1372,7 @@ onUnmounted(() => {
             >
               {{ product.name }}
             </h3>
-            <div class="flex items-center justify-center gap-2 md:justify-start">
+            <!-- <div class="flex items-center justify-center gap-2 md:justify-start">
               <template v-if="product.discount_price">
                 <p class="text-sm font-bold text-red-600 md:text-base">
                   {{ formatPrice(product.discount_price) }}
@@ -1384,6 +1384,42 @@ onUnmounted(() => {
               <p v-else class="text-sm font-semibold text-gray-600 md:text-base">
                 {{ formatPrice(product.price) }}
               </p>
+            </div> -->
+            <div
+              class="flex flex-wrap items-center justify-center gap-2 md:justify-start"
+            >
+              <template
+                v-if="product.discount_price && !getDiscountStatus(product).expired"
+              >
+                <template v-if="getDiscountStatus(product).active">
+                  <p class="text-sm font-bold text-red-600 md:text-base">
+                    {{ formatPrice(product.discount_price) }}
+                  </p>
+                  <p class="text-xs text-gray-400 line-through md:text-sm">
+                    {{ formatPrice(product.price) }}
+                  </p>
+                </template>
+
+                <template v-else-if="getDiscountStatus(product).upcoming">
+                  <div class="flex flex-col items-center w-full md:items-start">
+                    <p class="text-sm font-semibold text-gray-600 md:text-base">
+                      {{ formatPrice(product.price) }}
+                    </p>
+                    <p
+                      class="text-[9px] text-amber-600 font-bold bg-amber-50 px-2 py-0.5 rounded mt-1 uppercase tracking-widest text-center md:text-left"
+                    >
+                      Sale {{ formatPrice(product.discount_price) }} starts
+                      {{ formatUpcomingDate(product.discount_start_date) }}
+                    </p>
+                  </div>
+                </template>
+              </template>
+
+              <template v-else>
+                <p class="text-sm font-semibold text-gray-600 md:text-base">
+                  {{ formatPrice(product.price) }}
+                </p>
+              </template>
             </div>
           </div>
         </div>
@@ -1763,8 +1799,12 @@ const filteredProducts = computed(() => {
     const productCategory = p.category?.name || p.category_name;
     const matchesCategory =
       selectedCategory.value === "" || productCategory === selectedCategory.value;
+    // const matchesSale = showOnlySale.value
+    //   ? p.discount_price !== null && p.discount_price > 0
+    //   : true;
+
     const matchesSale = showOnlySale.value
-      ? p.discount_price !== null && p.discount_price > 0
+      ? p.discount_price !== null && getDiscountStatus(p).active // Hanya yang sedang aktif
       : true;
 
     return matchesCategory && matchesSale;
@@ -1875,6 +1915,45 @@ const handleCategoryChange = () => {
 //     }
 //   },
 // );
+
+// Menghitung status diskon berdasarkan waktu saat ini
+const getDiscountStatus = (p) => {
+  if (!p.discount_price) return { active: false, upcoming: false, expired: false };
+
+  const now = new Date();
+  let active = true;
+  let upcoming = false;
+  let expired = false;
+
+  // Konversi string UTC dari Laravel ke zona waktu lokal pengguna
+  if (p.discount_start_date) {
+    const startDate = new Date(p.discount_start_date);
+    if (now < startDate) {
+      active = false;
+      upcoming = true;
+    }
+  }
+  if (p.discount_end_date) {
+    const endDate = new Date(p.discount_end_date);
+    if (now > endDate) {
+      active = false;
+      expired = true;
+    }
+  }
+
+  return { active, upcoming, expired };
+};
+
+// Format tanggal khusus untuk tampilan "Starts at..."
+const formatUpcomingDate = (dateStr) => {
+  if (!dateStr) return "";
+  return new Date(dateStr).toLocaleString("id-ID", {
+    day: "numeric",
+    month: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
 
 onMounted(async () => {
   if (route.query.search) {
