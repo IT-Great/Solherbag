@@ -1479,12 +1479,12 @@ const convertToWIB = (dateString) => {
 // };
 
 // Fungsi krusial untuk mengambil harga valid saat ini
-const getActivePrice = (product) => {
-  if (product.discount_price && getDiscountStatus(product).active) {
-    return parseFloat(product.discount_price);
-  }
-  return parseFloat(product.price);
-};
+// const getActivePrice = (product) => {
+//   if (product.discount_price && getDiscountStatus(product).active) {
+//     return parseFloat(product.discount_price);
+//   }
+//   return parseFloat(product.price);
+// };
 
 const fetchAllProducts = async () => {
   isLoadingProducts.value = true;
