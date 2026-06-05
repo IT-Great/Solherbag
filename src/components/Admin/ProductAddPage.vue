@@ -310,6 +310,22 @@ onMounted(async () => {
               class="w-full p-3 bg-gray-100 rounded-xl"
             />
           </div>
+          <div>
+            <label class="block mb-1 text-xs font-bold text-gray-600">Discount Start Date</label>
+            <input
+              v-model="form.discount_start_date"
+              type="datetime-local"
+              class="w-full p-3 text-sm bg-white border border-gray-200 rounded-xl"
+            />
+          </div>
+          <div>
+            <label class="block mb-1 text-xs font-bold text-gray-600">Discount End Date</label>
+            <input
+              v-model="form.discount_end_date"
+              type="datetime-local"
+              class="w-full p-3 text-sm bg-white border border-gray-200 rounded-xl"
+            />
+          </div>
         </div>
 
         <div>
@@ -1001,6 +1017,8 @@ const form = ref({
   variant_images: [],
   variant_video: null,
   discount_price: "",
+  discount_start_date: "", 
+  discount_end_date: "",   
 });
 
 // State & Fungsi untuk input multiple strap_length
@@ -1161,6 +1179,9 @@ const handleSubmit = async () => {
     if (form.value.discount_price) {
       formData.append("discount_price", form.value.discount_price);
     }
+
+    formData.append("discount_start_date", form.value.discount_start_date || "");
+    formData.append("discount_end_date", form.value.discount_end_date || "");
 
     // if (form.value.image) {
     //   formData.append("image", form.value.image);

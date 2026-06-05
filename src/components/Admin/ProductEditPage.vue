@@ -825,6 +825,22 @@ const handleSubmit = async () => {
               class="w-full p-3 bg-gray-100 rounded-xl"
             />
           </div>
+          <div>
+            <label class="block mb-1 text-xs font-bold text-gray-600">Discount Start Date</label>
+            <input
+              v-model="form.discount_start_date"
+              type="datetime-local"
+              class="w-full p-3 text-sm bg-white border border-gray-200 rounded-xl"
+            />
+          </div>
+          <div>
+            <label class="block mb-1 text-xs font-bold text-gray-600">Discount End Date</label>
+            <input
+              v-model="form.discount_end_date"
+              type="datetime-local"
+              class="w-full p-3 text-sm bg-white border border-gray-200 rounded-xl"
+            />
+          </div>
         </div>
 
         <div class="grid grid-cols-2 gap-4">
@@ -1461,6 +1477,8 @@ const form = ref({
   code: "",
   price: "",
   discount_price: "",
+  discount_start_date: "", // <--- BARU
+  discount_end_date: "",   // <--- BARU
   stock: "",
   category_id: "",
   description: "",
@@ -1614,6 +1632,9 @@ const fillFormWithData = (p) => {
   form.value.code = p.code;
   form.value.price = p.price;
   form.value.discount_price = p.discount_price || "";
+  form.value.discount_price = p.raw_discount_price ?? p.discount_price ?? "";
+  form.value.discount_start_date = p.discount_start_date ? p.discount_start_date.replace(' ', 'T').substring(0, 16) : "";
+  form.value.discount_end_date = p.discount_end_date ? p.discount_end_date.replace(' ', 'T').substring(0, 16) : "";
   form.value.stock = p.stock;
   form.value.category_id = p.category_id;
   form.value.description = p.description;
@@ -1758,6 +1779,9 @@ const handleSubmit = async () => {
 
     // [PERBAIKAN] Paksa kirim string kosong agar Laravel mengubahnya jadi NULL di database
     formData.append("discount_price", form.value.discount_price || "");
+
+    formData.append("discount_start_date", form.value.discount_start_date || "");
+    formData.append("discount_end_date", form.value.discount_end_date || "");
 
     // [BARU] Cara mengirim Array Color ke Laravel
     if (form.value.color && form.value.color.length > 0) {
