@@ -1452,31 +1452,31 @@ const convertToWIB = (dateString) => {
   return date;
 };
 
-const getDiscountStatus = (p) => {
-  if (!p || !p.discount_price) return { active: false, upcoming: false, expired: false };
+// const getDiscountStatus = (p) => {
+//   if (!p || !p.discount_price) return { active: false, upcoming: false, expired: false };
 
-  const now = new Date();
-  let active = true;
-  let upcoming = false;
-  let expired = false;
+//   const now = new Date();
+//   let active = true;
+//   let upcoming = false;
+//   let expired = false;
 
-  if (p.discount_start_date) {
-    const startDate = convertToWIB(p.discount_start_date);
-    if (now < startDate) {
-      active = false;
-      upcoming = true;
-    }
-  }
-  if (p.discount_end_date) {
-    const endDate = convertToWIB(p.discount_end_date);
-    if (now > endDate) {
-      active = false;
-      expired = true;
-    }
-  }
+//   if (p.discount_start_date) {
+//     const startDate = convertToWIB(p.discount_start_date);
+//     if (now < startDate) {
+//       active = false;
+//       upcoming = true;
+//     }
+//   }
+//   if (p.discount_end_date) {
+//     const endDate = convertToWIB(p.discount_end_date);
+//     if (now > endDate) {
+//       active = false;
+//       expired = true;
+//     }
+//   }
 
-  return { active, upcoming, expired };
-};
+//   return { active, upcoming, expired };
+// };
 
 // Fungsi krusial untuk mengambil harga valid saat ini
 const getActivePrice = (product) => {
