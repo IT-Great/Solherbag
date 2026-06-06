@@ -1591,7 +1591,7 @@ onMounted(() => {
 
             <p class="text-[15px] md:text-[16px] text-gray-800 mb-6 font-serif">
               with minimum purchase of
-              <span class="font-bold whitespace-nowrap">Rp&nbsp;1.899.000</span>
+              <span class="font-bold whitespace-nowrap">Rp&nbsp;499.000</span>
             </p>
 
             <p

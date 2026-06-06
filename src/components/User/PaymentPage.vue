@@ -5457,7 +5457,7 @@ const applyPromo = async () => {
       );
     } else if (
       codeToBeApplied !== MEMBER_VOUCHER_CODE &&
-      checkoutTotalAmount.value < 1899000
+      checkoutTotalAmount.value < 499000
     ) {
       // [BARU] Aturan ketat dari bos untuk First Order Voucher!
       throw new Error("Minimum spend for First Order promo is Rp 1.899.000");
