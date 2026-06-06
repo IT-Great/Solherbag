@@ -4944,7 +4944,7 @@ onMounted(fetchData);
       </div>
     </div>
 
-    <Teleport>
+    <Teleport to="body">
       <div
         v-if="showModal"
         class="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto bg-black/40 backdrop-blur-sm"
