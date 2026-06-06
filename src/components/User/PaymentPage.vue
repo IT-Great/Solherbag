@@ -5380,17 +5380,37 @@ const processedShippingRates = computed(() => {
 // };
 
 const applyPromo = async () => {
+  // if (!promoInput.value) return;
+  // isVerifyingPromo.value = true;
+  
+  // try {
+  //   const codeToBeApplied = promoInput.value.toUpperCase();
+
+  //   // [PERBAIKAN PRESISI] Validasi cerdas di sisi frontend sebelum menembak API backend
+  //   if (codeToBeApplied === MEMBER_VOUCHER_CODE && checkoutTotalAmount.value < MEMBER_MIN_SPEND) {
+  //     throw new Error(`Minimum spend to use VIP Voucher is Rp ${MEMBER_MIN_SPEND.toLocaleString('id-ID')}`);
+  //   } else if (checkoutTotalAmount.value < 50000) {
+  //     throw new Error("Minimum spend for general promo is Rp 50.000");
+  //   }
+
+  //   const res = await axios.post(
+  //     `${BASE_URL}/promo/verify`,
+  //     { promo_code: codeToBeApplied },
+  //     getAxiosConfig()
+  //   );
+
   if (!promoInput.value) return;
   isVerifyingPromo.value = true;
   
   try {
     const codeToBeApplied = promoInput.value.toUpperCase();
 
-    // [PERBAIKAN PRESISI] Validasi cerdas di sisi frontend sebelum menembak API backend
+    // [PERBAIKAN PRESISI] Pembedaan Limit Minimum Belanja
     if (codeToBeApplied === MEMBER_VOUCHER_CODE && checkoutTotalAmount.value < MEMBER_MIN_SPEND) {
       throw new Error(`Minimum spend to use VIP Voucher is Rp ${MEMBER_MIN_SPEND.toLocaleString('id-ID')}`);
-    } else if (checkoutTotalAmount.value < 50000) {
-      throw new Error("Minimum spend for general promo is Rp 50.000");
+    } else if (codeToBeApplied !== MEMBER_VOUCHER_CODE && checkoutTotalAmount.value < 1899000) {
+      // [BARU] Aturan ketat dari bos untuk First Order Voucher!
+      throw new Error("Minimum spend for First Order promo is Rp 1.899.000");
     }
 
     const res = await axios.post(
