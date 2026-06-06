@@ -776,11 +776,20 @@ const selectedItemIds = ref([]);
 // ==========================================
 // [BARU] HELPER WAKTU GLOBAL (Bisa dipakai di mana saja)
 // ==========================================
+// export const convertToWIB = (dateString) => {
+//   if (!dateString) return null;
+//   const date = new Date(dateString);
+//   date.setHours(date.getHours() + 7);
+//   return date;
+// };
+
+// ==========================================
+// [PERBAIKAN] HELPER WAKTU GLOBAL
+// ==========================================
 export const convertToWIB = (dateString) => {
   if (!dateString) return null;
-  const date = new Date(dateString);
-  date.setHours(date.getHours() + 7);
-  return date;
+  // Biarkan JavaScript otomatis mengonversi "Z" (UTC) ke WIB!
+  return new Date(dateString); 
 };
 
 export const getDiscountStatus = (p) => {
