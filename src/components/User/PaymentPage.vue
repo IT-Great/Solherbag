@@ -5405,6 +5405,16 @@ const applyPromo = async () => {
   try {
     const codeToBeApplied = promoInput.value.toUpperCase();
 
+    // Kirim checkoutItems agar backend bisa cek diskon
+    const res = await axios.post(
+      `${BASE_URL}/promo/verify`,
+      { 
+        promo_code: codeToBeApplied,
+        cart_items: checkoutItems.value.map(item => ({ product_id: item.product_id }))
+      },
+      getAxiosConfig()
+    );
+
     // [PERBAIKAN PRESISI] Pembedaan Limit Minimum Belanja
     if (codeToBeApplied === MEMBER_VOUCHER_CODE && checkoutTotalAmount.value < MEMBER_MIN_SPEND) {
       throw new Error(`Minimum spend to use VIP Voucher is Rp ${MEMBER_MIN_SPEND.toLocaleString('id-ID')}`);
