@@ -5748,20 +5748,45 @@ const announcements = computed(() => [
   ),
 ]);
 
+// const nextAnnouncement = () => {
+//   currentAnnouncement.value = (currentAnnouncement.value + 1) % announcements.length;
+//   resetAnnouncementTimer();
+// };
+
+// const prevAnnouncement = () => {
+//   currentAnnouncement.value =
+//     (currentAnnouncement.value - 1 + announcements.length) % announcements.length;
+//   resetAnnouncementTimer();
+// };
+
+// const startAnnouncementTimer = () => {
+//   announcementTimer = setInterval(() => {
+//     currentAnnouncement.value = (currentAnnouncement.value + 1) % announcements.length;
+//   }, 3000);
+// };
+
+// const resetAnnouncementTimer = () => {
+//   clearInterval(announcementTimer);
+//   startAnnouncementTimer();
+// };
+
 const nextAnnouncement = () => {
-  currentAnnouncement.value = (currentAnnouncement.value + 1) % announcements.length;
+  // Tambahkan .value di sini
+  currentAnnouncement.value = (currentAnnouncement.value + 1) % announcements.value.length;
   resetAnnouncementTimer();
 };
 
 const prevAnnouncement = () => {
+  // Tambahkan .value di sini
   currentAnnouncement.value =
-    (currentAnnouncement.value - 1 + announcements.length) % announcements.length;
+    (currentAnnouncement.value - 1 + announcements.value.length) % announcements.value.length;
   resetAnnouncementTimer();
 };
 
 const startAnnouncementTimer = () => {
   announcementTimer = setInterval(() => {
-    currentAnnouncement.value = (currentAnnouncement.value + 1) % announcements.length;
+    // Tambahkan .value di sini
+    currentAnnouncement.value = (currentAnnouncement.value + 1) % announcements.value.length;
   }, 3000);
 };
 
