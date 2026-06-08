@@ -45,5 +45,33 @@
   "privacy": "Kebijakan Privasi",
   "shipping": "Kebijakan Pengiriman",
   "refund": "Kebijakan Pengembalian"
-}
+},
+"home": {
+    "title": "Warisan dalam Setiap Jahitan.",
+    "desc": "Selamat datang di dunia di mana waktu seakan terhenti. SOLHÉR menciptakan lebih dari sekadar tas; kami menciptakan pendamping seumur hidup. Dibuat dari kulit sapi top-grain terbaik, koleksi kami dirancang untuk wanita yang menghargai keanggunan yang berkelas. Temukan keindahan dari keabadian.",
+    "discover": "Temukan Zahara",
+    "coming_soon": "Segera Hadir",
+    "embrace_1": "Rangkul segala kemungkinan dengan",
+    "embrace_2": "tas yang bisa dibawa ke mana saja",
+    "shop_now": "Belanja Sekarang",
+    "trending": "Sedang Tren",
+    "trending_sub": "Produk paling dicari minggu ini",
+    "view_all": "Lihat Semua",
+    "vol1": "Volume 1 - Goddess Of The Sun",
+    "vol2": "Volume 2 - The Red Chapter Collection",
+    "vol3": "Volume 3 - The Raya Heirloom",
+    "vol4": "Volume 4 - In Between Us",
+    "only_left": "Sisa {stock} lagi!",
+    "out_of_stock": "Habis Terjual",
+    "premium_materials_1": "Bahan premium dan",
+    "premium_materials_2": "sentuhan akhir pilihan",
+    "popup_enjoy": "Nikmati",
+    "popup_discount": "Diskon Rp 250.000",
+    "popup_order": "Pesanan Pertama Anda",
+    "popup_min": "dengan minimum pembelian Rp 499.000",
+    "popup_inner_circle": "Bergabunglah dengan lingkaran kami dan jadilah yang pertama mengakses koleksi terbaru, penawaran pribadi, dan kebutuhan eksklusif yang dibuat khusus untuk Anda.",
+    "popup_placeholder": "Masukkan email Anda untuk membuka penawaran…",
+    "popup_claim": "Klaim Diskon Rp 250.000 Saya",
+    "popup_no_spam": "Tidak ada spam. Hanya penawaran menarik."
+  }
 }
