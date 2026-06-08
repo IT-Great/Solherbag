@@ -92,5 +92,19 @@
     "no_products": "Produk tidak ditemukan",
     "try_adjust": "Coba sesuaikan filter Anda untuk melihat lebih banyak hasil.",
     "reset": "Reset Filter"
+  },
+  "event": {
+    "archive": "Arsip Solher",
+    "moments": "Momen ",
+    "elegance": "Keanggunan",
+    "hero_desc": "Perjalanan visual yang dikurasi dari kampanye, lookbook musiman, dan para wanita yang menghidupkan koleksi Solher. Jelajahi koleksi abadi kami yang diabadikan melalui lensa inspirasi.",
+    "all_collections": "Semua Koleksi",
+    "all_years": "Semua Tahun",
+    "editorial": "Editorial",
+    "no_desc": "Jelajahi narasi visual dari koleksi eksklusif ini.",
+    "moments_captured": "Momen Diabadikan",
+    "scroll_shuffle": "Gulir untuk Mengacak",
+    "no_events": "Tidak ada acara yang ditemukan untuk pilihan ini.",
+    "clear_filters": "Hapus Filter"
   }
 }

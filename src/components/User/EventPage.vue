@@ -1004,24 +1004,23 @@ onUnmounted(() => {
 <template>
   <div class="min-h-screen pb-32 overflow-x-hidden bg-[#FAFAFA]">
     <div
-      class="px-6 pt-32 pb-16 text-center bg-white md:pt-40 md:pb-24 border-b border-gray-100"
+      class="px-6 pt-32 pb-16 text-center bg-white border-b border-gray-100 md:pt-40 md:pb-24"
     >
       <h4
         class="font-bold tracking-[0.3em] text-[10px] md:text-xs uppercase mb-6 text-gray-400"
       >
-        The Solher Archive
+        {{ $t("event.archive") }}
       </h4>
       <h1
-        class="max-w-4xl mx-auto mb-8 font-serif text-4xl tracking-tight text-gray-900 md:text-6xl lg:text-7xl leading-tight"
+        class="max-w-4xl mx-auto mb-8 font-serif text-4xl leading-tight tracking-tight text-gray-900 md:text-6xl lg:text-7xl"
       >
-        Moments of <span class="italic text-gray-500">Elegance</span>
+        {{ $t("event.moments") }}
+        <span class="italic text-gray-500">{{ $t("event.elegance") }}</span>
       </h1>
       <p
         class="max-w-2xl mx-auto text-sm font-light leading-relaxed text-gray-600 md:text-base"
       >
-        A curated visual journey of our campaigns, seasonal lookbooks, and the women who
-        bring Solher pieces to life. Explore our timeless collections captured through the
-        lens of inspiration.
+        {{ $t("event.hero_desc") }}
       </p>
     </div>
 
@@ -1039,7 +1038,7 @@ onUnmounted(() => {
             "
             class="px-6 py-2.5 text-[10px] font-bold tracking-widest uppercase transition-all border rounded-full"
           >
-            All Collections
+            {{ $t("event.all_collections") }}
           </button>
           <button
             v-for="season in availableSeasons"
@@ -1059,9 +1058,9 @@ onUnmounted(() => {
         <div class="relative">
           <select
             v-model="activeYear"
-            class="py-2 pl-4 pr-10 text-xs font-bold tracking-widest text-black uppercase bg-transparent border-b-2 border-black outline-none cursor-pointer appearance-none focus:ring-0"
+            class="py-2 pl-4 pr-10 text-xs font-bold tracking-widest text-black uppercase bg-transparent border-b-2 border-black outline-none appearance-none cursor-pointer focus:ring-0"
           >
-            <option value="All">All Years</option>
+            <option value="All">{{ $t("event.all_years") }}</option>
             <option v-for="year in availableYears" :key="year" :value="year">
               {{ year }}
             </option>
@@ -1101,23 +1100,21 @@ onUnmounted(() => {
               <span
                 class="inline-block px-3 py-1 mb-6 text-[10px] font-bold tracking-widest text-gray-500 uppercase border border-gray-200 rounded-full"
               >
-                {{ event.season || "Editorial" }} • {{ getYear(event.event_date) }}
+                {{ event.season || $t("event.editorial") }} •
+                {{ getYear(event.event_date) }}
               </span>
               <h2 class="mb-6 font-serif text-3xl leading-tight text-black md:text-5xl">
                 {{ event.title }}
               </h2>
               <div class="w-12 h-1 mb-8 bg-black"></div>
               <p
-                class="text-sm font-light leading-relaxed text-gray-600 md:text-base text-justify md:text-left"
+                class="text-sm font-light leading-relaxed text-justify text-gray-600 md:text-base md:text-left"
               >
-                {{
-                  event.description ||
-                  "Explore the visual narrative of this exclusive collection."
-                }}
+                {{ event.description || $t("event.no_desc") }}
               </p>
 
               <p class="mt-8 text-xs font-bold tracking-widest text-gray-400 uppercase">
-                {{ event.images.length }} Moments Captured
+                {{ event.images.length }} {{ $t("event.moments_captured") }}
               </p>
             </div>
           </div>
@@ -1144,7 +1141,7 @@ onUnmounted(() => {
               <span
                 class="px-4 py-2 text-[10px] font-bold tracking-widest text-white uppercase bg-black/50 backdrop-blur-sm rounded-full"
               >
-                Scroll to Shuffle
+                {{ $t("event.scroll_shuffle") }}
               </span>
             </div>
 
@@ -1177,7 +1174,7 @@ onUnmounted(() => {
           />
         </svg>
         <p class="font-serif text-xl italic text-gray-400">
-          No events found for this selection.
+          {{ $t("event.no_events") }}
         </p>
         <button
           @click="
@@ -1186,7 +1183,7 @@ onUnmounted(() => {
           "
           class="mt-6 text-xs font-bold tracking-widest text-black underline uppercase hover:text-gray-500"
         >
-          Clear Filters
+          {{ $t("event.clear_filters") }}
         </button>
       </div>
     </div>

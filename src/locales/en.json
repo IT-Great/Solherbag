@@ -92,5 +92,19 @@
     "no_products": "No products found",
     "try_adjust": "Try adjusting your filters to see more results.",
     "reset": "Reset Filters"
+  },
+  "event": {
+    "archive": "The Solher Archive",
+    "moments": "Moments of ",
+    "elegance": "Elegance",
+    "hero_desc": "A curated visual journey of our campaigns, seasonal lookbooks, and the women who bring Solher pieces to life. Explore our timeless collections captured through the lens of inspiration.",
+    "all_collections": "All Collections",
+    "all_years": "All Years",
+    "editorial": "Editorial",
+    "no_desc": "Explore the visual narrative of this exclusive collection.",
+    "moments_captured": "Moments Captured",
+    "scroll_shuffle": "Scroll to Shuffle",
+    "no_events": "No events found for this selection.",
+    "clear_filters": "Clear Filters"
   }
 }
