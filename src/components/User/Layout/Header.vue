@@ -5094,7 +5094,7 @@ watch(() => route.path, () => {
           <p
             :key="currentAnnouncement"
             @click="$router.push('/collections')"
-            class="text-xs md:text-sm leading-snug md:leading-normal font-serif tracking-widest text-center px-10 md:px-12 cursor-pointer hover:text-gray-300 transition-colors w-full max-w-3xl"
+            class="w-full max-w-3xl px-10 font-serif text-xs leading-snug tracking-widest text-center transition-colors cursor-pointer md:text-sm md:leading-normal md:px-12 hover:text-gray-300"
           >
             {{ announcements[currentAnnouncement] }}
           </p>
@@ -5503,7 +5503,7 @@ watch(() => route.path, () => {
                       class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
                     />
                     <div
-                      v-if="product.discount_price"
+                      v-if="product.discount_price && getDiscountStatus(product).active"
                       class="absolute top-2 left-2 bg-red-600 text-white px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-widest rounded-sm"
                     >
                       Sale
@@ -5515,7 +5515,13 @@ watch(() => route.path, () => {
                     {{ product.name }}
                   </h4>
                   <p class="text-[10px] text-gray-500 mt-0.5">
-                    {{ formatPrice(product.discount_price ?? product.price) }}
+                    {{
+                      formatPrice(
+                        product.discount_price && getDiscountStatus(product).active
+                          ? product.discount_price
+                          : product.price
+                      )
+                    }}
                   </p>
                 </div>
               </div>
@@ -5785,6 +5791,37 @@ const activeMegaCategory = ref("all");
 const categories = ref([]);
 const isMegaMenuLoading = ref(false);
 const randomMegaProducts = ref([]);
+
+const getDiscountStatus = (p) => {
+  if (!p || !p.discount_price) return { active: false, upcoming: false, expired: false };
+
+  const now = new Date();
+  let active = true;
+  let upcoming = false;
+  let expired = false;
+
+  // Konversi UTC ke WIB (mengikuti logika file lainnya)
+  if (p.discount_start_date) {
+    const startDate = new Date(
+      new Date(p.discount_start_date).getTime() + 7 * 60 * 60 * 1000
+    );
+    if (now < startDate) {
+      active = false;
+      upcoming = true;
+    }
+  }
+  if (p.discount_end_date) {
+    const endDate = new Date(
+      new Date(p.discount_end_date).getTime() + 7 * 60 * 60 * 1000
+    );
+    if (now > endDate) {
+      active = false;
+      expired = true;
+    }
+  }
+
+  return { active, upcoming, expired };
+};
 
 const formatPrice = (v) =>
   new Intl.NumberFormat("id-ID", {
