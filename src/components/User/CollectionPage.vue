@@ -1116,7 +1116,7 @@ onUnmounted(() => {
 
     <div class="mx-auto mb-10 max-w-7xl">
       <h1 class="mb-8 text-3xl font-bold tracking-tight text-black uppercase">
-        Products
+        {{ $t("collection.products") }}
       </h1>
 
       <div class="flex flex-col justify-between gap-6 mb-12 md:flex-row">
@@ -1192,7 +1192,7 @@ onUnmounted(() => {
             ]"
             class="px-6 py-3 text-xs font-bold tracking-widest uppercase transition border border-red-100 rounded-full shadow-sm whitespace-nowrap"
           >
-            % Sale
+            {{ $t("collection.sale") }}
           </button>
 
           <select
@@ -1200,7 +1200,7 @@ onUnmounted(() => {
             @change="handleCategoryChange"
             class="px-6 py-3 text-xs font-bold tracking-widest text-gray-600 uppercase transition bg-white border border-gray-200 rounded-full shadow-sm outline-none cursor-pointer focus:ring-2 focus:ring-black"
           >
-            <option value="">All Categories</option>
+            <option value="">{{ $t("collection.all_categories") }}</option>
             <option v-for="cat in categories" :key="cat.id" :value="cat.category_name">
               {{ cat.category_name }}
             </option>
@@ -1464,9 +1464,12 @@ onUnmounted(() => {
             />
           </svg>
         </button>
-        <span class="text-xs font-bold tracking-widest uppercase"
+        <!-- <span class="text-xs font-bold tracking-widest uppercase"
           >Page {{ currentPage }} of {{ totalPages || 1 }}</span
-        >
+        > -->
+        <span class="text-xs font-bold tracking-widest uppercase">
+          {{ $t("collection.page", { current: currentPage, total: totalPages || 1 }) }}
+        </span>
         <button
           @click="currentPage++"
           :disabled="currentPage === totalPages || totalPages === 0"
@@ -1492,13 +1495,13 @@ onUnmounted(() => {
 
     <div v-else-if="!isLoading" class="py-24 text-center">
       <p class="font-serif text-xl italic text-gray-400">
-        No items found matching your selection.
+        {{ $t("collection.no_items") }}
       </p>
       <button
         @click="resetAllFilters"
         class="mt-4 text-sm font-bold tracking-widest text-black underline uppercase"
       >
-        Reset All Filters
+        {{ $t("collection.reset_filters") }}
       </button>
     </div>
   </div>
@@ -1702,6 +1705,7 @@ import axios from "axios";
 import { BASE_URL } from "../../config/api.js";
 // [BARU] Import Fuse.js
 import Fuse from "fuse.js";
+import { useI18n } from "vue-i18n";
 
 // [BARU] Import gambar default
 import defaultBagIcon from "../../assets/products/bag_icon.jpg";
@@ -1725,6 +1729,8 @@ const isAuthenticated = !!localStorage.getItem("token");
 const isFavorited = (id) => userWishlists.value.includes(id);
 
 const activeSlides = ref({});
+
+const { t } = useI18n();
 
 const getMediaArray = (prod) => {
   // let media = [{ type: "image", url: prod.image }];
