@@ -5136,7 +5136,7 @@ watch(() => route.path, () => {
                 class="transition cursor-pointer hover:text-gray-500"
                 :class="{ 'text-gray-500': isHomeDropdownOpen }"
               >
-                Home
+                {{ $t("header.home") }}
               </router-link>
 
               <transition name="fade-slide">
@@ -5149,13 +5149,13 @@ watch(() => route.path, () => {
                       to="/"
                       class="text-[10px] font-bold tracking-widest text-gray-700 uppercase transition hover:text-black"
                     >
-                      Main Home
+                      {{ $t("header.main_home") }}
                     </router-link>
                     <router-link
                       to="/about-us"
                       class="text-[10px] font-bold tracking-widest text-gray-700 uppercase transition hover:text-black"
                     >
-                      About Us
+                      {{ $t("header.about_us") }}
                     </router-link>
                   </div>
                 </div>
@@ -5165,7 +5165,7 @@ watch(() => route.path, () => {
             <router-link
               to="/best-sellers"
               class="font-bold text-red-600 transition cursor-pointer hover:text-gray-500"
-              >Best Sellers</router-link
+              >{{ $t("header.best_sellers") }}</router-link
             >
 
             <div
@@ -5177,20 +5177,20 @@ watch(() => route.path, () => {
                 to="/collections"
                 class="transition cursor-pointer hover:text-gray-500"
                 :class="{ 'text-gray-500': isMegaMenuOpen }"
-                >Collections</router-link
+                >{{ $t("header.collections") }}</router-link
               >
             </div>
 
             <router-link
               to="/events"
               class="transition cursor-pointer hover:text-gray-500"
-              >Events</router-link
+              >{{ $t("header.events") }}</router-link
             >
 
             <router-link
               to="/contact"
               class="transition cursor-pointer hover:text-gray-500"
-              >Contact</router-link
+              >{{ $t("header.contact") }}</router-link
             >
           </nav>
 
@@ -5392,7 +5392,7 @@ watch(() => route.path, () => {
               <h3
                 class="font-bold text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-6"
               >
-                Categories
+                {{ $t("header.categories") }}
               </h3>
               <ul class="space-y-4">
                 <li>
@@ -5406,7 +5406,7 @@ watch(() => route.path, () => {
                     "
                     class="w-full text-xs tracking-widest text-left uppercase transition-colors"
                   >
-                    All Bags
+                    {{ $t("header.all_bags") }}
                   </button>
                 </li>
                 <li v-for="cat in categories" :key="cat.id">
@@ -5440,7 +5440,7 @@ watch(() => route.path, () => {
                 <router-link
                   to="/collections"
                   class="text-[10px] font-bold uppercase tracking-widest border-b border-black pb-0.5 hover:text-gray-500 transition-colors"
-                  >View All Collection</router-link
+                  >{{ $t("header.view_all") }}</router-link
                 >
               </div>
 
@@ -5539,82 +5539,18 @@ watch(() => route.path, () => {
               </button>
             </div>
 
-            <!-- <nav class="flex flex-col space-y-6">
-              <router-link
-                to="/"
-                @click="isMobileMenuOpen = false"
-                class="pb-4 text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors border-b border-gray-100 hover:text-gray-500"
-                >Home</router-link
-              >
-              <router-link
-                to="/best-sellers"
-                @click="isMobileMenuOpen = false"
-                class="pb-4 text-sm font-black tracking-widest text-red-600 uppercase transition-colors border-b border-gray-100 hover:text-red-800"
-                >Best Sellers</router-link
-              >
-
-              <div class="pb-4 border-b border-gray-100">
-                <div class="flex items-center justify-between w-full">
-                  <router-link
-                    to="/collections"
-                    @click="isMobileMenuOpen = false"
-                    class="text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors hover:text-gray-500"
-                    >Collections</router-link
-                  >
-                </div>
-                <ul class="pl-4 mt-4 space-y-4 border-l-2 border-gray-100">
-                  <li>
-                    <button
-                      @click="
-                        goToCollection('all');
-                        isMobileMenuOpen = false;
-                      "
-                      class="w-full text-xs font-medium tracking-widest text-left text-gray-500 uppercase transition-colors hover:text-black"
-                    >
-                      All Bags
-                    </button>
-                  </li>
-                  <li v-for="cat in categories" :key="cat.id">
-                    <button
-                      @click="
-                        goToCollection(cat.category_name);
-                        isMobileMenuOpen = false;
-                      "
-                      class="w-full text-xs font-medium tracking-widest text-left text-gray-500 uppercase transition-colors hover:text-black"
-                    >
-                      {{ cat.category_name }}
-                    </button>
-                  </li>
-                </ul>
-              </div>
-
-              <router-link
-                to="/events"
-                @click="isMobileMenuOpen = false"
-                class="pb-4 text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors border-b border-gray-100 hover:text-gray-500"
-                >Events</router-link
-              >
-
-              <router-link
-                to="/contact"
-                @click="isMobileMenuOpen = false"
-                class="pb-4 text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors border-b border-gray-100 hover:text-gray-500"
-                >Contact</router-link
-              >
-            </nav> -->
-
             <nav class="flex flex-col space-y-6">
               <router-link
                 to="/"
                 @click="isMobileMenuOpen = false"
                 class="pb-4 text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors border-b border-gray-100 hover:text-gray-500"
-                >Home</router-link
+                >{{ $t("header.home") }}</router-link
               >
               <router-link
                 to="/best-sellers"
                 @click="isMobileMenuOpen = false"
                 class="pb-4 text-sm font-black tracking-widest text-red-600 uppercase transition-colors border-b border-gray-100 hover:text-red-800"
-                >Best Sellers</router-link
+                >{{ $t("header.best_sellers") }}</router-link
               >
 
               <div class="pb-4 border-b border-gray-100">
@@ -5623,7 +5559,7 @@ watch(() => route.path, () => {
                     to="/collections"
                     @click="isMobileMenuOpen = false"
                     class="text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors hover:text-gray-500"
-                    >Collections</router-link
+                    >{{ $t("header.collections") }}</router-link
                   >
                 </div>
                 <ul class="pl-4 mt-4 space-y-4 border-l-2 border-gray-100">
@@ -5656,21 +5592,21 @@ watch(() => route.path, () => {
                 to="/events"
                 @click="isMobileMenuOpen = false"
                 class="pb-4 text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors border-b border-gray-100 hover:text-gray-500"
-                >Events</router-link
+                >{{ $t("header.events") }}</router-link
               >
 
               <router-link
                 to="/contact"
                 @click="isMobileMenuOpen = false"
                 class="pb-4 text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors border-b border-gray-100 hover:text-gray-500"
-                >Contact</router-link
+                >{{ $t("header.contact") }}</router-link
               >
 
               <div
                 class="flex items-center justify-between pb-4 border-b border-gray-100"
               >
                 <span class="text-sm font-bold tracking-widest text-gray-900 uppercase">
-                  Language
+                  {{ $t("header.language") }}
                 </span>
                 <button
                   @click="toggleLanguage"
