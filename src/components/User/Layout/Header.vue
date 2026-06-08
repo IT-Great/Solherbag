@@ -5735,7 +5735,18 @@ let announcementTimer = null;
 //   "A Little Extra, On Us — Complimentary Shipping Across Indonesia (Min. Rp 1.000.000)\u00A0→",
 // ];
 
-const announcements = computed(() => t("announcements", {}, { returnObjects: true }));
+// const announcements = computed(() => t("announcements", {}, { returnObjects: true }));
+
+const announcements = computed(() => [
+  t(
+    "header.announcement_1",
+    "An Exclusive Welcome Gift: Rp 250K OFF your first order\u00A0→"
+  ),
+  t(
+    "header.announcement_2",
+    "A Little Extra, On Us — Complimentary Shipping Across Indonesia (Min. Rp 1.000.000)\u00A0→"
+  ),
+]);
 
 const nextAnnouncement = () => {
   currentAnnouncement.value = (currentAnnouncement.value + 1) % announcements.length;

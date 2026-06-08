@@ -17,7 +17,9 @@
     "sign_in": "Masuk",
     "orders": "Pesanan",
     "profile": "Profil",
-    "logged_in": "Masuk sebagai"
+    "logged_in": "Masuk sebagai",
+    "announcement_1": "Hadiah Sambutan Eksklusif: Diskon Rp 250rb untuk pesanan pertama Anda →",
+    "announcement_2": "Gratis Ongkir ke Seluruh Indonesia (Min. Belanja Rp 1.000.000) →"
   },
   "announcements": [
     "Hadiah Selamat Datang Eksklusif: Diskon Rp 250rb untuk pesanan pertama Anda →",
