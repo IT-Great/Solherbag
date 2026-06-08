@@ -5539,6 +5539,70 @@ watch(() => route.path, () => {
               </button>
             </div>
 
+            <!-- <nav class="flex flex-col space-y-6">
+              <router-link
+                to="/"
+                @click="isMobileMenuOpen = false"
+                class="pb-4 text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors border-b border-gray-100 hover:text-gray-500"
+                >Home</router-link
+              >
+              <router-link
+                to="/best-sellers"
+                @click="isMobileMenuOpen = false"
+                class="pb-4 text-sm font-black tracking-widest text-red-600 uppercase transition-colors border-b border-gray-100 hover:text-red-800"
+                >Best Sellers</router-link
+              >
+
+              <div class="pb-4 border-b border-gray-100">
+                <div class="flex items-center justify-between w-full">
+                  <router-link
+                    to="/collections"
+                    @click="isMobileMenuOpen = false"
+                    class="text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors hover:text-gray-500"
+                    >Collections</router-link
+                  >
+                </div>
+                <ul class="pl-4 mt-4 space-y-4 border-l-2 border-gray-100">
+                  <li>
+                    <button
+                      @click="
+                        goToCollection('all');
+                        isMobileMenuOpen = false;
+                      "
+                      class="w-full text-xs font-medium tracking-widest text-left text-gray-500 uppercase transition-colors hover:text-black"
+                    >
+                      All Bags
+                    </button>
+                  </li>
+                  <li v-for="cat in categories" :key="cat.id">
+                    <button
+                      @click="
+                        goToCollection(cat.category_name);
+                        isMobileMenuOpen = false;
+                      "
+                      class="w-full text-xs font-medium tracking-widest text-left text-gray-500 uppercase transition-colors hover:text-black"
+                    >
+                      {{ cat.category_name }}
+                    </button>
+                  </li>
+                </ul>
+              </div>
+
+              <router-link
+                to="/events"
+                @click="isMobileMenuOpen = false"
+                class="pb-4 text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors border-b border-gray-100 hover:text-gray-500"
+                >Events</router-link
+              >
+
+              <router-link
+                to="/contact"
+                @click="isMobileMenuOpen = false"
+                class="pb-4 text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors border-b border-gray-100 hover:text-gray-500"
+                >Contact</router-link
+              >
+            </nav> -->
+
             <nav class="flex flex-col space-y-6">
               <router-link
                 to="/"
@@ -5601,6 +5665,34 @@ watch(() => route.path, () => {
                 class="pb-4 text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors border-b border-gray-100 hover:text-gray-500"
                 >Contact</router-link
               >
+
+              <div
+                class="flex items-center justify-between pb-4 border-b border-gray-100"
+              >
+                <span class="text-sm font-bold tracking-widest text-gray-900 uppercase">
+                  Language
+                </span>
+                <button
+                  @click="toggleLanguage"
+                  class="flex items-center gap-2 px-4 py-2 text-xs font-bold tracking-widest uppercase transition-colors bg-gray-100 rounded-lg hover:bg-gray-200"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-4 h-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
+                    />
+                  </svg>
+                  {{ locale === "en" ? "English" : "Bahasa" }}
+                </button>
+              </div>
             </nav>
 
             <div class="pt-8 mt-auto">
