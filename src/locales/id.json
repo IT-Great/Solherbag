@@ -27,6 +27,7 @@
     "Gratis Ongkir ke Seluruh Indonesia (Min. Belanja Rp 1.000.000) →"
   ],
   "footer": {
+<<<<<<< HEAD
     "join_email": "Bergabung dengan email kami",
     "sub_text": "Dapatkan penawaran eksklusif dan akses awal ke produk baru.",
     "placeholder": "Alamat email",
@@ -69,4 +70,25 @@
     "success_text": "Terima kasih! Pesan Anda telah berhasil dikirim.",
     "error_title": "Kesalahan"
   }
+=======
+  "join_email": "Bergabung dengan email kami",
+  "sub_text": "Dapatkan penawaran eksklusif dan akses awal ke produk baru.",
+  "placeholder": "Alamat email",
+  "subscribe": "Berlangganan",
+  "wait": "Menunggu...",
+  "solher_desc": "Dibuat dari kulit pilihan premium, setiap koleksi SolHer mencerminkan keanggunan abadi dan keahlian yang halus.",
+  "rights": "Hak Cipta Dilindungi Undang-Undang.",
+  "about_us": "Tentang Kami",
+  "about_solher": "Tentang Solher",
+  "contact_us": "Hubungi Kami",
+  "support": "Dukungan",
+  "customer_care": "Layanan Pelanggan",
+  "faqs": "FAQ",
+  "policies": "Kebijakan",
+  "terms": "Syarat & Ketentuan",
+  "privacy": "Kebijakan Privasi",
+  "shipping": "Kebijakan Pengiriman",
+  "refund": "Kebijakan Pengembalian"
+}
+>>>>>>> parent of 2600dbd (update contact page)
 }

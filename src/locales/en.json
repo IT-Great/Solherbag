@@ -45,6 +45,7 @@
     "privacy": "Privacy Policy",
     "shipping": "Shipping Policy",
     "refund": "Refund Policy"
+<<<<<<< HEAD
   },
   "contact": {
     "title": "Contact Us",
@@ -70,3 +71,7 @@
     "error_title": "Error"
   }
 }
+=======
+  }
+}
+>>>>>>> parent of 2600dbd (update contact page)
