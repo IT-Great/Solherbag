@@ -5571,7 +5571,7 @@ watch(() => route.path, () => {
                       "
                       class="w-full text-xs font-medium tracking-widest text-left text-gray-500 uppercase transition-colors hover:text-black"
                     >
-                      All Bags
+                      {{ $t("all_bags") }}
                     </button>
                   </li>
                   <li v-for="cat in categories" :key="cat.id">
@@ -5636,7 +5636,7 @@ watch(() => route.path, () => {
                 <p
                   class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1"
                 >
-                  Logged in as
+                  {{ $t("header.logged_in") }}
                 </p>
                 <p class="text-sm font-bold text-gray-900 truncate">
                   {{ userData?.first_name }} {{ userData?.last_name }}
@@ -5646,13 +5646,13 @@ watch(() => route.path, () => {
                     to="/orderpage"
                     @click="isMobileMenuOpen = false"
                     class="text-xs font-bold text-blue-600 hover:underline"
-                    >Orders</router-link
+                    >{{ $t("header.orders") }}</router-link
                   >
                   <router-link
                     to="/profilepage"
                     @click="isMobileMenuOpen = false"
                     class="text-xs font-bold text-blue-600 hover:underline"
-                    >Profile</router-link
+                    >{{ $t("header.profile") }}</router-link
                   >
                 </div>
               </div>
