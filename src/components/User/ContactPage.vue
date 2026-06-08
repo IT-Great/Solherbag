@@ -626,8 +626,8 @@ const handleSubmit = async () => {
 
     Swal.fire({
       icon: "success",
-      title: "Sent!",
-      text: "Thank you! Your message has been sent successfully.",
+      title: t("contact.success_title"),
+      text: t("contact.success_text"),
       confirmButtonColor: "#1A1A1A",
     });
 
@@ -642,7 +642,7 @@ const handleSubmit = async () => {
       error.response?.data?.message || "Failed to send message. Please try again.";
     Swal.fire({
       icon: "error",
-      title: "Error",
+      title: t("contact.error_title"),
       text: errorMessage,
       confirmButtonColor: "#1A1A1A",
     });
