@@ -1195,6 +1195,10 @@ import { ref, onMounted, onUnmounted, computed, watch } from "vue";
 import axios from "axios";
 import { BASE_URL } from "../../config/api";
 
+import { useI18n } from "vue-i18n"; // [TAMBAHKAN INI]
+
+const { t, locale } = useI18n(); // [TAMBAHKAN INI JUGA]
+
 const events = ref([]);
 const isLoading = ref(true);
 
