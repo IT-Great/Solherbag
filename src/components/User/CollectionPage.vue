@@ -1140,7 +1140,7 @@ onUnmounted(() => {
           <input
             v-model="searchQuery"
             type="text"
-            placeholder="Search our collection..."
+            :placeholder="$t('collection.products')"
             class="w-full py-3 pl-10 pr-4 text-sm transition bg-white border-none rounded-full shadow-sm outline-none focus:ring-2 focus:ring-black"
           />
         </div>
