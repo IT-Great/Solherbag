@@ -4949,9 +4949,12 @@ onMounted(fetchProductDetail);
             </p>
           </div> -->
 
-          <div class="flex flex-wrap items-center justify-center w-full gap-4 md:justify-start">
-            <template v-if="product.discount_price && !getDiscountStatus(product).expired">
-              
+          <div
+            class="flex flex-wrap items-center justify-center w-full gap-4 md:justify-start"
+          >
+            <template
+              v-if="product.discount_price && !getDiscountStatus(product).expired"
+            >
               <template v-if="getDiscountStatus(product).active">
                 <p class="text-2xl font-bold text-red-600">
                   {{ formatPrice(product.discount_price) }}
@@ -4969,15 +4972,28 @@ onMounted(fetchProductDetail);
                   {{ formatPrice(product.price) }}
                 </p>
                 <div class="w-full mt-2">
-                  <span class="flex items-center gap-2 px-3 py-2 text-xs font-bold border rounded-lg text-amber-700 bg-amber-50 border-amber-200 w-fit">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <span
+                    class="flex items-center gap-2 px-3 py-2 text-xs font-bold border rounded-lg text-amber-700 bg-amber-50 border-amber-200 w-fit"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
                     </svg>
-                    Upcoming Sale: {{ formatPrice(product.discount_price) }} starts on {{ formatUpcomingDate(product.discount_start_date) }}
+                    Upcoming Sale: {{ formatPrice(product.discount_price) }} starts on
+                    {{ formatUpcomingDate(product.discount_start_date) }}
                   </span>
                 </div>
               </template>
-
             </template>
             <template v-else>
               <p class="text-2xl text-gray-600">
@@ -5207,7 +5223,7 @@ onMounted(fetchProductDetail);
       </div>
     </div>
 
-    <div
+    <!-- <div
       v-if="recommendedProducts.length > 0"
       class="pt-16 mt-24 border-t border-gray-200"
     >
@@ -5260,6 +5276,62 @@ onMounted(fetchProductDetail);
           </div>
         </div>
       </div>
+    </div> -->
+
+    <div
+      v-if="recommendedProducts.length > 0"
+      class="pt-16 mt-24 border-t border-gray-200"
+    >
+      <h2
+        class="mb-10 font-serif text-2xl tracking-widest text-center text-black uppercase md:text-3xl"
+      >
+        You May Also Like
+      </h2>
+
+      <div class="grid grid-cols-2 gap-6 md:grid-cols-4 md:gap-8">
+        <div
+          v-for="rec in recommendedProducts"
+          :key="rec.id"
+          @click="goToRecommendedProduct(rec)"
+          class="flex flex-col cursor-pointer group"
+        >
+          <div
+            class="relative w-full aspect-[4/5] bg-gray-100 overflow-hidden mb-4 rounded-xl"
+          >
+            <img
+              :src="rec.image || defaultBagIcon"
+              :alt="rec.name"
+              class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
+            />
+            <div
+              v-if="rec.discount_price && getDiscountStatus(rec).active"
+              class="absolute top-2 left-2 bg-red-600 text-white px-2 py-0.5 font-bold text-[8px] uppercase tracking-widest rounded-sm z-10"
+            >
+              SALE
+            </div>
+          </div>
+          <h3
+            class="mb-1 text-xs font-bold tracking-widest text-gray-900 uppercase truncate"
+          >
+            {{ rec.name }}
+          </h3>
+          <div class="flex items-center gap-2">
+            <template v-if="rec.discount_price && getDiscountStatus(rec).active">
+              <p class="text-sm font-bold text-red-600">
+                {{ formatPrice(rec.discount_price) }}
+              </p>
+              <p class="text-xs text-gray-400 line-through">
+                {{ formatPrice(rec.price) }}
+              </p>
+            </template>
+            <template v-else>
+              <p class="text-sm text-gray-900 font-medium">
+                {{ formatPrice(rec.price) }}
+              </p>
+            </template>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -5300,20 +5372,29 @@ const getDiscountStatus = (p) => {
 
   if (p.discount_start_date) {
     const startDate = new Date(p.discount_start_date);
-    if (now < startDate) { active = false; upcoming = true; }
+    if (now < startDate) {
+      active = false;
+      upcoming = true;
+    }
   }
   if (p.discount_end_date) {
     const endDate = new Date(p.discount_end_date);
-    if (now > endDate) { active = false; expired = true; }
+    if (now > endDate) {
+      active = false;
+      expired = true;
+    }
   }
 
   return { active, upcoming, expired };
 };
 
 const formatUpcomingDate = (dateStr) => {
-  if (!dateStr) return '';
-  return new Date(dateStr).toLocaleString('id-ID', {
-    day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'
+  if (!dateStr) return "";
+  return new Date(dateStr).toLocaleString("id-ID", {
+    day: "numeric",
+    month: "short",
+    hour: "2-digit",
+    minute: "2-digit",
   });
 };
 // ==========================================
@@ -5353,9 +5434,10 @@ const updateRecentlyViewedAndTrack = (prod) => {
   localStorage.setItem("recently_viewed", JSON.stringify(list));
 
   // [PERBAIKAN] Evaluasi harga secara dinamis berdasarkan waktu saat ini!
-  const activePrice = (prod.discount_price && getDiscountStatus(prod).active) 
-                      ? parseFloat(prod.discount_price) 
-                      : parseFloat(prod.price);
+  const activePrice =
+    prod.discount_price && getDiscountStatus(prod).active
+      ? parseFloat(prod.discount_price)
+      : parseFloat(prod.price);
 
   // Tembakkan GTM Event dengan harga yang sudah tervalidasi
   trackGtmEvent("view_item", {
@@ -5806,7 +5888,7 @@ const handleAction = async (type) => {
       showConfirmButton: false,
       timer: 2000,
     });
-    
+
     window.dispatchEvent(
       new CustomEvent("optimistic-add-to-cart", {
         detail: {
@@ -5814,14 +5896,16 @@ const handleAction = async (type) => {
           product: {
             ...product.value,
             // Jika diskon BELUM AKTIF, paksa discount_price menjadi null agar Keranjang menagih harga normal!
-            discount_price: getDiscountStatus(product.value).active ? product.value.discount_price : null
+            discount_price: getDiscountStatus(product.value).active
+              ? product.value.discount_price
+              : null,
           },
           cartId: null,
           quantity: selectedQuantity.value,
           color: extractColorName(product.value.name),
         },
       })
-    );    
+    );
     const productImages = document.querySelectorAll(".main-product-image");
     const productImage = productImages[activeSlide.value];
     const cartIcon = document.querySelector(".cart-icon-header");
@@ -5861,8 +5945,7 @@ const handleAction = async (type) => {
     trackGtmEvent("add_to_cart", {
       ecommerce: {
         currency: "IDR",
-        value:
-          currentActivePrice.value * selectedQuantity.value,
+        value: currentActivePrice.value * selectedQuantity.value,
         items: [
           {
             item_id: product.value.id,
@@ -5942,7 +6025,11 @@ const resetZoom = (e) => {
 
 // Ini menentukan harga mutlak yang dipakai sistem saat ini
 const currentActivePrice = computed(() => {
-  if (product.value && product.value.discount_price && getDiscountStatus(product.value).active) {
+  if (
+    product.value &&
+    product.value.discount_price &&
+    getDiscountStatus(product.value).active
+  ) {
     return parseFloat(product.value.discount_price);
   }
   return parseFloat(product.value ? product.value.price : 0);

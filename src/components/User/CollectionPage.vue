@@ -1307,8 +1307,15 @@ onUnmounted(() => {
               ></div>
             </div>
 
-            <div
+            <!-- <div
               v-if="product.discount_price"
+              class="top-2 right-2 absolute bg-red-600 px-2 py-1 rounded-sm font-bold text-[8px] text-white uppercase tracking-tighter z-20"
+            >
+              -{{ calculateDiscount(product.price, product.discount_price) }}%
+            </div> -->
+
+            <div
+              v-if="product.discount_price && getDiscountStatus(product).active"
               class="top-2 right-2 absolute bg-red-600 px-2 py-1 rounded-sm font-bold text-[8px] text-white uppercase tracking-tighter z-20"
             >
               -{{ calculateDiscount(product.price, product.discount_price) }}%
@@ -1414,7 +1421,13 @@ onUnmounted(() => {
                     <p
                       class="text-[9px] text-amber-600 font-bold bg-amber-50 px-2 py-0.5 rounded mt-1 uppercase tracking-widest text-center md:text-left"
                     >
-                      Sale {{ formatPrice(product.discount_price) }} is scheduled: {{ formatUpcomingDate(product.discount_start_date, product.discount_end_date) }}
+                      Sale {{ formatPrice(product.discount_price) }} is scheduled:
+                      {{
+                        formatUpcomingDate(
+                          product.discount_start_date,
+                          product.discount_end_date
+                        )
+                      }}
                     </p>
                   </div>
                 </template>
