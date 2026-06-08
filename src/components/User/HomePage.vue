@@ -1147,6 +1147,21 @@ onMounted(() => {
 
 <template>
   <section class="w-full overflow-x-hidden bg-white">
+    <!-- <div
+      v-reveal
+      class="relative w-full max-w-[1600px] mx-auto aspect-[2/1] overflow-hidden cursor-pointer bg-gray-100"
+      @click="navigateToSpecificProduct('ETERNA RED')"
+    >
+      <Transition name="banner-fade">
+        <img
+          :key="currentBanner"
+          :src="currentBanner"
+          alt="SolHer Product"
+          class="absolute inset-0 object-cover w-full h-full transition-transform duration-1000 hover:scale-105"
+        />
+      </Transition>
+    </div> -->
+
     <div
       v-reveal
       class="relative w-full max-w-[1600px] mx-auto aspect-[2/1] overflow-hidden cursor-pointer bg-gray-100 mt-[20px]"
@@ -1164,10 +1179,13 @@ onMounted(() => {
 
     <div v-reveal class="max-w-4xl px-6 py-16 mx-auto text-center md:py-24">
       <h2 class="mb-6 text-2xl font-bold tracking-tight text-black md:text-3xl">
-        {{ $t("home.title") }}
+        A Legacy in Every Stitch.
       </h2>
       <p class="text-sm font-light leading-relaxed text-gray-700 md:text-base">
-        {{ $t("home.desc") }}
+        Welcome to a world where time stands still. SOLHÉR creates more than just bags; we
+        craft companions for a lifetime. Made from the finest top-grain cow leather, our
+        pieces are designed for the woman who values elegance that whispers rather than
+        shouts. Discover the beauty of timelessness.
       </p>
     </div>
 
@@ -1185,7 +1203,7 @@ onMounted(() => {
         >
           <span
             class="px-6 py-3 text-xs font-bold tracking-widest text-black uppercase bg-white rounded-full shadow-lg"
-            >{{ $t("discover") }}</span
+            >Discover Zahara</span
           >
         </div>
       </div>
@@ -1200,7 +1218,7 @@ onMounted(() => {
         >
           <span
             class="px-6 py-3 text-xs font-bold tracking-widest text-black uppercase bg-white rounded-full shadow-lg"
-            >{{ $t("coming_soon") }}</span
+            >Coming Soon</span
           >
         </div>
       </div>
@@ -1211,14 +1229,14 @@ onMounted(() => {
       class="max-w-4xl px-6 py-16 mx-auto text-center border-b border-gray-100 md:py-24"
     >
       <h2 class="mb-8 text-xl font-medium leading-snug text-black md:text-2xl">
-        {{ $t("embrace_1") }} <br />{{ $t("embrace_2") }}
+        Embrace the possibilities with <br />go everywhere bags
       </h2>
 
       <router-link
         to="/collections"
         class="inline-block bg-[#1A1A1A] hover:bg-black px-10 py-4 font-semibold text-white text-xs uppercase tracking-[0.2em] transition shadow-xl"
       >
-        {{ $t("shop_now") }}
+        Shop Now
       </router-link>
     </div>
 
@@ -1231,17 +1249,17 @@ onMounted(() => {
         <div class="flex items-end justify-between mb-10">
           <div>
             <h3 class="font-serif text-3xl italic font-light text-red-700 md:text-4xl">
-              {{ $t("home.trending") }}
+              Trending Now
             </h3>
             <p class="mt-2 text-xs font-bold tracking-widest text-gray-500 uppercase">
-              {{ $t("home.trending_sub") }}
+              Our most loved pieces this week
             </p>
           </div>
           <router-link
             to="/collections"
             class="hidden text-xs font-bold tracking-widest underline uppercase transition md:block hover:text-red-600"
-            >{{ $t("view_all") }}
-          </router-link>
+            >View All</router-link
+          >
         </div>
 
         <div class="flex gap-4 pb-4 overflow-x-auto scrollbar-hide">
@@ -1295,7 +1313,7 @@ onMounted(() => {
           v-reveal
           class="mb-10 font-serif text-3xl italic font-light text-gray-800 md:text-4xl"
         >
-          {{ $t("vol1") }}
+          Volume 1 - Goddess Of The Sun
         </h3>
 
         <div v-if="isLoading" class="flex gap-4 overflow-hidden">
@@ -1323,14 +1341,12 @@ onMounted(() => {
                 class="w-full h-[350px] md:h-[450px] object-cover group-hover:scale-110 transition-transform duration-700"
                 loading="lazy"
               />
-              <i18n-t
-                keypath="home.only_left"
-                tag="div"
+              <div
                 v-if="p.stock < 5"
                 class="absolute bottom-3 left-3 bg-amber-100 text-amber-800 px-2 py-1 text-[9px] font-bold uppercase tracking-widest rounded shadow-sm"
               >
-                <template #stock> {{ $t("only_left") }} </template>
-              </i18n-t>
+                Only {{ p.stock }} left
+              </div>
             </div>
             <h4 class="text-[10px] text-gray-500 uppercase tracking-widest">
               {{ p.name }}
@@ -1349,7 +1365,7 @@ onMounted(() => {
           v-reveal
           class="mb-10 font-serif text-3xl italic font-light text-gray-800 md:text-4xl"
         >
-          {{ $t("vol2") }}
+          Volume 2 - The Red Chapter Collection
         </h3>
 
         <div v-if="isLoading" class="flex gap-4 overflow-hidden">
@@ -1395,7 +1411,7 @@ onMounted(() => {
           v-reveal
           class="mb-10 font-serif text-3xl italic font-light text-gray-800 md:text-4xl"
         >
-          {{ $t("vol3") }}
+          Volume 3 - The Raya Heirloom
         </h3>
 
         <div v-if="isLoading" class="flex gap-4 overflow-hidden">
@@ -1423,14 +1439,12 @@ onMounted(() => {
                 class="w-full h-[350px] md:h-[450px] object-cover group-hover:scale-110 transition-transform duration-700"
                 loading="lazy"
               />
-              <i18n-t
-                keypath="home.only_left"
-                tag="div"
+              <div
                 v-if="p.stock < 5"
                 class="absolute bottom-3 left-3 bg-amber-100 text-amber-800 px-2 py-1 text-[9px] font-bold uppercase tracking-widest rounded shadow-sm"
               >
-                <template #stock> {{ $t("only_left") }} </template>
-              </i18n-t>
+                Only {{ p.stock }} left
+              </div>
             </div>
             <h4 class="text-[10px] text-gray-500 uppercase tracking-widest">
               {{ p.name }}
@@ -1451,7 +1465,7 @@ onMounted(() => {
           v-reveal
           class="mb-10 font-serif text-3xl italic font-light text-gray-800 md:text-4xl"
         >
-          {{ $t("vol4") }}
+          Volume 4 - In Between Us
         </h3>
 
         <div v-if="isLoading" class="flex gap-4 overflow-hidden">
@@ -1479,14 +1493,12 @@ onMounted(() => {
                 class="w-full h-[350px] md:h-[450px] object-cover group-hover:scale-110 transition-transform duration-700"
                 loading="lazy"
               />
-              <i18n-t
-                keypath="home.only_left"
-                tag="div"
+              <div
                 v-if="p.stock < 5"
                 class="absolute bottom-3 left-3 bg-amber-100 text-amber-800 px-2 py-1 text-[9px] font-bold uppercase tracking-widest rounded shadow-sm"
               >
-                <template #stock> {{ $t("only_left") }} </template>
-              </i18n-t>
+                Only {{ p.stock }} left
+              </div>
             </div>
             <h4 class="text-[10px] text-gray-500 uppercase tracking-widest">
               {{ p.name }}
@@ -1515,7 +1527,7 @@ onMounted(() => {
         <h2
           class="max-w-md font-serif text-2xl font-light text-white transition-transform duration-500 translate-y-4 md:text-5xl group-hover:translate-y-0"
         >
-          {{ $t("premium_materials_1") }} <br />{{ $t("premium_materials_2") }}
+          Premium materials and <br />hand-selected finishing touches
         </h2>
       </div>
     </div>
@@ -1528,7 +1540,7 @@ onMounted(() => {
       leave-from-class="scale-100 opacity-100"
       leave-to-class="scale-95 opacity-0"
     >
-      <!-- <div
+      <div
         v-if="showPromoPopup"
         class="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm px-4"
         @click.self="closePopup"
@@ -1610,56 +1622,6 @@ onMounted(() => {
             </div>
           </div>
         </div>
-      </div> -->
-      <div
-        class="flex flex-col items-center justify-center w-full px-6 py-8 overflow-y-auto text-center md:px-8 md:py-10 md:w-1/2 custom-scrollbar"
-      >
-        <img
-          src="../../assets/solherbrandbook.png"
-          alt="Solher Logo"
-          class="object-contain h-8 mb-8 md:h-10 opacity-90"
-        />
-
-        <h2
-          class="text-[28px] md:text-[34px] font-serif text-[#111] mb-4 tracking-tight leading-tight"
-        >
-          <span class="font-bold">✨ {{ $t("home.popup_enjoy") }}</span> <br />
-          <span class="font-extrabold whitespace-nowrap">{{
-            $t("home.popup_discount")
-          }}</span
-          ><br />
-          <span class="font-bold">{{ $t("home.popup_order") }}</span>
-        </h2>
-
-        <p class="text-[15px] md:text-[16px] text-gray-800 mb-6 font-serif">
-          {{ $t("home.popup_min") }}
-        </p>
-
-        <p
-          class="text-[12px] md:text-[13px] font-sans text-[#444] leading-relaxed mb-6 max-w-[280px]"
-        >
-          {{ $t("home.popup_inner_circle") }}
-        </p>
-
-        <div class="w-full max-w-[320px]">
-          <input
-            type="email"
-            v-model="promoEmail"
-            :placeholder="$t('home.popup_placeholder')"
-            class="w-full border border-black bg-white px-4 py-[14px] mb-3 text-[13px] font-sans focus:outline-none focus:ring-1 focus:ring-black placeholder-gray-400"
-          />
-
-          <button
-            @click="claimPromo"
-            class="w-full bg-black text-white font-bold uppercase tracking-widest text-[13px] md:text-[14px] py-4 hover:bg-gray-800 transition-colors shadow-md"
-          >
-            {{ $t("home.popup_claim") }}
-          </button>
-
-          <p class="text-[11px] font-sans text-gray-500 mt-3 opacity-70">
-            {{ $t("home.popup_no_spam") }}
-          </p>
-        </div>
       </div>
     </Transition>
   </section>
@@ -1675,10 +1637,6 @@ import Swal from "sweetalert2";
 
 import banner1 from "../../assets/first_banner.png";
 import banner2 from "../../assets/second_banner.png";
-
-import { useI18n } from "vue-i18n";
-
-const { t, locale } = useI18n();
 
 // [BARU] Logika Auto-Slide Banner
 const banners = [banner1, banner2];

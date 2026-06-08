@@ -45,33 +45,5 @@
     "privacy": "Privacy Policy",
     "shipping": "Shipping Policy",
     "refund": "Refund Policy"
-  },
-  "home": {
-    "title": "A Legacy in Every Stitch.",
-    "desc": "Welcome to a world where time stands still. SOLHÉR creates more than just bags; we craft companions for a lifetime. Made from the finest top-grain cow leather, our pieces are designed for the woman who values elegance that whispers rather than shouts. Discover the beauty of timelessness.",
-    "discover": "Discover Zahara",
-    "coming_soon": "Coming Soon",
-    "embrace_1": "Embrace the possibilities with",
-    "embrace_2": "go everywhere bags",
-    "shop_now": "Shop Now",
-    "trending": "Trending Now",
-    "trending_sub": "Our most loved pieces this week",
-    "view_all": "View All",
-    "vol1": "Volume 1 - Goddess Of The Sun",
-    "vol2": "Volume 2 - The Red Chapter Collection",
-    "vol3": "Volume 3 - The Raya Heirloom",
-    "vol4": "Volume 4 - In Between Us",
-    "only_left": "Only {stock} left!",
-    "out_of_stock": "Out of Stock",
-    "premium_materials_1": "Premium materials and",
-    "premium_materials_2": "hand-selected finishing touches",
-    "popup_enjoy": "Enjoy",
-    "popup_discount": "Rp 250.000 OFF",
-    "popup_order": "Your First Order",
-    "popup_min": "with minimum purchase of Rp 499.000",
-    "popup_inner_circle": "Join our inner circle and be the first to access curated drops, private offers, and elevated essentials made just for you.",
-    "popup_placeholder": "Enter your email to unlock your offer…",
-    "popup_claim": "Claim My Rp 250.000 OFF",
-    "popup_no_spam": "No spam. Only the good stuff."
   }
 }
