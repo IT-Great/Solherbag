@@ -259,11 +259,10 @@ onMounted(() => {
       <h1
         class="mb-4 font-serif text-4xl tracking-tighter text-gray-900 uppercase md:text-5xl"
       >
-        Best Sellers
+        {{ $t("best_seller.title") }}
       </h1>
       <p class="max-w-2xl mx-auto text-sm text-gray-500 md:text-base">
-        Discover our most loved pieces. Handcrafted perfection that defines the SolHer
-        experience.
+        {{ $t("best_seller.desc") }}
       </p>
     </div>
 
@@ -275,7 +274,7 @@ onMounted(() => {
           v-model="selectedCategory"
           class="block w-full p-3 text-xs font-bold tracking-widest text-gray-700 uppercase bg-white border border-gray-200 outline-none cursor-pointer rounded-xl focus:ring-black focus:border-black md:w-48"
         >
-          <option value="all">All Categories</option>
+          <option value="all">{{ $t("best_seller.all_categories") }}</option>
           <option v-for="cat in uniqueCategories" :key="cat" :value="cat">
             {{ cat }}
           </option>
@@ -285,15 +284,18 @@ onMounted(() => {
           v-model="sortOption"
           class="block w-full p-3 text-xs font-bold tracking-widest text-gray-700 uppercase bg-white border border-gray-200 outline-none cursor-pointer rounded-xl focus:ring-black focus:border-black md:w-48"
         >
-          <option value="sales_desc">Top Sales</option>
-          <option value="price_asc">Price: Low to High</option>
-          <option value="price_desc">Price: High to Low</option>
-          <option value="stock_desc">Highest Stock</option>
+          <option value="sales_desc">{{ $t("best_seller.sort_sales") }}</option>
+          <option value="price_asc">{{ $t("best_seller.sort_price_low") }}</option>
+          <option value="price_desc">{{ $t("best_seller.sort_price_high") }}</option>
+          <option value="stock_desc">{{ $t("best_seller.sort_stock") }}</option>
         </select>
       </div>
 
-      <div class="text-xs font-bold tracking-widest text-gray-400 uppercase">
+      <!-- <div class="text-xs font-bold tracking-widest text-gray-400 uppercase">
         Showing {{ processedProducts.length }} Products
+      </div> -->
+      <div class="text-xs font-bold tracking-widest text-gray-400 uppercase">
+        {{ $t("best_seller.showing", { count: processedProducts.length }) }}
       </div>
     </div>
 
@@ -347,13 +349,22 @@ onMounted(() => {
           >
             Only {{ product.stock }} left
           </div>
-          <div
+          <!-- <div
             v-if="product.stock === 0"
             class="absolute inset-0 bg-white/60 backdrop-blur-[2px] flex items-center justify-center"
           >
             <span
               class="bg-black text-white px-4 py-2 text-[10px] font-bold uppercase tracking-widest rounded-full"
               >Out of Stock</span
+            >
+          </div> -->
+          <div
+            v-if="product.stock === 0"
+            class="absolute inset-0 bg-white/60 backdrop-blur-[2px] flex items-center justify-center"
+          >
+            <span
+              class="bg-black text-white px-4 py-2 text-[10px] font-bold uppercase tracking-widest rounded-full"
+              >{{ $t("best_seller.only_left", { stock: product.stock }) }}</span
             >
           </div>
         </div>
@@ -392,7 +403,7 @@ onMounted(() => {
         @click="resetFilters"
         class="mt-6 text-xs font-bold tracking-widest text-black underline uppercase hover:text-gray-600"
       >
-        Reset Filters
+        {{ $t("best_seller.reset") }}
       </button>
     </div>
   </div>
@@ -403,10 +414,12 @@ import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
 import { BASE_URL } from "../../config/api";
+import { useI18n } from "vue-i18n";
 
 const router = useRouter();
 const isLoading = ref(true);
 const products = ref([]);
+const { t } = useI18n();
 
 // Filter States
 const selectedCategory = ref("all");

@@ -77,5 +77,20 @@
     "page": "Halaman {current} dari {total}",
     "no_items": "Tidak ada item yang sesuai dengan pilihan Anda.",
     "reset_filters": "Reset Semua Filter"
+  },
+  "best_seller": {
+    "title": "Produk Terlaris",
+    "desc": "Temukan produk kami yang paling disukai. Kesempurnaan kerajinan tangan yang mendefinisikan pengalaman SolHer.",
+    "all_categories": "Semua Kategori",
+    "sort_sales": "Penjualan Teratas",
+    "sort_price_low": "Harga: Rendah ke Tinggi",
+    "sort_price_high": "Harga: Tinggi ke Rendah",
+    "sort_stock": "Stok Terbanyak",
+    "showing": "Menampilkan {count} Produk",
+    "only_left": "Sisa {stock} lagi",
+    "out_of_stock": "Habis Terjual",
+    "no_products": "Produk tidak ditemukan",
+    "try_adjust": "Coba sesuaikan filter Anda untuk melihat lebih banyak hasil.",
+    "reset": "Reset Filter"
   }
 }
