@@ -25,5 +25,25 @@
   "announcements": [
     "An Exclusive Welcome Gift: Rp 250K OFF your first order →",
     "A Little Extra, On Us — Complimentary Shipping Across Indonesia (Min. Rp 1.000.000) →"
-  ]
+  ],
+  "footer": {
+    "join_email": "Join our email list",
+    "sub_text": "Get exclusive deals and early access to new products.",
+    "placeholder": "Email address",
+    "subscribe": "Subscribe",
+    "wait": "Wait...",
+    "solher_desc": "Crafted from premium selected leather, each SolHer piece reflects timeless elegance and refined craftsmanship.",
+    "rights": "All Rights Reserved.",
+    "about_us": "About Us",
+    "about_solher": "About Solher",
+    "contact_us": "Contact Us",
+    "support": "Support",
+    "customer_care": "Customer Care",
+    "faqs": "FAQs",
+    "policies": "Policies",
+    "terms": "Terms & Conditions",
+    "privacy": "Privacy Policy",
+    "shipping": "Shipping Policy",
+    "refund": "Refund Policy"
+  }
 }

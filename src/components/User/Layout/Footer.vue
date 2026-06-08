@@ -4,18 +4,18 @@
   >
     <div class="mx-auto max-w-7xl">
       <div
-        class="flex md:flex-row flex-col justify-between items-start gap-10 mb-6 pb-12 border-gray-400 border-b"
+        class="flex flex-col items-start justify-between gap-10 pb-12 mb-6 border-b border-gray-400 md:flex-row"
       >
         <div class="max-w-sm">
-          <h3 class="mb-4 font-normal text-black text-2xl">
+          <h3 class="mb-4 text-2xl font-normal text-black">
             Join our email list
           </h3>
-          <p class="text-gray-600 text-sm">
+          <p class="text-sm text-gray-600">
             Get exclusive deals and early access to new products.
           </p>
         </div>
 
-        <div class="flex sm:flex-row flex-col gap-3 w-full md:w-auto">
+        <div class="flex flex-col w-full gap-3 sm:flex-row md:w-auto">
           <input
             type="email"
             placeholder="Email address"
@@ -31,7 +31,7 @@
 
       <div class="text-center">
         <nav
-          class="flex justify-center space-x-6 mb-4 font-bold text-xs uppercase tracking-wider"
+          class="flex justify-center mb-4 space-x-6 text-xs font-bold tracking-wider uppercase"
         >
           <router-link to="/about-us" class="hover:underline"
             >About Us</router-link
@@ -68,20 +68,20 @@
   >
     <div class="mx-auto max-w-7xl">
       <div
-        class="flex md:flex-row flex-col justify-between items-start gap-10 mb-6 pb-12 border-gray-400 border-b"
+        class="flex flex-col items-start justify-between gap-10 pb-12 mb-6 border-b border-gray-400 md:flex-row"
       >
         <div class="max-w-sm">
-          <h3 class="mb-4 font-normal text-black text-2xl">
+          <h3 class="mb-4 text-2xl font-normal text-black">
             Join our email list
           </h3>
-          <p class="text-gray-600 text-sm">
+          <p class="text-sm text-gray-600">
             Get exclusive deals and early access to new products.
           </p>
         </div>
 
         <form
           @submit.prevent="handleFooterSignUp"
-          class="flex sm:flex-row flex-col gap-3 w-full md:w-auto"
+          class="flex flex-col w-full gap-3 sm:flex-row md:w-auto"
         >
           <input
             v-model="footerEmail"
@@ -100,7 +100,7 @@
       </div>
       <div class="text-center">
         <nav
-          class="flex justify-center space-x-6 mb-4 font-bold text-xs uppercase tracking-wider"
+          class="flex justify-center mb-4 space-x-6 text-xs font-bold tracking-wider uppercase"
         >
           <router-link to="/about-us" class="hover:underline"
             >About Us</router-link
@@ -149,20 +149,20 @@ const handleFooterSignUp = () => {
   >
     <div class="mx-auto max-w-7xl">
       <div
-        class="flex md:flex-row flex-col justify-between items-start gap-10 mb-6 pb-12 border-gray-400 border-b"
+        class="flex flex-col items-start justify-between gap-10 pb-12 mb-6 border-b border-gray-400 md:flex-row"
       >
         <div class="max-w-sm">
-          <h3 class="mb-4 font-normal text-black text-2xl">
+          <h3 class="mb-4 text-2xl font-normal text-black">
             Join our email list
           </h3>
-          <p class="text-gray-600 text-sm">
+          <p class="text-sm text-gray-600">
             Get exclusive deals and early access to new products.
           </p>
         </div>
 
         <form
           @submit.prevent="handleSubscribe"
-          class="flex sm:flex-row flex-col gap-3 w-full md:w-auto"
+          class="flex flex-col w-full gap-3 sm:flex-row md:w-auto"
         >
           <input
             v-model="footerEmail"
@@ -179,7 +179,7 @@ const handleFooterSignUp = () => {
           >
             <span v-if="!isLoading">Subscribe</span>
             <span v-else class="flex items-center gap-2">
-              <div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+              <div class="w-4 h-4 border-2 rounded-full border-white/30 border-t-white animate-spin"></div>
               Wait...
             </span>
           </button>
@@ -187,7 +187,7 @@ const handleFooterSignUp = () => {
       </div>
       <div class="text-center">
         <nav
-          class="flex justify-center space-x-6 mb-4 font-bold text-xs uppercase tracking-wider"
+          class="flex justify-center mb-4 space-x-6 text-xs font-bold tracking-wider uppercase"
         >
           <router-link to="/about-us" class="hover:underline"
             >About Us</router-link
@@ -260,20 +260,20 @@ const handleSubscribe = async () => {
   >
     <div class="mx-auto max-w-7xl">
       <div
-        class="flex md:flex-row flex-col justify-between items-start gap-10 mb-12 pb-12 border-gray-400 border-b"
+        class="flex flex-col items-start justify-between gap-10 pb-12 mb-12 border-b border-gray-400 md:flex-row"
       >
         <div class="max-w-sm">
-          <h3 class="mb-4 font-normal text-black text-2xl">
+          <h3 class="mb-4 text-2xl font-normal text-black">
             Join our email list
           </h3>
-          <p class="text-gray-600 text-sm">
+          <p class="text-sm text-gray-600">
             Get exclusive deals and early access to new products.
           </p>
         </div>
 
         <form
           @submit.prevent="handleSubscribe"
-          class="flex sm:flex-row flex-col gap-3 w-full md:w-auto"
+          class="flex flex-col w-full gap-3 sm:flex-row md:w-auto"
         >
           <input
             v-model="footerEmail"
@@ -290,18 +290,18 @@ const handleSubscribe = async () => {
           >
             <span v-if="!isLoading">Subscribe</span>
             <span v-else class="flex items-center gap-2">
-              <div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+              <div class="w-4 h-4 border-2 rounded-full border-white/30 border-t-white animate-spin"></div>
               Wait...
             </span>
           </button>
         </form>
       </div>
 
-      <div class="flex flex-col md:flex-row justify-between items-start gap-10">
+      <div class="flex flex-col items-start justify-between gap-10 md:flex-row">
         
         <div class="w-full md:w-1/4">
-          <h4 class="font-bold text-black text-lg uppercase tracking-widest mb-4">Solher</h4>
-          <p class="text-xs text-gray-600 mb-8 leading-relaxed pr-4">
+          <h4 class="mb-4 text-lg font-bold tracking-widest text-black uppercase">Solher</h4>
+          <p class="pr-4 mb-8 text-xs leading-relaxed text-gray-600">
             Crafted from premium selected leather, each SolHer piece reflects timeless elegance and refined craftsmanship.
           </p>
           <div class="text-[10px] text-gray-500 uppercase tracking-widest">
@@ -309,26 +309,26 @@ const handleSubscribe = async () => {
           </div>
         </div>
 
-        <div class="w-full md:w-3/4 grid grid-cols-2 md:grid-cols-3 gap-8 text-sm">
+        <div class="grid w-full grid-cols-2 gap-8 text-sm md:w-3/4 md:grid-cols-3">
           
           <div class="flex flex-col space-y-4">
             <h4 class="font-bold text-black text-[11px] uppercase tracking-widest mb-2">About Us</h4>
-            <router-link to="/about-us" class="text-gray-600 hover:text-black transition-colors text-xs font-medium">About Solher</router-link>
-            <router-link to="/contact" class="text-gray-600 hover:text-black transition-colors text-xs font-medium">Contact Us</router-link>
+            <router-link to="/about-us" class="text-xs font-medium text-gray-600 transition-colors hover:text-black">About Solher</router-link>
+            <router-link to="/contact" class="text-xs font-medium text-gray-600 transition-colors hover:text-black">Contact Us</router-link>
           </div>
 
           <div class="flex flex-col space-y-4">
             <h4 class="font-bold text-black text-[11px] uppercase tracking-widest mb-2">Support</h4>
-            <router-link to="/customer-care" class="text-gray-600 hover:text-black transition-colors text-xs font-medium">Customer Care</router-link>
-            <router-link to="/faq" class="text-gray-600 hover:text-black transition-colors text-xs font-medium">FAQs</router-link>
+            <router-link to="/customer-care" class="text-xs font-medium text-gray-600 transition-colors hover:text-black">Customer Care</router-link>
+            <router-link to="/faq" class="text-xs font-medium text-gray-600 transition-colors hover:text-black">FAQs</router-link>
           </div>
 
           <div class="flex flex-col space-y-4">
             <h4 class="font-bold text-black text-[11px] uppercase tracking-widest mb-2">Policies</h4>
-            <router-link to="/terms" class="text-gray-600 hover:text-black transition-colors text-xs font-medium">Terms & Conditions</router-link>
-            <router-link to="/privacy" class="text-gray-600 hover:text-black transition-colors text-xs font-medium">Privacy Policy</router-link>
-            <router-link to="/shipping-policy" class="text-gray-600 hover:text-black transition-colors text-xs font-medium">Shipping Policy</router-link>
-            <router-link to="/refund-policy" class="text-gray-600 hover:text-black transition-colors text-xs font-medium">Refund Policy</router-link>
+            <router-link to="/terms" class="text-xs font-medium text-gray-600 transition-colors hover:text-black">Terms & Conditions</router-link>
+            <router-link to="/privacy" class="text-xs font-medium text-gray-600 transition-colors hover:text-black">Privacy Policy</router-link>
+            <router-link to="/shipping-policy" class="text-xs font-medium text-gray-600 transition-colors hover:text-black">Shipping Policy</router-link>
+            <router-link to="/refund-policy" class="text-xs font-medium text-gray-600 transition-colors hover:text-black">Refund Policy</router-link>
           </div>
           
         </div>
@@ -351,20 +351,18 @@ const handleSubscribe = async () => {
   >
     <div class="mx-auto max-w-7xl">
       <div
-        class="flex md:flex-row flex-col justify-between items-start gap-10 mb-12 pb-12 border-gray-400 border-b"
+        class="flex flex-col items-start justify-between gap-10 pb-12 mb-12 border-b border-gray-400 md:flex-row"
       >
         <div class="max-w-sm">
-          <h3 class="mb-4 font-normal text-black text-2xl">
-            Join our email list
-          </h3>
-          <p class="text-gray-600 text-sm">
+          <h3 class="mb-4 text-2xl font-normal text-black">Join our email list</h3>
+          <p class="text-sm text-gray-600">
             Get exclusive deals and early access to new products.
           </p>
         </div>
 
         <form
           @submit.prevent="handleSubscribe"
-          class="flex sm:flex-row flex-col gap-3 w-full md:w-auto"
+          class="flex flex-col w-full gap-3 sm:flex-row md:w-auto"
         >
           <input
             v-model="footerEmail"
@@ -381,47 +379,87 @@ const handleSubscribe = async () => {
           >
             <span v-if="!isLoading">Subscribe</span>
             <span v-else class="flex items-center gap-2">
-              <div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+              <div
+                class="w-4 h-4 border-2 rounded-full border-white/30 border-t-white animate-spin"
+              ></div>
               Wait...
             </span>
           </button>
         </form>
       </div>
 
-      <div class="flex flex-col md:flex-row justify-between items-start gap-10">
-        
+      <div class="flex flex-col items-start justify-between gap-10 md:flex-row">
         <div class="w-full md:w-1/4">
-          <h4 class="font-bold text-black text-lg uppercase tracking-widest mb-4">Solher</h4>
-          <p class="text-xs text-gray-600 mb-8 leading-relaxed pr-4">
-            Crafted from premium selected leather, each SolHer piece reflects timeless elegance and refined craftsmanship.
+          <h4 class="mb-4 text-lg font-bold tracking-widest text-black uppercase">
+            Solher
+          </h4>
+          <p class="pr-4 mb-8 text-xs leading-relaxed text-gray-600">
+            Crafted from premium selected leather, each SolHer piece reflects timeless
+            elegance and refined craftsmanship.
           </p>
           <div class="text-[10px] text-gray-500 uppercase tracking-widest">
-            <span>© 2026 Solher.<br/>All Rights Reserved.</span>
+            <span>© 2026 Solher.<br />All Rights Reserved.</span>
           </div>
         </div>
 
-        <div class="w-full md:w-3/4 grid grid-cols-2 md:grid-cols-3 gap-8 text-sm">
-          
+        <div class="grid w-full grid-cols-2 gap-8 text-sm md:w-3/4 md:grid-cols-3">
           <div class="flex flex-col space-y-4">
-            <h4 class="font-bold text-black text-[11px] uppercase tracking-widest mb-2">About Us</h4>
-            <router-link to="/about-us" class="text-gray-600 hover:text-black transition-colors text-xs font-medium">About Solher</router-link>
-            <router-link to="/contact" class="text-gray-600 hover:text-black transition-colors text-xs font-medium">Contact Us</router-link>
+            <h4 class="font-bold text-black text-[11px] uppercase tracking-widest mb-2">
+              About Us
+            </h4>
+            <router-link
+              to="/about-us"
+              class="text-xs font-medium text-gray-600 transition-colors hover:text-black"
+              >About Solher</router-link
+            >
+            <router-link
+              to="/contact"
+              class="text-xs font-medium text-gray-600 transition-colors hover:text-black"
+              >Contact Us</router-link
+            >
           </div>
 
           <div class="flex flex-col space-y-4">
-            <h4 class="font-bold text-black text-[11px] uppercase tracking-widest mb-2">Support</h4>
-            <router-link to="/customer-care" class="text-gray-600 hover:text-black transition-colors text-xs font-medium">Customer Care</router-link>
-            <router-link to="/faq" class="text-gray-600 hover:text-black transition-colors text-xs font-medium">FAQs</router-link>
+            <h4 class="font-bold text-black text-[11px] uppercase tracking-widest mb-2">
+              Support
+            </h4>
+            <router-link
+              to="/customer-care"
+              class="text-xs font-medium text-gray-600 transition-colors hover:text-black"
+              >Customer Care</router-link
+            >
+            <router-link
+              to="/faq"
+              class="text-xs font-medium text-gray-600 transition-colors hover:text-black"
+              >FAQs</router-link
+            >
           </div>
 
           <div class="flex flex-col space-y-4">
-            <h4 class="font-bold text-black text-[11px] uppercase tracking-widest mb-2">Policies</h4>
-            <router-link to="/terms" class="text-gray-600 hover:text-black transition-colors text-xs font-medium">Terms & Conditions</router-link>
-            <router-link to="/privacy" class="text-gray-600 hover:text-black transition-colors text-xs font-medium">Privacy Policy</router-link>
-            <router-link to="/shipping-policy" class="text-gray-600 hover:text-black transition-colors text-xs font-medium">Shipping Policy</router-link>
-            <router-link to="/refund-policy" class="text-gray-600 hover:text-black transition-colors text-xs font-medium">Refund Policy</router-link>
+            <h4 class="font-bold text-black text-[11px] uppercase tracking-widest mb-2">
+              Policies
+            </h4>
+            <router-link
+              to="/terms"
+              class="text-xs font-medium text-gray-600 transition-colors hover:text-black"
+              >Terms & Conditions</router-link
+            >
+            <router-link
+              to="/privacy"
+              class="text-xs font-medium text-gray-600 transition-colors hover:text-black"
+              >Privacy Policy</router-link
+            >
+            <router-link
+              to="/shipping-policy"
+              class="text-xs font-medium text-gray-600 transition-colors hover:text-black"
+              >Shipping Policy</router-link
+            >
+            <router-link
+              to="/refund-policy"
+              class="text-xs font-medium text-gray-600 transition-colors hover:text-black"
+              >Refund Policy</router-link
+            >
           </div>
-          
         </div>
       </div>
     </div>
@@ -435,3 +473,49 @@ const handleSubscribe = async () => {
     </a>
   </footer>
 </template>
+
+<script setup>
+import { ref } from "vue";
+import { useI18n } from "vue-i18n";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { BASE_URL } from "../../../config/api"; // Sesuaikan path ini jika perlu
+
+const footerEmail = ref("");
+const { t } = useI18n();
+const isLoading = ref(false);
+
+const handleSubscribe = async () => {
+  isLoading.value = true;
+  try {
+    const res = await axios.post(`${BASE_URL}/subscribe`, {
+      email: footerEmail.value,
+    });
+
+    Swal.fire({
+      icon: "success",
+      title: "Subscribed!",
+      text:
+        res.data.message ||
+        "Thank you for subscribing to our newsletter. Check your inbox!",
+      confirmButtonColor: "#000",
+    });
+
+    footerEmail.value = ""; // Kosongkan input setelah sukses
+  } catch (error) {
+    const errorMsg =
+      error.response?.data?.errors?.email?.[0] ||
+      error.response?.data?.message ||
+      "Failed to subscribe. Please try again.";
+
+    Swal.fire({
+      icon: "error",
+      title: "Invalid Email",
+      text: errorMsg,
+      confirmButtonColor: "#000",
+    });
+  } finally {
+    isLoading.value = false;
+  }
+};
+</script>

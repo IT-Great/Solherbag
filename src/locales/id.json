@@ -13,7 +13,7 @@
     "highlights": "Sorotan Kategori",
     "view_all": "Lihat Semua Koleksi",
     "no_products": "Tidak ada produk di kategori ini.",
-    "language" : "Bahasa",
+    "language": "Bahasa",
     "account": "Akun",
     "sign_in": "Masuk",
     "orders": "Pesanan",
@@ -25,5 +25,25 @@
   "announcements": [
     "Hadiah Selamat Datang Eksklusif: Diskon Rp 250rb untuk pesanan pertama Anda →",
     "Gratis Ongkir ke Seluruh Indonesia (Min. Belanja Rp 1.000.000) →"
-  ]
+  ],
+  "footer": {
+  "join_email": "Bergabung dengan email kami",
+  "sub_text": "Dapatkan penawaran eksklusif dan akses awal ke produk baru.",
+  "placeholder": "Alamat email",
+  "subscribe": "Berlangganan",
+  "wait": "Menunggu...",
+  "solher_desc": "Dibuat dari kulit pilihan premium, setiap koleksi SolHer mencerminkan keanggunan abadi dan keahlian yang halus.",
+  "rights": "Hak Cipta Dilindungi Undang-Undang.",
+  "about_us": "Tentang Kami",
+  "about_solher": "Tentang Solher",
+  "contact_us": "Hubungi Kami",
+  "support": "Dukungan",
+  "customer_care": "Layanan Pelanggan",
+  "faqs": "FAQ",
+  "policies": "Kebijakan",
+  "terms": "Syarat & Ketentuan",
+  "privacy": "Kebijakan Privasi",
+  "shipping": "Kebijakan Pengiriman",
+  "refund": "Kebijakan Pengembalian"
+}
 }
