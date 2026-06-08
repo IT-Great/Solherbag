@@ -4780,7 +4780,7 @@ onMounted(fetchProductDetail);
           </div>
 
           <div
-            v-if="product.discount_price"
+            v-if="product.discount_price && getDiscountStatus(rec).active"
             class="absolute top-4 left-4 bg-red-600 text-white px-3 py-1 font-bold text-[10px] uppercase tracking-widest shadow-md z-10"
           >
             SALE
@@ -5325,7 +5325,7 @@ onMounted(fetchProductDetail);
               </p>
             </template>
             <template v-else>
-              <p class="text-sm text-gray-900 font-medium">
+              <p class="text-sm font-medium text-gray-900">
                 {{ formatPrice(rec.price) }}
               </p>
             </template>
