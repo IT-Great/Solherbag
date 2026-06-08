@@ -5230,6 +5230,13 @@ watch(() => route.path, () => {
           class="flex items-center justify-end flex-1 space-x-4 text-gray-700 md:space-x-5"
         >
           <button
+            @click="toggleLanguage"
+            class="text-[10px] font-bold tracking-widest uppercase transition hover:text-black"
+          >
+            {{ locale === "en" ? "ID" : "EN" }}
+          </button>
+
+          <button
             @click="openSearch"
             class="flex items-center justify-center transition-colors focus:outline-none hover:text-black"
           >
@@ -5277,7 +5284,9 @@ watch(() => route.path, () => {
                 >
                   HI {{ userData?.first_name }} {{ userData?.last_name }}
                 </h3>
-                <p class="mb-4 text-xs text-gray-500 truncate">{{ userData?.email }}</p>
+                <p class="mb-4 text-xs text-gray-500 truncate">
+                  {{ userData?.email }}
+                </p>
               </div>
               <div v-else>
                 <h3
@@ -5652,6 +5661,14 @@ import defaultBagIcon from "../../../assets/products/bag_icon.jpg";
 import { useCart } from "../../../composables/useCart";
 import { BASE_URL } from "../../../config/api";
 import { useProductStore } from "../../../composables/useProductStore";
+import { useI18n } from "vue-i18n";
+
+const { t, locale } = useI18n();
+
+const toggleLanguage = () => {
+  locale.value = locale.value === "en" ? "id" : "en";
+  localStorage.setItem("user_lang", locale.value);
+};
 
 const route = useRoute();
 const router = useRouter();
@@ -5712,11 +5729,13 @@ let announcementTimer = null;
 //   "A Little Extra, On Us — Complimentary Shipping Across Indonesia (Min. Rp 1.000.000) →",
 // ];
 
-const announcements = [
-  // Gunakan \u00A0 sebelum tanda panah agar menempel dengan kata sebelumnya
-  "An Exclusive Welcome Gift: Rp 250K OFF your first order\u00A0→",
-  "A Little Extra, On Us — Complimentary Shipping Across Indonesia (Min. Rp 1.000.000)\u00A0→",
-];
+// const announcements = [
+//   // Gunakan \u00A0 sebelum tanda panah agar menempel dengan kata sebelumnya
+//   "An Exclusive Welcome Gift: Rp 250K OFF your first order\u00A0→",
+//   "A Little Extra, On Us — Complimentary Shipping Across Indonesia (Min. Rp 1.000.000)\u00A0→",
+// ];
+
+const announcements = computed(() => t("announcements", {}, { returnObjects: true }));
 
 const nextAnnouncement = () => {
   currentAnnouncement.value = (currentAnnouncement.value + 1) % announcements.length;

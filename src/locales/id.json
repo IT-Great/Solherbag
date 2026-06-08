@@ -1,0 +1,26 @@
+{
+  "header": {
+    "home": "Beranda",
+    "main_home": "Beranda Utama",
+    "about_us": "Tentang Kami",
+    "best_sellers": "Produk Terlaris",
+    "collections": "Koleksi",
+    "events": "Acara",
+    "contact": "Kontak",
+    "all_bags": "Semua Tas",
+    "categories": "Kategori",
+    "featured": "Pilihan Utama",
+    "highlights": "Sorotan Kategori",
+    "view_all": "Lihat Semua Koleksi",
+    "no_products": "Tidak ada produk di kategori ini.",
+    "account": "Akun",
+    "sign_in": "Masuk",
+    "orders": "Pesanan",
+    "profile": "Profil",
+    "logged_in": "Masuk sebagai"
+  },
+  "announcements": [
+    "Hadiah Selamat Datang Eksklusif: Diskon Rp 250rb untuk pesanan pertama Anda →",
+    "Gratis Ongkir ke Seluruh Indonesia (Min. Belanja Rp 1.000.000) →"
+  ]
+}

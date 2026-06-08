@@ -1,0 +1,26 @@
+{
+  "header": {
+    "home": "Home",
+    "main_home": "Main Home",
+    "about_us": "About Us",
+    "best_sellers": "Best Sellers",
+    "collections": "Collections",
+    "events": "Events",
+    "contact": "Contact",
+    "all_bags": "All Bags",
+    "categories": "Categories",
+    "featured": "Featured Picks",
+    "highlights": "Category Highlights",
+    "view_all": "View All Collection",
+    "no_products": "No products found in this category.",
+    "account": "Account",
+    "sign_in": "Sign In",
+    "orders": "Orders",
+    "profile": "Profile",
+    "logged_in": "Logged in as"
+  },
+  "announcements": [
+    "An Exclusive Welcome Gift: Rp 250K OFF your first order →",
+    "A Little Extra, On Us — Complimentary Shipping Across Indonesia (Min. Rp 1.000.000) →"
+  ]
+}
