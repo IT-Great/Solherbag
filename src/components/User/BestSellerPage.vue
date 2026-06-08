@@ -314,7 +314,7 @@ onMounted(() => {
       <div
         v-for="(product, index) in processedProducts"
         :key="product.id"
-        class="group flex flex-col cursor-pointer"
+        class="flex flex-col cursor-pointer group"
         @click="$router.push(`/products/${product.slug || product.id}`)"
       >
         <div
@@ -377,7 +377,7 @@ onMounted(() => {
             </p>
           </template>
           <template v-else>
-            <p class="font-bold text-sm text-gray-900">
+            <p class="text-sm font-bold text-gray-900">
               {{ formatPrice(product.price) }}
             </p>
           </template>

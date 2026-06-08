@@ -5072,50 +5072,6 @@ watch(() => route.path, () => {
 
 <template>
   <div class="fixed top-0 left-0 z-[60] w-full flex flex-col">
-    <!-- <div
-      class="relative w-full min-h-[40px] py-2 md:py-0 bg-[#111] text-white flex items-center justify-center"
-    >
-      <button
-        @click="prevAnnouncement"
-        class="absolute p-2 text-gray-400 transition left-2 md:left-4 hover:text-white focus:outline-none"
-      >
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="1.5"
-            d="M15 19l-7-7 7-7"
-          />
-        </svg>
-      </button>
-
-      <div class="flex items-center justify-center w-full min-h-[20px] md:min-h-[24px]">
-        <transition name="fade-slide" mode="out-in">
-          <p
-            :key="currentAnnouncement"
-            @click="$router.push('/collections')"
-            class="w-full max-w-3xl px-10 font-serif text-xs leading-snug tracking-widest text-center transition-colors cursor-pointer md:text-sm md:leading-normal md:px-12 hover:text-gray-300"
-          >
-            {{ announcements[currentAnnouncement] }}
-          </p>
-        </transition>
-      </div>
-
-      <button
-        @click="nextAnnouncement"
-        class="absolute p-2 text-gray-400 transition right-2 md:right-4 hover:text-white focus:outline-none"
-      >
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="1.5"
-            d="M9 5l7 7-7 7"
-          />
-        </svg>
-      </button>
-    </div> -->
-
     <div
       class="relative w-full h-[48px] md:h-[40px] bg-[#111] text-white flex items-center justify-center overflow-hidden"
     >
@@ -5800,20 +5756,15 @@ const getDiscountStatus = (p) => {
   let upcoming = false;
   let expired = false;
 
-  // Konversi UTC ke WIB (mengikuti logika file lainnya)
   if (p.discount_start_date) {
-    const startDate = new Date(
-      new Date(p.discount_start_date).getTime() + 7 * 60 * 60 * 1000
-    );
+    const startDate = new Date(p.discount_start_date);
     if (now < startDate) {
       active = false;
       upcoming = true;
     }
   }
   if (p.discount_end_date) {
-    const endDate = new Date(
-      new Date(p.discount_end_date).getTime() + 7 * 60 * 60 * 1000
-    );
+    const endDate = new Date(p.discount_end_date);
     if (now > endDate) {
       active = false;
       expired = true;
