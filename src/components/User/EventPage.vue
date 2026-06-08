@@ -1218,7 +1218,11 @@ const getYear = (dateString) => {
 
 const fetchEvents = async () => {
   try {
-    const res = await axios.get(`${BASE_URL}/events`);
+    const res = await axios.get(`${BASE_URL}/events`, {
+      headers: {
+        "Accept-Language": locale.value, // Akan mengirimkan 'en' atau 'id'
+      },
+    });
     events.value = res.data.map((ev) => ({
       ...ev,
       images: typeof ev.images === "string" ? JSON.parse(ev.images) : ev.images,

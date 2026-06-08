@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="p-6 md:p-10 animate-fade-in">
     <Breadcrumb />
     <div class="flex items-center justify-between mb-8">
@@ -91,46 +91,6 @@
                   {{ event.status }}
                 </span>
               </td>
-              <!-- <td class="px-6 py-4 text-right">
-                <button
-                  @click="openModal(event)"
-                  class="p-2 text-blue-600 transition-colors hover:text-blue-800"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="w-5 h-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                    />
-                  </svg>
-                </button>
-                <button
-                  @click="deleteEvent(event.id)"
-                  class="p-2 ml-2 text-red-600 transition-colors hover:text-red-800"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="w-5 h-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                    />
-                  </svg>
-                </button>
-              </td> -->
               <td class="px-6 py-4 text-right">
                 <button
                   @click="$router.push(`/admin/events/${event.id}`)"
@@ -435,6 +395,552 @@ const saveEvent = async () => {
   formData.append("status", form.value.status);
 
   // [PERBAIKAN] Append multiple images
+  if (selectedFiles.value && selectedFiles.value.length > 0) {
+    selectedFiles.value.forEach((file, index) => {
+      formData.append(`images[${index}]`, file);
+    });
+  }
+
+  try {
+    let url = `${BASE_URL}/admin/events`;
+    if (isEditing.value) {
+      url = `${BASE_URL}/admin/events/${form.value.id}`;
+      formData.append("_method", "PUT");
+    }
+
+    await axios.post(url, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    Swal.fire({
+      toast: true,
+      position: "top-end",
+      icon: "success",
+      title: "Saved successfully",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+    closeModal();
+    fetchEvents();
+  } catch (error) {
+    Swal.fire("Error", error.response?.data?.message || "Failed to save event.", "error");
+  } finally {
+    isSaving.value = false;
+  }
+};
+
+const deleteEvent = async (id) => {
+  const result = await Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#000",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!",
+  });
+
+  if (result.isConfirmed) {
+    try {
+      await axios.delete(`${BASE_URL}/admin/events/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      Swal.fire("Deleted!", "Event has been deleted.", "success");
+      fetchEvents();
+    } catch (error) {
+      Swal.fire("Error!", "Failed to delete event.", "error");
+    }
+  }
+};
+
+onMounted(fetchEvents);
+</script>
+
+<style scoped>
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #e5e7eb;
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #d1d5db;
+}
+</style> -->
+
+<template>
+  <div class="p-6 md:p-10 animate-fade-in">
+    <Breadcrumb />
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <h1 class="text-2xl font-bold tracking-tight text-gray-900 md:text-3xl">
+          Event Management
+        </h1>
+        <p class="mt-1 text-sm text-gray-500">
+          Manage Solher's event galleries, campaigns, and lookbooks.
+        </p>
+      </div>
+      <button
+        @click="openModal()"
+        class="px-5 py-2.5 text-sm font-bold tracking-widest text-white uppercase transition-colors bg-black rounded-lg shadow-md hover:bg-gray-800"
+      >
+        + Add Event
+      </button>
+    </div>
+
+    <div class="overflow-hidden bg-white border border-gray-200 shadow-sm rounded-xl">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr
+              class="text-[10px] tracking-widest text-gray-500 uppercase border-b border-gray-200 bg-gray-50/50"
+            >
+              <th class="px-6 py-4 font-bold">Cover Image</th>
+              <th class="px-6 py-4 font-bold">Event Details</th>
+              <th class="px-6 py-4 font-bold">Season</th>
+              <th class="px-6 py-4 font-bold">Date</th>
+              <th class="px-6 py-4 font-bold">Status</th>
+              <th class="px-6 py-4 font-bold text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            <tr v-if="isLoading" class="animate-pulse">
+              <td colspan="6" class="py-10 text-center text-gray-400">
+                Loading events...
+              </td>
+            </tr>
+            <tr v-else-if="events.length === 0">
+              <td colspan="6" class="py-10 text-center text-gray-400">
+                No events found.
+              </td>
+            </tr>
+            <tr
+              v-else
+              v-for="event in events"
+              :key="event.id"
+              class="transition-colors hover:bg-gray-50"
+            >
+              <td class="px-6 py-4">
+                <img
+                  v-if="event.images && event.images.length > 0"
+                  :src="getImgUrl(event.images[0])"
+                  class="object-cover w-16 h-16 rounded-lg shadow-sm"
+                />
+                <div
+                  v-else
+                  class="flex items-center justify-center w-16 h-16 bg-gray-100 rounded-lg"
+                >
+                  <span class="text-[9px] text-gray-400 uppercase tracking-widest"
+                    >No Img</span
+                  >
+                </div>
+              </td>
+              <td class="px-6 py-4">
+                <p class="text-sm font-bold text-gray-900">{{ event.title }}</p>
+                <p class="text-xs text-gray-500 truncate max-w-[200px]">
+                  {{ event.images?.length || 0 }} Photos attached
+                </p>
+              </td>
+              <td class="px-6 py-4">
+                <span
+                  class="px-2.5 py-1 text-[10px] font-bold tracking-widest text-blue-700 uppercase bg-blue-100 rounded-md"
+                >
+                  {{ event.season || "Any" }}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-sm text-gray-600">{{ event.event_date }}</td>
+              <td class="px-6 py-4">
+                <span
+                  :class="
+                    event.status === 'published'
+                      ? 'bg-green-100 text-green-700'
+                      : 'bg-gray-200 text-gray-700'
+                  "
+                  class="px-2.5 py-1 text-[10px] font-bold tracking-widest uppercase rounded-md"
+                >
+                  {{ event.status }}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-right">
+                <button
+                  @click="$router.push(`/admin/events/${event.id}`)"
+                  class="p-2 text-gray-500 transition-colors hover:text-gray-800"
+                  title="View Details"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                    />
+                  </svg>
+                </button>
+                <button
+                  @click="openModal(event)"
+                  class="p-2 ml-2 text-blue-600 transition-colors hover:text-blue-800"
+                  title="Edit Event"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                    />
+                  </svg>
+                </button>
+                <button
+                  @click="deleteEvent(event.id)"
+                  class="p-2 ml-2 text-red-600 transition-colors hover:text-red-800"
+                  title="Delete Event"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                    />
+                  </svg>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div
+      v-if="isModalOpen"
+      class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+    >
+      <div class="w-full max-w-4xl overflow-hidden bg-white shadow-2xl rounded-2xl">
+        <div class="px-6 py-4 border-b border-gray-100">
+          <h3 class="text-lg font-bold text-gray-900">
+            {{ isEditing ? "Edit Event" : "Add New Event" }}
+          </h3>
+        </div>
+        <form
+          @submit.prevent="saveEvent"
+          class="p-6 space-y-5 max-h-[80vh] overflow-y-auto custom-scrollbar"
+        >
+          <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div>
+              <label
+                class="block mb-1 text-xs font-bold tracking-widest text-gray-500 uppercase"
+                >Event Title (INDONESIA)</label
+              >
+              <input
+                v-model="form.title_id"
+                type="text"
+                required
+                placeholder="Judul Acara..."
+                class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-black focus:outline-none"
+              />
+            </div>
+            <div>
+              <label
+                class="block mb-1 text-xs font-bold tracking-widest text-gray-500 uppercase"
+                >Event Title (ENGLISH)</label
+              >
+              <input
+                v-model="form.title_en"
+                type="text"
+                placeholder="Event Title..."
+                class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-black focus:outline-none"
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <div>
+              <label
+                class="block mb-1 text-xs font-bold tracking-widest text-gray-500 uppercase"
+                >Event Date</label
+              >
+              <input
+                v-model="form.event_date"
+                type="date"
+                required
+                class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-black focus:outline-none"
+              />
+            </div>
+            <div>
+              <label
+                class="block mb-1 text-xs font-bold tracking-widest text-gray-500 uppercase"
+                >Season (ID)</label
+              >
+              <input
+                v-model="form.season_id"
+                type="text"
+                placeholder="cth: Musim Semi"
+                class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-black focus:outline-none"
+              />
+            </div>
+            <div>
+              <label
+                class="block mb-1 text-xs font-bold tracking-widest text-gray-500 uppercase"
+                >Season (EN)</label
+              >
+              <input
+                v-model="form.season_en"
+                type="text"
+                placeholder="e.g. Spring"
+                class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-black focus:outline-none"
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div>
+              <label
+                class="block mb-1 text-xs font-bold tracking-widest text-gray-500 uppercase"
+                >Description (INDONESIA)</label
+              >
+              <textarea
+                v-model="form.description_id"
+                rows="4"
+                class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-black focus:outline-none placeholder-gray-400"
+                placeholder="Tambahkan deskripsi yang elegan..."
+              ></textarea>
+            </div>
+            <div>
+              <label
+                class="block mb-1 text-xs font-bold tracking-widest text-gray-500 uppercase"
+                >Description (ENGLISH)</label
+              >
+              <textarea
+                v-model="form.description_en"
+                rows="4"
+                class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-black focus:outline-none placeholder-gray-400"
+                placeholder="Add an elegant description..."
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="p-4 border border-gray-200 bg-gray-50 rounded-xl">
+            <label
+              class="block mb-2 text-xs font-bold tracking-widest text-gray-500 uppercase"
+              >Event Photos (Multiple)</label
+            >
+            <input
+              type="file"
+              @change="handleFileUpload"
+              accept="image/*"
+              multiple
+              class="w-full px-3 py-2 mb-3 text-sm bg-white border border-gray-300 rounded-lg"
+            />
+            <p class="text-[10px] text-gray-400 italic mb-3">
+              * Photos will be automatically compressed to WebP by the server.
+            </p>
+
+            <div v-if="imagePreviews.length > 0" class="flex flex-wrap gap-2">
+              <div
+                v-for="(preview, idx) in imagePreviews"
+                :key="idx"
+                class="relative w-16 h-16 overflow-hidden rounded-lg shadow-sm group"
+              >
+                <img :src="preview" class="object-cover w-full h-full" />
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label
+              class="block mb-1 text-xs font-bold tracking-widest text-gray-500 uppercase"
+              >Status</label
+            >
+            <select
+              v-model="form.status"
+              class="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-black focus:outline-none"
+            >
+              <option value="published">Published</option>
+              <option value="draft">Draft</option>
+            </select>
+          </div>
+
+          <div class="flex justify-end gap-3 pt-4 mt-6 border-t border-gray-100">
+            <button
+              type="button"
+              @click="closeModal"
+              class="px-5 py-2.5 text-sm font-bold tracking-widest text-gray-600 uppercase transition-colors bg-gray-100 rounded-lg hover:bg-gray-200"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              :disabled="isSaving"
+              class="px-5 py-2.5 text-sm font-bold tracking-widest text-white uppercase transition-colors bg-black rounded-lg shadow-md hover:bg-gray-800 disabled:opacity-50"
+            >
+              {{ isSaving ? "Saving..." : "Save Event" }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { BASE_URL } from "../../config/api";
+import Breadcrumb from "./Layout/Breadcrumb.vue";
+
+const events = ref([]);
+const isLoading = ref(true);
+const isModalOpen = ref(false);
+const isEditing = ref(false);
+const isSaving = ref(false);
+
+const selectedFiles = ref([]);
+const imagePreviews = ref([]);
+
+// [PERBAIKAN] Form State menggunakan format Multi-bahasa
+const form = ref({
+  id: null,
+  title_id: "",
+  title_en: "",
+  description_id: "",
+  description_en: "",
+  event_date: "",
+  season_id: "",
+  season_en: "",
+  status: "published",
+});
+
+const token = localStorage.getItem("admin_token") || localStorage.getItem("token");
+
+const getImgUrl = (path) => {
+  if (!path) return "";
+  if (path.startsWith("http")) return path;
+  const baseUrlFixed = BASE_URL.replace("/api", "");
+  return `${baseUrlFixed}/storage/${path}`;
+};
+
+const fetchEvents = async () => {
+  isLoading.value = true;
+  try {
+    const res = await axios.get(`${BASE_URL}/admin/events`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    events.value = res.data.map((ev) => ({
+      ...ev,
+      images: typeof ev.images === "string" ? JSON.parse(ev.images) : ev.images,
+    }));
+  } catch (error) {
+    console.error(error);
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+const handleFileUpload = (e) => {
+  const files = Array.from(e.target.files);
+  if (!files.length) return;
+
+  selectedFiles.value = files;
+  imagePreviews.value = files.map((file) => URL.createObjectURL(file));
+};
+
+const openModal = (event = null) => {
+  isEditing.value = !!event;
+  if (event) {
+    // [PERBAIKAN] Mapping data asli dari database
+    form.value = {
+      id: event.id,
+      title_id: event.title_id || "",
+      title_en: event.title_en || "",
+      description_id: event.description_id || "",
+      description_en: event.description_en || "",
+      event_date: event.event_date || "",
+      season_id: event.season_id || "",
+      season_en: event.season_en || "",
+      status: event.status || "published",
+    };
+    imagePreviews.value = (event.images || []).map((img) => getImgUrl(img));
+  } else {
+    form.value = {
+      id: null,
+      title_id: "",
+      title_en: "",
+      description_id: "",
+      description_en: "",
+      event_date: "",
+      season_id: "",
+      season_en: "",
+      status: "published",
+    };
+    imagePreviews.value = [];
+  }
+  selectedFiles.value = [];
+  isModalOpen.value = true;
+};
+
+const closeModal = () => {
+  isModalOpen.value = false;
+};
+
+const saveEvent = async () => {
+  isSaving.value = true;
+  const formData = new FormData();
+
+  // [PERBAIKAN] Append data multi-bahasa ke backend
+  formData.append("title_id", form.value.title_id);
+  formData.append("title_en", form.value.title_en || "");
+  formData.append("description_id", form.value.description_id || "");
+  formData.append("description_en", form.value.description_en || "");
+  formData.append("event_date", form.value.event_date);
+  formData.append("season_id", form.value.season_id || "");
+  formData.append("season_en", form.value.season_en || "");
+  formData.append("status", form.value.status);
+
   if (selectedFiles.value && selectedFiles.value.length > 0) {
     selectedFiles.value.forEach((file, index) => {
       formData.append(`images[${index}]`, file);
