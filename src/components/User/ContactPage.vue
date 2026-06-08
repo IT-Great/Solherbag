@@ -398,147 +398,166 @@ const handleSubmit = async () => {
 <template>
   <section class="min-h-screen px-4 py-16 bg-[#E5E7EB] md:px-6 md:py-24">
     <div class="relative max-w-2xl mx-auto">
-      
       <div v-if="isLoggedIn" class="flex justify-end mb-6 md:mb-8">
-        <button 
-          @click="showHistoryModal = true" 
+        <button
+          @click="showHistoryModal = true"
           class="flex items-center gap-2 px-5 py-2.5 text-[10px] font-bold tracking-widest text-black uppercase transition-all duration-300 bg-white border border-gray-200 rounded-full shadow-sm hover:shadow-md hover:border-black group"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400 transition-colors group-hover:text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-4 h-4 text-gray-400 transition-colors group-hover:text-black"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
           </svg>
-          My Inquiries History
+          {{ $t("contact.history_btn") }}
         </button>
       </div>
 
-      <h1 class="mb-10 font-serif text-4xl tracking-wide text-center text-black uppercase md:text-5xl md:mb-12">
-        Contact Us
+      <h1
+        class="mb-10 font-serif text-4xl tracking-wide text-center text-black uppercase md:text-5xl md:mb-12"
+      >
+        {{ $t("contact.title") }}
       </h1>
 
-      <form @submit.prevent="handleSubmit" class="p-6 space-y-6 bg-white shadow-xl md:p-10 rounded-3xl">
+      <form
+        @submit.prevent="handleSubmit"
+        class="p-6 space-y-6 bg-white shadow-xl md:p-10 rounded-3xl"
+      >
         <div class="flex flex-col">
-          <label class="mb-2 text-[10px] font-bold text-gray-500 uppercase tracking-widest">Name</label>
-          <input 
-            v-model="form.name" 
-            type="text" 
-            :readonly="isLoggedIn" 
-            :class="[isLoggedIn ? 'bg-gray-100 text-gray-500 cursor-not-allowed border-transparent' : 'bg-white text-black border-gray-300 hover:border-gray-400']" 
-            class="p-3.5 text-sm transition-colors border rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent" 
-            required 
-            placeholder="John Doe"
-          />
-        </div>
-
-        <div class="flex flex-col">
-          <label class="mb-2 text-[10px] font-bold text-gray-500 uppercase tracking-widest">Email</label>
-          <input 
-            v-model="form.email" 
-            type="email" 
-            :readonly="isLoggedIn" 
-            :class="[isLoggedIn ? 'bg-gray-100 text-gray-500 cursor-not-allowed border-transparent' : 'bg-white text-black border-gray-300 hover:border-gray-400']" 
-            class="p-3.5 text-sm transition-colors border rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent" 
-            required 
-            placeholder="john@example.com"
-          />
-        </div>
-
-        <div class="flex flex-col">
-          <label class="mb-2 text-[10px] font-bold text-gray-500 uppercase tracking-widest">Phone (Optional)</label>
-          <input 
-            v-model="form.phone" 
-            type="tel" 
-            :readonly="isLoggedIn" 
-            :class="[isLoggedIn ? 'bg-gray-100 text-gray-500 cursor-not-allowed border-transparent' : 'bg-white text-black border-gray-300 hover:border-gray-400']" 
-            class="p-3.5 text-sm transition-colors border rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent" 
-            placeholder="+62 812 3456 7890"
-          />
-        </div>
-
-        <div class="flex flex-col">
-          <label class="mb-2 text-[10px] font-bold text-gray-500 uppercase tracking-widest">Description</label>
-          <textarea 
-            v-model="form.description" 
-            rows="6" 
-            class="p-3.5 text-sm transition-colors bg-white border border-gray-300 resize-none hover:border-gray-400 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent" 
+          <label
+            class="mb-2 text-[10px] font-bold text-gray-500 uppercase tracking-widest"
+            >{{ $t("contact.name") }}</label
+          >
+          <input
+            v-model="form.name"
+            type="text"
+            :readonly="isLoggedIn"
+            :placeholder="$t('contact.placeholder_name')"
+            class="p-3.5 text-sm transition-colors border rounded-xl focus:outline-none focus:ring-2 focus:ring-black"
             required
-            placeholder="How can we help you?"
+          />
+        </div>
+
+        <div class="flex flex-col">
+          <label
+            class="mb-2 text-[10px] font-bold text-gray-500 uppercase tracking-widest"
+            >{{ $t("contact.email") }}</label
+          >
+          <input
+            v-model="form.email"
+            type="email"
+            :readonly="isLoggedIn"
+            :placeholder="$t('contact.placeholder_email')"
+            class="p-3.5 text-sm transition-colors border rounded-xl focus:outline-none focus:ring-2 focus:ring-black"
+            required
+          />
+        </div>
+
+        <div class="flex flex-col">
+          <label
+            class="mb-2 text-[10px] font-bold text-gray-500 uppercase tracking-widest"
+            >{{ $t("contact.phone") }}</label
+          >
+          <input
+            v-model="form.phone"
+            type="tel"
+            :readonly="isLoggedIn"
+            :placeholder="$t('contact.placeholder_phone')"
+            class="p-3.5 text-sm transition-colors border rounded-xl focus:outline-none focus:ring-2 focus:ring-black"
+          />
+        </div>
+
+        <div class="flex flex-col">
+          <label
+            class="mb-2 text-[10px] font-bold text-gray-500 uppercase tracking-widest"
+            >{{ $t("contact.description") }}</label
+          >
+          <textarea
+            v-model="form.description"
+            rows="6"
+            :placeholder="$t('contact.placeholder_desc')"
+            class="p-3.5 text-sm transition-colors bg-white border border-gray-300 resize-none rounded-xl focus:outline-none focus:ring-2 focus:ring-black"
+            required
           ></textarea>
         </div>
 
         <div class="flex justify-center pt-4">
-          <button 
-            type="submit" 
-            :disabled="loading" 
-            class="w-full md:w-auto bg-[#1A1A1A] hover:bg-black disabled:bg-gray-400 disabled:cursor-not-allowed shadow-xl shadow-black/20 hover:shadow-black/40 px-12 py-4 font-bold text-white text-[10px] sm:text-xs uppercase tracking-[0.2em] rounded-xl transition-all duration-300"
+          <button
+            type="submit"
+            :disabled="loading"
+            class="w-full md:w-auto bg-[#1A1A1A] text-white font-bold uppercase tracking-[0.2em] text-[10px] sm:text-xs py-4 px-12 rounded-xl transition-all"
           >
-            {{ loading ? "Sending..." : "Send Message" }}
+            {{ loading ? $t("contact.sending") : $t("contact.send") }}
           </button>
         </div>
       </form>
     </div>
 
     <Transition name="fade">
-      <div v-if="showHistoryModal" class="fixed inset-0 z-[100] flex justify-center items-center p-4 sm:p-6 bg-black/60 backdrop-blur-sm">
-        <div class="relative flex flex-col w-full max-w-3xl bg-[#F9FAFB] shadow-2xl rounded-3xl max-h-[90vh] md:max-h-[85vh] overflow-hidden transform transition-all">
-          
-          <div class="flex items-center justify-between p-6 bg-white border-b border-gray-200 shrink-0 sm:p-8">
-            <h2 class="font-serif text-2xl tracking-tighter uppercase sm:text-3xl">My Inquiries</h2>
-            <button 
-              @click="showHistoryModal = false" 
-              class="p-2 text-gray-400 transition-colors bg-gray-100 rounded-full hover:bg-gray-200 hover:text-black focus:outline-none"
+      <div
+        v-if="showHistoryModal"
+        class="fixed inset-0 z-[100] flex justify-center items-center p-4 bg-black/60 backdrop-blur-sm"
+      >
+        <div
+          class="relative flex flex-col w-full max-w-3xl bg-[#F9FAFB] shadow-2xl rounded-3xl max-h-[90vh] overflow-hidden"
+        >
+          <div
+            class="flex items-center justify-between p-6 bg-white border-b border-gray-200"
+          >
+            <h2 class="font-serif text-2xl tracking-tighter uppercase">
+              {{ $t("contact.history_title") }}
+            </h2>
+            <button
+              @click="showHistoryModal = false"
+              class="p-2 bg-gray-100 rounded-full hover:bg-gray-200"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 sm:w-6 sm:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              ✕
             </button>
           </div>
 
-          <div class="p-4 overflow-y-auto sm:p-8 grow custom-scrollbar">
-            
-            <div v-if="isLoadingHistory" class="flex flex-col items-center justify-center py-20">
-              <div class="w-10 h-10 border-4 border-gray-200 rounded-full border-t-black animate-spin"></div>
-              <p class="mt-4 text-xs font-bold tracking-widest text-gray-500 uppercase animate-pulse">Loading history...</p>
+          <div class="p-6 overflow-y-auto">
+            <div
+              v-if="histories.length === 0"
+              class="py-20 italic text-center text-gray-500"
+            >
+              {{ $t("contact.no_history") }}
             </div>
-
-            <div v-else-if="histories.length === 0" class="flex flex-col items-center justify-center py-20 text-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 mb-4 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-              </svg>
-              <p class="font-serif text-xl italic text-gray-500">You haven't sent any messages yet.</p>
-            </div>
-
             <div v-else class="space-y-6">
-              <div v-for="item in histories" :key="item.id" class="p-5 bg-white border border-gray-100 shadow-sm sm:p-6 rounded-2xl">
-                
-                <div class="flex flex-col items-start justify-between gap-3 mb-4 sm:flex-row sm:items-center sm:gap-0">
-                  <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">
-                    {{ new Date(item.created_at).toLocaleString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) }}
-                  </span>
-                  <span 
-                    :class="item.response ? 'bg-green-100 text-green-700 border-green-200' : 'bg-amber-100 text-amber-700 border-amber-200'"
-                    class="px-2.5 py-1 border rounded-md text-[9px] font-black uppercase tracking-wider shadow-sm"
+              <div
+                v-for="item in histories"
+                :key="item.id"
+                class="p-5 bg-white border rounded-2xl"
+              >
+                <div class="flex justify-between mb-4">
+                  <span class="text-[10px] text-gray-400 font-bold uppercase">{{
+                    new Date(item.created_at).toLocaleDateString()
+                  }}</span>
+                  <span
+                    :class="
+                      item.response
+                        ? 'bg-green-100 text-green-700'
+                        : 'bg-amber-100 text-amber-700'
+                    "
+                    class="px-2 py-1 text-[9px] font-black uppercase rounded"
                   >
-                    {{ item.response ? 'Answered' : 'Awaiting Reply' }}
+                    {{ item.response ? $t("contact.answered") : $t("contact.awaiting") }}
                   </span>
                 </div>
-                
-                <div class="p-4 mb-4 bg-gray-50 rounded-xl">
-                  <p class="text-sm leading-relaxed text-gray-800 whitespace-pre-wrap">"{{ item.description }}"</p>
-                </div>
-
-                <div class="p-4 border border-blue-100 sm:p-5 bg-blue-50/50 rounded-xl">
-                  <p class="text-[10px] font-bold text-gray-800 uppercase tracking-widest mb-3 flex items-center gap-2 border-b border-blue-100 pb-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-blue-600 shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                      <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                      <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                    </svg>
-                    Reply from Solher
+                <p class="mb-4 text-sm">"{{ item.description }}"</p>
+                <div class="p-4 bg-blue-50 rounded-xl">
+                  <p class="text-[10px] font-bold text-blue-600 uppercase mb-2">
+                    {{ $t("contact.reply_from") }}
                   </p>
-                  
-                  <p v-if="item.response" class="text-sm leading-relaxed text-gray-700 whitespace-pre-wrap">{{ item.response }}</p>
-                  <p v-else class="text-xs italic text-gray-400">Our team hasn't replied yet. Please check back later.</p>
+                  <p class="text-sm">{{ item.response || $t("contact.no_reply_yet") }}</p>
                 </div>
-
               </div>
             </div>
           </div>
@@ -553,6 +572,9 @@ import { ref, onMounted, watch } from "vue";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const isLoggedIn = ref(false);
 const loading = ref(false);
@@ -583,7 +605,7 @@ watch(showHistoryModal, async (newVal) => {
     isLoadingHistory.value = true;
     try {
       const res = await axios.get(`${BASE_URL}/user/contact-history`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       histories.value = res.data;
     } catch (error) {
@@ -616,8 +638,14 @@ const handleSubmit = async () => {
       form.value.phone = "";
     }
   } catch (error) {
-    const errorMessage = error.response?.data?.message || "Failed to send message. Please try again.";
-    Swal.fire({ icon: "error", title: "Error", text: errorMessage, confirmButtonColor: "#1A1A1A" });
+    const errorMessage =
+      error.response?.data?.message || "Failed to send message. Please try again.";
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: errorMessage,
+      confirmButtonColor: "#1A1A1A",
+    });
   } finally {
     loading.value = false;
   }

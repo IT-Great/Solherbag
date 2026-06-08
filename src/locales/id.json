@@ -45,5 +45,28 @@
   "privacy": "Kebijakan Privasi",
   "shipping": "Kebijakan Pengiriman",
   "refund": "Kebijakan Pengembalian"
+},
+"contact": {
+  "title": "Kontak Kami",
+  "history_btn": "Riwayat Pertanyaan Saya",
+  "name": "Nama",
+  "email": "Email",
+  "phone": "Telepon (Opsional)",
+  "description": "Deskripsi",
+  "placeholder_name": "John Doe",
+  "placeholder_email": "john@example.com",
+  "placeholder_phone": "+62 812 3456 7890",
+  "placeholder_desc": "Bagaimana kami bisa membantu Anda?",
+  "send": "Kirim Pesan",
+  "sending": "Mengirim...",
+  "history_title": "Pertanyaan Saya",
+  "no_history": "Anda belum mengirim pesan apa pun.",
+  "answered": "Terjawab",
+  "awaiting": "Menunggu Balasan",
+  "reply_from": "Balasan dari Solher",
+  "no_reply_yet": "Tim kami belum membalas. Silakan cek kembali nanti.",
+  "success_title": "Terkirim!",
+  "success_text": "Terima kasih! Pesan Anda telah berhasil dikirim.",
+  "error_title": "Kesalahan"
 }
 }
