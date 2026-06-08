@@ -9,11 +9,11 @@
       @click.stop
       class="relative flex flex-col bg-white shadow-2xl border border-gray-100 rounded-b-[2rem] w-full max-w-2xl max-h-[75vh] overflow-hidden animate-slide-down"
     >
-      <div class="bg-gray-50 px-8 py-6 border-gray-100 border-b">
+      <div class="px-8 py-6 border-b border-gray-100 bg-gray-50">
         <div class="flex items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="mr-4 w-5 h-5 text-gray-400"
+            class="w-5 h-5 mr-4 text-gray-400"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -29,12 +29,12 @@
             v-model="searchInput"
             type="text"
             placeholder="Search products..."
-            class="flex-grow bg-transparent border-none outline-none focus:ring-0 font-serif text-base placeholder-gray-300"
+            class="flex-grow font-serif text-base placeholder-gray-300 bg-transparent border-none outline-none focus:ring-0"
             ref="searchInputRef"
           />
           <button
             @click="$emit('close')"
-            class="ml-4 text-gray-400 hover:text-black transition-all"
+            class="ml-4 text-gray-400 transition-all hover:text-black"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -56,7 +56,7 @@
 
       <div class="flex-grow px-8 py-8 overflow-y-auto custom-scrollbar">
         <div v-if="recentlyViewed.length > 0" class="mb-10">
-          <div class="flex justify-between items-end mb-4">
+          <div class="flex items-end justify-between mb-4">
             <h3
               class="font-bold text-[9px] text-gray-400 uppercase tracking-[0.25em]"
             >
@@ -69,19 +69,19 @@
               Clear
             </button>
           </div>
-          <div class="gap-4 grid grid-cols-3 md:grid-cols-4">
+          <div class="grid grid-cols-3 gap-4 md:grid-cols-4">
             <div
               v-for="item in recentlyViewed"
               :key="item.id"
-              class="group cursor-pointer"
+              class="cursor-pointer group"
               @click="navigateToProduct(item.id)"
             >
               <div
-                class="relative bg-gray-50 shadow-sm mb-2 rounded-xl aspect-square overflow-hidden"
+                class="relative mb-2 overflow-hidden shadow-sm bg-gray-50 rounded-xl aspect-square"
               >
                 <img
                   :src="item.image"
-                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
                 />
               </div>
               <h4 class="font-bold text-[9px] text-gray-900 truncate uppercase">
@@ -99,27 +99,27 @@
           </h3>
           <div
             v-if="randomProducts.length === 0"
-            class="gap-4 grid grid-cols-3 md:grid-cols-4"
+            class="grid grid-cols-3 gap-4 md:grid-cols-4"
           >
             <div
               v-for="i in 6"
               :key="i"
-              class="animate-pulse bg-gray-100 rounded-xl aspect-square"
+              class="bg-gray-100 animate-pulse rounded-xl aspect-square"
             ></div>
           </div>
-          <div class="gap-4 grid grid-cols-3 md:grid-cols-4">
+          <div class="grid grid-cols-3 gap-4 md:grid-cols-4">
             <div
               v-for="product in randomProducts"
               :key="product.id"
-              class="group cursor-pointer"
+              class="cursor-pointer group"
               @click="navigateToProduct(product.id)"
             >
               <div
-                class="relative bg-gray-50 shadow-sm mb-2 rounded-xl aspect-square overflow-hidden"
+                class="relative mb-2 overflow-hidden shadow-sm bg-gray-50 rounded-xl aspect-square"
               >
                 <img
                   :src="product.image"
-                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
                 />
               </div>
               <h4 class="font-bold text-[9px] text-gray-900 truncate uppercase">
@@ -255,11 +255,11 @@ onMounted(() => {
       @click.stop
       class="relative flex flex-col bg-white shadow-2xl border border-gray-100 rounded-b-[2rem] w-full max-w-2xl max-h-[75vh] overflow-hidden animate-slide-down"
     >
-      <div class="bg-gray-50 px-8 py-6 border-gray-100 border-b">
+      <div class="px-8 py-6 border-b border-gray-100 bg-gray-50">
         <div class="flex items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="mr-4 w-5 h-5 text-gray-400"
+            class="w-5 h-5 mr-4 text-gray-400"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -275,13 +275,13 @@ onMounted(() => {
             v-model="searchInput"
             type="text"
             placeholder="Search products..."
-            class="flex-grow bg-transparent border-none outline-none focus:ring-0 font-serif text-base placeholder-gray-300"
+            class="flex-grow font-serif text-base placeholder-gray-300 bg-transparent border-none outline-none focus:ring-0"
             ref="searchInputRef"
           />
           <button
             v-if="searchInput"
             @click="searchInput = ''"
-            class="ml-2 text-gray-300 hover:text-red-500 transition-all mr-2"
+            class="ml-2 mr-2 text-gray-300 transition-all hover:text-red-500"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -300,7 +300,7 @@ onMounted(() => {
           </button>
           <button
             @click="$emit('close')"
-            class="ml-2 pl-4 border-l border-gray-200 text-gray-400 hover:text-black transition-all"
+            class="pl-4 ml-2 text-gray-400 transition-all border-l border-gray-200 hover:text-black"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -328,36 +328,42 @@ onMounted(() => {
 
           <div
             v-if="filteredSearchResults.length > 0"
-            class="gap-4 grid grid-cols-3 md:grid-cols-4"
+            class="grid grid-cols-3 gap-4 md:grid-cols-4"
           >
             <div
               v-for="product in filteredSearchResults.slice(0, 8)"
               :key="product.id"
-              class="group cursor-pointer"
+              class="cursor-pointer group"
               @click="navigateToProduct(product.id)"
             >
               <div
-                class="relative bg-gray-50 shadow-sm mb-2 rounded-xl aspect-square overflow-hidden"
+                class="relative mb-2 overflow-hidden shadow-sm bg-gray-50 rounded-xl aspect-square"
               >
                 <img
                   :src="product.image || defaultBagIcon"
-                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
                 />
               </div>
               <h4 class="font-bold text-[9px] text-gray-900 truncate uppercase">
                 {{ product.name }}
               </h4>
               <p class="mt-0.5 text-[8px] text-gray-400">
-                {{ formatPrice(product.discount_price ?? product.price) }}
+                {{
+                  formatPrice(
+                    product.discount_price && getDiscountStatus(product).active
+                      ? product.discount_price
+                      : product.price
+                  )
+                }}
               </p>
             </div>
           </div>
 
-          <div v-else class="py-10 text-center text-gray-400 font-serif italic">
+          <div v-else class="py-10 font-serif italic text-center text-gray-400">
             No products found for "{{ searchInput }}".
           </div>
 
-          <div class="mt-8 border-t border-gray-100 pt-6 text-center">
+          <div class="pt-6 mt-8 text-center border-t border-gray-100">
             <button
               @click="viewAllResults"
               class="bg-black hover:bg-gray-800 text-white font-bold text-[10px] uppercase tracking-widest px-8 py-3 rounded-full transition-colors"
@@ -369,7 +375,7 @@ onMounted(() => {
 
         <div v-else>
           <div v-if="recentlyViewed.length > 0" class="mb-10">
-            <div class="flex justify-between items-end mb-4">
+            <div class="flex items-end justify-between mb-4">
               <h3 class="font-bold text-[9px] text-gray-400 uppercase tracking-[0.25em]">
                 Recently Viewed
               </h3>
@@ -380,19 +386,19 @@ onMounted(() => {
                 Clear
               </button>
             </div>
-            <div class="gap-4 grid grid-cols-3 md:grid-cols-4">
+            <div class="grid grid-cols-3 gap-4 md:grid-cols-4">
               <div
                 v-for="item in recentlyViewed"
                 :key="item.id"
-                class="group cursor-pointer"
+                class="cursor-pointer group"
                 @click="navigateToProduct(item.id)"
               >
                 <div
-                  class="relative bg-gray-50 shadow-sm mb-2 rounded-xl aspect-square overflow-hidden"
+                  class="relative mb-2 overflow-hidden shadow-sm bg-gray-50 rounded-xl aspect-square"
                 >
                   <img
                     :src="item.image || defaultBagIcon"
-                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
                   />
                 </div>
                 <h4 class="font-bold text-[9px] text-gray-900 truncate uppercase">
@@ -410,27 +416,27 @@ onMounted(() => {
             </h3>
             <div
               v-if="randomProducts.length === 0"
-              class="gap-4 grid grid-cols-3 md:grid-cols-4"
+              class="grid grid-cols-3 gap-4 md:grid-cols-4"
             >
               <div
                 v-for="i in 6"
                 :key="i"
-                class="animate-pulse bg-gray-100 rounded-xl aspect-square"
+                class="bg-gray-100 animate-pulse rounded-xl aspect-square"
               ></div>
             </div>
-            <div class="gap-4 grid grid-cols-3 md:grid-cols-4">
-              <div
+            <div class="grid grid-cols-3 gap-4 md:grid-cols-4">
+              <!-- <div
                 v-for="product in randomProducts"
                 :key="product.id"
-                class="group cursor-pointer"
+                class="cursor-pointer group"
                 @click="navigateToProduct(product.id)"
               >
                 <div
-                  class="relative bg-gray-50 shadow-sm mb-2 rounded-xl aspect-square overflow-hidden"
+                  class="relative mb-2 overflow-hidden shadow-sm bg-gray-50 rounded-xl aspect-square"
                 >
                   <img
                     :src="product.image || defaultBagIcon"
-                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
                   />
                 </div>
                 <h4 class="font-bold text-[9px] text-gray-900 truncate uppercase">
@@ -438,6 +444,39 @@ onMounted(() => {
                 </h4>
                 <p class="mt-0.5 text-[8px] text-gray-400">
                   {{ formatPrice(product.discount_price ?? product.price) }}
+                </p> 
+              </div>-->
+              <div
+                class="cursor-pointer group"
+                v-for="product in randomProducts"
+                :key="product.id"
+                @click="navigateToProduct(product.id)"
+              >
+                <div
+                  class="relative mb-2 overflow-hidden shadow-sm bg-gray-50 rounded-xl aspect-square"
+                >
+                  <img
+                    :src="product.image || defaultBagIcon"
+                    class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div
+                    v-if="product.discount_price && getDiscountStatus(product).active"
+                    class="absolute top-2 left-2 bg-red-600 text-white px-2 py-0.5 font-bold text-[8px] uppercase tracking-widest rounded-sm z-10"
+                  >
+                    SALE
+                  </div>
+                </div>
+                <h4 class="font-bold text-[9px] text-gray-900 truncate uppercase">
+                  {{ product.name }}
+                </h4>
+                <p class="mt-0.5 text-[8px] text-gray-400">
+                  {{
+                    formatPrice(
+                      product.discount_price && getDiscountStatus(product).active
+                        ? product.discount_price
+                        : product.price
+                    )
+                  }}
                 </p>
               </div>
             </div>
