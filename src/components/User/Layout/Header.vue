@@ -5233,7 +5233,7 @@ watch(() => route.path, () => {
             @click="toggleLanguage"
             class="text-[10px] font-bold tracking-widest uppercase transition hover:text-black"
           >
-            {{ locale === "en" ? "ID" : "EN" }}
+            {{ locale === "en" ? "EN" : "ID" }}
           </button>
 
           <button
@@ -5772,21 +5772,24 @@ const announcements = computed(() => [
 
 const nextAnnouncement = () => {
   // Tambahkan .value di sini
-  currentAnnouncement.value = (currentAnnouncement.value + 1) % announcements.value.length;
+  currentAnnouncement.value =
+    (currentAnnouncement.value + 1) % announcements.value.length;
   resetAnnouncementTimer();
 };
 
 const prevAnnouncement = () => {
   // Tambahkan .value di sini
   currentAnnouncement.value =
-    (currentAnnouncement.value - 1 + announcements.value.length) % announcements.value.length;
+    (currentAnnouncement.value - 1 + announcements.value.length) %
+    announcements.value.length;
   resetAnnouncementTimer();
 };
 
 const startAnnouncementTimer = () => {
   announcementTimer = setInterval(() => {
     // Tambahkan .value di sini
-    currentAnnouncement.value = (currentAnnouncement.value + 1) % announcements.value.length;
+    currentAnnouncement.value =
+      (currentAnnouncement.value + 1) % announcements.value.length;
   }, 3000);
 };
 
