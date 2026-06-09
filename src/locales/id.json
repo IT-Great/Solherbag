@@ -106,5 +106,28 @@
     "scroll_shuffle": "Gulir untuk Mengacak",
     "no_events": "Tidak ada acara yang ditemukan untuk pilihan ini.",
     "clear_filters": "Hapus Filter"
+  },
+  "home": {
+    "title_one": "Warisan dalam Setiap Jahitan.",
+    "description_one": "Selamat datang di dunia di mana waktu seakan terhenti. SOLHÉR menciptakan lebih dari sekadar tas; kami menciptakan pendamping seumur hidup. Dibuat dari kulit sapi top-grain terbaik, koleksi kami dirancang untuk wanita yang menghargai keanggunan yang berkelas. Temukan keindahan dari keabadian.",
+    "discover_product_one": "Temukan Zahara",
+    "coming_soon": "Segera Hadir",
+    "title_two_first": "Rangkul segala kemungkinan dengan",
+    "title_two_two": "tas yang bisa dibawa ke mana saja",
+    "shop_now_btn": "Belanja Sekarang",
+    "cta_section_one": "Bahan premium dan",
+    "cta_section_two": "sentuhan akhir pilihan",
+    "popup_first_cta": "✨ Nikmati",
+    "popup_price_section_one": "Rp",
+    "popup_price_section_two": "250.000",
+    "popup_price_section_three": "DISKON",
+    "popup_second_cta": "Untuk Pesanan Pertama Anda",
+    "popup_second_cta_section_two": "dengan minimum pembelian",
+    "popup_minimum_price_first_section": "Rp",
+    "popup_minimum_price_second_section": "499.000",
+    "popup_third_cta": "Bergabunglah dengan lingkaran dalam kami dan jadilah yang pertama mengakses rilis kurasi, penawaran privat, dan koleksi eksklusif yang dibuat khusus untuk Anda.",
+    "popup_enter_email": "Masukkan email Anda untuk membuka penawaran…",
+    "popup_claim_btn": "Klaim Diskon Rp 250.000 Saya",
+    "popup_fourth_cta": "Tidak ada spam. Hanya penawaran menarik."
   }
 }

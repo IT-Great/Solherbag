@@ -1147,21 +1147,6 @@ onMounted(() => {
 
 <template>
   <section class="w-full overflow-x-hidden bg-white">
-    <!-- <div
-      v-reveal
-      class="relative w-full max-w-[1600px] mx-auto aspect-[2/1] overflow-hidden cursor-pointer bg-gray-100"
-      @click="navigateToSpecificProduct('ETERNA RED')"
-    >
-      <Transition name="banner-fade">
-        <img
-          :key="currentBanner"
-          :src="currentBanner"
-          alt="SolHer Product"
-          class="absolute inset-0 object-cover w-full h-full transition-transform duration-1000 hover:scale-105"
-        />
-      </Transition>
-    </div> -->
-
     <div
       v-reveal
       class="relative w-full max-w-[1600px] mx-auto aspect-[2/1] overflow-hidden cursor-pointer bg-gray-100 mt-[20px]"
@@ -1179,13 +1164,10 @@ onMounted(() => {
 
     <div v-reveal class="max-w-4xl px-6 py-16 mx-auto text-center md:py-24">
       <h2 class="mb-6 text-2xl font-bold tracking-tight text-black md:text-3xl">
-        A Legacy in Every Stitch.
+        {{ $t("home.title_one") }}
       </h2>
       <p class="text-sm font-light leading-relaxed text-gray-700 md:text-base">
-        Welcome to a world where time stands still. SOLHÉR creates more than just bags; we
-        craft companions for a lifetime. Made from the finest top-grain cow leather, our
-        pieces are designed for the woman who values elegance that whispers rather than
-        shouts. Discover the beauty of timelessness.
+        {{ $t("home.description_one") }}
       </p>
     </div>
 
@@ -1203,7 +1185,7 @@ onMounted(() => {
         >
           <span
             class="px-6 py-3 text-xs font-bold tracking-widest text-black uppercase bg-white rounded-full shadow-lg"
-            >Discover Zahara</span
+            >{{ $t("home.discover_product_one") }}</span
           >
         </div>
       </div>
@@ -1218,7 +1200,7 @@ onMounted(() => {
         >
           <span
             class="px-6 py-3 text-xs font-bold tracking-widest text-black uppercase bg-white rounded-full shadow-lg"
-            >Coming Soon</span
+            >{{ $t("home.coming_soon") }}</span
           >
         </div>
       </div>
@@ -1229,14 +1211,14 @@ onMounted(() => {
       class="max-w-4xl px-6 py-16 mx-auto text-center border-b border-gray-100 md:py-24"
     >
       <h2 class="mb-8 text-xl font-medium leading-snug text-black md:text-2xl">
-        Embrace the possibilities with <br />go everywhere bags
+        {{ $t("home.title_two_first") }} <br />{{ $t("home.title_two_two") }}
       </h2>
 
       <router-link
         to="/collections"
         class="inline-block bg-[#1A1A1A] hover:bg-black px-10 py-4 font-semibold text-white text-xs uppercase tracking-[0.2em] transition shadow-xl"
       >
-        Shop Now
+        {{ $t("home.shop_now_btn") }}
       </router-link>
     </div>
 
@@ -1527,7 +1509,7 @@ onMounted(() => {
         <h2
           class="max-w-md font-serif text-2xl font-light text-white transition-transform duration-500 translate-y-4 md:text-5xl group-hover:translate-y-0"
         >
-          Premium materials and <br />hand-selected finishing touches
+          {{ $t("home.cta_section_one") }} <br />{{ $t("home.cta_section_two") }}
         </h2>
       </div>
     </div>
@@ -1582,30 +1564,35 @@ onMounted(() => {
             <h2
               class="text-[28px] md:text-[34px] font-serif text-[#111] mb-4 tracking-tight leading-tight"
             >
-              <span class="font-bold">✨ Enjoy</span> <br />
+              <span class="font-bold">{{ $t("home.popup_first_cta") }}</span> <br />
               <span class="font-extrabold whitespace-nowrap"
-                >Rp&nbsp;250.000&nbsp;OFF</span
+                >{{ $t("home.popup_price_section_one") }}&nbsp;{{
+                  $t("home.popup_price_section_two")
+                }}&nbsp;{{ $t("home.popup_price_section_three") }}</span
               ><br />
-              <span class="font-bold">Your First Order</span>
+              <span class="font-bold">{{ $t("home.popup_second_cta") }}</span>
             </h2>
 
             <p class="text-[15px] md:text-[16px] text-gray-800 mb-6 font-serif">
-              with minimum purchase of
-              <span class="font-bold whitespace-nowrap">Rp&nbsp;499.000</span>
+              {{ $t("home.popup_second_cta_section_two") }}
+              <span class="font-bold whitespace-nowrap"
+                >{{ $t("home.popup_minimum_price_first_section") }}&nbsp;{{
+                  $t("home.popup_minimum_price_second_section")
+                }}</span
+              >
             </p>
 
             <p
               class="text-[12px] md:text-[13px] font-sans text-[#444] leading-relaxed mb-6 max-w-[280px]"
             >
-              Join our inner circle and be the first to access curated drops, private
-              offers, and elevated essentials made just for you.
+              {{ $t("home.popup_third_cta") }}
             </p>
 
             <div class="w-full max-w-[320px]">
               <input
                 type="email"
                 v-model="promoEmail"
-                placeholder="Enter your email to unlock your offer…"
+                :placeholder="$t('home.popup_enter_email')"
                 class="w-full border border-black bg-white px-4 py-[14px] mb-3 text-[13px] font-sans focus:outline-none focus:ring-1 focus:ring-black placeholder-gray-400"
               />
 
@@ -1613,11 +1600,11 @@ onMounted(() => {
                 @click="claimPromo"
                 class="w-full bg-black text-white font-bold uppercase tracking-widest text-[13px] md:text-[14px] py-4 hover:bg-gray-800 transition-colors shadow-md"
               >
-                Claim My Rp 250.000 OFF
+                {{ $t("home.popup_claim_btn") }}
               </button>
 
               <p class="text-[11px] font-sans text-gray-500 mt-3 opacity-70">
-                No spam. Only the good stuff.
+                {{ $t("home.popup_fourth_cta") }}
               </p>
             </div>
           </div>
@@ -1634,6 +1621,7 @@ import { useRouter } from "vue-router";
 import { BASE_URL } from "../../config/api.js";
 import { useProductStore } from "../../composables/useProductStore";
 import Swal from "sweetalert2";
+import { useI18n } from "vue-i18n";
 
 import banner1 from "../../assets/first_banner.png";
 import banner2 from "../../assets/second_banner.png";
@@ -1654,6 +1642,7 @@ const promoEmail = ref("");
 const isClaimingPromo = ref(false);
 
 const showPromoPopup = ref(false);
+const { t } = useI18n();
 
 // =========================================================================
 // CUSTOM DIRECTIVE: v-reveal
