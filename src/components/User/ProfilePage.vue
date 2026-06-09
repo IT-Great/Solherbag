@@ -4916,7 +4916,7 @@ onMounted(() => {
           class="flex items-center justify-between p-6 border-b border-gray-100 shrink-0 md:p-8 md:pb-6"
         >
           <h3 class="text-xl font-bold text-gray-900">
-            {{ isEdit ? $("profile.edit_address") : $("profile.add_new_address") }}
+            {{ isEdit ? $t("profile.edit_address") : $t("profile.add_new_address") }}
           </h3>
           <button
             @click="showModal = false"
