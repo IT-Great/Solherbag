@@ -1293,8 +1293,14 @@ onMounted(() => {
                     class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
                     alt="Suggested Product"
                   />
-                  <div
+                  <!-- <div
                     v-if="product.discount_price"
+                    class="absolute top-2 left-2 bg-red-600 text-white px-2 py-0.5 text-[8px] font-bold uppercase tracking-widest rounded-sm"
+                  >
+                    SALE
+                  </div> -->
+                  <div
+                    v-if="getDiscountStatus(product)"
                     class="absolute top-2 left-2 bg-red-600 text-white px-2 py-0.5 text-[8px] font-bold uppercase tracking-widest rounded-sm"
                   >
                     SALE
