@@ -1300,7 +1300,7 @@ onMounted(() => {
                     SALE
                   </div> -->
                   <div
-                    v-if="getDiscountStatus(product)"
+                    v-if="getDiscountStatus(product).active"
                     class="absolute top-2 left-2 bg-red-600 text-white px-2 py-0.5 text-[8px] font-bold uppercase tracking-widest rounded-sm"
                   >
                     SALE
