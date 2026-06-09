@@ -1312,6 +1312,12 @@ watch([activeSeason, activeYear], () => {
   startAutoShuffle();
 });
 
+// [TAMBAHKAN KODE INI]
+// Pantau perubahan bahasa. Jika berubah, tarik ulang data dari API!
+watch(locale, () => {
+  fetchEvents();
+});
+
 onMounted(() => {
   window.scrollTo(0, 0);
   fetchEvents();
