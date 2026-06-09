@@ -302,10 +302,10 @@ onUnmounted(() => {
   <div class="max-w-4xl min-h-screen px-6 py-24 mx-auto animate-fade-in">
     <div class="mb-10 text-center">
       <h1 class="font-serif text-4xl tracking-tighter uppercase md:text-5xl">
-        {{ $t(chat.chat_page_title) }}
+        {{ $t("chat.chat_page_title") }}
       </h1>
       <p class="mt-4 font-serif italic text-gray-500">
-        {{ $t(chat.select_admin) }}
+        {{ $t("chat.select_admin") }}
       </p>
     </div>
 
