@@ -5306,17 +5306,17 @@ watch(() => route.path, () => {
                   to="/orderpage"
                   @click="isDropdownOpen = false"
                   class="flex items-center justify-center py-3 space-x-2 transition bg-gray-100 hover:bg-gray-200"
-                  ><span class="font-bold text-[10px] uppercase tracking-wider"
-                    >Orders</span
-                  ></router-link
+                  ><span class="font-bold text-[10px] uppercase tracking-wider">{{
+                    $t("header.orders")
+                  }}</span></router-link
                 >
                 <router-link
                   to="/profilepage"
                   @click="isDropdownOpen = false"
                   class="flex items-center justify-center py-3 space-x-2 transition bg-gray-100 hover:bg-gray-200"
-                  ><span class="font-bold text-[10px] uppercase tracking-wider"
-                    >Profile</span
-                  ></router-link
+                  ><span class="font-bold text-[10px] uppercase tracking-wider">{{
+                    $t("header.profile")
+                  }}</span></router-link
                 >
               </div>
             </div>

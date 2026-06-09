@@ -323,7 +323,7 @@ onMounted(() => {
       <div class="flex-grow px-8 py-8 overflow-y-auto custom-scrollbar">
         <div v-if="searchInput">
           <h3 class="mb-4 font-bold text-[9px] text-gray-400 uppercase tracking-[0.25em]">
-            {{ $t("search_modal.search_products") }}
+            {{ $t("search_modal.search_result") }}
           </h3>
 
           <div
