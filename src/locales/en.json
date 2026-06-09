@@ -278,5 +278,9 @@
     "tax_and_shipping" : "Tax and shipping calculated at checkout.",
     "checkout" : "Checkout",
     "processing" : "Processing..."
+  },
+  "chat" : {
+    "chat_page_title" : "Customer Support",
+    "select_admin" : "Select an admin below to start a conversation."
   }
 }

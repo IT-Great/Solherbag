@@ -277,5 +277,9 @@
     "tax_and_shipping": "Pajak dan ongkos kirim dihitung saat checkout.",
     "checkout": "Checkout",
     "processing": "Memproses..."
+  },
+  "chat" : {
+    "chat_page_title" : "Customer Support",
+    "select_admin" : "Silahkan pilih admin dibawah ini untuk memulai percakapan."
   }
 }
