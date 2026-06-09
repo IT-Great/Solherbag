@@ -274,7 +274,7 @@ onMounted(() => {
           <input
             v-model="searchInput"
             type="text"
-            placeholder="Search products..."
+            :placeholder="$t('search_modal.search_products')"
             class="flex-grow font-serif text-base placeholder-gray-300 bg-transparent border-none outline-none focus:ring-0"
             ref="searchInputRef"
           />
@@ -323,7 +323,7 @@ onMounted(() => {
       <div class="flex-grow px-8 py-8 overflow-y-auto custom-scrollbar">
         <div v-if="searchInput">
           <h3 class="mb-4 font-bold text-[9px] text-gray-400 uppercase tracking-[0.25em]">
-            Search Results
+            {{ $t("search_modal.search_products") }}
           </h3>
 
           <div
@@ -360,7 +360,7 @@ onMounted(() => {
           </div>
 
           <div v-else class="py-10 font-serif italic text-center text-gray-400">
-            No products found for "{{ searchInput }}".
+            {{ $t("search_modal.no_product_found") }} "{{ searchInput }}".
           </div>
 
           <div class="pt-6 mt-8 text-center border-t border-gray-100">
@@ -368,7 +368,7 @@ onMounted(() => {
               @click="viewAllResults"
               class="bg-black hover:bg-gray-800 text-white font-bold text-[10px] uppercase tracking-widest px-8 py-3 rounded-full transition-colors"
             >
-              View All Results
+              {{ $t("search_modal.view_all_results") }}
             </button>
           </div>
         </div>
@@ -377,13 +377,13 @@ onMounted(() => {
           <div v-if="recentlyViewed.length > 0" class="mb-10">
             <div class="flex items-end justify-between mb-4">
               <h3 class="font-bold text-[9px] text-gray-400 uppercase tracking-[0.25em]">
-                Recently Viewed
+                {{ $t("search_modal.recently_viewed") }}
               </h3>
               <button
                 @click="clearRecentlyViewed"
                 class="font-bold text-[9px] text-gray-300 hover:text-red-500 uppercase tracking-widest transition-colors"
               >
-                Clear
+                {{ $t("search_modal.clear") }}
               </button>
             </div>
             <div class="grid grid-cols-3 gap-4 md:grid-cols-4">
@@ -412,7 +412,7 @@ onMounted(() => {
             <h3
               class="mb-4 font-bold text-[9px] text-gray-400 uppercase tracking-[0.25em]"
             >
-              You May Also Like
+              {{ $t("search_modal.you_may_also_like") }}
             </h3>
             <div
               v-if="randomProducts.length === 0"
@@ -580,6 +580,7 @@ import { ref, onMounted, onUnmounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
 import { BASE_URL } from "../../../config/api";
+import { useI18n } from "vue-i18n";
 
 // [BARU] Import gambar default
 import defaultBagIcon from "../../../assets/products/bag_icon.jpg";
@@ -593,6 +594,8 @@ const searchInputRef = ref(null);
 const recentlyViewed = ref([]);
 const randomProducts = ref([]);
 const allProducts = ref([]);
+
+const { t } = useI18n();
 
 // Logika Pencarian Lokal (Real-time)
 const filteredSearchResults = computed(() => {
