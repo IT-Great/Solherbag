@@ -252,6 +252,10 @@
     "postal_code": "Kode Pos",
     "delete": "Hapus",
     "cancel": "Batal",
-    "save_address": "Simpan Alamat"
+    "save_address": "Simpan Alamat",
+    "active_member" : "Member Aktif",
+    "locked" : "Terkunci",
+    "add_new_address" : "Tambah Alamat Baru",
+    "edit_address" : "Ubah Alamat"
   }
 }
