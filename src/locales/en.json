@@ -111,7 +111,7 @@
     "title": "Contact Us",
     "history_btn": "My Inquiries History",
     "name": "Name",
-    "email": "Email",
+    "email": "Email Address",
     "phone": "Phone (Optional)",
     "description": "Description",
     "placeholder_name": "John Doe",
@@ -130,5 +130,14 @@
     "success_title": "Sent!",
     "success_text": "Thank you! Your message has been sent successfully.",
     "error_title": "Error"
+  },
+  "search_modal" : {
+    "search_products" : "Search products...",
+    "search_result" : "Search Results",
+    "no_product_found" : "No products found for",
+    "view_all_results" : "View All Results",
+    "recently_viewed" : "Recently Viewed",
+    "clear" : "Clear",
+    "you_may_also_like" : "You May Also Like"
   }
 }

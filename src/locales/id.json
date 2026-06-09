@@ -111,7 +111,7 @@
     "title": "Kontak Kami",
     "history_btn": "Riwayat Pertanyaan Saya",
     "name": "Nama",
-    "email": "Email",
+    "email": "Alamat Email",
     "phone": "Telepon (Opsional)",
     "description": "Deskripsi",
     "placeholder_name": "John Doe",
@@ -129,5 +129,14 @@
     "success_title": "Terkirim!",
     "success_text": "Terima kasih! Pesan Anda telah berhasil dikirim.",
     "error_title": "Kesalahan"
+  },
+  "search_modal": {
+    "search_products": "Cari produk...",
+    "search_result": "Hasil Pencarian",
+    "no_product_found": "Tidak ada produk yang ditemukan untuk",
+    "view_all_results": "Lihat Semua Hasil",
+    "recently_viewed": "Terakhir Dilihat",
+    "clear": "Hapus",
+    "you_may_also_like": "Anda Mungkin Juga Suka"
   }
 }
