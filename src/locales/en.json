@@ -46,29 +46,6 @@
     "shipping": "Shipping Policy",
     "refund": "Refund Policy"
   },
-  "contact": {
-    "title": "Contact Us",
-    "history_btn": "My Inquiries History",
-    "name": "Name",
-    "email": "Email",
-    "phone": "Phone (Optional)",
-    "description": "Description",
-    "placeholder_name": "John Doe",
-    "placeholder_email": "john@example.com",
-    "placeholder_phone": "+62 812 3456 7890",
-    "placeholder_desc": "How can we help you?",
-    "send": "Send Message",
-    "sending": "Sending...",
-    "history_title": "My Inquiries",
-    "no_history": "You haven't sent any messages yet.",
-    "answered": "Answered",
-    "awaiting": "Awaiting Reply",
-    "reply_from": "Reply from Solher",
-    "no_reply_yet": "Our team hasn't replied yet. Please check back later.",
-    "success_title": "Sent!",
-    "success_text": "Thank you! Your message has been sent successfully.",
-    "error_title": "Error"
-  },
   "collection": {
     "products": "Products",
     "search_placeholder": "Search our collection...",
@@ -129,5 +106,28 @@
     "popup_enter_email" : "Enter your email to unlock your offer…",
     "popup_claim_btn" : "Claim My Rp 250.000 OFF",
     "popup_fourth_cta" : "No spam. Only the good stuff."
+  },
+  "contact": {
+    "title": "Contact Us",
+    "history_btn": "My Inquiries History",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone (Optional)",
+    "description": "Description",
+    "placeholder_name": "John Doe",
+    "placeholder_email": "john@example.com",
+    "placeholder_phone": "+62 812 3456 7890",
+    "placeholder_desc": "How can we help you?",
+    "send": "Send Message",
+    "sending": "Sending...",
+    "history_title": "My Inquiries",
+    "no_history": "You haven't sent any messages yet.",
+    "answered": "Answered",
+    "awaiting": "Awaiting Reply",
+    "reply_from": "Reply from Solher",
+    "no_reply_yet": "Our team hasn't replied yet. Please check back later.",
+    "success_title": "Sent!",
+    "success_text": "Thank you! Your message has been sent successfully.",
+    "error_title": "Error"
   }
 }
