@@ -183,5 +183,32 @@
     "orders" : "orders",
     "previous" : "Previous",
     "next" : "Next"
+  },
+  "tracking" : {
+    "back_to_order" : "Back to Orders",
+    "shipment_tracking" : "Shipment Tracking",
+    "fetching_order" : "Fetching order details...",
+    "waybill" : "Waybill / Resi",
+    "waiting_for_courier" : "Waiting for Courier...",
+    "payment" : "Payment",
+    "courier" : "Courier",
+    "origin_detail" : "Origin Details",
+    "sender_name" : "Sender Name",
+    "full_address" : "Full Address",
+    "postal_code" : "Postal Code:",
+    "courier_note" : "Courier Note",
+    "waiting_courier_loc" : "Menunggu data lokasi kurir (Origin & Destination) tersedia dari ekspedisi...",
+    "order_summary" : "Order Summary",
+    "color" : "Color:",
+    "subtotal_products" : "Subtotal for Products",
+    "shipping_cost" : "Shipping Cost",
+    "promo_applied" : "Promo Applied",
+    "points_redeemed" : "Points Redeemed",
+    "grand_total" : "Grand Total",
+    "loyalty_reward" : "Loyalty Reward",
+    "points_credited" : "Points credited to your account",
+    "tracking_timeline" : "Tracking Timeline",
+    "destination_details" : "Destination Details",
+    "recipient_name" : "Recipient Name"
   }
 }

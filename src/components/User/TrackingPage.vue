@@ -1558,12 +1558,12 @@ onMounted(fetchAllData);
           @click="$router.push('/orderpage')"
           class="text-gray-500 hover:text-black font-bold text-xs uppercase tracking-widest transition flex items-center gap-2 mb-6"
         >
-          <span>&larr;</span> Back to Orders
+          <span>&larr;</span> {{ $t("tracking.back_to_order") }}
         </button>
         <h1
           class="font-serif text-3xl md:text-4xl uppercase tracking-tighter text-gray-900"
         >
-          Shipment Tracking
+          {{ $t("tracking.shipment_tracking") }}
         </h1>
       </div>
     </div>
@@ -1575,7 +1575,7 @@ onMounted(fetchAllData);
       <p
         class="mt-4 font-bold text-gray-400 text-xs uppercase tracking-widest animate-pulse"
       >
-        Fetching order details...
+        {{ $t("tracking.fetching_order") }}
       </p>
     </div>
 
@@ -1593,13 +1593,13 @@ onMounted(fetchAllData);
         >
           <div>
             <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
-              Waybill / Resi
+              {{ $t("tracking.waybill") }}
             </p>
             <p class="font-mono font-bold text-xl text-black">
               {{
                 trackingData?.courier?.waybill_id ||
                 orderData.tracking_number ||
-                "Waiting for Courier..."
+                $t("tracking.waiting_for_courier")
               }}
             </p>
             <div class="mt-3 flex flex-wrap items-center gap-3">
@@ -1619,7 +1619,7 @@ onMounted(fetchAllData);
               <p
                 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2"
               >
-                Payment
+                {{ $t("tracking.payment") }}
               </p>
               <div class="flex items-center gap-3">
                 <div
@@ -1646,7 +1646,7 @@ onMounted(fetchAllData);
               <p
                 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2"
               >
-                Courier
+                {{ $t("tracking.courier") }}
               </p>
               <div class="flex items-center gap-3">
                 <div
@@ -1690,12 +1690,12 @@ onMounted(fetchAllData);
             <div class="flex items-center gap-2 mb-4 border-b border-gray-100 pb-2">
               <span class="w-2 h-2 rounded-full bg-gray-300"></span>
               <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-                Origin Details
+                {{ $t("tracking.origin_detail") }}
               </p>
             </div>
             <div>
               <p class="text-[10px] text-gray-400 uppercase tracking-widest">
-                Sender Name
+                {{ $t("tracking.sender_name") }}
               </p>
               <p class="font-bold text-gray-900">
                 {{ trackingData.origin?.contact_name || "-" }}
@@ -1709,12 +1709,13 @@ onMounted(fetchAllData);
             </div>
             <div>
               <p class="text-[10px] text-gray-400 uppercase tracking-widest">
-                Full Address
+                {{ $t("tracking.full_address") }}
               </p>
               <p class="text-gray-600 leading-relaxed text-xs">
                 {{ trackingData.origin?.address || "-" }}<br />
                 <span v-if="trackingData.origin?.postal_code" class="font-bold"
-                  >Postal Code: {{ trackingData.origin.postal_code }}</span
+                  >{{ $t("tracking.postal_code") }}
+                  {{ trackingData.origin.postal_code }}</span
                 >
               </p>
             </div>
@@ -1724,12 +1725,12 @@ onMounted(fetchAllData);
             <div class="flex items-center gap-2 mb-4 border-b border-gray-100 pb-2">
               <span class="w-2 h-2 rounded-full bg-black"></span>
               <p class="text-[10px] font-bold text-black uppercase tracking-widest">
-                Destination Details
+                {{ $t("tracking.destination_details") }}
               </p>
             </div>
             <div>
               <p class="text-[10px] text-gray-400 uppercase tracking-widest">
-                Recipient Name
+                {{ $t("tracking.recipient_name") }}
               </p>
               <p class="font-bold text-gray-900">
                 {{ trackingData.destination?.contact_name || "-" }}
@@ -1743,18 +1744,19 @@ onMounted(fetchAllData);
             </div>
             <div>
               <p class="text-[10px] text-gray-400 uppercase tracking-widest">
-                Full Address
+                {{ $t("tracking.full_address") }}
               </p>
               <p class="text-gray-600 leading-relaxed text-xs">
                 {{ trackingData.destination?.address || "-" }}<br />
                 <span v-if="trackingData.destination?.postal_code" class="font-bold"
-                  >Postal Code: {{ trackingData.destination.postal_code }}</span
+                  >{{ $t("tracking.postal_code") }}
+                  {{ trackingData.destination.postal_code }}</span
                 >
               </p>
             </div>
             <div v-if="trackingData.destination?.note">
               <p class="text-[10px] text-gray-400 uppercase tracking-widest">
-                Courier Note
+                {{ $t("tracking.courier_note") }}
               </p>
               <p class="text-gray-500 italic text-xs bg-gray-50 p-2 rounded border">
                 "{{ trackingData.destination.note }}"
@@ -1763,7 +1765,7 @@ onMounted(fetchAllData);
           </div>
         </div>
         <div v-else class="p-6 md:p-8 text-center bg-white text-gray-400 text-xs italic">
-          Menunggu data lokasi kurir (Origin & Destination) tersedia dari ekspedisi...
+          {{ $t("tracking.waiting_courier_loc") }}
         </div>
       </div>
 
@@ -1834,7 +1836,7 @@ onMounted(fetchAllData);
       >
         <div class="bg-gray-50 p-4 border-b border-gray-100">
           <h3 class="font-bold text-xs uppercase tracking-widest text-gray-500 ml-2">
-            Order Summary
+            {{ $t("tracking.order_summary") }}
           </h3>
         </div>
 
@@ -1857,7 +1859,8 @@ onMounted(fetchAllData);
                   v-if="detail.color"
                   class="text-[10px] text-gray-500 uppercase tracking-widest mt-0.5"
                 >
-                  Color: <span class="font-bold text-gray-700">{{ detail.color }}</span>
+                  {{ $t("tracking.color") }}
+                  <span class="font-bold text-gray-700">{{ detail.color }}</span>
                 </p>
                 <p class="text-gray-400 text-xs mt-1">
                   {{ detail.quantity }} x {{ formatPrice(detail.price) }}
@@ -1871,11 +1874,11 @@ onMounted(fetchAllData);
 
           <div class="border-t border-gray-100 pt-4 space-y-2">
             <div class="flex justify-between text-xs text-gray-500">
-              <span>Subtotal for Products</span>
+              <span>{{ $t("tracking.subtotal_products") }}</span>
               <span>{{ formatPrice(orderData.total_amount) }}</span>
             </div>
             <div class="flex justify-between text-xs text-gray-500">
-              <span>Shipping Cost</span>
+              <span>{{ $t("tracking.shipping_cost") }}</span>
               <span>{{ formatPrice(orderData.shipping_cost) }}</span>
             </div>
             <div
@@ -1883,7 +1886,7 @@ onMounted(fetchAllData);
               class="flex justify-between text-xs text-green-600 font-medium"
             >
               <span
-                >Promo Applied (<span class="font-mono uppercase">{{
+                >{{ $t("tracking.promo_applied") }} (<span class="font-mono uppercase">{{
                   orderData.promo_code
                 }}</span
                 >)</span
@@ -1895,15 +1898,20 @@ onMounted(fetchAllData);
               v-if="orderData.points_used > 0"
               class="flex justify-between text-xs text-yellow-600 font-medium"
             >
-              <span>Points Redeemed ({{ orderData.points_used }} Pts)</span>
+              <span
+                >{{ $t("tracking.points_redeemed") }} ({{
+                  orderData.points_used
+                }}
+                Pts)</span
+              >
               <span>- {{ formatPrice(orderData.points_used * 1000) }}</span>
             </div>
             <div
               class="flex justify-between items-center mt-4 pt-4 border-t border-gray-200 border-dashed"
             >
-              <span class="font-bold text-[10px] uppercase tracking-widest text-black"
-                >Grand Total</span
-              >
+              <span class="font-bold text-[10px] uppercase tracking-widest text-black">{{
+                $t("tracking.grand_total")
+              }}</span>
               <span class="font-black text-xl text-black">{{
                 formatPrice(getGrandTotal(orderData))
               }}</span>
@@ -1937,10 +1945,10 @@ onMounted(fetchAllData);
                 <p
                   class="text-[10px] font-bold text-yellow-800 uppercase tracking-widest"
                 >
-                  Loyalty Reward
+                  {{ $t("tracking.loyalty_reward") }}
                 </p>
                 <p class="text-xs text-gray-500 mt-0.5">
-                  Points credited to your account
+                  {{ $t("tracking.points_credited") }}
                 </p>
               </div>
             </div>
@@ -1958,7 +1966,7 @@ onMounted(fetchAllData);
         <h3
           class="font-bold text-sm uppercase tracking-widest border-b border-gray-100 pb-4 mb-6"
         >
-          Tracking Timeline
+          {{ $t("tracking.tracking_timeline") }}
         </h3>
 
         <div class="relative border-l-2 border-gray-100 ml-3 space-y-8">
@@ -1996,6 +2004,8 @@ import { BASE_URL } from "../../config/api";
 
 import defaultBagIcon from "../../assets/products/bag_icon.jpg";
 
+import { useI18n } from "vue-i18n";
+
 const userData = ref(null);
 
 const route = useRoute();
@@ -2005,6 +2015,8 @@ const orderData = ref(null);
 const trackingData = ref(null);
 const isLoading = ref(true);
 const error = ref(null);
+
+const { t } = useI18n();
 
 const paymentMethodInfo = ref(history.state?.paymentMethod || "");
 

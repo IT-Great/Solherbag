@@ -182,5 +182,32 @@
     "orders": "pesanan",
     "previous": "Sebelumnya",
     "next": "Selanjutnya"
+  },
+  "tracking": {
+    "back_to_order": "Kembali ke Pesanan",
+    "shipment_tracking": "Pelacakan Pengiriman",
+    "fetching_order": "Mengambil detail pesanan...",
+    "waybill": "Nomor Resi",
+    "waiting_for_courier": "Menunggu Kurir...",
+    "payment": "Pembayaran",
+    "courier": "Kurir",
+    "origin_detail": "Detail Asal",
+    "sender_name": "Nama Pengirim",
+    "full_address": "Alamat Lengkap",
+    "postal_code": "Kode Pos:",
+    "courier_note": "Catatan Kurir",
+    "waiting_courier_loc": "Menunggu data lokasi kurir (Origin & Destination) tersedia dari ekspedisi...",
+    "order_summary": "Ringkasan Pesanan",
+    "color": "Warna:",
+    "subtotal_products": "Subtotal Produk",
+    "shipping_cost": "Ongkos Kirim",
+    "promo_applied": "Promo Digunakan",
+    "points_redeemed": "Poin Ditukarkan",
+    "grand_total": "Total Keseluruhan",
+    "loyalty_reward": "Reward Loyalitas",
+    "points_credited": "Poin ditambahkan ke akun Anda",
+    "tracking_timeline": "Linimasa Pelacakan",
+    "destination_details" : "Alamat Lengkap",
+    "recipient_name" : "Nama Penerima"
   }
 }
