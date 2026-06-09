@@ -395,7 +395,7 @@ const handleSubmit = async () => {
 };
 </script> -->
 
-<!-- <template>
+<template>
   <section class="min-h-screen px-4 py-16 bg-[#E5E7EB] md:px-6 md:py-24">
     <div class="relative max-w-2xl mx-auto">
       <div v-if="isLoggedIn" class="flex justify-end mb-6 md:mb-8">
@@ -417,14 +417,14 @@ const handleSubmit = async () => {
               d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
-          My Inquiries History
+          {{ $t("contact.history_btn") }}
         </button>
       </div>
 
       <h1
         class="mb-10 font-serif text-4xl tracking-wide text-center text-black uppercase md:text-5xl md:mb-12"
       >
-        Contact Us
+        {{ $t("contact.title") }}
       </h1>
 
       <form
@@ -434,7 +434,7 @@ const handleSubmit = async () => {
         <div class="flex flex-col">
           <label
             class="mb-2 text-[10px] font-bold text-gray-500 uppercase tracking-widest"
-            >Name</label
+            >{{ $t("contact.name") }}</label
           >
           <input
             v-model="form.name"
@@ -454,7 +454,7 @@ const handleSubmit = async () => {
         <div class="flex flex-col">
           <label
             class="mb-2 text-[10px] font-bold text-gray-500 uppercase tracking-widest"
-            >Email</label
+            >{{ $t("contact.email") }}</label
           >
           <input
             v-model="form.email"
@@ -474,7 +474,7 @@ const handleSubmit = async () => {
         <div class="flex flex-col">
           <label
             class="mb-2 text-[10px] font-bold text-gray-500 uppercase tracking-widest"
-            >Phone (Optional)</label
+            >{{ $t("contact.phone") }}</label
           >
           <input
             v-model="form.phone"
@@ -493,14 +493,14 @@ const handleSubmit = async () => {
         <div class="flex flex-col">
           <label
             class="mb-2 text-[10px] font-bold text-gray-500 uppercase tracking-widest"
-            >Description</label
+            >{{ $t("contact.description") }}</label
           >
           <textarea
             v-model="form.description"
             rows="6"
             class="p-3.5 text-sm transition-colors bg-white border border-gray-300 resize-none hover:border-gray-400 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
             required
-            placeholder="How can we help you?"
+            :placeholder="$t('contact.placeholder_desc')"
           ></textarea>
         </div>
 
@@ -510,7 +510,7 @@ const handleSubmit = async () => {
             :disabled="loading"
             class="w-full md:w-auto bg-[#1A1A1A] hover:bg-black disabled:bg-gray-400 disabled:cursor-not-allowed shadow-xl shadow-black/20 hover:shadow-black/40 px-12 py-4 font-bold text-white text-[10px] sm:text-xs uppercase tracking-[0.2em] rounded-xl transition-all duration-300"
           >
-            {{ loading ? "Sending..." : "Send Message" }}
+            {{ loading ? $t("contact.sending") : $t("contact.send") }}
           </button>
         </div>
       </form>
@@ -528,7 +528,7 @@ const handleSubmit = async () => {
             class="flex items-center justify-between p-6 bg-white border-b border-gray-200 shrink-0 sm:p-8"
           >
             <h2 class="font-serif text-2xl tracking-tighter uppercase sm:text-3xl">
-              My Inquiries
+              {{ $t("contact.history_title") }}
             </h2>
             <button
               @click="showHistoryModal = false"
@@ -562,7 +562,7 @@ const handleSubmit = async () => {
               <p
                 class="mt-4 text-xs font-bold tracking-widest text-gray-500 uppercase animate-pulse"
               >
-                Loading history...
+                {{ $t("contact.loading_history") }}
               </p>
             </div>
 
@@ -585,7 +585,7 @@ const handleSubmit = async () => {
                 />
               </svg>
               <p class="font-serif text-xl italic text-gray-500">
-                You haven't sent any messages yet.
+                {{ $t("contact.no_history") }}
               </p>
             </div>
 
@@ -619,7 +619,7 @@ const handleSubmit = async () => {
                     "
                     class="px-2.5 py-1 border rounded-md text-[9px] font-black uppercase tracking-wider shadow-sm"
                   >
-                    {{ item.response ? "Answered" : "Awaiting Reply" }}
+                    {{ item.response ? $t("contact.answered") : $t("contact.awaiting") }}
                   </span>
                 </div>
 
@@ -644,7 +644,7 @@ const handleSubmit = async () => {
                       />
                       <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                     </svg>
-                    Reply from Solher
+                    {{ $t("contact.reply_from") }}
                   </p>
 
                   <p
@@ -654,7 +654,7 @@ const handleSubmit = async () => {
                     {{ item.response }}
                   </p>
                   <p v-else class="text-xs italic text-gray-400">
-                    Our team hasn't replied yet. Please check back later.
+                    {{ $t("contact.no_reply_yet") }}
                   </p>
                 </div>
               </div>
@@ -671,6 +671,7 @@ import { ref, onMounted, watch } from "vue";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
+import { useI18n } from "vue-i18n";
 
 const isLoggedIn = ref(false);
 const loading = ref(false);
@@ -684,6 +685,8 @@ const form = ref({
 const showHistoryModal = ref(false);
 const isLoadingHistory = ref(false);
 const histories = ref([]);
+
+const { t } = useI18n();
 
 onMounted(() => {
   const user = localStorage.getItem("user");
@@ -784,8 +787,9 @@ const handleSubmit = async () => {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #d1d5db;
 }
-</style> -->
+</style>
 
+<!-- 
 <template>
   <section class="min-h-screen px-4 py-16 bg-[#E5E7EB] md:px-6 md:py-24">
     <div class="relative max-w-2xl mx-auto">
@@ -1178,4 +1182,4 @@ const handleSubmit = async () => {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #d1d5db;
 }
-</style>
+</style> -->

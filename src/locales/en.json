@@ -121,6 +121,7 @@
     "send": "Send Message",
     "sending": "Sending...",
     "history_title": "My Inquiries",
+    "loading_history" : "Loading history...",
     "no_history": "You haven't sent any messages yet.",
     "answered": "Answered",
     "awaiting": "Awaiting Reply",
