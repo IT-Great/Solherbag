@@ -258,5 +258,25 @@
     "locked" : "Locked",
     "add_new_address" : "Add New Address",
     "edit_address" : "Edit Address"
+  },
+  "cart" : {
+    "your_bag" : "Your Bag",
+    "your_bag_empty" : "Your bag is currently empty.",
+    "continue_shopping" : "Continue Shopping",
+    "select_all_items" : "Select All Items",
+    "color" : "Color:",
+    "remove" : "Remove",
+    "out_of_stock_1" : "Out of stock! Maximum",
+    "out_of_stock_2" : "reached.",
+    "stock_left_1" : "Hurry! Only",
+    "stock_left_2" : "left.",
+    "you_may_also_like" : "You May Also Like",
+    "add_this_product" : "Add This Product",
+    "order_summary" : "Order Summary",
+    "select_items" : "Selected Items",
+    "estimated_total" : "Estimated Total",
+    "tax_and_shipping" : "Tax and shipping calculated at checkout.",
+    "checkout" : "Checkout",
+    "processing" : "Processing..."
   }
 }

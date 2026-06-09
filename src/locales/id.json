@@ -253,9 +253,29 @@
     "delete": "Hapus",
     "cancel": "Batal",
     "save_address": "Simpan Alamat",
-    "active_member" : "Member Aktif",
-    "locked" : "Terkunci",
-    "add_new_address" : "Tambah Alamat Baru",
-    "edit_address" : "Ubah Alamat"
+    "active_member": "Member Aktif",
+    "locked": "Terkunci",
+    "add_new_address": "Tambah Alamat Baru",
+    "edit_address": "Ubah Alamat"
+  },
+  "cart": {
+    "your_bag": "Tas Belanja Anda",
+    "your_bag_empty": "Tas belanja Anda saat ini kosong.",
+    "continue_shopping": "Lanjutkan Belanja",
+    "select_all_items": "Pilih Semua Produk",
+    "color": "Warna:",
+    "remove": "Hapus",
+    "out_of_stock_1": "Stok habis! Maksimum",
+    "out_of_stock_2": "tercapai.",
+    "stock_left_1": "Buruan! Sisa",
+    "stock_left_2": "lagi.",
+    "you_may_also_like": "Anda Mungkin Juga Suka",
+    "add_this_product": "Tambah Produk Ini",
+    "order_summary": "Ringkasan Pesanan",
+    "select_items": "Produk Terpilih",
+    "estimated_total": "Estimasi Total",
+    "tax_and_shipping": "Pajak dan ongkos kirim dihitung saat checkout.",
+    "checkout": "Checkout",
+    "processing": "Memproses..."
   }
 }

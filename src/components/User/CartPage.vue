@@ -1085,7 +1085,9 @@ onMounted(() => {
           <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
         </svg>
       </button>
-      <h1 class="font-serif text-4xl tracking-tighter uppercase md:text-5xl">Your Bag</h1>
+      <h1 class="font-serif text-4xl tracking-tighter uppercase md:text-5xl">
+        {{ $t("cart.your_bag") }}
+      </h1>
       <span class="ml-2 font-sans text-xl text-gray-400">({{ cartCount }} items)</span>
     </div>
 
@@ -1096,13 +1098,13 @@ onMounted(() => {
           class="py-20 text-center border-t border-gray-100"
         >
           <p class="mb-6 font-serif text-2xl italic text-gray-400">
-            Your bag is currently empty.
+            {{ $t("cart.your_bag_empty") }}
           </p>
           <button
             @click="$router.push('/collections')"
             class="px-8 py-4 text-xs font-bold tracking-widest text-white uppercase transition bg-black rounded-full hover:bg-gray-800"
           >
-            Continue Shopping
+            {{ $t("cart.continue_shopping") }}
           </button>
         </div>
 
@@ -1117,7 +1119,7 @@ onMounted(() => {
             <label
               for="selectAll"
               class="text-xs font-bold tracking-widest text-gray-800 uppercase cursor-pointer select-none"
-              >Select All Items</label
+              >{{ $t("cart.select_all_items") }}</label
             >
           </div>
 
@@ -1172,7 +1174,7 @@ onMounted(() => {
                       v-if="item.color"
                       class="text-[10px] sm:text-xs text-gray-500 uppercase tracking-widest mt-1"
                     >
-                      Color:
+                      {{ $t("cart.color") }}
                       <span class="font-bold text-gray-800">{{
                         parseColorName(item.color)
                       }}</span>
@@ -1235,7 +1237,7 @@ onMounted(() => {
                         d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                       />
                     </svg>
-                    Remove
+                    {{ $t("cart.remove") }}
                   </button>
                 </div>
 
@@ -1244,13 +1246,15 @@ onMounted(() => {
                     v-if="item.quantity >= item.product.stock"
                     class="font-bold text-[9px] sm:text-[10px] text-red-600 uppercase tracking-tighter animate-pulse"
                   >
-                    Out of stock! Maximum {{ item.product.stock }} reached.
+                    {{ $t("cart.out_of_stock_1") }} {{ item.product.stock }}
+                    {{ $t("cart.out_of_stock_2") }}
                   </p>
                   <p
                     v-else-if="item.product.stock < 5"
                     class="text-[9px] sm:text-[10px] text-amber-600 italic font-medium"
                   >
-                    Hurry! Only {{ item.product.stock }} left.
+                    {{ $t("cart.stock_left_1") }} {{ item.product.stock }}
+                    {{ $t("cart.stock_left_2") }}.
                   </p>
                 </div>
               </div>
@@ -1259,7 +1263,7 @@ onMounted(() => {
 
           <div class="pt-12 border-t border-gray-100">
             <h3 class="mb-6 text-sm font-bold tracking-widest text-gray-800 uppercase">
-              You May Also Like
+              {{ $t("cart.you_may_also_like") }}
             </h3>
 
             <div v-if="isLoadingProducts" class="grid grid-cols-2 gap-6 md:grid-cols-4">
@@ -1320,7 +1324,7 @@ onMounted(() => {
                   @click="addSuggestedProduct(product)"
                   class="mt-auto border border-gray-200 hover:border-black hover:bg-black hover:text-white rounded-xl py-2 px-3 text-[9px] font-bold uppercase tracking-widest transition-all duration-300"
                 >
-                  Add This Product
+                  {{ $t("cart.add_this_product") }}
                 </button>
               </div>
             </TransitionGroup>
@@ -1333,24 +1337,24 @@ onMounted(() => {
           <h2
             class="pb-4 mb-8 text-lg font-bold tracking-widest text-gray-900 uppercase border-b border-gray-200"
           >
-            Order Summary
+            {{ $t("cart.order_summary") }}
           </h2>
 
           <div class="mb-8 space-y-4">
             <div class="flex justify-between text-sm text-gray-600">
-              <span>Selected Items</span>
+              <span>{{ $t("cart.select_items") }}</span>
               <span class="font-bold text-black">{{ checkoutCount }}</span>
             </div>
             <div class="flex items-end justify-between pt-4 border-t border-gray-200">
-              <span class="font-bold text-gray-500 text-xs uppercase tracking-[0.2em]"
-                >Estimated Total</span
-              >
+              <span class="font-bold text-gray-500 text-xs uppercase tracking-[0.2em]">{{
+                $t("cart.estimated_total")
+              }}</span>
               <span class="text-2xl font-black text-black">{{
                 formatPrice(checkoutTotalAmount)
               }}</span>
             </div>
             <p class="text-[10px] text-gray-400 italic text-right mt-1">
-              Tax and shipping calculated at checkout.
+              {{ $t("cart.tax_and_shipping") }}
             </p>
           </div>
 
@@ -1360,13 +1364,13 @@ onMounted(() => {
             class="bg-black hover:bg-gray-800 disabled:bg-gray-300 shadow-xl hover:shadow-black/20 py-5 rounded-2xl w-full font-bold text-white text-sm uppercase tracking-[0.3em] transition-all duration-300 flex justify-center items-center gap-3"
           >
             <span v-if="!isProcessingCheckout"
-              >Checkout ({{ selectedItemIds.length }})</span
+              >{{ $t("cart.checkout") }} ({{ selectedItemIds.length }})</span
             >
             <span v-else class="flex items-center gap-2"
               ><div
                 class="w-4 h-4 border-2 rounded-full border-white/40 border-t-white animate-spin"
               ></div>
-              Processing...</span
+              {{ $t("cart.processing") }}</span
             >
           </button>
         </div>
