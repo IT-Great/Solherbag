@@ -6308,7 +6308,7 @@ onUnmounted(() => {
   <div class="min-h-screen px-6 py-20 mx-auto max-w-7xl">
     <div class="flex items-center justify-between mb-10">
       <h1 class="font-serif text-4xl tracking-tighter text-gray-900 uppercase">
-        Track My Orders
+        {{ $t("order.track_my_order") }}
       </h1>
     </div>
 
@@ -6436,7 +6436,9 @@ onUnmounted(() => {
       </div>
 
       <div class="flex items-center w-full gap-2 md:w-auto">
-        <span class="text-xs font-bold tracking-wide text-gray-400 uppercase">Show:</span>
+        <span class="text-xs font-bold tracking-wide text-gray-400 uppercase">{{
+          $t("order.show")
+        }}</span>
         <select
           v-model="itemsPerPage"
           class="px-3 py-2 text-sm font-bold border border-gray-200 outline-none cursor-pointer bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
@@ -6501,12 +6503,12 @@ onUnmounted(() => {
       v-else-if="filteredTransactions.length === 0"
       class="p-12 text-center bg-white border border-gray-100 rounded-2xl animate-fade-in"
     >
-      <p class="italic text-gray-400">No orders found matching the selected filters.</p>
+      <p class="italic text-gray-400">{{ $t("order.no_order") }}</p>
       <button
         @click="resetFilters"
         class="inline-block mt-6 text-xs font-bold tracking-widest text-black underline uppercase"
       >
-        Clear Filters
+        {{ $t("order.clear_filter") }}
       </button>
     </div>
 
@@ -6524,7 +6526,7 @@ onUnmounted(() => {
               <p
                 class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-1"
               >
-                Order ID
+                {{ $t("order.order_id") }}
               </p>
               <p class="font-mono text-sm font-bold text-gray-800">
                 {{ order.order_id }}
@@ -6534,7 +6536,7 @@ onUnmounted(() => {
               <p
                 class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-1"
               >
-                Date
+                {{ $t("order.date") }}
               </p>
               <p class="text-xs font-bold text-gray-800">
                 {{ formatDateTime(order.created_at) }}
@@ -6546,8 +6548,9 @@ onUnmounted(() => {
             <div
               class="flex items-center justify-between w-full gap-3 md:justify-end md:w-auto"
             >
-              <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
-                >Transaction:</span
+              <span
+                class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
+                >{{ $t("order.transaction") }}</span
               >
               <span
                 :class="statusClass(order.status)"
@@ -6561,8 +6564,9 @@ onUnmounted(() => {
               v-if="order.shipping_method === 'biteship'"
               class="flex items-center justify-between w-full gap-3 md:justify-end md:w-auto"
             >
-              <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
-                >Shipping:</span
+              <span
+                class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
+                >{{ $t("order.shipping") }}</span
               >
               <span
                 :class="shippingStatusClass(order.shipping_status)"
@@ -6575,12 +6579,13 @@ onUnmounted(() => {
               v-else-if="order.shipping_method === 'free'"
               class="flex items-center justify-between w-full gap-3 md:justify-end md:w-auto"
             >
-              <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
-                >Shipping:</span
+              <span
+                class="text-[9px] font-bold text-gray-400 uppercase tracking-widest"
+                >{{ $t("order.shipping") }}</span
               >
               <span
                 class="px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-tighter border bg-gray-100 text-gray-600"
-                >In-Store Pickup</span
+                >{{ $t("order.in_store") }}</span
               >
             </div>
           </div>
@@ -6609,7 +6614,7 @@ onUnmounted(() => {
               <p
                 class="text-[8px] font-bold text-yellow-800 uppercase tracking-widest leading-none"
               >
-                Points Earned
+                {{ $t("order.points_earned") }}
               </p>
               <p class="text-sm font-black leading-tight text-yellow-600">
                 +{{ order.point }} Pts
@@ -6629,7 +6634,7 @@ onUnmounted(() => {
             <p
               class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-3"
             >
-              Payment Info
+              {{ $t("order.payment_info") }}
             </p>
             <div v-if="order.payment_method" class="flex items-center gap-3">
               <div
@@ -6652,25 +6657,27 @@ onUnmounted(() => {
                   class="text-[10px] text-teal-600 font-bold mt-0.5"
                   v-if="order.status === 'refunded'"
                 >
-                  REFUNDED
+                  {{ $t("order.refunded") }}
                 </p>
                 <p
                   class="text-[10px] text-red-600 font-bold mt-0.5"
                   v-else-if="order.status === 'cancelled'"
                 >
-                  EXPIRED / CANCELLED
+                  {{ $t("order.expired_cancelled") }}
                 </p>
                 <p
                   class="text-[10px] text-orange-500 font-bold mt-0.5"
                   v-else-if="canPay(order.status)"
                 >
-                  UNPAID
+                  {{ $t("order.unpaid") }}
                 </p>
-                <p class="text-[10px] text-green-600 font-bold mt-0.5" v-else>PAID</p>
+                <p class="text-[10px] text-green-600 font-bold mt-0.5" v-else>
+                  {{ $t("order.paid") }}
+                </p>
               </div>
             </div>
             <p v-else class="text-xs italic text-gray-400">
-              Waiting for payment selection...
+              {{ $t("order.waiting_payment") }}
             </p>
           </div>
 
@@ -6678,7 +6685,7 @@ onUnmounted(() => {
             <p
               class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-3"
             >
-              Shipping Info
+              {{ $t("order.shipping_info") }}
             </p>
             <div v-if="order.shipping_method === 'free'" class="flex items-center gap-3">
               <div
@@ -6700,9 +6707,11 @@ onUnmounted(() => {
                 </svg>
               </div>
               <div>
-                <p class="text-xs font-bold text-gray-800 uppercase">No Courier</p>
+                <p class="text-xs font-bold text-gray-800 uppercase">
+                  {{ $t("order.no_courier") }}
+                </p>
                 <p class="text-[10px] text-gray-500 font-medium mt-0.5">
-                  In-store Payment / Pickup
+                  {{ $t("order.in_store_payment") }}
                 </p>
               </div>
             </div>
@@ -6728,7 +6737,7 @@ onUnmounted(() => {
                   {{ order.courier_company }} - {{ order.courier_type }}
                 </p>
                 <p class="text-[10px] text-gray-500 mt-0.5">
-                  Resi:
+                  {{ $t("order.resi") }}
                   <span class="font-mono font-bold text-black">{{
                     order.tracking_number || "Waiting..."
                   }}</span>
@@ -6737,7 +6746,7 @@ onUnmounted(() => {
             </div>
 
             <div v-else class="text-xs italic text-gray-400">
-              Setup shipping at checkout
+              {{ $t("order.setup_shipping") }}
             </div>
           </div>
         </div>
@@ -6755,7 +6764,7 @@ onUnmounted(() => {
             v-if="canPay(order.status) && countdowns[order.id] !== 'Expired'"
             class="my-3 text-blue-600 text-[10px] text-center uppercase tracking-widest animate-pulse font-bold bg-blue-50 py-2 rounded-lg"
           >
-            Tap anywhere here to complete payment
+            {{ $t("order.tap_anywhere") }}
           </div>
 
           <div
@@ -6775,7 +6784,8 @@ onUnmounted(() => {
                 v-if="detail.color"
                 class="text-[10px] text-gray-500 uppercase tracking-widest mt-0.5"
               >
-                Color: <span class="font-bold text-gray-800">{{ detail.color }}</span>
+                {{ $t("order.color") }}
+                <span class="font-bold text-gray-800">{{ detail.color }}</span>
               </p>
               <p class="text-xs text-gray-400">
                 {{ detail.quantity }} x {{ formatPrice(detail.price) }}
@@ -6790,12 +6800,12 @@ onUnmounted(() => {
         <div class="px-6 py-4 border-t border-gray-100 bg-gray-50/50">
           <div class="flex flex-col pb-4 mb-4 space-y-1 border-b border-gray-200">
             <div class="flex justify-between text-xs text-gray-500">
-              <span>Subtotal for Products</span
+              <span>{{ $t("order.subtotal") }}</span
               ><span>{{ formatPrice(getSubtotal(order)) }}</span>
             </div>
             <div class="flex justify-between text-xs text-gray-500">
               <span
-                >Shipping Subtotal ({{
+                >{{ $t("order.shipping_subtotal") }} ({{
                   order.shipping_cost > 0
                     ? formatPrice(order.shipping_cost / getOrderQuantity(order)) +
                       " x " +
@@ -6810,7 +6820,7 @@ onUnmounted(() => {
               class="flex justify-between text-xs font-medium text-green-600"
             >
               <span
-                >Promo Applied (<span class="font-mono uppercase">{{
+                >{{ $t("order.promo_applied") }} (<span class="font-mono uppercase">{{
                   order.promo_code
                 }}</span
                 >)</span
@@ -6822,13 +6832,15 @@ onUnmounted(() => {
               v-if="order.points_used > 0"
               class="flex justify-between text-xs font-medium text-yellow-600"
             >
-              <span>Points Redeemed ({{ order.points_used }} Pts)</span>
+              <span>{{ $t("order.points_redeemed") }} ({{ order.points_used }} Pts)</span>
               <span>- {{ formatPrice(order.points_used * 1000) }}</span>
             </div>
             <div
               class="flex justify-between pt-2 mt-2 text-sm font-bold text-gray-900 border-t border-gray-200 border-dashed"
             >
-              <span class="uppercase tracking-widest text-[10px] mt-1">Final Amount</span>
+              <span class="uppercase tracking-widest text-[10px] mt-1">{{
+                $t("order.final_amount")
+              }}</span>
               <span class="text-lg">{{ formatPrice(getGrandTotal(order)) }}</span>
             </div>
           </div>
@@ -6867,7 +6879,7 @@ onUnmounted(() => {
                 @click="cancelOrder(order.id)"
                 class="w-full px-6 py-2 text-xs font-bold tracking-widest text-red-600 uppercase transition border border-red-200 hover:bg-red-50 rounded-xl md:w-auto"
               >
-                Cancel
+                {{ $t("order.cancel") }}
               </button>
               <button
                 v-if="canPay(order.status)"
@@ -6875,7 +6887,7 @@ onUnmounted(() => {
                 :disabled="countdowns[order.id] === 'Expired'"
                 class="w-full px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-black hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed rounded-xl md:w-auto"
               >
-                Pay Now
+                {{ $t("order.pay_now") }}
               </button>
               <button
                 v-if="
@@ -6900,39 +6912,39 @@ onUnmounted(() => {
                 "
                 class="w-full px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-black shadow-sm hover:bg-gray-800 rounded-xl md:w-auto"
               >
-                Track Order
+                {{ $t("order.track_order") }}
               </button>
               <button
                 v-if="canRequestRefund(order)"
                 @click="requestRefund(order.id)"
                 class="w-full px-6 py-2 text-xs font-bold tracking-widest text-gray-600 uppercase transition border border-gray-300 hover:bg-gray-100 rounded-xl md:w-auto"
               >
-                Request to Refund
+                {{ $t("order.request_refund") }}
               </button>
               <div
                 v-if="order.status === 'refund_requested'"
                 class="w-full px-4 py-2 text-xs font-bold text-center bg-amber-100 rounded-xl text-amber-700 md:w-auto"
               >
-                Waiting Admin
+                {{ $t("order.waiting_admin") }}
               </div>
               <div
                 v-if="order.status === 'refund_manual_required'"
                 class="w-full px-4 py-2 text-xs font-bold text-center text-pink-700 bg-pink-100 rounded-xl md:w-auto"
               >
-                Manual Refund
+                {{ $t("order.manual_refund") }}
               </div>
               <button
                 v-if="order.status === 'refund_approved'"
                 @click="processRefund(order.id)"
                 class="w-full px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-blue-600 shadow-sm hover:bg-blue-700 rounded-xl md:w-auto"
               >
-                Refund Now
+                {{ $t("order.refund_now") }}
               </button>
               <div
                 v-if="order.status === 'refund_rejected'"
                 class="w-full text-xs italic font-bold text-center text-red-500 md:w-auto"
               >
-                Refund Rejected
+                {{ $t("order.refund_rejected") }}
               </div>
             </div>
           </div>
@@ -6943,11 +6955,12 @@ onUnmounted(() => {
         class="flex flex-col items-center justify-between gap-4 pt-6 mt-8 border-t border-gray-100 md:flex-row"
       >
         <p class="text-sm text-gray-400">
-          Showing
-          <span class="font-bold text-black">{{ showingStart }}</span> to
-          <span class="font-bold text-black">{{ showingEnd }}</span> of
+          {{ $t("order.showing") }}
+          <span class="font-bold text-black">{{ showingStart }}</span>
+          {{ $t("order.to") }}
+          <span class="font-bold text-black">{{ showingEnd }}</span> {{ $t("order.of") }}
           <span class="font-bold text-black">{{ filteredTransactions.length }}</span>
-          orders
+          {{ $t("order.orders") }}
         </p>
 
         <div class="flex gap-2">
@@ -6956,7 +6969,7 @@ onUnmounted(() => {
             :disabled="currentPage === 1"
             class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
           >
-            Previous
+            {{ $t("order.previous") }}
           </button>
 
           <div class="flex gap-1">
@@ -6984,7 +6997,7 @@ onUnmounted(() => {
             :disabled="currentPage === totalPages || totalPages === 0"
             class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
           >
-            Next
+            {{ $t("order.next") }}
           </button>
         </div>
       </div>
@@ -6998,6 +7011,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 
 import defaultBagIcon from "../../assets/products/bag_icon.jpg";
 
@@ -7016,6 +7030,8 @@ const activeTransactionTab = ref("all");
 const activeShippingTab = ref("all");
 // [BARU] STATE UNIFIED TABS
 const activeUnifiedTab = ref("all");
+
+const { t } = useI18n();
 
 const unifiedTabs = [
   { label: "All Orders", value: "all" },
