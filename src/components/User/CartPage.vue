@@ -1157,30 +1157,6 @@ onMounted(() => {
               <div
                 class="flex flex-col flex-grow justify-between min-h-[6rem] sm:min-h-[12rem]"
               >
-                <!-- <div>
-                  <div class="flex items-start justify-between gap-2">
-                    <h3
-                      class="w-2/3 text-sm font-bold tracking-tight uppercase transition-colors cursor-pointer sm:text-xl hover:text-gray-600 line-clamp-2"
-                      @click="$router.push(`/products/${item.product.id}`)"
-                    >
-                      {{ item.product.name }}
-                    </h3>
-                    <p
-                      class="text-sm font-bold text-right sm:text-xl whitespace-nowrap"
-                    >
-                      {{ formatPrice(item.gross_amount) }}
-                    </p>
-                  </div>
-                  <p class="mt-1 text-xs italic tracking-widest text-gray-400">
-                    {{
-                      formatPrice(
-                        item.product.discount_price ?? item.product.price,
-                      )
-                    }}
-                    / pc
-                  </p>
-                </div> -->
-
                 <div>
                   <div class="flex items-start justify-between gap-2">
                     <h3
@@ -1191,18 +1167,7 @@ onMounted(() => {
                     >
                       {{ item.product.name }}
                     </h3>
-                    <!-- <p v-if="item.color" class="text-[10px] sm:text-xs text-gray-500 uppercase tracking-widest mt-1">
-                      Color: <span class="font-bold text-gray-800">{{ item.color }}</span>
-                    </p> -->
-                    <!-- <p
-                      v-if="item.color"
-                      class="text-[10px] sm:text-xs text-gray-500 uppercase tracking-widest mt-1"
-                    >
-                      Color:
-                      <span class="font-bold text-gray-800">{{
-                        getColorName(item.color)
-                      }}</span>
-                    </p> -->
+
                     <p
                       v-if="item.color"
                       class="text-[10px] sm:text-xs text-gray-500 uppercase tracking-widest mt-1"
@@ -1224,13 +1189,6 @@ onMounted(() => {
                     </p>
 
                     <span class="hidden w-1 h-1 bg-gray-300 rounded-full sm:block"></span>
-
-                    <!-- <p
-                      class="text-gray-500 text-[10px] font-bold uppercase tracking-widest"
-                    >
-                      Avail. Stock:
-                      <span class="text-black">{{ item.product.stock }}</span>
-                    </p> -->
                   </div>
                 </div>
 
@@ -1349,7 +1307,7 @@ onMounted(() => {
                   {{ product.name }}
                 </h4>
                 <p class="mb-3 text-xs font-medium text-gray-600">
-                  {{ formatPrice(getActivePrice(item.product)) }}
+                  {{ formatPrice(getActivePrice(product)) }}
                 </p>
 
                 <button
@@ -1451,40 +1409,6 @@ const convertToWIB = (dateString) => {
   date.setHours(date.getHours() + 7);
   return date;
 };
-
-// const getDiscountStatus = (p) => {
-//   if (!p || !p.discount_price) return { active: false, upcoming: false, expired: false };
-
-//   const now = new Date();
-//   let active = true;
-//   let upcoming = false;
-//   let expired = false;
-
-//   if (p.discount_start_date) {
-//     const startDate = convertToWIB(p.discount_start_date);
-//     if (now < startDate) {
-//       active = false;
-//       upcoming = true;
-//     }
-//   }
-//   if (p.discount_end_date) {
-//     const endDate = convertToWIB(p.discount_end_date);
-//     if (now > endDate) {
-//       active = false;
-//       expired = true;
-//     }
-//   }
-
-//   return { active, upcoming, expired };
-// };
-
-// Fungsi krusial untuk mengambil harga valid saat ini
-// const getActivePrice = (product) => {
-//   if (product.discount_price && getDiscountStatus(product).active) {
-//     return parseFloat(product.discount_price);
-//   }
-//   return parseFloat(product.price);
-// };
 
 const fetchAllProducts = async () => {
   isLoadingProducts.value = true;
