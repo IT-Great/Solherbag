@@ -332,5 +332,28 @@
         "answer": "Biaya pengiriman dihitung berdasarkan lokasi Anda dan produk dalam pesanan Anda. Anda akan selalu mengetahui biaya pengiriman sebelum melakukan tahap pembayaran."
       }
     ]
+  },
+  "terms": {
+    "subtitle": "Solher Indonesia",
+    "title": "Syarat & Ketentuan",
+    "intro": "Selamat datang di Solher. Dengan mengakses atau menggunakan situs web kami, Anda setuju untuk terikat oleh Syarat dan Ketentuan ini.",
+    "sections": [
+      {
+        "heading": "1. Akun & Keanggotaan",
+        "content": "Saat Anda membuat akun bersama kami, Anda harus memberikan informasi yang akurat dan lengkap. Pengguna terdaftar baru mungkin memenuhi syarat untuk mendapatkan bonus selamat datang, seperti Poin Loyalitas. Poin yang terkumpul dapat digunakan sebagai diskon saat pembayaran, dengan tunduk pada batas potongan maksimum."
+      },
+      {
+        "heading": "2. Produk & Harga",
+        "content": "Kami telah berupaya semaksimal mungkin untuk menampilkan warna dan gambar produk kami secara akurat. Kami tidak dapat menjamin bahwa tampilan warna pada monitor komputer Anda akan sepenuhnya presisi. Semua harga dapat berubah sewaktu-waktu tanpa pemberitahuan. Kami berhak untuk memodifikasi atau menghentikan produk kapan saja."
+      },
+      {
+        "heading": "3. Batasan Pesanan & Stok",
+        "content": "Kami berhak menolak pesanan apa pun yang Anda ajukan kepada kami. Jika terjadi selisih stok atau persaingan pesanan (race condition) selama lalu lintas penjualan yang tinggi, sistem kami secara ketat mengalokasikan stok berdasarkan prinsip siapa cepat, dia dapat. Jika pembayaran Anda telah diproses tetapi stok barang habis, pengembalian dana (refund) otomatis akan diterbitkan."
+      },
+      {
+        "heading": "4. Keamanan Pembayaran",
+        "content": "Semua transaksi daring diproses secara aman melalui gerbang pembayaran (payment gateway) resmi kami. Kami tidak menyimpan detail kartu kredit Anda secara langsung di server kami."
+      }
+    ]
   }
 }
