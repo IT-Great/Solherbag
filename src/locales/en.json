@@ -357,26 +357,62 @@
       }
     ]
   },
-  "privacy_policy" : {
-    "solher_title" : "Solher Indonesia",
-    "privacy_policy" : "Privacy Policy",
-    "cta_1" : "Solher ('we', 'our', or 'us') respects your privacy and is committed to protecting your personal data. This privacy policy will inform you about how we look after your personal data when you visit our website.",
-    "first_point" : "1. Data We Collect",
-    "first_desc" : "We may collect, use, store and transfer different kinds of personal data about you, including:",
-    "identity_data" : "Identity Data:",
-    "first_name_and_last_name" : "First name, last name.",
-    "contact_data" : "Contact Data:",
-    "data_contact" : "Billing address, delivery address, email address, and telephone numbers.",
-    "financial_data" : "Financial Data:",
-    "data_financial" : "Payment details processed securely by our third-party gateway.",
-    "transaction_data" : "Transaction Data:",
-    "data_transaction" : "Details about payments to and from you and other details of products you have purchased from us.",
-    "second_point" : "2. How We Use Your Data",
-    "second_desc" : "We will only use your personal data when the law allows us to. Most commonly, we will use your personal data in the following circumstances:",
-    "delivery_process" : "To process and deliver your order, including managing payments and calculating shipping rates.",
-    "manage_relationship" : "To manage our relationship with you, including notifying you about changes to our terms or privacy policy.",
-    "marketing_communication" : "To send marketing communications, if you have opted in to our newsletter.",
-    "third_point" : "3. Data Security",
-    "third_desc" : "We have put in place appropriate security measures to prevent your personal data from being accidentally lost, used, or accessed in an unauthorized way. Access to your personal data is limited to those employees, agents, and contractors who have a business need to know."
+  "privacy_policy": {
+    "solher_title": "Solher Indonesia",
+    "privacy_policy": "Privacy Policy",
+    "cta_1": "Solher ('we', 'our', or 'us') respects your privacy and is committed to protecting your personal data. This privacy policy will inform you about how we look after your personal data when you visit our website.",
+    "first_point": "1. Data We Collect",
+    "first_desc": "We may collect, use, store and transfer different kinds of personal data about you, including:",
+    "identity_data": "Identity Data:",
+    "first_name_and_last_name": "First name, last name.",
+    "contact_data": "Contact Data:",
+    "data_contact": "Billing address, delivery address, email address, and telephone numbers.",
+    "financial_data": "Financial Data:",
+    "data_financial": "Payment details processed securely by our third-party gateway.",
+    "transaction_data": "Transaction Data:",
+    "data_transaction": "Details about payments to and from you and other details of products you have purchased from us.",
+    "second_point": "2. How We Use Your Data",
+    "second_desc": "We will only use your personal data when the law allows us to. Most commonly, we will use your personal data in the following circumstances:",
+    "delivery_process": "To process and deliver your order, including managing payments and calculating shipping rates.",
+    "manage_relationship": "To manage our relationship with you, including notifying you about changes to our terms or privacy policy.",
+    "marketing_communication": "To send marketing communications, if you have opted in to our newsletter.",
+    "third_point": "3. Data Security",
+    "third_desc": "We have put in place appropriate security measures to prevent your personal data from being accidentally lost, used, or accessed in an unauthorized way. Access to your personal data is limited to those employees, agents, and contractors who have a business need to know."
+  },
+  "shipping": {
+    "subtitle": "Solher Indonesia",
+    "title": "Shipping Policy",
+    "sections": [
+      {
+        "heading": "1. Processing Time",
+        "content": "All orders are processed within 1-2 business days (excluding weekends and national holidays) after receiving your order confirmation email. You will receive another notification when your order has shipped."
+      },
+      {
+        "heading": "2. Shipping Rates & Delivery Estimates",
+        "content": "We partner with multiple trusted logistics providers to offer you the best rates and delivery times. Shipping charges for your order will be calculated and displayed at checkout based on the volumetric weight of the items and your destination address.",
+        "list": [
+          {
+            "label": "Instant/Same Day",
+            "desc": "Delivery on the same day if ordered before 14:00 WIB."
+          },
+          {
+            "label": "Next Day",
+            "desc": "Delivered the next business day."
+          },
+          {
+            "label": "Regular",
+            "desc": "Typically 2-5 business days depending on your location."
+          }
+        ]
+      },
+      {
+        "heading": "3. Order Tracking",
+        "content": "Once your order is dispatched, you can track its real-time status directly from your \"Orders\" page in your account dashboard. Please allow up to 24 hours for the tracking portal to update."
+      },
+      {
+        "heading": "4. In-Store Pickup",
+        "content": "You can skip the shipping fees with free local pickup at our physical booth locations or partnered stores (e.g., Kecilung Kitchen & Resto) during special events. After placing your order and selecting local pickup at checkout, your order will be prepared and ready for pick up within 1 business day."
+      }
+    ]
   }
 }
