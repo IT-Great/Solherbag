@@ -278,8 +278,16 @@
     "checkout": "Checkout",
     "processing": "Memproses..."
   },
-  "chat" : {
-    "chat_page_title" : "Customer Support",
-    "select_admin" : "Silahkan pilih admin dibawah ini untuk memulai percakapan."
+  "chat": {
+    "chat_page_title": "Customer Support",
+    "select_admin": "Silahkan pilih admin dibawah ini untuk memulai percakapan."
+  },
+  "about": {
+    "title_one": "Jantung dari SOLHER:",
+    "title_two": "Sebuah Surat Cinta untuk Kualitas.",
+    "paragraph_one": "SOLHER lahir dari sebuah pengamatan sederhana: dunia bergerak terlalu cepat, namun keindahan sejati tidaklah tergesa-gesa. Pendiri kami memimpikan sebuah tas yang tidak hanya bertahan untuk satu musim, tetapi menjadi semakin indah seiring berjalannya waktu—sama seperti para wanita yang membawanya.",
+    "paragraph_two": "Setiap karya SOLHER bermula dari sentuhan tangan. Kami memadukan kulit sapi dengan mutu tertinggi, yang dipilih karena tekstur uratnya yang unik dan kekuatannya yang lentur. Ini adalah material yang bernapas, hidup, dan bercerita. Para pengrajin kami memperlakukan setiap lembar kulit dengan penghormatan yang selayaknya, memastikan bahwa ketika Anda menggenggam tas SOLHER, Anda sedang menggenggam tradisi bertahun-tahun dan sebuah janji untuk masa depan.",
+    "paragraph_three": "Kami tidak percaya pada tren sesaat. Kami percaya pada kepercayaan diri yang tenang dari sebuah siluet klasik. Kami percaya bahwa tas seorang wanita adalah penjaga rahasianya, mimpi-mimpinya, dan kemenangan kecilnya sehari-hari. Inilah persembahan kami untuk Anda: sebuah kemewahan tak lekang oleh waktu yang akan selalu mendampingi Anda, selamanya.",
+    "cta_1": "Kami menciptakan karya yang berfungsi lebih baik dan bertahan lebih lama."
   }
 }

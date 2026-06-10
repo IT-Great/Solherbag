@@ -282,5 +282,13 @@
   "chat" : {
     "chat_page_title" : "Customer Support",
     "select_admin" : "Select an admin below to start a conversation."
+  },
+  "about" : {
+    "title_one" : "The Heart of SOLHER:",
+    "title_two" : "A Love Letter to Quality.",
+    "paragraph_one" : "SOLHER was born from a simple observation: the world moves too fast, but true beauty is patient. Our founder dreamed of a bag that didn't just last a season, but grew more beautiful with every passing year—much like the women who carry them.",
+    "paragraph_two" : "Every SOLHER piece begins with the touch of the hand. We source the highest grade of cow leather, chosen for its unique grain and supple strength. It is a material that breathes, lives, and tells a story. Our artisans treat every hide with the respect it deserves, ensuring that when you hold a SOLHER bag, you are holding years of tradition and a promise of tomorrow.",
+    "paragraph_three" : "We don't believe in trends. We believe in the quiet confidence of a classic silhouette. We believe that a woman’s bag is a keeper of her secrets, her dreams, and her daily triumphs. This is our gift to you: a piece of timeless luxury that stays by your side, forever.",
+    "cta_1" : "We make things that work better and last longer."
   }
 }

@@ -99,31 +99,21 @@ h1 {
         <h1
           class="mb-10 font-serif text-4xl leading-tight tracking-tight text-gray-900 md:text-6xl"
         >
-          The Heart of SOLHER: <br class="hidden md:block" />
-          <span class="italic text-gray-700">A Love Letter to Quality.</span>
+          {{ $t("about.title_one") }} <br class="hidden md:block" />
+          <span class="italic text-gray-700">{{ $t("about.title_two") }}</span>
         </h1>
 
         <div
           class="px-4 space-y-6 text-sm font-light leading-loose tracking-wide text-justify text-gray-700 md:px-12 md:text-base md:text-center"
         >
           <p>
-            SOLHER was born from a simple observation: the world moves too fast, but true
-            beauty is patient. Our founder dreamed of a bag that didn't just last a
-            season, but grew more beautiful with every passing year—much like the women
-            who carry them.
+            {{ $t("about.paragraph_one") }}
           </p>
           <p>
-            Every SOLHER piece begins with the touch of the hand. We source the highest
-            grade of cow leather, chosen for its unique grain and supple strength. It is a
-            material that breathes, lives, and tells a story. Our artisans treat every
-            hide with the respect it deserves, ensuring that when you hold a SOLHER bag,
-            you are holding years of tradition and a promise of tomorrow.
+            {{ $t("about.paragraph_two") }}
           </p>
           <p>
-            We don't believe in trends. We believe in the quiet confidence of a classic
-            silhouette. We believe that a woman’s bag is a keeper of her secrets, her
-            dreams, and her daily triumphs. This is our gift to you: a piece of timeless
-            luxury that stays by your side, forever.
+            {{ $t("about.paragraph_three") }}
           </p>
         </div>
       </div>
@@ -138,7 +128,7 @@ h1 {
           :key="n"
           class="mx-4 text-sm font-medium tracking-tighter text-gray-800 uppercase"
         >
-          We make things that work better and last longer. &nbsp;&nbsp; •
+          {{ $t("about.cta_1") }} &nbsp;&nbsp; •
         </span>
       </div>
     </div>
