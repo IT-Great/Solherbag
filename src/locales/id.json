@@ -355,5 +355,27 @@
         "content": "Semua transaksi daring diproses secara aman melalui gerbang pembayaran (payment gateway) resmi kami. Kami tidak menyimpan detail kartu kredit Anda secara langsung di server kami."
       }
     ]
+  },
+  "privacy_policy": {
+    "solher_title": "Solher Indonesia",
+    "privacy_policy": "Kebijakan Privasi",
+    "cta_1": "Solher ('kami') menghargai privasi Anda dan berkomitmen untuk melindungi data pribadi Anda. Kebijakan privasi ini akan menginformasikan kepada Anda tentang bagaimana kami mengelola dan menjaga data pribadi Anda saat Anda mengunjungi situs web kami.",
+    "first_point": "1. Data yang Kami Kumpulkan",
+    "first_desc": "Kami dapat mengumpulkan, menggunakan, menyimpan, dan mentransfer berbagai jenis data pribadi tentang Anda, termasuk:",
+    "identity_data": "Data Identitas:",
+    "first_name_and_last_name": "Nama depan, nama belakang.",
+    "contact_data": "Data Kontak:",
+    "data_contact": "Alamat tagihan, alamat pengiriman, alamat email, dan nomor telepon.",
+    "financial_data": "Data Keuangan:",
+    "data_financial": "Detail pembayaran yang diproses secara aman oleh gerbang pembayaran (payment gateway) pihak ketiga kami.",
+    "transaction_data": "Data Transaksi:",
+    "data_transaction": "Detail tentang rincian pembayaran dari dan kepada Anda, serta detail lainnya mengenai produk yang telah Anda beli dari kami.",
+    "second_point": "2. Bagaimana Kami Menggunakan Data Anda",
+    "second_desc": "Kami hanya akan menggunakan data pribadi Anda apabila diizinkan oleh hukum yang berlaku. Secara umum, kami akan menggunakan data pribadi Anda dalam keadaan berikut:",
+    "delivery_process": "Untuk memproses dan mengirimkan pesanan Anda, termasuk mengelola pembayaran dan menghitung tarif pengiriman.",
+    "manage_relationship": "Untuk mengelola hubungan kami dengan Anda, termasuk memberi tahu Anda tentang perubahan pada syarat atau kebijakan privasi kami.",
+    "marketing_communication": "Untuk mengirimkan komunikasi pemasaran, jika Anda telah memilih untuk berlangganan buletin (newsletter) kami.",
+    "third_point": "3. Keamanan Data",
+    "third_desc": "Kami telah menerapkan langkah-langkah keamanan yang tepat untuk mencegah agar data pribadi Anda tidak hilang secara tidak sengaja, digunakan, atau diakses dengan cara yang tidak sah. Akses ke data pribadi Anda dibatasi secara ketat hanya untuk karyawan, agen, dan kontraktor yang memiliki kepentingan bisnis untuk mengetahuinya."
   }
 }

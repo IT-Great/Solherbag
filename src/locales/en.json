@@ -356,5 +356,27 @@
         "content": "All online transactions are securely processed through our authorized payment gateway. We do not store your credit card details directly on our servers."
       }
     ]
+  },
+  "privacy_policy" : {
+    "solher_title" : "Solher Indonesia",
+    "privacy_policy" : "Privacy Policy",
+    "cta_1" : "Solher ('we', 'our', or 'us') respects your privacy and is committed to protecting your personal data. This privacy policy will inform you about how we look after your personal data when you visit our website.",
+    "first_point" : "1. Data We Collect",
+    "first_desc" : "We may collect, use, store and transfer different kinds of personal data about you, including:",
+    "identity_data" : "Identity Data:",
+    "first_name_and_last_name" : "First name, last name.",
+    "contact_data" : "Contact Data:",
+    "data_contact" : "Billing address, delivery address, email address, and telephone numbers.",
+    "financial_data" : "Financial Data:",
+    "data_financial" : "Payment details processed securely by our third-party gateway.",
+    "transaction_data" : "Transaction Data:",
+    "data_transaction" : "Details about payments to and from you and other details of products you have purchased from us.",
+    "second_point" : "2. How We Use Your Data",
+    "second_desc" : "We will only use your personal data when the law allows us to. Most commonly, we will use your personal data in the following circumstances:",
+    "delivery_process" : "To process and deliver your order, including managing payments and calculating shipping rates.",
+    "manage_relationship" : "To manage our relationship with you, including notifying you about changes to our terms or privacy policy.",
+    "marketing_communication" : "To send marketing communications, if you have opted in to our newsletter.",
+    "third_point" : "3. Data Security",
+    "third_desc" : "We have put in place appropriate security measures to prevent your personal data from being accidentally lost, used, or accessed in an unauthorized way. Access to your personal data is limited to those employees, agents, and contractors who have a business need to know."
   }
 }
