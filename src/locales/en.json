@@ -290,5 +290,21 @@
     "paragraph_two" : "Every SOLHER piece begins with the touch of the hand. We source the highest grade of cow leather, chosen for its unique grain and supple strength. It is a material that breathes, lives, and tells a story. Our artisans treat every hide with the respect it deserves, ensuring that when you hold a SOLHER bag, you are holding years of tradition and a promise of tomorrow.",
     "paragraph_three" : "We don't believe in trends. We believe in the quiet confidence of a classic silhouette. We believe that a woman’s bag is a keeper of her secrets, her dreams, and her daily triumphs. This is our gift to you: a piece of timeless luxury that stays by your side, forever.",
     "cta_1" : "We make things that work better and last longer."
+  },
+   "customer_care" : {
+    "title_one" : "Welcome to",
+    "title_two" : "SolHer",
+    "title_three" : "Customer Care!",
+    "description" : "We are here to help you discover the best natural solutions for your health and well-being.",
+    "contact_us" : "Contact Us",
+    "phone" : "Phone / WhatsApp:",
+    "operating_hours" : "Operating Hours",
+    "our_cs" : "Our customer service is available every day:",
+    "mon_to_fri" : "Monday – Friday:",
+    "eight_to_five" : "8:00 AM – 5:00 PM (WIB)",
+    "saturday" : "Saturday:",
+    "nine_to_two" : "9:00 AM – 2:00 PM (WIB)",
+    "sunday_and_holidays" : "Sunday & Public Holidays:",
+    "closed" : "Closed"
   }
 }
