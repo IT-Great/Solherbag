@@ -5691,11 +5691,24 @@ import { BASE_URL } from "../../../config/api";
 import { useProductStore } from "../../../composables/useProductStore";
 import { useI18n } from "vue-i18n";
 
+// [BARU] Import Pinia Store & Utilitas Currency Eksternal
+import { useCurrencyStore } from "@/stores/currency";
+import { formatPrice } from "@/utils/currency";
+
 const { t, locale } = useI18n();
+const currencyStore = useCurrencyStore();
+
+// const toggleLanguage = () => {
+//   locale.value = locale.value === "en" ? "id" : "en";
+//   localStorage.setItem("user_lang", locale.value);
+// };
 
 const toggleLanguage = () => {
   locale.value = locale.value === "en" ? "id" : "en";
   localStorage.setItem("user_lang", locale.value);
+
+  // Jika bahasa Inggris gunakan USD, jika Indonesia gunakan IDR
+  currencyStore.selectedCurrency = locale.value === "en" ? "USD" : "IDR";
 };
 
 const route = useRoute();
@@ -5860,12 +5873,12 @@ const getDiscountStatus = (p) => {
   return { active, upcoming, expired };
 };
 
-const formatPrice = (v) =>
-  new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    minimumFractionDigits: 0,
-  }).format(v);
+// const formatPrice = (v) =>
+//   new Intl.NumberFormat("id-ID", {
+//     style: "currency",
+//     currency: "IDR",
+//     minimumFractionDigits: 0,
+//   }).format(v);
 
 const shuffleArray = (array) => {
   let currentIndex = array.length,
@@ -6023,11 +6036,36 @@ const onAddToCartEvent = (e) => {
   });
 };
 
-onMounted(() => {
+// onMounted(() => {
+//   checkAuth();
+//   if (isAuthenticated.value) fetchCarts();
+
+//   fetchCategoriesForMegaMenu();
+
+//   window.addEventListener("optimistic-add-to-cart", onAddToCartEvent);
+//   window.addEventListener("click", (e) => {
+//     if (!e.target.closest(".relative")) isDropdownOpen.value = false;
+//   });
+//   window.addEventListener("refresh-cart", fetchCarts);
+//   window.addEventListener("refresh-chat-badge", fetchUnreadChats);
+//   startAnnouncementTimer();
+// });
+
+onMounted(async () => {
   checkAuth();
   if (isAuthenticated.value) fetchCarts();
-
   fetchCategoriesForMegaMenu();
+
+  // [BARU] Ambil data kurs dari backend Laravel dan simpan ke Pinia
+  try {
+    const res = await axios.get(`${BASE_URL}/exchange-rates`);
+    currencyStore.exchangeRates = res.data.data.rates;
+  } catch (error) {
+    console.error("Gagal memuat data kurs mata uang:", error);
+  }
+
+  // [BARU] Set mata uang default menyesuaikan bahasa yang sedang aktif di device/localstorage
+  currencyStore.selectedCurrency = locale.value === "en" ? "USD" : "IDR";
 
   window.addEventListener("optimistic-add-to-cart", onAddToCartEvent);
   window.addEventListener("click", (e) => {
