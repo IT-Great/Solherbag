@@ -414,5 +414,36 @@
         "content": "You can skip the shipping fees with free local pickup at our physical booth locations or partnered stores (e.g., Kecilung Kitchen & Resto) during special events. After placing your order and selecting local pickup at checkout, your order will be prepared and ready for pick up within 1 business day."
       }
     ]
+  },
+  "refund": {
+    "subtitle": "Solher Indonesia",
+    "title": "Refund Policy",
+    "sections": [
+      {
+        "heading": "1. Automatic Refunds (Cancellations)",
+        "paragraphs": [
+          "If your order is cancelled before it is processed by our logistics partner, or if the logistics provider rejects the pickup, our system will automatically initiate a full refund to your original payment method. Any Loyalty Points used will also be instantly restored to your account."
+        ]
+      },
+      {
+        "heading": "2. Manual Refund Requests",
+        "paragraphs": [
+          "We accept return and refund requests within 3 days of the delivery date. To be eligible for a return, your item must be unused, in the same condition that you received it, and in its original packaging (including the dust bag and tags).",
+          "You can submit a refund request directly through your \"Orders\" page. <strong>A mandatory unboxing video or clear photos</strong> of the product defect must be uploaded as proof."
+        ]
+      },
+      {
+        "heading": "3. Processing Your Refund",
+        "paragraphs": [
+          "Once your return is received and inspected by our team, we will notify you of the approval or rejection of your refund. If approved, the refund will be processed immediately. Please note that it may take some time for your bank or credit card company to officially post the refund."
+        ]
+      },
+      {
+        "heading": "4. Non-Refundable Items",
+        "paragraphs": [
+          "Certain types of items cannot be returned, including sale items, custom-designed products, or items damaged due to improper care. Shipping costs are non-refundable."
+        ]
+      }
+    ]
   }
 }

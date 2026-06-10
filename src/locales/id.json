@@ -413,5 +413,36 @@
         "content": "Anda dapat melewati biaya pengiriman dengan opsi pengambilan lokal gratis di lokasi stan fisik kami atau toko mitra (mis. Kecilung Kitchen & Resto) selama acara khusus berlangsung. Setelah melakukan pemesanan dan memilih opsi pengambilan lokal saat pembayaran, pesanan Anda akan disiapkan dan siap untuk diambil dalam waktu 1 hari kerja."
       }
     ]
+  },
+  "refund": {
+    "subtitle": "Solher Indonesia",
+    "title": "Kebijakan Pengembalian Dana",
+    "sections": [
+      {
+        "heading": "1. Pengembalian Dana Otomatis (Pembatalan)",
+        "paragraphs": [
+          "Jika pesanan Anda dibatalkan sebelum diproses oleh mitra logistik kami, atau jika pihak logistik menolak penjemputan, sistem kami akan secara otomatis memproses pengembalian dana penuh ke metode pembayaran awal Anda. Poin Loyalitas apa pun yang digunakan juga akan langsung dikembalikan ke akun Anda."
+        ]
+      },
+      {
+        "heading": "2. Permintaan Pengembalian Dana Manual",
+        "paragraphs": [
+          "Kami menerima permintaan pengembalian barang dan dana dalam waktu 3 hari sejak tanggal pengiriman. Agar memenuhi syarat untuk pengembalian, barang Anda harus belum digunakan, dalam kondisi yang sama seperti saat Anda menerimanya, dan berada dalam kemasan aslinya (termasuk tas anti debu/dust bag dan label harga).",
+          "Anda dapat mengajukan permintaan pengembalian dana secara langsung melalui halaman \"Pesanan\" Anda. <strong>Video unboxing yang wajib disertakan atau foto yang jelas</strong> dari cacat produk harus diunggah sebagai bukti pengajuan."
+        ]
+      },
+      {
+        "heading": "3. Pemrosesan Pengembalian Dana Anda",
+        "paragraphs": [
+          "Setelah barang retur Anda kami terima dan periksa, kami akan memberi tahu Anda mengenai persetujuan atau penolakan pengembalian dana Anda. Jika disetujui, pengembalian dana akan segera diproses. Harap diperhatikan bahwa mungkin diperlukan beberapa waktu bagi bank atau perusahaan kartu kredit Anda untuk secara resmi membukukan pengembalian dana tersebut."
+        ]
+      },
+      {
+        "heading": "4. Barang yang Tidak Dapat Dikembalikan",
+        "paragraphs": [
+          "Jenis barang tertentu tidak dapat dikembalikan, termasuk barang diskon (sale), produk dengan desain khusus, atau barang yang rusak akibat perawatan yang tidak tepat. Biaya pengiriman tidak dapat dikembalikan."
+        ]
+      }
+    ]
   }
 }
