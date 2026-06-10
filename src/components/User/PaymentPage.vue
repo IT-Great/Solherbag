@@ -4280,24 +4280,24 @@ onMounted(fetchData);
       <div class="w-3 h-3 bg-black rounded-full animate-bounce-3"></div>
     </div>
     <p class="font-serif text-sm italic tracking-widest text-gray-500 animate-pulse">
-      Preparing your checkout...
+      {{ $t("payment.prepare_checkout") }}
     </p>
   </div>
 
   <div v-else class="max-w-6xl min-h-screen px-6 py-12 mx-auto md:py-24 animate-fade-in">
     <div v-if="checkoutItems.length === 0" class="py-20 text-center">
-      <h2 class="mb-4 font-serif text-3xl">Your bag is empty</h2>
+      <h2 class="mb-4 font-serif text-3xl">{{ $t("payment.bag_empty") }}</h2>
       <button
         @click="$router.push('/collections')"
         class="px-8 py-3 text-xs font-bold tracking-widest text-white uppercase bg-black rounded-full"
       >
-        Return to Shop
+        {{ $t("payment.return_shop") }}
       </button>
     </div>
 
     <div v-else>
       <h1 class="mb-12 font-serif text-3xl tracking-tighter uppercase md:text-4xl">
-        Checkout
+        {{ $t("payment.checkout") }}
       </h1>
 
       <div class="flex flex-col gap-12 lg:flex-row">
@@ -4309,7 +4309,7 @@ onMounted(fetchData);
                 >1</span
               >
               <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">
-                Shipping Address
+                {{ $t("payment.shipping_address") }}
               </h2>
             </div>
 
@@ -4317,12 +4317,14 @@ onMounted(fetchData);
               v-if="addresses.length === 0"
               class="py-10 text-center border border-gray-300 border-dashed bg-gray-50 rounded-2xl"
             >
-              <p class="mb-2 text-sm italic text-gray-500">No address found.</p>
+              <p class="mb-2 text-sm italic text-gray-500">
+                {{ $t("payment.no_address_found") }}
+              </p>
               <button
                 @click="openModal()"
                 class="text-xs font-bold text-blue-600 underline"
               >
-                + Add New Address
+                {{ $t("payment.add_new_address") }}
               </button>
             </div>
             <div v-else class="space-y-4">
@@ -4351,7 +4353,7 @@ onMounted(fetchData);
                     <span
                       v-if="addr.is_default"
                       class="text-[9px] bg-gray-200 px-2 py-0.5 rounded font-bold uppercase"
-                      >Default</span
+                      >{{ $t("payment.default") }}</span
                     >
                   </div>
                   <p class="mt-2 text-sm leading-relaxed text-gray-600">
@@ -4365,7 +4367,7 @@ onMounted(fetchData);
                 @click="openModal()"
                 class="mt-4 text-xs font-bold text-gray-500 underline hover:text-black"
               >
-                + Add Another Address
+                {{ $t("payment.add_another_address") }}
               </button>
             </div>
           </section>
@@ -4377,13 +4379,13 @@ onMounted(fetchData);
                 >2</span
               >
               <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">
-                Shipping Method
+                {{ $t("payment.shipping_method") }}
               </h2>
             </div>
 
             <div>
               <h4 class="text-sm tracking-widest text-gray-900 uppercase">
-                Choose the shipping address first
+                {{ $t("payment.choose_shipping_address") }}
               </h4>
             </div>
           </section>
@@ -4395,7 +4397,7 @@ onMounted(fetchData);
                 >2</span
               >
               <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">
-                Shipping Method
+                {{ $t("payment.shipping_method") }}
               </h2>
             </div>
 
@@ -4417,13 +4419,13 @@ onMounted(fetchData);
                 <div class="flex items-center justify-between flex-grow ml-4">
                   <div>
                     <p class="text-sm font-bold tracking-wide text-gray-900 uppercase">
-                      Free Shipping
+                      {{ $t("payment.free_shipping") }}
                     </p>
                     <p class="mt-1 text-xs font-bold text-green-600">
-                      In-Store Pickup (Ambil barang di toko)
+                      {{ $t("payment.in_store") }}
                     </p>
                   </div>
-                  <p class="font-black text-black">Rp 0</p>
+                  <p class="font-black text-black">{{ $t("payment.price") }}</p>
                 </div>
               </label>
 
@@ -4444,9 +4446,11 @@ onMounted(fetchData);
                 <div class="flex items-center justify-between flex-grow ml-4">
                   <div>
                     <p class="text-sm font-bold tracking-wide text-gray-900 uppercase">
-                      Standard / Express
+                      {{ $t("payment.standard") }}
                     </p>
-                    <p class="mt-1 text-xs text-gray-500">Powered by Biteship</p>
+                    <p class="mt-1 text-xs text-gray-500">
+                      {{ $t("payment.powered_by_biteship") }}
+                    </p>
                   </div>
                 </div>
               </label>
@@ -4462,7 +4466,7 @@ onMounted(fetchData);
                     <h3
                       class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-3"
                     >
-                      Destination
+                      {{ $t("payment.destination") }}
                     </h3>
                     <p class="text-xs font-bold text-gray-900 uppercase">
                       {{ destinationInfo?.name }}
@@ -4479,7 +4483,7 @@ onMounted(fetchData);
 
                 <div>
                   <h3 class="mb-4 text-sm font-bold tracking-widest uppercase">
-                    Pickup Schedule
+                    {{ $t("payment.pickup_schedule") }}
                   </h3>
 
                   <div class="flex flex-col gap-4 mb-4 md:flex-row">
@@ -4497,8 +4501,12 @@ onMounted(fetchData);
                         v-model="deliveryType"
                         class="hidden"
                       />
-                      <p class="text-xs font-bold uppercase">Standard Pickup</p>
-                      <p class="text-[10px] text-gray-500 mt-1">Pickup Now</p>
+                      <p class="text-xs font-bold uppercase">
+                        {{ $t("payment.standard_pickup") }}
+                      </p>
+                      <p class="text-[10px] text-gray-500 mt-1">
+                        {{ $t("payment.scheduled_pickup") }}
+                      </p>
                     </label>
                     <label
                       :class="
@@ -4514,9 +4522,11 @@ onMounted(fetchData);
                         v-model="deliveryType"
                         class="hidden"
                       />
-                      <p class="text-xs font-bold uppercase">Scheduled Pickup</p>
+                      <p class="text-xs font-bold uppercase">
+                        {{ $t("payment.scheduled_pickup") }}
+                      </p>
                       <p class="text-[10px] text-gray-500 mt-1">
-                        Choose specific date & time
+                        {{ $t("payment.choose_specific_date_time") }}
                       </p>
                     </label>
                   </div>
@@ -4528,7 +4538,7 @@ onMounted(fetchData);
                     <div class="flex-1">
                       <label
                         class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2"
-                        >Pickup Date</label
+                        >{{ $t("payment.pickup_date") }}</label
                       >
                       <input
                         type="date"
@@ -4541,7 +4551,7 @@ onMounted(fetchData);
                     <div class="flex-1">
                       <label
                         class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2"
-                        >Pickup Time</label
+                        >{{ $t("payment.pickup_time") }}</label
                       >
                       <input
                         type="time"
@@ -4557,19 +4567,19 @@ onMounted(fetchData);
                   <h3
                     class="pt-6 mb-4 text-sm font-bold tracking-widest uppercase border-t"
                   >
-                    Select Courier
+                    {{ $t("payment.select_courier") }}
                   </h3>
                   <div
                     v-if="isLoadingRates"
                     class="py-4 text-sm text-center text-gray-500 animate-pulse"
                   >
-                    Calculating couriers...
+                    {{ $t("payment.calculating_couriers") }}
                   </div>
                   <div
                     v-else-if="processedShippingRates.length === 0"
                     class="py-4 text-xs italic text-center text-red-500"
                   >
-                    No couriers available.
+                    {{ $t("payment.no_courier_available") }}
                   </div>
                   <div v-else class="space-y-3">
                     <label
@@ -4634,7 +4644,7 @@ onMounted(fetchData);
                         v-if="rate.is_disabled"
                         class="mt-3 ml-8 text-[10px] text-red-600 bg-red-50 px-3 py-1.5 rounded-lg border border-red-100 font-bold uppercase tracking-widest"
                       >
-                        ⚠️ Unavailable: {{ rate.disable_reason }}
+                        ⚠️ {{ $t("payment.unavailable") }} {{ rate.disable_reason }}
                       </div>
                     </label>
                   </div>
@@ -4651,7 +4661,7 @@ onMounted(fetchData);
             <h2
               class="pb-4 mb-6 text-sm font-bold tracking-widest text-gray-900 uppercase border-b"
             >
-              Order Summary
+              {{ $t("payment.order_summary") }}
             </h2>
 
             <div
@@ -4673,7 +4683,7 @@ onMounted(fetchData);
                     v-if="item.color"
                     class="text-gray-500 text-[9px] uppercase tracking-widest mt-0.5"
                   >
-                    Color:
+                    {{ $t("payment.color") }}
                     <span class="font-bold text-gray-700">{{
                       parseColorName(item.color)
                     }}</span>
@@ -4693,11 +4703,13 @@ onMounted(fetchData);
 
             <div class="pt-4 space-y-3 text-sm border-t border-gray-50">
               <div class="flex justify-between text-gray-500">
-                <span>Total Items</span>
-                <span class="font-bold text-gray-900">{{ checkoutCount }} items</span>
+                <span>{{ $t("payment.total_items") }}</span>
+                <span class="font-bold text-gray-900"
+                  >{{ checkoutCount }} {{ $t("payment.item") }}</span
+                >
               </div>
               <div class="flex justify-between text-gray-500">
-                <span>Subtotal</span>
+                <span>{{ $t("payment.subtotal") }}</span>
                 <span>{{ formatPrice(checkoutTotalAmount) }}</span>
               </div>
 
@@ -4722,16 +4734,16 @@ onMounted(fetchData);
                           clip-rule="evenodd"
                         />
                       </svg>
-                      VIP Perks
+                      {{ $t("payment.vip_perks") }}
                     </p>
                     <p class="text-[10px] text-gray-500 mt-0.5">
-                      Use 500k Member Voucher
+                      {{ $t("payment.use_500k") }}
                     </p>
                     <p
                       v-if="checkoutTotalAmount < MEMBER_MIN_SPEND"
                       class="text-[8px] text-red-500 italic mt-0.5"
                     >
-                      Min. spend Rp 1.000.000
+                      {{ $t("payment.min_spend") }}
                     </p>
                   </div>
 
@@ -4757,7 +4769,7 @@ onMounted(fetchData);
                 <label
                   class="text-[10px] font-bold text-gray-900 uppercase tracking-widest mb-2 block"
                 >
-                  Promo Code
+                  {{ $t("payment.promo_code") }}
                 </label>
                 <div class="flex gap-2">
                   <input
@@ -4766,7 +4778,7 @@ onMounted(fetchData);
                     :disabled="
                       appliedPromoCode !== null || isVerifyingPromo || useMemberVoucher
                     "
-                    placeholder="Enter your promo code"
+                    :placeholder="$t('payment.enter_promo_code')"
                     class="flex-1 bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-sm uppercase focus:ring-black outline-none disabled:bg-gray-100 disabled:text-gray-400 transition-colors"
                   />
                   <button
@@ -4775,7 +4787,7 @@ onMounted(fetchData);
                     :disabled="!promoInput || isVerifyingPromo || useMemberVoucher"
                     class="bg-black text-white text-[10px] font-bold uppercase px-4 rounded-lg hover:bg-gray-800 transition disabled:bg-gray-300 w-20 flex justify-center items-center"
                   >
-                    <span v-if="!isVerifyingPromo">Apply</span>
+                    <span v-if="!isVerifyingPromo">{{ $t("payment.apply") }}</span>
                     <div
                       v-else
                       class="w-3 h-3 border-2 rounded-full border-white/40 border-t-white animate-spin"
@@ -4786,7 +4798,7 @@ onMounted(fetchData);
                     @click="removePromo"
                     class="bg-red-50 text-red-600 border border-red-200 text-[10px] font-bold uppercase px-4 rounded-lg hover:bg-red-100 transition w-20"
                   >
-                    Remove
+                    {{ $t("payment.remove") }}
                   </button>
                 </div>
                 <p
@@ -4802,7 +4814,7 @@ onMounted(fetchData);
                 >
                   <span
                     class="text-[10px] font-bold text-gray-500 uppercase tracking-widest"
-                    >Promo Applied</span
+                    >{{ $t("payment.promo_applied") }}</span
                   >
                   <span class="text-[11px] text-green-600 font-medium"
                     >- {{ formatPrice(promoDiscountAmount) }}</span
@@ -4828,9 +4840,11 @@ onMounted(fetchData);
                         d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
                       />
                     </svg>
-                    Redeem Points
+                    {{ $t("payment.redeem_points") }}
                   </span>
-                  <span class="text-xs text-gray-500">Bal: {{ userData.point }} Pts</span>
+                  <span class="text-xs text-gray-500"
+                    >{{ $t("payment.bal") }} {{ userData.point }} Pts</span
+                  >
                 </div>
                 <div class="flex gap-2">
                   <input
@@ -4845,7 +4859,7 @@ onMounted(fetchData);
                     @click="useAllPoints"
                     class="bg-yellow-100 text-yellow-800 text-[10px] font-bold uppercase px-3 rounded-lg hover:bg-yellow-200 transition"
                   >
-                    Use All
+                    {{ $t("payment.use_all") }}
                   </button>
                 </div>
                 <p
@@ -4857,10 +4871,10 @@ onMounted(fetchData);
               </div>
 
               <div class="flex items-start justify-between text-gray-500">
-                <span>Shipping</span>
-                <span v-if="shippingMethod === 'free'" class="font-bold text-green-600"
-                  >Free</span
-                >
+                <span>{{ $t("payment.shipping") }}</span>
+                <span v-if="shippingMethod === 'free'" class="font-bold text-green-600">{{
+                  $t("payment.free")
+                }}</span>
                 <div
                   v-else-if="shippingMethod === 'biteship' && selectedRate"
                   class="text-right"
@@ -4869,16 +4883,21 @@ onMounted(fetchData);
                     formatPrice(selectedRate.price * checkoutCount)
                   }}</span>
                   <p class="text-[10px] text-gray-400 mt-1">
-                    {{ formatPrice(selectedRate.price) }} x {{ checkoutCount }} items
+                    {{ formatPrice(selectedRate.price) }} x {{ checkoutCount }}
+                    {{ $t("payment.item") }}
                   </p>
                 </div>
-                <span v-else class="italic text-[10px]">Select method</span>
+                <span v-else class="italic text-[10px]">{{
+                  $t("payment.select_method")
+                }}</span>
               </div>
 
               <div
                 class="flex justify-between pt-4 font-bold text-gray-900 border-t border-gray-100"
               >
-                <span class="mt-1 text-xs tracking-widest uppercase">Grand Total</span>
+                <span class="mt-1 text-xs tracking-widest uppercase">{{
+                  $t("payment.grand_total")
+                }}</span>
                 <span class="text-xl">{{ formatPrice(grandTotalWithDiscount) }}</span>
               </div>
 
@@ -4904,7 +4923,7 @@ onMounted(fetchData);
                   <p
                     class="text-[10px] font-bold text-yellow-800 uppercase tracking-widest"
                   >
-                    Points to earn
+                    {{ $t("payment.points_to_earn") }}
                   </p>
                   <p class="text-sm font-black text-yellow-600">
                     +{{ calculateEarnedPoints }} Pts
@@ -4918,12 +4937,12 @@ onMounted(fetchData);
               :disabled="isButtonDisabled"
               class="mt-8 w-full bg-black hover:bg-gray-800 disabled:bg-gray-300 py-5 rounded-2xl font-bold text-white text-xs uppercase tracking-[0.3em] transition-all duration-500 shadow-xl shadow-black/10"
             >
-              <span v-if="!isProcessing">Pay Now</span>
+              <span v-if="!isProcessing">{{ $t("payment.pay_now") }}</span>
               <span v-else class="flex items-center justify-center gap-2">
                 <div
                   class="w-3 h-3 border-2 rounded-full border-white/30 border-t-white animate-spin"
                 ></div>
-                Processing...
+                {{ $t("payment.processing") }}
               </span>
             </button>
 
@@ -4931,13 +4950,13 @@ onMounted(fetchData);
               v-if="!selectedAddressId"
               class="mt-4 text-[10px] text-red-500 text-center uppercase tracking-tighter"
             >
-              * Please select a shipping address
+              {{ $t("payment.select_shipping_address") }}
             </p>
             <p
               v-else-if="shippingMethod === 'biteship' && !selectedRate"
               class="mt-4 text-[10px] text-red-500 text-center uppercase tracking-tighter"
             >
-              * Please select a courier service
+              {{ $t("payment.select_courier_service") }}
             </p>
           </div>
         </div>
@@ -5186,7 +5205,7 @@ onMounted(fetchData);
               <label
                 for="def"
                 class="text-sm font-medium text-blue-900 cursor-pointer select-none"
-                >Set as default shipping address</label
+                >{{ $t("payment.default_shipping_address") }}</label
               >
             </div>
 
@@ -5194,7 +5213,7 @@ onMounted(fetchData);
               <div>
                 <label
                   class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
-                  >First Name</label
+                  >{{ $t("payment.first_name") }}</label
                 >
                 <input
                   v-model="form.first_name_address"
@@ -5205,7 +5224,7 @@ onMounted(fetchData);
               <div>
                 <label
                   class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
-                  >Last Name</label
+                  >{{ $t("payment.last_name") }}</label
                 >
                 <input
                   v-model="form.last_name_address"
@@ -5219,14 +5238,14 @@ onMounted(fetchData);
               <div>
                 <label
                   class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
-                  >Province</label
+                  >{{ $t("payment.province") }}</label
                 >
                 <select
                   v-model="form.province"
                   class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
                   required
                 >
-                  <option value="" disabled>Select Province</option>
+                  <option value="" disabled>{{ $t("payment.select_province") }}</option>
                   <option v-for="p in filteredProvinces" :key="p" :value="p">
                     {{ p }}
                   </option>
@@ -5235,7 +5254,7 @@ onMounted(fetchData);
               <div>
                 <label
                   class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
-                  >City</label
+                  >{{ $t("payment.city") }}</label
                 >
                 <input
                   v-model="form.city"
@@ -5264,8 +5283,8 @@ onMounted(fetchData);
                   />
                 </svg>
                 <p class="text-[11px] text-amber-800 leading-relaxed">
-                  <span class="font-bold">Pin Location:</span> Drag the map marker exactly
-                  to your location to ensure accurate delivery.
+                  <span class="font-bold">{{ $t("payment.pin_location") }}</span>
+                  {{ $t("payment.pin_location_desc") }}
                 </p>
               </div>
 
@@ -5299,7 +5318,7 @@ onMounted(fetchData);
                   @click="getCurrentLocation"
                   class="w-full sm:w-auto px-4 py-2.5 text-[10px] font-bold tracking-wider text-blue-700 uppercase transition-colors bg-blue-100 rounded-xl hover:bg-blue-200"
                 >
-                  Use Current Loc
+                  {{ $t("payment.current_loc") }}
                 </button>
               </div>
 
@@ -5334,7 +5353,7 @@ onMounted(fetchData);
             <div>
               <label
                 class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
-                >Complete Address</label
+                >{{ $t("payment.complete_address") }}</label
               >
               <textarea
                 v-model="form.address_location"
@@ -5349,7 +5368,7 @@ onMounted(fetchData);
               <div>
                 <label
                   class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
-                  >Details (Opt)</label
+                  >{{ $t("payment.details") }}</label
                 >
                 <input
                   v-model="form.location_type"
@@ -5360,7 +5379,7 @@ onMounted(fetchData);
               <div>
                 <label
                   class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
-                  >Postal Code</label
+                  >{{ $t("payment.postal_code") }}</label
                 >
                 <input
                   v-model="form.postal_code"
@@ -5384,7 +5403,7 @@ onMounted(fetchData);
             @click="deleteAddress"
             class="text-xs font-bold tracking-widest text-red-500 uppercase transition-colors hover:text-red-700"
           >
-            Delete
+            {{ $t("payment.delete") }}
           </button>
           <div v-else></div>
           <div class="flex gap-3">
@@ -5393,14 +5412,14 @@ onMounted(fetchData);
               @click="showModal = false"
               class="px-5 py-2.5 text-sm font-bold text-gray-600 transition-colors bg-white border border-gray-300 rounded-xl hover:bg-gray-50 hidden sm:block"
             >
-              Cancel
+              {{ $t("payment.cancel") }}
             </button>
             <button
               type="button"
               @click="saveAddress"
               class="px-6 py-2.5 text-sm font-bold text-white transition-colors bg-blue-600 rounded-xl hover:bg-blue-700 shadow-md shadow-blue-500/20"
             >
-              Save Address
+              {{ $t("payment.save_address") }}
             </button>
           </div>
         </div>
