@@ -305,5 +305,32 @@
     "nine_to_two": "09:00 – 14:00 (WIB)",
     "sunday_and_holidays": "Minggu & Hari Libur Nasional:",
     "closed": "Tutup"
+  },
+  "faq": {
+    "title": "Pertanyaan yang Sering Diajukan",
+    "search_placeholder": "Cari pertanyaan...",
+    "no_results": "Tidak ada pertanyaan yang cocok dengan",
+    "items": [
+      {
+        "question": "Bagaimana kebijakan pengembalian barang?",
+        "answer": "Tujuan utama kami adalah memastikan setiap pelanggan puas dengan pembelian mereka. Jika tidak demikian, beri tahu kami dan kami akan berusaha sebaik mungkin untuk membantu Anda menemukan solusinya."
+      },
+      {
+        "question": "Apakah ada produk yang tidak dapat dikembalikan (final sale)?",
+        "answer": "Kami tidak dapat menerima pengembalian untuk beberapa produk tertentu. Produk-produk ini akan diberi tanda khusus sebelum Anda melakukan pembelian."
+      },
+      {
+        "question": "Kapan pesanan saya akan tiba?",
+        "answer": "Kami akan bekerja cepat untuk mengirimkan pesanan Anda sesegera mungkin. Setelah pesanan dikirim, Anda akan menerima email berisi informasi lebih lanjut. Waktu pengiriman bervariasi tergantung pada lokasi Anda."
+      },
+      {
+        "question": "Di mana produk Anda diproduksi?",
+        "answer": "Produk kami diproduksi baik di tingkat lokal maupun global. Kami memilih mitra produksi kami dengan sangat hati-hati untuk memastikan produk kami memiliki kualitas tinggi dengan nilai yang sepadan."
+      },
+      {
+        "question": "Berapa biaya pengirimannya?",
+        "answer": "Biaya pengiriman dihitung berdasarkan lokasi Anda dan produk dalam pesanan Anda. Anda akan selalu mengetahui biaya pengiriman sebelum melakukan tahap pembayaran."
+      }
+    ]
   }
 }
