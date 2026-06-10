@@ -1711,7 +1711,7 @@ import { useI18n } from "vue-i18n";
 import defaultBagIcon from "../../assets/products/bag_icon.jpg";
 
 // [BARU] Import fungsi format mata uang global yang reaktif terhadap Pinia
-import { formatPrice } from "@/utils/currency";
+import { formatPrice } from "../../utils/currency";
 
 const route = useRoute();
 const router = useRouter();

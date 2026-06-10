@@ -5692,8 +5692,8 @@ import { useProductStore } from "../../../composables/useProductStore";
 import { useI18n } from "vue-i18n";
 
 // [BARU] Import Pinia Store & Utilitas Currency Eksternal
-import { useCurrencyStore } from "@/stores/currency";
-import { formatPrice } from "@/utils/currency";
+import { useCurrencyStore } from "../../../stores/currency";
+import { formatPrice } from "../../../utils/currency";
 
 const { t, locale } = useI18n();
 const currencyStore = useCurrencyStore();
