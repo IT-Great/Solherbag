@@ -5345,6 +5345,8 @@ import { BASE_URL } from "../../config/api.js";
 import defaultBagIcon from "../../assets/products/bag_icon.jpg";
 import { useCart } from "../../composables/useCart";
 
+import { formatPrice } from "../../utils/currency";
+
 const { handleOptimisticAdd, selectedItemIds, fetchCarts, cartItems } = useCart();
 
 const route = useRoute();
@@ -5989,12 +5991,12 @@ const handleAction = async (type) => {
   }
 };
 
-const formatPrice = (value) =>
-  new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    minimumFractionDigits: 0,
-  }).format(value);
+// const formatPrice = (value) =>
+//   new Intl.NumberFormat("id-ID", {
+//     style: "currency",
+//     currency: "IDR",
+//     minimumFractionDigits: 0,
+//   }).format(value);
 const calculateDiscount = (price, discountPrice) =>
   Math.round(((price - discountPrice) / price) * 100);
 
