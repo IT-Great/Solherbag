@@ -1626,6 +1626,8 @@ import { useI18n } from "vue-i18n";
 import banner1 from "../../assets/first_banner.png";
 import banner2 from "../../assets/second_banner.png";
 
+import { formatPrice } from "../../utils/currency";
+
 // [BARU] Logika Auto-Slide Banner
 const banners = [banner1, banner2];
 const currentBannerIndex = ref(0);
@@ -1714,12 +1716,12 @@ const navigateToSpecificProduct = async (query) => {
   }
 };
 
-const formatPrice = (value) =>
-  new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    minimumFractionDigits: 0,
-  }).format(value);
+// const formatPrice = (value) =>
+//   new Intl.NumberFormat("id-ID", {
+//     style: "currency",
+//     currency: "IDR",
+//     minimumFractionDigits: 0,
+//   }).format(value);
 
 const closePopup = () => {
   showPromoPopup.value = false;

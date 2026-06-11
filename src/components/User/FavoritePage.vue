@@ -5,7 +5,7 @@
       class="z-40 fixed inset-0 flex flex-col justify-center items-center bg-[#F3F4F6]/60 backdrop-blur-[2px]"
     >
       <div
-        class="border-4 border-gray-200 border-t-black rounded-full w-12 h-12 animate-spin"
+        class="w-12 h-12 border-4 border-gray-200 rounded-full border-t-black animate-spin"
       ></div>
     </div>
 
@@ -13,7 +13,7 @@
       <div class="flex items-center gap-4 mb-10">
         <button
           @click="$router.push('/profilepage')"
-          class="p-2 bg-white rounded-full shadow-sm hover:bg-gray-50 transition"
+          class="p-2 transition bg-white rounded-full shadow-sm hover:bg-gray-50"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -26,19 +26,19 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <h1 class="font-bold text-black text-3xl uppercase tracking-tight">
+        <h1 class="text-3xl font-bold tracking-tight text-black uppercase">
           My Favorites
         </h1>
       </div>
 
       <div
         v-if="wishlists.length > 0"
-        class="gap-x-6 gap-y-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+        class="grid grid-cols-2 gap-x-6 gap-y-12 md:grid-cols-3 lg:grid-cols-4"
       >
         <div
           v-for="item in wishlists"
           :key="item.id"
-          class="group cursor-pointer relative"
+          class="relative cursor-pointer group"
           @click="$router.push(`/products/${item.product.slug || item.product.id}`)"
         >
           <div
@@ -46,12 +46,12 @@
           >
             <img
               :src="item.product.image"
-              class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+              class="absolute inset-0 object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
             />
 
             <button
               @click.stop="toggleWishlist(item.product.id)"
-              class="absolute top-2 left-2 z-20 p-2 bg-white/80 hover:bg-white rounded-full shadow-sm text-red-500 transition-transform hover:scale-110"
+              class="absolute z-20 p-2 text-red-500 transition-transform rounded-full shadow-sm top-2 left-2 bg-white/80 hover:bg-white hover:scale-110"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -76,20 +76,20 @@
 
           <div class="space-y-2 text-center md:text-left">
             <h3
-              class="font-medium text-xs text-gray-900 md:text-sm truncate uppercase tracking-widest"
+              class="text-xs font-medium tracking-widest text-gray-900 uppercase truncate md:text-sm"
             >
               {{ item.product.name }}
             </h3>
-            <div class="flex justify-center md:justify-start items-center gap-2">
+            <div class="flex items-center justify-center gap-2 md:justify-start">
               <template v-if="item.product.discount_price">
-                <p class="font-bold text-red-600 text-sm md:text-base">
+                <p class="text-sm font-bold text-red-600 md:text-base">
                   {{ formatPrice(item.product.discount_price) }}
                 </p>
-                <p class="text-xs text-gray-400 md:text-sm line-through">
+                <p class="text-xs text-gray-400 line-through md:text-sm">
                   {{ formatPrice(item.product.price) }}
                 </p>
               </template>
-              <p v-else class="font-semibold text-gray-600 text-sm md:text-base">
+              <p v-else class="text-sm font-semibold text-gray-600 md:text-base">
                 {{ formatPrice(item.product.price) }}
               </p>
             </div>
@@ -100,7 +100,7 @@
       <div v-else-if="!isLoading" class="py-24 text-center">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="w-16 h-16 mx-auto text-gray-300 mb-4"
+          class="w-16 h-16 mx-auto mb-4 text-gray-300"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -112,12 +112,12 @@
             d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
           />
         </svg>
-        <p class="font-serif text-gray-400 text-xl italic mb-4">
+        <p class="mb-4 font-serif text-xl italic text-gray-400">
           Your wishlist is empty.
         </p>
         <button
           @click="$router.push('/collections')"
-          class="bg-black text-white px-6 py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-gray-800 transition"
+          class="px-6 py-3 text-xs font-bold tracking-widest text-white uppercase transition bg-black rounded-full hover:bg-gray-800"
         >
           Discover Products
         </button>
@@ -133,6 +133,8 @@ import { BASE_URL } from "../../config/api.js";
 
 const wishlists = ref([]);
 const isLoading = ref(true);
+
+import { formatPrice } from "../../utils/currency";
 
 const fetchWishlists = async () => {
   isLoading.value = true;
@@ -167,12 +169,12 @@ const toggleWishlist = async (productId) => {
   }
 };
 
-const formatPrice = (value) =>
-  new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    minimumFractionDigits: 0,
-  }).format(value);
+// const formatPrice = (value) =>
+//   new Intl.NumberFormat("id-ID", {
+//     style: "currency",
+//     currency: "IDR",
+//     minimumFractionDigits: 0,
+//   }).format(value);
 
 onMounted(fetchWishlists);
 </script>

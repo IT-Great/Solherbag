@@ -585,6 +585,8 @@ import { useI18n } from "vue-i18n";
 // [BARU] Import gambar default
 import defaultBagIcon from "../../../assets/products/bag_icon.jpg";
 
+import { formatPrice } from "../../utils/currency";
+
 const emit = defineEmits(["close"]);
 const router = useRouter();
 
@@ -672,12 +674,12 @@ const getDiscountStatus = (p) => {
   return { active, upcoming, expired };
 };
 
-const formatPrice = (v) =>
-  new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    minimumFractionDigits: 0,
-  }).format(v);
+// const formatPrice = (v) =>
+//   new Intl.NumberFormat("id-ID", {
+//     style: "currency",
+//     currency: "IDR",
+//     minimumFractionDigits: 0,
+//   }).format(v);
 
 const fetchAllProducts = async () => {
   try {

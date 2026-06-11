@@ -416,6 +416,8 @@ import axios from "axios";
 import { BASE_URL } from "../../config/api";
 import { useI18n } from "vue-i18n";
 
+import { formatPrice } from "../../utils/currency";
+
 const router = useRouter();
 const isLoading = ref(true);
 const products = ref([]);
@@ -522,12 +524,12 @@ const resetFilters = () => {
   sortOption.value = "sales_desc";
 };
 
-const formatPrice = (v) =>
-  new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    minimumFractionDigits: 0,
-  }).format(v);
+// const formatPrice = (v) =>
+//   new Intl.NumberFormat("id-ID", {
+//     style: "currency",
+//     currency: "IDR",
+//     minimumFractionDigits: 0,
+//   }).format(v);
 
 onMounted(() => {
   fetchProducts();
