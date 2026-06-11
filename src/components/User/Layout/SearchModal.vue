@@ -585,7 +585,7 @@ import { useI18n } from "vue-i18n";
 // [BARU] Import gambar default
 import defaultBagIcon from "../../../assets/products/bag_icon.jpg";
 
-import { formatPrice } from "../../utils/currency";
+import { formatPrice } from "../../../utils/currency";
 
 const emit = defineEmits(["close"]);
 const router = useRouter();
