@@ -1,36 +1,36 @@
 <!-- <template>
-  <div class="mx-auto px-6 py-20 max-w-3xl min-h-screen">
+  <div class="max-w-3xl min-h-screen px-6 py-20 mx-auto">
     
     <div class="mb-8">
-      <button @click="$router.push('/orderpage')" class="text-gray-500 hover:text-black font-bold text-xs uppercase tracking-widest transition flex items-center gap-2 mb-6">
+      <button @click="$router.push('/orderpage')" class="flex items-center gap-2 mb-6 text-xs font-bold tracking-widest text-gray-500 uppercase transition hover:text-black">
         <span>&larr;</span> Back to Orders
       </button>
-      <h1 class="font-serif text-3xl md:text-4xl uppercase tracking-tighter text-gray-900">Shipment Tracking</h1>
+      <h1 class="font-serif text-3xl tracking-tighter text-gray-900 uppercase md:text-4xl">Shipment Tracking</h1>
     </div>
 
-    <div v-if="isLoading" class="flex flex-col justify-center items-center py-20">
-      <div class="border-4 border-gray-100 border-t-black rounded-full w-10 h-10 animate-spin"></div>
-      <p class="mt-4 font-bold text-gray-400 text-xs uppercase tracking-widest animate-pulse">Fetching latest updates...</p>
+    <div v-if="isLoading" class="flex flex-col items-center justify-center py-20">
+      <div class="w-10 h-10 border-4 border-gray-100 rounded-full border-t-black animate-spin"></div>
+      <p class="mt-4 text-xs font-bold tracking-widest text-gray-400 uppercase animate-pulse">Fetching latest updates...</p>
     </div>
 
-    <div v-else-if="error" class="bg-red-50 p-8 rounded-2xl text-center border border-red-100">
-      <p class="text-red-600 font-bold">{{ error }}</p>
+    <div v-else-if="error" class="p-8 text-center border border-red-100 bg-red-50 rounded-2xl">
+      <p class="font-bold text-red-600">{{ error }}</p>
     </div>
 
-    <div v-else-if="trackingData" class="bg-white shadow-sm border border-gray-100 rounded-3xl overflow-hidden animate-fade-in">
+    <div v-else-if="trackingData" class="overflow-hidden bg-white border border-gray-100 shadow-sm rounded-3xl animate-fade-in">
       
-      <div class="bg-gray-50 p-6 md:p-8 border-b border-gray-100">
-        <div class="flex flex-col md:flex-row justify-between md:items-center gap-4">
+      <div class="p-6 border-b border-gray-100 bg-gray-50 md:p-8">
+        <div class="flex flex-col justify-between gap-4 md:flex-row md:items-center">
           <div>
             <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Waybill Number</p>
-            <p class="font-mono font-bold text-xl text-black">{{ trackingData.waybill_id }}</p>
+            <p class="font-mono text-xl font-bold text-black">{{ trackingData.waybill_id }}</p>
           </div>
           <div class="md:text-right">
             <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Courier</p>
             <p class="font-bold text-gray-800 uppercase">{{ trackingData.courier?.company }} - {{ trackingData.courier?.type }}</p>
           </div>
         </div>
-        <div class="mt-6 flex items-center gap-3">
+        <div class="flex items-center gap-3 mt-6">
           <span class="bg-black text-white px-4 py-1.5 rounded-full font-bold text-[10px] uppercase tracking-widest">
             {{ trackingData.status }}
           </span>
@@ -38,7 +38,7 @@
       </div>
 
       <div class="p-6 md:p-8">
-        <div v-if="trackingData.history && trackingData.history.length > 0" class="relative border-l border-gray-200 ml-3 space-y-8">
+        <div v-if="trackingData.history && trackingData.history.length > 0" class="relative ml-3 space-y-8 border-l border-gray-200">
           
           <div v-for="(history, index) in trackingData.history" :key="index" class="relative pl-8">
             <span 
@@ -47,13 +47,13 @@
             ></span>
             
             <div :class="index === 0 ? 'opacity-100' : 'opacity-60'">
-              <p class="font-bold text-gray-900 text-sm mb-1">{{ history.note }}</p>
-              <p class="text-xs text-gray-500 font-medium">{{ formatDate(history.updated_at) }}</p>
+              <p class="mb-1 text-sm font-bold text-gray-900">{{ history.note }}</p>
+              <p class="text-xs font-medium text-gray-500">{{ formatDate(history.updated_at) }}</p>
             </div>
           </div>
 
         </div>
-        <div v-else class="text-center py-10 text-gray-400 italic">
+        <div v-else class="py-10 italic text-center text-gray-400">
           No tracking history available yet.
         </div>
       </div>
@@ -105,46 +105,46 @@ onMounted(fetchTracking);
 
 <!-- Sebelum Mocking (Simulasi Update Status) -->
 <!-- <template>
-  <div class="mx-auto px-6 py-20 max-w-3xl min-h-screen">
+  <div class="max-w-3xl min-h-screen px-6 py-20 mx-auto">
     
     <div class="mb-8">
-      <button @click="$router.push('/orderpage')" class="text-gray-500 hover:text-black font-bold text-xs uppercase tracking-widest transition flex items-center gap-2 mb-6">
+      <button @click="$router.push('/orderpage')" class="flex items-center gap-2 mb-6 text-xs font-bold tracking-widest text-gray-500 uppercase transition hover:text-black">
         <span>&larr;</span> Back to Orders
       </button>
-      <h1 class="font-serif text-3xl md:text-4xl uppercase tracking-tighter text-gray-900">Shipment Tracking</h1>
+      <h1 class="font-serif text-3xl tracking-tighter text-gray-900 uppercase md:text-4xl">Shipment Tracking</h1>
     </div>
 
-    <div v-if="isLoading" class="flex flex-col justify-center items-center py-20">
-      <div class="border-4 border-gray-100 border-t-black rounded-full w-10 h-10 animate-spin"></div>
-      <p class="mt-4 font-bold text-gray-400 text-xs uppercase tracking-widest animate-pulse">Fetching latest updates...</p>
+    <div v-if="isLoading" class="flex flex-col items-center justify-center py-20">
+      <div class="w-10 h-10 border-4 border-gray-100 rounded-full border-t-black animate-spin"></div>
+      <p class="mt-4 text-xs font-bold tracking-widest text-gray-400 uppercase animate-pulse">Fetching latest updates...</p>
     </div>
 
-    <div v-else-if="error" class="bg-red-50 p-8 rounded-2xl text-center border border-red-100">
-      <p class="text-red-600 font-bold">{{ error }}</p>
+    <div v-else-if="error" class="p-8 text-center border border-red-100 bg-red-50 rounded-2xl">
+      <p class="font-bold text-red-600">{{ error }}</p>
     </div>
 
     <div v-else-if="trackingData" class="space-y-6 animate-fade-in">
       
-      <div class="bg-white shadow-sm border border-gray-100 rounded-3xl overflow-hidden">
-        <div class="bg-gray-50 p-6 md:p-8 border-b border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+      <div class="overflow-hidden bg-white border border-gray-100 shadow-sm rounded-3xl">
+        <div class="flex flex-col items-start justify-between gap-6 p-6 border-b border-gray-100 bg-gray-50 md:p-8 md:flex-row md:items-center">
           <div>
             <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Waybill / Resi</p>
-            <p class="font-mono font-bold text-xl text-black">
+            <p class="font-mono text-xl font-bold text-black">
               {{ trackingData.courier?.waybill_id || 'Waiting for Courier...' }}
             </p>
           </div>
           <div class="md:text-right">
             <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Courier Service</p>
-            <p class="font-bold text-gray-800 uppercase text-sm">
+            <p class="text-sm font-bold text-gray-800 uppercase">
               {{ trackingData.courier?.company }} - {{ trackingData.courier?.type }}
             </p>
           </div>
         </div>
 
-        <div class="p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
+        <div class="grid grid-cols-1 gap-8 p-6 text-sm md:p-8 md:grid-cols-2">
           <div>
             <div class="flex items-center gap-2 mb-2">
-              <span class="w-2 h-2 rounded-full bg-gray-300"></span>
+              <span class="w-2 h-2 bg-gray-300 rounded-full"></span>
               <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Origin</p>
             </div>
             <p class="font-bold text-gray-900">{{ trackingData.origin?.contact_name }}</p>
@@ -152,19 +152,19 @@ onMounted(fetchTracking);
           
           <div>
             <div class="flex items-center gap-2 mb-2">
-              <span class="w-2 h-2 rounded-full bg-black"></span>
+              <span class="w-2 h-2 bg-black rounded-full"></span>
               <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Destination</p>
             </div>
             <p class="font-bold text-gray-900">{{ trackingData.destination?.contact_name }}</p>
-            <p class="text-gray-500 mt-1 leading-relaxed">{{ trackingData.destination?.address }}</p>
+            <p class="mt-1 leading-relaxed text-gray-500">{{ trackingData.destination?.address }}</p>
           </div>
         </div>
       </div>
 
-      <div class="bg-white shadow-sm border border-gray-100 rounded-3xl p-6 md:p-8">
-        <h3 class="font-bold text-sm uppercase tracking-widest border-b border-gray-100 pb-4 mb-6">Tracking Timeline</h3>
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-3xl md:p-8">
+        <h3 class="pb-4 mb-6 text-sm font-bold tracking-widest uppercase border-b border-gray-100">Tracking Timeline</h3>
         
-        <div class="relative border-l-2 border-gray-100 ml-3 space-y-8">
+        <div class="relative ml-3 space-y-8 border-l-2 border-gray-100">
           
           <div v-for="(history, index) in timelineHistory" :key="index" class="relative pl-8">
             <span 
@@ -173,10 +173,10 @@ onMounted(fetchTracking);
             ></span>
             
             <div :class="index === 0 ? 'opacity-100' : 'opacity-50'">
-              <p class="font-bold text-gray-900 text-sm uppercase tracking-wide mb-1">
+              <p class="mb-1 text-sm font-bold tracking-wide text-gray-900 uppercase">
                 {{ formatStatusTitle(history.status) }}
               </p>
-              <p class="text-gray-600 text-xs mb-2">{{ history.note }}</p>
+              <p class="mb-2 text-xs text-gray-600">{{ history.note }}</p>
               <p class="text-[10px] text-gray-400 font-medium font-mono">
                 {{ formatDate(history.updated_at) }}
               </p>
@@ -279,14 +279,14 @@ onMounted(fetchTracking);
 
 <!-- Sesudah Mocking (Simulasi Update Status) -->
 <!-- <template>
-  <div class="mx-auto px-6 py-20 max-w-3xl min-h-screen">
+  <div class="max-w-3xl min-h-screen px-6 py-20 mx-auto">
     
-    <div class="mb-8 flex justify-between items-center">
+    <div class="flex items-center justify-between mb-8">
       <div>
-        <button @click="$router.push('/orderpage')" class="text-gray-500 hover:text-black font-bold text-xs uppercase tracking-widest transition flex items-center gap-2 mb-6">
+        <button @click="$router.push('/orderpage')" class="flex items-center gap-2 mb-6 text-xs font-bold tracking-widest text-gray-500 uppercase transition hover:text-black">
           <span>&larr;</span> Back to Orders
         </button>
-        <h1 class="font-serif text-3xl md:text-4xl uppercase tracking-tighter text-gray-900">Shipment Tracking</h1>
+        <h1 class="font-serif text-3xl tracking-tighter text-gray-900 uppercase md:text-4xl">Shipment Tracking</h1>
       </div>
 
       <button 
@@ -300,37 +300,37 @@ onMounted(fetchTracking);
       </button>
     </div>
 
-    <div v-if="isLoading" class="flex flex-col justify-center items-center py-20">
-      <div class="border-4 border-gray-100 border-t-black rounded-full w-10 h-10 animate-spin"></div>
-      <p class="mt-4 font-bold text-gray-400 text-xs uppercase tracking-widest animate-pulse">Fetching latest updates...</p>
+    <div v-if="isLoading" class="flex flex-col items-center justify-center py-20">
+      <div class="w-10 h-10 border-4 border-gray-100 rounded-full border-t-black animate-spin"></div>
+      <p class="mt-4 text-xs font-bold tracking-widest text-gray-400 uppercase animate-pulse">Fetching latest updates...</p>
     </div>
 
-    <div v-else-if="error" class="bg-red-50 p-8 rounded-2xl text-center border border-red-100">
-      <p class="text-red-600 font-bold">{{ error }}</p>
+    <div v-else-if="error" class="p-8 text-center border border-red-100 bg-red-50 rounded-2xl">
+      <p class="font-bold text-red-600">{{ error }}</p>
     </div>
 
     <div v-else-if="trackingData" class="space-y-6 animate-fade-in">
       
-      <div class="bg-white shadow-sm border border-gray-100 rounded-3xl overflow-hidden">
-        <div class="bg-gray-50 p-6 md:p-8 border-b border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+      <div class="overflow-hidden bg-white border border-gray-100 shadow-sm rounded-3xl">
+        <div class="flex flex-col items-start justify-between gap-6 p-6 border-b border-gray-100 bg-gray-50 md:p-8 md:flex-row md:items-center">
           <div>
             <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Waybill / Resi</p>
-            <p class="font-mono font-bold text-xl text-black">
+            <p class="font-mono text-xl font-bold text-black">
               {{ trackingData.courier?.waybill_id || simulatedWaybill || 'Waiting for Courier...' }}
             </p>
           </div>
           <div class="md:text-right">
             <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Courier Service</p>
-            <p class="font-bold text-gray-800 uppercase text-sm">
+            <p class="text-sm font-bold text-gray-800 uppercase">
               {{ trackingData.courier?.company }} - {{ trackingData.courier?.type }}
             </p>
           </div>
         </div>
 
-        <div class="p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
+        <div class="grid grid-cols-1 gap-8 p-6 text-sm md:p-8 md:grid-cols-2">
           <div>
             <div class="flex items-center gap-2 mb-2">
-              <span class="w-2 h-2 rounded-full bg-gray-300"></span>
+              <span class="w-2 h-2 bg-gray-300 rounded-full"></span>
               <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Origin</p>
             </div>
             <p class="font-bold text-gray-900">{{ trackingData.origin?.contact_name }}</p>
@@ -338,19 +338,19 @@ onMounted(fetchTracking);
           
           <div>
             <div class="flex items-center gap-2 mb-2">
-              <span class="w-2 h-2 rounded-full bg-black"></span>
+              <span class="w-2 h-2 bg-black rounded-full"></span>
               <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Destination</p>
             </div>
             <p class="font-bold text-gray-900">{{ trackingData.destination?.contact_name }}</p>
-            <p class="text-gray-500 mt-1 leading-relaxed">{{ trackingData.destination?.address }}</p>
+            <p class="mt-1 leading-relaxed text-gray-500">{{ trackingData.destination?.address }}</p>
           </div>
         </div>
       </div>
 
-      <div class="bg-white shadow-sm border border-gray-100 rounded-3xl p-6 md:p-8">
-        <h3 class="font-bold text-sm uppercase tracking-widest border-b border-gray-100 pb-4 mb-6">Tracking Timeline</h3>
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-3xl md:p-8">
+        <h3 class="pb-4 mb-6 text-sm font-bold tracking-widest uppercase border-b border-gray-100">Tracking Timeline</h3>
         
-        <div class="relative border-l-2 border-gray-100 ml-3 space-y-8">
+        <div class="relative ml-3 space-y-8 border-l-2 border-gray-100">
           
           <div v-for="(history, index) in timelineHistory" :key="index" class="relative pl-8">
             <span 
@@ -359,10 +359,10 @@ onMounted(fetchTracking);
             ></span>
             
             <div :class="index === 0 ? 'opacity-100' : 'opacity-50'">
-              <p class="font-bold text-gray-900 text-sm uppercase tracking-wide mb-1">
+              <p class="mb-1 text-sm font-bold tracking-wide text-gray-900 uppercase">
                 {{ formatStatusTitle(history.status) }}
               </p>
-              <p class="text-gray-600 text-xs mb-2">{{ history.note }}</p>
+              <p class="mb-2 text-xs text-gray-600">{{ history.note }}</p>
               <p class="text-[10px] text-gray-400 font-medium font-mono">
                 {{ formatDate(history.updated_at) }}
               </p>
@@ -497,17 +497,17 @@ onMounted(fetchTracking);
 </script> -->
 
 <!-- <template>
-  <div class="mx-auto px-6 py-20 max-w-3xl min-h-screen">
-    <div class="mb-8 flex justify-between items-center">
+  <div class="max-w-3xl min-h-screen px-6 py-20 mx-auto">
+    <div class="flex items-center justify-between mb-8">
       <div>
         <button
           @click="$router.push('/orderpage')"
-          class="text-gray-500 hover:text-black font-bold text-xs uppercase tracking-widest transition flex items-center gap-2 mb-6"
+          class="flex items-center gap-2 mb-6 text-xs font-bold tracking-widest text-gray-500 uppercase transition hover:text-black"
         >
           <span>&larr;</span> Back to Orders
         </button>
         <h1
-          class="font-serif text-3xl md:text-4xl uppercase tracking-tighter text-gray-900"
+          class="font-serif text-3xl tracking-tighter text-gray-900 uppercase md:text-4xl"
         >
           Shipment Tracking
         </h1>
@@ -539,13 +539,13 @@ onMounted(fetchTracking);
 
     <div
       v-if="isLoading"
-      class="flex flex-col justify-center items-center py-20"
+      class="flex flex-col items-center justify-center py-20"
     >
       <div
-        class="border-4 border-gray-100 border-t-black rounded-full w-10 h-10 animate-spin"
+        class="w-10 h-10 border-4 border-gray-100 rounded-full border-t-black animate-spin"
       ></div>
       <p
-        class="mt-4 font-bold text-gray-400 text-xs uppercase tracking-widest animate-pulse"
+        class="mt-4 text-xs font-bold tracking-widest text-gray-400 uppercase animate-pulse"
       >
         Fetching latest updates...
       </p>
@@ -553,17 +553,17 @@ onMounted(fetchTracking);
 
     <div
       v-else-if="error"
-      class="bg-red-50 p-8 rounded-2xl text-center border border-red-100"
+      class="p-8 text-center border border-red-100 bg-red-50 rounded-2xl"
     >
-      <p class="text-red-600 font-bold">{{ error }}</p>
+      <p class="font-bold text-red-600">{{ error }}</p>
     </div>
 
     <div v-else-if="trackingData" class="space-y-6 animate-fade-in">
       <div
-        class="bg-white shadow-sm border border-gray-100 rounded-3xl overflow-hidden"
+        class="overflow-hidden bg-white border border-gray-100 shadow-sm rounded-3xl"
       >
         <div
-          class="bg-gray-50 p-6 md:p-8 border-b border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-6"
+          class="flex flex-col items-start justify-between gap-6 p-6 border-b border-gray-100 bg-gray-50 md:p-8 md:flex-row md:items-center"
         >
           <div>
             <p
@@ -571,14 +571,14 @@ onMounted(fetchTracking);
             >
               Waybill / Resi
             </p>
-            <p class="font-mono font-bold text-xl text-black">
+            <p class="font-mono text-xl font-bold text-black">
               {{
                 trackingData.courier?.waybill_id ||
                 simulatedWaybill ||
                 "Waiting for Courier..."
               }}
             </p>
-            <div class="mt-2 flex items-center gap-3">
+            <div class="flex items-center gap-3 mt-2">
               <span
                 class="bg-black text-white px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-widest"
               >
@@ -598,17 +598,17 @@ onMounted(fetchTracking);
             >
               Courier Service
             </p>
-            <p class="font-bold text-gray-800 uppercase text-sm">
+            <p class="text-sm font-bold text-gray-800 uppercase">
               {{ trackingData.courier?.company }} -
               {{ trackingData.courier?.type }}
             </p>
           </div>
         </div>
 
-        <div class="p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
+        <div class="grid grid-cols-1 gap-8 p-6 text-sm md:p-8 md:grid-cols-2">
           <div>
             <div class="flex items-center gap-2 mb-2">
-              <span class="w-2 h-2 rounded-full bg-gray-300"></span>
+              <span class="w-2 h-2 bg-gray-300 rounded-full"></span>
               <p
                 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest"
               >
@@ -622,7 +622,7 @@ onMounted(fetchTracking);
 
           <div>
             <div class="flex items-center gap-2 mb-2">
-              <span class="w-2 h-2 rounded-full bg-black"></span>
+              <span class="w-2 h-2 bg-black rounded-full"></span>
               <p
                 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest"
               >
@@ -632,7 +632,7 @@ onMounted(fetchTracking);
             <p class="font-bold text-gray-900">
               {{ trackingData.destination?.contact_name }}
             </p>
-            <p class="text-gray-500 mt-1 leading-relaxed">
+            <p class="mt-1 leading-relaxed text-gray-500">
               {{ trackingData.destination?.address }}
             </p>
           </div>
@@ -640,15 +640,15 @@ onMounted(fetchTracking);
       </div>
 
       <div
-        class="bg-white shadow-sm border border-gray-100 rounded-3xl p-6 md:p-8"
+        class="p-6 bg-white border border-gray-100 shadow-sm rounded-3xl md:p-8"
       >
         <h3
-          class="font-bold text-sm uppercase tracking-widest border-b border-gray-100 pb-4 mb-6"
+          class="pb-4 mb-6 text-sm font-bold tracking-widest uppercase border-b border-gray-100"
         >
           Tracking Timeline
         </h3>
 
-        <div class="relative border-l-2 border-gray-100 ml-3 space-y-8">
+        <div class="relative ml-3 space-y-8 border-l-2 border-gray-100">
           <div
             v-for="(history, index) in timelineHistory"
             :key="index"
@@ -663,11 +663,11 @@ onMounted(fetchTracking);
 
             <div :class="index === 0 ? 'opacity-100' : 'opacity-50'">
               <p
-                class="font-bold text-gray-900 text-sm uppercase tracking-wide mb-1"
+                class="mb-1 text-sm font-bold tracking-wide text-gray-900 uppercase"
               >
                 {{ formatStatusTitle(history.status) }}
               </p>
-              <p class="text-gray-600 text-xs mb-2">{{ history.note }}</p>
+              <p class="mb-2 text-xs text-gray-600">{{ history.note }}</p>
               <p class="text-[10px] text-gray-400 font-medium font-mono">
                 {{ formatDate(history.updated_at) }}
               </p>
@@ -812,16 +812,16 @@ onMounted(fetchTracking);
 </script> -->
 
 <!-- <template>
-  <div class="mx-auto px-6 py-20 max-w-4xl min-h-screen">
-    <div class="mb-8 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+  <div class="max-w-4xl min-h-screen px-6 py-20 mx-auto">
+    <div class="flex flex-col gap-4 mb-8 md:flex-row md:justify-between md:items-center">
       <div>
         <button
           @click="$router.push('/orderpage')"
-          class="text-gray-500 hover:text-black font-bold text-xs uppercase tracking-widest transition flex items-center gap-2 mb-6"
+          class="flex items-center gap-2 mb-6 text-xs font-bold tracking-widest text-gray-500 uppercase transition hover:text-black"
         >
           <span>&larr;</span> Back to Orders
         </button>
-        <h1 class="font-serif text-3xl md:text-4xl uppercase tracking-tighter text-gray-900">
+        <h1 class="font-serif text-3xl tracking-tighter text-gray-900 uppercase md:text-4xl">
           Shipment Tracking
         </h1>
       </div>
@@ -839,55 +839,55 @@ onMounted(fetchTracking);
       </button>
     </div>
 
-    <div v-if="isLoading" class="flex flex-col justify-center items-center py-20">
-      <div class="border-4 border-gray-100 border-t-black rounded-full w-10 h-10 animate-spin"></div>
-      <p class="mt-4 font-bold text-gray-400 text-xs uppercase tracking-widest animate-pulse">
+    <div v-if="isLoading" class="flex flex-col items-center justify-center py-20">
+      <div class="w-10 h-10 border-4 border-gray-100 rounded-full border-t-black animate-spin"></div>
+      <p class="mt-4 text-xs font-bold tracking-widest text-gray-400 uppercase animate-pulse">
         Fetching latest updates...
       </p>
     </div>
 
-    <div v-else-if="error" class="bg-red-50 p-8 rounded-2xl text-center border border-red-100">
-      <p class="text-red-600 font-bold">{{ error }}</p>
+    <div v-else-if="error" class="p-8 text-center border border-red-100 bg-red-50 rounded-2xl">
+      <p class="font-bold text-red-600">{{ error }}</p>
     </div>
 
     <div v-else-if="trackingData" class="space-y-6 animate-fade-in">
       
-      <div class="bg-white shadow-sm border border-gray-100 rounded-3xl overflow-hidden">
-        <div class="bg-gray-50 p-6 md:p-8 border-b border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+      <div class="overflow-hidden bg-white border border-gray-100 shadow-sm rounded-3xl">
+        <div class="flex flex-col items-start justify-between gap-6 p-6 border-b border-gray-100 bg-gray-50 md:p-8 md:flex-row md:items-center">
           
           <div>
             <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Waybill / Resi</p>
-            <p class="font-mono font-bold text-xl text-black">
+            <p class="font-mono text-xl font-bold text-black">
               {{ trackingData.courier?.waybill_id || trackingData.tracking_number || simulatedWaybill || "Waiting for Courier..." }}
             </p>
-            <div class="mt-3 flex flex-wrap items-center gap-3">
+            <div class="flex flex-wrap items-center gap-3 mt-3">
               <span class="bg-black text-white px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-widest">
                 {{ formatStatusTitle(trackingData.status) }}
               </span>
             </div>
           </div>
 
-          <div class="flex items-center gap-6 w-full md:w-auto">
+          <div class="flex items-center w-full gap-6 md:w-auto">
             <div v-if="activePaymentMethod" class="flex flex-col items-start md:items-end">
                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Payment</p>
                <div class="flex items-center gap-3">
-                 <div class="w-10 h-6 bg-white border border-gray-200 rounded flex justify-center items-center overflow-hidden shrink-0">
+                 <div class="flex items-center justify-center w-10 h-6 overflow-hidden bg-white border border-gray-200 rounded shrink-0">
                    <img v-if="getPaymentLogo(activePaymentMethod)" :src="getPaymentLogo(activePaymentMethod)" class="w-full h-full object-contain p-0.5" />
                    <span v-else class="font-black text-gray-300 text-[8px]">{{ activePaymentMethod.split(' ')[1] || 'PAY' }}</span>
                  </div>
-                 <p class="font-bold text-green-600 text-xs uppercase">{{ activePaymentMethod.replace("_", " ") }}</p>
+                 <p class="text-xs font-bold text-green-600 uppercase">{{ activePaymentMethod.replace("_", " ") }}</p>
                </div>
             </div>
 
-            <div class="w-px h-8 bg-gray-200 hidden md:block"></div> <div class="flex flex-col items-start md:items-end">
+            <div class="hidden w-px h-8 bg-gray-200 md:block"></div> <div class="flex flex-col items-start md:items-end">
               <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Courier</p>
               <div class="flex items-center gap-3">
-                <div class="w-8 h-8 bg-white border border-gray-200 rounded-lg flex justify-center items-center overflow-hidden shrink-0">
-                   <img v-if="getCourierLogo(trackingData.courier?.company || trackingData.courier_company)" :src="getCourierLogo(trackingData.courier?.company || trackingData.courier_company)" class="w-full h-full object-contain p-1" />
+                <div class="flex items-center justify-center w-8 h-8 overflow-hidden bg-white border border-gray-200 rounded-lg shrink-0">
+                   <img v-if="getCourierLogo(trackingData.courier?.company || trackingData.courier_company)" :src="getCourierLogo(trackingData.courier?.company || trackingData.courier_company)" class="object-contain w-full h-full p-1" />
                    <span v-else class="font-black text-gray-300 text-[8px]">{{ trackingData.courier?.company || 'N/A' }}</span>
                 </div>
                 <div class="text-left md:text-right">
-                  <p class="font-bold text-gray-800 uppercase text-xs">
+                  <p class="text-xs font-bold text-gray-800 uppercase">
                     {{ trackingData.courier?.company || trackingData.courier_company }}
                   </p>
                   <p class="text-[10px] text-gray-500 font-bold uppercase">{{ trackingData.courier?.type || trackingData.courier_type }}</p>
@@ -898,10 +898,10 @@ onMounted(fetchTracking);
           
         </div>
 
-        <div class="p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-sm bg-white">
+        <div class="grid grid-cols-1 gap-8 p-6 text-sm bg-white md:p-8 md:grid-cols-2">
           <div class="space-y-3">
-            <div class="flex items-center gap-2 mb-4 border-b border-gray-100 pb-2">
-              <span class="w-2 h-2 rounded-full bg-gray-300"></span>
+            <div class="flex items-center gap-2 pb-2 mb-4 border-b border-gray-100">
+              <span class="w-2 h-2 bg-gray-300 rounded-full"></span>
               <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Origin Details</p>
             </div>
             <div>
@@ -910,11 +910,11 @@ onMounted(fetchTracking);
             </div>
             <div>
               <p class="text-[10px] text-gray-400 uppercase tracking-widest">Phone</p>
-              <p class="font-mono text-gray-700 text-xs">{{ trackingData.origin?.contact_phone || '-' }}</p>
+              <p class="font-mono text-xs text-gray-700">{{ trackingData.origin?.contact_phone || '-' }}</p>
             </div>
             <div>
               <p class="text-[10px] text-gray-400 uppercase tracking-widest">Full Address</p>
-              <p class="text-gray-600 leading-relaxed text-xs">
+              <p class="text-xs leading-relaxed text-gray-600">
                 {{ trackingData.origin?.address || '-' }}<br/>
                 <span v-if="trackingData.origin?.postal_code" class="font-bold">Postal Code: {{ trackingData.origin.postal_code }}</span>
               </p>
@@ -922,8 +922,8 @@ onMounted(fetchTracking);
           </div>
 
           <div class="space-y-3">
-            <div class="flex items-center gap-2 mb-4 border-b border-gray-100 pb-2">
-              <span class="w-2 h-2 rounded-full bg-black"></span>
+            <div class="flex items-center gap-2 pb-2 mb-4 border-b border-gray-100">
+              <span class="w-2 h-2 bg-black rounded-full"></span>
               <p class="text-[10px] font-bold text-black uppercase tracking-widest">Destination Details</p>
             </div>
             <div>
@@ -932,41 +932,41 @@ onMounted(fetchTracking);
             </div>
             <div>
               <p class="text-[10px] text-gray-400 uppercase tracking-widest">Phone</p>
-              <p class="font-mono text-gray-700 text-xs">{{ trackingData.destination?.contact_phone || '-' }}</p>
+              <p class="font-mono text-xs text-gray-700">{{ trackingData.destination?.contact_phone || '-' }}</p>
             </div>
             <div>
               <p class="text-[10px] text-gray-400 uppercase tracking-widest">Full Address</p>
-              <p class="text-gray-600 leading-relaxed text-xs">
+              <p class="text-xs leading-relaxed text-gray-600">
                 {{ trackingData.destination?.address || '-' }}<br/>
                 <span v-if="trackingData.destination?.postal_code" class="font-bold">Postal Code: {{ trackingData.destination.postal_code }}</span>
               </p>
             </div>
             <div v-if="trackingData.destination?.note">
               <p class="text-[10px] text-gray-400 uppercase tracking-widest">Courier Note</p>
-              <p class="text-gray-500 italic text-xs bg-gray-50 p-2 rounded border">"{{ trackingData.destination.note }}"</p>
+              <p class="p-2 text-xs italic text-gray-500 border rounded bg-gray-50">"{{ trackingData.destination.note }}"</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div v-if="trackingData.details && trackingData.details.length > 0" class="bg-white shadow-sm border border-gray-100 rounded-3xl overflow-hidden">
-        <div class="bg-gray-50 p-4 border-b border-gray-100">
-           <h3 class="font-bold text-xs uppercase tracking-widest text-gray-500 ml-2">Order Summary</h3>
+      <div v-if="trackingData.details && trackingData.details.length > 0" class="overflow-hidden bg-white border border-gray-100 shadow-sm rounded-3xl">
+        <div class="p-4 border-b border-gray-100 bg-gray-50">
+           <h3 class="ml-2 text-xs font-bold tracking-widest text-gray-500 uppercase">Order Summary</h3>
         </div>
         
         <div class="p-6">
-          <div class="space-y-4 mb-6">
+          <div class="mb-6 space-y-4">
             <div v-for="detail in trackingData.details" :key="detail.id" class="flex items-center gap-4 py-2">
-              <img :src="detail.product.image" class="bg-gray-100 border border-gray-100 rounded-lg w-16 h-16 object-cover" />
+              <img :src="detail.product.image" class="object-cover w-16 h-16 bg-gray-100 border border-gray-100 rounded-lg" />
               <div class="flex-grow">
-                <h4 class="font-bold text-gray-900 text-sm uppercase">{{ detail.product.name }}</h4>
-                <p class="text-gray-400 text-xs">{{ detail.quantity }} x {{ formatPrice(detail.price) }}</p>
+                <h4 class="text-sm font-bold text-gray-900 uppercase">{{ detail.product.name }}</h4>
+                <p class="text-xs text-gray-400">{{ detail.quantity }} x {{ formatPrice(detail.price) }}</p>
               </div>
-              <p class="font-bold text-gray-900 text-sm">{{ formatPrice(detail.quantity * detail.price) }}</p>
+              <p class="text-sm font-bold text-gray-900">{{ formatPrice(detail.quantity * detail.price) }}</p>
             </div>
           </div>
 
-          <div class="border-t border-gray-100 pt-4 space-y-2">
+          <div class="pt-4 space-y-2 border-t border-gray-100">
             <div class="flex justify-between text-xs text-gray-500">
               <span>Subtotal for Products</span>
               <span>{{ formatPrice(trackingData.total_amount) }}</span>
@@ -975,20 +975,20 @@ onMounted(fetchTracking);
               <span>Shipping Cost</span>
               <span>{{ formatPrice(trackingData.shipping_cost) }}</span>
             </div>
-            <div class="flex justify-between items-center mt-4 pt-4 border-t border-gray-200 border-dashed">
+            <div class="flex items-center justify-between pt-4 mt-4 border-t border-gray-200 border-dashed">
               <span class="font-bold text-[10px] uppercase tracking-widest text-black">Grand Total</span>
-              <span class="font-black text-xl text-black">{{ formatPrice(getGrandTotal(trackingData)) }}</span>
+              <span class="text-xl font-black text-black">{{ formatPrice(getGrandTotal(trackingData)) }}</span>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="bg-white shadow-sm border border-gray-100 rounded-3xl p-6 md:p-8">
-        <h3 class="font-bold text-sm uppercase tracking-widest border-b border-gray-100 pb-4 mb-6">
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-3xl md:p-8">
+        <h3 class="pb-4 mb-6 text-sm font-bold tracking-widest uppercase border-b border-gray-100">
           Tracking Timeline
         </h3>
 
-        <div class="relative border-l-2 border-gray-100 ml-3 space-y-8">
+        <div class="relative ml-3 space-y-8 border-l-2 border-gray-100">
           <div v-for="(history, index) in timelineHistory" :key="index" class="relative pl-8">
             <span
               :class="index === 0 ? 'bg-black ring-4 ring-gray-50' : 'bg-gray-300'"
@@ -996,10 +996,10 @@ onMounted(fetchTracking);
             ></span>
 
             <div :class="index === 0 ? 'opacity-100' : 'opacity-50'">
-              <p class="font-bold text-gray-900 text-sm uppercase tracking-wide mb-1">
+              <p class="mb-1 text-sm font-bold tracking-wide text-gray-900 uppercase">
                 {{ formatStatusTitle(history.status) }}
               </p>
-              <p class="text-gray-600 text-xs mb-2">{{ history.note }}</p>
+              <p class="mb-2 text-xs text-gray-600">{{ history.note }}</p>
               <p class="text-[10px] text-gray-400 font-medium font-mono">
                 {{ formatDate(history.updated_at) }}
               </p>
@@ -1170,16 +1170,16 @@ onMounted(fetchTracking);
 </script> -->
 
 <!-- <template>
-  <div class="mx-auto px-6 py-20 max-w-4xl min-h-screen">
-    <div class="mb-8 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+  <div class="max-w-4xl min-h-screen px-6 py-20 mx-auto">
+    <div class="flex flex-col gap-4 mb-8 md:flex-row md:justify-between md:items-center">
       <div>
         <button
           @click="$router.push('/orderpage')"
-          class="text-gray-500 hover:text-black font-bold text-xs uppercase tracking-widest transition flex items-center gap-2 mb-6"
+          class="flex items-center gap-2 mb-6 text-xs font-bold tracking-widest text-gray-500 uppercase transition hover:text-black"
         >
           <span>&larr;</span> Back to Orders
         </button>
-        <h1 class="font-serif text-3xl md:text-4xl uppercase tracking-tighter text-gray-900">
+        <h1 class="font-serif text-3xl tracking-tighter text-gray-900 uppercase md:text-4xl">
           Shipment Tracking
         </h1>
       </div>
@@ -1197,57 +1197,57 @@ onMounted(fetchTracking);
       </button>
     </div>
 
-    <div v-if="isLoading" class="flex flex-col justify-center items-center py-20">
-      <div class="border-4 border-gray-100 border-t-black rounded-full w-10 h-10 animate-spin"></div>
-      <p class="mt-4 font-bold text-gray-400 text-xs uppercase tracking-widest animate-pulse">
+    <div v-if="isLoading" class="flex flex-col items-center justify-center py-20">
+      <div class="w-10 h-10 border-4 border-gray-100 rounded-full border-t-black animate-spin"></div>
+      <p class="mt-4 text-xs font-bold tracking-widest text-gray-400 uppercase animate-pulse">
         Fetching order details...
       </p>
     </div>
 
-    <div v-else-if="error" class="bg-red-50 p-8 rounded-2xl text-center border border-red-100">
-      <p class="text-red-600 font-bold">{{ error }}</p>
+    <div v-else-if="error" class="p-8 text-center border border-red-100 bg-red-50 rounded-2xl">
+      <p class="font-bold text-red-600">{{ error }}</p>
     </div>
 
     <div v-else-if="orderData" class="space-y-6 animate-fade-in">
       
-      <div class="bg-white shadow-sm border border-gray-100 rounded-3xl overflow-hidden">
-        <div class="bg-gray-50 p-6 md:p-8 border-b border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+      <div class="overflow-hidden bg-white border border-gray-100 shadow-sm rounded-3xl">
+        <div class="flex flex-col items-start justify-between gap-6 p-6 border-b border-gray-100 bg-gray-50 md:p-8 md:flex-row md:items-center">
           
           <div>
             <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Waybill / Resi</p>
-            <p class="font-mono font-bold text-xl text-black">
+            <p class="font-mono text-xl font-bold text-black">
               {{ trackingData?.courier?.waybill_id || orderData.tracking_number || simulatedWaybill || "Waiting for Courier..." }}
             </p>
-            <div class="mt-3 flex flex-wrap items-center gap-3">
+            <div class="flex flex-wrap items-center gap-3 mt-3">
               <span class="bg-black text-white px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-widest">
                 {{ formatStatusTitle(trackingData?.status || orderData.status) }}
               </span>
             </div>
           </div>
 
-          <div class="flex items-center gap-6 w-full md:w-auto">
+          <div class="flex items-center w-full gap-6 md:w-auto">
             <div v-if="activePaymentMethod" class="flex flex-col items-start md:items-end">
                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Payment</p>
                <div class="flex items-center gap-3">
-                 <div class="w-10 h-6 bg-white border border-gray-200 rounded flex justify-center items-center overflow-hidden shrink-0">
+                 <div class="flex items-center justify-center w-10 h-6 overflow-hidden bg-white border border-gray-200 rounded shrink-0">
                    <img v-if="getPaymentLogo(activePaymentMethod)" :src="getPaymentLogo(activePaymentMethod)" class="w-full h-full object-contain p-0.5" />
                    <span v-else class="font-black text-gray-300 text-[8px]">{{ activePaymentMethod.split(' ')[1] || 'PAY' }}</span>
                  </div>
-                 <p class="font-bold text-green-600 text-xs uppercase">{{ activePaymentMethod.replace("_", " ") }}</p>
+                 <p class="text-xs font-bold text-green-600 uppercase">{{ activePaymentMethod.replace("_", " ") }}</p>
                </div>
             </div>
 
-            <div class="w-px h-8 bg-gray-200 hidden md:block"></div> 
+            <div class="hidden w-px h-8 bg-gray-200 md:block"></div> 
             
             <div class="flex flex-col items-start md:items-end">
               <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Courier</p>
               <div class="flex items-center gap-3">
-                <div class="w-8 h-8 bg-white border border-gray-200 rounded-lg flex justify-center items-center overflow-hidden shrink-0">
-                   <img v-if="getCourierLogo(trackingData?.courier?.company || orderData.courier_company)" :src="getCourierLogo(trackingData?.courier?.company || orderData.courier_company)" class="w-full h-full object-contain p-1" />
+                <div class="flex items-center justify-center w-8 h-8 overflow-hidden bg-white border border-gray-200 rounded-lg shrink-0">
+                   <img v-if="getCourierLogo(trackingData?.courier?.company || orderData.courier_company)" :src="getCourierLogo(trackingData?.courier?.company || orderData.courier_company)" class="object-contain w-full h-full p-1" />
                    <span v-else class="font-black text-gray-300 text-[8px]">{{ trackingData?.courier?.company || orderData.courier_company || 'N/A' }}</span>
                 </div>
                 <div class="text-left md:text-right">
-                  <p class="font-bold text-gray-800 uppercase text-xs">
+                  <p class="text-xs font-bold text-gray-800 uppercase">
                     {{ trackingData?.courier?.company || orderData.courier_company }}
                   </p>
                   <p class="text-[10px] text-gray-500 font-bold uppercase">{{ trackingData?.courier?.type || orderData.courier_type }}</p>
@@ -1258,10 +1258,10 @@ onMounted(fetchTracking);
           
         </div>
 
-        <div v-if="trackingData" class="p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-sm bg-white">
+        <div v-if="trackingData" class="grid grid-cols-1 gap-8 p-6 text-sm bg-white md:p-8 md:grid-cols-2">
           <div class="space-y-3">
-            <div class="flex items-center gap-2 mb-4 border-b border-gray-100 pb-2">
-              <span class="w-2 h-2 rounded-full bg-gray-300"></span>
+            <div class="flex items-center gap-2 pb-2 mb-4 border-b border-gray-100">
+              <span class="w-2 h-2 bg-gray-300 rounded-full"></span>
               <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Origin Details</p>
             </div>
             <div>
@@ -1270,11 +1270,11 @@ onMounted(fetchTracking);
             </div>
             <div>
               <p class="text-[10px] text-gray-400 uppercase tracking-widest">Phone</p>
-              <p class="font-mono text-gray-700 text-xs">{{ trackingData.origin?.contact_phone || '-' }}</p>
+              <p class="font-mono text-xs text-gray-700">{{ trackingData.origin?.contact_phone || '-' }}</p>
             </div>
             <div>
               <p class="text-[10px] text-gray-400 uppercase tracking-widest">Full Address</p>
-              <p class="text-gray-600 leading-relaxed text-xs">
+              <p class="text-xs leading-relaxed text-gray-600">
                 {{ trackingData.origin?.address || '-' }}<br/>
                 <span v-if="trackingData.origin?.postal_code" class="font-bold">Postal Code: {{ trackingData.origin.postal_code }}</span>
               </p>
@@ -1282,8 +1282,8 @@ onMounted(fetchTracking);
           </div>
 
           <div class="space-y-3">
-            <div class="flex items-center gap-2 mb-4 border-b border-gray-100 pb-2">
-              <span class="w-2 h-2 rounded-full bg-black"></span>
+            <div class="flex items-center gap-2 pb-2 mb-4 border-b border-gray-100">
+              <span class="w-2 h-2 bg-black rounded-full"></span>
               <p class="text-[10px] font-bold text-black uppercase tracking-widest">Destination Details</p>
             </div>
             <div>
@@ -1292,44 +1292,44 @@ onMounted(fetchTracking);
             </div>
             <div>
               <p class="text-[10px] text-gray-400 uppercase tracking-widest">Phone</p>
-              <p class="font-mono text-gray-700 text-xs">{{ trackingData.destination?.contact_phone || '-' }}</p>
+              <p class="font-mono text-xs text-gray-700">{{ trackingData.destination?.contact_phone || '-' }}</p>
             </div>
             <div>
               <p class="text-[10px] text-gray-400 uppercase tracking-widest">Full Address</p>
-              <p class="text-gray-600 leading-relaxed text-xs">
+              <p class="text-xs leading-relaxed text-gray-600">
                 {{ trackingData.destination?.address || '-' }}<br/>
                 <span v-if="trackingData.destination?.postal_code" class="font-bold">Postal Code: {{ trackingData.destination.postal_code }}</span>
               </p>
             </div>
             <div v-if="trackingData.destination?.note">
               <p class="text-[10px] text-gray-400 uppercase tracking-widest">Courier Note</p>
-              <p class="text-gray-500 italic text-xs bg-gray-50 p-2 rounded border">"{{ trackingData.destination.note }}"</p>
+              <p class="p-2 text-xs italic text-gray-500 border rounded bg-gray-50">"{{ trackingData.destination.note }}"</p>
             </div>
           </div>
         </div>
-        <div v-else class="p-6 md:p-8 text-center bg-white text-gray-400 text-xs italic">
+        <div v-else class="p-6 text-xs italic text-center text-gray-400 bg-white md:p-8">
           Menunggu data lokasi kurir (Origin & Destination) tersedia dari ekspedisi...
         </div>
       </div>
 
-      <div v-if="orderData.details && orderData.details.length > 0" class="bg-white shadow-sm border border-gray-100 rounded-3xl overflow-hidden">
-        <div class="bg-gray-50 p-4 border-b border-gray-100">
-           <h3 class="font-bold text-xs uppercase tracking-widest text-gray-500 ml-2">Order Summary</h3>
+      <div v-if="orderData.details && orderData.details.length > 0" class="overflow-hidden bg-white border border-gray-100 shadow-sm rounded-3xl">
+        <div class="p-4 border-b border-gray-100 bg-gray-50">
+           <h3 class="ml-2 text-xs font-bold tracking-widest text-gray-500 uppercase">Order Summary</h3>
         </div>
         
         <div class="p-6">
-          <div class="space-y-4 mb-6">
-            <div v-for="detail in orderData.details" :key="detail.id" class="flex items-center gap-4 py-2 border-b border-gray-50 last:border-0 pb-4">
-              <img :src="detail.product.image" class="bg-gray-100 border border-gray-100 rounded-lg w-16 h-16 object-cover" />
+          <div class="mb-6 space-y-4">
+            <div v-for="detail in orderData.details" :key="detail.id" class="flex items-center gap-4 py-2 pb-4 border-b border-gray-50 last:border-0">
+              <img :src="detail.product.image" class="object-cover w-16 h-16 bg-gray-100 border border-gray-100 rounded-lg" />
               <div class="flex-grow">
-                <h4 class="font-bold text-gray-900 text-sm uppercase">{{ detail.product.name }}</h4>
-                <p class="text-gray-400 text-xs">{{ detail.quantity }} x {{ formatPrice(detail.price) }}</p>
+                <h4 class="text-sm font-bold text-gray-900 uppercase">{{ detail.product.name }}</h4>
+                <p class="text-xs text-gray-400">{{ detail.quantity }} x {{ formatPrice(detail.price) }}</p>
               </div>
-              <p class="font-bold text-gray-900 text-sm">{{ formatPrice(detail.quantity * detail.price) }}</p>
+              <p class="text-sm font-bold text-gray-900">{{ formatPrice(detail.quantity * detail.price) }}</p>
             </div>
           </div>
 
-          <div class="border-t border-gray-100 pt-4 space-y-2">
+          <div class="pt-4 space-y-2 border-t border-gray-100">
             <div class="flex justify-between text-xs text-gray-500">
               <span>Subtotal for Products</span>
               <span>{{ formatPrice(orderData.total_amount) }}</span>
@@ -1338,20 +1338,20 @@ onMounted(fetchTracking);
               <span>Shipping Cost</span>
               <span>{{ formatPrice(orderData.shipping_cost) }}</span>
             </div>
-            <div class="flex justify-between items-center mt-4 pt-4 border-t border-gray-200 border-dashed">
+            <div class="flex items-center justify-between pt-4 mt-4 border-t border-gray-200 border-dashed">
               <span class="font-bold text-[10px] uppercase tracking-widest text-black">Grand Total</span>
-              <span class="font-black text-xl text-black">{{ formatPrice(getGrandTotal(orderData)) }}</span>
+              <span class="text-xl font-black text-black">{{ formatPrice(getGrandTotal(orderData)) }}</span>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="bg-white shadow-sm border border-gray-100 rounded-3xl p-6 md:p-8">
-        <h3 class="font-bold text-sm uppercase tracking-widest border-b border-gray-100 pb-4 mb-6">
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-3xl md:p-8">
+        <h3 class="pb-4 mb-6 text-sm font-bold tracking-widest uppercase border-b border-gray-100">
           Tracking Timeline
         </h3>
 
-        <div class="relative border-l-2 border-gray-100 ml-3 space-y-8">
+        <div class="relative ml-3 space-y-8 border-l-2 border-gray-100">
           <div v-for="(history, index) in timelineHistory" :key="index" class="relative pl-8">
             <span
               :class="index === 0 ? 'bg-black ring-4 ring-gray-50' : 'bg-gray-300'"
@@ -1359,10 +1359,10 @@ onMounted(fetchTracking);
             ></span>
 
             <div :class="index === 0 ? 'opacity-100' : 'opacity-50'">
-              <p class="font-bold text-gray-900 text-sm uppercase tracking-wide mb-1">
+              <p class="mb-1 text-sm font-bold tracking-wide text-gray-900 uppercase">
                 {{ formatStatusTitle(history.status) }}
               </p>
-              <p class="text-gray-600 text-xs mb-2">{{ history.note }}</p>
+              <p class="mb-2 text-xs text-gray-600">{{ history.note }}</p>
               <p class="text-[10px] text-gray-400 font-medium font-mono">
                 {{ formatDate(history.updated_at) }}
               </p>
@@ -1551,29 +1551,29 @@ onMounted(fetchAllData);
 
 <!-- Tanpa Tombol Simulasi -->
 <template>
-  <div class="mx-auto px-6 py-20 max-w-4xl min-h-screen">
-    <div class="mb-8 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+  <div class="max-w-4xl min-h-screen px-6 py-20 mx-auto">
+    <div class="flex flex-col gap-4 mb-8 md:flex-row md:justify-between md:items-center">
       <div>
         <button
           @click="$router.push('/orderpage')"
-          class="text-gray-500 hover:text-black font-bold text-xs uppercase tracking-widest transition flex items-center gap-2 mb-6"
+          class="flex items-center gap-2 mb-6 text-xs font-bold tracking-widest text-gray-500 uppercase transition hover:text-black"
         >
           <span>&larr;</span> {{ $t("tracking.back_to_order") }}
         </button>
         <h1
-          class="font-serif text-3xl md:text-4xl uppercase tracking-tighter text-gray-900"
+          class="font-serif text-3xl tracking-tighter text-gray-900 uppercase md:text-4xl"
         >
           {{ $t("tracking.shipment_tracking") }}
         </h1>
       </div>
     </div>
 
-    <div v-if="isLoading" class="flex flex-col justify-center items-center py-20">
+    <div v-if="isLoading" class="flex flex-col items-center justify-center py-20">
       <div
-        class="border-4 border-gray-100 border-t-black rounded-full w-10 h-10 animate-spin"
+        class="w-10 h-10 border-4 border-gray-100 rounded-full border-t-black animate-spin"
       ></div>
       <p
-        class="mt-4 font-bold text-gray-400 text-xs uppercase tracking-widest animate-pulse"
+        class="mt-4 text-xs font-bold tracking-widest text-gray-400 uppercase animate-pulse"
       >
         {{ $t("tracking.fetching_order") }}
       </p>
@@ -1581,28 +1581,28 @@ onMounted(fetchAllData);
 
     <div
       v-else-if="error"
-      class="bg-red-50 p-8 rounded-2xl text-center border border-red-100"
+      class="p-8 text-center border border-red-100 bg-red-50 rounded-2xl"
     >
-      <p class="text-red-600 font-bold">{{ error }}</p>
+      <p class="font-bold text-red-600">{{ error }}</p>
     </div>
 
     <div v-else-if="orderData" class="space-y-6 animate-fade-in">
-      <div class="bg-white shadow-sm border border-gray-100 rounded-3xl overflow-hidden">
+      <div class="overflow-hidden bg-white border border-gray-100 shadow-sm rounded-3xl">
         <div
-          class="bg-gray-50 p-6 md:p-8 border-b border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-6"
+          class="flex flex-col items-start justify-between gap-6 p-6 border-b border-gray-100 bg-gray-50 md:p-8 md:flex-row md:items-center"
         >
           <div>
             <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
               {{ $t("tracking.waybill") }}
             </p>
-            <p class="font-mono font-bold text-xl text-black">
+            <p class="font-mono text-xl font-bold text-black">
               {{
                 trackingData?.courier?.waybill_id ||
                 orderData.tracking_number ||
                 $t("tracking.waiting_for_courier")
               }}
             </p>
-            <div class="mt-3 flex flex-wrap items-center gap-3">
+            <div class="flex flex-wrap items-center gap-3 mt-3">
               <span
                 class="bg-black text-white px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-widest"
               >
@@ -1611,7 +1611,7 @@ onMounted(fetchAllData);
             </div>
           </div>
 
-          <div class="flex items-center gap-6 w-full md:w-auto">
+          <div class="flex items-center w-full gap-6 md:w-auto">
             <div
               v-if="activePaymentMethod"
               class="flex flex-col items-start md:items-end"
@@ -1623,7 +1623,7 @@ onMounted(fetchAllData);
               </p>
               <div class="flex items-center gap-3">
                 <div
-                  class="w-10 h-6 bg-white border border-gray-200 rounded flex justify-center items-center overflow-hidden shrink-0"
+                  class="flex items-center justify-center w-10 h-6 overflow-hidden bg-white border border-gray-200 rounded shrink-0"
                 >
                   <img
                     v-if="getPaymentLogo(activePaymentMethod)"
@@ -1634,13 +1634,13 @@ onMounted(fetchAllData);
                     activePaymentMethod.split(" ")[1] || "PAY"
                   }}</span>
                 </div>
-                <p class="font-bold text-green-600 text-xs uppercase">
+                <p class="text-xs font-bold text-green-600 uppercase">
                   {{ activePaymentMethod.replace("_", " ") }}
                 </p>
               </div>
             </div>
 
-            <div class="w-px h-8 bg-gray-200 hidden md:block"></div>
+            <div class="hidden w-px h-8 bg-gray-200 md:block"></div>
 
             <div class="flex flex-col items-start md:items-end">
               <p
@@ -1650,7 +1650,7 @@ onMounted(fetchAllData);
               </p>
               <div class="flex items-center gap-3">
                 <div
-                  class="w-8 h-8 bg-white border border-gray-200 rounded-lg flex justify-center items-center overflow-hidden shrink-0"
+                  class="flex items-center justify-center w-8 h-8 overflow-hidden bg-white border border-gray-200 rounded-lg shrink-0"
                 >
                   <img
                     v-if="
@@ -1663,14 +1663,14 @@ onMounted(fetchAllData);
                         trackingData?.courier?.company || orderData.courier_company
                       )
                     "
-                    class="w-full h-full object-contain p-1"
+                    class="object-contain w-full h-full p-1"
                   />
                   <span v-else class="font-black text-gray-300 text-[8px]">{{
                     trackingData?.courier?.company || orderData.courier_company || "N/A"
                   }}</span>
                 </div>
                 <div class="text-left md:text-right">
-                  <p class="font-bold text-gray-800 uppercase text-xs">
+                  <p class="text-xs font-bold text-gray-800 uppercase">
                     {{ trackingData?.courier?.company || orderData.courier_company }}
                   </p>
                   <p class="text-[10px] text-gray-500 font-bold uppercase">
@@ -1684,11 +1684,11 @@ onMounted(fetchAllData);
 
         <div
           v-if="trackingData"
-          class="p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-sm bg-white"
+          class="grid grid-cols-1 gap-8 p-6 text-sm bg-white md:p-8 md:grid-cols-2"
         >
           <div class="space-y-3">
-            <div class="flex items-center gap-2 mb-4 border-b border-gray-100 pb-2">
-              <span class="w-2 h-2 rounded-full bg-gray-300"></span>
+            <div class="flex items-center gap-2 pb-2 mb-4 border-b border-gray-100">
+              <span class="w-2 h-2 bg-gray-300 rounded-full"></span>
               <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
                 {{ $t("tracking.origin_detail") }}
               </p>
@@ -1703,7 +1703,7 @@ onMounted(fetchAllData);
             </div>
             <div>
               <p class="text-[10px] text-gray-400 uppercase tracking-widest">Phone</p>
-              <p class="font-mono text-gray-700 text-xs">
+              <p class="font-mono text-xs text-gray-700">
                 {{ trackingData.origin?.contact_phone || "-" }}
               </p>
             </div>
@@ -1711,7 +1711,7 @@ onMounted(fetchAllData);
               <p class="text-[10px] text-gray-400 uppercase tracking-widest">
                 {{ $t("tracking.full_address") }}
               </p>
-              <p class="text-gray-600 leading-relaxed text-xs">
+              <p class="text-xs leading-relaxed text-gray-600">
                 {{ trackingData.origin?.address || "-" }}<br />
                 <span v-if="trackingData.origin?.postal_code" class="font-bold"
                   >{{ $t("tracking.postal_code") }}
@@ -1722,8 +1722,8 @@ onMounted(fetchAllData);
           </div>
 
           <div class="space-y-3">
-            <div class="flex items-center gap-2 mb-4 border-b border-gray-100 pb-2">
-              <span class="w-2 h-2 rounded-full bg-black"></span>
+            <div class="flex items-center gap-2 pb-2 mb-4 border-b border-gray-100">
+              <span class="w-2 h-2 bg-black rounded-full"></span>
               <p class="text-[10px] font-bold text-black uppercase tracking-widest">
                 {{ $t("tracking.destination_details") }}
               </p>
@@ -1738,7 +1738,7 @@ onMounted(fetchAllData);
             </div>
             <div>
               <p class="text-[10px] text-gray-400 uppercase tracking-widest">Phone</p>
-              <p class="font-mono text-gray-700 text-xs">
+              <p class="font-mono text-xs text-gray-700">
                 {{ trackingData.destination?.contact_phone || "-" }}
               </p>
             </div>
@@ -1746,7 +1746,7 @@ onMounted(fetchAllData);
               <p class="text-[10px] text-gray-400 uppercase tracking-widest">
                 {{ $t("tracking.full_address") }}
               </p>
-              <p class="text-gray-600 leading-relaxed text-xs">
+              <p class="text-xs leading-relaxed text-gray-600">
                 {{ trackingData.destination?.address || "-" }}<br />
                 <span v-if="trackingData.destination?.postal_code" class="font-bold"
                   >{{ $t("tracking.postal_code") }}
@@ -1758,55 +1758,55 @@ onMounted(fetchAllData);
               <p class="text-[10px] text-gray-400 uppercase tracking-widest">
                 {{ $t("tracking.courier_note") }}
               </p>
-              <p class="text-gray-500 italic text-xs bg-gray-50 p-2 rounded border">
+              <p class="p-2 text-xs italic text-gray-500 border rounded bg-gray-50">
                 "{{ trackingData.destination.note }}"
               </p>
             </div>
           </div>
         </div>
-        <div v-else class="p-6 md:p-8 text-center bg-white text-gray-400 text-xs italic">
+        <div v-else class="p-6 text-xs italic text-center text-gray-400 bg-white md:p-8">
           {{ $t("tracking.waiting_courier_loc") }}
         </div>
       </div>
 
       <!-- <div
         v-if="orderData.details && orderData.details.length > 0"
-        class="bg-white shadow-sm border border-gray-100 rounded-3xl overflow-hidden"
+        class="overflow-hidden bg-white border border-gray-100 shadow-sm rounded-3xl"
       >
-        <div class="bg-gray-50 p-4 border-b border-gray-100">
+        <div class="p-4 border-b border-gray-100 bg-gray-50">
           <h3
-            class="font-bold text-xs uppercase tracking-widest text-gray-500 ml-2"
+            class="ml-2 text-xs font-bold tracking-widest text-gray-500 uppercase"
           >
             Order Summary
           </h3>
         </div>
 
         <div class="p-6">
-          <div class="space-y-4 mb-6">
+          <div class="mb-6 space-y-4">
             <div
               v-for="detail in orderData.details"
               :key="detail.id"
-              class="flex items-center gap-4 py-2 border-b border-gray-50 last:border-0 pb-4"
+              class="flex items-center gap-4 py-2 pb-4 border-b border-gray-50 last:border-0"
             >
               <img
                 :src="detail.product.image"
-                class="bg-gray-100 border border-gray-100 rounded-lg w-16 h-16 object-cover"
+                class="object-cover w-16 h-16 bg-gray-100 border border-gray-100 rounded-lg"
               />
               <div class="flex-grow">
-                <h4 class="font-bold text-gray-900 text-sm uppercase">
+                <h4 class="text-sm font-bold text-gray-900 uppercase">
                   {{ detail.product.name }}
                 </h4>
-                <p class="text-gray-400 text-xs">
+                <p class="text-xs text-gray-400">
                   {{ detail.quantity }} x {{ formatPrice(detail.price) }}
                 </p>
               </div>
-              <p class="font-bold text-gray-900 text-sm">
+              <p class="text-sm font-bold text-gray-900">
                 {{ formatPrice(detail.quantity * detail.price) }}
               </p>
             </div>
           </div>
 
-          <div class="border-t border-gray-100 pt-4 space-y-2">
+          <div class="pt-4 space-y-2 border-t border-gray-100">
             <div class="flex justify-between text-xs text-gray-500">
               <span>Subtotal for Products</span>
               <span>{{ formatPrice(orderData.total_amount) }}</span>
@@ -1816,13 +1816,13 @@ onMounted(fetchAllData);
               <span>{{ formatPrice(orderData.shipping_cost) }}</span>
             </div>
             <div
-              class="flex justify-between items-center mt-4 pt-4 border-t border-gray-200 border-dashed"
+              class="flex items-center justify-between pt-4 mt-4 border-t border-gray-200 border-dashed"
             >
               <span
                 class="font-bold text-[10px] uppercase tracking-widest text-black"
                 >Grand Total</span
               >
-              <span class="font-black text-xl text-black">{{
+              <span class="text-xl font-black text-black">{{
                 formatPrice(getGrandTotal(orderData))
               }}</span>
             </div>
@@ -1832,27 +1832,27 @@ onMounted(fetchAllData);
 
       <div
         v-if="orderData.details && orderData.details.length > 0"
-        class="bg-white shadow-sm border border-gray-100 rounded-3xl overflow-hidden"
+        class="overflow-hidden bg-white border border-gray-100 shadow-sm rounded-3xl"
       >
-        <div class="bg-gray-50 p-4 border-b border-gray-100">
-          <h3 class="font-bold text-xs uppercase tracking-widest text-gray-500 ml-2">
+        <div class="p-4 border-b border-gray-100 bg-gray-50">
+          <h3 class="ml-2 text-xs font-bold tracking-widest text-gray-500 uppercase">
             {{ $t("tracking.order_summary") }}
           </h3>
         </div>
 
         <div class="p-6">
-          <div class="space-y-4 mb-6">
+          <div class="mb-6 space-y-4">
             <div
               v-for="detail in orderData.details"
               :key="detail.id"
-              class="flex items-center gap-4 py-2 border-b border-gray-50 last:border-0 pb-4"
+              class="flex items-center gap-4 py-2 pb-4 border-b border-gray-50 last:border-0"
             >
               <img
                 :src="detail.product.image || defaultBagIcon"
-                class="bg-gray-100 border border-gray-100 rounded-lg w-16 h-16 object-cover"
+                class="object-cover w-16 h-16 bg-gray-100 border border-gray-100 rounded-lg"
               />
               <div class="flex-grow">
-                <h4 class="font-bold text-gray-900 text-sm uppercase">
+                <h4 class="text-sm font-bold text-gray-900 uppercase">
                   {{ detail.product.name }}
                 </h4>
                 <p
@@ -1862,17 +1862,17 @@ onMounted(fetchAllData);
                   {{ $t("tracking.color") }}
                   <span class="font-bold text-gray-700">{{ detail.color }}</span>
                 </p>
-                <p class="text-gray-400 text-xs mt-1">
+                <p class="mt-1 text-xs text-gray-400">
                   {{ detail.quantity }} x {{ formatPrice(detail.price) }}
                 </p>
               </div>
-              <p class="font-bold text-gray-900 text-sm">
+              <p class="text-sm font-bold text-gray-900">
                 {{ formatPrice(detail.quantity * detail.price) }}
               </p>
             </div>
           </div>
 
-          <div class="border-t border-gray-100 pt-4 space-y-2">
+          <div class="pt-4 space-y-2 border-t border-gray-100">
             <div class="flex justify-between text-xs text-gray-500">
               <span>{{ $t("tracking.subtotal_products") }}</span>
               <span>{{ formatPrice(orderData.total_amount) }}</span>
@@ -1883,7 +1883,7 @@ onMounted(fetchAllData);
             </div>
             <div
               v-if="orderData.promo_discount > 0"
-              class="flex justify-between text-xs text-green-600 font-medium"
+              class="flex justify-between text-xs font-medium text-green-600"
             >
               <span
                 >{{ $t("tracking.promo_applied") }} (<span class="font-mono uppercase">{{
@@ -1896,7 +1896,7 @@ onMounted(fetchAllData);
 
             <div
               v-if="orderData.points_used > 0"
-              class="flex justify-between text-xs text-yellow-600 font-medium"
+              class="flex justify-between text-xs font-medium text-yellow-600"
             >
               <span
                 >{{ $t("tracking.points_redeemed") }} ({{
@@ -1907,12 +1907,12 @@ onMounted(fetchAllData);
               <span>- {{ formatPrice(orderData.points_used * 1000) }}</span>
             </div>
             <div
-              class="flex justify-between items-center mt-4 pt-4 border-t border-gray-200 border-dashed"
+              class="flex items-center justify-between pt-4 mt-4 border-t border-gray-200 border-dashed"
             >
               <span class="font-bold text-[10px] uppercase tracking-widest text-black">{{
                 $t("tracking.grand_total")
               }}</span>
-              <span class="font-black text-xl text-black">{{
+              <span class="text-xl font-black text-black">{{
                 formatPrice(getGrandTotal(orderData))
               }}</span>
             </div>
@@ -1924,11 +1924,11 @@ onMounted(fetchAllData);
               orderData.point > 0 &&
               orderData.status === 'completed'
             "
-            class="mt-6 p-4 bg-gradient-to-r from-yellow-50 to-white border border-yellow-100 rounded-xl flex items-center justify-between"
+            class="flex items-center justify-between p-4 mt-6 border border-yellow-100 bg-gradient-to-r from-yellow-50 to-white rounded-xl"
           >
             <div class="flex items-center gap-3">
               <div
-                class="w-10 h-10 bg-yellow-400 text-white rounded-full flex justify-center items-center shadow-sm"
+                class="flex items-center justify-center w-10 h-10 text-white bg-yellow-400 rounded-full shadow-sm"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -1956,20 +1956,20 @@ onMounted(fetchAllData);
               <span class="text-2xl font-black text-yellow-600"
                 >+{{ orderData.point }}</span
               >
-              <span class="text-xs font-bold text-yellow-800 ml-1">Pts</span>
+              <span class="ml-1 text-xs font-bold text-yellow-800">Pts</span>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="bg-white shadow-sm border border-gray-100 rounded-3xl p-6 md:p-8">
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-3xl md:p-8">
         <h3
-          class="font-bold text-sm uppercase tracking-widest border-b border-gray-100 pb-4 mb-6"
+          class="pb-4 mb-6 text-sm font-bold tracking-widest uppercase border-b border-gray-100"
         >
           {{ $t("tracking.tracking_timeline") }}
         </h3>
 
-        <div class="relative border-l-2 border-gray-100 ml-3 space-y-8">
+        <div class="relative ml-3 space-y-8 border-l-2 border-gray-100">
           <div
             v-for="(history, index) in timelineHistory"
             :key="index"
@@ -1981,10 +1981,10 @@ onMounted(fetchAllData);
             ></span>
 
             <div :class="index === 0 ? 'opacity-100' : 'opacity-50'">
-              <p class="font-bold text-gray-900 text-sm uppercase tracking-wide mb-1">
+              <p class="mb-1 text-sm font-bold tracking-wide text-gray-900 uppercase">
                 {{ formatStatusTitle(history.status) }}
               </p>
-              <p class="text-gray-600 text-xs mb-2">{{ history.note }}</p>
+              <p class="mb-2 text-xs text-gray-600">{{ history.note }}</p>
               <p class="text-[10px] text-gray-400 font-medium font-mono">
                 {{ formatDate(history.updated_at) }}
               </p>
@@ -2005,6 +2005,8 @@ import { BASE_URL } from "../../config/api";
 import defaultBagIcon from "../../assets/products/bag_icon.jpg";
 
 import { useI18n } from "vue-i18n";
+
+import { formatPrice } from "../../utils/currency";
 
 const userData = ref(null);
 
@@ -2065,8 +2067,8 @@ const getPaymentLogo = (methodString) => {
   return map[channel] ? baseUrl + map[channel] : null;
 };
 
-const formatPrice = (v) =>
-  new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(v || 0);
+// const formatPrice = (v) =>
+//   new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(v || 0);
 
 // const getGrandTotal = (order) => {
 //   if (!order) return 0;

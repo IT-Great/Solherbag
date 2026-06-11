@@ -7015,6 +7015,8 @@ import { useI18n } from "vue-i18n";
 
 import defaultBagIcon from "../../assets/products/bag_icon.jpg";
 
+import { formatPrice } from "../../utils/currency";
+
 const userData = ref(null);
 const router = useRouter();
 const transactions = ref([]);
@@ -7687,8 +7689,8 @@ const shippingStatusClass = (status) => {
   return "bg-gray-50 border-gray-200 text-gray-600";
 };
 
-const formatPrice = (v) =>
-  new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(v);
+// const formatPrice = (v) =>
+//   new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(v);
 const formatDateTime = (date) =>
   new Date(date).toLocaleDateString("en-GB", {
     day: "numeric",

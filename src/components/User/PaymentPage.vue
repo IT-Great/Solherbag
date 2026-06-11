@@ -5217,7 +5217,7 @@ onMounted(fetchData);
                 >
                 <input
                   v-model="form.first_name_address"
-                  class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+                  class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   required
                 />
               </div>
@@ -5228,7 +5228,7 @@ onMounted(fetchData);
                 >
                 <input
                   v-model="form.last_name_address"
-                  class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+                  class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   required
                 />
               </div>
@@ -5242,7 +5242,7 @@ onMounted(fetchData);
                 >
                 <select
                   v-model="form.province"
-                  class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+                  class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   required
                 >
                   <option value="" disabled>{{ $t("payment.select_province") }}</option>
@@ -5258,7 +5258,7 @@ onMounted(fetchData);
                 >
                 <input
                   v-model="form.city"
-                  class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+                  class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   required
                 />
               </div>
@@ -5266,7 +5266,7 @@ onMounted(fetchData);
 
             <div class="relative overflow-hidden border border-gray-200 rounded-2xl">
               <div
-                class="flex items-start gap-2 px-4 py-3 bg-amber-50 border-b border-amber-100"
+                class="flex items-start gap-2 px-4 py-3 border-b bg-amber-50 border-amber-100"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -5289,7 +5289,7 @@ onMounted(fetchData);
               </div>
 
               <div
-                class="flex flex-col sm:flex-row items-center justify-between gap-2 p-3 border-b border-gray-200 bg-gray-50"
+                class="flex flex-col items-center justify-between gap-2 p-3 border-b border-gray-200 sm:flex-row bg-gray-50"
               >
                 <div class="relative w-full sm:flex-1">
                   <input
@@ -5359,7 +5359,7 @@ onMounted(fetchData);
                 v-model="form.address_location"
                 rows="3"
                 placeholder="Street name, building, house number..."
-                class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 resize-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none custom-scrollbar"
+                class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none resize-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 custom-scrollbar"
                 required
               ></textarea>
             </div>
@@ -5373,7 +5373,7 @@ onMounted(fetchData);
                 <input
                   v-model="form.location_type"
                   placeholder="Apartment, suite, block"
-                  class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+                  class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 />
               </div>
               <div>
@@ -5384,7 +5384,7 @@ onMounted(fetchData);
                 <input
                   v-model="form.postal_code"
                   placeholder="Postal code"
-                  class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+                  class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   required
                 />
               </div>
@@ -5439,6 +5439,8 @@ import { Country, State } from "country-state-city";
 import "leaflet/dist/leaflet.css";
 import { LMap, LTileLayer, LMarker } from "@vue-leaflet/vue-leaflet";
 import L from "leaflet";
+
+import { formatPrice } from "../../utils/currency";
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -6204,12 +6206,12 @@ const calculateEarnedPoints = computed(() =>
 const checkoutItems = computed(() =>
   cartItems.value.filter((item) => selectedItemIds.value.includes(item.id))
 );
-const formatPrice = (v) =>
-  new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    minimumFractionDigits: 0,
-  }).format(v);
+// const formatPrice = (v) =>
+//   new Intl.NumberFormat("id-ID", {
+//     style: "currency",
+//     currency: "IDR",
+//     minimumFractionDigits: 0,
+//   }).format(v);
 
 onMounted(fetchData);
 </script>
