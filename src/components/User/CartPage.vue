@@ -1388,6 +1388,8 @@ import { BASE_URL } from "../../config/api.js";
 // import { useCart } from "../../composables/useCart";
 import { useCart, getActivePrice, getDiscountStatus } from "../../composables/useCart";
 
+import { formatPrice } from "../../utils/currency";
+
 // [BARU] Import gambar default
 import defaultBagIcon from "../../assets/products/bag_icon.jpg";
 
@@ -1471,12 +1473,12 @@ const addSuggestedProduct = (product) => {
   });
 };
 
-const formatPrice = (v) =>
-  new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    minimumFractionDigits: 0,
-  }).format(v);
+// const formatPrice = (v) =>
+//   new Intl.NumberFormat("id-ID", {
+//     style: "currency",
+//     currency: "IDR",
+//     minimumFractionDigits: 0,
+//   }).format(v);
 
 const handleCheckout = () => {
   if (selectedItemIds.value.length === 0) return;
