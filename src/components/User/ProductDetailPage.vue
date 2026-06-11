@@ -465,7 +465,7 @@
               <span class="transition group-hover:text-gray-500">{{ $t(`product_detail.${section}`) }}</span>
               <span>{{ activeSection === section ? "−" : "+" }}</span>
             </button>
-            <transition name="fade">
+            <!-- <transition name="fade">
               <div
                 v-show="activeSection === section"
                 class="mt-4 text-sm leading-relaxed text-gray-600 whitespace-pre-wrap"
@@ -475,6 +475,22 @@
                 </template>
                 <template v-else-if="section === 'design'">
                   {{ (locale === 'en' && product.design_en) ? product.design_en : (product.design || $t('product_detail.no_information')) }}
+                </template>
+                <template v-else-if="section === 'shipping_and_returns'">
+                  {{ $t('product_detail.shipping_desc') }}
+                </template>
+              </div>
+            </transition> -->
+            <transition name="fade">
+              <div
+                v-show="activeSection === section"
+                class="mt-4 text-sm leading-relaxed text-gray-600 whitespace-pre-wrap"
+              >
+                <template v-if="section === 'description'">
+                  {{ ($i18n.locale === 'en' && product.description_en) ? product.description_en : (product.description || $t('product_detail.no_information')) }}
+                </template>
+                <template v-else-if="section === 'design'">
+                  {{ ($i18n.locale === 'en' && product.design_en) ? product.design_en : (product.design || $t('product_detail.no_information')) }}
                 </template>
                 <template v-else-if="section === 'shipping_and_returns'">
                   {{ $t('product_detail.shipping_desc') }}
