@@ -515,5 +515,26 @@
     "delete" : "Delete",
     "cancel" : "Cancel",
     "save_address" : "Save Address"
+  },
+  "product_detail" : {
+    "loading_solher" : "Loading Solher piece...",
+    "save" : "SAVE",
+    "upcoming" : "Upcoming Sale:",
+    "starts_on" : "starts on",
+    "material" : "Material",
+    "strap_length" : "Strap Length",
+    "dimensions" : "Dimensions",
+    "weight" : "Weight",
+    "colors" : "Colors",
+    "quantity" : "Quantity",
+    "out_of_stock" : "Out of Stock",
+    "add_to_cart" : "Add to Cart",
+    "buy_it_now" : "Buy It Now",
+    "description" : "Description",
+    "design" : "Design",
+    "shipping_and_returns" : "Shipping & Returns",
+    "no_information" : "No information available.",
+    "shipping_desc" : "Shipping options are available on the payment page through our partnership with Biteship. For product returns, please refer to the contact information on our Customer Care page. Returns can be coordinated following an automatic refund or as part of a manual refund application.",
+    "you_may_also_like" : "You May Also Like"
   }
 }

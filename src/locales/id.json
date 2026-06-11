@@ -514,5 +514,26 @@
     "delete": "Hapus",
     "cancel": "Batal",
     "save_address": "Simpan Alamat"
+  },
+  "product_detail": {
+    "loading_solher": "Memuat produk Solher...",
+    "save": "HEMAT",
+    "upcoming": "Diskon Mendatang:",
+    "starts_on": "dimulai pada",
+    "material": "Material",
+    "strap_length": "Panjang Tali",
+    "dimensions": "Dimensi",
+    "weight": "Berat",
+    "colors": "Warna",
+    "quantity": "Jumlah",
+    "out_of_stock": "Stok Habis",
+    "add_to_cart": "Tambah ke Keranjang",
+    "buy_it_now": "Beli Sekarang",
+    "description": "Deskripsi",
+    "design": "Desain",
+    "shipping_and_returns": "Pengiriman & Pengembalian",
+    "no_information": "Informasi tidak tersedia.",
+    "shipping_desc": "Opsi pengiriman tersedia pada halaman pembayaran melalui kemitraan kami dengan Biteship. Untuk pengembalian produk, silakan merujuk pada informasi kontak di halaman Layanan Pelanggan kami. Pengembalian barang dapat dikoordinasikan setelah pengembalian dana otomatis atau sebagai bagian dari pengajuan pengembalian dana manual.",
+    "you_may_also_like": "Anda Mungkin Juga Suka"
   }
 }
