@@ -1,4 +1,4 @@
-import { useCurrencyStore } from '@/stores/currency'
+import { useCurrencyStore } from '../stores/currency'
 
 export function formatPrice(basePriceIDR) {
     const store = useCurrencyStore();
