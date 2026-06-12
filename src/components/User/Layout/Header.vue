@@ -558,7 +558,7 @@
                       "
                       class="w-full text-xs font-medium tracking-widest text-left text-gray-500 uppercase transition-colors hover:text-black"
                     >
-                      {{ $t("all_bags") }}
+                      {{ $t("header.all_bags") }}
                     </button>
                   </li>
                   <li v-for="cat in categories" :key="cat.id">
@@ -615,6 +615,20 @@
                   </svg>
                   {{ locale === "en" ? "English" : "Bahasa" }}
                 </button>
+
+                <select
+                  v-model="currencyStore.selectedCurrency"
+                  @change="changeCurrency(currencyStore.selectedCurrency)"
+                  class="flex-1 px-4 py-3 text-[10px] font-bold tracking-widest text-center uppercase transition-colors bg-gray-100 rounded-lg outline-none appearance-none hover:bg-gray-200 focus:ring-2 focus:ring-black"
+                >
+                  <option
+                    v-for="currency in availableCurrencies"
+                    :key="currency"
+                    :value="currency"
+                  >
+                    {{ currency }}
+                  </option>
+                </select>
               </div>
             </nav>
 
