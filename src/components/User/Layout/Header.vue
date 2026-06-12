@@ -157,12 +157,71 @@
         <div
           class="flex items-center justify-end flex-1 space-x-4 text-gray-700 md:space-x-5"
         >
-          <button
+          <!-- <button
             @click="toggleLanguage"
             class="text-[10px] font-bold tracking-widest uppercase transition hover:text-black"
           >
             {{ locale === "en" ? "EN" : "ID" }}
-          </button>
+          </button> -->
+
+          <div class="items-center hidden gap-3 md:flex">
+            <button
+              @click="toggleLanguage"
+              class="text-[10px] font-bold tracking-widest uppercase transition hover:text-black"
+              title="Change Language"
+            >
+              {{ locale === "en" ? "EN" : "ID" }}
+            </button>
+
+            <span class="text-gray-300">|</span>
+
+            <div
+              class="relative group"
+              @mouseenter="isCurrencyDropdownOpen = true"
+              @mouseleave="isCurrencyDropdownOpen = false"
+            >
+              <button
+                class="flex items-center gap-1 text-[10px] font-bold tracking-widest uppercase transition hover:text-black"
+              >
+                {{ currencyStore.selectedCurrency }}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-3 h-3"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </button>
+
+              <transition name="fade-slide">
+                <div
+                  v-if="isCurrencyDropdownOpen"
+                  class="absolute right-0 w-24 py-2 mt-2 bg-white border border-gray-100 shadow-xl top-full"
+                >
+                  <button
+                    v-for="currency in availableCurrencies"
+                    :key="currency"
+                    @click="changeCurrency(currency)"
+                    :class="
+                      currencyStore.selectedCurrency === currency
+                        ? 'bg-gray-50 text-black font-black'
+                        : 'text-gray-500 hover:text-black hover:bg-gray-50'
+                    "
+                    class="block w-full px-4 py-2 text-[10px] tracking-widest text-left uppercase transition-colors"
+                  >
+                    {{ currency }}
+                  </button>
+                </div>
+              </transition>
+            </div>
+          </div>
 
           <button
             @click="openSearch"
