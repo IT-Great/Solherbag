@@ -2060,6 +2060,8 @@ onUnmounted(() => {
               <p class="text-sm font-bold text-red-600 md:text-base">
                 {{ formatPrice(p.discount_price) }}
               </p>
+            </div>
+            <div v-else>
               <p class="text-xs text-gray-400 line-through md:text-sm">
                 {{ formatPrice(p.price) }}
               </p>
