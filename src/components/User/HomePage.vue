@@ -1712,6 +1712,21 @@ const initData = async () => {
 //   }
 // };
 
+// Helper internal untuk mengonversi waktu UTC ke WIB (UTC+7)
+const convertToWIB = (dateString) => {
+  if (!dateString) return null;
+  // Laravel mengirim UTC dengan format '2026-06-06T00:00:00.000000Z'
+  const date = new Date(dateString);
+  // Tambahkan 7 jam untuk menjadi WIB (karena server menyimpan UTC murni)
+  // Perhatikan: Karena Anda minta "dikurangi 7 jam", pastikan ini benar.
+  // Biasanya dari UTC ke WIB justru DITAMBAH (+7 jam).
+  // Jika database Anda terlanjur menyimpan waktu +7 sebagai UTC,
+  // dan Anda ingin menguranginya, gunakan: date.setHours(date.getHours() - 7);
+  // Di sini saya berikan contoh standar konversi UTC ke WIB (+7).
+  date.setHours(date.getHours() - 7);
+  return date;
+};
+
 const getDiscountStatus = (p) => {
   if (!p || !p.discount_price) return { active: false, upcoming: false, expired: false };
 
