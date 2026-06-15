@@ -2056,9 +2056,17 @@ onUnmounted(() => {
             <h4 class="text-[10px] text-gray-500 uppercase tracking-widest">
               {{ p.name }}
             </h4>
-            <p class="font-medium text-black">
-              {{ formatPrice(p.discount_price ?? p.price) }}
-            </p>
+            <template v-if="getDiscountStatus(product).active">
+              <p class="text-sm font-bold text-red-600 md:text-base">
+                {{ formatPrice(product.discount_price) }}
+              </p>
+              <p class="text-xs text-gray-400 line-through md:text-sm">
+                {{ formatPrice(product.price) }}
+              </p>
+            </template>
+            <!-- <p class="font-medium text-black"> -->
+            <!-- {{ formatPrice(p.discount_price ?? p.price) }} -->
+            <!-- </p> -->
           </div>
         </div>
       </div>
@@ -2362,6 +2370,48 @@ const isClaimingPromo = ref(false);
 
 const showPromoPopup = ref(false);
 const { t } = useI18n();
+
+// Helper internal untuk mengonversi waktu UTC ke WIB (UTC+7)
+const convertToWIB = (dateString) => {
+  if (!dateString) return null;
+  // Laravel mengirim UTC dengan format '2026-06-06T00:00:00.000000Z'
+  const date = new Date(dateString);
+  // Tambahkan 7 jam untuk menjadi WIB (karena server menyimpan UTC murni)
+  // Perhatikan: Karena Anda minta "dikurangi 7 jam", pastikan ini benar.
+  // Biasanya dari UTC ke WIB justru DITAMBAH (+7 jam).
+  // Jika database Anda terlanjur menyimpan waktu +7 sebagai UTC,
+  // dan Anda ingin menguranginya, gunakan: date.setHours(date.getHours() - 7);
+  // Di sini saya berikan contoh standar konversi UTC ke WIB (+7).
+  date.setHours(date.getHours() - 7);
+  return date;
+};
+
+const getDiscountStatus = (p) => {
+  if (!p || !p.discount_price) return { active: false, upcoming: false, expired: false };
+
+  // Waktu perangkat lokal pengguna saat membuka web
+  const now = new Date();
+  let active = true;
+  let upcoming = false;
+  let expired = false;
+
+  if (p.discount_start_date) {
+    const startDate = convertToWIB(p.discount_start_date);
+    if (now < startDate) {
+      active = false;
+      upcoming = true;
+    }
+  }
+  if (p.discount_end_date) {
+    const endDate = convertToWIB(p.discount_end_date);
+    if (now > endDate) {
+      active = false;
+      expired = true;
+    }
+  }
+
+  return { active, upcoming, expired };
+};
 
 const vReveal = {
   mounted: (el) => {
