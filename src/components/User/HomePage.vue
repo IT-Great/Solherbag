@@ -1335,12 +1335,12 @@ onMounted(() => {
             </h4>
             <p class="font-medium text-black">
               <!-- {{ formatPrice(p.discount_price ?? p.price) }} -->
-              <template v-if="getDiscountStatus(product).active">
+              <template v-if="getDiscountStatus(p).active">
                 <p class="text-sm font-bold text-red-600 md:text-base">
-                  {{ formatPrice(product.discount_price) }}
+                  {{ formatPrice(p.discount_price) }}
                 </p>
                 <p class="text-xs text-gray-400 line-through md:text-sm">
-                  {{ formatPrice(product.price) }}
+                  {{ formatPrice(p.price) }}
                 </p>
               </template>
             </p>
