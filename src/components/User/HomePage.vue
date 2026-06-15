@@ -2062,7 +2062,7 @@ onUnmounted(() => {
               </p>
             </div>
             <div v-else>
-              <p class="text-xs text-gray-400 line-through md:text-sm">
+              <p class="font-medium text-black">
                 {{ formatPrice(p.price) }}
               </p>
             </div>
