@@ -2056,12 +2056,12 @@ onUnmounted(() => {
             <h4 class="text-[10px] text-gray-500 uppercase tracking-widest">
               {{ p.name }}
             </h4>
-            <template v-if="getDiscountStatus(product).active">
+            <template v-if="getDiscountStatus(p).active">
               <p class="text-sm font-bold text-red-600 md:text-base">
-                {{ formatPrice(product.discount_price) }}
+                {{ formatPrice(p.discount_price) }}
               </p>
               <p class="text-xs text-gray-400 line-through md:text-sm">
-                {{ formatPrice(product.price) }}
+                {{ formatPrice(p.price) }}
               </p>
             </template>
             <!-- <p class="font-medium text-black"> -->
