@@ -1334,7 +1334,7 @@ onMounted(() => {
               {{ p.name }}
             </h4>
             <p class="font-medium text-black">
-              {{ formatPrice(p.discount_price ?? p.price) }}
+              {{ formatPrice(p.discount_price) }}
             </p>
           </div>
         </div>
