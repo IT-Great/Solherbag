@@ -1334,7 +1334,15 @@ onMounted(() => {
               {{ p.name }}
             </h4>
             <p class="font-medium text-black">
-              {{ formatPrice(p.discount_price) }}
+              <!-- {{ formatPrice(p.discount_price ?? p.price) }} -->
+              <template v-if="getDiscountStatus(product).active">
+                <p class="text-sm font-bold text-red-600 md:text-base">
+                  {{ formatPrice(product.discount_price) }}
+                </p>
+                <p class="text-xs text-gray-400 line-through md:text-sm">
+                  {{ formatPrice(product.price) }}
+                </p>
+              </template>
             </p>
           </div>
         </div>
@@ -1703,6 +1711,33 @@ const initData = async () => {
 //     console.error("Product link broken or not found");
 //   }
 // };
+
+const getDiscountStatus = (p) => {
+  if (!p || !p.discount_price) return { active: false, upcoming: false, expired: false };
+
+  // Waktu perangkat lokal pengguna saat membuka web
+  const now = new Date();
+  let active = true;
+  let upcoming = false;
+  let expired = false;
+
+  if (p.discount_start_date) {
+    const startDate = convertToWIB(p.discount_start_date);
+    if (now < startDate) {
+      active = false;
+      upcoming = true;
+    }
+  }
+  if (p.discount_end_date) {
+    const endDate = convertToWIB(p.discount_end_date);
+    if (now > endDate) {
+      active = false;
+      expired = true;
+    }
+  }
+
+  return { active, upcoming, expired };
+};
 
 const navigateToSpecificProduct = async (query) => {
   try {
