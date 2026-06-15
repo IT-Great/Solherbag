@@ -2112,9 +2112,19 @@ onUnmounted(() => {
             <h4 class="text-[10px] text-gray-500 uppercase tracking-widest">
               {{ p.name }}
             </h4>
-            <p class="font-medium text-black">
+            <!-- <p class="font-medium text-black">
               {{ formatPrice(p.discount_price ?? p.price) }}
-            </p>
+            </p> -->
+            <div v-if="getDiscountStatus(p).active">
+              <p class="text-sm font-bold text-red-600 md:text-base">
+                {{ formatPrice(p.discount_price) }}
+              </p>
+            </div>
+            <div v-else>
+              <p class="font-medium text-black">
+                {{ formatPrice(p.price) }}
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -2164,9 +2174,19 @@ onUnmounted(() => {
             <h4 class="text-[10px] text-gray-500 uppercase tracking-widest">
               {{ p.name }}
             </h4>
-            <p class="font-medium text-black">
+            <!-- <p class="font-medium text-black">
               {{ formatPrice(p.discount_price ?? p.price) }}
-            </p>
+            </p> -->
+            <div v-if="getDiscountStatus(p).active">
+              <p class="text-sm font-bold text-red-600 md:text-base">
+                {{ formatPrice(p.discount_price) }}
+              </p>
+            </div>
+            <div v-else>
+              <p class="font-medium text-black">
+                {{ formatPrice(p.price) }}
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -2216,9 +2236,19 @@ onUnmounted(() => {
             <h4 class="text-[10px] text-gray-500 uppercase tracking-widest">
               {{ p.name }}
             </h4>
-            <p class="font-medium text-black">
+            <!-- <p class="font-medium text-black">
               {{ formatPrice(p.discount_price ?? p.price) }}
-            </p>
+            </p> -->
+            <div v-if="getDiscountStatus(p).active">
+              <p class="text-sm font-bold text-red-600 md:text-base">
+                {{ formatPrice(p.discount_price) }}
+              </p>
+            </div>
+            <div v-else>
+              <p class="font-medium text-black">
+                {{ formatPrice(p.price) }}
+              </p>
+            </div>
           </div>
         </div>
       </div>
