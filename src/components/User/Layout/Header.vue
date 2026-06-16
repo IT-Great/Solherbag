@@ -705,7 +705,8 @@ const isCurrencyDropdownOpen = ref(false);
 
 const changeCurrency = (currency) => {
   currencyStore.selectedCurrency = currency;
-  localStorage.setItem("user_currency", currency);
+  // localStorage.setItem("user_currency", currency);
+  localStorage.setItem("currency", currency);
   isCurrencyDropdownOpen.value = false;
 };
 

@@ -6157,6 +6157,8 @@ const parseColorName = (colorString) => {
 const handlePayment = async () => {
   isProcessing.value = true;
   try {
+    const activeCurrency = localStorage.getItem("currency") || "IDR";
+
     const payload = {
       address_id: selectedAddressId.value,
       shipping_method: shippingMethod.value,
@@ -6171,6 +6173,9 @@ const handlePayment = async () => {
       delivery_date: shippingMethod.value === "biteship" ? deliveryDate.value : null,
       delivery_time: shippingMethod.value === "biteship" ? deliveryTime.value : null,
       promo_code: appliedPromoCode.value,
+
+      // [BARU] Kirimkan mata uang ke backend Laravel
+      currency: activeCurrency,
     };
     const res = await axios.post(`${BASE_URL}/checkout`, payload, getAxiosConfig());
     if (res.data.checkout_url) {
