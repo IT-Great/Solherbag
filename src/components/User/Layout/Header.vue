@@ -1082,7 +1082,8 @@ onMounted(async () => {
   // currencyStore.selectedCurrency = locale.value === "en" ? "USD" : "IDR";
 
   // [PERBAIKAN] Set mata uang dari localStorage jika ada, jika tidak default ke IDR
-  const savedCurrency = localStorage.getItem("user_currency");
+  // const savedCurrency = localStorage.getItem("user_currency");
+  const savedCurrency = localStorage.getItem("currency");
   if (savedCurrency && availableCurrencies.includes(savedCurrency)) {
     currencyStore.selectedCurrency = savedCurrency;
   } else {
