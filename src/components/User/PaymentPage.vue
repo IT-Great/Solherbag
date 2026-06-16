@@ -4269,7 +4269,7 @@ onMounted(fetchData);
 }
 </style> -->
 
-<!-- <template>
+<template>
   <div
     v-if="isPageLoading"
     class="z-[100] fixed inset-0 flex flex-col justify-center items-center bg-white"
@@ -4962,6 +4962,200 @@ onMounted(fetchData);
         </div>
       </div>
     </div>
+
+    <!-- <div
+      v-if="showModal"
+      class="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto bg-black/40 backdrop-blur-sm"
+    >
+      <div class="relative w-full max-w-2xl p-6 my-4 bg-white shadow-2xl rounded-2xl">
+        <button
+          @click="showModal = false"
+          class="absolute text-xl text-gray-400 top-4 right-5 hover:text-black"
+        >
+          ✕
+        </button>
+        <h3 class="mb-4 text-xl font-bold">Add New Address</h3>
+
+        <form @submit.prevent="saveAddress" class="space-y-3">
+          <div class="flex items-center gap-2 mb-2">
+            <input type="checkbox" v-model="form.is_default" id="def" />
+            <label for="def" class="text-sm">Set as my default address</label>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <input
+              v-model="form.first_name_address"
+              placeholder="First name"
+              class="px-3 py-2 text-sm border outline-none bg-gray-50 rounded-xl"
+              required
+            />
+            <input
+              v-model="form.last_name_address"
+              placeholder="Last name"
+              class="px-3 py-2 text-sm border outline-none bg-gray-50 rounded-xl"
+              required
+            />
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <select
+              v-model="form.province"
+              class="px-3 py-2 text-sm border outline-none bg-gray-50 rounded-xl"
+              required
+            >
+              <option value="" disabled>Select Province</option>
+              <option v-for="p in filteredProvinces" :key="p" :value="p">
+                {{ p }}
+              </option>
+            </select>
+            <input
+              v-model="form.city"
+              placeholder="City"
+              class="px-3 py-2 text-sm border outline-none bg-gray-50 rounded-xl"
+              required
+            />
+          </div>
+
+          <div class="relative mt-2 overflow-hidden border border-gray-200 rounded-xl">
+            <div
+              class="bg-amber-50 border-b border-amber-100 py-1.5 px-3 flex items-start gap-2"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4 text-amber-500 shrink-0 mt-0.5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
+              </svg>
+              <p class="text-[10px] text-amber-700 leading-tight">
+                <span class="font-bold">Important:</span> Ensure the blue pin on the map
+                is accurately placed exactly at your location to prevent delivery
+                failures.
+              </p>
+            </div>
+
+            <div
+              class="flex items-center justify-between gap-2 p-2 border-b border-gray-200 bg-gray-50"
+            >
+              <div class="relative flex-1">
+                <input
+                  type="text"
+                  v-model="searchQuery"
+                  @input="handleSearchInput"
+                  placeholder="Search area (e.g. Tunjungan Plaza)"
+                  class="w-full text-xs px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                />
+                <div
+                  v-if="searchResults.length > 0"
+                  class="absolute z-[999] mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-32 overflow-y-auto"
+                >
+                  <div
+                    v-for="(result, idx) in searchResults"
+                    :key="idx"
+                    @click="selectSearchResult(result)"
+                    class="px-3 py-2 text-xs text-gray-700 border-b cursor-pointer hover:bg-blue-50 last:border-0"
+                  >
+                    {{ result.display_name }}
+                  </div>
+                </div>
+              </div>
+              <button
+                type="button"
+                @click="getCurrentLocation"
+                class="text-[10px] bg-blue-100 text-blue-700 px-3 py-1.5 rounded-lg font-bold hover:bg-blue-200 transition whitespace-nowrap"
+              >
+                Current Loc
+              </button>
+            </div>
+
+            <div class="relative z-0 w-full h-40 sm:h-48">
+              <l-map
+                ref="map"
+                v-model:zoom="zoom"
+                :center="center"
+                :use-global-leaflet="false"
+                @click="onMapClick"
+              >
+                <l-tile-layer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  layer-type="base"
+                  name="OpenStreetMap"
+                ></l-tile-layer>
+                <l-marker
+                  :lat-lng="markerLatLng"
+                  draggable
+                  @update:latLng="onMarkerDrag"
+                ></l-marker>
+              </l-map>
+              <div
+                class="absolute bottom-2 right-2 z-[400] bg-white/90 backdrop-blur px-2 py-1 rounded shadow text-[9px] font-mono text-gray-600 pointer-events-none"
+              >
+                {{ form.latitude ? parseFloat(form.latitude).toFixed(5) : "-" }},
+                {{ form.longitude ? parseFloat(form.longitude).toFixed(5) : "-" }}
+              </div>
+            </div>
+          </div>
+
+          <div class="relative pt-1">
+            <div class="flex items-end justify-between mb-1">
+              <label class="font-bold text-gray-700 text-[10px] uppercase tracking-widest"
+                >Detail Address</label
+              >
+              <span
+                class="text-[9px] text-blue-600 bg-blue-50 px-2 py-0.5 rounded font-medium"
+                >Editable</span
+              >
+            </div>
+            <textarea
+              v-model="form.address_location"
+              rows="2"
+              placeholder="Enter full street address and specific details..."
+              class="w-full px-3 py-2 text-sm border outline-none resize-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-blue-500"
+              required
+            ></textarea>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3 pt-1">
+            <input
+              v-model="form.location_type"
+              placeholder="Apartment, suite (optional)"
+              class="px-3 py-2 text-sm border outline-none bg-gray-50 rounded-xl"
+            />
+            <input
+              v-model="form.postal_code"
+              placeholder="Postal code"
+              class="px-3 py-2 text-sm border outline-none bg-gray-50 rounded-xl"
+              required
+            />
+          </div>
+
+          <div class="flex justify-end pt-4">
+            <div class="flex gap-3">
+              <button
+                type="button"
+                @click="showModal = false"
+                class="px-3 text-sm font-bold text-gray-500 hover:text-gray-800"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                class="px-6 py-2 text-sm font-bold text-white transition-colors bg-blue-600 shadow-md hover:bg-blue-700 rounded-xl shadow-blue-500/30"
+              >
+                Save Address
+              </button>
+            </div>
+          </div>
+        </form>
+      </div> 
+    </div> -->
 
     <div
       v-if="showModal"
@@ -6082,960 +6276,4 @@ onMounted(fetchData);
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #d1d5db;
 }
-</style> -->
-
-<template>
-  <div
-    v-if="isPageLoading"
-    class="z-[100] fixed inset-0 flex flex-col justify-center items-center bg-white"
-  >
-    <div class="flex gap-2 mb-4">
-      <div class="w-3 h-3 bg-black rounded-full animate-bounce-1"></div>
-      <div class="w-3 h-3 bg-black rounded-full animate-bounce-2"></div>
-      <div class="w-3 h-3 bg-black rounded-full animate-bounce-3"></div>
-    </div>
-    <p class="font-serif text-sm italic tracking-widest text-gray-500 animate-pulse">
-      {{ $t("payment.prepare_checkout") }}
-    </p>
-  </div>
-
-  <div v-else class="max-w-6xl min-h-screen px-6 py-12 mx-auto md:py-24 animate-fade-in">
-    <div v-if="checkoutItems.length === 0" class="py-20 text-center">
-      <h2 class="mb-4 font-serif text-3xl">{{ $t("payment.bag_empty") }}</h2>
-      <button
-        @click="$router.push('/collections')"
-        class="px-8 py-3 text-xs font-bold tracking-widest text-white uppercase bg-black rounded-full"
-      >
-        {{ $t("payment.return_shop") }}
-      </button>
-    </div>
-
-    <div v-else>
-      <h1 class="mb-12 font-serif text-3xl tracking-tighter uppercase md:text-4xl">
-        {{ $t("payment.checkout") }}
-      </h1>
-
-      <div class="flex flex-col gap-12 lg:flex-row">
-        <div class="flex-grow space-y-12">
-          <section>
-            <div class="flex items-center gap-4 mb-4">
-              <span
-                class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white"
-                >1</span
-              >
-              <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">
-                {{ $t("payment.shipping_address") }}
-              </h2>
-            </div>
-
-            <div
-              v-if="addresses.length === 0"
-              class="py-10 text-center border border-gray-300 border-dashed bg-gray-50 rounded-2xl"
-            >
-              <p class="mb-2 text-sm italic text-gray-500">
-                {{ $t("payment.no_address_found") }}
-              </p>
-              <button
-                @click="openModal()"
-                class="text-xs font-bold text-blue-600 underline"
-              >
-                {{ $t("payment.add_new_address") }}
-              </button>
-            </div>
-            <div v-else class="space-y-4">
-              <label
-                v-for="addr in addresses"
-                :key="addr.id"
-                :class="[
-                  selectedAddressId === addr.id
-                    ? 'border-black ring-1 ring-black bg-white shadow-md'
-                    : 'border-gray-100 bg-gray-50/50',
-                ]"
-                class="relative flex items-start p-6 transition-all border cursor-pointer rounded-2xl hover:bg-white"
-              >
-                <input
-                  type="radio"
-                  name="address"
-                  :value="addr.id"
-                  v-model="selectedAddressId"
-                  class="w-4 h-4 mt-1 text-black border-gray-300 focus:ring-black"
-                />
-                <div class="flex-grow ml-4">
-                  <div class="flex justify-between">
-                    <p class="text-sm font-bold text-gray-900 uppercase">
-                      {{ addr.receiver.full_name }}
-                    </p>
-                    <span
-                      v-if="addr.is_default"
-                      class="text-[9px] bg-gray-200 px-2 py-0.5 rounded font-bold uppercase"
-                      >{{ $t("payment.default") }}</span
-                    >
-                  </div>
-                  <p class="mt-2 text-sm leading-relaxed text-gray-600">
-                    {{ addr.details.location }}, {{ addr.details.type }} <br />
-                    {{ addr.details.city }}, {{ addr.details.province }} <br />
-                    {{ addr.details.region }} - {{ addr.details.postal_code }}
-                  </p>
-                </div>
-              </label>
-              <button
-                @click="openModal()"
-                class="mt-4 text-xs font-bold text-gray-500 underline hover:text-black"
-              >
-                {{ $t("payment.add_another_address") }}
-              </button>
-            </div>
-          </section>
-
-          <section v-if="!selectedAddressId">
-            <div class="flex items-center gap-4 mb-4">
-              <span
-                class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white"
-                >2</span
-              >
-              <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">
-                {{ $t("payment.shipping_method") }}
-              </h2>
-            </div>
-
-            <div>
-              <h4 class="text-sm tracking-widest text-gray-900 uppercase">
-                {{ $t("payment.choose_shipping_address") }}
-              </h4>
-            </div>
-          </section>
-
-          <section v-if="selectedAddressId">
-            <div class="flex items-center gap-4 mb-4">
-              <span
-                class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white"
-                >2</span
-              >
-              <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">
-                {{ $t("payment.shipping_method") }}
-              </h2>
-            </div>
-
-            <div class="space-y-4">
-              <label
-                :class="[
-                  shippingMethod === 'free'
-                    ? 'border-black ring-1 ring-black bg-white shadow-md'
-                    : 'border-gray-100 bg-gray-50/50',
-                ]"
-                class="relative flex items-center p-6 transition-all border cursor-pointer rounded-2xl"
-              >
-                <input
-                  type="radio"
-                  value="free"
-                  v-model="shippingMethod"
-                  class="w-4 h-4 text-black border-gray-300 focus:ring-black"
-                />
-                <div class="flex items-center justify-between flex-grow ml-4">
-                  <div>
-                    <p class="text-sm font-bold tracking-wide text-gray-900 uppercase">
-                      {{ $t("payment.free_shipping") }}
-                    </p>
-                    <p class="mt-1 text-xs font-bold text-green-600">
-                      {{ $t("payment.in_store") }}
-                    </p>
-                  </div>
-                  <p class="font-black text-black">{{ $t("payment.price") }}</p>
-                </div>
-              </label>
-
-              <label
-                :class="[
-                  shippingMethod === 'biteship'
-                    ? 'border-black ring-1 ring-black bg-white shadow-md'
-                    : 'border-gray-100 bg-gray-50/50',
-                ]"
-                class="relative flex items-center p-6 transition-all border cursor-pointer rounded-2xl"
-              >
-                <input
-                  type="radio"
-                  value="biteship"
-                  v-model="shippingMethod"
-                  class="w-4 h-4 text-black border-gray-300 focus:ring-black"
-                />
-                <div class="flex items-center justify-between flex-grow ml-4">
-                  <div>
-                    <p class="text-sm font-bold tracking-wide text-gray-900 uppercase">
-                      {{ $t("payment.standard") }}
-                    </p>
-                    <p class="mt-1 text-xs text-gray-500">
-                      {{
-                        destinationInfo?.country === "Indonesia"
-                          ? $t("payment.powered_by_biteship")
-                          : "International Express Shipping"
-                      }}
-                    </p>
-                  </div>
-                </div>
-              </label>
-
-              <div
-                v-if="shippingMethod === 'biteship'"
-                class="p-6 mt-4 space-y-8 bg-white border border-gray-200 rounded-3xl animate-fade-in"
-              >
-                <div
-                  class="grid grid-cols-1 gap-6 p-4 md:grid-cols-2 bg-gray-50 rounded-2xl"
-                >
-                  <div>
-                    <h3
-                      class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-3"
-                    >
-                      {{ $t("payment.destination") }}
-                    </h3>
-                    <p class="text-xs font-bold text-gray-900 uppercase">
-                      {{ destinationInfo?.name }}
-                    </p>
-                    <p class="mt-1 text-xs text-gray-500">
-                      {{ destinationInfo?.phone }}
-                    </p>
-                    <p class="mt-1 text-xs text-gray-500 line-clamp-2">
-                      {{ destinationInfo?.address }} -
-                      {{ destinationInfo?.postal_code }}
-                    </p>
-                  </div>
-                </div>
-
-                <div v-if="destinationInfo?.country === 'Indonesia'">
-                  <h3 class="mb-4 text-sm font-bold tracking-widest uppercase">
-                    {{ $t("payment.pickup_schedule") }}
-                  </h3>
-
-                  <div class="flex flex-col gap-4 mb-4 md:flex-row">
-                    <label
-                      :class="
-                        deliveryType === 'now'
-                          ? 'border-black bg-gray-50'
-                          : 'border-gray-200'
-                      "
-                      class="flex-1 p-4 transition border cursor-pointer rounded-xl"
-                    >
-                      <input
-                        type="radio"
-                        value="now"
-                        v-model="deliveryType"
-                        class="hidden"
-                      />
-                      <p class="text-xs font-bold uppercase">
-                        {{ $t("payment.standard_pickup") }}
-                      </p>
-                      <p class="text-[10px] text-gray-500 mt-1">
-                        {{ $t("payment.scheduled_pickup") }}
-                      </p>
-                    </label>
-                    <label
-                      :class="
-                        deliveryType === 'scheduled'
-                          ? 'border-black bg-gray-50'
-                          : 'border-gray-200'
-                      "
-                      class="flex-1 p-4 transition border cursor-pointer rounded-xl"
-                    >
-                      <input
-                        type="radio"
-                        value="scheduled"
-                        v-model="deliveryType"
-                        class="hidden"
-                      />
-                      <p class="text-xs font-bold uppercase">
-                        {{ $t("payment.scheduled_pickup") }}
-                      </p>
-                      <p class="text-[10px] text-gray-500 mt-1">
-                        {{ $t("payment.choose_specific_date_time") }}
-                      </p>
-                    </label>
-                  </div>
-
-                  <div
-                    v-if="deliveryType === 'scheduled'"
-                    class="flex gap-4 p-4 border border-blue-100 bg-blue-50/30 rounded-xl animate-fade-in"
-                  >
-                    <div class="flex-1">
-                      <label
-                        class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2"
-                        >{{ $t("payment.pickup_date") }}</label
-                      >
-                      <input
-                        type="date"
-                        v-model="deliveryDate"
-                        :min="todayDate"
-                        class="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg outline-none focus:ring-black focus:border-black"
-                        required
-                      />
-                    </div>
-                    <div class="flex-1">
-                      <label
-                        class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2"
-                        >{{ $t("payment.pickup_time") }}</label
-                      >
-                      <input
-                        type="time"
-                        v-model="deliveryTime"
-                        class="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg outline-none focus:ring-black focus:border-black"
-                        required
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <h3
-                    class="pt-6 mb-4 text-sm font-bold tracking-widest uppercase border-t"
-                  >
-                    {{ $t("payment.select_courier") }}
-                  </h3>
-                  <div
-                    v-if="isLoadingRates"
-                    class="py-4 text-sm text-center text-gray-500 animate-pulse"
-                  >
-                    {{ $t("payment.calculating_couriers") }}
-                  </div>
-                  <div
-                    v-else-if="processedShippingRates.length === 0"
-                    class="py-4 text-xs italic text-center text-red-500"
-                  >
-                    {{ $t("payment.no_courier_available") }}
-                  </div>
-                  <div v-else class="space-y-3">
-                    <label
-                      v-for="(rate, idx) in processedShippingRates"
-                      :key="idx"
-                      :class="[
-                        rate.is_disabled
-                          ? 'opacity-40 bg-gray-100 border-gray-200 pointer-events-none select-none'
-                          : selectedRate?.company === rate.company &&
-                            selectedRate?.type === rate.type
-                          ? 'border-black bg-gray-50 shadow-sm'
-                          : 'border-gray-200 hover:bg-gray-50 cursor-pointer transition-all',
-                      ]"
-                      class="relative flex flex-col p-4 border rounded-xl"
-                    >
-                      <div class="flex items-center w-full">
-                        <input
-                          type="radio"
-                          :value="rate"
-                          v-model="selectedRate"
-                          :disabled="rate.is_disabled"
-                          class="w-4 h-4 text-black border-gray-300 focus:ring-black disabled:opacity-50"
-                        />
-                        <div class="flex items-center flex-grow gap-4 ml-4">
-                          <div
-                            class="flex items-center justify-center w-12 h-12 overflow-hidden bg-white border border-gray-100 rounded-lg shrink-0"
-                          >
-                            <img
-                              v-show="!imageErrors[rate.company]"
-                              v-if="getCourierLogo(rate.company)"
-                              :src="getCourierLogo(rate.company)"
-                              :alt="rate.company"
-                              class="object-contain w-full h-full p-1"
-                              @error="handleImageError(rate.company)"
-                            />
-                            <span
-                              v-show="
-                                imageErrors[rate.company] || !getCourierLogo(rate.company)
-                              "
-                              class="text-xs font-black text-gray-300"
-                            >
-                              {{ rate.company.toUpperCase() }}
-                            </span>
-                          </div>
-                          <div>
-                            <p
-                              class="text-sm font-bold tracking-wide text-gray-800 uppercase"
-                            >
-                              {{ rate.company }} - {{ rate.type.replace("_", " ") }}
-                            </p>
-                            <p class="text-gray-500 text-[10px] mt-0.5">
-                              {{ rate.courier_name }} ({{ rate.duration }})
-                            </p>
-                          </div>
-                        </div>
-                        <p class="text-sm font-black text-black">
-                          {{ formatPrice(rate.price) }}
-                        </p>
-                      </div>
-
-                      <div
-                        v-if="rate.is_disabled"
-                        class="mt-3 ml-8 text-[10px] text-red-600 bg-red-50 px-3 py-1.5 rounded-lg border border-red-100 font-bold uppercase tracking-widest"
-                      >
-                        ⚠️ {{ $t("payment.unavailable") }} {{ rate.disable_reason }}
-                      </div>
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-        </div>
-
-        <div class="lg:w-[400px] space-y-6">
-          <div
-            class="sticky p-8 bg-white border border-gray-100 shadow-xl rounded-3xl top-28"
-          >
-            <h2
-              class="pb-4 mb-6 text-sm font-bold tracking-widest text-gray-900 uppercase border-b"
-            >
-              {{ $t("payment.order_summary") }}
-            </h2>
-
-            <div
-              class="space-y-4 mb-8 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar"
-            >
-              <div v-for="item in checkoutItems" :key="item.id" class="flex gap-4">
-                <img
-                  :src="item.product.image"
-                  class="object-cover w-16 h-16 bg-gray-100 rounded-xl shrink-0"
-                />
-                <div class="flex-grow">
-                  <p
-                    class="font-bold text-gray-900 text-[11px] uppercase truncate w-32"
-                    :title="item.product.name"
-                  >
-                    {{ item.product.name }}
-                  </p>
-                  <p
-                    v-if="item.color"
-                    class="text-gray-500 text-[9px] uppercase tracking-widest mt-0.5"
-                  >
-                    {{ $t("payment.color") }}
-                    <span class="font-bold text-gray-700">{{
-                      parseColorName(item.color)
-                    }}</span>
-                  </p>
-                  <p class="text-gray-400 text-[10px]">Qty: {{ item.quantity }}</p>
-                  <p class="mt-1 text-xs font-medium text-gray-900">
-                    {{
-                      formatPrice(
-                        (item.product.discount_price ?? item.product.price) *
-                          item.quantity
-                      )
-                    }}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="pt-4 space-y-3 text-sm border-t border-gray-50">
-              <div class="flex justify-between text-gray-500">
-                <span>{{ $t("payment.total_items") }}</span>
-                <span class="font-bold text-gray-900"
-                  >{{ checkoutCount }} {{ $t("payment.item") }}</span
-                >
-              </div>
-              <div class="flex justify-between text-gray-500">
-                <span>{{ $t("payment.subtotal") }}</span>
-                <span>{{ formatPrice(checkoutTotalAmount) }}</span>
-              </div>
-
-              <div
-                v-if="userData?.is_membership"
-                class="pt-4 mt-2 border-t border-gray-200 border-dashed"
-              ></div>
-            </div>
-
-            <div class="flex items-start justify-between text-gray-500">
-              <span>{{ $t("payment.shipping") }}</span>
-              <span v-if="shippingMethod === 'free'" class="font-bold text-green-600">{{
-                $t("payment.free")
-              }}</span>
-              <div
-                v-else-if="shippingMethod === 'biteship' && selectedRate"
-                class="text-right"
-              >
-                <span class="block font-medium text-gray-900">{{
-                  formatPrice(selectedRate.price * checkoutCount)
-                }}</span>
-                <p class="text-[10px] text-gray-400 mt-1">
-                  {{ formatPrice(selectedRate.price) }} x {{ checkoutCount }}
-                  {{ $t("payment.item") }}
-                </p>
-              </div>
-              <span v-else class="italic text-[10px]">{{
-                $t("payment.select_method")
-              }}</span>
-            </div>
-
-            <div
-              class="flex justify-between pt-4 font-bold text-gray-900 border-t border-gray-100"
-            >
-              <span class="mt-1 text-xs tracking-widest uppercase">{{
-                $t("payment.grand_total")
-              }}</span>
-              <span class="text-xl">{{ formatPrice(grandTotalWithDiscount) }}</span>
-            </div>
-
-            <button
-              @click="handlePayment"
-              :disabled="isButtonDisabled"
-              class="mt-8 w-full bg-black hover:bg-gray-800 disabled:bg-gray-300 py-5 rounded-2xl font-bold text-white text-xs uppercase tracking-[0.3em] transition-all duration-500 shadow-xl shadow-black/10"
-            >
-              <span v-if="!isProcessing">{{ $t("payment.pay_now") }}</span>
-              <span v-else class="flex items-center justify-center gap-2">
-                <div
-                  class="w-3 h-3 border-2 rounded-full border-white/30 border-t-white animate-spin"
-                ></div>
-                {{ $t("payment.processing") }}
-              </span>
-            </button>
-
-            <p
-              v-if="!selectedAddressId"
-              class="mt-4 text-[10px] text-red-500 text-center uppercase tracking-tighter"
-            >
-              {{ $t("payment.select_shipping_address") }}
-            </p>
-            <p
-              v-else-if="shippingMethod === 'biteship' && !selectedRate"
-              class="mt-4 text-[10px] text-red-500 text-center uppercase tracking-tighter"
-            >
-              {{ $t("payment.select_courier_service") }}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div
-      v-if="showModal"
-      class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm sm:p-6"
-    >
-      <div
-        class="relative w-full max-w-2xl bg-white shadow-2xl rounded-3xl animate-fade-in flex flex-col max-h-[90vh] md:max-h-[85vh]"
-      >
-        <div
-          class="flex items-center justify-between p-6 border-b border-gray-100 shrink-0 md:p-8 md:pb-6"
-        >
-          <h3 class="text-xl font-bold text-gray-900">
-            {{ isEdit ? "Edit Address" : "Add New Address" }}
-          </h3>
-          <button
-            @click="showModal = false"
-            class="p-2 text-gray-400 transition-colors rounded-full hover:bg-gray-100 hover:text-gray-900 focus:outline-none"
-          >
-            ✕
-          </button>
-        </div>
-
-        <div class="p-6 overflow-y-auto custom-scrollbar md:p-8 grow">
-          <form @submit.prevent="saveAddress" class="space-y-5">
-            <div
-              class="flex items-center gap-3 p-3.5 border border-blue-100 bg-blue-50 rounded-xl"
-            >
-              <input
-                type="checkbox"
-                v-model="form.is_default"
-                id="def"
-                class="w-4 h-4 text-blue-600 border-gray-300 rounded cursor-pointer focus:ring-blue-500"
-              />
-              <label
-                for="def"
-                class="text-sm font-medium text-blue-900 cursor-pointer select-none"
-                >{{ $t("payment.default_shipping_address") }}</label
-              >
-            </div>
-
-            <div class="mb-4">
-              <label
-                class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
-              >
-                Country / Region
-              </label>
-              <select
-                v-model="form.region"
-                @change="fetchProvinces"
-                class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                required
-              >
-                <option v-for="c in countries" :key="c.isoCode" :value="c.name">
-                  {{ c.name }}
-                </option>
-              </select>
-            </div>
-
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div>
-                <label
-                  class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
-                  >{{ $t("payment.first_name") }}</label
-                >
-                <input
-                  v-model="form.first_name_address"
-                  class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                  required
-                />
-              </div>
-              <div>
-                <label
-                  class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
-                  >{{ $t("payment.last_name") }}</label
-                >
-                <input
-                  v-model="form.last_name_address"
-                  class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                  required
-                />
-              </div>
-            </div>
-
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div>
-                <label
-                  class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
-                  >{{ $t("payment.province") }}</label
-                >
-                <select
-                  v-if="filteredProvinces.length > 0"
-                  v-model="form.province"
-                  class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                  required
-                >
-                  <option value="" disabled>{{ $t("payment.select_province") }}</option>
-                  <option v-for="p in filteredProvinces" :key="p" :value="p">
-                    {{ p }}
-                  </option>
-                </select>
-                <input
-                  v-else
-                  v-model="form.province"
-                  placeholder="State/Province"
-                  class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                  required
-                />
-              </div>
-              <div>
-                <label
-                  class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
-                  >{{ $t("payment.city") }}</label
-                >
-                <input
-                  v-model="form.city"
-                  class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                  required
-                />
-              </div>
-            </div>
-
-            <div>
-              <label
-                class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
-                >Complete Address</label
-              >
-              <textarea
-                v-model="form.address_location"
-                rows="3"
-                required
-                class="w-full px-4 py-3 text-sm border border-gray-200 bg-gray-50 rounded-xl"
-              ></textarea>
-            </div>
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <input
-                v-model="form.postal_code"
-                placeholder="Postal Code"
-                required
-                class="w-full px-4 py-3 text-sm border border-gray-200 bg-gray-50 rounded-xl"
-              />
-            </div>
-          </form>
-        </div>
-
-        <div
-          class="flex items-center justify-end gap-3 p-6 border-t border-gray-100 bg-gray-50/50"
-        >
-          <button
-            @click="showModal = false"
-            class="px-5 py-2.5 text-sm font-bold text-gray-600 bg-white border border-gray-300 rounded-xl"
-          >
-            Cancel
-          </button>
-          <button
-            @click="saveAddress"
-            class="px-6 py-2.5 text-sm font-bold text-white bg-blue-600 rounded-xl"
-          >
-            Save Address
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
-<script setup>
-import { ref, onMounted, watch, computed, nextTick } from "vue";
-import { useRouter } from "vue-router";
-import axios from "axios";
-import Swal from "sweetalert2";
-import { BASE_URL } from "../../config/api.js";
-import { useCart } from "../../composables/useCart.js";
-import { Country, State } from "country-state-city";
-import "leaflet/dist/leaflet.css";
-import { LMap, LTileLayer, LMarker } from "@vue-leaflet/vue-leaflet";
-import L from "leaflet";
-import { formatPrice } from "../../utils/currency";
-
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: new URL("leaflet/dist/images/marker-icon-2x.png", import.meta.url).href,
-  iconUrl: new URL("leaflet/dist/images/marker-icon.png", import.meta.url).href,
-  shadowUrl: new URL("leaflet/dist/images/marker-shadow.png", import.meta.url).href,
-});
-
-const router = useRouter();
-const getAxiosConfig = () => ({
-  headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-});
-
-const {
-  cartItems,
-  checkoutCount,
-  checkoutTotalAmount,
-  selectedItemIds,
-  clearSelectedCart,
-} = useCart();
-
-const userData = ref(null);
-const addresses = ref([]);
-const selectedAddressId = ref(null);
-const isProcessing = ref(false);
-const shippingMethod = ref("free");
-const selectedRate = ref(null);
-const isLoadingRates = ref(false);
-const deliveryType = ref("now");
-const deliveryDate = ref("");
-const deliveryTime = ref("");
-const pointsToUse = ref(0);
-const pointConversionRate = 1000;
-const promoInput = ref("");
-const appliedPromoCode = ref(null);
-const promoDiscountAmount = ref(0);
-const promoMessage = ref("");
-const promoSuccess = ref(false);
-const isVerifyingPromo = ref(false);
-const rawShippingRates = ref([]);
-const isPageLoading = ref(true);
-
-const useMemberVoucher = ref(false);
-const MEMBER_VOUCHER_CODE = "SOLHERMEMBER";
-const MEMBER_MIN_SPEND = 1000000;
-
-// [PERBAIKAN 1]: Mengambil nama negara ('region') ke dalam Computed Property
-const destinationInfo = computed(() => {
-  if (!selectedAddressId.value || !addresses.value) return null;
-  const addr = addresses.value.find((a) => a.id === selectedAddressId.value);
-  if (!addr) return null;
-  return {
-    name: addr.receiver.full_name,
-    phone: userData.value?.phone || "No Phone Provided",
-    address: `${addr.details.location}, ${addr.details.city}, ${addr.details.province}`,
-    postal_code: addr.details.postal_code,
-    country: addr.details.region, // Ini menangkap nilai dropdown Country
-  };
-});
-
-// [PERBAIKAN 2]: Menambahkan logo DHL ke fungsi fallback image
-const getCourierLogo = (company) => {
-  const baseUrl = "/courier_images/";
-  const map = {
-    jne: "jne.png",
-    sicepat: "sicepat.png",
-    jnt: "jnt.png",
-    anteraja: "anteraja.png",
-    gojek: "gojek.png",
-    grab: "grab.png",
-    paxel: "paxel.png",
-    ninja: "ninja.png",
-    dhl: "dhl.png", // LOGO DHL
-  };
-  return map[company.toLowerCase()] ? baseUrl + map[company.toLowerCase()] : null;
-};
-
-// Data & Logika Modal Form Alamat
-const showModal = ref(false);
-const countries = ref(Country.getAllCountries());
-const filteredProvinces = ref([]);
-const form = ref({
-  id: null,
-  region: "Indonesia", // Default ke Indonesia
-  first_name_address: "",
-  last_name_address: "",
-  address_location: "",
-  location_type: "",
-  city: "",
-  province: "",
-  postal_code: "",
-  latitude: null,
-  longitude: null,
-  is_default: true,
-});
-
-// [PERBAIKAN 3]: Fungsi cerdas untuk meload data provinsi bedasarkan negara
-const fetchProvinces = () => {
-  const selectedCountry = countries.value.find((c) => c.name === form.value.region);
-  if (selectedCountry) {
-    const states = State.getStatesOfCountry(selectedCountry.isoCode);
-    filteredProvinces.value = states.map((s) => s.name);
-  } else {
-    filteredProvinces.value = [];
-  }
-};
-
-const openModal = () => {
-  form.value = {
-    region: "Indonesia",
-    is_default: true,
-    first_name_address: userData.value?.first_name || "",
-    last_name_address: userData.value?.last_name || "",
-    address_location: "",
-    location_type: "",
-    city: "",
-    province: "",
-    postal_code: "",
-    latitude: null,
-    longitude: null,
-  };
-  fetchProvinces(); // Load provinsi saat modal dibuka
-  showModal.value = true;
-};
-
-const saveAddress = async () => {
-  try {
-    const res = await axios.post(`${BASE_URL}/addresses`, form.value, getAxiosConfig());
-    showModal.value = false;
-    const resAddr = await axios.get(`${BASE_URL}/addresses`, getAxiosConfig());
-    addresses.value = resAddr.data.data;
-    selectedAddressId.value =
-      res.data.id || res.data.data?.id || addresses.value[addresses.value.length - 1].id;
-    Swal.fire({
-      toast: true,
-      position: "top-end",
-      icon: "success",
-      title: "Address Added!",
-      showConfirmButton: false,
-      timer: 1500,
-    });
-  } catch (e) {
-    Swal.fire("Error", "Failed to save address", "error");
-  }
-};
-
-// [PERBAIKAN 4]: Menangkap `res.data.rates` dari Backend baru
-watch(selectedAddressId, async (newVal) => {
-  if (newVal) {
-    if (!selectedItemIds.value || selectedItemIds.value.length === 0) return;
-    selectedRate.value = null;
-    isLoadingRates.value = true;
-    rawShippingRates.value = [];
-    try {
-      const res = await axios.post(
-        `${BASE_URL}/shipping/rates`,
-        { address_id: newVal, cart_ids: selectedItemIds.value },
-        getAxiosConfig()
-      );
-
-      // Deteksi struktur response baru dari Factory (Gateway)
-      if (res.data && res.data.rates) {
-        rawShippingRates.value = res.data.rates;
-      } else if (res.data && res.data.pricing) {
-        rawShippingRates.value = res.data.pricing; // Fallback Biteship lama
-      }
-    } catch (error) {
-      if (error.response?.status === 401) return router.push("/login");
-      Swal.fire({
-        toast: true,
-        position: "top-end",
-        icon: "error",
-        title: "Failed to calculate shipping.",
-        showConfirmButton: false,
-        timer: 4000,
-      });
-    } finally {
-      isLoadingRates.value = false;
-    }
-  }
-});
-
-const totalQuantityToCheckout = computed(() =>
-  checkoutItems.value.reduce((sum, item) => sum + item.quantity, 0)
-);
-
-const processedShippingRates = computed(() => {
-  if (!rawShippingRates.value || rawShippingRates.value.length === 0) return [];
-  // ... (Sisa logika jarak Gojek/Grab tetap sama persis, tidak perlu diubah karena DHL akan terlewat dari validasi ini dengan status is_disabled: false) ...
-  return rawShippingRates.value.map((rate) => ({
-    ...rate,
-    is_disabled: false,
-    disable_reason: "",
-  }));
-});
-
-const handlePayment = async () => {
-  isProcessing.value = true;
-  try {
-    const activeCurrency = localStorage.getItem("currency") || "IDR";
-    const payload = {
-      address_id: selectedAddressId.value,
-      shipping_method: shippingMethod.value,
-      use_points: pointsToUse.value,
-      cart_ids: selectedItemIds.value,
-      courier_company:
-        shippingMethod.value === "biteship" ? selectedRate.value?.company : null,
-      courier_type: shippingMethod.value === "biteship" ? selectedRate.value?.type : null,
-      shipping_cost:
-        shippingMethod.value === "biteship" ? selectedRate.value?.price : null,
-      delivery_type: shippingMethod.value === "biteship" ? deliveryType.value : null,
-      delivery_date: shippingMethod.value === "biteship" ? deliveryDate.value : null,
-      delivery_time: shippingMethod.value === "biteship" ? deliveryTime.value : null,
-      promo_code: appliedPromoCode.value,
-      currency: activeCurrency,
-    };
-    const res = await axios.post(`${BASE_URL}/checkout`, payload, getAxiosConfig());
-    if (res.data.checkout_url) {
-      clearSelectedCart();
-      window.location.href = res.data.checkout_url;
-    }
-  } catch (error) {
-    Swal.fire(
-      "Payment Error",
-      error.response?.data?.message || "Failed to create invoice",
-      "error"
-    );
-  } finally {
-    isProcessing.value = false;
-  }
-};
-
-const fetchData = async () => {
-  try {
-    const user = localStorage.getItem("user");
-    if (user) userData.value = JSON.parse(user);
-    const resAddr = await axios.get(`${BASE_URL}/addresses`, getAxiosConfig());
-    addresses.value = resAddr.data.data;
-    if (addresses.value.length > 0) {
-      const defaultAddr = addresses.value.find((a) => a.is_default);
-      selectedAddressId.value = defaultAddr ? defaultAddr.id : addresses.value[0].id;
-    }
-    isPageLoading.value = false;
-  } catch (error) {
-    isPageLoading.value = false;
-  }
-};
-
-const checkoutItems = computed(() =>
-  cartItems.value.filter((item) => selectedItemIds.value.includes(item.id))
-);
-const grandTotal = computed(() => {
-  let total = checkoutTotalAmount.value;
-  if (shippingMethod.value === "biteship" && selectedRate.value)
-    total += parseFloat(selectedRate.value.price) * checkoutCount.value;
-  return total;
-});
-const grandTotalWithDiscount = computed(
-  () => grandTotal.value - promoDiscountAmount.value - pointDiscountAmount.value
-);
-
-onMounted(fetchData);
-</script>
+</style>
