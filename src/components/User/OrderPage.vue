@@ -7928,7 +7928,6 @@ onUnmounted(() => {
           </div>
 
           <div class="flex-1 mt-4 md:mt-0"></div>
-
           <div class="flex-1 mt-4 md:mt-0"></div>
         </div>
 
@@ -8063,7 +8062,7 @@ onUnmounted(() => {
           @click="handleOrderClick(order)"
           :class="[
             'px-6 py-2',
-            canPay(order.status) && countdowns[order.id] !== 'Expired'
+            canPay(order.status) && countdowns[order.id] !== 'Expired' && !isRedirecting
               ? 'cursor-pointer hover:bg-blue-50/30 transition-colors'
               : '',
           ]"
@@ -8194,13 +8193,20 @@ onUnmounted(() => {
               >
                 {{ $t("order.cancel") }}
               </button>
+
               <button
                 v-if="canPay(order.status)"
-                @click="redirectToPayment(order)"
-                :disabled="countdowns[order.id] === 'Expired'"
+                @click.stop="redirectToPayment(order)"
+                :disabled="countdowns[order.id] === 'Expired' || isRedirecting"
                 class="w-full px-6 py-2 text-xs font-bold tracking-widest text-white uppercase transition bg-black hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed rounded-xl md:w-auto"
               >
-                {{ $t("order.pay_now") }}
+                <span v-if="!isRedirecting">{{ $t("order.pay_now") }}</span>
+                <span v-else class="flex items-center justify-center gap-2">
+                  <div
+                    class="w-3 h-3 border-2 rounded-full border-white/30 border-t-white animate-spin"
+                  ></div>
+                  Wait
+                </span>
               </button>
 
               <button
@@ -8330,8 +8336,6 @@ import { useI18n } from "vue-i18n";
 
 import defaultBagIcon from "../../assets/products/bag_icon.jpg";
 
-import { formatPrice } from "../../utils/currency";
-
 const userData = ref(null);
 const router = useRouter();
 const transactions = ref([]);
@@ -8346,6 +8350,9 @@ const itemsPerPage = ref(10);
 const activeTransactionTab = ref("all");
 const activeShippingTab = ref("all");
 const activeUnifiedTab = ref("all");
+
+// [BARU] Status Pengunci (Lock) untuk Mencegah Double-Click
+const isRedirecting = ref(false);
 
 const { t } = useI18n();
 
@@ -8559,7 +8566,6 @@ const resetFilters = () => {
   searchQuery.value = "";
 };
 
-// [PERBAIKAN 3]: Logo untuk Kurir DHL ditambahkan ke Map Gambar
 const getCourierLogo = (company) => {
   if (!company) return null;
   const map = {
@@ -8571,7 +8577,7 @@ const getCourierLogo = (company) => {
     grab: "grab.png",
     paxel: "paxel.png",
     ninja: "ninja.png",
-    dhl: "dhl.png", // LOGO DHL
+    dhl: "dhl.png",
   };
   return map[company.toLowerCase()]
     ? "/courier_images/" + map[company.toLowerCase()]
@@ -8599,15 +8605,8 @@ const getPaymentLogo = (methodString) => {
   return map[channel] ? "/payment_images/" + map[channel] : null;
 };
 
-// [PERBAIKAN 4]: Format harga yang membaca Mata Uang dari Database
-// Alih-alih berasumsi "IDR", kita akan mendeteksi currency transaksi
 const formatLocalPrice = (value, order) => {
-  // Jika utilitas formatPrice Anda tidak men-support argumen kedua (currency code),
-  // fungsi pembungkus ini akan memastikan formatnya tetap aman.
-  // Pastikan Anda memodifikasi file 'utils/currency.js' jika ingin logo $, €, RM muncul.
-  // Untuk saat ini, kita lempar nilainya bersama currency_code (contoh: "USD")
   const code = order.currency_code || "IDR";
-
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: code,
@@ -8622,7 +8621,6 @@ const getGrandTotal = (order) => {
   const total = parseFloat(order.total_amount || 0);
   const shipping = parseFloat(order.shipping_cost || 0);
   const promo = parseFloat(order.promo_discount || 0);
-  // Logika poin di bawah ini aman karena backend sudah mengurangi total poin berdasarkan currency sebelum invoice dibuat.
   const pointsDiscount = parseFloat((order.points_used || 0) * 1000);
   return total + shipping - promo - pointsDiscount;
 };
@@ -8708,16 +8706,39 @@ const fetchOrders = async () => {
 const canPay = (status) => ["pending"].includes(status);
 const canCancel = (status) => ["pending", "processing"].includes(status);
 
+// [PERBAIKAN] Modifikasi fungsi redirect untuk mengunci klik ganda
 const handleOrderClick = (order) => {
+  if (isRedirecting.value) return; // Kunci jika sedang proses
+
   if (canPay(order.status) && countdowns.value[order.id] !== "Expired") {
     redirectToPayment(order);
   }
 };
 
 const redirectToPayment = (order) => {
-  if (order.status === "pending" && order.payment?.checkout_url)
-    window.location.href = order.payment.checkout_url;
-  else Swal.fire("Error", "Payment URL not found or invalid status", "error");
+  if (isRedirecting.value) return; // Kunci jika sedang proses
+
+  if (order.status === "pending" && order.payment?.checkout_url) {
+    isRedirecting.value = true;
+
+    // Munculkan layar loading agar user tidak bisa asal klik lagi
+    Swal.fire({
+      title: "Opening Secure Payment...",
+      text: "Please wait.",
+      allowOutsideClick: false,
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
+    // Pindah halaman dengan sedikit delay agar animasi SweetAlert terlihat mulus
+    setTimeout(() => {
+      window.location.href = order.payment.checkout_url;
+    }, 200);
+  } else {
+    Swal.fire("Error", "Payment URL not found or invalid status", "error");
+  }
 };
 
 const cancelOrder = async (id) => {
@@ -8753,7 +8774,6 @@ const cancelOrder = async (id) => {
   }
 };
 
-// [PERBAIKAN 5]: Mendukung Pengajuan Refund untuk Kurir DHL juga
 const canRequestRefund = (order) => {
   if (!["completed", "shipping_failed", "returned"].includes(order.status)) return false;
   if (["shipping_failed", "returned"].includes(order.status)) return true;
