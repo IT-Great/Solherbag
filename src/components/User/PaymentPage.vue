@@ -7055,6 +7055,26 @@ const processedShippingRates = computed(() => {
   });
 });
 
+const pointDiscountAmount = computed(
+  () => (pointsToUse.value || 0) * pointConversionRate
+);
+const useAllPoints = () => {
+  pointsToUse.value = maxUsablePoints.value;
+};
+watch(pointsToUse, (newVal) => {
+  if (newVal < 0) pointsToUse.value = 0;
+  if (newVal > maxUsablePoints.value) pointsToUse.value = maxUsablePoints.value;
+});
+
+const grandTotalWithDiscount = computed(() => {
+  return grandTotal.value - promoDiscountAmount.value - pointDiscountAmount.value;
+});
+
+const parseColorName = (colorString) => {
+  if (!colorString) return "";
+  return colorString.includes("|") ? colorString.split("|")[0] : colorString;
+};
+
 const handlePayment = async () => {
   isProcessing.value = true;
   try {
