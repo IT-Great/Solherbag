@@ -7081,16 +7081,33 @@ const handleImageError = (company) => {
 };
 
 // [PERBAIKAN 1]: Mengambil nama negara ('region') ke dalam Computed Property
+// const destinationInfo = computed(() => {
+//   if (!selectedAddressId.value || !addresses.value) return null;
+//   const addr = addresses.value.find((a) => a.id === selectedAddressId.value);
+//   if (!addr) return null;
+//   return {
+//     name: addr.receiver.full_name,
+//     phone: userData.value?.phone || "No Phone Provided",
+//     address: `${addr.details.location}, ${addr.details.city}, ${addr.details.province}`,
+//     postal_code: addr.details.postal_code,
+//     country: addr.details.region, // Ini menangkap nilai dropdown Country
+//   };
+// });
+
 const destinationInfo = computed(() => {
   if (!selectedAddressId.value || !addresses.value) return null;
   const addr = addresses.value.find((a) => a.id === selectedAddressId.value);
   if (!addr) return null;
+  
   return {
-    name: addr.receiver.full_name,
+    name: addr.receiver?.full_name || "Unknown",
     phone: userData.value?.phone || "No Phone Provided",
-    address: `${addr.details.location}, ${addr.details.city}, ${addr.details.province}`,
-    postal_code: addr.details.postal_code,
-    country: addr.details.region, // Ini menangkap nilai dropdown Country
+    address: `${addr.details?.location || ''}, ${addr.details?.city || ''}, ${addr.details?.province || ''}`,
+    postal_code: addr.postal_code || addr.details?.postal_code || '',
+    
+    // [PERBAIKAN]: Pengecekan ganda. Cari di root, jika tidak ada cari di details. 
+    // Jika tidak ada keduanya, set default ke Indonesia.
+    country: addr.region || addr.details?.region || 'Indonesia', 
   };
 });
 
