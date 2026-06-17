@@ -6972,6 +6972,24 @@ const totalQuantityToCheckout = computed(() =>
 //   }));
 // });
 
+const getDistanceFromOrigin = (destLat, destLng) => {
+  if (!destLat || !destLng) return 999;
+  const lat1 = -7.25653;
+  const lon1 = 112.74877;
+  const lat2 = parseFloat(destLat);
+  const lon2 = parseFloat(destLng);
+  const R = 6371;
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
+};
+
 const processedShippingRates = computed(() => {
   if (!rawShippingRates.value || rawShippingRates.value.length === 0) return [];
   let checkHour = new Date().getHours();
