@@ -8715,6 +8715,32 @@ const handleOrderClick = (order) => {
   }
 };
 
+// const redirectToPayment = (order) => {
+//   if (isRedirecting.value) return; // Kunci jika sedang proses
+
+//   if (order.status === "pending" && order.payment?.checkout_url) {
+//     isRedirecting.value = true;
+
+//     // Munculkan layar loading agar user tidak bisa asal klik lagi
+//     Swal.fire({
+//       title: "Opening Secure Payment...",
+//       text: "Please wait.",
+//       allowOutsideClick: false,
+//       showConfirmButton: false,
+//       didOpen: () => {
+//         Swal.showLoading();
+//       },
+//     });
+
+//     // Pindah halaman dengan sedikit delay agar animasi SweetAlert terlihat mulus
+//     setTimeout(() => {
+//       window.location.href = order.payment.checkout_url;
+//     }, 200);
+//   } else {
+//     Swal.fire("Error", "Payment URL not found or invalid status", "error");
+//   }
+// };
+
 const redirectToPayment = (order) => {
   if (isRedirecting.value) return; // Kunci jika sedang proses
 
@@ -8732,9 +8758,17 @@ const redirectToPayment = (order) => {
       },
     });
 
-    // Pindah halaman dengan sedikit delay agar animasi SweetAlert terlihat mulus
+    // Pindah halaman dengan sedikit delay
     setTimeout(() => {
       window.location.href = order.payment.checkout_url;
+      
+      // PENGAMAN EKSTRA: Buka kunci dan tutup loading setelah 3 detik
+      // Jika browser berhasil pindah ke Stripe, kode ini tidak akan tereksekusi.
+      // Jika browser gagal/memblokir, layar tidak akan macet.
+      setTimeout(() => {
+        isRedirecting.value = false;
+        Swal.close();
+      }, 3000);
     }, 200);
   } else {
     Swal.fire("Error", "Payment URL not found or invalid status", "error");
