@@ -7054,6 +7054,11 @@ const processedShippingRates = computed(() => {
   });
 });
 
+const parseColorName = (colorString) => {
+  if (!colorString) return "";
+  return colorString.includes("|") ? colorString.split("|")[0] : colorString;
+};
+
 const handlePayment = async () => {
   isProcessing.value = true;
   try {
