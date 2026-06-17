@@ -7037,5 +7037,17 @@ const grandTotalWithDiscount = computed(
   () => grandTotal.value - promoDiscountAmount.value - pointDiscountAmount.value
 );
 
+// 1. Pemecah string warna (misal: "Black|#000000" menjadi "Black")
+const parseColorName = (colorString) => {
+  if (!colorString) return "";
+  return colorString.includes("|") ? colorString.split("|")[0] : colorString;
+};
+
+// 2. State untuk menangani gambar kurir yang gagal dimuat (fallback ke text)
+const imageErrors = ref({});
+const handleImageError = (company) => {
+  imageErrors.value[company] = true;
+};
+
 onMounted(fetchData);
 </script>
