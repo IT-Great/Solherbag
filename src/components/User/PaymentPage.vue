@@ -7305,6 +7305,10 @@ watch(selectedAddressId, async (newVal) => {
   }
 });
 
+const pointDiscountAmount = computed(
+  () => (pointsToUse.value || 0) * pointConversionRate
+);
+
 const totalQuantityToCheckout = computed(() =>
   checkoutItems.value.reduce((sum, item) => sum + item.quantity, 0)
 );
