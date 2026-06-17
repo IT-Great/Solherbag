@@ -6962,14 +6962,97 @@ const totalQuantityToCheckout = computed(() =>
   checkoutItems.value.reduce((sum, item) => sum + item.quantity, 0)
 );
 
+// const processedShippingRates = computed(() => {
+//   if (!rawShippingRates.value || rawShippingRates.value.length === 0) return [];
+//   // ... (Sisa logika jarak Gojek/Grab tetap sama persis, tidak perlu diubah karena DHL akan terlewat dari validasi ini dengan status is_disabled: false) ...
+//   return rawShippingRates.value.map((rate) => ({
+//     ...rate,
+//     is_disabled: false,
+//     disable_reason: "",
+//   }));
+// });
+
 const processedShippingRates = computed(() => {
   if (!rawShippingRates.value || rawShippingRates.value.length === 0) return [];
-  // ... (Sisa logika jarak Gojek/Grab tetap sama persis, tidak perlu diubah karena DHL akan terlewat dari validasi ini dengan status is_disabled: false) ...
-  return rawShippingRates.value.map((rate) => ({
-    ...rate,
-    is_disabled: false,
-    disable_reason: "",
-  }));
+  let checkHour = new Date().getHours();
+  if (deliveryType.value === "scheduled" && deliveryTime.value) {
+    if (deliveryDate.value === todayDate.value) {
+      checkHour = parseInt(deliveryTime.value.split(":")[0]);
+    } else {
+      checkHour = 12;
+    }
+  } else {
+    checkHour = new Date().getHours();
+  }
+
+  const totalWeightKg = totalQuantityToCheckout.value || 1;
+  let distanceKm = 999;
+  if (addresses.value && selectedAddressId.value) {
+    const destInfo = addresses.value.find((a) => a.id === selectedAddressId.value);
+    if (destInfo && destInfo.details.latitude && destInfo.details.longitude) {
+      distanceKm = getDistanceFromOrigin(
+        destInfo.details.latitude,
+        destInfo.details.longitude
+      );
+    }
+  }
+
+  const rates = rawShippingRates.value.map((rate) => {
+    let is_disabled = false;
+    let disable_reason = "";
+    const type = rate.type ? rate.type.toLowerCase().replace(/_/g, " ") : "";
+    const company = rate.company ? rate.company.toLowerCase() : "";
+
+    if (company === "gojek" || company === "grab") {
+      if (distanceKm > 40) {
+        is_disabled = true;
+        disable_reason = `Jarak > 40km (${distanceKm.toFixed(1)}km)`;
+      }
+    }
+    if (!is_disabled && company === "gojek") {
+      if (type.includes("same day") || type.includes("sameday")) {
+        if (checkHour >= 15 || checkHour < 6) {
+          is_disabled = true;
+          disable_reason = "Tutup. Operasional 06:00 - 15:00";
+        } else if (totalWeightKg > 7) {
+          is_disabled = true;
+          disable_reason = "Berat Maks 7kg";
+        }
+      } else if (type.includes("instant")) {
+        if (checkHour >= 17 || checkHour < 6) {
+          is_disabled = true;
+          disable_reason = "Tutup. Operasional 06:00 - 17:00";
+        } else if (totalWeightKg > 20) {
+          is_disabled = true;
+          disable_reason = "Berat Maks 20kg";
+        }
+      }
+    } else if (!is_disabled && company === "grab") {
+      if (type.includes("same day") || type.includes("sameday")) {
+        if (checkHour >= 14 || checkHour < 9) {
+          is_disabled = true;
+          disable_reason = "Tutup. Operasional 09:00 - 14:00";
+        } else if (totalWeightKg > 7) {
+          is_disabled = true;
+          disable_reason = "Berat Maks 7kg";
+        }
+      } else if (type.includes("instant")) {
+        if (checkHour >= 18 || checkHour < 8) {
+          is_disabled = true;
+          disable_reason = "Tutup. Operasional 08:00 - 18:00";
+        } else if (totalWeightKg > 20) {
+          is_disabled = true;
+          disable_reason = "Berat Maks 20kg";
+        }
+      }
+    }
+    return { ...rate, is_disabled, disable_reason };
+  });
+
+  return [...rates].sort((a, b) => {
+    if (a.is_disabled === b.is_disabled) return 0;
+    return a.is_disabled ? 1 : -1;
+  });
 });
 
 const handlePayment = async () => {
