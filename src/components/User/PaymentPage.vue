@@ -7066,9 +7066,9 @@ watch(pointsToUse, (newVal) => {
   if (newVal > maxUsablePoints.value) pointsToUse.value = maxUsablePoints.value;
 });
 
-const grandTotalWithDiscount = computed(() => {
-  return grandTotal.value - promoDiscountAmount.value - pointDiscountAmount.value;
-});
+// const grandTotalWithDiscount = computed(() => {
+//   return grandTotal.value - promoDiscountAmount.value - pointDiscountAmount.value;
+// });
 
 const parseColorName = (colorString) => {
   if (!colorString) return "";
