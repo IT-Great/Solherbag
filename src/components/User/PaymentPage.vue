@@ -3163,6 +3163,10 @@ const fetchData = async () => {
   }
 };
 
+const calculateEarnedPoints = computed(() =>
+  Math.floor(checkoutTotalAmount.value / 100000)
+);
+
 const checkoutItems = computed(() =>
   cartItems.value.filter((item) => selectedItemIds.value.includes(item.id))
 );
