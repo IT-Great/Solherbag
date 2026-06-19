@@ -3058,6 +3058,41 @@ const saveAddress = async () => {
 };
 
 // [PERBAIKAN 4]: Menangkap `res.data.rates` dari Backend baru
+// watch(selectedAddressId, async (newVal) => {
+//   if (newVal) {
+//     if (!selectedItemIds.value || selectedItemIds.value.length === 0) return;
+//     selectedRate.value = null;
+//     isLoadingRates.value = true;
+//     rawShippingRates.value = [];
+//     try {
+//       const res = await axios.post(
+//         `${BASE_URL}/shipping/rates`,
+//         { address_id: newVal, cart_ids: selectedItemIds.value },
+//         getAxiosConfig()
+//       );
+
+//       // Deteksi struktur response baru dari Factory (Gateway)
+//       if (res.data && res.data.rates) {
+//         rawShippingRates.value = res.data.rates;
+//       } else if (res.data && res.data.pricing) {
+//         rawShippingRates.value = res.data.pricing; // Fallback Biteship lama
+//       }
+//     } catch (error) {
+//       if (error.response?.status === 401) return router.push("/login");
+//       Swal.fire({
+//         toast: true,
+//         position: "top-end",
+//         icon: "error",
+//         title: "Failed to calculate shipping.",
+//         showConfirmButton: false,
+//         timer: 4000,
+//       });
+//     } finally {
+//       isLoadingRates.value = false;
+//     }
+//   }
+// });
+
 watch(selectedAddressId, async (newVal) => {
   if (newVal) {
     if (!selectedItemIds.value || selectedItemIds.value.length === 0) return;
@@ -3071,8 +3106,10 @@ watch(selectedAddressId, async (newVal) => {
         getAxiosConfig()
       );
 
-      // Deteksi struktur response baru dari Factory (Gateway)
-      if (res.data && res.data.rates) {
+      // [PERBAIKAN]: Menambahkan penangkap res.data.data untuk Shippo/Mock
+      if (res.data && res.data.data) {
+        rawShippingRates.value = res.data.data;
+      } else if (res.data && res.data.rates) {
         rawShippingRates.value = res.data.rates;
       } else if (res.data && res.data.pricing) {
         rawShippingRates.value = res.data.pricing; // Fallback Biteship lama
@@ -3101,14 +3138,36 @@ const totalQuantityToCheckout = computed(() =>
   checkoutItems.value.reduce((sum, item) => sum + item.quantity, 0)
 );
 
+// const processedShippingRates = computed(() => {
+//   if (!rawShippingRates.value || rawShippingRates.value.length === 0) return [];
+//   // ... (Sisa logika jarak Gojek/Grab tetap sama persis, tidak perlu diubah karena DHL akan terlewat dari validasi ini dengan status is_disabled: false) ...
+//   return rawShippingRates.value.map((rate) => ({
+//     ...rate,
+//     is_disabled: false,
+//     disable_reason: "",
+//   }));
+// });
+
 const processedShippingRates = computed(() => {
   if (!rawShippingRates.value || rawShippingRates.value.length === 0) return [];
-  // ... (Sisa logika jarak Gojek/Grab tetap sama persis, tidak perlu diubah karena DHL akan terlewat dari validasi ini dengan status is_disabled: false) ...
-  return rawShippingRates.value.map((rate) => ({
-    ...rate,
-    is_disabled: false,
-    disable_reason: "",
-  }));
+  
+  return rawShippingRates.value.map((rate) => {
+    // Deteksi apakah ini format Shippo/Mock atau format Biteship
+    const isShippo = rate.provider !== undefined;
+    
+    return {
+      ...rate,
+      // [PERBAIKAN TRANSLATOR]: Jika dari Shippo, ubah 'provider' jadi 'company' agar UI tidak error
+      company: isShippo ? rate.provider : rate.company,
+      type: isShippo ? rate.service_name : rate.type,
+      duration: isShippo ? rate.etd : rate.duration,
+      courier_name: isShippo ? 'Global Express' : rate.courier_name,
+      price: rate.price,
+      
+      is_disabled: false,
+      disable_reason: "",
+    };
+  });
 });
 
 const handlePayment = async () => {
