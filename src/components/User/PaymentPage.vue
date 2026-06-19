@@ -3093,6 +3093,20 @@ const saveAddress = async () => {
 //   }
 // });
 
+const isButtonDisabled = computed(() => {
+  if (isProcessing.value || cartItems.value.length === 0 || !selectedAddressId.value)
+    return true;
+  if (shippingMethod.value === "biteship") {
+    if (!selectedRate.value) return true;
+    if (
+      deliveryType.value === "scheduled" &&
+      (!deliveryDate.value || !deliveryTime.value)
+    )
+      return true;
+  }
+  return false;
+});
+
 watch(selectedAddressId, async (newVal) => {
   if (newVal) {
     if (!selectedItemIds.value || selectedItemIds.value.length === 0) return;
@@ -3150,20 +3164,20 @@ const totalQuantityToCheckout = computed(() =>
 
 const processedShippingRates = computed(() => {
   if (!rawShippingRates.value || rawShippingRates.value.length === 0) return [];
-  
+
   return rawShippingRates.value.map((rate) => {
     // Deteksi apakah ini format Shippo/Mock atau format Biteship
     const isShippo = rate.provider !== undefined;
-    
+
     return {
       ...rate,
       // [PERBAIKAN TRANSLATOR]: Jika dari Shippo, ubah 'provider' jadi 'company' agar UI tidak error
       company: isShippo ? rate.provider : rate.company,
       type: isShippo ? rate.service_name : rate.type,
       duration: isShippo ? rate.etd : rate.duration,
-      courier_name: isShippo ? 'Global Express' : rate.courier_name,
+      courier_name: isShippo ? "Global Express" : rate.courier_name,
       price: rate.price,
-      
+
       is_disabled: false,
       disable_reason: "",
     };
