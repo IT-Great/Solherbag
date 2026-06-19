@@ -7098,16 +7098,18 @@ const destinationInfo = computed(() => {
   if (!selectedAddressId.value || !addresses.value) return null;
   const addr = addresses.value.find((a) => a.id === selectedAddressId.value);
   if (!addr) return null;
-  
+
   return {
     name: addr.receiver?.full_name || "Unknown",
     phone: userData.value?.phone || "No Phone Provided",
-    address: `${addr.details?.location || ''}, ${addr.details?.city || ''}, ${addr.details?.province || ''}`,
-    postal_code: addr.postal_code || addr.details?.postal_code || '',
-    
-    // [PERBAIKAN]: Pengecekan ganda. Cari di root, jika tidak ada cari di details. 
+    address: `${addr.details?.location || ""}, ${addr.details?.city || ""}, ${
+      addr.details?.province || ""
+    }`,
+    postal_code: addr.postal_code || addr.details?.postal_code || "",
+
+    // [PERBAIKAN]: Pengecekan ganda. Cari di root, jika tidak ada cari di details.
     // Jika tidak ada keduanya, set default ke Indonesia.
-    country: addr.region || addr.details?.region || 'Indonesia', 
+    country: addr.region || addr.details?.region || "Indonesia",
   };
 });
 
@@ -7191,6 +7193,16 @@ const handleSearchInput = () => {
     } catch (error) {}
   }, 500);
 };
+
+const maxUsablePoints = computed(() => {
+  if (!userData.value || checkoutTotalAmount.value === 0) return 0;
+  const userBalance = userData.value.point || 0;
+  const priceAfterPromo = checkoutTotalAmount.value - promoDiscountAmount.value;
+  const maxPointsForPrice = Math.floor(
+    Math.max(0, priceAfterPromo) / pointConversionRate
+  );
+  return Math.min(userBalance, maxPointsForPrice);
+});
 
 const selectSearchResult = (result) => {
   const lat = parseFloat(result.lat);
