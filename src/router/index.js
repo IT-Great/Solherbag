@@ -1851,6 +1851,7 @@ import AuditLogPage from "../components/Admin/AuditLogPage.vue";
 import EventPage from "../components/User/EventPage.vue";
 import AdminEventPage from "../components/Admin/AdminEventPage.vue";
 import AdminEventDetailPage from "../components/Admin/AdminEventDetailPage.vue";
+import AffiliateDashboard from "../components/User/AffiliateDashboard.vue";
 
 const routes = [
   { path: "/", name: "Home", component: HomePage },
@@ -1887,6 +1888,9 @@ const routes = [
   { path: "/chat/:id", name: "UserChat", component: ChatPage, meta: { requiresAuth: true } },
   
   { path: "/events", name: "EventPage", component: EventPage },
+
+  // USER AFFILIATOR ROUTES
+  { path: "/affiliate-demo", name: "AffiliateDemo", component: AffiliateDashboard, meta: { requiresAuth: true } },
 
   // ADMIN ROUTES
   { path: "/admin/dashboard", name: "Dashboard", component: DashboardPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },

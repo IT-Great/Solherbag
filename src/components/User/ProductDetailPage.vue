@@ -212,7 +212,8 @@
                   {{ formatPrice(product.price) }}
                 </p>
                 <span class="px-2 py-1 text-xs font-bold text-red-600 bg-red-100 rounded">
-                  {{ $t('product_detail.save') }} {{ calculateDiscount(product.price, product.discount_price) }}%
+                  {{ $t("product_detail.save") }}
+                  {{ calculateDiscount(product.price, product.discount_price) }}%
                 </span>
               </template>
 
@@ -238,7 +239,9 @@
                         d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                       />
                     </svg>
-                    {{ $t('product_detail.upcoming') }} {{ formatPrice(product.discount_price) }} {{ $t('product_detail.starts_on') }}
+                    {{ $t("product_detail.upcoming") }}
+                    {{ formatPrice(product.discount_price) }}
+                    {{ $t("product_detail.starts_on") }}
                     {{ formatUpcomingDate(product.discount_start_date) }}
                   </span>
                 </div>
@@ -264,7 +267,7 @@
           <div v-if="product.material" class="flex items-start justify-between text-sm">
             <span
               class="text-gray-500 font-bold uppercase tracking-widest text-[10px] w-24 shrink-0"
-              >{{ $t('product_detail.material') }}</span
+              >{{ $t("product_detail.material") }}</span
             >
             <span class="font-medium text-right text-gray-900">{{
               product.material
@@ -277,7 +280,7 @@
           >
             <span
               class="text-gray-500 font-bold uppercase tracking-widest text-[10px] w-24 shrink-0 mt-1"
-              >{{ $t('product_detail.strap_length') }}</span
+              >{{ $t("product_detail.strap_length") }}</span
             >
 
             <div class="flex flex-col items-end">
@@ -305,7 +308,7 @@
           >
             <span
               class="text-gray-500 font-bold uppercase tracking-widest text-[10px] w-24 shrink-0"
-              >{{ $t('product_detail.dimensions') }}</span
+              >{{ $t("product_detail.dimensions") }}</span
             >
             <span class="font-mono text-right text-gray-900">
               {{ product.length || "-" }} <span class="text-xs text-gray-400">x</span>
@@ -320,7 +323,7 @@
           >
             <span
               class="text-gray-500 font-bold uppercase tracking-widest text-[10px] w-24 shrink-0"
-              >{{ $t('product_detail.weight') }}</span
+              >{{ $t("product_detail.weight") }}</span
             >
             <span class="font-medium text-right text-gray-900"
               >{{ product.weight }} <span class="text-xs">gram</span></span
@@ -333,7 +336,7 @@
           >
             <span
               class="text-gray-500 font-bold uppercase tracking-widest text-[10px] w-24 shrink-0 mt-1"
-              >{{ $t('product_detail.colors') }}</span
+              >{{ $t("product_detail.colors") }}</span
             >
             <div class="flex flex-col items-end">
               <div class="flex flex-wrap justify-end gap-2">
@@ -370,7 +373,7 @@
         >
           <span
             class="text-[10px] font-bold text-gray-500 uppercase tracking-widest w-24 shrink-0"
-            >{{ $t('product_detail.quantity') }}</span
+            >{{ $t("product_detail.quantity") }}</span
           >
           <div
             class="flex items-center overflow-hidden border border-gray-200 shadow-sm bg-gray-50 rounded-xl"
@@ -407,7 +410,11 @@
               'flex-1 py-4 border-2 font-bold text-xs uppercase tracking-widest transition',
             ]"
           >
-            {{ product.stock === 0 ? $t('product_detail.out_of_stock') : $t('product_detail.add_to_cart') }}
+            {{
+              product.stock === 0
+                ? $t("product_detail.out_of_stock")
+                : $t("product_detail.add_to_cart")
+            }}
           </button>
 
           <button
@@ -420,7 +427,7 @@
               'flex-1 py-4 font-bold text-xs uppercase tracking-widest transition border-2 border-transparent',
             ]"
           >
-            {{ $t('product_detail.buy_it_now') }}
+            {{ $t("product_detail.buy_it_now") }}
           </button>
         </div>
 
@@ -462,7 +469,9 @@
               @click="activeSection = activeSection === section ? null : section"
               class="flex items-center justify-between w-full text-xs font-medium tracking-widest text-left uppercase group"
             >
-              <span class="transition group-hover:text-gray-500">{{ $t(`product_detail.${section}`) }}</span>
+              <span class="transition group-hover:text-gray-500">{{
+                $t(`product_detail.${section}`)
+              }}</span>
               <span>{{ activeSection === section ? "−" : "+" }}</span>
             </button>
             <!-- <transition name="fade">
@@ -487,13 +496,21 @@
                 class="mt-4 text-sm leading-relaxed text-gray-600 whitespace-pre-wrap"
               >
                 <template v-if="section === 'description'">
-                  {{ ($i18n.locale === 'en' && product.description_en) ? product.description_en : (product.description || $t('product_detail.no_information')) }}
+                  {{
+                    $i18n.locale === "en" && product.description_en
+                      ? product.description_en
+                      : product.description || $t("product_detail.no_information")
+                  }}
                 </template>
                 <template v-else-if="section === 'design'">
-                  {{ ($i18n.locale === 'en' && product.design_en) ? product.design_en : (product.design || $t('product_detail.no_information')) }}
+                  {{
+                    $i18n.locale === "en" && product.design_en
+                      ? product.design_en
+                      : product.design || $t("product_detail.no_information")
+                  }}
                 </template>
                 <template v-else-if="section === 'shipping_and_returns'">
-                  {{ $t('product_detail.shipping_desc') }}
+                  {{ $t("product_detail.shipping_desc") }}
                 </template>
               </div>
             </transition>
@@ -509,7 +526,7 @@
       <h2
         class="mb-10 font-serif text-2xl tracking-widest text-center text-black uppercase md:text-3xl"
       >
-        {{ $t('product_detail.you_may_also_like') }}
+        {{ $t("product_detail.you_may_also_like") }}
       </h2>
 
       <div class="grid grid-cols-2 gap-6 md:grid-cols-4 md:gap-8">
@@ -587,6 +604,72 @@ const activeSlide = ref(0);
 const selectedQuantity = ref(1);
 const recommendedProducts = ref([]);
 const siblingColors = ref([]);
+
+// [BARU] Menyimpan data pengguna yang sedang login (untuk mengecek status afiliasi)
+const currentUser = ref(null);
+
+// ==========================================
+// [BARU] FUNGSI MENARIK DATA PROFIL USER
+// ==========================================
+const fetchUserProfile = async () => {
+  if (!isAuthenticated) return;
+  try {
+    const res = await axios.get(`${BASE_URL}/user`, {
+      // Sesuaikan endpoint user Anda, biasanya /user atau /profile
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    currentUser.value = res.data.data || res.data;
+  } catch (error) {
+    console.error("Gagal menarik data profil pengguna:", error);
+  }
+};
+
+// ==========================================
+// [BARU] FUNGSI MEMBAGIKAN TAUTAN AFILIASI
+// ==========================================
+const handleShare = () => {
+  let linkToShare = window.location.href; // Ambil URL produk saat ini
+
+  // Jika yang login adalah afiliator, sisipkan parameter referral-nya
+  if (
+    currentUser.value &&
+    currentUser.value.is_affiliate &&
+    currentUser.value.referral_code
+  ) {
+    const url = new URL(linkToShare);
+    url.searchParams.set("ref", currentUser.value.referral_code);
+    linkToShare = url.toString();
+  }
+
+  // Salin ke Clipboard (Papan Klip)
+  navigator.clipboard
+    .writeText(linkToShare)
+    .then(() => {
+      Swal.fire({
+        icon: "success",
+        title: "Tautan Tersalin!",
+        text: currentUser.value?.is_affiliate
+          ? "Tautan afiliasi siap disebar untuk mendapat komisi."
+          : "Bagikan produk ini ke teman Anda.",
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+      });
+    })
+    .catch((err) => {
+      console.error("Gagal menyalin teks: ", err);
+      Swal.fire({
+        icon: "error",
+        title: "Gagal menyalin tautan",
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    });
+};
 
 // ==========================================
 // LOGIKA STATUS DISKON (TIME-BASED)
@@ -1137,7 +1220,11 @@ const currentActivePrice = computed(() => {
   return parseFloat(product.value ? product.value.price : 0);
 });
 
-onMounted(fetchProductDetail);
+// onMounted(fetchProductDetail);
+onMounted(() => {
+  fetchProductDetail();
+  fetchUserProfile(); // [BARU] Panggil fungsi untuk mengambil data profil saat komponen dimuat
+});
 </script>
 
 <style scoped>

@@ -5767,6 +5767,61 @@ onMounted(() => {
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
           </svg>
         </router-link>
+        <router-link
+          to="/favorites"
+          class="flex items-center justify-between p-5 transition-all bg-white border border-gray-100 shadow-sm group hover:border-red-100 hover:shadow-md rounded-2xl"
+        >
+        </router-link>
+
+        <router-link
+          to="/affiliate-demo"
+          v-if="userData"
+          class="flex items-center justify-between p-5 mt-4 transition-all bg-white border border-gray-100 shadow-sm group hover:border-blue-100 hover:shadow-md rounded-2xl"
+        >
+          <div class="flex items-center gap-4">
+            <div
+              class="flex items-center justify-center w-10 h-10 text-blue-600 transition-colors bg-blue-50 rounded-xl group-hover:bg-blue-100"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"
+                />
+              </svg>
+            </div>
+            <div>
+              <h2
+                class="text-sm font-bold text-gray-900 transition-colors group-hover:text-blue-600"
+              >
+                Dasbor Afiliator
+              </h2>
+              <p class="text-xs text-gray-500">Kelola komisi & tautan Anda</p>
+            </div>
+          </div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5 text-gray-300 transition-all group-hover:text-blue-600 group-hover:translate-x-1"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </router-link>
       </div>
 
       <div class="lg:col-span-8">
