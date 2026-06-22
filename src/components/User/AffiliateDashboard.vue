@@ -5,7 +5,7 @@
         <h1
           class="font-serif text-3xl font-bold tracking-tighter text-gray-900 uppercase"
         >
-          Dasbor Afiliator
+          Dasbor Afiliator (Fitur Dalam Pengembangan)
         </h1>
         <p class="mt-2 text-sm text-gray-500">
           Pantau tautan, performa penjualan, dan cairkan komisi Anda di sini.
