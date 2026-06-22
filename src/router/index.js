@@ -2162,7 +2162,7 @@ const routes = [
     path: "/admin/affiliates",
     name: "AdminAffiliates",
     component: AdminAffiliateDashboard,
-    meta: { requiresAuth: true, role: "admin" }, // Pastikan hanya admin yang bisa akses
+    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
   },
 ];
 
