@@ -194,124 +194,220 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+// import { ref } from "vue";
+// import Swal from "sweetalert2";
+
+// // State UI
+// const activeTab = ref("withdrawals"); // Default buka tab pencairan agar admin langsung lihat yang butuh aksi
+
+// // Utility
+// const formatPrice = (value) => {
+//   return new Intl.NumberFormat("id-ID", {
+//     style: "currency",
+//     currency: "IDR",
+//     minimumFractionDigits: 0,
+//   }).format(value);
+// };
+
+// // ==========================================
+// // DATA MOCKUP (Siap Diformat Ulang API Nanti)
+// // ==========================================
+// const stats = ref({
+//   totalAffiliates: 12,
+//   pendingRequests: 2,
+//   totalTransferred: 4500000,
+// });
+
+// const affiliates = ref([
+//   {
+//     id: 1,
+//     name: "Budi Santoso",
+//     email: "budi@example.com",
+//     referral_code: "BUDI123",
+//     active_balance: 150000,
+//     total_earned: 1250000,
+//   },
+//   {
+//     id: 2,
+//     name: "Siti Aminah",
+//     email: "siti@example.com",
+//     referral_code: "SITI_FASHION",
+//     active_balance: 45000,
+//     total_earned: 850000,
+//   },
+//   {
+//     id: 3,
+//     name: "Andi Style",
+//     email: "andi@example.com",
+//     referral_code: "ANDI_BAGS",
+//     active_balance: 0,
+//     total_earned: 450000,
+//   },
+// ]);
+
+// const withdrawals = ref([
+//   {
+//     id: 101,
+//     date: "22 Jun 2026 09:15",
+//     affiliate_name: "Budi Santoso",
+//     bank_name: "BCA",
+//     account_number: "0123456789",
+//     account_name: "Budi Santoso",
+//     amount: 100000,
+//     status: "pending",
+//     admin_notes: "Biaya Admin: Rp2.500 | TRANSFER BERSIH: Rp97.500",
+//   },
+//   {
+//     id: 102,
+//     date: "22 Jun 2026 10:30",
+//     affiliate_name: "Siti Aminah",
+//     bank_name: "Mandiri",
+//     account_number: "9876543210",
+//     account_name: "Siti Aminah",
+//     amount: 250000,
+//     status: "pending",
+//     admin_notes: "Biaya Admin: Rp0 | TRANSFER BERSIH: Rp250.000",
+//   },
+//   {
+//     id: 100,
+//     date: "20 Jun 2026 14:20",
+//     affiliate_name: "Andi Style",
+//     bank_name: "BNI",
+//     account_number: "1122334455",
+//     account_name: "Andi Darmawan",
+//     amount: 450000,
+//     status: "completed",
+//     admin_notes: "Biaya Admin: Rp2.500 | TRANSFER BERSIH: Rp447.500",
+//   },
+// ]);
+
+// // ==========================================
+// // FUNGSI AKSI ADMIN
+// // ==========================================
+// const markAsTransferred = (req) => {
+//   Swal.fire({
+//     title: "Konfirmasi Transfer",
+//     html: `Apakah Anda sudah mentransfer uang sebesar <br><strong class="text-xl text-green-600">${
+//       req.admin_notes.split("TRANSFER BERSIH: ")[1]
+//     }</strong><br> ke rekening <b>${req.bank_name} (${req.account_number})</b>?`,
+//     icon: "question",
+//     showCancelButton: true,
+//     confirmButtonText: "Ya, Sudah Ditransfer",
+//     cancelButtonText: "Belum",
+//     confirmButtonColor: "#000",
+//   }).then((result) => {
+//     if (result.isConfirmed) {
+//       // Logic Mockup: Ubah status di UI
+//       req.status = "completed";
+//       stats.value.pendingRequests--;
+//       stats.value.totalTransferred += req.amount;
+
+//       Swal.fire({
+//         title: "Berhasil!",
+//         text: "Status pencairan dana telah diperbarui.",
+//         icon: "success",
+//         timer: 2000,
+//         showConfirmButton: false,
+//       });
+//     }
+//   });
+// };
+
+import { ref, onMounted } from "vue";
+import axios from "axios";
 import Swal from "sweetalert2";
+import { BASE_URL } from "../../config/api.js"; // Sesuaikan lokasi file api.js Anda
 
-// State UI
-const activeTab = ref("withdrawals"); // Default buka tab pencairan agar admin langsung lihat yang butuh aksi
+const activeTab = ref("withdrawals");
+const isLoading = ref(true);
 
-// Utility
+// State Data Asli
+const stats = ref({
+  totalAffiliates: 0,
+  pendingRequests: 0,
+  totalTransferred: 0,
+});
+const affiliates = ref([]);
+const withdrawals = ref([]);
+
 const formatPrice = (value) => {
   return new Intl.NumberFormat("id-ID", {
     style: "currency",
     currency: "IDR",
     minimumFractionDigits: 0,
-  }).format(value);
+  }).format(value || 0);
 };
 
-// ==========================================
-// DATA MOCKUP (Siap Diformat Ulang API Nanti)
-// ==========================================
-const stats = ref({
-  totalAffiliates: 12,
-  pendingRequests: 2,
-  totalTransferred: 4500000,
-});
+// Tarik data dari API Backend Admin
+const fetchAdminDashboard = async () => {
+  isLoading.value = true;
+  try {
+    const res = await axios.get(`${BASE_URL}/admin/affiliates/dashboard`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
 
-const affiliates = ref([
-  {
-    id: 1,
-    name: "Budi Santoso",
-    email: "budi@example.com",
-    referral_code: "BUDI123",
-    active_balance: 150000,
-    total_earned: 1250000,
-  },
-  {
-    id: 2,
-    name: "Siti Aminah",
-    email: "siti@example.com",
-    referral_code: "SITI_FASHION",
-    active_balance: 45000,
-    total_earned: 850000,
-  },
-  {
-    id: 3,
-    name: "Andi Style",
-    email: "andi@example.com",
-    referral_code: "ANDI_BAGS",
-    active_balance: 0,
-    total_earned: 450000,
-  },
-]);
+    const data = res.data.data;
+    stats.value = data.stats;
+    affiliates.value = data.affiliates;
+    withdrawals.value = data.withdrawals;
+  } catch (error) {
+    console.error("Error fetching admin affiliate data:", error);
+    Swal.fire("Error", "Gagal memuat data afiliasi", "error");
+  } finally {
+    isLoading.value = false;
+  }
+};
 
-const withdrawals = ref([
-  {
-    id: 101,
-    date: "22 Jun 2026 09:15",
-    affiliate_name: "Budi Santoso",
-    bank_name: "BCA",
-    account_number: "0123456789",
-    account_name: "Budi Santoso",
-    amount: 100000,
-    status: "pending",
-    admin_notes: "Biaya Admin: Rp2.500 | TRANSFER BERSIH: Rp97.500",
-  },
-  {
-    id: 102,
-    date: "22 Jun 2026 10:30",
-    affiliate_name: "Siti Aminah",
-    bank_name: "Mandiri",
-    account_number: "9876543210",
-    account_name: "Siti Aminah",
-    amount: 250000,
-    status: "pending",
-    admin_notes: "Biaya Admin: Rp0 | TRANSFER BERSIH: Rp250.000",
-  },
-  {
-    id: 100,
-    date: "20 Jun 2026 14:20",
-    affiliate_name: "Andi Style",
-    bank_name: "BNI",
-    account_number: "1122334455",
-    account_name: "Andi Darmawan",
-    amount: 450000,
-    status: "completed",
-    admin_notes: "Biaya Admin: Rp2.500 | TRANSFER BERSIH: Rp447.500",
-  },
-]);
-
-// ==========================================
-// FUNGSI AKSI ADMIN
-// ==========================================
+// Tembak API Approve saat bos Anda selesai mentransfer
 const markAsTransferred = (req) => {
+  // Parsing instruksi admin_notes agar bos Anda tahu persis nominal akhirnya
+  const cleanTransferAmount = req.admin_notes
+    ? req.admin_notes.split("TRANSFER BERSIH: ")[1]
+    : formatPrice(req.amount);
+
   Swal.fire({
     title: "Konfirmasi Transfer",
-    html: `Apakah Anda sudah mentransfer uang sebesar <br><strong class="text-xl text-green-600">${
-      req.admin_notes.split("TRANSFER BERSIH: ")[1]
-    }</strong><br> ke rekening <b>${req.bank_name} (${req.account_number})</b>?`,
+    html: `Apakah Anda sudah mentransfer uang sebesar <br><strong class="text-xl text-green-600">${cleanTransferAmount}</strong><br> ke rekening <b>${req.bank_name} (${req.account_number})</b>?`,
     icon: "question",
     showCancelButton: true,
     confirmButtonText: "Ya, Sudah Ditransfer",
     cancelButtonText: "Belum",
     confirmButtonColor: "#000",
+    showLoaderOnConfirm: true,
+    preConfirm: async () => {
+      try {
+        await axios.post(
+          `${BASE_URL}/admin/affiliates/withdrawals/${req.id}/approve`,
+          {},
+          {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          }
+        );
+        return true;
+      } catch (error) {
+        Swal.showValidationMessage(
+          `Gagal mengupdate status: ${error.response?.data?.message || "Error Server"}`
+        );
+      }
+    },
   }).then((result) => {
     if (result.isConfirmed) {
-      // Logic Mockup: Ubah status di UI
-      req.status = "completed";
-      stats.value.pendingRequests--;
-      stats.value.totalTransferred += req.amount;
-
       Swal.fire({
         title: "Berhasil!",
-        text: "Status pencairan dana telah diperbarui.",
+        text: "Status pencairan dana telah diperbarui menjadi Selesai.",
         icon: "success",
         timer: 2000,
         showConfirmButton: false,
       });
+      // Refresh data agar tabel & statistik langsung ter-update
+      fetchAdminDashboard();
     }
   });
 };
+
+onMounted(() => {
+  fetchAdminDashboard();
+});
 </script>
 
 <style scoped>
