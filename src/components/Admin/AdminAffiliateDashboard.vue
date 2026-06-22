@@ -380,7 +380,7 @@ const markAsTransferred = (req) => {
           `${BASE_URL}/admin/affiliates/withdrawals/${req.id}/approve`,
           {},
           {
-            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+            headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
           }
         );
         return true;
