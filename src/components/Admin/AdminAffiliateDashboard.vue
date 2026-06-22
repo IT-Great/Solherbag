@@ -343,7 +343,7 @@ const fetchAdminDashboard = async () => {
   isLoading.value = true;
   try {
     const res = await axios.get(`${BASE_URL}/admin/affiliates/dashboard`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
     });
 
     const data = res.data.data;
