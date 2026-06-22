@@ -15,15 +15,15 @@ import AdminHeader from "./components/Admin/Layout/AdminHeader.vue";
 
 const route = useRoute();
 
-onMounted(() => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const refCode = urlParams.get("ref");
+// onMounted(() => {
+//   const urlParams = new URLSearchParams(window.location.search);
+//   const refCode = urlParams.get("ref");
 
-  if (refCode) {
-    // Simpan ke brankas browser. Akan bertahan meskipun user menutup tab.
-    localStorage.setItem("affiliate_ref", refCode);
-  }
-});
+//   if (refCode) {
+//     // Simpan ke brankas browser. Akan bertahan meskipun user menutup tab.
+//     localStorage.setItem("affiliate_ref", refCode);
+//   }
+// });
 
 // [BARU] Logika pelacak yang 100% responsif terhadap Vue Router
 watch(
