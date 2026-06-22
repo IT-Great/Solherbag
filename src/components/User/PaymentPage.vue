@@ -2240,7 +2240,7 @@ onMounted(fetchData);
                       parseColorName(item.color)
                     }}</span>
                   </p>
-                  <p class="text-gray-400 text-[10px]">Qty: {{ item.quantity }}</p>
+                  <!-- <p class="text-gray-400 text-[10px]">Qty: {{ item.quantity }}</p>
                   <p class="mt-1 text-xs font-medium text-gray-900">
                     {{
                       formatPrice(
@@ -2248,6 +2248,10 @@ onMounted(fetchData);
                           item.quantity
                       )
                     }}
+                  </p> -->
+                  <p class="text-gray-400 text-[10px]">Qty: {{ item.quantity }}</p>
+                  <p class="mt-1 text-xs font-medium text-gray-900">
+                    {{ formatPrice(getActivePrice(item.product) * item.quantity) }}
                   </p>
                 </div>
               </div>
@@ -2771,7 +2775,8 @@ import { useRouter } from "vue-router";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
-import { useCart } from "../../composables/useCart.js";
+// import { useCart } from "../../composables/useCart.js";
+import { useCart, getActivePrice } from "../../composables/useCart.js";
 import { Country, State } from "country-state-city";
 import "leaflet/dist/leaflet.css";
 import { LMap, LTileLayer, LMarker } from "@vue-leaflet/vue-leaflet";
