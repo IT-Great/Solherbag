@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="px-6 py-12 mx-auto max-w-7xl">
     <div class="flex items-center justify-between mb-10">
       <div>
@@ -268,9 +268,9 @@ const openWithdrawalModal = () => {
     }
   });
 };
-</script>
+</script> -->
 
-<!-- <template>
+<template>
   <div class="px-6 py-12 mx-auto max-w-7xl">
     <div v-if="isLoading" class="flex flex-col items-center justify-center py-20">
       <div
@@ -623,4 +623,3 @@ onMounted(() => {
   fetchDashboardData();
 });
 </script>
--->
