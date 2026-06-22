@@ -5872,7 +5872,7 @@ onMounted(() => {
           </button>
         </template>
 
-        <router-link
+        <!-- <router-link
           to="/affiliate-demo"
           v-if="userData"
           class="flex items-center justify-between p-5 mt-4 transition-all bg-white border border-gray-100 shadow-sm group hover:border-blue-100 hover:shadow-md rounded-2xl"
@@ -5920,7 +5920,7 @@ onMounted(() => {
           >
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
           </svg>
-        </router-link>
+        </router-link> -->
       </div>
 
       <div class="lg:col-span-8">
