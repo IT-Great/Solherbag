@@ -5,6 +5,8 @@
 
 // const route = useRoute();
 
+// import { onMounted } from "vue";
+import { watch } from "vue"; // [GANTI: gunakan watch alih-alih onMounted]
 import { useRoute } from "vue-router";
 import Header from "./components/User/Layout/Header.vue";
 import Footer from "./components/User/Layout/Footer.vue";
@@ -12,6 +14,29 @@ import Sidebar from "./components/Admin/Layout/Sidebar.vue";
 import AdminHeader from "./components/Admin/Layout/AdminHeader.vue";
 
 const route = useRoute();
+
+onMounted(() => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const refCode = urlParams.get("ref");
+
+  if (refCode) {
+    // Simpan ke brankas browser. Akan bertahan meskipun user menutup tab.
+    localStorage.setItem("affiliate_ref", refCode);
+  }
+});
+
+// [BARU] Logika pelacak yang 100% responsif terhadap Vue Router
+watch(
+  () => route.query.ref,
+  (newRef) => {
+    if (newRef) {
+      // Jika mendeteksi ada ?ref= di URL, langsung kunci di brankas browser
+      localStorage.setItem("affiliate_ref", newRef);
+      console.log("Kode Referal ditangkap:", newRef); // Anda bisa cek di Console nanti
+    }
+  },
+  { immediate: true } // Mengeksekusi pengecekan langsung saat halaman pertama kali dimuat
+);
 </script>
 
 <template>

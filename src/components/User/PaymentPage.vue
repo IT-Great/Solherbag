@@ -3203,6 +3203,7 @@ const handlePayment = async () => {
       delivery_time: shippingMethod.value === "biteship" ? deliveryTime.value : null,
       promo_code: appliedPromoCode.value,
       currency: activeCurrency,
+      referral_code: localStorage.getItem("affiliate_ref"),
     };
     const res = await axios.post(`${BASE_URL}/checkout`, payload, getAxiosConfig());
     if (res.data.checkout_url) {
