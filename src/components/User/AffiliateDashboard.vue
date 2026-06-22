@@ -1,4 +1,3 @@
-<!-- 
 <template>
   <div class="px-6 py-12 mx-auto max-w-7xl">
     <div class="flex items-center justify-between mb-10">
@@ -269,9 +268,9 @@ const openWithdrawalModal = () => {
     }
   });
 };
-</script> -->
+</script>
 
-<template>
+<!-- <template>
   <div class="px-6 py-12 mx-auto max-w-7xl">
     <div v-if="isLoading" class="flex flex-col items-center justify-center py-20">
       <div
@@ -375,7 +374,7 @@ const openWithdrawalModal = () => {
             type="text"
             readonly
             :value="affiliateLink"
-            class="flex-1 px-4 py-3 text-sm font-medium text-blue-700 bg-blue-50 border-blue-100 rounded-lg focus:ring-0"
+            class="flex-1 px-4 py-3 text-sm font-medium text-blue-700 border-blue-100 rounded-lg bg-blue-50 focus:ring-0"
           />
           <button
             @click="copyLink"
@@ -624,3 +623,4 @@ onMounted(() => {
   fetchDashboardData();
 });
 </script>
+-->
