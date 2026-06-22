@@ -612,7 +612,7 @@
 // import AdminResetPasswordPage from "../components/Admin/AdminResetPasswordPage.vue";
 // import ProductStockPage from "../components/Admin/ProductStockPage.vue";
 // import CollectionsPage from "../components/User/CollectionPage.vue";
-// import BestSellerPage from "../components/User/BestSellerPage.vue"; 
+// import BestSellerPage from "../components/User/BestSellerPage.vue";
 // import ContactPage from "../components/User/ContactPage.vue";
 // import ShippingPolicy from "../components/User/ShippingPolicy.vue";
 // import RefundPolicy from "../components/User/RefundPolicy.vue";
@@ -1188,7 +1188,7 @@
 
 //   // --- LOGIKA PROTEKSI ROUTE (REQUIRES AUTH) ---
 //   if (to.meta.requiresAuth) {
-    
+
 //     // Jika akses admin area
 //     if (isAccessingAdmin) {
 //       if (!isAdminSessionValid) {
@@ -1206,14 +1206,14 @@
 //         if (role === 'gudang') {
 //           const allowedGudangPaths = ['/admin/products', '/admin/stocks', '/admin/transactions', '/admin/profile'];
 //           const isAllowed = allowedGudangPaths.some(p => targetPath.startsWith(p));
-//           if (!isAllowed) return next("/admin/transactions"); 
+//           if (!isAllowed) return next("/admin/transactions");
 //         }
 
 //         // Aturan untuk Accounting
 //         if (role === 'accounting') {
 //           const allowedAccountingPaths = ['/admin/coas', '/admin/category-coas', '/admin/payments', '/admin/suppliers', '/admin/invoices', '/admin/salesreports', '/admin/profile'];
 //           const isAllowed = allowedAccountingPaths.some(p => targetPath.startsWith(p));
-//           if (!isAllowed) return next("/admin/coas"); 
+//           if (!isAllowed) return next("/admin/coas");
 //         }
 
 //         // Aturan untuk Admin Standar
@@ -1229,7 +1229,7 @@
 //     }
 
 //     // Jika akses user area
-//     if (!userToken || !user || user.usertype !== "user") { 
+//     if (!userToken || !user || user.usertype !== "user") {
 //       return next("/login");
 //     }
 
@@ -1284,7 +1284,7 @@
 // import AdminResetPasswordPage from "../components/Admin/AdminResetPasswordPage.vue";
 // import ProductStockPage from "../components/Admin/ProductStockPage.vue";
 // import CollectionsPage from "../components/User/CollectionPage.vue";
-// import BestSellerPage from "../components/User/BestSellerPage.vue"; 
+// import BestSellerPage from "../components/User/BestSellerPage.vue";
 // import ContactPage from "../components/User/ContactPage.vue";
 // import ShippingPolicy from "../components/User/ShippingPolicy.vue";
 // import RefundPolicy from "../components/User/RefundPolicy.vue";
@@ -1377,12 +1377,12 @@
 //     localStorage.removeItem("admin_token");
 //     localStorage.removeItem("admin");
 //     localStorage.removeItem("admin_last_activity");
-    
+
 //     // Matikan pemantau aktivitas agar browser tidak bekerja terus menerus
 //     stopActivityListeners();
 
 //     // Lempar ke halaman login
-//     window.location.href = '/loginadmin'; 
+//     window.location.href = '/loginadmin';
 //   }, 5 * 60 * 1000);
 // };
 
@@ -1417,7 +1417,7 @@
 //     if (lastActivity) {
 //       const currentTime = new Date().getTime();
 //       const diff = currentTime - parseInt(lastActivity, 10);
-      
+
 //       // Jika ternyata beda waktunya sudah lewat 5 menit (misal dia tutup laptop lalu buka lagi)
 //       if (diff > 5 * 60 * 1000) {
 //         localStorage.removeItem("admin_token");
@@ -1465,7 +1465,7 @@
 
 //   // --- LOGIKA PROTEKSI ROUTE (REQUIRES AUTH) ---
 //   if (to.meta.requiresAuth) {
-    
+
 //     if (isAccessingAdmin) {
 //       if (!isAdminSessionValid) {
 //         return next("/loginadmin");
@@ -1481,13 +1481,13 @@
 //         if (role === 'gudang') {
 //           const allowedGudangPaths = ['/admin/products', '/admin/stocks', '/admin/transactions', '/admin/profile'];
 //           const isAllowed = allowedGudangPaths.some(p => targetPath.startsWith(p));
-//           if (!isAllowed) return next("/admin/transactions"); 
+//           if (!isAllowed) return next("/admin/transactions");
 //         }
 
 //         if (role === 'accounting') {
 //           const allowedAccountingPaths = ['/admin/coas', '/admin/category-coas', '/admin/payments', '/admin/suppliers', '/admin/invoices', '/admin/salesreports', '/admin/profile'];
 //           const isAllowed = allowedAccountingPaths.some(p => targetPath.startsWith(p));
-//           if (!isAllowed) return next("/admin/coas"); 
+//           if (!isAllowed) return next("/admin/coas");
 //         }
 
 //         if (role === 'admin') {
@@ -1499,7 +1499,7 @@
 //       return next();
 //     }
 
-//     if (!userToken || !user || user.usertype !== "user") { 
+//     if (!userToken || !user || user.usertype !== "user") {
 //       return next("/login");
 //     }
 //     return next();
@@ -1553,7 +1553,7 @@
 // import AdminResetPasswordPage from "../components/Admin/AdminResetPasswordPage.vue";
 // import ProductStockPage from "../components/Admin/ProductStockPage.vue";
 // import CollectionsPage from "../components/User/CollectionPage.vue";
-// import BestSellerPage from "../components/User/BestSellerPage.vue"; 
+// import BestSellerPage from "../components/User/BestSellerPage.vue";
 // import ContactPage from "../components/User/ContactPage.vue";
 // import ShippingPolicy from "../components/User/ShippingPolicy.vue";
 // import RefundPolicy from "../components/User/RefundPolicy.vue";
@@ -1624,7 +1624,7 @@
 //   { path: "/admin/payments", name: "TransferReceivePayment", component: TransferReceivePage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
 //   { path: "/admin/suppliers", name: "SupplierPage", component: SupplierPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
 //   { path: "/admin/invoices", name: "InvoicePage", component: InvoicePage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
-  
+
 //   // [BARU] ADMIN CHAT ROUTE
 //   { path: "/admin/chat/:id", name: "AdminChat", component: AdminChatPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
 
@@ -1661,12 +1661,12 @@
 //     localStorage.removeItem("admin_token");
 //     localStorage.removeItem("admin");
 //     localStorage.removeItem("admin_last_activity");
-    
+
 //     // Matikan pemantau aktivitas agar browser tidak bekerja terus menerus
 //     stopActivityListeners();
 
 //     // Lempar ke halaman login
-//     window.location.href = '/loginadmin'; 
+//     window.location.href = '/loginadmin';
 //   }, 5 * 60 * 1000);
 // };
 
@@ -1701,7 +1701,7 @@
 //     if (lastActivity) {
 //       const currentTime = new Date().getTime();
 //       const diff = currentTime - parseInt(lastActivity, 10);
-      
+
 //       // Jika ternyata beda waktunya sudah lewat 5 menit (misal dia tutup laptop lalu buka lagi)
 //       if (diff > 5 * 60 * 1000) {
 //         localStorage.removeItem("admin_token");
@@ -1749,7 +1749,7 @@
 
 //   // --- LOGIKA PROTEKSI ROUTE (REQUIRES AUTH) ---
 //   if (to.meta.requiresAuth) {
-    
+
 //     if (isAccessingAdmin) {
 //       if (!isAdminSessionValid) {
 //         return next("/loginadmin");
@@ -1765,13 +1765,13 @@
 //         if (role === 'gudang') {
 //           const allowedGudangPaths = ['/admin/products', '/admin/stocks', '/admin/transactions', '/admin/profile'];
 //           const isAllowed = allowedGudangPaths.some(p => targetPath.startsWith(p));
-//           if (!isAllowed) return next("/admin/transactions"); 
+//           if (!isAllowed) return next("/admin/transactions");
 //         }
 
 //         if (role === 'accounting') {
 //           const allowedAccountingPaths = ['/admin/coas', '/admin/category-coas', '/admin/payments', '/admin/suppliers', '/admin/invoices', '/admin/salesreports', '/admin/profile'];
 //           const isAllowed = allowedAccountingPaths.some(p => targetPath.startsWith(p));
-//           if (!isAllowed) return next("/admin/coas"); 
+//           if (!isAllowed) return next("/admin/coas");
 //         }
 
 //         if (role === 'admin') {
@@ -1783,7 +1783,7 @@
 //       return next();
 //     }
 
-//     if (!userToken || !user || user.usertype !== "user") { 
+//     if (!userToken || !user || user.usertype !== "user") {
 //       return next("/login");
 //     }
 //     return next();
@@ -1837,7 +1837,7 @@ import AdminCodeVerificationPage from "../components/Admin/AdminCodeVerification
 import AdminResetPasswordPage from "../components/Admin/AdminResetPasswordPage.vue";
 import ProductStockPage from "../components/Admin/ProductStockPage.vue";
 import CollectionsPage from "../components/User/CollectionPage.vue";
-import BestSellerPage from "../components/User/BestSellerPage.vue"; 
+import BestSellerPage from "../components/User/BestSellerPage.vue";
 import ContactPage from "../components/User/ContactPage.vue";
 import ShippingPolicy from "../components/User/ShippingPolicy.vue";
 import RefundPolicy from "../components/User/RefundPolicy.vue";
@@ -1852,74 +1852,318 @@ import EventPage from "../components/User/EventPage.vue";
 import AdminEventPage from "../components/Admin/AdminEventPage.vue";
 import AdminEventDetailPage from "../components/Admin/AdminEventDetailPage.vue";
 import AffiliateDashboard from "../components/User/AffiliateDashboard.vue";
+import AdminAffiliateDashboard from "../components/Admin/AdminAffiliateDashboard.vue";
 
 const routes = [
   { path: "/", name: "Home", component: HomePage },
   { path: "/best-sellers", name: "BestSellers", component: BestSellerPage },
   { path: "/collections", name: "Collections", component: CollectionsPage },
   { path: "/contact", name: "Contact", component: ContactPage },
-  { path: "/login", name: "Login", component: LoginPage, meta: { hideHeaderFooter: true } },
-  { path: "/forgot-password", name: "ForgotPassword", component: ForgotPasswordPage, meta: { hideHeaderFooter: true } },
-  { path: "/verify-code", name: "VerifyCode", component: CodeVerificationPage, meta: { hideHeaderFooter: true } },
-  { path: "/reset-password", name: "ResetPassword", component: ResetPasswordPage, meta: { hideHeaderFooter: true } },
-  { path: "/loginadmin", name: "AdminLogin", component: AdminLoginPage, meta: { hideHeaderFooter: true } },
-  { path: "/admin/forgot-password", name: "AdminForgotPassword", component: AdminForgotPasswordPage, meta: { hideHeaderFooter: true } },
-  { path: "/admin/verify-code", name: "AdminVerifyCode", component: AdminCodeVerificationPage, meta: { hideHeaderFooter: true } },
-  { path: "/admin/reset-password", name: "AdminResetPassword", component: AdminResetPasswordPage, meta: { hideHeaderFooter: true } },
-  { path: "/register", name: "Register", component: RegisterPage, meta: { hideHeaderFooter: true } },
-  { path: "/profilepage", name: "Profile", component: ProfilePage, meta: { requiresAuth: true } },
-  { path: "/orderpage", name: "Orders", component: OrderPage, meta: { requiresAuth: true } },
+  {
+    path: "/login",
+    name: "Login",
+    component: LoginPage,
+    meta: { hideHeaderFooter: true },
+  },
+  {
+    path: "/forgot-password",
+    name: "ForgotPassword",
+    component: ForgotPasswordPage,
+    meta: { hideHeaderFooter: true },
+  },
+  {
+    path: "/verify-code",
+    name: "VerifyCode",
+    component: CodeVerificationPage,
+    meta: { hideHeaderFooter: true },
+  },
+  {
+    path: "/reset-password",
+    name: "ResetPassword",
+    component: ResetPasswordPage,
+    meta: { hideHeaderFooter: true },
+  },
+  {
+    path: "/loginadmin",
+    name: "AdminLogin",
+    component: AdminLoginPage,
+    meta: { hideHeaderFooter: true },
+  },
+  {
+    path: "/admin/forgot-password",
+    name: "AdminForgotPassword",
+    component: AdminForgotPasswordPage,
+    meta: { hideHeaderFooter: true },
+  },
+  {
+    path: "/admin/verify-code",
+    name: "AdminVerifyCode",
+    component: AdminCodeVerificationPage,
+    meta: { hideHeaderFooter: true },
+  },
+  {
+    path: "/admin/reset-password",
+    name: "AdminResetPassword",
+    component: AdminResetPasswordPage,
+    meta: { hideHeaderFooter: true },
+  },
+  {
+    path: "/register",
+    name: "Register",
+    component: RegisterPage,
+    meta: { hideHeaderFooter: true },
+  },
+  {
+    path: "/profilepage",
+    name: "Profile",
+    component: ProfilePage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/orderpage",
+    name: "Orders",
+    component: OrderPage,
+    meta: { requiresAuth: true },
+  },
   { path: "/customer-care", name: "CustomerCare", component: CustomerCarePage },
   { path: "/faq", name: "Faq", component: FaqPage },
   { path: "/about-us", name: "AboutUs", component: AboutUsPage },
-  { path: '/shipping-policy', name: 'ShippingPolicy', component: ShippingPolicy },
-  { path: '/refund-policy', name: 'RefundPolicy', component: RefundPolicy },
-  { path: '/terms', name: 'TermsAndCondition', component: TermsAndCondition },
-  { path: '/privacy', name: 'PrivacyPolicy', component: PrivacyPolicy },
-  { path: "/favorites", name: "Favorites", component: () => import("../components/User/FavoritePage.vue") },
-  { path: "/cart", name: "Cart", component: CartPage, meta: { requiresAuth: true } },
-  { path: "/products/:id", name: "ProductDetail", component: ProductDetailPage },
-  { path: "/payment", name: "PaymentPage", component: PaymentPage, meta: { requiresAuth: true } },
-  { path: "/payment-success", name: "PaymentSuccess", component: PaymentSuccessPage, meta: { requiresAuth: true, hideHeaderFooter: true } },
-  { path: "/tracking/:id", name: "TrackingPage", component: TrackingPage, meta: { requiresAuth: true, hideHeaderFooter: true } },
+  {
+    path: "/shipping-policy",
+    name: "ShippingPolicy",
+    component: ShippingPolicy,
+  },
+  { path: "/refund-policy", name: "RefundPolicy", component: RefundPolicy },
+  { path: "/terms", name: "TermsAndCondition", component: TermsAndCondition },
+  { path: "/privacy", name: "PrivacyPolicy", component: PrivacyPolicy },
+  {
+    path: "/favorites",
+    name: "Favorites",
+    component: () => import("../components/User/FavoritePage.vue"),
+  },
+  {
+    path: "/cart",
+    name: "Cart",
+    component: CartPage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/products/:id",
+    name: "ProductDetail",
+    component: ProductDetailPage,
+  },
+  {
+    path: "/payment",
+    name: "PaymentPage",
+    component: PaymentPage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/payment-success",
+    name: "PaymentSuccess",
+    component: PaymentSuccessPage,
+    meta: { requiresAuth: true, hideHeaderFooter: true },
+  },
+  {
+    path: "/tracking/:id",
+    name: "TrackingPage",
+    component: TrackingPage,
+    meta: { requiresAuth: true, hideHeaderFooter: true },
+  },
 
-  // USER CHAT ROUTES 
-  { path: "/chat-list", name: "ChatList", component: ChatListPage, meta: { requiresAuth: true } },
-  { path: "/chat/:id", name: "UserChat", component: ChatPage, meta: { requiresAuth: true } },
-  
+  // USER CHAT ROUTES
+  {
+    path: "/chat-list",
+    name: "ChatList",
+    component: ChatListPage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/chat/:id",
+    name: "UserChat",
+    component: ChatPage,
+    meta: { requiresAuth: true },
+  },
+
   { path: "/events", name: "EventPage", component: EventPage },
 
   // USER AFFILIATOR ROUTES
-  { path: "/affiliate-demo", name: "AffiliateDemo", component: AffiliateDashboard, meta: { requiresAuth: true } },
+  {
+    path: "/affiliate-demo",
+    name: "AffiliateDemo",
+    component: AffiliateDashboard,
+    meta: { requiresAuth: true },
+  },
 
   // ADMIN ROUTES
-  { path: "/admin/dashboard", name: "Dashboard", component: DashboardPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
-  { path: "/admin/profile", name: "Adminprofile", component: AdminProfilePage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
-  { path: "/admin/categories", name: "Category", component: CategoryPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
-  { path: "/admin/categories/:id", name: "CategoryDetail", component: () => import("../components/Admin/CategoryDetailPage.vue"), meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
-  { path: "/admin/products", name: "Product", component: ProductPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
-  { path: "/admin/products/add", name: "ProductAdd", component: ProductAddPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
-  { path: "/admin/products/edit/:id", name: "ProductEdit", component: ProductEditPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
-  { path: "/admin/products/view/:id", name: "ProductView", component: () => import("../components/Admin/ProductViewPage.vue"), meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
-  { path: "/admin/products/inactive", name: "InactiveProduct", component: InactiveProductPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
-  { path: "/admin/stocks", name: "ProductStock", component: ProductStockPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
-  { path: "/admin/salesreports", name: "SalesReport", component: SalesReportPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
-  { path: "/admin/transactions", name: "Transaction", component: TransactionPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
-  { path: "/admin/transactions/:id", name: "TransactionDetail", component: TransactionDetailPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
-  { path: "/admin/user_list", name: "UserList", component: UserListPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
-  { path: "/admin/users/:id", name: "UserDetail", component: UserDetailPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
-  { path: "/admin/subscribers", name: "Subscribers", component: SubscriberPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
-  { path: "/admin/messages", name: "MessageView", component: MessageViewPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
-  { path: "/admin/messages/:id", name: "DetailMessage", component: DetailMessageViewPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
-  { path: "/admin/category-coas", name: "CategoryCoa", component: CategoryCoaPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
-  { path: "/admin/coas", name: "CoaPage", component: CoaPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
-  { path: "/admin/payments", name: "TransferReceivePayment", component: TransferReceivePage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
-  { path: "/admin/suppliers", name: "SupplierPage", component: SupplierPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
-  { path: "/admin/invoices", name: "InvoicePage", component: InvoicePage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
-  { path: "/admin/chat/:id", name: "AdminChat", component: AdminChatPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
-  { path: "/admin/audit-logs", name: "AuditLogs", component: AuditLogPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
-    { path: "/admin/events", name: "AdminEventPage", component: AdminEventPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
-    { path: "/admin/events/:id", name: "AdminEventDetailPage", component: AdminEventDetailPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  {
+    path: "/admin/dashboard",
+    name: "Dashboard",
+    component: DashboardPage,
+    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+  },
+  {
+    path: "/admin/profile",
+    name: "Adminprofile",
+    component: AdminProfilePage,
+    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+  },
+  {
+    path: "/admin/categories",
+    name: "Category",
+    component: CategoryPage,
+    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+  },
+  {
+    path: "/admin/categories/:id",
+    name: "CategoryDetail",
+    component: () => import("../components/Admin/CategoryDetailPage.vue"),
+    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+  },
+  {
+    path: "/admin/products",
+    name: "Product",
+    component: ProductPage,
+    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+  },
+  {
+    path: "/admin/products/add",
+    name: "ProductAdd",
+    component: ProductAddPage,
+    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+  },
+  {
+    path: "/admin/products/edit/:id",
+    name: "ProductEdit",
+    component: ProductEditPage,
+    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+  },
+  {
+    path: "/admin/products/view/:id",
+    name: "ProductView",
+    component: () => import("../components/Admin/ProductViewPage.vue"),
+    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+  },
+  {
+    path: "/admin/products/inactive",
+    name: "InactiveProduct",
+    component: InactiveProductPage,
+    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+  },
+  {
+    path: "/admin/stocks",
+    name: "ProductStock",
+    component: ProductStockPage,
+    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+  },
+  {
+    path: "/admin/salesreports",
+    name: "SalesReport",
+    component: SalesReportPage,
+    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+  },
+  {
+    path: "/admin/transactions",
+    name: "Transaction",
+    component: TransactionPage,
+    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+  },
+  {
+    path: "/admin/transactions/:id",
+    name: "TransactionDetail",
+    component: TransactionDetailPage,
+    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+  },
+  {
+    path: "/admin/user_list",
+    name: "UserList",
+    component: UserListPage,
+    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+  },
+  {
+    path: "/admin/users/:id",
+    name: "UserDetail",
+    component: UserDetailPage,
+    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+  },
+  {
+    path: "/admin/subscribers",
+    name: "Subscribers",
+    component: SubscriberPage,
+    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+  },
+  {
+    path: "/admin/messages",
+    name: "MessageView",
+    component: MessageViewPage,
+    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+  },
+  {
+    path: "/admin/messages/:id",
+    name: "DetailMessage",
+    component: DetailMessageViewPage,
+    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+  },
+  {
+    path: "/admin/category-coas",
+    name: "CategoryCoa",
+    component: CategoryCoaPage,
+    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+  },
+  {
+    path: "/admin/coas",
+    name: "CoaPage",
+    component: CoaPage,
+    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+  },
+  {
+    path: "/admin/payments",
+    name: "TransferReceivePayment",
+    component: TransferReceivePage,
+    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+  },
+  {
+    path: "/admin/suppliers",
+    name: "SupplierPage",
+    component: SupplierPage,
+    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+  },
+  {
+    path: "/admin/invoices",
+    name: "InvoicePage",
+    component: InvoicePage,
+    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+  },
+  {
+    path: "/admin/chat/:id",
+    name: "AdminChat",
+    component: AdminChatPage,
+    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+  },
+  {
+    path: "/admin/audit-logs",
+    name: "AuditLogs",
+    component: AuditLogPage,
+    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+  },
+  {
+    path: "/admin/events",
+    name: "AdminEventPage",
+    component: AdminEventPage,
+    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+  },
+  {
+    path: "/admin/events/:id",
+    name: "AdminEventDetailPage",
+    component: AdminEventDetailPage,
+    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+  },
+  {
+    path: "/admin/affiliates",
+    name: "AdminAffiliates",
+    component: AdminAffiliateDashboard,
+    meta: { requiresAuth: true, role: "admin" }, // Pastikan hanya admin yang bisa akses
+  },
 ];
 
 const router = createRouter({
@@ -1954,12 +2198,12 @@ const resetTimers = () => {
   if (hasAdmin) {
     localStorage.setItem("admin_last_activity", currentTime);
     if (adminIdleTimer) clearTimeout(adminIdleTimer);
-    
+
     adminIdleTimer = setTimeout(() => {
       localStorage.removeItem("admin_token");
       localStorage.removeItem("admin");
       localStorage.removeItem("admin_last_activity");
-      window.location.href = '/loginadmin'; 
+      window.location.href = "/loginadmin";
     }, TIMEOUT_ADMIN);
   }
 
@@ -1967,26 +2211,36 @@ const resetTimers = () => {
   if (hasUser) {
     localStorage.setItem("user_last_activity", currentTime);
     if (userIdleTimer) clearTimeout(userIdleTimer);
-    
+
     userIdleTimer = setTimeout(() => {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       localStorage.removeItem("user_last_activity");
-      
+
       // Karena customer mungkin sedang di halaman publik (Home) saat ter-logout,
-      // kita cukup mereload halaman agar Header UI (keranjang/profile) ter-update, 
+      // kita cukup mereload halaman agar Header UI (keranjang/profile) ter-update,
       // atau lempar ke login jika mereka sedang di halaman yg butuh auth.
-      window.location.reload(); 
+      window.location.reload();
     }, TIMEOUT_USER);
   }
 };
 
-const activityEvents = ['mousedown', 'mousemove', 'keydown', 'scroll', 'touchstart'];
+const activityEvents = [
+  "mousedown",
+  "mousemove",
+  "keydown",
+  "scroll",
+  "touchstart",
+];
 const startActivityListeners = () => {
-  activityEvents.forEach(event => document.addEventListener(event, resetTimers, { passive: true }));
+  activityEvents.forEach((event) =>
+    document.addEventListener(event, resetTimers, { passive: true }),
+  );
 };
 const stopActivityListeners = () => {
-  activityEvents.forEach(event => document.removeEventListener(event, resetTimers, { passive: true }));
+  activityEvents.forEach((event) =>
+    document.removeEventListener(event, resetTimers, { passive: true }),
+  );
 };
 // =========================================================================
 
@@ -2001,7 +2255,11 @@ router.beforeEach((to, from, next) => {
   let admin = adminString ? JSON.parse(adminString) : null;
 
   const validAdminRoles = ["admin", "superadmin", "gudang", "accounting"];
-  let isAdminSessionValid = !!(adminToken && admin && validAdminRoles.includes(admin.usertype));
+  let isAdminSessionValid = !!(
+    adminToken &&
+    admin &&
+    validAdminRoles.includes(admin.usertype)
+  );
   let isUserSessionValid = !!(userToken && user && user.usertype === "user");
 
   // =========================================================================
@@ -2012,7 +2270,10 @@ router.beforeEach((to, from, next) => {
   // Cek Timeout Admin
   if (isAdminSessionValid) {
     const lastAdminActivity = localStorage.getItem("admin_last_activity");
-    if (lastAdminActivity && (currentTime - parseInt(lastAdminActivity, 10) > TIMEOUT_ADMIN)) {
+    if (
+      lastAdminActivity &&
+      currentTime - parseInt(lastAdminActivity, 10) > TIMEOUT_ADMIN
+    ) {
       localStorage.removeItem("admin_token");
       localStorage.removeItem("admin");
       localStorage.removeItem("admin_last_activity");
@@ -2025,7 +2286,10 @@ router.beforeEach((to, from, next) => {
   // Cek Timeout User
   if (isUserSessionValid) {
     const lastUserActivity = localStorage.getItem("user_last_activity");
-    if (lastUserActivity && (currentTime - parseInt(lastUserActivity, 10) > TIMEOUT_USER)) {
+    if (
+      lastUserActivity &&
+      currentTime - parseInt(lastUserActivity, 10) > TIMEOUT_USER
+    ) {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       localStorage.removeItem("user_last_activity");
@@ -2055,15 +2319,14 @@ router.beforeEach((to, from, next) => {
 
   if (isAdminSessionValid) {
     if (["/loginadmin", "/login", "/register"].includes(to.path)) {
-      if (admin.usertype === 'accounting') return next("/admin/coas");
-      else if (admin.usertype === 'gudang') return next("/admin/transactions");
+      if (admin.usertype === "accounting") return next("/admin/coas");
+      else if (admin.usertype === "gudang") return next("/admin/transactions");
       else return next("/admin/dashboard");
     }
   }
 
   // --- LOGIKA PROTEKSI ROUTE (REQUIRES AUTH) ---
   if (to.meta.requiresAuth) {
-    
     if (isAccessingAdmin) {
       if (!isAdminSessionValid) {
         return next("/loginadmin");
@@ -2073,29 +2336,54 @@ router.beforeEach((to, from, next) => {
       const role = admin.usertype;
       const targetPath = to.path;
 
-      if (role !== 'superadmin') {
-        if (role === 'gudang') {
-          const allowedGudangPaths = ['/admin/products', '/admin/stocks', '/admin/transactions', '/admin/profile'];
-          const isAllowed = allowedGudangPaths.some(p => targetPath.startsWith(p));
-          if (!isAllowed) return next("/admin/transactions"); 
+      if (role !== "superadmin") {
+        if (role === "gudang") {
+          const allowedGudangPaths = [
+            "/admin/products",
+            "/admin/stocks",
+            "/admin/transactions",
+            "/admin/profile",
+          ];
+          const isAllowed = allowedGudangPaths.some((p) =>
+            targetPath.startsWith(p),
+          );
+          if (!isAllowed) return next("/admin/transactions");
         }
 
-        if (role === 'accounting') {
-          const allowedAccountingPaths = ['/admin/coas', '/admin/category-coas', '/admin/payments', '/admin/suppliers', '/admin/invoices', '/admin/salesreports', '/admin/profile'];
-          const isAllowed = allowedAccountingPaths.some(p => targetPath.startsWith(p));
-          if (!isAllowed) return next("/admin/coas"); 
+        if (role === "accounting") {
+          const allowedAccountingPaths = [
+            "/admin/coas",
+            "/admin/category-coas",
+            "/admin/payments",
+            "/admin/suppliers",
+            "/admin/invoices",
+            "/admin/salesreports",
+            "/admin/profile",
+          ];
+          const isAllowed = allowedAccountingPaths.some((p) =>
+            targetPath.startsWith(p),
+          );
+          if (!isAllowed) return next("/admin/coas");
         }
 
-        if (role === 'admin') {
-          const forbiddenAdminPaths = ['/admin/coas', '/admin/category-coas', '/admin/payments', '/admin/suppliers', '/admin/invoices'];
-          const isForbidden = forbiddenAdminPaths.some(p => targetPath.startsWith(p));
+        if (role === "admin") {
+          const forbiddenAdminPaths = [
+            "/admin/coas",
+            "/admin/category-coas",
+            "/admin/payments",
+            "/admin/suppliers",
+            "/admin/invoices",
+          ];
+          const isForbidden = forbiddenAdminPaths.some((p) =>
+            targetPath.startsWith(p),
+          );
           if (isForbidden) return next("/admin/dashboard");
         }
       }
       return next();
     }
 
-    if (!isUserSessionValid) { 
+    if (!isUserSessionValid) {
       return next("/login");
     }
     return next();
