@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="px-6 py-8 mx-auto max-w-7xl animate-fade-in">
     <div class="flex items-center justify-between mb-8">
       <div>
@@ -85,7 +85,7 @@
       <div class="overflow-x-auto">
         <table class="w-full text-sm text-left">
           <thead
-            class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-100"
+            class="text-xs text-gray-500 uppercase border-b border-gray-100 bg-gray-50"
           >
             <tr>
               <th class="px-6 py-4 font-bold tracking-wider">Nama Afiliator</th>
@@ -130,7 +130,7 @@
       <div class="overflow-x-auto">
         <table class="w-full text-sm text-left">
           <thead
-            class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-100"
+            class="text-xs text-gray-500 uppercase border-b border-gray-100 bg-gray-50"
           >
             <tr>
               <th class="px-6 py-4 font-bold tracking-wider">Waktu Request</th>
@@ -400,6 +400,458 @@ const markAsTransferred = (req) => {
         showConfirmButton: false,
       });
       // Refresh data agar tabel & statistik langsung ter-update
+      fetchAdminDashboard();
+    }
+  });
+};
+
+onMounted(() => {
+  fetchAdminDashboard();
+});
+</script>
+
+<style scoped>
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style> -->
+<template>
+  <div class="px-6 py-8 mx-auto max-w-7xl animate-fade-in">
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <h1
+          class="font-serif text-3xl font-bold tracking-tighter text-gray-900 uppercase"
+        >
+          Manajemen Afiliasi
+        </h1>
+        <p class="mt-2 text-sm text-gray-500">
+          Pantau performa afiliator, seleksi pendaftar, dan kelola pencairan komisi.
+        </p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 mb-8 md:grid-cols-4">
+      <div class="p-6 border border-gray-100 shadow-sm bg-gray-50 rounded-xl">
+        <p class="text-xs font-bold tracking-widest text-gray-500 uppercase">
+          Total Afiliator
+        </p>
+        <p class="mt-2 text-3xl font-bold text-gray-900">
+          {{ stats.totalAffiliates }}
+          <span class="text-sm font-medium text-gray-500">Orang</span>
+        </p>
+      </div>
+
+      <div class="p-6 bg-white border border-blue-100 shadow-sm rounded-xl">
+        <div class="flex items-center justify-between">
+          <p class="text-xs font-bold tracking-widest text-blue-600 uppercase">
+            Pendaftar Baru
+          </p>
+          <span
+            v-if="stats.pendingApplications > 0"
+            class="flex items-center w-2 h-2 bg-blue-500 rounded-full animate-pulse"
+          ></span>
+        </div>
+        <p class="mt-2 text-3xl font-bold text-gray-900">
+          {{ stats.pendingApplications }}
+          <span class="text-sm font-medium text-gray-500">Antrean</span>
+        </p>
+      </div>
+
+      <div class="p-6 bg-white border border-yellow-100 shadow-sm rounded-xl">
+        <div class="flex items-center justify-between">
+          <p class="text-xs font-bold tracking-widest text-yellow-600 uppercase">
+            Menunggu Pencairan
+          </p>
+          <span
+            v-if="stats.pendingRequests > 0"
+            class="flex items-center w-2 h-2 bg-yellow-400 rounded-full animate-pulse"
+          ></span>
+        </div>
+        <p class="mt-2 text-3xl font-bold text-gray-900">
+          {{ stats.pendingRequests }}
+          <span class="text-sm font-medium text-gray-500">Request</span>
+        </p>
+      </div>
+
+      <div class="p-6 bg-white border border-green-100 shadow-sm rounded-xl">
+        <p class="text-xs font-bold tracking-widest text-green-600 uppercase">
+          Komisi Ditransfer
+        </p>
+        <p class="mt-2 text-2xl font-bold text-gray-900 truncate">
+          {{ formatPrice(stats.totalTransferred) }}
+        </p>
+      </div>
+    </div>
+
+    <div class="flex gap-6 mb-6 border-b border-gray-200">
+      <button
+        @click="activeTab = 'applications'"
+        :class="
+          activeTab === 'applications'
+            ? 'border-black text-black'
+            : 'border-transparent text-gray-500 hover:text-gray-700'
+        "
+        class="py-3 text-sm font-bold tracking-widest uppercase transition-colors border-b-2"
+      >
+        Pendaftar Baru
+        <span
+          v-if="stats.pendingApplications > 0"
+          class="px-2 py-0.5 ml-1 text-xs text-white bg-blue-600 rounded-full"
+          >{{ stats.pendingApplications }}</span
+        >
+      </button>
+      <button
+        @click="activeTab = 'withdrawals'"
+        :class="
+          activeTab === 'withdrawals'
+            ? 'border-black text-black'
+            : 'border-transparent text-gray-500 hover:text-gray-700'
+        "
+        class="py-3 text-sm font-bold tracking-widest uppercase transition-colors border-b-2"
+      >
+        Pencairan Dana
+        <span
+          v-if="stats.pendingRequests > 0"
+          class="px-2 py-0.5 ml-1 text-xs text-white bg-red-500 rounded-full"
+          >{{ stats.pendingRequests }}</span
+        >
+      </button>
+      <button
+        @click="activeTab = 'affiliates'"
+        :class="
+          activeTab === 'affiliates'
+            ? 'border-black text-black'
+            : 'border-transparent text-gray-500 hover:text-gray-700'
+        "
+        class="py-3 text-sm font-bold tracking-widest uppercase transition-colors border-b-2"
+      >
+        Daftar Afiliator
+      </button>
+    </div>
+
+    <div
+      v-if="activeTab === 'applications'"
+      class="overflow-hidden bg-white border border-gray-200 shadow-sm rounded-xl"
+    >
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left">
+          <thead
+            class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-100"
+          >
+            <tr>
+              <th class="px-6 py-4 font-bold tracking-wider">Calon Afiliator</th>
+              <th class="px-6 py-4 font-bold tracking-wider">Media Sosial</th>
+              <th class="px-6 py-4 font-bold tracking-wider">Alasan Bergabung</th>
+              <th class="px-6 py-4 font-bold tracking-wider text-center">Aksi</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            <tr v-if="applications.length === 0">
+              <td colspan="4" class="px-6 py-10 text-center text-gray-500">
+                Tidak ada pendaftar baru saat ini.
+              </td>
+            </tr>
+            <tr
+              v-for="app in applications"
+              :key="app.id"
+              class="transition-colors hover:bg-gray-50"
+            >
+              <td class="px-6 py-4">
+                <p class="font-bold text-gray-900">{{ app.user_name }}</p>
+                <p class="text-xs text-gray-500">{{ app.user_email }}</p>
+                <p class="text-[10px] text-gray-400 mt-1">Daftar: {{ app.date }}</p>
+              </td>
+              <td class="px-6 py-4">
+                <a
+                  :href="app.social_media_url"
+                  target="_blank"
+                  class="flex items-center gap-1 font-medium text-blue-600 hover:text-blue-800 hover:underline"
+                >
+                  Buka Profil
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-3 h-3"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                    />
+                  </svg>
+                </a>
+              </td>
+              <td class="px-6 py-4 text-gray-600 max-w-xs truncate" :title="app.reason">
+                {{ app.reason }}
+              </td>
+              <td class="px-6 py-4 text-center">
+                <button
+                  @click="approveApplication(app)"
+                  class="px-4 py-2 text-xs font-bold text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700 shadow-sm"
+                >
+                  Setujui
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div
+      v-if="activeTab === 'withdrawals'"
+      class="overflow-hidden bg-white border border-gray-200 shadow-sm rounded-xl"
+    >
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left">
+          <thead
+            class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-100"
+          >
+            <tr>
+              <th class="px-6 py-4 font-bold tracking-wider">Waktu Request</th>
+              <th class="px-6 py-4 font-bold tracking-wider">Afiliator</th>
+              <th class="px-6 py-4 font-bold tracking-wider">
+                Info Rekening & Transfer Bersih
+              </th>
+              <th class="px-6 py-4 font-bold tracking-wider">Status</th>
+              <th class="px-6 py-4 font-bold tracking-wider text-center">Aksi</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            <tr v-if="withdrawals.length === 0">
+              <td colspan="5" class="px-6 py-10 text-center text-gray-500">
+                Tidak ada riwayat pencairan dana.
+              </td>
+            </tr>
+            <tr
+              v-for="req in withdrawals"
+              :key="req.id"
+              class="transition-colors hover:bg-gray-50"
+            >
+              <td class="px-6 py-4 text-gray-500">{{ req.date }}</td>
+              <td class="px-6 py-4 font-bold text-gray-900">{{ req.affiliate_name }}</td>
+              <td class="px-6 py-4">
+                <p class="font-bold text-gray-900">
+                  {{ req.bank_name }} - {{ req.account_number }}
+                </p>
+                <p class="text-xs text-gray-500">a.n. {{ req.account_name }}</p>
+                <p
+                  class="mt-2 text-[10px] font-bold text-blue-700 bg-blue-50 p-1.5 rounded border border-blue-100 w-fit"
+                >
+                  {{ req.admin_notes }}
+                </p>
+              </td>
+              <td class="px-6 py-4">
+                <span
+                  :class="
+                    req.status === 'pending'
+                      ? 'bg-yellow-100 text-yellow-700 border-yellow-200'
+                      : 'bg-green-100 text-green-700 border-green-200'
+                  "
+                  class="px-3 py-1 text-[10px] font-bold tracking-wider uppercase rounded-full border"
+                >
+                  {{ req.status === "pending" ? "Menunggu Transfer" : "Selesai" }}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-center">
+                <button
+                  v-if="req.status === 'pending'"
+                  @click="markAsTransferred(req)"
+                  class="px-4 py-2 text-xs font-bold text-white transition-colors bg-black rounded-lg hover:bg-gray-800"
+                >
+                  Tandai Selesai
+                </button>
+                <span v-else class="text-xs font-bold text-gray-400">Telah Diproses</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div
+      v-if="activeTab === 'affiliates'"
+      class="overflow-hidden bg-white border border-gray-200 shadow-sm rounded-xl"
+    >
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left">
+          <thead
+            class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-100"
+          >
+            <tr>
+              <th class="px-6 py-4 font-bold tracking-wider">Nama Afiliator</th>
+              <th class="px-6 py-4 font-bold tracking-wider">Kode Referal</th>
+              <th class="px-6 py-4 font-bold tracking-wider text-right">
+                Saldo Aktif (Belum Ditarik)
+              </th>
+              <th class="px-6 py-4 font-bold tracking-wider text-right">
+                Total Pendapatan (Historis)
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            <tr
+              v-for="aff in affiliates"
+              :key="aff.id"
+              class="transition-colors hover:bg-gray-50"
+            >
+              <td class="px-6 py-4">
+                <p class="font-bold text-gray-900">{{ aff.name }}</p>
+                <p class="text-xs text-gray-500">{{ aff.email }}</p>
+              </td>
+              <td class="px-6 py-4 font-mono font-medium text-blue-600">
+                {{ aff.referral_code }}
+              </td>
+              <td class="px-6 py-4 font-bold text-right text-green-600">
+                {{ formatPrice(aff.active_balance) }}
+              </td>
+              <td class="px-6 py-4 font-bold text-right text-gray-900">
+                {{ formatPrice(aff.total_earned) }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { BASE_URL } from "../../config/api.js";
+
+const activeTab = ref("applications"); // Ubah default tab ke Pendaftar Baru
+const isLoading = ref(true);
+
+const stats = ref({
+  totalAffiliates: 0,
+  pendingRequests: 0,
+  totalTransferred: 0,
+  pendingApplications: 0, // [BARU]
+});
+const affiliates = ref([]);
+const withdrawals = ref([]);
+const applications = ref([]); // [BARU] State untuk pendaftar
+
+const formatPrice = (value) => {
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0,
+  }).format(value || 0);
+};
+
+const fetchAdminDashboard = async () => {
+  isLoading.value = true;
+  try {
+    const res = await axios.get(`${BASE_URL}/admin/affiliates/dashboard`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
+    });
+
+    const data = res.data.data;
+    stats.value = data.stats;
+    affiliates.value = data.affiliates;
+    withdrawals.value = data.withdrawals;
+    applications.value = data.applications || []; // [BARU] Assign data pendaftar
+  } catch (error) {
+    console.error("Error fetching admin affiliate data:", error);
+    Swal.fire("Error", "Gagal memuat data afiliasi", "error");
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+// [BARU] Fungsi menembak API Approve Pendaftar
+const approveApplication = (app) => {
+  Swal.fire({
+    title: "Setujui Pendaftar?",
+    text: `Akun ${app.user_name} akan otomatis menjadi afiliator dan diberikan kode referal.`,
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "Ya, Setujui",
+    cancelButtonText: "Batal",
+    confirmButtonColor: "#2563eb", // Warna biru untuk membedakan dengan transfer uang
+    showLoaderOnConfirm: true,
+    preConfirm: async () => {
+      try {
+        await axios.post(
+          `${BASE_URL}/admin/affiliates/applications/${app.id}/approve`,
+          {},
+          { headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` } }
+        );
+        return true;
+      } catch (error) {
+        Swal.showValidationMessage(
+          `Gagal menyetujui: ${error.response?.data?.message || "Error Server"}`
+        );
+      }
+    },
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire({
+        title: "Berhasil!",
+        text: "Pendaftar telah menjadi afiliator aktif.",
+        icon: "success",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+      fetchAdminDashboard(); // Refresh data
+    }
+  });
+};
+
+const markAsTransferred = (req) => {
+  const cleanTransferAmount = req.admin_notes
+    ? req.admin_notes.split("TRANSFER BERSIH: ")[1]
+    : formatPrice(req.amount);
+
+  Swal.fire({
+    title: "Konfirmasi Transfer",
+    html: `Apakah Anda sudah mentransfer uang sebesar <br><strong class="text-xl text-green-600">${cleanTransferAmount}</strong><br> ke rekening <b>${req.bank_name} (${req.account_number})</b>?`,
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonText: "Ya, Sudah Ditransfer",
+    cancelButtonText: "Belum",
+    confirmButtonColor: "#000",
+    showLoaderOnConfirm: true,
+    preConfirm: async () => {
+      try {
+        await axios.post(
+          `${BASE_URL}/admin/affiliates/withdrawals/${req.id}/approve`,
+          {},
+          { headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` } }
+        );
+        return true;
+      } catch (error) {
+        Swal.showValidationMessage(
+          `Gagal mengupdate status: ${error.response?.data?.message || "Error Server"}`
+        );
+      }
+    },
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire({
+        title: "Berhasil!",
+        text: "Status pencairan dana telah diperbarui menjadi Selesai.",
+        icon: "success",
+        timer: 2000,
+        showConfirmButton: false,
+      });
       fetchAdminDashboard();
     }
   });
