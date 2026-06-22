@@ -5767,11 +5767,110 @@ onMounted(() => {
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
           </svg>
         </router-link>
-        <router-link
+        <!-- <router-link
           to="/favorites"
           class="flex items-center justify-between p-5 transition-all bg-white border border-gray-100 shadow-sm group hover:border-red-100 hover:shadow-md rounded-2xl"
         >
-        </router-link>
+        </router-link> -->
+
+        <template v-if="userData">
+          <router-link
+            v-if="userData.is_affiliate"
+            to="/affiliate-demo"
+            class="flex items-center justify-between p-5 mt-4 transition-all bg-white border border-gray-100 shadow-sm group hover:border-blue-100 hover:shadow-md rounded-2xl"
+          >
+            <div class="flex items-center gap-4">
+              <div
+                class="flex items-center justify-center w-10 h-10 text-blue-600 transition-colors bg-blue-50 rounded-xl group-hover:bg-blue-100"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"
+                  />
+                </svg>
+              </div>
+              <div>
+                <h2
+                  class="text-sm font-bold text-gray-900 transition-colors group-hover:text-blue-600"
+                >
+                  Dasbor Afiliator
+                </h2>
+                <p class="text-xs text-gray-500">Kelola komisi & tautan Anda</p>
+              </div>
+            </div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5 text-gray-300 transition-all group-hover:text-blue-600 group-hover:translate-x-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </router-link>
+
+          <button
+            v-else
+            @click="showAffiliateModal = true"
+            class="flex items-center justify-between w-full p-5 mt-4 text-left transition-all border shadow-lg bg-gradient-to-r from-gray-900 to-black border-gray-800 group hover:shadow-xl rounded-2xl"
+          >
+            <div class="flex items-center gap-4">
+              <div
+                class="flex items-center justify-center w-10 h-10 text-black transition-colors bg-yellow-400 rounded-xl"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+              <div>
+                <h2
+                  class="text-sm font-bold text-white transition-colors group-hover:text-yellow-400"
+                >
+                  Program Afiliasi
+                </h2>
+                <p class="text-[10px] text-gray-400 uppercase tracking-widest mt-0.5">
+                  Dapatkan Komisi Khusus!
+                </p>
+              </div>
+            </div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5 text-gray-500 transition-all group-hover:text-yellow-400 group-hover:translate-x-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </template>
 
         <router-link
           to="/affiliate-demo"
@@ -6444,6 +6543,64 @@ onMounted(() => {
       </div>
     </div>
   </div>
+  <div
+    v-if="showAffiliateModal"
+    class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm"
+  >
+    <div class="w-full max-w-md p-8 bg-white shadow-2xl rounded-3xl animate-fade-in">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-xl font-bold text-gray-900">Daftar Afiliator</h3>
+        <button
+          @click="showAffiliateModal = false"
+          class="p-2 text-gray-400 rounded-full hover:bg-gray-100 hover:text-gray-600"
+        >
+          ✕
+        </button>
+      </div>
+
+      <p class="mb-6 text-xs leading-relaxed text-gray-500">
+        Bergabunglah dengan program afiliasi Solher dan dapatkan komisi dari setiap
+        penjualan. Kami akan meninjau profil media sosial Anda sebelum memberikan
+        persetujuan.
+      </p>
+
+      <form @submit.prevent="submitAffiliateApplication" class="space-y-4">
+        <div>
+          <label
+            class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
+            >Link Media Sosial Utama</label
+          >
+          <input
+            v-model="affiliateForm.social_media_url"
+            type="url"
+            placeholder="https://instagram.com/username"
+            class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+            required
+          />
+        </div>
+        <div>
+          <label
+            class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
+            >Alasan Bergabung</label
+          >
+          <textarea
+            v-model="affiliateForm.reason"
+            rows="3"
+            placeholder="Ceritakan sedikit tentang audiens Anda..."
+            class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 resize-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none custom-scrollbar"
+            required
+          ></textarea>
+        </div>
+        <button
+          type="submit"
+          :disabled="isSubmittingAffiliate"
+          class="w-full py-3.5 mt-4 font-bold text-white transition-colors bg-gray-900 rounded-xl hover:bg-black disabled:bg-gray-400"
+        >
+          {{ isSubmittingAffiliate ? "Mengirim..." : "Kirim Pendaftaran" }}
+        </button>
+      </form>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -6510,6 +6667,14 @@ const markerLatLng = ref([-7.250445, 112.768845]);
 const searchQuery = ref("");
 const searchResults = ref([]);
 let debounceTimeout = null;
+
+// --- STATE AFILIASI ---
+const showAffiliateModal = ref(false);
+const isSubmittingAffiliate = ref(false);
+const affiliateForm = ref({
+  social_media_url: "",
+  reason: "",
+});
 
 // 1. REVERSE GEOCODING (Nominatim API - FREE)
 const reverseGeocode = async (lat, lng) => {
@@ -6866,6 +7031,34 @@ const handleImageUpdate = async (e) => {
     userData.value.profile_image = oldImage;
     URL.revokeObjectURL(objectUrl);
     Swal.fire("Gagal", "Tidak dapat mengunggah foto. Silakan coba lagi.", "error");
+  }
+};
+
+// --- FUNGSI SUBMIT PENDAFTARAN ---
+const submitAffiliateApplication = async () => {
+  isSubmittingAffiliate.value = true;
+  try {
+    const res = await axios.post(`${BASE_URL}/affiliate/apply`, affiliateForm.value, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+
+    showAffiliateModal.value = false;
+    affiliateForm.value = { social_media_url: "", reason: "" }; // reset form
+
+    Swal.fire({
+      icon: "success",
+      title: "Pendaftaran Berhasil!",
+      text: "Data Anda telah dikirim. Kami akan meninjau akun Anda segera.",
+      confirmButtonColor: "#000",
+    });
+  } catch (err) {
+    Swal.fire(
+      "Gagal",
+      err.response?.data?.message || "Terjadi kesalahan saat mengirim pendaftaran.",
+      "error"
+    );
+  } finally {
+    isSubmittingAffiliate.value = false;
   }
 };
 
