@@ -239,7 +239,6 @@ onUnmounted(() => {
     class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in"
     @click.self="$router.back()"
   >
-    <Breadcrumb />
     <div
       class="flex flex-col w-full max-w-3xl bg-[#F9FAFB] shadow-2xl rounded-2xl overflow-hidden h-[85vh] md:h-[80vh]"
     >
@@ -542,7 +541,7 @@ import axios from "axios";
 import { BASE_URL } from "../../config/api";
 import Echo from "laravel-echo";
 import Pusher from "pusher-js";
-import Breadcrumb from "./Layout/Breadcrumb.vue";
+// import Breadcrumb from "./Layout/Breadcrumb.vue";
 
 const route = useRoute();
 const router = useRouter();
