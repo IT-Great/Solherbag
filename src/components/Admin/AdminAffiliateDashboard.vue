@@ -429,9 +429,7 @@ onMounted(() => {
   <div class="px-6 py-8 mx-auto max-w-7xl animate-fade-in">
     <div class="flex items-center justify-between mb-8">
       <div>
-        <h1
-          class="font-serif text-3xl font-bold tracking-tighter text-gray-900 uppercase"
-        >
+        <h1 class="text-3xl font-bold tracking-tighter text-gray-900 uppercase">
           Manajemen Afiliasi
         </h1>
         <p class="mt-2 text-sm text-gray-500">
