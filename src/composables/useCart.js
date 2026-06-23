@@ -850,14 +850,45 @@ export function useCart() {
     },
   });
 
-  const fetchCarts = async () => {
+  // const fetchCarts = async () => {
+  //   const token = localStorage.getItem("token");
+  //   if (!token) return;
+  //   try {
+  //     const res = await axios.get(`${BASE_URL}/carts`, {
+  //       headers: { Authorization: `Bearer ${token}` },
+  //     });
+  //     cartItems.value = res.data.map((item) => ({ ...item, isSyncing: false }));
+
+  //     res.data.forEach((item) => {
+  //       if (!selectedItemIds.value.includes(item.id)) {
+  //         selectedItemIds.value.push(item.id);
+  //       }
+  //     });
+  //   } catch (err) {
+  //     console.error("Failed to load bag", err);
+  //   }
+  // };
+
+const fetchCarts = async () => {
     const token = localStorage.getItem("token");
     if (!token) return;
     try {
       const res = await axios.get(`${BASE_URL}/carts`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      cartItems.value = res.data.map((item) => ({ ...item, isSyncing: false }));
+      
+      // 👇 [PERBAIKAN] Tulis ulang gross_amount menggunakan harga ter-update 👇
+      cartItems.value = res.data.map((item) => {
+        // Tarik harga yang paling benar detik ini
+        const validPrice = getActivePrice(item.product);
+        
+        return { 
+          ...item, 
+          // Timpa gross_amount dari database dengan hasil perkalian terbaru
+          gross_amount: validPrice * item.quantity, 
+          isSyncing: false 
+        };
+      });
 
       res.data.forEach((item) => {
         if (!selectedItemIds.value.includes(item.id)) {
@@ -895,7 +926,9 @@ export function useCart() {
       id: tempId,
       product_id: product.id,
       quantity: quantity,
-      gross_amount: unitPrice * quantity,
+      // gross_amount: unitPrice * quantity,
+      // Pastikan menggunakan getActivePrice
+      gross_amount: getActivePrice(product) * quantity,
       color: color,
       isSyncing: !cartId,
       isCreating: !cartId,
