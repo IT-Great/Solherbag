@@ -348,7 +348,7 @@ const openWithdrawalModal = () => {
           </p>
           <button
             @click="openWithdrawalModal"
-            :disabled="activeBalance <= 0"
+            :disabled="activeBalance < 50000"
             :class="
               activeBalance > 0
                 ? 'bg-black hover:bg-gray-800 text-white shadow-md'
@@ -534,7 +534,102 @@ const copyLink = () => {
   });
 };
 
+// const openWithdrawalModal = () => {
+//   Swal.fire({
+//     title: "Tarik Komisi",
+//     html: `
+//       <div class="text-left">
+//         <p class="mb-4 text-sm text-gray-500">Dana yang bisa ditarik: <strong>${formatPrice(
+//           activeBalance.value
+//         )}</strong></p>
+//         <div class="p-3 mb-4 text-[11px] leading-relaxed text-amber-800 bg-amber-50 border border-amber-200 rounded-lg">
+//           <strong>Informasi Potongan:</strong><br/>
+//           Pencairan ke rekening <strong>Bank Mandiri tidak dikenakan biaya</strong> (Gratis). Pencairan ke bank selain Mandiri akan dikenakan biaya transfer antarbank (BI-FAST) sebesar <strong>Rp2.500</strong> yang dipotong otomatis dari nominal penarikan.
+//         </div>
+//         <div class="mb-3">
+//           <label class="block mb-1 text-xs font-bold text-gray-700 uppercase">Nama Bank</label>
+//           <input id="swal-bank" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black" placeholder="Contoh: BCA / Mandiri">
+//         </div>
+//         <div class="mb-3">
+//           <label class="block mb-1 text-xs font-bold text-gray-700 uppercase">Nomor Rekening</label>
+//           <input id="swal-acc-num" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black" placeholder="0123456789">
+//         </div>
+//         <div class="mb-3">
+//           <label class="block mb-1 text-xs font-bold text-gray-700 uppercase">Atas Nama</label>
+//           <input id="swal-acc-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black" placeholder="Nama sesuai buku tabungan">
+//         </div>
+//         <div class="mb-3">
+//           <label class="block mb-1 text-xs font-bold text-gray-700 uppercase">Nominal Tarik</label>
+//           <input id="swal-amount" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black" value="${
+//             activeBalance.value
+//           }" max="${activeBalance.value}">
+//         </div>
+//       </div>
+//     `,
+//     showCancelButton: true,
+//     confirmButtonText: "Ajukan Pencairan",
+//     cancelButtonText: "Batal",
+//     confirmButtonColor: "#000",
+//     showLoaderOnConfirm: true,
+//     preConfirm: async () => {
+//       const bank_name = document.getElementById("swal-bank").value;
+//       const account_number = document.getElementById("swal-acc-num").value;
+//       const account_name = document.getElementById("swal-acc-name").value;
+//       const amount = document.getElementById("swal-amount").value;
+
+//       if (!bank_name || !account_number || !account_name || !amount) {
+//         Swal.showValidationMessage("Semua kolom perbankan wajib diisi");
+//         return false;
+//       }
+//       if (amount <= 0 || amount > activeBalance.value) {
+//         Swal.showValidationMessage("Nominal tarikan tidak valid");
+//         return false;
+//       }
+
+//       try {
+//         const payload = { bank_name, account_number, account_name, amount };
+//         const res = await axios.post(`${BASE_URL}/affiliate/withdraw`, payload, {
+//           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+//         });
+//         return res.data;
+//       } catch (error) {
+//         Swal.showValidationMessage(
+//           `Pengajuan gagal: ${
+//             error.response?.data?.message || "Terjadi kesalahan server"
+//           }`
+//         );
+//       }
+//     },
+//     allowOutsideClick: () => !Swal.isLoading(),
+//   }).then((result) => {
+//     if (result.isConfirmed) {
+//       // Perbarui saldo secara instan di layar tanpa harus refresh
+//       activeBalance.value -=
+//         result.value.data?.amount || document.getElementById("swal-amount").value;
+
+//       Swal.fire({
+//         title: "Berhasil Diajukan!",
+//         text:
+//           "Permintaan penarikan dana Anda sudah masuk ke sistem dan akan diproses oleh admin.",
+//         icon: "success",
+//         confirmButtonColor: "#000",
+//       });
+//     }
+//   });
+// };
+
 const openWithdrawalModal = () => {
+  // Tambahkan pengecekan awal sebelum modal terbuka
+  if (activeBalance.value < 50000) {
+    Swal.fire({
+      icon: "warning",
+      title: "Saldo Belum Mencukupi",
+      text: "Batas minimal penarikan adalah Rp 50.000. Tingkatkan terus penjualan Anda!",
+      confirmButtonColor: "#000",
+    });
+    return;
+  }
+
   Swal.fire({
     title: "Tarik Komisi",
     html: `
@@ -543,8 +638,10 @@ const openWithdrawalModal = () => {
           activeBalance.value
         )}</strong></p>
         <div class="p-3 mb-4 text-[11px] leading-relaxed text-amber-800 bg-amber-50 border border-amber-200 rounded-lg">
-          <strong>Informasi Potongan:</strong><br/>
-          Pencairan ke rekening <strong>Bank Mandiri tidak dikenakan biaya</strong> (Gratis). Pencairan ke bank selain Mandiri akan dikenakan biaya transfer antarbank (BI-FAST) sebesar <strong>Rp2.500</strong> yang dipotong otomatis dari nominal penarikan.
+          <strong>Informasi Potongan & Batasan:</strong><br/>
+          • Minimal penarikan: <strong>Rp 50.000</strong><br/>
+          • Maksimal penarikan: <strong>Rp 1.000.000</strong> per transaksi.<br/>
+          • Transfer ke Bank Mandiri <strong>Gratis</strong>. Selain Mandiri dikenakan admin BI-FAST Rp2.500.
         </div>
         <div class="mb-3">
           <label class="block mb-1 text-xs font-bold text-gray-700 uppercase">Nama Bank</label>
@@ -561,8 +658,8 @@ const openWithdrawalModal = () => {
         <div class="mb-3">
           <label class="block mb-1 text-xs font-bold text-gray-700 uppercase">Nominal Tarik</label>
           <input id="swal-amount" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black" value="${
-            activeBalance.value
-          }" max="${activeBalance.value}">
+            Math.min(activeBalance.value, 1000000) // Default value diset max 1 juta
+          }" min="50000" max="1000000">
         </div>
       </div>
     `,
@@ -575,14 +672,26 @@ const openWithdrawalModal = () => {
       const bank_name = document.getElementById("swal-bank").value;
       const account_number = document.getElementById("swal-acc-num").value;
       const account_name = document.getElementById("swal-acc-name").value;
-      const amount = document.getElementById("swal-amount").value;
+      const amount = parseFloat(document.getElementById("swal-amount").value);
 
       if (!bank_name || !account_number || !account_name || !amount) {
         Swal.showValidationMessage("Semua kolom perbankan wajib diisi");
         return false;
       }
-      if (amount <= 0 || amount > activeBalance.value) {
-        Swal.showValidationMessage("Nominal tarikan tidak valid");
+
+      // 👇 [BARU] Validasi Batas Minimal dan Maksimal di Frontend 👇
+      if (amount < 50000) {
+        Swal.showValidationMessage("Minimal penarikan adalah Rp 50.000");
+        return false;
+      }
+      if (amount > 1000000) {
+        Swal.showValidationMessage(
+          "Maksimal penarikan adalah Rp 1.000.000 per transaksi"
+        );
+        return false;
+      }
+      if (amount > activeBalance.value) {
+        Swal.showValidationMessage("Nominal melebihi saldo aktif Anda");
         return false;
       }
 
@@ -603,9 +712,9 @@ const openWithdrawalModal = () => {
     allowOutsideClick: () => !Swal.isLoading(),
   }).then((result) => {
     if (result.isConfirmed) {
-      // Perbarui saldo secara instan di layar tanpa harus refresh
       activeBalance.value -=
-        result.value.data?.amount || document.getElementById("swal-amount").value;
+        result.value.data?.amount_deducted ||
+        document.getElementById("swal-amount").value;
 
       Swal.fire({
         title: "Berhasil Diajukan!",
