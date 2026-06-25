@@ -421,6 +421,21 @@ const handleSubscribe = async () => {
               class="text-xs font-medium text-gray-600 transition-colors hover:text-black"
               >{{ $t("footer.contact_us") }}</router-link
             >
+
+            <!-- 👇 [BARU] Tautan Program Ambassador yang Elegan 👇 -->
+            <router-link to="/affiliate" class="relative flex items-center w-fit group">
+              <span
+                class="text-xs font-medium text-gray-600 transition-colors group-hover:text-black"
+              >
+                Solher Ambassador
+              </span>
+              <span
+                class="ml-2 px-1.5 py-0.5 text-[8px] font-bold text-white bg-black rounded-sm tracking-widest uppercase shadow-sm"
+              >
+                JOIN
+              </span>
+            </router-link>
+            <!-- 👆 ========================================== 👆 -->
           </div>
 
           <div class="flex flex-col space-y-4">

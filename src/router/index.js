@@ -1853,6 +1853,7 @@ import AdminEventPage from "../components/Admin/AdminEventPage.vue";
 import AdminEventDetailPage from "../components/Admin/AdminEventDetailPage.vue";
 import AffiliateDashboard from "../components/User/AffiliateDashboard.vue";
 import AdminAffiliateDashboard from "../components/Admin/AdminAffiliateDashboard.vue";
+import AffiliateLandingPage from "../components/User/AffiliateLandingPage.vue";
 
 const routes = [
   { path: "/", name: "Home", component: HomePage },
@@ -1928,6 +1929,7 @@ const routes = [
   { path: "/customer-care", name: "CustomerCare", component: CustomerCarePage },
   { path: "/faq", name: "Faq", component: FaqPage },
   { path: "/about-us", name: "AboutUs", component: AboutUsPage },
+  { path: "/affiliate", name: "Affiliate", component: AffiliateLandingPage },
   {
     path: "/shipping-policy",
     name: "ShippingPolicy",
