@@ -256,7 +256,7 @@ const formData = ref({
 
 onMounted(() => {
   // Cek apakah user sudah login dan apakah dia sudah jadi afiliator
-  const userData = localStorage.getItem("token");
+  const userData = localStorage.getItem("user");
   if (userData) {
     try {
       const user = JSON.parse(userData);
