@@ -544,7 +544,7 @@ onMounted(() => {
       <div class="overflow-x-auto">
         <table class="w-full text-sm text-left">
           <thead
-            class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-100"
+            class="text-xs text-gray-500 uppercase border-b border-gray-100 bg-gray-50"
           >
             <tr>
               <th class="px-6 py-4 font-bold tracking-wider">Calon Afiliator</th>
@@ -592,13 +592,13 @@ onMounted(() => {
                   </svg>
                 </a>
               </td>
-              <td class="px-6 py-4 text-gray-600 max-w-xs truncate" :title="app.reason">
+              <td class="max-w-xs px-6 py-4 text-gray-600 truncate" :title="app.reason">
                 {{ app.reason }}
               </td>
               <td class="px-6 py-4 text-center">
                 <button
                   @click="approveApplication(app)"
-                  class="px-4 py-2 text-xs font-bold text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700 shadow-sm"
+                  class="px-4 py-2 text-xs font-bold text-white transition-colors bg-blue-600 rounded-lg shadow-sm hover:bg-blue-700"
                 >
                   Setujui
                 </button>
@@ -616,7 +616,7 @@ onMounted(() => {
       <div class="overflow-x-auto">
         <table class="w-full text-sm text-left">
           <thead
-            class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-100"
+            class="text-xs text-gray-500 uppercase border-b border-gray-100 bg-gray-50"
           >
             <tr>
               <th class="px-6 py-4 font-bold tracking-wider">Waktu Request</th>
@@ -687,7 +687,7 @@ onMounted(() => {
       <div class="overflow-x-auto">
         <table class="w-full text-sm text-left">
           <thead
-            class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-100"
+            class="text-xs text-gray-500 uppercase border-b border-gray-100 bg-gray-50"
           >
             <tr>
               <th class="px-6 py-4 font-bold tracking-wider">Nama Afiliator</th>
@@ -814,13 +814,19 @@ const approveApplication = (app) => {
 };
 
 const markAsTransferred = (req) => {
-  const cleanTransferAmount = req.admin_notes
-    ? req.admin_notes.split("TRANSFER BERSIH: ")[1]
-    : formatPrice(req.amount);
+  // const cleanTransferAmount = req.admin_notes
+  //   ? req.admin_notes.split("TRANSFER BERSIH: ")[1]
+  //   : formatPrice(req.amount);
+
+  // Regex mencari pola "Rp" diikuti angka di akhir string
+  const match = req.admin_notes ? req.admin_notes.match(/Rp[\d.]+$/) : null;
+  const cleanTransferAmount = match ? match[0] : formatPrice(req.amount);
 
   Swal.fire({
     title: "Konfirmasi Transfer",
-    html: `Apakah Anda sudah mentransfer uang sebesar <br><strong class="text-xl text-green-600">${cleanTransferAmount}</strong><br> ke rekening <b>${req.bank_name} (${req.account_number})</b>?`,
+    html: `Apakah Anda sudah mentransfer uang sebesar <br><strong class="text-xl text-green-600">${
+      cleanTransferAmount || formatPrice(req.amount)
+    }</strong><br> ke rekening <b>${req.bank_name} (${req.account_number})</b>??`,
     icon: "question",
     showCancelButton: true,
     confirmButtonText: "Ya, Sudah Ditransfer",
