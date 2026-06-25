@@ -387,7 +387,7 @@ const submitApplication = async () => {
     </section>
 
     <!-- HOW IT WORKS SECTION -->
-    <section class="px-6 py-24 mx-auto max-w-7xl">
+    <!-- <section class="px-6 py-24 mx-auto max-w-7xl">
       <div class="mb-16 text-center">
         <h2 class="font-serif text-3xl font-normal text-gray-900 md:text-4xl">
           Langkah Bergabung
@@ -411,6 +411,110 @@ const submitApplication = async () => {
           </h3>
           <p class="text-sm leading-relaxed text-gray-500">
             {{ step.desc }}
+          </p>
+        </div>
+      </div>
+    </section> -->
+
+    <!-- HOW IT WORKS SECTION (DENGAN IKON) -->
+    <section class="px-6 py-24 mx-auto max-w-7xl">
+      <div class="mb-16 text-center">
+        <h2 class="font-serif text-3xl font-normal text-gray-900 md:text-4xl">
+          Langkah Bergabung
+        </h2>
+        <div class="w-16 h-0.5 mx-auto mt-6 bg-black"></div>
+      </div>
+
+      <div class="grid grid-cols-1 gap-12 md:grid-cols-4">
+        <!-- Step 1 -->
+        <div class="relative flex flex-col items-center text-center group">
+          <div
+            class="flex items-center justify-center w-20 h-20 mb-6 transition-all duration-500 bg-white border border-gray-200 rounded-full shadow-sm group-hover:border-black group-hover:bg-black group-hover:text-white"
+          >
+            <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+          </div>
+          <h3 class="mb-3 text-sm font-bold tracking-widest text-gray-900 uppercase">
+            Isi Formulir
+          </h3>
+          <p class="text-sm leading-relaxed text-gray-500">
+            Lengkapi data toko dan estimasi penjualan bulanan Anda melalui formulir
+            pendaftaran kami.
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="relative flex flex-col items-center text-center group">
+          <div
+            class="flex items-center justify-center w-20 h-20 mb-6 transition-all duration-500 bg-white border border-gray-200 rounded-full shadow-sm group-hover:border-black group-hover:bg-black group-hover:text-white"
+          >
+            <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </div>
+          <h3 class="mb-3 text-sm font-bold tracking-widest text-gray-900 uppercase">
+            Proses Kurasi
+          </h3>
+          <p class="text-sm leading-relaxed text-gray-500">
+            Tim Gycora akan meninjau profil bisnis Anda dalam 1x24 jam kerja untuk
+            memastikan standar kemitraan.
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="relative flex flex-col items-center text-center group">
+          <div
+            class="flex items-center justify-center w-20 h-20 mb-6 transition-all duration-500 bg-white border border-gray-200 rounded-full shadow-sm group-hover:border-black group-hover:bg-black group-hover:text-white"
+          >
+            <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"
+              />
+            </svg>
+          </div>
+          <h3 class="mb-3 text-sm font-bold tracking-widest text-gray-900 uppercase">
+            Akses Terbuka
+          </h3>
+          <p class="text-sm leading-relaxed text-gray-500">
+            Setelah disetujui, akun Anda otomatis ditingkatkan dan dapat langsung melihat
+            Harga Grosir Pabrik.
+          </p>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="relative flex flex-col items-center text-center group">
+          <div
+            class="flex items-center justify-center w-20 h-20 mb-6 transition-all duration-500 bg-white border border-gray-200 rounded-full shadow-sm group-hover:border-black group-hover:bg-black group-hover:text-white"
+          >
+            <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+              />
+            </svg>
+          </div>
+          <h3 class="mb-3 text-sm font-bold tracking-widest text-gray-900 uppercase">
+            Mulai Berjualan
+          </h3>
+          <p class="text-sm leading-relaxed text-gray-500">
+            Lakukan pesanan minimal (MOQ) dan nikmati margin keuntungan maksimal untuk
+            bisnis Anda.
           </p>
         </div>
       </div>
@@ -628,7 +732,7 @@ const submitApplication = async () => {
               Akun Anda saat ini sudah terdaftar sebagai Solher Ambassador aktif.
             </p>
             <button
-              @click="router.push('/affiliate-dashboard')"
+              @click="router.push('/affiliate-demo')"
               class="px-8 py-4 text-xs font-bold tracking-widest text-white uppercase transition bg-black hover:bg-gray-800"
             >
               Buka Dasbor Saya
