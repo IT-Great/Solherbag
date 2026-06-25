@@ -459,6 +459,11 @@ const handleLogout = () => {
 </style> -->
 
 <template>
+  <div
+    v-show="isMobileOpen"
+    @click="closeMobileSidebar"
+    class="fixed inset-0 z-40 bg-black/50 md:hidden backdrop-blur-sm"
+  ></div>
   <aside
     :class="[isCollapsed ? 'w-20' : 'w-64']"
     class="relative sticky top-0 z-40 flex flex-col h-screen overflow-hidden transition-all duration-300 ease-in-out bg-white border-r border-gray-200 shadow-lg"
@@ -785,6 +790,17 @@ import { useRouter, useRoute } from "vue-router";
 const router = useRouter();
 const route = useRoute();
 const isCollapsed = ref(false);
+const isMobileOpen = ref(false); // [BARU]
+
+// Fungsi untuk toggle mobile
+const toggleMobileSidebar = () => {
+  isMobileOpen.value = !isMobileOpen.value;
+};
+
+const closeMobileSidebar = () => {
+  isMobileOpen.value = false;
+};
+
 const userName = ref("Admin");
 const userRole = ref(""); // Tambahkan state untuk menyimpan role user
 
@@ -1014,8 +1030,18 @@ const toggleSidebar = () => {
   }
 };
 
+// const handleExternalToggle = () => {
+//   toggleSidebar();
+// };
+
+// Modifikasi handleExternalToggle agar bisa handle mobile dan desktop
 const handleExternalToggle = () => {
-  toggleSidebar();
+  if (window.innerWidth < 768) {
+    toggleMobileSidebar();
+  } else {
+    isCollapsed.value = !isCollapsed.value;
+    openDropdowns.value = [];
+  }
 };
 
 const checkOrientation = () => {
