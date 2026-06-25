@@ -277,7 +277,7 @@ const scrollToForm = () => {
 };
 
 const submitApplication = async () => {
-  const token = localStorage.getItem("user_token");
+  const token = localStorage.getItem("token");
 
   if (!token) {
     Swal.fire({
