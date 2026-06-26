@@ -270,7 +270,7 @@ const openWithdrawalModal = () => {
 };
 </script> -->
 
-<template>
+<!-- <template>
   <div class="px-6 py-12 mx-auto max-w-7xl">
     <div v-if="isLoading" class="flex flex-col items-center justify-center py-20">
       <div
@@ -731,4 +731,384 @@ const openWithdrawalModal = () => {
 onMounted(() => {
   fetchDashboardData();
 });
+</script> -->
+
+<template>
+  <div class="px-6 py-12 mx-auto max-w-7xl">
+    <div v-if="isLoading" class="flex flex-col items-center justify-center py-20">
+      <div
+        class="w-10 h-10 border-4 border-gray-200 rounded-full border-t-blue-600 animate-spin"
+      ></div>
+      <p
+        class="mt-4 text-sm font-medium tracking-widest text-gray-500 uppercase animate-pulse"
+      >
+        {{ $t('affiliate_dashboard.loading') }}
+      </p>
+    </div>
+
+    <div v-else>
+      <div class="flex items-center justify-between mb-10">
+        <div>
+          <h1
+            class="font-serif text-3xl font-bold tracking-tighter text-gray-900 uppercase"
+          >
+            {{ $t('affiliate_dashboard.title') }}
+          </h1>
+          <p class="mt-2 text-sm text-gray-500">
+            {{ $t('affiliate_dashboard.subtitle') }}
+          </p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 gap-6 mb-10 md:grid-cols-3">
+        <div class="p-6 border border-gray-100 shadow-sm bg-gray-50 rounded-xl">
+          <p class="text-xs font-bold tracking-widest text-gray-500 uppercase">
+            {{ $t('affiliate_dashboard.total_earned') }}
+          </p>
+          <p class="mt-2 text-3xl font-bold text-gray-900">
+            {{ formatPrice(totalEarned) }}
+          </p>
+        </div>
+
+        <div class="p-6 bg-white border border-yellow-100 shadow-sm rounded-xl">
+          <div class="flex items-center justify-between">
+            <p class="text-xs font-bold tracking-widest text-yellow-600 uppercase">
+              {{ $t('affiliate_dashboard.pending_commission') }}
+            </p>
+            <span
+              v-if="pendingBalance > 0"
+              class="flex items-center w-2 h-2 bg-yellow-400 rounded-full animate-pulse"
+            ></span>
+          </div>
+          <p class="mt-2 text-3xl font-bold text-gray-900">
+            {{ formatPrice(pendingBalance) }}
+          </p>
+          <p class="mt-1 text-xs text-gray-400">{{ $t('affiliate_dashboard.shipping_note') }}</p>
+        </div>
+
+        <div class="p-6 bg-white border border-green-100 shadow-sm rounded-xl">
+          <div class="flex items-center justify-between">
+            <p class="text-xs font-bold tracking-widest text-green-600 uppercase">
+              {{ $t('affiliate_dashboard.active_balance') }}
+            </p>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5 text-green-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </div>
+          <p class="mt-2 text-3xl font-bold text-gray-900">
+            {{ formatPrice(activeBalance) }}
+          </p>
+          <button
+            @click="openWithdrawalModal"
+            :disabled="activeBalance < 50000"
+            :class="
+              activeBalance > 0
+                ? 'bg-black hover:bg-gray-800 text-white shadow-md'
+                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+            "
+            class="w-full py-3 mt-4 text-xs font-bold tracking-widest uppercase transition-colors rounded-lg"
+          >
+            {{ $t('affiliate_dashboard.btn_withdraw') }}
+          </button>
+        </div>
+      </div>
+
+      <div class="p-6 mb-10 bg-white border border-gray-200 shadow-sm rounded-xl">
+        <h2 class="mb-4 text-sm font-bold tracking-widest text-gray-900 uppercase">
+          {{ $t('affiliate_dashboard.your_link') }}
+        </h2>
+        <p class="mb-4 text-sm text-gray-500">
+          {{ $t('affiliate_dashboard.link_desc') }}
+        </p>
+        <div class="flex flex-col gap-3 md:flex-row">
+          <input
+            type="text"
+            readonly
+            :value="affiliateLink"
+            class="flex-1 px-4 py-3 text-sm font-medium text-blue-700 border-blue-100 rounded-lg bg-blue-50 focus:ring-0"
+          />
+          <button
+            @click="copyLink"
+            class="px-6 py-3 text-sm font-bold tracking-widest text-black uppercase transition-colors border-2 border-black rounded-lg hover:bg-black hover:text-white shrink-0"
+          >
+            {{ $t('affiliate_dashboard.btn_copy') }}
+          </button>
+        </div>
+      </div>
+
+      <div class="overflow-hidden bg-white border border-gray-200 shadow-sm rounded-xl">
+        <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
+          <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">
+            {{ $t('affiliate_dashboard.history_title') }}
+          </h2>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm text-left">
+            <thead
+              class="text-xs text-gray-500 uppercase bg-white border-b border-gray-100"
+            >
+              <tr>
+                <th class="px-6 py-4 font-bold tracking-wider">{{ $t('affiliate_dashboard.th_order_id') }}</th>
+                <th class="px-6 py-4 font-bold tracking-wider">{{ $t('affiliate_dashboard.th_date') }}</th>
+                <th class="px-6 py-4 font-bold tracking-wider">{{ $t('affiliate_dashboard.th_status') }}</th>
+                <th class="px-6 py-4 font-bold tracking-wider text-right">{{ $t('affiliate_dashboard.th_commission') }}</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr v-if="transactionHistory.length === 0">
+                <td colspan="4" class="px-6 py-8 text-center text-gray-500">
+                  {{ $t('affiliate_dashboard.empty_history') }}
+                </td>
+              </tr>
+              <tr
+                v-for="trx in transactionHistory"
+                :key="trx.id"
+                class="hover:bg-gray-50"
+              >
+                <td class="px-6 py-4 font-mono font-medium text-gray-900">
+                  #{{ trx.id }}
+                </td>
+                <td class="px-6 py-4 text-gray-500">{{ formatDate(trx.created_at) }}</td>
+                <td class="px-6 py-4">
+                  <span
+                    :class="{
+                      'bg-green-100 text-green-700 border border-green-200':
+                        trx.commission_status === 'settled',
+                      'bg-yellow-100 text-yellow-700 border border-yellow-200':
+                        trx.commission_status === 'pending',
+                      'bg-red-100 text-red-700 border border-red-200':
+                        trx.commission_status === 'void',
+                    }"
+                    class="px-3 py-1 text-[10px] font-bold tracking-wider uppercase rounded-full"
+                  >
+                    {{ trx.commission_status }}
+                  </span>
+                </td>
+                <td class="px-6 py-4 font-bold text-right text-gray-900">
+                  + {{ formatPrice(trx.commission_earned) }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, computed } from "vue";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { BASE_URL } from "../../config/api.js";
+import { useI18n } from "vue-i18n"; // [BARU] Import i18n
+
+const { t } = useI18n(); // [BARU] Inisiasi i18n
+const isLoading = ref(true);
+const activeBalance = ref(0);
+const pendingBalance = ref(0);
+const totalEarned = ref(0);
+const referralCode = ref("");
+const transactionHistory = ref([]);
+
+const affiliateLink = computed(() => {
+  if (!referralCode.value) return "";
+  return `${window.location.origin}/?ref=${referralCode.value}`;
+});
+
+const formatPrice = (value) => {
+  const num = parseFloat(value) || 0;
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0,
+  }).format(num);
+};
+
+const formatDate = (dateString) => {
+  if (!dateString) return "-";
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat("id-ID", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(date);
+};
+
+const fetchDashboardData = async () => {
+  isLoading.value = true;
+  try {
+    const res = await axios.get(`${BASE_URL}/affiliate/dashboard`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+
+    const data = res.data.data || res.data;
+    activeBalance.value = parseFloat(data.active_balance || 0);
+    pendingBalance.value = parseFloat(data.pending_balance || 0);
+    totalEarned.value = parseFloat(data.total_earned || 0);
+    referralCode.value = data.referral_code;
+    transactionHistory.value = data.transactions || [];
+  } catch (error) {
+    console.error("Gagal menarik data afiliasi:", error);
+    Swal.fire({
+      icon: "error",
+      title: t('affiliate_dashboard.err_fetch_title'),
+      text: t('affiliate_dashboard.err_fetch_desc'),
+      confirmButtonColor: "#000",
+    });
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+const copyLink = () => {
+  navigator.clipboard.writeText(affiliateLink.value).then(() => {
+    Swal.fire({
+      icon: "success",
+      title: t('affiliate_dashboard.copy_success_title'),
+      text: t('affiliate_dashboard.copy_success_desc'),
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 3000,
+    });
+  });
+};
+
+const openWithdrawalModal = () => {
+  if (activeBalance.value < 50000) {
+    Swal.fire({
+      icon: "warning",
+      title: t('affiliate_dashboard.warn_balance_title'),
+      text: t('affiliate_dashboard.warn_balance_desc'),
+      confirmButtonColor: "#000",
+    });
+    return;
+  }
+
+  Swal.fire({
+    title: t('affiliate_dashboard.modal_withdraw_title'),
+    html: `
+      <div class="text-left">
+        <p class="mb-4 text-sm text-gray-500">${t('affiliate_dashboard.modal_available_funds')} <strong>${formatPrice(
+          activeBalance.value
+        )}</strong></p>
+        <div class="p-3 mb-4 text-[11px] leading-relaxed text-amber-800 bg-amber-50 border border-amber-200 rounded-lg">
+          <strong>${t('affiliate_dashboard.modal_info_title')}</strong><br/>
+          • ${t('affiliate_dashboard.modal_info_min')} <strong>Rp 50.000</strong><br/>
+          • ${t('affiliate_dashboard.modal_info_max')}<br/>
+          • ${t('affiliate_dashboard.modal_info_fee')}
+        </div>
+        <div class="mb-3">
+          <label class="block mb-1 text-xs font-bold text-gray-700 uppercase">${t('affiliate_dashboard.label_bank')}</label>
+          <input id="swal-bank" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black" placeholder="${t('affiliate_dashboard.placeholder_bank')}">
+        </div>
+        <div class="mb-3">
+          <label class="block mb-1 text-xs font-bold text-gray-700 uppercase">${t('affiliate_dashboard.label_account_num')}</label>
+          <input id="swal-acc-num" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black" placeholder="0123456789">
+        </div>
+        <div class="mb-3">
+          <label class="block mb-1 text-xs font-bold text-gray-700 uppercase">${t('affiliate_dashboard.label_account_name')}</label>
+          <input id="swal-acc-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black" placeholder="${t('affiliate_dashboard.placeholder_account_name')}">
+        </div>
+        <div class="mb-3">
+          <label class="block mb-1 text-xs font-bold text-gray-700 uppercase">${t('affiliate_dashboard.label_amount')}</label>
+          <input id="swal-amount" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black" value="${
+            Math.min(activeBalance.value, 1000000) 
+          }" min="50000" max="1000000">
+        </div>
+      </div>
+    `,
+    showCancelButton: true,
+    confirmButtonText: t('affiliate_dashboard.btn_submit_withdraw'),
+    cancelButtonText: t('affiliate_dashboard.btn_cancel'),
+    confirmButtonColor: "#000",
+    showLoaderOnConfirm: true,
+    preConfirm: async () => {
+      const bank_name = document.getElementById("swal-bank").value;
+      const account_number = document.getElementById("swal-acc-num").value;
+      const account_name = document.getElementById("swal-acc-name").value;
+      const amount = parseFloat(document.getElementById("swal-amount").value);
+
+      if (!bank_name || !account_number || !account_name || !amount) {
+        Swal.showValidationMessage(t('affiliate_dashboard.val_empty_fields'));
+        return false;
+      }
+
+      if (amount < 50000) {
+        Swal.showValidationMessage(t('affiliate_dashboard.val_min_amount'));
+        return false;
+      }
+      if (amount > 1000000) {
+        Swal.showValidationMessage(t('affiliate_dashboard.val_max_amount'));
+        return false;
+      }
+      if (amount > activeBalance.value) {
+        Swal.showValidationMessage(t('affiliate_dashboard.val_exceed_balance'));
+        return false;
+      }
+
+      try {
+        const payload = { bank_name, account_number, account_name, amount };
+        const res = await axios.post(`${BASE_URL}/affiliate/withdraw`, payload, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        });
+        return res.data;
+      } catch (error) {
+        Swal.showValidationMessage(
+          `${t('affiliate_dashboard.val_fail_submit')} ${
+            error.response?.data?.message || t('affiliate_dashboard.val_server_err')
+          }`
+        );
+      }
+    },
+    allowOutsideClick: () => !Swal.isLoading(),
+  }).then((result) => {
+    if (result.isConfirmed) {
+      activeBalance.value -=
+        result.value.data?.amount_deducted ||
+        document.getElementById("swal-amount").value;
+
+      Swal.fire({
+        title: t('affiliate_dashboard.succ_withdraw_title'),
+        text: t('affiliate_dashboard.succ_withdraw_desc'),
+        icon: "success",
+        confirmButtonColor: "#000",
+      });
+    }
+  });
+};
+
+onMounted(() => {
+  fetchDashboardData();
+});
 </script>
+
+<style scoped>
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>
