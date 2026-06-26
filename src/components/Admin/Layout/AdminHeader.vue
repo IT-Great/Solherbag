@@ -330,7 +330,7 @@ const handleImageError = (event) => {
 
 <template>
   <header
-    class="sticky top-0 z-30 flex items-center justify-between h-16 px-4 border-b border-gray-200 shadow-sm bg-gray-50 md:px-8"
+    class="sticky top-0 z-30 flex items-center justify-between h-16 px-4 bg-gray-300 border-b border-gray-200 shadow-sm md:px-8"
   >
     <div>
       <button
@@ -414,7 +414,7 @@ import defaultProfile from "../../../../src/assets/profile.png";
 
 const router = useRouter();
 const adminData = ref(null);
-const unreadCount = ref(0); 
+const unreadCount = ref(0);
 
 const toggleSidebarGlobal = () => {
   // Event ini ditangkap oleh Sidebar.vue
@@ -445,7 +445,7 @@ onMounted(() => {
     adminData.value = JSON.parse(admin);
   }
 
-  fetchUnreadCount(); 
+  fetchUnreadCount();
   window.addEventListener("admin-image-updated", updateHeaderImage);
   window.addEventListener("refresh-message-badge", fetchUnreadCount);
 });
