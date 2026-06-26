@@ -2263,7 +2263,7 @@ router.beforeEach((to, from, next) => {
   let user = userString ? JSON.parse(userString) : null;
   let admin = adminString ? JSON.parse(adminString) : null;
 
-  const validAdminRoles = ["admin", "superadmin", "gudang", "accounting"];
+  const validAdminRoles = ["admin", "superadmin", "gudang", "accounting", "cs"];
   let isAdminSessionValid = !!(
     adminToken &&
     admin &&
