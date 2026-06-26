@@ -1122,7 +1122,7 @@ const handleLogout = () => {
 }
 </style> -->
 
-<template>
+<!-- <template>
   <div>
     <div
       v-show="isMobileOpen"
@@ -1526,4 +1526,146 @@ const handleLogout = () => {
 .custom-scrollbar:hover::-webkit-scrollbar-thumb {
   background: #d1d5db;
 }
-</style>
+</style> -->
+
+<template>
+  <div>
+    <div
+      v-show="isMobileOpen"
+      @click="closeMobileSidebar"
+      class="fixed inset-0 z-40 transition-opacity bg-black/50 md:hidden backdrop-blur-sm"
+    ></div>
+
+    <aside
+      :class="[
+        // Logika Desktop
+        isCollapsed ? 'md:w-20' : 'md:w-64',
+        // Logika Mobile (Geser masuk/keluar)
+        isMobileOpen ? 'translate-x-0' : '-translate-x-full',
+        // 👇 PERBAIKAN KRUSIAL: Gunakan md:sticky md:top-0 alih-alih md:relative 👇
+        'fixed inset-y-0 left-0 z-50 flex flex-col h-screen w-64 md:sticky md:top-0 md:translate-x-0 overflow-hidden transition-all duration-300 ease-in-out bg-white border-r border-gray-200 shadow-xl md:shadow-none'
+      ]"
+    >
+      <div class="flex items-center justify-between p-6 border-b border-gray-100 shrink-0">
+        <div class="flex justify-center flex-grow">
+          <img
+            src="../../../assets/solherbrandbook.png"
+            alt="Logo"
+            :class="[isCollapsed ? 'h-8' : 'h-16']"
+            class="w-auto transition-all duration-300"
+          />
+        </div>
+        <button @click="closeMobileSidebar" class="p-2 text-gray-500 md:hidden hover:text-black">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div
+        v-show="!isCollapsed || isMobileOpen"
+        class="mt-4 text-center transition-opacity duration-300 shrink-0"
+      >
+        <p class="text-xs tracking-widest text-gray-400 uppercase">Administrator</p>
+        <h4 class="text-sm font-bold text-black">Hi, {{ userName }}</h4>
+      </div>
+
+      <nav class="flex-grow pb-4 mt-6 overflow-y-auto custom-scrollbar">
+        <ul class="px-3 space-y-1">
+          <template v-for="(item, index) in filteredMenuItems" :key="index">
+            <li v-if="item.type === 'label'" class="pt-4 pb-1 pl-3">
+              <span
+                v-show="!isCollapsed || isMobileOpen"
+                class="text-[10px] font-black text-gray-400 uppercase tracking-widest transition-opacity duration-300"
+              >
+                {{ item.name }}
+              </span>
+              <div v-show="isCollapsed && !isMobileOpen" class="h-px mx-2 mt-4 bg-gray-200"></div>
+            </li>
+
+            <li v-else-if="item.children">
+              <button
+                @click="toggleDropdown(item.name)"
+                :class="[
+                  'group flex items-center justify-between w-full p-3 rounded-xl text-gray-700 transition-colors hover:bg-gray-100',
+                  isDropdownOpen(item.name) ? 'bg-gray-50' : '',
+                ]"
+              >
+                <div class="flex items-center">
+                  <div class="flex-shrink-0" v-html="item.icon"></div>
+                  <span
+                    v-show="!isCollapsed || isMobileOpen"
+                    class="ml-4 text-sm font-medium transition-opacity duration-300 whitespace-nowrap"
+                  >
+                    {{ item.name }}
+                  </span>
+                </div>
+                <svg
+                  v-show="!isCollapsed || isMobileOpen"
+                  :class="isDropdownOpen(item.name) ? 'rotate-180' : ''"
+                  class="w-4 h-4 text-gray-400 transition-transform duration-200"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              <ul
+                v-show="(!isCollapsed || isMobileOpen) && isDropdownOpen(item.name)"
+                class="relative pr-2 mt-1 mb-2 space-y-1 pl-11"
+              >
+                <div class="absolute top-0 w-px bg-gray-200 left-6 bottom-2"></div>
+                <li
+                  v-for="(child, childIndex) in item.children"
+                  :key="childIndex"
+                  class="relative"
+                >
+                  <div class="absolute left-[-20px] top-1/2 w-3 h-px bg-gray-200"></div>
+                  <router-link
+                    :to="child.path"
+                    @click="closeMobileSidebar" 
+                    class="flex items-center px-3 py-2 text-xs text-gray-500 transition-colors rounded-lg hover:text-black hover:bg-gray-100"
+                    active-class="font-bold text-blue-600 bg-blue-50"
+                  >
+                    {{ child.name }}
+                  </router-link>
+                </li>
+              </ul>
+            </li>
+
+            <li v-else>
+              <router-link
+                :to="item.path"
+                @click="closeMobileSidebar"
+                class="flex items-center p-3 text-gray-700 transition-colors group hover:bg-gray-100 rounded-xl"
+                active-class="font-semibold text-blue-600 bg-blue-50"
+              >
+                <div class="flex-shrink-0" v-html="item.icon"></div>
+                <span
+                  v-show="!isCollapsed || isMobileOpen"
+                  class="ml-4 text-sm transition-opacity duration-300 whitespace-nowrap"
+                >
+                  {{ item.name }}
+                </span>
+              </router-link>
+            </li>
+          </template>
+        </ul>
+      </nav>
+
+      <div class="p-4 border-t border-gray-100 shrink-0">
+        <button
+          @click="handleLogout"
+          class="flex items-center w-full p-3 text-red-500 transition-colors group hover:bg-red-50 rounded-xl"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 shrink-0">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+          </svg>
+          <span v-show="!isCollapsed || isMobileOpen" class="ml-4 font-medium whitespace-nowrap">Logout Admin</span>
+        </button>
+      </div>
+    </aside>
+  </div>
+</template>
