@@ -1854,6 +1854,7 @@ import AdminEventDetailPage from "../components/Admin/AdminEventDetailPage.vue";
 import AffiliateDashboard from "../components/User/AffiliateDashboard.vue";
 import AdminAffiliateDashboard from "../components/Admin/AdminAffiliateDashboard.vue";
 import AffiliateLandingPage from "../components/User/AffiliateLandingPage.vue";
+import AccessPolicyManagement from "../components/Admin/AccessPolicyManagement.vue";
 
 const routes = [
   { path: "/", name: "Home", component: HomePage },
@@ -2164,6 +2165,12 @@ const routes = [
     path: "/admin/affiliates",
     name: "AdminAffiliates",
     component: AdminAffiliateDashboard,
+    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+  },
+  {
+    path: "/admin/access-policy",
+    name: "AccessPolicyManagementa",
+    component: AccessPolicyManagement,
     meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
   },
 ];
