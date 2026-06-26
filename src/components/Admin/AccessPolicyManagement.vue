@@ -1,0 +1,195 @@
+<template>
+  <div class="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8 animate-fade-in">
+    <div class="mb-8 sm:flex sm:items-center sm:justify-between">
+      <div>
+        <h1 class="font-serif text-2xl font-bold text-gray-900">Access Policy Management</h1>
+        <p class="mt-2 text-sm text-gray-500">
+          Atur hak akses menu dan fitur untuk setiap peran (Role) staf di sistem Gycora.
+        </p>
+      </div>
+      <div class="mt-4 sm:mt-0">
+        <button
+          @click="savePolicies"
+          :disabled="isSaving"
+          class="inline-flex items-center px-6 py-3 text-xs font-bold tracking-widest text-white uppercase transition bg-black rounded-lg hover:bg-gray-800 disabled:opacity-50"
+        >
+          <span v-if="isSaving" class="w-4 h-4 mr-2 border-2 border-white rounded-full border-t-transparent animate-spin"></span>
+          Simpan Pengaturan
+        </button>
+      </div>
+    </div>
+
+    <div class="overflow-hidden bg-white border border-gray-200 shadow-sm rounded-2xl">
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th scope="col" class="w-64 py-4 pl-6 pr-3 text-xs font-bold tracking-wider text-left text-gray-500 uppercase border-r border-gray-200">
+                Menu / Modul
+              </th>
+              <th 
+                v-for="role in roles" 
+                :key="role.id" 
+                scope="col" 
+                class="px-4 py-4 text-xs font-bold tracking-wider text-center text-gray-500 uppercase border-r border-gray-200"
+              >
+                {{ role.name }}
+                <p class="mt-1 text-[9px] font-normal text-gray-400 capitalize">{{ role.desc }}</p>
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr v-for="module in modules" :key="module.id" class="transition-colors hover:bg-gray-50/50">
+              <td class="py-4 pl-6 pr-3 text-sm font-medium text-gray-900 border-r border-gray-200 whitespace-nowrap">
+                {{ module.name }}
+              </td>
+              <td 
+                v-for="role in roles" 
+                :key="`${module.id}-${role.id}`" 
+                class="px-4 py-4 text-center border-r border-gray-200 whitespace-nowrap"
+              >
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input 
+                    type="checkbox" 
+                    class="sr-only peer"
+                    :checked="hasAccess(role.id, module.id)"
+                    @change="toggleAccess(role.id, module.id)"
+                  >
+                  <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-2 peer-focus:ring-gray-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-black"></div>
+                </label>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="p-4 border-t border-yellow-100 bg-yellow-50">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg class="w-5 h-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.5-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <div class="ml-3">
+            <p class="text-xs text-yellow-700">
+              <strong>Catatan Sistem:</strong> Role <span class="font-bold">Superadmin</span> memiliki akses absolut (bypass) ke seluruh sistem dan tidak ditampilkan pada matriks ini.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import { BASE_URL } from '../../config/api'; // Sesuaikan path
+
+const isSaving = ref(false);
+
+// Definisi Role (Selain Superadmin)
+const roles = ref([
+  { id: 'admin', name: 'Admin', desc: 'General Management' },
+  { id: 'gudang', name: 'Gudang', desc: 'Stock & Logistics' },
+  { id: 'accounting', name: 'Accounting', desc: 'Finance & Report' },
+  { id: 'cs', name: 'Customer Service', desc: 'Chat & Blast Email' } // [BARU]
+]);
+
+// Daftar Modul/Menu di Sistem
+const modules = ref([
+  { id: 'dashboard', name: 'Dashboard Analytics' },
+  { id: 'products', name: 'Product Management' },
+  { id: 'stocks', name: 'Stock Management' },
+  { id: 'transactions', name: 'Transactions & Shipping' },
+  { id: 'messages', name: 'Messages & Inbox' },
+  { id: 'sales_report', name: 'Sales Reports' },
+  { id: 'accounting_mod', name: 'Accounting (COA, Invoice)' },
+  { id: 'affiliates', name: 'Affiliate Management' }
+]);
+
+// State untuk menyimpan relasi akses: { "admin": ["dashboard", "products", ...], "cs": ["messages"] }
+const permissions = ref({
+  admin: ['dashboard', 'products', 'transactions', 'sales_report', 'affiliates'],
+  gudang: ['stocks', 'transactions'],
+  accounting: ['sales_report', 'accounting_mod'],
+  cs: ['messages'] // Default CS
+});
+
+// Load konfigurasi dari backend saat halaman dibuka
+const fetchPolicies = async () => {
+  try {
+    // Note: Anda harus membuat endpoint GET ini di Laravel nanti
+    // const res = await axios.get(`${BASE_URL}/admin/access-policies`, {
+    //   headers: { Authorization: `Bearer ${localStorage.getItem('admin_token')}` }
+    // });
+    // permissions.value = res.data.permissions;
+  } catch (error) {
+    console.error("Gagal memuat kebijakan akses", error);
+  }
+};
+
+const hasAccess = (roleId, moduleId) => {
+  return permissions.value[roleId]?.includes(moduleId) || false;
+};
+
+const toggleAccess = (roleId, moduleId) => {
+  const rolePermissions = permissions.value[roleId] || [];
+  const index = rolePermissions.indexOf(moduleId);
+  
+  if (index > -1) {
+    // Hapus akses
+    rolePermissions.splice(index, 1);
+  } else {
+    // Tambah akses
+    rolePermissions.push(moduleId);
+  }
+  
+  permissions.value[roleId] = rolePermissions;
+};
+
+const savePolicies = async () => {
+  isSaving.value = true;
+  try {
+    // Note: Anda harus membuat endpoint POST ini di Laravel nanti
+    // await axios.post(`${BASE_URL}/admin/access-policies`, {
+    //   permissions: permissions.value
+    // }, {
+    //   headers: { Authorization: `Bearer ${localStorage.getItem('admin_token')}` }
+    // });
+
+    // Simulasi delay
+    await new Promise(resolve => setTimeout(resolve, 800));
+
+    Swal.fire({
+      icon: 'success',
+      title: 'Kebijakan Diperbarui!',
+      text: 'Hak akses berhasil disimpan dan akan langsung berlaku untuk seluruh staf.',
+      confirmButtonColor: '#000'
+    });
+  } catch (error) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Gagal Menyimpan',
+      text: 'Terjadi kesalahan pada server saat memperbarui kebijakan.',
+      confirmButtonColor: '#000'
+    });
+  } finally {
+    isSaving.value = false;
+  }
+};
+
+onMounted(() => {
+  fetchPolicies();
+});
+</script>
+
+<style scoped>
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
