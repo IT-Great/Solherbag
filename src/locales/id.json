@@ -535,5 +535,68 @@
     "no_information": "Informasi tidak tersedia.",
     "shipping_desc": "Opsi pengiriman tersedia pada halaman pembayaran melalui kemitraan kami dengan Biteship. Untuk pengembalian produk, silakan merujuk pada informasi kontak di halaman Layanan Pelanggan kami. Pengembalian barang dapat dikoordinasikan setelah pengembalian dana otomatis atau sebagai bagian dari pengajuan pengembalian dana manual.",
     "you_may_also_like": "Anda Mungkin Juga Suka"
+  },
+  "affiliator_user": {
+    "exclusive_program": "Exclusive Program",
+    "first_word": "Menjadi Wajah",
+    "second_word": "Solher",
+    "third_word": "Jadilah Ambassador Kami.",
+    "fourth_word": "Bagikan rahasia kecantikan dan kesehatan rambut Anda kepada dunia. Bergabunglah dengan program afiliasi kami dan dapatkan komisi eksklusif dari setiap pembelian yang Anda inspirasi.",
+    "register": "Daftar Sekarang",
+
+    "join_step": "Langkah Bergabung",
+    "fill_form": "Isi Formulir",
+    "shop_data": "Lengkapi data toko dan estimasi penjualan bulanan Anda melalui formulir pendaftaran kami.",
+    "process": "Proses Kurasi",
+    "profile_review": "Tim Gycora akan meninjau profil bisnis Anda dalam 1x24 jam kerja untuk memastikan standar kemitraan.",
+    "opened_access": "Akses Terbuka",
+    "after_accepted": "Setelah disetujui, akun Anda otomatis ditingkatkan dan dapat langsung melihat Harga Grosir Pabrik.",
+    "start_sell": "Mulai Berjualan",
+    "do_order": "Lakukan pesanan minimal (MOQ) dan nikmati margin keuntungan maksimal untuk bisnis Anda.",
+
+    "most_asked": "Yang Sering Ditanya Seputar Program Ambassador Solher",
+    "faq_1_q": "Apa saja syarat menjadi Ambassador Solher?",
+    "faq_1_a": "Kami mencari individu yang memiliki minat besar pada perawatan rambut dan kecantikan, serta aktif berinteraksi dengan pengikutnya di media sosial (Instagram, TikTok, atau platform lainnya).",
+    "faq_2_q": "Bagaimana cara kerja komisi?",
+    "faq_2_a": "Setiap pelanggan yang berbelanja melalui tautan unik Anda akan otomatis terekam oleh sistem. Anda akan mendapatkan persentase komisi bersih dari total belanja pelanggan tersebut.",
+    "faq_3_q": "Kapan saya bisa menarik komisi?",
+    "faq_3_a": "Komisi dapat ditarik kapan saja melalui Dasbor Ambassador Anda setelah mencapai batas minimum penarikan sebesar Rp 50.000.",
+
+    "testimonial_title": "Ayo Lihat Testimoni Dari Para Affiliator",
+    "feedback_1": "Menjadi bagian dari Solher adalah keputusan terbaik. Produknya sangat mudah direkomendasikan karena kualitasnya memang luar biasa dan audiens saya sangat menyukainya!",
+    "feedback_2": "Dasbornya sangat transparan dan mudah digunakan. Saya bisa memantau klik dan penjualan harian. Pencairan komisi juga sangat cepat dan tanpa ribet.",
+    "feedback_3": "Saya suka bagaimana Solher sangat menghargai ambassador-nya. Komisi kompetitif dan saya selalu mendapat informasi produk lebih awal sebelum rilis resmi.",
+
+    "benefit_title": "Keistimewaan Ambassador",
+    "benefit_1_title": "Komisi Kompetitif",
+    "benefit_1_desc": "Nikmati persentase komisi yang menguntungkan dari setiap produk yang berhasil terjual melalui tautan referal unik Anda.",
+    "benefit_2_title": "Akses Eksklusif",
+    "benefit_2_desc": "Jadilah yang pertama mengetahui dan mencoba produk terbaru kami sebelum diluncurkan secara resmi ke publik.",
+    "benefit_3_title": "Dasbor Transparan",
+    "benefit_3_desc": "Pantau setiap klik, penjualan, dan pencairan komisi Anda secara real-time melalui dasbor afiliasi cerdas kami.",
+
+    "already_ambassador": "Anda Telah Menjadi Ambassador!",
+    "already_ambassador_desc": "Akun Anda saat ini sudah terdaftar sebagai Solher Ambassador aktif.",
+    "open_dashboard": "Buka Dasbor Saya",
+
+    "start_journey": "Mulai Perjalanan Anda",
+    "start_journey_desc": "Ceritakan sedikit tentang Anda dan platform yang Anda gunakan.",
+    "social_link_label": "Tautan Media Sosial Utama",
+    "social_link_placeholder": "https://instagram.com/username",
+    "social_link_hint": "Tautan ke profil Instagram, TikTok, YouTube, atau Blog Anda.",
+    "reason_label": "Mengapa Anda ingin bergabung?",
+    "reason_placeholder": "Ceritakan alasan Anda mencintai produk kami dan bagaimana Anda berencana mempromosikannya...",
+    "submit_btn": "Kirim Pendaftaran",
+    "processing": "Memproses...",
+    "review_note": "Tim kami akan meninjau aplikasi Anda dalam 1-2 hari kerja.",
+
+    "alert_login_title": "Harap Login",
+    "alert_login_text": "Anda harus masuk ke akun Anda terlebih dahulu untuk mendaftar sebagai Ambassador.",
+    "btn_to_login": "Menuju Halaman Login",
+    "btn_cancel": "Batal",
+    "alert_success_title": "Aplikasi Terkirim!",
+    "alert_success_text": "Aplikasi kemitraan Anda telah berhasil dikirim. Kami akan meninjaunya segera.",
+    "alert_error_title": "Gagal Mengirim",
+    "alert_error_text": "Terjadi kesalahan saat mengirim pendaftaran. Silakan coba lagi."
   }
 }
