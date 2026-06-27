@@ -409,15 +409,43 @@ const modules = ref([
 const permissions = ref({});
 
 // Load konfigurasi dari backend saat halaman dibuka
+// const fetchPolicies = async () => {
+//   try {
+//     const res = await axios.get(`${BASE_URL}/admin/access-policies`, {
+//       headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
+//     });
+
+//     // Asumsi backend mengembalikan format JSON yang sudah di-group by role & module
+//     if (res.data && res.data.permissions) {
+//       permissions.value = res.data.permissions;
+//     }
+//   } catch (error) {
+//     console.error("Gagal memuat kebijakan akses", error);
+//     Swal.fire({
+//       icon: "error",
+//       title: "Gagal Memuat Data",
+//       text: "Tidak dapat menarik data Access Policy dari server.",
+//       confirmButtonColor: "#000",
+//     });
+//   }
+// };
+
+// Load konfigurasi dari backend saat halaman dibuka
 const fetchPolicies = async () => {
   try {
     const res = await axios.get(`${BASE_URL}/admin/access-policies`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
     });
 
-    // Asumsi backend mengembalikan format JSON yang sudah di-group by role & module
     if (res.data && res.data.permissions) {
-      permissions.value = res.data.permissions;
+      const fetchedPerms = res.data.permissions;
+
+      // [PERBAIKAN]: Cek jika yang datang adalah Array kosong [], paksa jadi Object {}
+      if (Array.isArray(fetchedPerms) && fetchedPerms.length === 0) {
+        permissions.value = {};
+      } else {
+        permissions.value = fetchedPerms;
+      }
     }
   } catch (error) {
     console.error("Gagal memuat kebijakan akses", error);
