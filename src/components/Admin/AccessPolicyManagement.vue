@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8 animate-fade-in">
     <div class="mb-8 sm:flex sm:items-center sm:justify-between">
       <div>
@@ -194,6 +194,310 @@ const savePolicies = async () => {
       icon: "error",
       title: "Gagal Menyimpan",
       text: "Terjadi kesalahan pada server saat memperbarui kebijakan.",
+      confirmButtonColor: "#000",
+    });
+  } finally {
+    isSaving.value = false;
+  }
+};
+
+onMounted(() => {
+  fetchPolicies();
+});
+</script>
+
+<style scoped>
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style> -->
+<template>
+  <div class="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8 animate-fade-in">
+    <div class="mb-8 sm:flex sm:items-center sm:justify-between">
+      <div>
+        <h1 class="font-serif text-2xl font-bold text-gray-900">
+          Granular Access Policy
+        </h1>
+        <p class="mt-2 text-sm text-gray-500">
+          Atur hak akses spesifik (Create, Read, Update, Delete) untuk setiap peran
+          (Role).
+        </p>
+      </div>
+      <div class="mt-4 sm:mt-0">
+        <button
+          @click="savePolicies"
+          :disabled="isSaving"
+          class="inline-flex items-center px-6 py-3 text-xs font-bold tracking-widest text-white uppercase transition bg-black rounded-lg hover:bg-gray-800 disabled:opacity-50"
+        >
+          <span
+            v-if="isSaving"
+            class="w-4 h-4 mr-2 border-2 border-white rounded-full border-t-transparent animate-spin"
+          ></span>
+          {{ isSaving ? "Menyimpan..." : "Simpan Pengaturan" }}
+        </button>
+      </div>
+    </div>
+
+    <div class="flex flex-wrap gap-4 mb-4 text-xs font-medium text-gray-600">
+      <span class="flex items-center gap-1.5">
+        <div
+          class="w-5 h-5 flex items-center justify-center bg-black text-white rounded text-[10px] font-bold"
+        >
+          C
+        </div>
+        Create (Buat Baru)
+      </span>
+      <span class="flex items-center gap-1.5">
+        <div
+          class="w-5 h-5 flex items-center justify-center bg-black text-white rounded text-[10px] font-bold"
+        >
+          R
+        </div>
+        Read (Lihat Data)
+      </span>
+      <span class="flex items-center gap-1.5">
+        <div
+          class="w-5 h-5 flex items-center justify-center bg-black text-white rounded text-[10px] font-bold"
+        >
+          U
+        </div>
+        Update (Ubah Data)
+      </span>
+      <span class="flex items-center gap-1.5">
+        <div
+          class="w-5 h-5 flex items-center justify-center bg-black text-white rounded text-[10px] font-bold"
+        >
+          D
+        </div>
+        Delete (Hapus)
+      </span>
+    </div>
+
+    <div class="overflow-hidden bg-white border border-gray-200 shadow-sm rounded-2xl">
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th
+                scope="col"
+                class="w-64 py-4 pl-6 pr-3 text-xs font-bold tracking-wider text-left text-gray-500 uppercase border-r border-gray-200"
+              >
+                Menu / Modul
+              </th>
+              <th
+                v-for="role in roles"
+                :key="role.id"
+                scope="col"
+                class="px-4 py-4 text-xs font-bold tracking-wider text-center text-gray-500 uppercase border-r border-gray-200 min-w-[140px]"
+              >
+                {{ role.name }}
+                <p class="mt-1 text-[9px] font-normal text-gray-400 capitalize">
+                  {{ role.desc }}
+                </p>
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr
+              v-for="module in modules"
+              :key="module.id"
+              class="transition-colors hover:bg-gray-50/50"
+            >
+              <td
+                class="py-4 pl-6 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap border-r border-gray-200"
+              >
+                {{ module.name }}
+              </td>
+              <td
+                v-for="role in roles"
+                :key="`${module.id}-${role.id}`"
+                class="px-4 py-4 text-center whitespace-nowrap border-r border-gray-200"
+              >
+                <div class="flex justify-center gap-1.5">
+                  <button
+                    v-for="action in crudActions"
+                    :key="action.id"
+                    @click="togglePermission(role.id, module.id, action.id)"
+                    :title="action.title"
+                    :class="[
+                      'w-7 h-7 flex items-center justify-center rounded transition-all duration-200 text-xs font-bold',
+                      hasPermission(role.id, module.id, action.id)
+                        ? 'bg-black text-white shadow-md transform scale-110'
+                        : 'bg-gray-100 text-gray-400 hover:bg-gray-200 hover:text-gray-600',
+                    ]"
+                  >
+                    {{ action.label }}
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="p-4 border-t border-yellow-100 bg-yellow-50">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg class="w-5 h-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+              <path
+                fill-rule="evenodd"
+                d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.5-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div class="ml-3">
+            <p class="text-xs text-yellow-700">
+              <strong>Catatan Sistem:</strong> Role
+              <span class="font-bold">Superadmin</span> memiliki akses absolut (bypass) ke
+              seluruh sistem dan tidak ditampilkan pada matriks ini.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { BASE_URL } from "../../config/api"; // Sesuaikan path
+
+const isSaving = ref(false);
+
+// Definisi Aksi CRUD
+const crudActions = [
+  { id: "create", label: "C", title: "Create (Tambah)" },
+  { id: "read", label: "R", title: "Read (Lihat)" },
+  { id: "update", label: "U", title: "Update (Ubah)" },
+  { id: "delete", label: "D", title: "Delete (Hapus)" },
+];
+
+// Definisi Role (Selain Superadmin)
+const roles = ref([
+  { id: "admin", name: "Admin", desc: "General Management" },
+  { id: "gudang", name: "Gudang", desc: "Stock & Logistics" },
+  { id: "accounting", name: "Accounting", desc: "Finance & Report" },
+  { id: "cs", name: "Customer Service", desc: "Chat & Blast Email" },
+]);
+
+// Daftar Modul/Menu di Sistem
+const modules = ref([
+  { id: "dashboard", name: "Dashboard Analytics" },
+  { id: "products", name: "Product Management" },
+  { id: "stocks", name: "Stock Management" },
+  { id: "transactions", name: "Transactions & Shipping" },
+  { id: "messages", name: "Messages & Inbox" },
+  { id: "sales_report", name: "Sales Reports" },
+  { id: "accounting_mod", name: "Accounting (COA, Invoice)" },
+  { id: "affiliates", name: "Affiliate Management" },
+]);
+
+// State untuk menyimpan relasi akses (Format Nested Object)
+// Format yang diharapkan: { role: { module: ['create', 'read', 'update', 'delete'] } }
+const permissions = ref({});
+
+// Load konfigurasi dari backend saat halaman dibuka
+const fetchPolicies = async () => {
+  try {
+    const res = await axios.get(`${BASE_URL}/admin/access-policies`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
+    });
+
+    // Asumsi backend mengembalikan format JSON yang sudah di-group by role & module
+    if (res.data && res.data.permissions) {
+      permissions.value = res.data.permissions;
+    }
+  } catch (error) {
+    console.error("Gagal memuat kebijakan akses", error);
+    Swal.fire({
+      icon: "error",
+      title: "Gagal Memuat Data",
+      text: "Tidak dapat menarik data Access Policy dari server.",
+      confirmButtonColor: "#000",
+    });
+  }
+};
+
+// Cek apakah suatu role punya akses tertentu di sebuah modul
+const hasPermission = (roleId, moduleId, actionId) => {
+  if (!permissions.value[roleId]) return false;
+  if (!permissions.value[roleId][moduleId]) return false;
+  return permissions.value[roleId][moduleId].includes(actionId);
+};
+
+// Toggle (Centang/Hapus) hak akses
+const togglePermission = (roleId, moduleId, actionId) => {
+  // Inisialisasi object role jika belum ada
+  if (!permissions.value[roleId]) {
+    permissions.value[roleId] = {};
+  }
+  // Inisialisasi array modul jika belum ada
+  if (!permissions.value[roleId][moduleId]) {
+    permissions.value[roleId][moduleId] = [];
+  }
+
+  const modulePerms = permissions.value[roleId][moduleId];
+  const index = modulePerms.indexOf(actionId);
+
+  if (index > -1) {
+    modulePerms.splice(index, 1); // Hapus aksi
+  } else {
+    modulePerms.push(actionId); // Tambah aksi
+
+    // Logika UX Pintar:
+    // Jika user memberikan akses Create, Update, atau Delete, otomatis berikan akses Read.
+    // (Karena tidak masuk akal bisa mengubah data jika tidak bisa melihatnya).
+    if (actionId !== "read" && !modulePerms.includes("read")) {
+      modulePerms.push("read");
+    }
+  }
+
+  // Logika UX Pintar:
+  // Jika akses Read dihapus, hapus juga C, U, D di modul tersebut.
+  if (actionId === "read" && index > -1) {
+    permissions.value[roleId][moduleId] = [];
+  }
+};
+
+// Kirim payload (permissions.value) ke backend
+const savePolicies = async () => {
+  isSaving.value = true;
+  try {
+    const res = await axios.post(
+      `${BASE_URL}/admin/access-policies`,
+      {
+        permissions: permissions.value,
+      },
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
+      }
+    );
+
+    Swal.fire({
+      icon: "success",
+      title: "Kebijakan Diperbarui!",
+      text: res.data.message || "Hak akses CRUD berhasil disimpan dan langsung berlaku.",
+      confirmButtonColor: "#000",
+    });
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Gagal Menyimpan",
+      text:
+        error.response?.data?.message ||
+        "Terjadi kesalahan pada server saat memperbarui kebijakan.",
       confirmButtonColor: "#000",
     });
   } finally {
