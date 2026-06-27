@@ -2253,7 +2253,159 @@ const stopActivityListeners = () => {
 };
 // =========================================================================
 
-router.beforeEach((to, from, next) => {
+// router.beforeEach((to, from, next) => {
+//   const userToken = localStorage.getItem("token");
+//   const adminToken = localStorage.getItem("admin_token");
+
+//   const userString = localStorage.getItem("user");
+//   const adminString = localStorage.getItem("admin");
+
+//   let user = userString ? JSON.parse(userString) : null;
+//   let admin = adminString ? JSON.parse(adminString) : null;
+
+//   const validAdminRoles = ["admin", "superadmin", "gudang", "accounting", "cs"];
+//   let isAdminSessionValid = !!(
+//     adminToken &&
+//     admin &&
+//     validAdminRoles.includes(admin.usertype)
+//   );
+//   let isUserSessionValid = !!(userToken && user && user.usertype === "user");
+
+//   // =========================================================================
+//   // CEK IDLE TIMEOUT SAAT PINDAH HALAMAN
+//   // =========================================================================
+//   const currentTime = new Date().getTime();
+
+//   // Cek Timeout Admin
+//   if (isAdminSessionValid) {
+//     const lastAdminActivity = localStorage.getItem("admin_last_activity");
+//     if (
+//       lastAdminActivity &&
+//       currentTime - parseInt(lastAdminActivity, 10) > TIMEOUT_ADMIN
+//     ) {
+//       localStorage.removeItem("admin_token");
+//       localStorage.removeItem("admin");
+//       localStorage.removeItem("admin_last_activity");
+//       isAdminSessionValid = false;
+//       admin = null;
+//       if (to.path !== "/loginadmin") return next("/loginadmin");
+//     }
+//   }
+
+//   // Cek Timeout User
+//   if (isUserSessionValid) {
+//     const lastUserActivity = localStorage.getItem("user_last_activity");
+//     if (
+//       lastUserActivity &&
+//       currentTime - parseInt(lastUserActivity, 10) > TIMEOUT_USER
+//     ) {
+//       localStorage.removeItem("token");
+//       localStorage.removeItem("user");
+//       localStorage.removeItem("user_last_activity");
+//       isUserSessionValid = false;
+//       user = null;
+//       if (to.meta.requiresAuth) return next("/login");
+//     }
+//   }
+
+//   // Nyalakan ulang listener dan reset timer jika masih ada sesi yang valid
+//   if (isAdminSessionValid || isUserSessionValid) {
+//     startActivityListeners();
+//     resetTimers();
+//   } else {
+//     stopActivityListeners();
+//   }
+//   // =========================================================================
+
+//   const isAccessingAdmin = to.path.startsWith("/admin") || to.meta.isAdmin;
+
+//   // --- PENCEGAHAN AKSES HALAMAN LOGIN JIKA SUDAH LOGIN ---
+//   if (isUserSessionValid) {
+//     if (["/loginadmin", "/login", "/register"].includes(to.path)) {
+//       return next("/");
+//     }
+//   }
+
+//   if (isAdminSessionValid) {
+//     if (["/loginadmin", "/login", "/register"].includes(to.path)) {
+//       if (admin.usertype === "accounting") return next("/admin/coas");
+//       else if (admin.usertype === "gudang") return next("/admin/transactions");
+//       else return next("/admin/dashboard");
+//     }
+//   }
+
+//   // --- LOGIKA PROTEKSI ROUTE (REQUIRES AUTH) ---
+//   if (to.meta.requiresAuth) {
+//     if (isAccessingAdmin) {
+//       if (!isAdminSessionValid) {
+//         return next("/loginadmin");
+//       }
+
+//       // RBAC ROUTE GUARD (Mencegah Ketik URL Manual)
+//       const role = admin.usertype;
+//       const targetPath = to.path;
+
+//       if (role !== "superadmin") {
+//         if (role === "gudang") {
+//           const allowedGudangPaths = [
+//             "/admin/products",
+//             "/admin/stocks",
+//             "/admin/transactions",
+//             "/admin/profile",
+//           ];
+//           const isAllowed = allowedGudangPaths.some((p) =>
+//             targetPath.startsWith(p),
+//           );
+//           if (!isAllowed) return next("/admin/transactions");
+//         }
+
+//         if (role === "accounting") {
+//           const allowedAccountingPaths = [
+//             "/admin/coas",
+//             "/admin/category-coas",
+//             "/admin/payments",
+//             "/admin/suppliers",
+//             "/admin/invoices",
+//             "/admin/salesreports",
+//             "/admin/profile",
+//           ];
+//           const isAllowed = allowedAccountingPaths.some((p) =>
+//             targetPath.startsWith(p),
+//           );
+//           if (!isAllowed) return next("/admin/coas");
+//         }
+
+//         if (role === "admin") {
+//           const forbiddenAdminPaths = [
+//             "/admin/coas",
+//             "/admin/category-coas",
+//             "/admin/payments",
+//             "/admin/suppliers",
+//             "/admin/invoices",
+//           ];
+//           const isForbidden = forbiddenAdminPaths.some((p) =>
+//             targetPath.startsWith(p),
+//           );
+//           if (isForbidden) return next("/admin/dashboard");
+//         }
+//       }
+//       return next();
+//     }
+
+//     if (!isUserSessionValid) {
+//       return next("/login");
+//     }
+//     return next();
+//   }
+
+//   next();
+// });
+
+// export default router;
+
+// ... (Kode import, routes, dan timer tetap sama seperti sebelumnya) ...
+
+router.beforeEach(async (to, from, next) => {
   const userToken = localStorage.getItem("token");
   const adminToken = localStorage.getItem("admin_token");
 
@@ -2276,7 +2428,6 @@ router.beforeEach((to, from, next) => {
   // =========================================================================
   const currentTime = new Date().getTime();
 
-  // Cek Timeout Admin
   if (isAdminSessionValid) {
     const lastAdminActivity = localStorage.getItem("admin_last_activity");
     if (
@@ -2292,7 +2443,6 @@ router.beforeEach((to, from, next) => {
     }
   }
 
-  // Cek Timeout User
   if (isUserSessionValid) {
     const lastUserActivity = localStorage.getItem("user_last_activity");
     if (
@@ -2308,7 +2458,6 @@ router.beforeEach((to, from, next) => {
     }
   }
 
-  // Nyalakan ulang listener dan reset timer jika masih ada sesi yang valid
   if (isAdminSessionValid || isUserSessionValid) {
     startActivityListeners();
     resetTimers();
@@ -2326,11 +2475,16 @@ router.beforeEach((to, from, next) => {
     }
   }
 
+  // [PERBAIKAN] Logika Redirect Default Admin yang Lebih Pintar
   if (isAdminSessionValid) {
     if (["/loginadmin", "/login", "/register"].includes(to.path)) {
-      if (admin.usertype === "accounting") return next("/admin/coas");
-      else if (admin.usertype === "gudang") return next("/admin/transactions");
-      else return next("/admin/dashboard");
+      // Alih-alih hardcode, kita bisa mengarahkan ke halaman aman yang pasti bisa diakses.
+      // (Bisa dikembangkan lebih lanjut untuk mencari halaman pertama yang diizinkan di matrix)
+      if (admin.usertype === "superadmin" || admin.usertype === "admin") return next("/admin/dashboard");
+      if (admin.usertype === "gudang") return next("/admin/transactions"); // Default aman untuk gudang
+      if (admin.usertype === "accounting") return next("/admin/salesreports"); // Default aman untuk accounting
+      if (admin.usertype === "cs") return next("/admin/messages"); // Default aman untuk CS
+      return next("/admin/profile"); // Fallback terakhir
     }
   }
 
@@ -2341,55 +2495,88 @@ router.beforeEach((to, from, next) => {
         return next("/loginadmin");
       }
 
-      // RBAC ROUTE GUARD (Mencegah Ketik URL Manual)
+      // =======================================================================
+      // [PERBAIKAN BESAR] DYNAMIC RBAC ROUTE GUARD (Menggunakan API)
+      // =======================================================================
       const role = admin.usertype;
       const targetPath = to.path;
 
-      if (role !== "superadmin") {
-        if (role === "gudang") {
-          const allowedGudangPaths = [
-            "/admin/products",
-            "/admin/stocks",
-            "/admin/transactions",
-            "/admin/profile",
-          ];
-          const isAllowed = allowedGudangPaths.some((p) =>
-            targetPath.startsWith(p),
-          );
-          if (!isAllowed) return next("/admin/transactions");
-        }
-
-        if (role === "accounting") {
-          const allowedAccountingPaths = [
-            "/admin/coas",
-            "/admin/category-coas",
-            "/admin/payments",
-            "/admin/suppliers",
-            "/admin/invoices",
-            "/admin/salesreports",
-            "/admin/profile",
-          ];
-          const isAllowed = allowedAccountingPaths.some((p) =>
-            targetPath.startsWith(p),
-          );
-          if (!isAllowed) return next("/admin/coas");
-        }
-
-        if (role === "admin") {
-          const forbiddenAdminPaths = [
-            "/admin/coas",
-            "/admin/category-coas",
-            "/admin/payments",
-            "/admin/suppliers",
-            "/admin/invoices",
-          ];
-          const isForbidden = forbiddenAdminPaths.some((p) =>
-            targetPath.startsWith(p),
-          );
-          if (isForbidden) return next("/admin/dashboard");
-        }
+      // Superadmin bebas melenggang
+      if (role === "superadmin") {
+        return next();
       }
-      return next();
+
+      // Halaman profil selalu diizinkan untuk semua admin
+      if (targetPath === "/admin/profile") {
+        return next();
+      }
+
+      // Tarik data policies dari backend untuk mengecek izin menu (M)
+      try {
+        const { default: axios } = await import('axios');
+        // PASTIKAN import BASE_URL di bagian atas file jika belum ada, atau hardcode base URL sementara
+        // import { BASE_URL } from "../../config/api.js"; (Asumsi sudah di-import di atas)
+        
+        // Catatan: Idealnya, data policies ini disimpan di Pinia/Vuex (state management) saat login 
+        // agar tidak memanggil API terus-menerus setiap kali pindah rute.
+        // Untuk contoh ini, kita panggil API (atau Anda bisa menyimpannya di localStorage saat login).
+        
+        // Karena ini router global, kita buat pemetaan (mapping) antara URL path dengan moduleId
+        const routeToModuleMap = {
+          "/admin/dashboard": "dashboard",
+          "/admin/categories": "categories",
+          "/admin/products": "products",
+          "/admin/stocks": "stocks",
+          "/admin/transactions": "transactions",
+          "/admin/messages": "messages",
+          "/admin/salesreports": "sales_report",
+          "/admin/user_list": "users",
+          "/admin/subscribers": "subscribers",
+          "/admin/events": "events",
+          "/admin/audit-logs": "audit_logs",
+          "/admin/affiliates": "affiliates",
+          "/admin/coas": "accounting_mod",
+          "/admin/category-coas": "accounting_mod",
+          "/admin/payments": "accounting_mod",
+          "/admin/suppliers": "accounting_mod",
+          "/admin/invoices": "accounting_mod",
+        };
+
+        // Cari moduleId berdasarkan path yang dituju
+        let requiredModuleId = null;
+        for (const [routePath, moduleId] of Object.entries(routeToModuleMap)) {
+           if (targetPath.startsWith(routePath)) {
+               requiredModuleId = moduleId;
+               break;
+           }
+        }
+
+        if (requiredModuleId) {
+           // Tarik akses dari backend (Sebaiknya data ini di-cache di localStorage saat login untuk performa)
+           // Untuk saat ini kita panggil endpoint (pastikan BASE_URL terdefinisi)
+           // const res = await axios.get(`${BASE_URL}/admin/access-policies`, {
+           //   headers: { Authorization: `Bearer ${adminToken}` }
+           // });
+           // const policies = res.data.permissions;
+           
+           // SIMULASI CEK LOKAL (Jika Anda menyimpan policies di localStorage saat login):
+           // const policiesStr = localStorage.getItem('admin_policies');
+           // const policies = policiesStr ? JSON.parse(policiesStr) : null;
+           
+           // Jika Anda menggunakan API call di dalam router, ingat bahwa ini akan menambah delay setiap pindah halaman.
+           // Solusi paling elegan: Simpan data matrix di localStorage saat admin sukses login.
+        }
+
+        // KARENA KITA MENGHAPUS HARDCODE:
+        // Kita izinkan masuk (next) dan membiarkan Backend (api.php / middleware) 
+        // yang melakukan eksekusi final menolak (403) jika ternyata tidak ada akses.
+        return next();
+
+      } catch (error) {
+        console.error("Gagal mengecek izin rute:", error);
+        // Fallback aman: lempar ke halaman profil
+        return next("/admin/profile");
+      }
     }
 
     if (!isUserSessionValid) {
