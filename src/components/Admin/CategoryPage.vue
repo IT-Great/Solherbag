@@ -889,10 +889,6 @@ const searchQuery = ref("");
 const currentPage = ref(1);
 const itemsPerPage = ref(5);
 
-const axiosConfig = {
-  headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
-};
-
 const filteredCategories = computed(() => {
   return categories.value.filter((cat) => {
     const term = searchQuery.value.toLowerCase();
