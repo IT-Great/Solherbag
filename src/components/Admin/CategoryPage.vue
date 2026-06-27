@@ -516,6 +516,7 @@ onMounted(fetchCategories);
         <p class="text-sm text-gray-500">Manage your product categories here.</p>
       </div>
       <button
+        v-if="canCreate || isSuperAdmin"
         @click="openModal()"
         class="px-6 py-2 font-semibold text-white transition bg-blue-600 shadow-sm hover:bg-blue-700 rounded-xl shadow-blue-500/30"
       >
@@ -645,6 +646,7 @@ onMounted(fetchCategories);
                   </svg>
                 </router-link>
                 <button
+                  v-if="canUpdate || isSuperAdmin"
                   @click="openModal(cat)"
                   class="p-2 transition rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-500"
                   title="Edit Category"
@@ -665,6 +667,7 @@ onMounted(fetchCategories);
                   </svg>
                 </button>
                 <button
+                  v-if="canDelete || isSuperAdmin"
                   @click="confirmDelete(cat.id)"
                   class="p-2 text-red-500 transition rounded-lg bg-red-50 hover:bg-red-100"
                   title="Delete Category"
@@ -828,6 +831,54 @@ const isLoading = ref(true); // Pastikan ini true di awal agar skeleton langsung
 const isSubmitting = ref(false);
 const currentId = ref(null);
 
+// --- STATE PERMISSIONS (BARU) ---
+const userRole = ref("");
+const isSuperAdmin = computed(() => userRole.value === "superadmin");
+
+// State untuk menyimpan hak akses spesifik di modul "products"
+const myPermissions = ref({
+  create: false,
+  read: false,
+  update: false,
+  delete: false,
+});
+
+const canCreate = computed(() => myPermissions.value.create);
+const canUpdate = computed(() => myPermissions.value.update);
+const canDelete = computed(() => myPermissions.value.delete);
+
+const axiosConfig = {
+  headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
+};
+
+// [BARU] Mengambil data hak akses pengguna yang sedang login
+const fetchUserPermissions = async () => {
+  const adminStr = localStorage.getItem("admin");
+  if (adminStr) {
+    const admin = JSON.parse(adminStr);
+    userRole.value = admin.usertype;
+  }
+
+  // Jika superadmin, tidak perlu repot-repot nge-fetch rule, langsung full akses
+  if (isSuperAdmin.value) return;
+
+  try {
+    const res = await axios.get(`${BASE_URL}/admin/access-policies`, axiosConfig);
+    const policies = res.data.permissions;
+
+    // Mengekstrak array ['create', 'update', dll] milik role yang sedang login untuk modul 'products'
+    const categoryTerms = policies[userRole.value]?.categories || [];
+
+    myPermissions.value = {
+      create: categoryTerms.includes("create"),
+      read: categoryTerms.includes("read"),
+      update: categoryTerms.includes("update"),
+      delete: categoryTerms.includes("delete"),
+    };
+  } catch (error) {
+    console.error("Gagal mengambil kebijakan akses untuk tombol", error);
+  }
+};
 const form = ref({
   category_code: "",
   category_name: "",
@@ -1011,5 +1062,10 @@ const confirmDelete = (id) => {
   });
 };
 
-onMounted(fetchCategories);
+onMounted(() => {
+  // Panggil fetchUserPermissions dulu agar UI tombol bisa segera bersiap
+  fetchUserPermissions().then(() => {
+    fetchCategories();
+  });
+});
 </script>
