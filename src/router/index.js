@@ -1794,7 +1794,806 @@
 
 // export default router;
 
+// import { createRouter, createWebHistory } from "vue-router";
+// import HomePage from "../components/User/HomePage.vue";
+// import LoginPage from "../components/User/LoginPage.vue";
+// import RegisterPage from "../components/User/RegisterPage.vue";
+// import ProfilePage from "../components/User/ProfilePage.vue";
+// import OrderPage from "../components/User/OrderPage.vue";
+// import AdminLoginPage from "../components/Admin/AdminLoginPage.vue";
+// import DashboardPage from "../components/Admin/DashboardPage.vue";
+// import AdminProfilePage from "../components/Admin/AdminProfilePage.vue";
+// import CategoryPage from "../components/Admin/CategoryPage.vue";
+// import ProductPage from "../components/Admin/ProductPage.vue";
+// import ProductAddPage from "../components/Admin/ProductAddPage.vue";
+// import ProductEditPage from "../components/Admin/ProductEditPage.vue";
+// import SalesReportPage from "../components/Admin/SalesReportPage.vue";
+// import TransactionPage from "../components/Admin/TransactionPage.vue";
+// import ProductDetailPage from "../components/User/ProductDetailPage.vue";
+// import UserListPage from "../components/Admin/UserListPage.vue";
+// import UserDetailPage from "../components/Admin/UserDetailPage.vue";
+// import MessageViewPage from "../components/Admin/MessageViewPage.vue";
+// import CustomerCarePage from "../components/User/CustomerCarePage.vue";
+// import FaqPage from "../components/User/FaqPage.vue";
+// import AboutUsPage from "../components/User/AboutUsPage.vue";
+// import InactiveProductPage from "../components/Admin/InactiveProductPage.vue";
+// import TransactionDetailPage from "../components/Admin/TransactionDetailPage.vue";
+// import PaymentPage from "../components/User/PaymentPage.vue";
+// import PaymentSuccessPage from "../components/User/PaymentSuccessPage.vue";
+// import TrackingPage from "../components/User/TrackingPage.vue";
+// import CategoryCoaPage from "../components/Admin/CategoryCoaPage.vue";
+// import CoaPage from "../components/Admin/CoaPage.vue";
+// import TransferReceivePage from "../components/Admin/TransferReceivePage.vue";
+// import SupplierPage from "../components/Admin/SupplierPage.vue";
+// import InvoicePage from "../components/Admin/InvoicePage.vue";
+// import CartPage from "../components/User/CartPage.vue";
+// import DetailMessageViewPage from "../components/Admin/DetailMessageViewPage.vue";
+// import SubscriberPage from "../components/Admin/SubscriberPage.vue";
+// import ForgotPasswordPage from "../components/User/ForgotPasswordPage.vue";
+// import CodeVerificationPage from "../components/User/CodeVerificationPage.vue";
+// import ResetPasswordPage from "../components/User/ResetPasswordPage.vue";
+// import AdminForgotPasswordPage from "../components/Admin/AdminForgotPasswordPage.vue";
+// import AdminCodeVerificationPage from "../components/Admin/AdminCodeVerificationPage.vue";
+// import AdminResetPasswordPage from "../components/Admin/AdminResetPasswordPage.vue";
+// import ProductStockPage from "../components/Admin/ProductStockPage.vue";
+// import CollectionsPage from "../components/User/CollectionPage.vue";
+// import BestSellerPage from "../components/User/BestSellerPage.vue";
+// import ContactPage from "../components/User/ContactPage.vue";
+// import ShippingPolicy from "../components/User/ShippingPolicy.vue";
+// import RefundPolicy from "../components/User/RefundPolicy.vue";
+// import TermsAndCondition from "../components/User/TermsAndCondition.vue";
+// import PrivacyPolicy from "../components/User/PrivacyPolicy.vue";
+
+// import ChatListPage from "../components/User/ChatListPage.vue";
+// import ChatPage from "../components/User/ChatPage.vue";
+// import AdminChatPage from "../components/Admin/AdminChatPage.vue";
+// import AuditLogPage from "../components/Admin/AuditLogPage.vue";
+// import EventPage from "../components/User/EventPage.vue";
+// import AdminEventPage from "../components/Admin/AdminEventPage.vue";
+// import AdminEventDetailPage from "../components/Admin/AdminEventDetailPage.vue";
+// import AffiliateDashboard from "../components/User/AffiliateDashboard.vue";
+// import AdminAffiliateDashboard from "../components/Admin/AdminAffiliateDashboard.vue";
+// import AffiliateLandingPage from "../components/User/AffiliateLandingPage.vue";
+// import AccessPolicyManagement from "../components/Admin/AccessPolicyManagement.vue";
+
+// const routes = [
+//   { path: "/", name: "Home", component: HomePage },
+//   { path: "/best-sellers", name: "BestSellers", component: BestSellerPage },
+//   { path: "/collections", name: "Collections", component: CollectionsPage },
+//   { path: "/contact", name: "Contact", component: ContactPage },
+//   {
+//     path: "/login",
+//     name: "Login",
+//     component: LoginPage,
+//     meta: { hideHeaderFooter: true },
+//   },
+//   {
+//     path: "/forgot-password",
+//     name: "ForgotPassword",
+//     component: ForgotPasswordPage,
+//     meta: { hideHeaderFooter: true },
+//   },
+//   {
+//     path: "/verify-code",
+//     name: "VerifyCode",
+//     component: CodeVerificationPage,
+//     meta: { hideHeaderFooter: true },
+//   },
+//   {
+//     path: "/reset-password",
+//     name: "ResetPassword",
+//     component: ResetPasswordPage,
+//     meta: { hideHeaderFooter: true },
+//   },
+//   {
+//     path: "/loginadmin",
+//     name: "AdminLogin",
+//     component: AdminLoginPage,
+//     meta: { hideHeaderFooter: true },
+//   },
+//   {
+//     path: "/admin/forgot-password",
+//     name: "AdminForgotPassword",
+//     component: AdminForgotPasswordPage,
+//     meta: { hideHeaderFooter: true },
+//   },
+//   {
+//     path: "/admin/verify-code",
+//     name: "AdminVerifyCode",
+//     component: AdminCodeVerificationPage,
+//     meta: { hideHeaderFooter: true },
+//   },
+//   {
+//     path: "/admin/reset-password",
+//     name: "AdminResetPassword",
+//     component: AdminResetPasswordPage,
+//     meta: { hideHeaderFooter: true },
+//   },
+//   {
+//     path: "/register",
+//     name: "Register",
+//     component: RegisterPage,
+//     meta: { hideHeaderFooter: true },
+//   },
+//   {
+//     path: "/profilepage",
+//     name: "Profile",
+//     component: ProfilePage,
+//     meta: { requiresAuth: true },
+//   },
+//   {
+//     path: "/orderpage",
+//     name: "Orders",
+//     component: OrderPage,
+//     meta: { requiresAuth: true },
+//   },
+//   { path: "/customer-care", name: "CustomerCare", component: CustomerCarePage },
+//   { path: "/faq", name: "Faq", component: FaqPage },
+//   { path: "/about-us", name: "AboutUs", component: AboutUsPage },
+//   { path: "/affiliate", name: "Affiliate", component: AffiliateLandingPage },
+//   {
+//     path: "/shipping-policy",
+//     name: "ShippingPolicy",
+//     component: ShippingPolicy,
+//   },
+//   { path: "/refund-policy", name: "RefundPolicy", component: RefundPolicy },
+//   { path: "/terms", name: "TermsAndCondition", component: TermsAndCondition },
+//   { path: "/privacy", name: "PrivacyPolicy", component: PrivacyPolicy },
+//   {
+//     path: "/favorites",
+//     name: "Favorites",
+//     component: () => import("../components/User/FavoritePage.vue"),
+//   },
+//   {
+//     path: "/cart",
+//     name: "Cart",
+//     component: CartPage,
+//     meta: { requiresAuth: true },
+//   },
+//   {
+//     path: "/products/:id",
+//     name: "ProductDetail",
+//     component: ProductDetailPage,
+//   },
+//   {
+//     path: "/payment",
+//     name: "PaymentPage",
+//     component: PaymentPage,
+//     meta: { requiresAuth: true },
+//   },
+//   {
+//     path: "/payment-success",
+//     name: "PaymentSuccess",
+//     component: PaymentSuccessPage,
+//     meta: { requiresAuth: true, hideHeaderFooter: true },
+//   },
+//   {
+//     path: "/tracking/:id",
+//     name: "TrackingPage",
+//     component: TrackingPage,
+//     meta: { requiresAuth: true, hideHeaderFooter: true },
+//   },
+
+//   // USER CHAT ROUTES
+//   {
+//     path: "/chat-list",
+//     name: "ChatList",
+//     component: ChatListPage,
+//     meta: { requiresAuth: true },
+//   },
+//   {
+//     path: "/chat/:id",
+//     name: "UserChat",
+//     component: ChatPage,
+//     meta: { requiresAuth: true },
+//   },
+
+//   { path: "/events", name: "EventPage", component: EventPage },
+
+//   // USER AFFILIATOR ROUTES
+//   {
+//     path: "/affiliate-demo",
+//     name: "AffiliateDemo",
+//     component: AffiliateDashboard,
+//     meta: { requiresAuth: true },
+//   },
+
+//   // ADMIN ROUTES
+//   {
+//     path: "/admin/dashboard",
+//     name: "Dashboard",
+//     component: DashboardPage,
+//     meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+//   },
+//   {
+//     path: "/admin/profile",
+//     name: "Adminprofile",
+//     component: AdminProfilePage,
+//     meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+//   },
+//   {
+//     path: "/admin/categories",
+//     name: "Category",
+//     component: CategoryPage,
+//     meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+//   },
+//   {
+//     path: "/admin/categories/:id",
+//     name: "CategoryDetail",
+//     component: () => import("../components/Admin/CategoryDetailPage.vue"),
+//     meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+//   },
+//   {
+//     path: "/admin/products",
+//     name: "Product",
+//     component: ProductPage,
+//     meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+//   },
+//   {
+//     path: "/admin/products/add",
+//     name: "ProductAdd",
+//     component: ProductAddPage,
+//     meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+//   },
+//   {
+//     path: "/admin/products/edit/:id",
+//     name: "ProductEdit",
+//     component: ProductEditPage,
+//     meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+//   },
+//   {
+//     path: "/admin/products/view/:id",
+//     name: "ProductView",
+//     component: () => import("../components/Admin/ProductViewPage.vue"),
+//     meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+//   },
+//   {
+//     path: "/admin/products/inactive",
+//     name: "InactiveProduct",
+//     component: InactiveProductPage,
+//     meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+//   },
+//   {
+//     path: "/admin/stocks",
+//     name: "ProductStock",
+//     component: ProductStockPage,
+//     meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+//   },
+//   {
+//     path: "/admin/salesreports",
+//     name: "SalesReport",
+//     component: SalesReportPage,
+//     meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+//   },
+//   {
+//     path: "/admin/transactions",
+//     name: "Transaction",
+//     component: TransactionPage,
+//     meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+//   },
+//   {
+//     path: "/admin/transactions/:id",
+//     name: "TransactionDetail",
+//     component: TransactionDetailPage,
+//     meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+//   },
+//   {
+//     path: "/admin/user_list",
+//     name: "UserList",
+//     component: UserListPage,
+//     meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+//   },
+//   {
+//     path: "/admin/users/:id",
+//     name: "UserDetail",
+//     component: UserDetailPage,
+//     meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+//   },
+//   {
+//     path: "/admin/subscribers",
+//     name: "Subscribers",
+//     component: SubscriberPage,
+//     meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+//   },
+//   {
+//     path: "/admin/messages",
+//     name: "MessageView",
+//     component: MessageViewPage,
+//     meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+//   },
+//   {
+//     path: "/admin/messages/:id",
+//     name: "DetailMessage",
+//     component: DetailMessageViewPage,
+//     meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+//   },
+//   {
+//     path: "/admin/category-coas",
+//     name: "CategoryCoa",
+//     component: CategoryCoaPage,
+//     meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+//   },
+//   {
+//     path: "/admin/coas",
+//     name: "CoaPage",
+//     component: CoaPage,
+//     meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+//   },
+//   {
+//     path: "/admin/payments",
+//     name: "TransferReceivePayment",
+//     component: TransferReceivePage,
+//     meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+//   },
+//   {
+//     path: "/admin/suppliers",
+//     name: "SupplierPage",
+//     component: SupplierPage,
+//     meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+//   },
+//   {
+//     path: "/admin/invoices",
+//     name: "InvoicePage",
+//     component: InvoicePage,
+//     meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+//   },
+//   {
+//     path: "/admin/chat/:id",
+//     name: "AdminChat",
+//     component: AdminChatPage,
+//     meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+//   },
+//   {
+//     path: "/admin/audit-logs",
+//     name: "AuditLogs",
+//     component: AuditLogPage,
+//     meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+//   },
+//   {
+//     path: "/admin/events",
+//     name: "AdminEventPage",
+//     component: AdminEventPage,
+//     meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+//   },
+//   {
+//     path: "/admin/events/:id",
+//     name: "AdminEventDetailPage",
+//     component: AdminEventDetailPage,
+//     meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+//   },
+//   {
+//     path: "/admin/affiliates",
+//     name: "AdminAffiliates",
+//     component: AdminAffiliateDashboard,
+//     meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+//   },
+//   {
+//     path: "/admin/access-policy",
+//     name: "AccessPolicyManagementa",
+//     component: AccessPolicyManagement,
+//     meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
+//   },
+// ];
+
+// const router = createRouter({
+//   history: createWebHistory(),
+//   routes,
+//   scrollBehavior(to, from, savedPosition) {
+//     return { top: 0, behavior: "smooth" };
+//   },
+// });
+
+// // =========================================================================
+// // [PERBAIKAN] LOGIKA AUTO-RESET IDLE TIMER (ADMIN & USER)
+// // =========================================================================
+// let adminIdleTimer = null;
+// let userIdleTimer = null;
+
+// const TIMEOUT_ADMIN = 5 * 60 * 1000; // 5 Menit untuk Admin
+// const TIMEOUT_USER = 2 * 60 * 60 * 1000; // 2 Jam untuk Customer
+
+// const resetTimers = () => {
+//   const currentTime = new Date().getTime().toString();
+//   const hasAdmin = localStorage.getItem("admin_token");
+//   const hasUser = localStorage.getItem("token");
+
+//   // Jika tidak ada yang login, matikan listener agar performa browser hemat
+//   if (!hasAdmin && !hasUser) {
+//     stopActivityListeners();
+//     return;
+//   }
+
+//   // --- LOGIKA ADMIN ---
+//   if (hasAdmin) {
+//     localStorage.setItem("admin_last_activity", currentTime);
+//     if (adminIdleTimer) clearTimeout(adminIdleTimer);
+
+//     adminIdleTimer = setTimeout(() => {
+//       localStorage.removeItem("admin_token");
+//       localStorage.removeItem("admin");
+//       localStorage.removeItem("admin_last_activity");
+//       window.location.href = "/loginadmin";
+//     }, TIMEOUT_ADMIN);
+//   }
+
+//   // --- LOGIKA USER ---
+//   if (hasUser) {
+//     localStorage.setItem("user_last_activity", currentTime);
+//     if (userIdleTimer) clearTimeout(userIdleTimer);
+
+//     userIdleTimer = setTimeout(() => {
+//       localStorage.removeItem("token");
+//       localStorage.removeItem("user");
+//       localStorage.removeItem("user_last_activity");
+
+//       // Karena customer mungkin sedang di halaman publik (Home) saat ter-logout,
+//       // kita cukup mereload halaman agar Header UI (keranjang/profile) ter-update,
+//       // atau lempar ke login jika mereka sedang di halaman yg butuh auth.
+//       window.location.reload();
+//     }, TIMEOUT_USER);
+//   }
+// };
+
+// const activityEvents = [
+//   "mousedown",
+//   "mousemove",
+//   "keydown",
+//   "scroll",
+//   "touchstart",
+// ];
+// const startActivityListeners = () => {
+//   activityEvents.forEach((event) =>
+//     document.addEventListener(event, resetTimers, { passive: true }),
+//   );
+// };
+// const stopActivityListeners = () => {
+//   activityEvents.forEach((event) =>
+//     document.removeEventListener(event, resetTimers, { passive: true }),
+//   );
+// };
+// // =========================================================================
+
+// // router.beforeEach((to, from, next) => {
+// //   const userToken = localStorage.getItem("token");
+// //   const adminToken = localStorage.getItem("admin_token");
+
+// //   const userString = localStorage.getItem("user");
+// //   const adminString = localStorage.getItem("admin");
+
+// //   let user = userString ? JSON.parse(userString) : null;
+// //   let admin = adminString ? JSON.parse(adminString) : null;
+
+// //   const validAdminRoles = ["admin", "superadmin", "gudang", "accounting", "cs"];
+// //   let isAdminSessionValid = !!(
+// //     adminToken &&
+// //     admin &&
+// //     validAdminRoles.includes(admin.usertype)
+// //   );
+// //   let isUserSessionValid = !!(userToken && user && user.usertype === "user");
+
+// //   // =========================================================================
+// //   // CEK IDLE TIMEOUT SAAT PINDAH HALAMAN
+// //   // =========================================================================
+// //   const currentTime = new Date().getTime();
+
+// //   // Cek Timeout Admin
+// //   if (isAdminSessionValid) {
+// //     const lastAdminActivity = localStorage.getItem("admin_last_activity");
+// //     if (
+// //       lastAdminActivity &&
+// //       currentTime - parseInt(lastAdminActivity, 10) > TIMEOUT_ADMIN
+// //     ) {
+// //       localStorage.removeItem("admin_token");
+// //       localStorage.removeItem("admin");
+// //       localStorage.removeItem("admin_last_activity");
+// //       isAdminSessionValid = false;
+// //       admin = null;
+// //       if (to.path !== "/loginadmin") return next("/loginadmin");
+// //     }
+// //   }
+
+// //   // Cek Timeout User
+// //   if (isUserSessionValid) {
+// //     const lastUserActivity = localStorage.getItem("user_last_activity");
+// //     if (
+// //       lastUserActivity &&
+// //       currentTime - parseInt(lastUserActivity, 10) > TIMEOUT_USER
+// //     ) {
+// //       localStorage.removeItem("token");
+// //       localStorage.removeItem("user");
+// //       localStorage.removeItem("user_last_activity");
+// //       isUserSessionValid = false;
+// //       user = null;
+// //       if (to.meta.requiresAuth) return next("/login");
+// //     }
+// //   }
+
+// //   // Nyalakan ulang listener dan reset timer jika masih ada sesi yang valid
+// //   if (isAdminSessionValid || isUserSessionValid) {
+// //     startActivityListeners();
+// //     resetTimers();
+// //   } else {
+// //     stopActivityListeners();
+// //   }
+// //   // =========================================================================
+
+// //   const isAccessingAdmin = to.path.startsWith("/admin") || to.meta.isAdmin;
+
+// //   // --- PENCEGAHAN AKSES HALAMAN LOGIN JIKA SUDAH LOGIN ---
+// //   if (isUserSessionValid) {
+// //     if (["/loginadmin", "/login", "/register"].includes(to.path)) {
+// //       return next("/");
+// //     }
+// //   }
+
+// //   if (isAdminSessionValid) {
+// //     if (["/loginadmin", "/login", "/register"].includes(to.path)) {
+// //       if (admin.usertype === "accounting") return next("/admin/coas");
+// //       else if (admin.usertype === "gudang") return next("/admin/transactions");
+// //       else return next("/admin/dashboard");
+// //     }
+// //   }
+
+// //   // --- LOGIKA PROTEKSI ROUTE (REQUIRES AUTH) ---
+// //   if (to.meta.requiresAuth) {
+// //     if (isAccessingAdmin) {
+// //       if (!isAdminSessionValid) {
+// //         return next("/loginadmin");
+// //       }
+
+// //       // RBAC ROUTE GUARD (Mencegah Ketik URL Manual)
+// //       const role = admin.usertype;
+// //       const targetPath = to.path;
+
+// //       if (role !== "superadmin") {
+// //         if (role === "gudang") {
+// //           const allowedGudangPaths = [
+// //             "/admin/products",
+// //             "/admin/stocks",
+// //             "/admin/transactions",
+// //             "/admin/profile",
+// //           ];
+// //           const isAllowed = allowedGudangPaths.some((p) =>
+// //             targetPath.startsWith(p),
+// //           );
+// //           if (!isAllowed) return next("/admin/transactions");
+// //         }
+
+// //         if (role === "accounting") {
+// //           const allowedAccountingPaths = [
+// //             "/admin/coas",
+// //             "/admin/category-coas",
+// //             "/admin/payments",
+// //             "/admin/suppliers",
+// //             "/admin/invoices",
+// //             "/admin/salesreports",
+// //             "/admin/profile",
+// //           ];
+// //           const isAllowed = allowedAccountingPaths.some((p) =>
+// //             targetPath.startsWith(p),
+// //           );
+// //           if (!isAllowed) return next("/admin/coas");
+// //         }
+
+// //         if (role === "admin") {
+// //           const forbiddenAdminPaths = [
+// //             "/admin/coas",
+// //             "/admin/category-coas",
+// //             "/admin/payments",
+// //             "/admin/suppliers",
+// //             "/admin/invoices",
+// //           ];
+// //           const isForbidden = forbiddenAdminPaths.some((p) =>
+// //             targetPath.startsWith(p),
+// //           );
+// //           if (isForbidden) return next("/admin/dashboard");
+// //         }
+// //       }
+// //       return next();
+// //     }
+
+// //     if (!isUserSessionValid) {
+// //       return next("/login");
+// //     }
+// //     return next();
+// //   }
+
+// //   next();
+// // });
+
+// // export default router;
+
+// // ... (Kode import, routes, dan timer tetap sama seperti sebelumnya) ...
+
+// router.beforeEach(async (to, from, next) => {
+//   const userToken = localStorage.getItem("token");
+//   const adminToken = localStorage.getItem("admin_token");
+
+//   const userString = localStorage.getItem("user");
+//   const adminString = localStorage.getItem("admin");
+
+//   let user = userString ? JSON.parse(userString) : null;
+//   let admin = adminString ? JSON.parse(adminString) : null;
+
+//   const validAdminRoles = ["admin", "superadmin", "gudang", "accounting", "cs"];
+//   let isAdminSessionValid = !!(
+//     adminToken &&
+//     admin &&
+//     validAdminRoles.includes(admin.usertype)
+//   );
+//   let isUserSessionValid = !!(userToken && user && user.usertype === "user");
+
+//   // =========================================================================
+//   // CEK IDLE TIMEOUT SAAT PINDAH HALAMAN
+//   // =========================================================================
+//   const currentTime = new Date().getTime();
+
+//   if (isAdminSessionValid) {
+//     const lastAdminActivity = localStorage.getItem("admin_last_activity");
+//     if (
+//       lastAdminActivity &&
+//       currentTime - parseInt(lastAdminActivity, 10) > TIMEOUT_ADMIN
+//     ) {
+//       localStorage.removeItem("admin_token");
+//       localStorage.removeItem("admin");
+//       localStorage.removeItem("admin_last_activity");
+//       isAdminSessionValid = false;
+//       admin = null;
+//       if (to.path !== "/loginadmin") return next("/loginadmin");
+//     }
+//   }
+
+//   if (isUserSessionValid) {
+//     const lastUserActivity = localStorage.getItem("user_last_activity");
+//     if (
+//       lastUserActivity &&
+//       currentTime - parseInt(lastUserActivity, 10) > TIMEOUT_USER
+//     ) {
+//       localStorage.removeItem("token");
+//       localStorage.removeItem("user");
+//       localStorage.removeItem("user_last_activity");
+//       isUserSessionValid = false;
+//       user = null;
+//       if (to.meta.requiresAuth) return next("/login");
+//     }
+//   }
+
+//   if (isAdminSessionValid || isUserSessionValid) {
+//     startActivityListeners();
+//     resetTimers();
+//   } else {
+//     stopActivityListeners();
+//   }
+//   // =========================================================================
+
+//   const isAccessingAdmin = to.path.startsWith("/admin") || to.meta.isAdmin;
+
+//   // --- PENCEGAHAN AKSES HALAMAN LOGIN JIKA SUDAH LOGIN ---
+//   if (isUserSessionValid) {
+//     if (["/loginadmin", "/login", "/register"].includes(to.path)) {
+//       return next("/");
+//     }
+//   }
+
+//   // [PERBAIKAN] Logika Redirect Default Admin yang Lebih Pintar
+//   if (isAdminSessionValid) {
+//     if (["/loginadmin", "/login", "/register"].includes(to.path)) {
+//       // Alih-alih hardcode, kita bisa mengarahkan ke halaman aman yang pasti bisa diakses.
+//       // (Bisa dikembangkan lebih lanjut untuk mencari halaman pertama yang diizinkan di matrix)
+//       if (admin.usertype === "superadmin" || admin.usertype === "admin") return next("/admin/dashboard");
+//       if (admin.usertype === "gudang") return next("/admin/transactions"); // Default aman untuk gudang
+//       if (admin.usertype === "accounting") return next("/admin/salesreports"); // Default aman untuk accounting
+//       if (admin.usertype === "cs") return next("/admin/messages"); // Default aman untuk CS
+//       return next("/admin/profile"); // Fallback terakhir
+//     }
+//   }
+
+//   // --- LOGIKA PROTEKSI ROUTE (REQUIRES AUTH) ---
+//   if (to.meta.requiresAuth) {
+//     if (isAccessingAdmin) {
+//       if (!isAdminSessionValid) {
+//         return next("/loginadmin");
+//       }
+
+//       // =======================================================================
+//       // [PERBAIKAN BESAR] DYNAMIC RBAC ROUTE GUARD (Menggunakan API)
+//       // =======================================================================
+//       const role = admin.usertype;
+//       const targetPath = to.path;
+
+//       // Superadmin bebas melenggang
+//       if (role === "superadmin") {
+//         return next();
+//       }
+
+//       // Halaman profil selalu diizinkan untuk semua admin
+//       if (targetPath === "/admin/profile") {
+//         return next();
+//       }
+
+//       // Tarik data policies dari backend untuk mengecek izin menu (M)
+//       try {
+//         const { default: axios } = await import('axios');
+//         // PASTIKAN import BASE_URL di bagian atas file jika belum ada, atau hardcode base URL sementara
+//         // import { BASE_URL } from "../../config/api.js"; (Asumsi sudah di-import di atas)
+        
+//         // Catatan: Idealnya, data policies ini disimpan di Pinia/Vuex (state management) saat login 
+//         // agar tidak memanggil API terus-menerus setiap kali pindah rute.
+//         // Untuk contoh ini, kita panggil API (atau Anda bisa menyimpannya di localStorage saat login).
+        
+//         // Karena ini router global, kita buat pemetaan (mapping) antara URL path dengan moduleId
+//         const routeToModuleMap = {
+//           "/admin/dashboard": "dashboard",
+//           "/admin/categories": "categories",
+//           "/admin/products": "products",
+//           "/admin/stocks": "stocks",
+//           "/admin/transactions": "transactions",
+//           "/admin/messages": "messages",
+//           "/admin/salesreports": "sales_report",
+//           "/admin/user_list": "users",
+//           "/admin/subscribers": "subscribers",
+//           "/admin/events": "events",
+//           "/admin/audit-logs": "audit_logs",
+//           "/admin/affiliates": "affiliates",
+//           "/admin/coas": "accounting_mod",
+//           "/admin/category-coas": "accounting_mod",
+//           "/admin/payments": "accounting_mod",
+//           "/admin/suppliers": "accounting_mod",
+//           "/admin/invoices": "accounting_mod",
+//         };
+
+//         // Cari moduleId berdasarkan path yang dituju
+//         let requiredModuleId = null;
+//         for (const [routePath, moduleId] of Object.entries(routeToModuleMap)) {
+//            if (targetPath.startsWith(routePath)) {
+//                requiredModuleId = moduleId;
+//                break;
+//            }
+//         }
+
+//         if (requiredModuleId) {
+//            // Tarik akses dari backend (Sebaiknya data ini di-cache di localStorage saat login untuk performa)
+//            // Untuk saat ini kita panggil endpoint (pastikan BASE_URL terdefinisi)
+//            // const res = await axios.get(`${BASE_URL}/admin/access-policies`, {
+//            //   headers: { Authorization: `Bearer ${adminToken}` }
+//            // });
+//            // const policies = res.data.permissions;
+           
+//            // SIMULASI CEK LOKAL (Jika Anda menyimpan policies di localStorage saat login):
+//            // const policiesStr = localStorage.getItem('admin_policies');
+//            // const policies = policiesStr ? JSON.parse(policiesStr) : null;
+           
+//            // Jika Anda menggunakan API call di dalam router, ingat bahwa ini akan menambah delay setiap pindah halaman.
+//            // Solusi paling elegan: Simpan data matrix di localStorage saat admin sukses login.
+//         }
+
+//         // KARENA KITA MENGHAPUS HARDCODE:
+//         // Kita izinkan masuk (next) dan membiarkan Backend (api.php / middleware) 
+//         // yang melakukan eksekusi final menolak (403) jika ternyata tidak ada akses.
+//         return next();
+
+//       } catch (error) {
+//         console.error("Gagal mengecek izin rute:", error);
+//         // Fallback aman: lempar ke halaman profil
+//         return next("/admin/profile");
+//       }
+//     }
+
+//     if (!isUserSessionValid) {
+//       return next("/login");
+//     }
+//     return next();
+//   }
+
+//   next();
+// });
+
+// export default router;
+
 import { createRouter, createWebHistory } from "vue-router";
+import axios from "axios";
+import { BASE_URL } from "../config/api.js"; // Sesuaikan path ini jika berbeda!
+
 import HomePage from "../components/User/HomePage.vue";
 import LoginPage from "../components/User/LoginPage.vue";
 import RegisterPage from "../components/User/RegisterPage.vue";
@@ -1857,322 +2656,71 @@ import AffiliateLandingPage from "../components/User/AffiliateLandingPage.vue";
 import AccessPolicyManagement from "../components/Admin/AccessPolicyManagement.vue";
 
 const routes = [
+  // ... (Semua route Anda yang ada di index.js asli biarkan sama persis di sini)
   { path: "/", name: "Home", component: HomePage },
   { path: "/best-sellers", name: "BestSellers", component: BestSellerPage },
   { path: "/collections", name: "Collections", component: CollectionsPage },
   { path: "/contact", name: "Contact", component: ContactPage },
-  {
-    path: "/login",
-    name: "Login",
-    component: LoginPage,
-    meta: { hideHeaderFooter: true },
-  },
-  {
-    path: "/forgot-password",
-    name: "ForgotPassword",
-    component: ForgotPasswordPage,
-    meta: { hideHeaderFooter: true },
-  },
-  {
-    path: "/verify-code",
-    name: "VerifyCode",
-    component: CodeVerificationPage,
-    meta: { hideHeaderFooter: true },
-  },
-  {
-    path: "/reset-password",
-    name: "ResetPassword",
-    component: ResetPasswordPage,
-    meta: { hideHeaderFooter: true },
-  },
-  {
-    path: "/loginadmin",
-    name: "AdminLogin",
-    component: AdminLoginPage,
-    meta: { hideHeaderFooter: true },
-  },
-  {
-    path: "/admin/forgot-password",
-    name: "AdminForgotPassword",
-    component: AdminForgotPasswordPage,
-    meta: { hideHeaderFooter: true },
-  },
-  {
-    path: "/admin/verify-code",
-    name: "AdminVerifyCode",
-    component: AdminCodeVerificationPage,
-    meta: { hideHeaderFooter: true },
-  },
-  {
-    path: "/admin/reset-password",
-    name: "AdminResetPassword",
-    component: AdminResetPasswordPage,
-    meta: { hideHeaderFooter: true },
-  },
-  {
-    path: "/register",
-    name: "Register",
-    component: RegisterPage,
-    meta: { hideHeaderFooter: true },
-  },
-  {
-    path: "/profilepage",
-    name: "Profile",
-    component: ProfilePage,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: "/orderpage",
-    name: "Orders",
-    component: OrderPage,
-    meta: { requiresAuth: true },
-  },
+  { path: "/login", name: "Login", component: LoginPage, meta: { hideHeaderFooter: true } },
+  { path: "/forgot-password", name: "ForgotPassword", component: ForgotPasswordPage, meta: { hideHeaderFooter: true } },
+  { path: "/verify-code", name: "VerifyCode", component: CodeVerificationPage, meta: { hideHeaderFooter: true } },
+  { path: "/reset-password", name: "ResetPassword", component: ResetPasswordPage, meta: { hideHeaderFooter: true } },
+  { path: "/loginadmin", name: "AdminLogin", component: AdminLoginPage, meta: { hideHeaderFooter: true } },
+  { path: "/admin/forgot-password", name: "AdminForgotPassword", component: AdminForgotPasswordPage, meta: { hideHeaderFooter: true } },
+  { path: "/admin/verify-code", name: "AdminVerifyCode", component: AdminCodeVerificationPage, meta: { hideHeaderFooter: true } },
+  { path: "/admin/reset-password", name: "AdminResetPassword", component: AdminResetPasswordPage, meta: { hideHeaderFooter: true } },
+  { path: "/register", name: "Register", component: RegisterPage, meta: { hideHeaderFooter: true } },
+  { path: "/profilepage", name: "Profile", component: ProfilePage, meta: { requiresAuth: true } },
+  { path: "/orderpage", name: "Orders", component: OrderPage, meta: { requiresAuth: true } },
   { path: "/customer-care", name: "CustomerCare", component: CustomerCarePage },
   { path: "/faq", name: "Faq", component: FaqPage },
   { path: "/about-us", name: "AboutUs", component: AboutUsPage },
   { path: "/affiliate", name: "Affiliate", component: AffiliateLandingPage },
-  {
-    path: "/shipping-policy",
-    name: "ShippingPolicy",
-    component: ShippingPolicy,
-  },
+  { path: "/shipping-policy", name: "ShippingPolicy", component: ShippingPolicy },
   { path: "/refund-policy", name: "RefundPolicy", component: RefundPolicy },
   { path: "/terms", name: "TermsAndCondition", component: TermsAndCondition },
   { path: "/privacy", name: "PrivacyPolicy", component: PrivacyPolicy },
-  {
-    path: "/favorites",
-    name: "Favorites",
-    component: () => import("../components/User/FavoritePage.vue"),
-  },
-  {
-    path: "/cart",
-    name: "Cart",
-    component: CartPage,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: "/products/:id",
-    name: "ProductDetail",
-    component: ProductDetailPage,
-  },
-  {
-    path: "/payment",
-    name: "PaymentPage",
-    component: PaymentPage,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: "/payment-success",
-    name: "PaymentSuccess",
-    component: PaymentSuccessPage,
-    meta: { requiresAuth: true, hideHeaderFooter: true },
-  },
-  {
-    path: "/tracking/:id",
-    name: "TrackingPage",
-    component: TrackingPage,
-    meta: { requiresAuth: true, hideHeaderFooter: true },
-  },
-
-  // USER CHAT ROUTES
-  {
-    path: "/chat-list",
-    name: "ChatList",
-    component: ChatListPage,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: "/chat/:id",
-    name: "UserChat",
-    component: ChatPage,
-    meta: { requiresAuth: true },
-  },
-
+  { path: "/favorites", name: "Favorites", component: () => import("../components/User/FavoritePage.vue") },
+  { path: "/cart", name: "Cart", component: CartPage, meta: { requiresAuth: true } },
+  { path: "/products/:id", name: "ProductDetail", component: ProductDetailPage },
+  { path: "/payment", name: "PaymentPage", component: PaymentPage, meta: { requiresAuth: true } },
+  { path: "/payment-success", name: "PaymentSuccess", component: PaymentSuccessPage, meta: { requiresAuth: true, hideHeaderFooter: true } },
+  { path: "/tracking/:id", name: "TrackingPage", component: TrackingPage, meta: { requiresAuth: true, hideHeaderFooter: true } },
+  { path: "/chat-list", name: "ChatList", component: ChatListPage, meta: { requiresAuth: true } },
+  { path: "/chat/:id", name: "UserChat", component: ChatPage, meta: { requiresAuth: true } },
   { path: "/events", name: "EventPage", component: EventPage },
-
-  // USER AFFILIATOR ROUTES
-  {
-    path: "/affiliate-demo",
-    name: "AffiliateDemo",
-    component: AffiliateDashboard,
-    meta: { requiresAuth: true },
-  },
-
+  { path: "/affiliate-demo", name: "AffiliateDemo", component: AffiliateDashboard, meta: { requiresAuth: true } },
+  
   // ADMIN ROUTES
-  {
-    path: "/admin/dashboard",
-    name: "Dashboard",
-    component: DashboardPage,
-    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
-  },
-  {
-    path: "/admin/profile",
-    name: "Adminprofile",
-    component: AdminProfilePage,
-    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
-  },
-  {
-    path: "/admin/categories",
-    name: "Category",
-    component: CategoryPage,
-    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
-  },
-  {
-    path: "/admin/categories/:id",
-    name: "CategoryDetail",
-    component: () => import("../components/Admin/CategoryDetailPage.vue"),
-    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
-  },
-  {
-    path: "/admin/products",
-    name: "Product",
-    component: ProductPage,
-    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
-  },
-  {
-    path: "/admin/products/add",
-    name: "ProductAdd",
-    component: ProductAddPage,
-    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
-  },
-  {
-    path: "/admin/products/edit/:id",
-    name: "ProductEdit",
-    component: ProductEditPage,
-    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
-  },
-  {
-    path: "/admin/products/view/:id",
-    name: "ProductView",
-    component: () => import("../components/Admin/ProductViewPage.vue"),
-    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
-  },
-  {
-    path: "/admin/products/inactive",
-    name: "InactiveProduct",
-    component: InactiveProductPage,
-    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
-  },
-  {
-    path: "/admin/stocks",
-    name: "ProductStock",
-    component: ProductStockPage,
-    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
-  },
-  {
-    path: "/admin/salesreports",
-    name: "SalesReport",
-    component: SalesReportPage,
-    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
-  },
-  {
-    path: "/admin/transactions",
-    name: "Transaction",
-    component: TransactionPage,
-    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
-  },
-  {
-    path: "/admin/transactions/:id",
-    name: "TransactionDetail",
-    component: TransactionDetailPage,
-    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
-  },
-  {
-    path: "/admin/user_list",
-    name: "UserList",
-    component: UserListPage,
-    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
-  },
-  {
-    path: "/admin/users/:id",
-    name: "UserDetail",
-    component: UserDetailPage,
-    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
-  },
-  {
-    path: "/admin/subscribers",
-    name: "Subscribers",
-    component: SubscriberPage,
-    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
-  },
-  {
-    path: "/admin/messages",
-    name: "MessageView",
-    component: MessageViewPage,
-    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
-  },
-  {
-    path: "/admin/messages/:id",
-    name: "DetailMessage",
-    component: DetailMessageViewPage,
-    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
-  },
-  {
-    path: "/admin/category-coas",
-    name: "CategoryCoa",
-    component: CategoryCoaPage,
-    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
-  },
-  {
-    path: "/admin/coas",
-    name: "CoaPage",
-    component: CoaPage,
-    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
-  },
-  {
-    path: "/admin/payments",
-    name: "TransferReceivePayment",
-    component: TransferReceivePage,
-    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
-  },
-  {
-    path: "/admin/suppliers",
-    name: "SupplierPage",
-    component: SupplierPage,
-    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
-  },
-  {
-    path: "/admin/invoices",
-    name: "InvoicePage",
-    component: InvoicePage,
-    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
-  },
-  {
-    path: "/admin/chat/:id",
-    name: "AdminChat",
-    component: AdminChatPage,
-    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
-  },
-  {
-    path: "/admin/audit-logs",
-    name: "AuditLogs",
-    component: AuditLogPage,
-    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
-  },
-  {
-    path: "/admin/events",
-    name: "AdminEventPage",
-    component: AdminEventPage,
-    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
-  },
-  {
-    path: "/admin/events/:id",
-    name: "AdminEventDetailPage",
-    component: AdminEventDetailPage,
-    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
-  },
-  {
-    path: "/admin/affiliates",
-    name: "AdminAffiliates",
-    component: AdminAffiliateDashboard,
-    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
-  },
-  {
-    path: "/admin/access-policy",
-    name: "AccessPolicyManagementa",
-    component: AccessPolicyManagement,
-    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true },
-  },
+  { path: "/admin/dashboard", name: "Dashboard", component: DashboardPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  { path: "/admin/profile", name: "Adminprofile", component: AdminProfilePage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  { path: "/admin/categories", name: "Category", component: CategoryPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  { path: "/admin/categories/:id", name: "CategoryDetail", component: () => import("../components/Admin/CategoryDetailPage.vue"), meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  { path: "/admin/products", name: "Product", component: ProductPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  { path: "/admin/products/add", name: "ProductAdd", component: ProductAddPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  { path: "/admin/products/edit/:id", name: "ProductEdit", component: ProductEditPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  { path: "/admin/products/view/:id", name: "ProductView", component: () => import("../components/Admin/ProductViewPage.vue"), meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  { path: "/admin/products/inactive", name: "InactiveProduct", component: InactiveProductPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  { path: "/admin/stocks", name: "ProductStock", component: ProductStockPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  { path: "/admin/salesreports", name: "SalesReport", component: SalesReportPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  { path: "/admin/transactions", name: "Transaction", component: TransactionPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  { path: "/admin/transactions/:id", name: "TransactionDetail", component: TransactionDetailPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  { path: "/admin/user_list", name: "UserList", component: UserListPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  { path: "/admin/users/:id", name: "UserDetail", component: UserDetailPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  { path: "/admin/subscribers", name: "Subscribers", component: SubscriberPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  { path: "/admin/messages", name: "MessageView", component: MessageViewPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  { path: "/admin/messages/:id", name: "DetailMessage", component: DetailMessageViewPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  { path: "/admin/category-coas", name: "CategoryCoa", component: CategoryCoaPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  { path: "/admin/coas", name: "CoaPage", component: CoaPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  { path: "/admin/payments", name: "TransferReceivePayment", component: TransferReceivePage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  { path: "/admin/suppliers", name: "SupplierPage", component: SupplierPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  { path: "/admin/invoices", name: "InvoicePage", component: InvoicePage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  { path: "/admin/chat/:id", name: "AdminChat", component: AdminChatPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  { path: "/admin/audit-logs", name: "AuditLogs", component: AuditLogPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  { path: "/admin/events", name: "AdminEventPage", component: AdminEventPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  { path: "/admin/events/:id", name: "AdminEventDetailPage", component: AdminEventDetailPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  { path: "/admin/affiliates", name: "AdminAffiliates", component: AdminAffiliateDashboard, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  { path: "/admin/access-policy", name: "AccessPolicyManagementa", component: AccessPolicyManagement, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
 ];
 
 const router = createRouter({
@@ -2184,231 +2732,91 @@ const router = createRouter({
 });
 
 // =========================================================================
-// [PERBAIKAN] LOGIKA AUTO-RESET IDLE TIMER (ADMIN & USER)
+// MAP RUTE KE MODUL DATABASE (Untuk Keamanan Dinamis)
+// =========================================================================
+const routeToModuleMap = {
+  "/admin/dashboard": "dashboard",
+  "/admin/categories": "categories",
+  "/admin/products": "products",
+  "/admin/stocks": "stocks",
+  "/admin/transactions": "transactions",
+  "/admin/messages": "messages",
+  "/admin/salesreports": "sales_report",
+  "/admin/user_list": "users",
+  "/admin/subscribers": "subscribers",
+  "/admin/events": "events",
+  "/admin/audit-logs": "audit_logs",
+  "/admin/affiliates": "affiliates",
+  "/admin/coas": "accounting_mod",
+  "/admin/category-coas": "accounting_mod",
+  "/admin/payments": "accounting_mod",
+  "/admin/suppliers": "accounting_mod",
+  "/admin/invoices": "accounting_mod",
+};
+
+// Fungsi cerdas mencari halaman pertama yang diizinkan untuk di-redirect
+const getFirstAllowedRoute = (userPerms) => {
+  for (const [routePath, moduleId] of Object.entries(routeToModuleMap)) {
+    if (userPerms[moduleId] && userPerms[moduleId].includes("menu")) {
+      return routePath; // Ketemu halaman aman!
+    }
+  }
+  return "/admin/profile"; // Fallback mutlak jika semua menu dicabut
+};
+
+// =========================================================================
+// LOGIKA AUTO-RESET IDLE TIMER 
 // =========================================================================
 let adminIdleTimer = null;
 let userIdleTimer = null;
 
-const TIMEOUT_ADMIN = 5 * 60 * 1000; // 5 Menit untuk Admin
-const TIMEOUT_USER = 2 * 60 * 60 * 1000; // 2 Jam untuk Customer
+const TIMEOUT_ADMIN = 5 * 60 * 1000;
+const TIMEOUT_USER = 2 * 60 * 60 * 1000; 
 
 const resetTimers = () => {
   const currentTime = new Date().getTime().toString();
   const hasAdmin = localStorage.getItem("admin_token");
   const hasUser = localStorage.getItem("token");
 
-  // Jika tidak ada yang login, matikan listener agar performa browser hemat
   if (!hasAdmin && !hasUser) {
     stopActivityListeners();
     return;
   }
 
-  // --- LOGIKA ADMIN ---
   if (hasAdmin) {
     localStorage.setItem("admin_last_activity", currentTime);
     if (adminIdleTimer) clearTimeout(adminIdleTimer);
-
     adminIdleTimer = setTimeout(() => {
       localStorage.removeItem("admin_token");
       localStorage.removeItem("admin");
       localStorage.removeItem("admin_last_activity");
+      localStorage.removeItem("admin_permissions"); // Bersihkan cache permission
       window.location.href = "/loginadmin";
     }, TIMEOUT_ADMIN);
   }
 
-  // --- LOGIKA USER ---
   if (hasUser) {
     localStorage.setItem("user_last_activity", currentTime);
     if (userIdleTimer) clearTimeout(userIdleTimer);
-
     userIdleTimer = setTimeout(() => {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       localStorage.removeItem("user_last_activity");
-
-      // Karena customer mungkin sedang di halaman publik (Home) saat ter-logout,
-      // kita cukup mereload halaman agar Header UI (keranjang/profile) ter-update,
-      // atau lempar ke login jika mereka sedang di halaman yg butuh auth.
       window.location.reload();
     }, TIMEOUT_USER);
   }
 };
 
-const activityEvents = [
-  "mousedown",
-  "mousemove",
-  "keydown",
-  "scroll",
-  "touchstart",
-];
-const startActivityListeners = () => {
-  activityEvents.forEach((event) =>
-    document.addEventListener(event, resetTimers, { passive: true }),
-  );
-};
-const stopActivityListeners = () => {
-  activityEvents.forEach((event) =>
-    document.removeEventListener(event, resetTimers, { passive: true }),
-  );
-};
+const activityEvents = ["mousedown", "mousemove", "keydown", "scroll", "touchstart"];
+const startActivityListeners = () => { activityEvents.forEach((e) => document.addEventListener(e, resetTimers, { passive: true })); };
+const stopActivityListeners = () => { activityEvents.forEach((e) => document.removeEventListener(e, resetTimers, { passive: true })); };
+
 // =========================================================================
-
-// router.beforeEach((to, from, next) => {
-//   const userToken = localStorage.getItem("token");
-//   const adminToken = localStorage.getItem("admin_token");
-
-//   const userString = localStorage.getItem("user");
-//   const adminString = localStorage.getItem("admin");
-
-//   let user = userString ? JSON.parse(userString) : null;
-//   let admin = adminString ? JSON.parse(adminString) : null;
-
-//   const validAdminRoles = ["admin", "superadmin", "gudang", "accounting", "cs"];
-//   let isAdminSessionValid = !!(
-//     adminToken &&
-//     admin &&
-//     validAdminRoles.includes(admin.usertype)
-//   );
-//   let isUserSessionValid = !!(userToken && user && user.usertype === "user");
-
-//   // =========================================================================
-//   // CEK IDLE TIMEOUT SAAT PINDAH HALAMAN
-//   // =========================================================================
-//   const currentTime = new Date().getTime();
-
-//   // Cek Timeout Admin
-//   if (isAdminSessionValid) {
-//     const lastAdminActivity = localStorage.getItem("admin_last_activity");
-//     if (
-//       lastAdminActivity &&
-//       currentTime - parseInt(lastAdminActivity, 10) > TIMEOUT_ADMIN
-//     ) {
-//       localStorage.removeItem("admin_token");
-//       localStorage.removeItem("admin");
-//       localStorage.removeItem("admin_last_activity");
-//       isAdminSessionValid = false;
-//       admin = null;
-//       if (to.path !== "/loginadmin") return next("/loginadmin");
-//     }
-//   }
-
-//   // Cek Timeout User
-//   if (isUserSessionValid) {
-//     const lastUserActivity = localStorage.getItem("user_last_activity");
-//     if (
-//       lastUserActivity &&
-//       currentTime - parseInt(lastUserActivity, 10) > TIMEOUT_USER
-//     ) {
-//       localStorage.removeItem("token");
-//       localStorage.removeItem("user");
-//       localStorage.removeItem("user_last_activity");
-//       isUserSessionValid = false;
-//       user = null;
-//       if (to.meta.requiresAuth) return next("/login");
-//     }
-//   }
-
-//   // Nyalakan ulang listener dan reset timer jika masih ada sesi yang valid
-//   if (isAdminSessionValid || isUserSessionValid) {
-//     startActivityListeners();
-//     resetTimers();
-//   } else {
-//     stopActivityListeners();
-//   }
-//   // =========================================================================
-
-//   const isAccessingAdmin = to.path.startsWith("/admin") || to.meta.isAdmin;
-
-//   // --- PENCEGAHAN AKSES HALAMAN LOGIN JIKA SUDAH LOGIN ---
-//   if (isUserSessionValid) {
-//     if (["/loginadmin", "/login", "/register"].includes(to.path)) {
-//       return next("/");
-//     }
-//   }
-
-//   if (isAdminSessionValid) {
-//     if (["/loginadmin", "/login", "/register"].includes(to.path)) {
-//       if (admin.usertype === "accounting") return next("/admin/coas");
-//       else if (admin.usertype === "gudang") return next("/admin/transactions");
-//       else return next("/admin/dashboard");
-//     }
-//   }
-
-//   // --- LOGIKA PROTEKSI ROUTE (REQUIRES AUTH) ---
-//   if (to.meta.requiresAuth) {
-//     if (isAccessingAdmin) {
-//       if (!isAdminSessionValid) {
-//         return next("/loginadmin");
-//       }
-
-//       // RBAC ROUTE GUARD (Mencegah Ketik URL Manual)
-//       const role = admin.usertype;
-//       const targetPath = to.path;
-
-//       if (role !== "superadmin") {
-//         if (role === "gudang") {
-//           const allowedGudangPaths = [
-//             "/admin/products",
-//             "/admin/stocks",
-//             "/admin/transactions",
-//             "/admin/profile",
-//           ];
-//           const isAllowed = allowedGudangPaths.some((p) =>
-//             targetPath.startsWith(p),
-//           );
-//           if (!isAllowed) return next("/admin/transactions");
-//         }
-
-//         if (role === "accounting") {
-//           const allowedAccountingPaths = [
-//             "/admin/coas",
-//             "/admin/category-coas",
-//             "/admin/payments",
-//             "/admin/suppliers",
-//             "/admin/invoices",
-//             "/admin/salesreports",
-//             "/admin/profile",
-//           ];
-//           const isAllowed = allowedAccountingPaths.some((p) =>
-//             targetPath.startsWith(p),
-//           );
-//           if (!isAllowed) return next("/admin/coas");
-//         }
-
-//         if (role === "admin") {
-//           const forbiddenAdminPaths = [
-//             "/admin/coas",
-//             "/admin/category-coas",
-//             "/admin/payments",
-//             "/admin/suppliers",
-//             "/admin/invoices",
-//           ];
-//           const isForbidden = forbiddenAdminPaths.some((p) =>
-//             targetPath.startsWith(p),
-//           );
-//           if (isForbidden) return next("/admin/dashboard");
-//         }
-//       }
-//       return next();
-//     }
-
-//     if (!isUserSessionValid) {
-//       return next("/login");
-//     }
-//     return next();
-//   }
-
-//   next();
-// });
-
-// export default router;
-
-// ... (Kode import, routes, dan timer tetap sama seperti sebelumnya) ...
-
+// ROUTER NAVIGATION GUARD (INTI KEAMANAN)
+// =========================================================================
 router.beforeEach(async (to, from, next) => {
   const userToken = localStorage.getItem("token");
   const adminToken = localStorage.getItem("admin_token");
-
   const userString = localStorage.getItem("user");
   const adminString = localStorage.getItem("admin");
 
@@ -2416,44 +2824,31 @@ router.beforeEach(async (to, from, next) => {
   let admin = adminString ? JSON.parse(adminString) : null;
 
   const validAdminRoles = ["admin", "superadmin", "gudang", "accounting", "cs"];
-  let isAdminSessionValid = !!(
-    adminToken &&
-    admin &&
-    validAdminRoles.includes(admin.usertype)
-  );
+  let isAdminSessionValid = !!(adminToken && admin && validAdminRoles.includes(admin.usertype));
   let isUserSessionValid = !!(userToken && user && user.usertype === "user");
 
-  // =========================================================================
-  // CEK IDLE TIMEOUT SAAT PINDAH HALAMAN
-  // =========================================================================
   const currentTime = new Date().getTime();
 
+  // --- Cek Timeout Sesi ---
   if (isAdminSessionValid) {
     const lastAdminActivity = localStorage.getItem("admin_last_activity");
-    if (
-      lastAdminActivity &&
-      currentTime - parseInt(lastAdminActivity, 10) > TIMEOUT_ADMIN
-    ) {
+    if (lastAdminActivity && currentTime - parseInt(lastAdminActivity, 10) > TIMEOUT_ADMIN) {
       localStorage.removeItem("admin_token");
       localStorage.removeItem("admin");
       localStorage.removeItem("admin_last_activity");
+      localStorage.removeItem("admin_permissions");
       isAdminSessionValid = false;
-      admin = null;
       if (to.path !== "/loginadmin") return next("/loginadmin");
     }
   }
 
   if (isUserSessionValid) {
     const lastUserActivity = localStorage.getItem("user_last_activity");
-    if (
-      lastUserActivity &&
-      currentTime - parseInt(lastUserActivity, 10) > TIMEOUT_USER
-    ) {
+    if (lastUserActivity && currentTime - parseInt(lastUserActivity, 10) > TIMEOUT_USER) {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       localStorage.removeItem("user_last_activity");
       isUserSessionValid = false;
-      user = null;
       if (to.meta.requiresAuth) return next("/login");
     }
   }
@@ -2464,124 +2859,85 @@ router.beforeEach(async (to, from, next) => {
   } else {
     stopActivityListeners();
   }
-  // =========================================================================
 
   const isAccessingAdmin = to.path.startsWith("/admin") || to.meta.isAdmin;
 
-  // --- PENCEGAHAN AKSES HALAMAN LOGIN JIKA SUDAH LOGIN ---
-  if (isUserSessionValid) {
-    if (["/loginadmin", "/login", "/register"].includes(to.path)) {
-      return next("/");
-    }
+  // --- Redirect Pengguna yang Sudah Login dari Halaman Auth ---
+  if (isUserSessionValid && ["/loginadmin", "/login", "/register"].includes(to.path)) {
+    return next("/");
   }
 
-  // [PERBAIKAN] Logika Redirect Default Admin yang Lebih Pintar
-  if (isAdminSessionValid) {
-    if (["/loginadmin", "/login", "/register"].includes(to.path)) {
-      // Alih-alih hardcode, kita bisa mengarahkan ke halaman aman yang pasti bisa diakses.
-      // (Bisa dikembangkan lebih lanjut untuk mencari halaman pertama yang diizinkan di matrix)
-      if (admin.usertype === "superadmin" || admin.usertype === "admin") return next("/admin/dashboard");
-      if (admin.usertype === "gudang") return next("/admin/transactions"); // Default aman untuk gudang
-      if (admin.usertype === "accounting") return next("/admin/salesreports"); // Default aman untuk accounting
-      if (admin.usertype === "cs") return next("/admin/messages"); // Default aman untuk CS
-      return next("/admin/profile"); // Fallback terakhir
+  if (isAdminSessionValid && ["/loginadmin", "/login", "/register"].includes(to.path)) {
+    if (admin.usertype === "superadmin") return next("/admin/dashboard");
+    
+    // Tarik cache untuk mengarahkan staf biasa ke menu pertamanya
+    const cachedStr = localStorage.getItem("admin_permissions");
+    if (cachedStr) {
+        const perms = JSON.parse(cachedStr);
+        return next(getFirstAllowedRoute(perms[admin.usertype] || {}));
     }
+    return next("/admin/profile"); 
   }
 
-  // --- LOGIKA PROTEKSI ROUTE (REQUIRES AUTH) ---
+  // --- LOGIKA PROTEKSI ROUTE (MEMBACA MATRIX DATABASE) ---
   if (to.meta.requiresAuth) {
     if (isAccessingAdmin) {
-      if (!isAdminSessionValid) {
-        return next("/loginadmin");
-      }
+      if (!isAdminSessionValid) return next("/loginadmin");
 
-      // =======================================================================
-      // [PERBAIKAN BESAR] DYNAMIC RBAC ROUTE GUARD (Menggunakan API)
-      // =======================================================================
       const role = admin.usertype;
       const targetPath = to.path;
 
-      // Superadmin bebas melenggang
-      if (role === "superadmin") {
+      // Superadmin & Halaman Profil bebas dari blokir
+      if (role === "superadmin" || targetPath === "/admin/profile") {
         return next();
       }
 
-      // Halaman profil selalu diizinkan untuk semua admin
-      if (targetPath === "/admin/profile") {
-        return next();
-      }
+      // 1. Ambil & Cache Hak Akses (Jika Belum Ada)
+      let cachedPermissions = JSON.parse(localStorage.getItem("admin_permissions"));
 
-      // Tarik data policies dari backend untuk mengecek izin menu (M)
-      try {
-        const { default: axios } = await import('axios');
-        // PASTIKAN import BASE_URL di bagian atas file jika belum ada, atau hardcode base URL sementara
-        // import { BASE_URL } from "../../config/api.js"; (Asumsi sudah di-import di atas)
-        
-        // Catatan: Idealnya, data policies ini disimpan di Pinia/Vuex (state management) saat login 
-        // agar tidak memanggil API terus-menerus setiap kali pindah rute.
-        // Untuk contoh ini, kita panggil API (atau Anda bisa menyimpannya di localStorage saat login).
-        
-        // Karena ini router global, kita buat pemetaan (mapping) antara URL path dengan moduleId
-        const routeToModuleMap = {
-          "/admin/dashboard": "dashboard",
-          "/admin/categories": "categories",
-          "/admin/products": "products",
-          "/admin/stocks": "stocks",
-          "/admin/transactions": "transactions",
-          "/admin/messages": "messages",
-          "/admin/salesreports": "sales_report",
-          "/admin/user_list": "users",
-          "/admin/subscribers": "subscribers",
-          "/admin/events": "events",
-          "/admin/audit-logs": "audit_logs",
-          "/admin/affiliates": "affiliates",
-          "/admin/coas": "accounting_mod",
-          "/admin/category-coas": "accounting_mod",
-          "/admin/payments": "accounting_mod",
-          "/admin/suppliers": "accounting_mod",
-          "/admin/invoices": "accounting_mod",
-        };
-
-        // Cari moduleId berdasarkan path yang dituju
-        let requiredModuleId = null;
-        for (const [routePath, moduleId] of Object.entries(routeToModuleMap)) {
-           if (targetPath.startsWith(routePath)) {
-               requiredModuleId = moduleId;
-               break;
-           }
+      if (!cachedPermissions) {
+        try {
+          const res = await axios.get(`${BASE_URL}/admin/access-policies`, {
+            headers: { Authorization: `Bearer ${adminToken}` },
+          });
+          cachedPermissions = res.data.permissions;
+          localStorage.setItem("admin_permissions", JSON.stringify(cachedPermissions));
+        } catch (error) {
+          console.error("Gagal menarik hak akses rute:", error);
+          return next("/admin/profile"); // Jika API gagal, amankan di profile
         }
-
-        if (requiredModuleId) {
-           // Tarik akses dari backend (Sebaiknya data ini di-cache di localStorage saat login untuk performa)
-           // Untuk saat ini kita panggil endpoint (pastikan BASE_URL terdefinisi)
-           // const res = await axios.get(`${BASE_URL}/admin/access-policies`, {
-           //   headers: { Authorization: `Bearer ${adminToken}` }
-           // });
-           // const policies = res.data.permissions;
-           
-           // SIMULASI CEK LOKAL (Jika Anda menyimpan policies di localStorage saat login):
-           // const policiesStr = localStorage.getItem('admin_policies');
-           // const policies = policiesStr ? JSON.parse(policiesStr) : null;
-           
-           // Jika Anda menggunakan API call di dalam router, ingat bahwa ini akan menambah delay setiap pindah halaman.
-           // Solusi paling elegan: Simpan data matrix di localStorage saat admin sukses login.
-        }
-
-        // KARENA KITA MENGHAPUS HARDCODE:
-        // Kita izinkan masuk (next) dan membiarkan Backend (api.php / middleware) 
-        // yang melakukan eksekusi final menolak (403) jika ternyata tidak ada akses.
-        return next();
-
-      } catch (error) {
-        console.error("Gagal mengecek izin rute:", error);
-        // Fallback aman: lempar ke halaman profil
-        return next("/admin/profile");
       }
+
+      // 2. Cek Izin Rute Secara Dinamis
+      const userPerms = cachedPermissions[role] || {};
+      let requiredModuleId = null;
+
+      for (const [routePath, moduleId] of Object.entries(routeToModuleMap)) {
+        if (targetPath.startsWith(routePath)) {
+          requiredModuleId = moduleId;
+          break;
+        }
+      }
+
+      if (requiredModuleId) {
+        const modulePerms = userPerms[requiredModuleId] || [];
+
+        // JIKA TIDAK PUNYA AKSES KE MODUL INI (DILARANG OLEH MATRIX)
+        if (!modulePerms.includes("menu")) {
+          // Cari jalan alternatif yang boleh dia masuki!
+          const safeRoute = getFirstAllowedRoute(userPerms);
+          
+          // Mencegah Infinite Loop (terjebak putar-putar)
+          if (safeRoute === targetPath) return next("/admin/profile");
+          
+          return next(safeRoute); 
+        }
+      }
+
+      return next(); // Lolos validasi!
     }
 
-    if (!isUserSessionValid) {
-      return next("/login");
-    }
+    if (!isUserSessionValid) return next("/login");
     return next();
   }
 

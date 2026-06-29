@@ -2418,6 +2418,7 @@ const handleLogout = () => {
       localStorage.removeItem("admin");
       localStorage.removeItem("admin_login_time");
       localStorage.removeItem("role");
+      localStorage.removeItem("admin_permissions");
 
       Swal.fire({
         title: "Logged Out!",
