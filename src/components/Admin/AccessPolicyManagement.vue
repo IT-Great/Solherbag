@@ -1070,15 +1070,29 @@ const modules = ref([
     availableActions: ["menu", "create", "read", "update", "delete"],
   },
   { id: "sales_report", name: "Sales Reports", availableActions: ["menu", "read"] },
+  // {
+  //   id: "users",
+  //   name: "User Management",
+  //   availableActions: ["menu", "create", "read", "update", "delete"],
+  // },
   {
     id: "users",
     name: "User Management",
-    availableActions: ["menu", "create", "read", "update", "delete"],
+    // [PERBAIKAN] Hanya sediakan akses Menu dan Read
+    // Karena pembuatan user dilakukan di frontend publik, dan chat diatur oleh modul messages
+    availableActions: ["menu", "read"],
   },
+  // {
+  //   id: "subscribers",
+  //   name: "Subscribers",
+  //   availableActions: ["menu", "create", "read", "update", "delete"],
+  // },
   {
     id: "subscribers",
     name: "Subscribers",
-    availableActions: ["menu", "create", "read", "update", "delete"],
+    // [PERBAIKAN] Hanya sediakan akses Menu dan Read
+    // Karena halaman ini hanya untuk melihat daftar dan detail email subscriber
+    availableActions: ["menu", "read"],
   },
   {
     id: "events",
