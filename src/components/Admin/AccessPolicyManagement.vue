@@ -1100,10 +1100,16 @@ const modules = ref([
     availableActions: ["menu", "create", "read", "update", "delete"],
   },
   { id: "audit_logs", name: "Audit Trail", availableActions: ["menu", "read"] }, // Log aktivitas tidak boleh dimodifikasi
+  // {
+  //   id: "affiliates",
+  //   name: "Affiliate Management",
+  //   availableActions: ["menu", "create", "read", "update", "delete"],
+  // },
   {
     id: "affiliates",
     name: "Affiliate Management",
-    availableActions: ["menu", "create", "read", "update", "delete"],
+    // [PERBAIKAN] Hanya sediakan aksi yang memang digunakan
+    availableActions: ["menu", "read", "update"],
   },
   {
     id: "accounting_mod",

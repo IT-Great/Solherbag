@@ -597,6 +597,7 @@ onMounted(() => {
               </td>
               <td class="px-6 py-4 text-center">
                 <button
+                  v-if="canUpdate || isSuperAdmin"
                   @click="approveApplication(app)"
                   class="px-4 py-2 text-xs font-bold text-white transition-colors bg-blue-600 rounded-lg shadow-sm hover:bg-blue-700"
                 >
@@ -666,7 +667,7 @@ onMounted(() => {
               </td>
               <td class="px-6 py-4 text-center">
                 <button
-                  v-if="req.status === 'pending'"
+                  v-if="req.status === 'pending' && (canUpdate || isSuperAdmin)"
                   @click="markAsTransferred(req)"
                   class="px-4 py-2 text-xs font-bold text-white transition-colors bg-black rounded-lg hover:bg-gray-800"
                 >
@@ -733,6 +734,13 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
 
+// --- STATE PERMISSIONS ---
+const userRole = ref("");
+const isSuperAdmin = computed(() => userRole.value === "superadmin");
+const myPermissions = ref({ read: false, update: false });
+
+const canUpdate = computed(() => myPermissions.value.update);
+
 const activeTab = ref("applications"); // Ubah default tab ke Pendaftar Baru
 const isLoading = ref(true);
 
@@ -745,6 +753,35 @@ const stats = ref({
 const affiliates = ref([]);
 const withdrawals = ref([]);
 const applications = ref([]); // [BARU] State untuk pendaftar
+
+// Fungsi Fetch Permission
+const fetchUserPermissions = async () => {
+  const adminStr = localStorage.getItem("admin");
+  if (adminStr) {
+    const admin = JSON.parse(adminStr);
+    userRole.value = admin.usertype;
+  }
+  if (isSuperAdmin.value) return;
+
+  try {
+    const cachedPerms = localStorage.getItem("admin_permissions");
+    const policies = cachedPerms
+      ? JSON.parse(cachedPerms)
+      : (
+          await axios.get(`${BASE_URL}/admin/access-policies`, {
+            headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
+          })
+        ).data.permissions;
+
+    const affTerms = policies[userRole.value]?.affiliates || [];
+    myPermissions.value = {
+      read: affTerms.includes("read"),
+      update: affTerms.includes("update"),
+    };
+  } catch (error) {
+    console.error("Gagal mengambil kebijakan akses", error);
+  }
+};
 
 const formatPrice = (value) => {
   return new Intl.NumberFormat("id-ID", {
@@ -861,8 +898,14 @@ const markAsTransferred = (req) => {
   });
 };
 
+// onMounted(() => {
+//   fetchAdminDashboard();
+// });
+
 onMounted(() => {
-  fetchAdminDashboard();
+  fetchUserPermissions().then(() => {
+    fetchAdminDashboard();
+  });
 });
 </script>
 
