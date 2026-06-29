@@ -2280,30 +2280,71 @@ const menuItems = [
 ];
 
 // [PERBAIKAN] Logika cerdas untuk menyaring menu
+// const filteredMenuItems = computed(() => {
+//   const clonedMenuItems = JSON.parse(JSON.stringify(menuItems));
+
+//   return clonedMenuItems.filter((item) => {
+//     // Label kategori selalu dirender (bisa di-hide via CSS jika kosong)
+//     if (item.type === "label") return true;
+
+//     // Superadmin punya akses absolut
+//     if (isSuperAdmin.value) return true;
+
+//     // Ambil daftar modul yang diizinkan untuk role yang sedang login
+//     const rolePerms = systemPermissions.value[userRole.value] || {};
+
+//     // Jika menu memiliki sub-menu (seperti Products)
+//     if (item.children) {
+//       item.children = item.children.filter((child) => {
+//         return rolePerms[child.moduleId]?.includes("menu");
+//       });
+//       // Tampilkan parent hanya jika ada minimal 1 child yang diizinkan
+//       return item.children.length > 0;
+//     }
+
+//     // Untuk menu tunggal
+//     return rolePerms[item.moduleId]?.includes("menu");
+//   });
+// });
+
+// [PERBAIKAN] Logika cerdas 2 Tahap untuk menyaring menu & label kosong
 const filteredMenuItems = computed(() => {
   const clonedMenuItems = JSON.parse(JSON.stringify(menuItems));
 
-  return clonedMenuItems.filter((item) => {
-    // Label kategori selalu dirender (bisa di-hide via CSS jika kosong)
-    if (item.type === "label") return true;
+  // TAHAP 1: Saring Menu berdasarkan Role
+  let authorizedItems = clonedMenuItems;
 
-    // Superadmin punya akses absolut
-    if (isSuperAdmin.value) return true;
-
-    // Ambil daftar modul yang diizinkan untuk role yang sedang login
+  if (!isSuperAdmin.value) {
     const rolePerms = systemPermissions.value[userRole.value] || {};
 
-    // Jika menu memiliki sub-menu (seperti Products)
-    if (item.children) {
-      item.children = item.children.filter((child) => {
-        return rolePerms[child.moduleId]?.includes("menu");
-      });
-      // Tampilkan parent hanya jika ada minimal 1 child yang diizinkan
-      return item.children.length > 0;
-    }
+    authorizedItems = clonedMenuItems.filter((item) => {
+      // Biarkan label lolos dulu di Tahap 1
+      if (item.type === "label") return true;
 
-    // Untuk menu tunggal
-    return rolePerms[item.moduleId]?.includes("menu");
+      // Jika menu memiliki sub-menu (seperti Products)
+      if (item.children) {
+        item.children = item.children.filter((child) => {
+          return rolePerms[child.moduleId]?.includes("menu");
+        });
+        // Tampilkan parent hanya jika ada minimal 1 child yang diizinkan
+        return item.children.length > 0;
+      }
+
+      // Untuk menu tunggal
+      return rolePerms[item.moduleId]?.includes("menu");
+    });
+  }
+
+  // TAHAP 2: Bersihkan Label Kategori yang "Dangling" (Kosong)
+  // Sebuah label dianggap kosong jika setelahnya tidak ada item sama sekali,
+  // atau item setelahnya kebetulan adalah label kategori lain.
+  return authorizedItems.filter((item, index, array) => {
+    if (item.type === "label") {
+      const nextItem = array[index + 1];
+      // Pertahankan label HANYA JIKA ada item berikutnya DAN item itu bukan label
+      return nextItem && nextItem.type !== "label";
+    }
+    return true; // Pertahankan semua item menu yang bukan label
   });
 });
 
