@@ -1067,7 +1067,7 @@ const modules = ref([
   {
     id: "messages",
     name: "Messages & Inbox",
-    availableActions: ["menu", "create", "read", "update", "delete"],
+    availableActions: ["menu", "read", "update"],
   },
   { id: "sales_report", name: "Sales Reports", availableActions: ["menu", "read"] },
   // {

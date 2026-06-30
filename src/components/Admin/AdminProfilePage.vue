@@ -633,6 +633,7 @@ import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
 import Breadcrumb from "./Layout/Breadcrumb.vue";
+import defaultProfile from "../../../src/assets/profile.png";
 
 const router = useRouter();
 const adminData = ref(null);
