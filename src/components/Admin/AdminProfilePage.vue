@@ -633,7 +633,6 @@ import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
 import Breadcrumb from "./Layout/Breadcrumb.vue";
-import defaultProfile from "../../../src/assets/profile.png";
 
 const router = useRouter();
 const adminData = ref(null);
@@ -714,9 +713,7 @@ const handleImageUpdate = async (e) => {
 };
 
 const handleImageError = (e) => {
-  // e.target.src = `https://ui-avatars.com/api/?name=${adminData.value.first_name}+${adminData.value.last_name}&background=random`;
-
-  e.target.src = defaultProfile;
+  e.target.src = `https://ui-avatars.com/api/?name=${adminData.value.first_name}+${adminData.value.last_name}&background=random`;
 };
 
 const submitInfoUpdate = async () => {
