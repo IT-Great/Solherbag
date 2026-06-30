@@ -714,7 +714,9 @@ const handleImageUpdate = async (e) => {
 };
 
 const handleImageError = (e) => {
-  e.target.src = `https://ui-avatars.com/api/?name=${adminData.value.first_name}+${adminData.value.last_name}&background=random`;
+  // e.target.src = `https://ui-avatars.com/api/?name=${adminData.value.first_name}+${adminData.value.last_name}&background=random`;
+
+  e.target.src = defaultProfile;
 };
 
 const submitInfoUpdate = async () => {
