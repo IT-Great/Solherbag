@@ -859,9 +859,7 @@ onMounted(() => {
   <div class="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8 animate-fade-in">
     <div class="mb-8 sm:flex sm:items-center sm:justify-between">
       <div>
-        <h1 class="font-serif text-2xl font-bold text-gray-900">
-          Granular Access Policy
-        </h1>
+        <h1 class="text-2xl font-bold text-gray-900">Access Policy Management</h1>
         <p class="mt-2 text-sm text-gray-500">
           Atur hak akses spesifik (Create, Read, Update, Delete) untuk setiap peran
           (Role).
