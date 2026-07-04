@@ -1963,6 +1963,9 @@ const currentImage = ref("");
 const currentVariantImages = ref([]);
 const currentVideo = ref("");
 
+// Tambahkan konstanta daftar mata uang di bagian atas script setup
+const SUPPORTED_CURRENCIES = ["USD", "SGD", "EUR", "AUD", "MYR"];
+
 const form = ref({
   name: "",
   code: "",
