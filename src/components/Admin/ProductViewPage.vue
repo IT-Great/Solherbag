@@ -215,6 +215,72 @@
               formatPrice(product.price)
             }}</span>
           </div>
+
+          <!-- 👇 TAMPILAN MULTI CURRENCY 👇 -->
+          <!-- <div
+            v-if="product.prices && Object.keys(product.prices).length > 0"
+            class="flex flex-wrap gap-2 mt-4 pt-4 border-t border-gray-100"
+          >
+            <div
+              v-for="(val, curr) in product.prices"
+              :key="curr"
+              class="bg-gray-50 border border-gray-200 px-3 py-1.5 rounded-lg flex flex-col min-w-[80px]"
+            >
+              <span class="text-[9px] font-bold text-gray-500 uppercase tracking-widest"
+                >{{ curr }} Price</span
+              >
+              <div class="flex items-center gap-2 mt-0.5">
+                <span
+                  v-if="product.discount_prices && product.discount_prices[curr]"
+                  class="text-sm font-black text-red-600"
+                >
+                  {{ curr === "USD" ? "$" : "S$" }}{{ product.discount_prices[curr] }}
+                </span>
+                <span
+                  :class="
+                    product.discount_prices && product.discount_prices[curr]
+                      ? 'line-through text-gray-400 text-xs'
+                      : 'text-sm font-black text-gray-900'
+                  "
+                >
+                  {{ curr === "USD" ? "$" : "S$" }}{{ val }}
+                </span>
+              </div>
+            </div>
+          </div> -->
+
+          <div
+            v-if="product.prices && Object.keys(product.prices).length > 0"
+            class="flex flex-wrap gap-2 mt-4 pt-4 border-t border-gray-100"
+          >
+            <div
+              v-for="(val, curr) in product.prices"
+              :key="curr"
+              class="bg-gray-50 border border-gray-200 px-3 py-1.5 rounded-lg flex flex-col min-w-[80px]"
+            >
+              <span class="text-[9px] font-bold text-gray-500 uppercase tracking-widest"
+                >{{ curr }} Price</span
+              >
+              <div class="flex items-center gap-2 mt-0.5">
+                <!-- Menggunakan fungsi getCurrencySymbol() secara dinamis -->
+                <span
+                  v-if="product.discount_prices && product.discount_prices[curr]"
+                  class="text-sm font-black text-red-600"
+                >
+                  {{ getCurrencySymbol(curr) }}{{ product.discount_prices[curr] }}
+                </span>
+                <span
+                  :class="
+                    product.discount_prices && product.discount_prices[curr]
+                      ? 'line-through text-gray-400 text-xs'
+                      : 'text-sm font-black text-gray-900'
+                  "
+                >
+                  {{ getCurrencySymbol(curr) }}{{ val }}
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div
@@ -473,7 +539,7 @@
               {{ product.description || "No description provided." }}
             </div>
           </div>
-          
+
           <div class="py-4">
             <button
               @click="toggleSection('description_en')"
@@ -513,7 +579,7 @@
               {{ product.design || "No design details provided." }}
             </div>
           </div>
-          
+
           <div class="py-4">
             <button
               @click="toggleSection('design_en')"
@@ -611,6 +677,17 @@ const formatDate = (dateString) => {
     month: "long",
     year: "numeric",
   });
+};
+
+const getCurrencySymbol = (currencyCode) => {
+  const symbols = {
+    USD: "$",
+    SGD: "S$",
+    EUR: "€",
+    AUD: "A$",
+    MYR: "RM",
+  };
+  return symbols[currencyCode] || `${currencyCode} `;
 };
 
 const goToEditPage = () => {
