@@ -1349,16 +1349,16 @@ const resetZoom = (e) => {
   if (img) img.style.transformOrigin = "center center";
 };
 
-const currentActivePrice = computed(() => {
-  if (
-    product.value &&
-    product.value.discount_price &&
-    getDiscountStatus(product.value).active
-  ) {
-    return parseFloat(product.value.discount_price);
-  }
-  return parseFloat(product.value ? product.value.price : 0);
-});
+// const currentActivePrice = computed(() => {
+//   if (
+//     product.value &&
+//     product.value.discount_price &&
+//     getDiscountStatus(product.value).active
+//   ) {
+//     return parseFloat(product.value.discount_price);
+//   }
+//   return parseFloat(product.value ? product.value.price : 0);
+// });
 
 // onMounted(fetchProductDetail);
 onMounted(() => {
