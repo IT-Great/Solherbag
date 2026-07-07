@@ -1995,7 +1995,7 @@ onUnmounted(() => {
             </h4>
             <div class="flex items-center gap-2 mt-1">
               <p v-if="p.discount_price" class="text-sm font-bold text-red-600">
-                {{ formatPrice(p.discount_price) }}
+                {{ formatCurrencyDisplay(getDiscountToDisplay(p)) }}
               </p>
               <p
                 :class="
@@ -2004,7 +2004,7 @@ onUnmounted(() => {
                     : 'font-bold text-sm text-gray-600'
                 "
               >
-                {{ formatPrice(p.price) }}
+                {{ formatCurrencyDisplay(getPriceToDisplay(p)) }}
               </p>
             </div>
           </div>
@@ -2058,12 +2058,12 @@ onUnmounted(() => {
             </h4>
             <div v-if="getDiscountStatus(p).active">
               <p class="text-sm font-bold text-red-600 md:text-base">
-                {{ formatPrice(p.discount_price) }}
+                {{ formatCurrencyDisplay(getDiscountToDisplay(p)) }}
               </p>
             </div>
             <div v-else>
               <p class="font-medium text-black">
-                {{ formatPrice(p.price) }}
+                {{ formatCurrencyDisplay(getPriceToDisplay(p)) }}
               </p>
             </div>
             <!-- <p class="font-medium text-black"> -->
@@ -2117,12 +2117,12 @@ onUnmounted(() => {
             </p> -->
             <div v-if="getDiscountStatus(p).active">
               <p class="text-sm font-bold text-red-600 md:text-base">
-                {{ formatPrice(p.discount_price) }}
+                {{ formatCurrencyDisplay(getDiscountToDisplay(p)) }}
               </p>
             </div>
             <div v-else>
               <p class="font-medium text-black">
-                {{ formatPrice(p.price) }}
+                {{ formatCurrencyDisplay(getPriceToDisplay(p)) }}
               </p>
             </div>
           </div>
@@ -2179,12 +2179,12 @@ onUnmounted(() => {
             </p> -->
             <div v-if="getDiscountStatus(p).active">
               <p class="text-sm font-bold text-red-600 md:text-base">
-                {{ formatPrice(p.discount_price) }}
+                {{ formatCurrencyDisplay(getDiscountToDisplay(p)) }}
               </p>
             </div>
             <div v-else>
               <p class="font-medium text-black">
-                {{ formatPrice(p.price) }}
+                {{ formatCurrencyDisplay(getPriceToDisplay(p)) }}
               </p>
             </div>
           </div>
@@ -2241,12 +2241,12 @@ onUnmounted(() => {
             </p> -->
             <div v-if="getDiscountStatus(p).active">
               <p class="text-sm font-bold text-red-600 md:text-base">
-                {{ formatPrice(p.discount_price) }}
+                {{ formatCurrencyDisplay(getDiscountToDisplay(p)) }}
               </p>
             </div>
             <div v-else>
               <p class="font-medium text-black">
-                {{ formatPrice(p.price) }}
+                {{ formatCurrencyDisplay(getPriceToDisplay(p)) }}
               </p>
             </div>
           </div>
@@ -2418,6 +2418,12 @@ const convertToWIB = (dateString) => {
   return date;
 };
 
+const currentCurrency = ref(localStorage.getItem("currency") || "IDR");
+
+const updateCurrencyState = () => {
+  currentCurrency.value = localStorage.getItem("currency") || "IDR";
+};
+
 const getDiscountStatus = (p) => {
   if (!p || !p.discount_price) return { active: false, upcoming: false, expired: false };
 
@@ -2444,6 +2450,85 @@ const getDiscountStatus = (p) => {
 
   return { active, upcoming, expired };
 };
+
+// Mengambil harga dasar sesuai mata uang
+const getPriceToDisplay = (product) => {
+  if (!product) return { value: 0, curr: "IDR" };
+  const curr = currentCurrency.value;
+  if (curr === "IDR") return { value: product.price, curr: "IDR" };
+
+  const prices =
+    typeof product.prices === "string"
+      ? JSON.parse(product.prices)
+      : product.prices || {};
+
+  if (prices[curr]) {
+    return { value: parseFloat(prices[curr]), curr: curr };
+  }
+  return { value: product.price, curr: "IDR" };
+};
+
+// Mengambil harga diskon sesuai mata uang
+const getDiscountToDisplay = (product) => {
+  if (!product) return null;
+  const curr = currentCurrency.value;
+
+  if (curr === "IDR") {
+    return product.discount_price ? { value: product.discount_price, curr: "IDR" } : null;
+  }
+
+  const discountPrices =
+    typeof product.discount_prices === "string"
+      ? JSON.parse(product.discount_prices)
+      : product.discount_prices || {};
+
+  if (discountPrices[curr]) {
+    return { value: parseFloat(discountPrices[curr]), curr: curr };
+  }
+  return product.discount_price ? { value: product.discount_price, curr: "IDR" } : null;
+};
+
+// Memformat angka menjadi string (Misal: 10 => $10.00)
+const formatCurrencyDisplay = (priceObj) => {
+  if (!priceObj) return "";
+  const { value, curr } = priceObj;
+
+  const symbols = {
+    USD: "$",
+    SGD: "S$",
+    EUR: "€",
+    AUD: "A$",
+    MYR: "RM",
+    IDR: "Rp ",
+  };
+
+  const formatter = new Intl.NumberFormat(curr === "IDR" ? "id-ID" : "en-US", {
+    minimumFractionDigits: curr === "IDR" ? 0 : 2,
+    maximumFractionDigits: curr === "IDR" ? 0 : 2,
+  });
+
+  return `${symbols[curr] || curr + " "}${formatter.format(value)}`;
+};
+
+// Menghitung persentase diskon dinamis
+const calculateDynamicDiscount = (product) => {
+  const priceObj = getPriceToDisplay(product);
+  const discObj = getDiscountToDisplay(product);
+  if (!priceObj || !discObj) return 0;
+
+  return Math.round(((priceObj.value - discObj.value) / priceObj.value) * 100);
+};
+
+// Anda juga harus mengubah currentActivePrice agar membaca harga dinamis (penting untuk analytics)
+const currentActivePrice = computed(() => {
+  if (!product.value) return 0;
+  if (product.value.discount_price && getDiscountStatus(product.value).active) {
+    const discObj = getDiscountToDisplay(product.value);
+    return discObj ? discObj.value : 0;
+  }
+  const priceObj = getPriceToDisplay(product.value);
+  return priceObj ? priceObj.value : 0;
+});
 
 const vReveal = {
   mounted: (el) => {
@@ -2560,10 +2645,17 @@ onMounted(() => {
       showPromoPopup.value = true;
     }, 50);
   });
+
+  // Dengarkan perubahan mata uang
+  window.addEventListener("currency-changed", updateCurrencyState);
+  window.addEventListener("storage", (e) => {
+    if (e.key === "currency") updateCurrencyState();
+  });
 });
 
 onUnmounted(() => {
   if (slideInterval) clearInterval(slideInterval);
+  window.removeEventListener("currency-changed", updateCurrencyState);
 });
 </script>
 
