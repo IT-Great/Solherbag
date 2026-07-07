@@ -127,7 +127,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import axios from "axios";
 import { BASE_URL } from "../../config/api.js";
 
