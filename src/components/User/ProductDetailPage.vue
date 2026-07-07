@@ -45,8 +45,15 @@
             </template>
           </div>
 
-          <div
+          <!-- <div
             v-if="product.discount_price && getDiscountStatus(product).active"
+            class="absolute top-4 left-4 bg-red-600 text-white px-3 py-1 font-bold text-[10px] uppercase tracking-widest shadow-md z-10"
+          >
+            SALE
+          </div> -->
+
+          <div
+            v-if="getDiscountToDisplay(product) && getDiscountStatus(product).active"
             class="absolute top-4 left-4 bg-red-600 text-white px-3 py-1 font-bold text-[10px] uppercase tracking-widest shadow-md z-10"
           >
             SALE
@@ -198,7 +205,7 @@
             </button>
           </div>
 
-          <div
+          <!-- <div
             class="flex flex-wrap items-center justify-center w-full gap-4 md:justify-start"
           >
             <template
@@ -250,6 +257,32 @@
             <template v-else>
               <p class="text-2xl text-gray-600">
                 {{ formatPrice(product.price) }}
+              </p>
+            </template>
+          </div> -->
+
+          <div
+            class="flex flex-wrap items-center justify-center w-full gap-4 md:justify-start"
+          >
+            <template
+              v-if="getDiscountToDisplay(product) && !getDiscountStatus(product).expired"
+            >
+              <template v-if="getDiscountStatus(product).active">
+                <p class="text-2xl font-bold text-red-600">
+                  {{ formatCurrencyDisplay(getDiscountToDisplay(product)) }}
+                </p>
+                <p class="text-lg text-gray-400 line-through">
+                  {{ formatCurrencyDisplay(getPriceToDisplay(product)) }}
+                </p>
+                <span class="px-2 py-1 text-xs font-bold text-red-600 bg-red-100 rounded">
+                  {{ $t("product_detail.save") }} {{ calculateDynamicDiscount(product) }}%
+                </span>
+              </template>
+              <template v-else-if="getDiscountStatus(product).upcoming"> </template>
+            </template>
+            <template v-else>
+              <p class="text-2xl text-gray-600">
+                {{ formatCurrencyDisplay(getPriceToDisplay(product)) }}
               </p>
             </template>
           </div>
@@ -544,8 +577,14 @@
               :alt="rec.name"
               class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
             />
-            <div
+            <!-- <div
               v-if="rec.discount_price && getDiscountStatus(rec).active"
+              class="absolute top-2 left-2 bg-red-600 text-white px-2 py-0.5 font-bold text-[8px] uppercase tracking-widest rounded-sm z-10"
+            >
+              SALE
+            </div> -->
+            <div
+              v-if="getDiscountToDisplay(product) && getDiscountStatus(product).active"
               class="absolute top-2 left-2 bg-red-600 text-white px-2 py-0.5 font-bold text-[8px] uppercase tracking-widest rounded-sm z-10"
             >
               SALE
@@ -556,7 +595,7 @@
           >
             {{ rec.name }}
           </h3>
-          <div class="flex items-center gap-2">
+          <!-- <div class="flex items-center gap-2">
             <template v-if="rec.discount_price && getDiscountStatus(rec).active">
               <p class="text-sm font-bold text-red-600">
                 {{ formatPrice(rec.discount_price) }}
@@ -568,6 +607,21 @@
             <template v-else>
               <p class="text-sm font-medium text-gray-900">
                 {{ formatPrice(rec.price) }}
+              </p>
+            </template>
+          </div> -->
+          <div class="flex items-center gap-2">
+            <template v-if="getDiscountToDisplay(rec) && getDiscountStatus(rec).active">
+              <p class="text-sm font-bold text-red-600">
+                {{ formatCurrencyDisplay(getDiscountToDisplay(rec)) }}
+              </p>
+              <p class="text-xs text-gray-400 line-through">
+                {{ formatCurrencyDisplay(getPriceToDisplay(rec)) }}
+              </p>
+            </template>
+            <template v-else>
+              <p class="text-sm font-medium text-gray-900">
+                {{ formatCurrencyDisplay(getPriceToDisplay(rec)) }}
               </p>
             </template>
           </div>
@@ -604,6 +658,13 @@ const activeSlide = ref(0);
 const selectedQuantity = ref(1);
 const recommendedProducts = ref([]);
 const siblingColors = ref([]);
+
+// 1. Tambahkan state untuk mata uang saat ini
+const currentCurrency = ref(localStorage.getItem("currency") || "IDR");
+
+const updateCurrencyState = () => {
+  currentCurrency.value = localStorage.getItem("currency") || "IDR";
+};
 
 // [BARU] Menyimpan data pengguna yang sedang login (untuk mengecek status afiliasi)
 const currentUser = ref(null);
@@ -699,6 +760,85 @@ const getDiscountStatus = (p) => {
 
   return { active, upcoming, expired };
 };
+
+// Mengambil harga dasar sesuai mata uang
+const getPriceToDisplay = (product) => {
+  if (!product) return { value: 0, curr: "IDR" };
+  const curr = currentCurrency.value;
+  if (curr === "IDR") return { value: product.price, curr: "IDR" };
+
+  const prices =
+    typeof product.prices === "string"
+      ? JSON.parse(product.prices)
+      : product.prices || {};
+
+  if (prices[curr]) {
+    return { value: parseFloat(prices[curr]), curr: curr };
+  }
+  return { value: product.price, curr: "IDR" };
+};
+
+// Mengambil harga diskon sesuai mata uang
+const getDiscountToDisplay = (product) => {
+  if (!product) return null;
+  const curr = currentCurrency.value;
+
+  if (curr === "IDR") {
+    return product.discount_price ? { value: product.discount_price, curr: "IDR" } : null;
+  }
+
+  const discountPrices =
+    typeof product.discount_prices === "string"
+      ? JSON.parse(product.discount_prices)
+      : product.discount_prices || {};
+
+  if (discountPrices[curr]) {
+    return { value: parseFloat(discountPrices[curr]), curr: curr };
+  }
+  return product.discount_price ? { value: product.discount_price, curr: "IDR" } : null;
+};
+
+// Memformat angka menjadi string (Misal: 10 => $10.00)
+const formatCurrencyDisplay = (priceObj) => {
+  if (!priceObj) return "";
+  const { value, curr } = priceObj;
+
+  const symbols = {
+    USD: "$",
+    SGD: "S$",
+    EUR: "€",
+    AUD: "A$",
+    MYR: "RM",
+    IDR: "Rp ",
+  };
+
+  const formatter = new Intl.NumberFormat(curr === "IDR" ? "id-ID" : "en-US", {
+    minimumFractionDigits: curr === "IDR" ? 0 : 2,
+    maximumFractionDigits: curr === "IDR" ? 0 : 2,
+  });
+
+  return `${symbols[curr] || curr + " "}${formatter.format(value)}`;
+};
+
+// Menghitung persentase diskon dinamis
+const calculateDynamicDiscount = (product) => {
+  const priceObj = getPriceToDisplay(product);
+  const discObj = getDiscountToDisplay(product);
+  if (!priceObj || !discObj) return 0;
+
+  return Math.round(((priceObj.value - discObj.value) / priceObj.value) * 100);
+};
+
+// Anda juga harus mengubah currentActivePrice agar membaca harga dinamis (penting untuk analytics)
+const currentActivePrice = computed(() => {
+  if (!product.value) return 0;
+  if (product.value.discount_price && getDiscountStatus(product.value).active) {
+    const discObj = getDiscountToDisplay(product.value);
+    return discObj ? discObj.value : 0;
+  }
+  const priceObj = getPriceToDisplay(product.value);
+  return priceObj ? priceObj.value : 0;
+});
 
 const formatUpcomingDate = (dateStr) => {
   if (!dateStr) return "";
@@ -1224,6 +1364,16 @@ const currentActivePrice = computed(() => {
 onMounted(() => {
   fetchProductDetail();
   fetchUserProfile(); // [BARU] Panggil fungsi untuk mengambil data profil saat komponen dimuat
+
+  // Dengarkan perubahan mata uang
+  window.addEventListener("currency-changed", updateCurrencyState);
+  window.addEventListener("storage", (e) => {
+    if (e.key === "currency") updateCurrencyState();
+  });
+});
+
+onUnmounted(() => {
+  window.removeEventListener("currency-changed", updateCurrencyState);
 });
 </script>
 
