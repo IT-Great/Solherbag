@@ -1067,7 +1067,7 @@ onMounted(() => {
 });
 </script> -->
 
-<template>
+<!-- <template>
   <div class="min-h-screen px-6 py-24 mx-auto max-w-7xl">
     <div class="flex items-center gap-4 mb-10">
       <button
@@ -1297,12 +1297,7 @@ onMounted(() => {
                     class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
                     alt="Suggested Product"
                   />
-                  <!-- <div
-                    v-if="product.discount_price"
-                    class="absolute top-2 left-2 bg-red-600 text-white px-2 py-0.5 text-[8px] font-bold uppercase tracking-widest rounded-sm"
-                  >
-                    SALE
-                  </div> -->
+                  
                   <div
                     v-if="getDiscountStatus(product).active"
                     class="absolute top-2 left-2 bg-red-600 text-white px-2 py-0.5 text-[8px] font-bold uppercase tracking-widest rounded-sm"
@@ -1380,7 +1375,7 @@ onMounted(() => {
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -1411,6 +1406,12 @@ const {
 
 const allProducts = ref([]);
 const isLoadingProducts = ref(true); // [BARU] State loading untuk produk
+
+const currentCurrency = ref(localStorage.getItem("currency") || "IDR");
+
+const updateCurrencyState = () => {
+  currentCurrency.value = localStorage.getItem("currency") || "IDR";
+};
 
 // ==========================================
 // [PERBAIKAN] LOGIKA STATUS DISKON & ZONA WAKTU
@@ -1487,5 +1488,470 @@ const handleCheckout = () => {
 
 onMounted(() => {
   fetchAllProducts();
+
+  // Dengarkan perubahan mata uang
+  window.addEventListener("currency-changed", updateCurrencyState);
+  window.addEventListener("storage", (e) => {
+    if (e.key === "currency") updateCurrencyState();
+  });
+});
+
+onUnmounted(() => {
+  window.removeEventListener("currency-changed", updateCurrencyState);
+});
+</script> -->
+
+<template>
+  <div class="min-h-screen px-6 py-24 mx-auto max-w-7xl">
+    <div class="flex items-center gap-4 mb-10">
+      <button
+        @click="$router.push('/collections')"
+        class="p-2 transition bg-white rounded-full shadow-sm hover:bg-gray-50"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-5 h-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+      <h1 class="font-serif text-4xl tracking-tighter uppercase md:text-5xl">
+        {{ $t("cart.your_bag") }}
+      </h1>
+      <span class="ml-2 font-sans text-xl text-gray-400">({{ cartCount }} items)</span>
+    </div>
+
+    <div class="flex flex-col gap-12 lg:flex-row lg:gap-20">
+      <div class="flex-grow lg:w-2/3">
+        <div
+          v-if="cartItems.length === 0"
+          class="py-20 text-center border-t border-gray-100"
+        >
+          <p class="mb-6 font-serif text-2xl italic text-gray-400">
+            {{ $t("cart.your_bag_empty") }}
+          </p>
+          <button
+            @click="$router.push('/collections')"
+            class="px-8 py-4 text-xs font-bold tracking-widest text-white uppercase transition bg-black rounded-full hover:bg-gray-800"
+          >
+            {{ $t("cart.continue_shopping") }}
+          </button>
+        </div>
+
+        <div v-else class="space-y-4">
+          <div class="flex items-center gap-4 px-2 pb-4 mb-4 border-b border-gray-200">
+            <input
+              type="checkbox"
+              v-model="isAllSelected"
+              id="selectAll"
+              class="w-5 h-5 text-black transition border-gray-300 rounded shadow-sm cursor-pointer focus:ring-black"
+            />
+            <label
+              for="selectAll"
+              class="text-xs font-bold tracking-widest text-gray-800 uppercase cursor-pointer select-none"
+              >{{ $t("cart.select_all_items") }}</label
+            >
+          </div>
+
+          <TransitionGroup name="list">
+            <div
+              v-for="item in cartItems"
+              :key="item.id"
+              class="relative flex items-start gap-4 pb-8 border-b border-gray-100 sm:gap-6 last:border-0"
+            >
+              <div class="pt-3 sm:pt-16">
+                <input
+                  type="checkbox"
+                  :value="item.id"
+                  v-model="selectedItemIds"
+                  class="w-5 h-5 text-black transition border-gray-300 rounded shadow-sm cursor-pointer focus:ring-black"
+                />
+              </div>
+
+              <div
+                class="relative w-24 h-24 cursor-pointer sm:w-48 sm:h-48 shrink-0"
+                @click="$router.push(`/products/${item.product.slug || item.product.id}`)"
+              >
+                <img
+                  :src="item.product.image || defaultBagIcon"
+                  class="object-cover w-full h-full shadow-sm bg-gray-50 rounded-2xl"
+                />
+                <div
+                  v-if="item.isSyncing"
+                  class="absolute inset-0 bg-white/50 backdrop-blur-[2px] rounded-2xl flex justify-center items-center"
+                >
+                  <div
+                    class="w-6 h-6 border-2 border-gray-300 rounded-full border-t-black animate-spin"
+                  ></div>
+                </div>
+              </div>
+
+              <div
+                class="flex flex-col flex-grow justify-between min-h-[6rem] sm:min-h-[12rem]"
+              >
+                <div>
+                  <div class="flex items-start justify-between gap-2">
+                    <h3
+                      class="w-2/3 text-sm font-bold tracking-tight uppercase transition-colors cursor-pointer sm:text-xl hover:text-gray-600 line-clamp-2"
+                      @click="
+                        $router.push(`/products/${item.product.slug || item.product.id}`)
+                      "
+                    >
+                      {{ item.product.name }}
+                    </h3>
+
+                    <p
+                      v-if="item.color"
+                      class="text-[10px] sm:text-xs text-gray-500 uppercase tracking-widest mt-1"
+                    >
+                      {{ $t("cart.color") }}
+                      <span class="font-bold text-gray-800">{{
+                        parseColorName(item.color)
+                      }}</span>
+                    </p>
+
+                    <p class="text-sm font-bold text-right sm:text-xl whitespace-nowrap">
+                      {{
+                        formatCurrencyDisplay({
+                          value:
+                            item.quantity * getActivePrice(item.product, currentCurrency),
+                          curr: currentCurrency,
+                        })
+                      }}
+                    </p>
+                  </div>
+
+                  <div class="flex flex-wrap items-center mt-1 gap-x-3 gap-y-1">
+                    <p class="text-xs italic tracking-widest text-gray-400">
+                      {{
+                        formatCurrencyDisplay({
+                          value: getActivePrice(item.product, currentCurrency),
+                          curr: currentCurrency,
+                        })
+                      }}
+                      / pc
+                    </p>
+                    <span class="hidden w-1 h-1 bg-gray-300 rounded-full sm:block"></span>
+                  </div>
+                </div>
+
+                <div
+                  class="flex flex-col items-start gap-4 mt-4 sm:flex-row sm:justify-between sm:items-end sm:mt-6"
+                >
+                  <div
+                    class="flex items-center overflow-hidden border border-gray-200 shadow-sm bg-gray-50 rounded-xl"
+                  >
+                    <button
+                      @click="handleQtyChange(item, item.quantity - 1)"
+                      class="px-4 py-2 text-base font-bold transition-colors hover:bg-gray-200 sm:px-5 sm:py-3 sm:text-lg"
+                    >
+                      -
+                    </button>
+                    <input
+                      type="number"
+                      v-model.number="item.quantity"
+                      @input="handleQtyInput(item)"
+                      class="w-10 text-sm font-bold text-center bg-transparent border-none focus:ring-0 sm:w-14 sm:text-base"
+                    />
+                    <button
+                      @click="handleQtyChange(item, item.quantity + 1)"
+                      class="px-4 py-2 text-base font-bold transition-colors hover:bg-gray-200 sm:px-5 sm:py-3 sm:text-lg"
+                    >
+                      +
+                    </button>
+                  </div>
+                  <button
+                    @click="handleOptimisticDelete(item.id)"
+                    class="group flex items-center gap-2 font-bold text-gray-400 hover:text-red-500 text-[10px] sm:text-xs uppercase tracking-widest transition-colors"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-4 h-4 transition-transform sm:w-5 sm:h-5 group-hover:rotate-12"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                      />
+                    </svg>
+                    {{ $t("cart.remove") }}
+                  </button>
+                </div>
+
+                <div class="mt-2 min-h-[1.25rem]">
+                  <p
+                    v-if="item.quantity >= item.product.stock"
+                    class="font-bold text-[9px] sm:text-[10px] text-red-600 uppercase tracking-tighter animate-pulse"
+                  >
+                    {{ $t("cart.out_of_stock_1") }} {{ item.product.stock }}
+                    {{ $t("cart.out_of_stock_2") }}
+                  </p>
+                  <p
+                    v-else-if="item.product.stock < 5"
+                    class="text-[9px] sm:text-[10px] text-amber-600 italic font-medium"
+                  >
+                    {{ $t("cart.stock_left_1") }} {{ item.product.stock }}
+                    {{ $t("cart.stock_left_2") }}.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </TransitionGroup>
+
+          <div class="pt-12 border-t border-gray-100">
+            <h3 class="mb-6 text-sm font-bold tracking-widest text-gray-800 uppercase">
+              {{ $t("cart.you_may_also_like") }}
+            </h3>
+
+            <div v-if="isLoadingProducts" class="grid grid-cols-2 gap-6 md:grid-cols-4">
+              <div v-for="i in 4" :key="`skel-${i}`" class="flex flex-col gap-2">
+                <div class="bg-gray-200 aspect-square rounded-2xl animate-pulse"></div>
+                <div class="w-3/4 h-3 mt-1 bg-gray-200 rounded animate-pulse"></div>
+                <div class="w-1/2 h-3 bg-gray-200 rounded animate-pulse"></div>
+                <div
+                  class="w-full h-8 pt-2 mt-auto bg-gray-200 rounded-xl animate-pulse"
+                ></div>
+              </div>
+            </div>
+
+            <TransitionGroup
+              v-else-if="suggestedProducts.length > 0"
+              name="list"
+              tag="div"
+              class="grid grid-cols-2 gap-6 md:grid-cols-4"
+            >
+              <div
+                v-for="product in suggestedProducts"
+                :key="product.id"
+                class="flex flex-col group"
+              >
+                <div
+                  class="relative mb-3 overflow-hidden cursor-pointer aspect-square rounded-2xl bg-gray-50"
+                  @click="$router.push(`/products/${product.slug || product.id}`)"
+                >
+                  <img
+                    :src="product.image || defaultBagIcon"
+                    class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
+                    alt="Suggested Product"
+                  />
+
+                  <div
+                    v-if="getDiscountStatus(product, currentCurrency).active"
+                    class="absolute top-2 left-2 bg-red-600 text-white px-2 py-0.5 text-[8px] font-bold uppercase tracking-widest rounded-sm"
+                  >
+                    SALE
+                  </div>
+                </div>
+
+                <h4
+                  class="font-bold text-[10px] uppercase truncate tracking-wide text-gray-900 mb-1"
+                >
+                  {{ product.name }}
+                </h4>
+
+                <p class="mb-3 text-xs font-medium text-gray-600">
+                  {{
+                    formatCurrencyDisplay({
+                      value: getActivePrice(product, currentCurrency),
+                      curr: currentCurrency,
+                    })
+                  }}
+                </p>
+
+                <button
+                  @click="addSuggestedProduct(product)"
+                  class="mt-auto border border-gray-200 hover:border-black hover:bg-black hover:text-white rounded-xl py-2 px-3 text-[9px] font-bold uppercase tracking-widest transition-all duration-300"
+                >
+                  {{ $t("cart.add_this_product") }}
+                </button>
+              </div>
+            </TransitionGroup>
+          </div>
+        </div>
+      </div>
+
+      <div v-if="cartItems.length > 0" class="lg:w-1/3">
+        <div class="bg-gray-50 p-8 rounded-[2rem] border border-gray-100 sticky top-32">
+          <h2
+            class="pb-4 mb-8 text-lg font-bold tracking-widest text-gray-900 uppercase border-b border-gray-200"
+          >
+            {{ $t("cart.order_summary") }}
+          </h2>
+
+          <div class="mb-8 space-y-4">
+            <div class="flex justify-between text-sm text-gray-600">
+              <span>{{ $t("cart.select_items") }}</span>
+              <span class="font-bold text-black">{{ checkoutCount }}</span>
+            </div>
+            <div class="flex items-end justify-between pt-4 border-t border-gray-200">
+              <span class="font-bold text-gray-500 text-xs uppercase tracking-[0.2em]">{{
+                $t("cart.estimated_total")
+              }}</span>
+
+              <span class="text-2xl font-black text-black">{{
+                formatCurrencyDisplay({
+                  value: checkoutTotalAmount,
+                  curr: currentCurrency,
+                })
+              }}</span>
+            </div>
+            <p class="text-[10px] text-gray-400 italic text-right mt-1">
+              {{ $t("cart.tax_and_shipping") }}
+            </p>
+          </div>
+
+          <button
+            @click="handleCheckout"
+            :disabled="isProcessingCheckout || selectedItemIds.length === 0"
+            class="bg-black hover:bg-gray-800 disabled:bg-gray-300 shadow-xl hover:shadow-black/20 py-5 rounded-2xl w-full font-bold text-white text-sm uppercase tracking-[0.3em] transition-all duration-300 flex justify-center items-center gap-3"
+          >
+            <span v-if="!isProcessingCheckout"
+              >{{ $t("cart.checkout") }} ({{ selectedItemIds.length }})</span
+            >
+            <span v-else class="flex items-center gap-2"
+              ><div
+                class="w-4 h-4 border-2 rounded-full border-white/40 border-t-white animate-spin"
+              ></div>
+              {{ $t("cart.processing") }}</span
+            >
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, onMounted, onUnmounted } from "vue";
+import { useRouter } from "vue-router";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { BASE_URL } from "../../config/api.js";
+import { useCart, getActivePrice, getDiscountStatus } from "../../composables/useCart";
+
+import defaultBagIcon from "../../assets/products/bag_icon.jpg";
+
+const router = useRouter();
+const isProcessingCheckout = ref(false);
+
+const {
+  cartItems,
+  cartCount,
+  checkoutCount,
+  checkoutTotalAmount,
+  selectedItemIds,
+  isAllSelected,
+  triggerCurrencyUpdate,
+  handleQtyChange,
+  handleQtyInput,
+  handleOptimisticDelete,
+  handleOptimisticAdd,
+} = useCart();
+
+const allProducts = ref([]);
+const isLoadingProducts = ref(true);
+
+const currentCurrency = ref(localStorage.getItem("currency") || "IDR");
+
+const updateCurrencyState = () => {
+  currentCurrency.value = localStorage.getItem("currency") || "IDR";
+  triggerCurrencyUpdate(); // Beritahu composable kalau currency ganti
+};
+
+// Helper Format Currency khusus
+const formatCurrencyDisplay = (priceObj) => {
+  if (!priceObj) return "";
+  const { value, curr } = priceObj;
+
+  const symbols = {
+    USD: "$",
+    SGD: "S$",
+    EUR: "€",
+    AUD: "A$",
+    MYR: "RM",
+    IDR: "Rp ",
+  };
+
+  const formatter = new Intl.NumberFormat(curr === "IDR" ? "id-ID" : "en-US", {
+    minimumFractionDigits: curr === "IDR" ? 0 : 2,
+    maximumFractionDigits: curr === "IDR" ? 0 : 2,
+  });
+
+  return `${symbols[curr] || curr + " "}${formatter.format(value)}`;
+};
+
+const fetchAllProducts = async () => {
+  isLoadingProducts.value = true;
+  try {
+    const res = await axios.get(`${BASE_URL}/products`);
+    const data = res.data?.data?.data || res.data?.data || res.data;
+    if (Array.isArray(data)) {
+      allProducts.value = data;
+    }
+  } catch (err) {
+    console.error("Gagal mengambil daftar produk", err);
+  } finally {
+    setTimeout(() => {
+      isLoadingProducts.value = false;
+    }, 500);
+  }
+};
+
+const suggestedProducts = computed(() => {
+  if (allProducts.value.length === 0) return [];
+
+  const cartProductIds = cartItems.value.map((item) => item.product_id);
+
+  let availableProducts = allProducts.value.filter(
+    (p) => !cartProductIds.includes(p.id) && p.stock > 0
+  );
+
+  availableProducts.sort(() => 0.5 - Math.random());
+
+  return availableProducts.slice(0, 4);
+});
+
+const parseColorName = (colorString) => {
+  if (!colorString) return "";
+  return colorString.includes("|") ? colorString.split("|")[0] : colorString;
+};
+
+const addSuggestedProduct = (product) => {
+  handleOptimisticAdd({ product: product, cartId: null }, () => {
+    Swal.fire({
+      title: "Added to Bag",
+      icon: "success",
+      toast: true,
+      position: "top-center",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  });
+};
+
+const handleCheckout = () => {
+  if (selectedItemIds.value.length === 0) return;
+  router.push("/payment");
+};
+
+onMounted(() => {
+  fetchAllProducts();
+
+  window.addEventListener("currency-changed", updateCurrencyState);
+  window.addEventListener("storage", (e) => {
+    if (e.key === "currency") updateCurrencyState();
+  });
+});
+
+onUnmounted(() => {
+  window.removeEventListener("currency-changed", updateCurrencyState);
 });
 </script>

@@ -67,7 +67,7 @@
             </button>
 
             <div
-              v-if="item.product.discount_price"
+              v-if="getDiscountToDisplay(product) && getDiscountStatus(product).active"
               class="top-2 right-2 absolute bg-red-600 px-2 py-1 rounded-sm font-bold text-[8px] text-white uppercase tracking-tighter z-20"
             >
               SALE
@@ -83,14 +83,14 @@
             <div class="flex items-center justify-center gap-2 md:justify-start">
               <template v-if="item.product.discount_price">
                 <p class="text-sm font-bold text-red-600 md:text-base">
-                  {{ formatPrice(item.product.discount_price) }}
+                  {{ formatCurrencyDisplay(getDiscountToDisplay(product)) }}
                 </p>
                 <p class="text-xs text-gray-400 line-through md:text-sm">
-                  {{ formatPrice(item.product.price) }}
+                  {{ formatCurrencyDisplay(getPriceToDisplay(item.product)) }}
                 </p>
               </template>
               <p v-else class="text-sm font-semibold text-gray-600 md:text-base">
-                {{ formatPrice(item.product.price) }}
+                {{ formatCurrencyDisplay(getPriceToDisplay(item.product)) }}
               </p>
             </div>
           </div>
@@ -136,6 +136,134 @@ const isLoading = ref(true);
 
 import { formatPrice } from "../../utils/currency";
 
+const currentCurrency = ref(localStorage.getItem("currency") || "IDR");
+
+const updateCurrencyState = () => {
+  currentCurrency.value = localStorage.getItem("currency") || "IDR";
+};
+
+// Mengambil harga dasar sesuai mata uang
+const getPriceToDisplay = (product) => {
+  if (!product) return { value: 0, curr: "IDR" };
+  const curr = currentCurrency.value;
+  if (curr === "IDR") return { value: product.price, curr: "IDR" };
+
+  const prices =
+    typeof product.prices === "string"
+      ? JSON.parse(product.prices)
+      : product.prices || {};
+
+  if (prices[curr]) {
+    return { value: parseFloat(prices[curr]), curr: curr };
+  }
+  return { value: product.price, curr: "IDR" };
+};
+
+// Mengambil harga diskon sesuai mata uang
+const getDiscountToDisplay = (product) => {
+  if (!product) return null;
+  const curr = currentCurrency.value;
+
+  if (curr === "IDR") {
+    return product.discount_price ? { value: product.discount_price, curr: "IDR" } : null;
+  }
+
+  const discountPrices =
+    typeof product.discount_prices === "string"
+      ? JSON.parse(product.discount_prices)
+      : product.discount_prices || {};
+
+  if (discountPrices[curr]) {
+    return { value: parseFloat(discountPrices[curr]), curr: curr };
+  }
+  return product.discount_price ? { value: product.discount_price, curr: "IDR" } : null;
+};
+
+// Memformat angka menjadi string (Misal: 10 => $10.00)
+const formatCurrencyDisplay = (priceObj) => {
+  if (!priceObj) return "";
+  const { value, curr } = priceObj;
+
+  const symbols = {
+    USD: "$",
+    SGD: "S$",
+    EUR: "€",
+    AUD: "A$",
+    MYR: "RM",
+    IDR: "Rp ",
+  };
+
+  const formatter = new Intl.NumberFormat(curr === "IDR" ? "id-ID" : "en-US", {
+    minimumFractionDigits: curr === "IDR" ? 0 : 2,
+    maximumFractionDigits: curr === "IDR" ? 0 : 2,
+  });
+
+  return `${symbols[curr] || curr + " "}${formatter.format(value)}`;
+};
+
+// Menghitung persentase diskon dinamis
+const calculateDynamicDiscount = (product) => {
+  const priceObj = getPriceToDisplay(product);
+  const discObj = getDiscountToDisplay(product);
+  if (!priceObj || !discObj) return 0;
+
+  return Math.round(((priceObj.value - discObj.value) / priceObj.value) * 100);
+};
+
+// Anda juga harus mengubah currentActivePrice agar membaca harga dinamis (penting untuk analytics)
+const currentActivePrice = computed(() => {
+  if (!product.value) return 0;
+  if (product.value.discount_price && getDiscountStatus(product.value).active) {
+    const discObj = getDiscountToDisplay(product.value);
+    return discObj ? discObj.value : 0;
+  }
+  const priceObj = getPriceToDisplay(product.value);
+  return priceObj ? priceObj.value : 0;
+});
+
+// Tambahkan helper ini dulu jika belum ada di file Anda
+const convertToWIB = (dateString) => {
+  if (!dateString) return null;
+  const date = new Date(dateString);
+  // Sesuaikan UTC server menjadi WIB dengan mengurangi 7 jam (seperti logika sebelumnya)
+  date.setHours(date.getHours() - 7);
+  return date;
+};
+
+// Fungsi getDiscountStatus yang sudah diperbarui
+const getDiscountStatus = (p) => {
+  // 👇 PERBAIKAN 1: Gunakan helper multi-currency untuk mengecek diskon
+  const discObj = getDiscountToDisplay(p);
+
+  if (!p || !discObj || !discObj.value) {
+    return { active: false, upcoming: false, expired: false };
+  }
+
+  const now = new Date();
+  let active = true;
+  let upcoming = false;
+  let expired = false;
+
+  // 👇 PERBAIKAN 2: Gunakan convertToWIB agar akurat
+  if (p.discount_start_date) {
+    const startDate = convertToWIB(p.discount_start_date);
+    if (now < startDate) {
+      active = false;
+      upcoming = true;
+    }
+  }
+
+  if (p.discount_end_date) {
+    const endDate = convertToWIB(p.discount_end_date);
+    if (now > endDate) {
+      active = false;
+      expired = true;
+    }
+  }
+
+  return { active, upcoming, expired };
+};
+
 const fetchWishlists = async () => {
   isLoading.value = true;
   try {
@@ -176,5 +304,16 @@ const toggleWishlist = async (productId) => {
 //     minimumFractionDigits: 0,
 //   }).format(value);
 
-onMounted(fetchWishlists);
+onMounted(() => {
+  fetchWishlists();
+
+  window.addEventListener("currency-changed", updateCurrencyState);
+  window.addEventListener("storage", (e) => {
+    if (e.key === "currency") updateCurrencyState();
+  });
+});
+
+onUnmounted(() => {
+  window.removeEventListener("currency-changed", updateCurrencyState);
+});
 </script>
