@@ -4353,6 +4353,781 @@ onMounted(fetchData);
 </template>
 
 <script setup>
+// import { ref, onMounted, onUnmounted, watch, computed } from "vue";
+// import { useRouter, useRoute } from "vue-router";
+// import axios from "axios";
+// import Swal from "sweetalert2";
+// import { BASE_URL } from "../../config/api.js";
+// import { useCart } from "../../composables/useCart.js";
+// import { Country, State } from "country-state-city";
+// import "leaflet/dist/leaflet.css";
+// import { LMap, LTileLayer, LMarker } from "@vue-leaflet/vue-leaflet";
+// import L from "leaflet";
+
+// delete L.Icon.Default.prototype._getIconUrl;
+// L.Icon.Default.mergeOptions({
+//   iconRetinaUrl: new URL("leaflet/dist/images/marker-icon-2x.png", import.meta.url).href,
+//   iconUrl: new URL("leaflet/dist/images/marker-icon.png", import.meta.url).href,
+//   shadowUrl: new URL("leaflet/dist/images/marker-shadow.png", import.meta.url).href,
+// });
+
+// const router = useRouter();
+// const route = useRoute();
+// const getAxiosConfig = () => ({
+//   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+// });
+
+// const { cartItems, checkoutCount, selectedItemIds, clearSelectedCart } = useCart();
+
+// const userData = ref(null);
+// const addresses = ref([]);
+// const selectedAddressId = ref(null);
+// const isProcessing = ref(false);
+// const shippingMethod = ref("free");
+// const selectedRate = ref(null);
+// const isLoadingRates = ref(false);
+// const deliveryType = ref("now");
+// const deliveryDate = ref("");
+// const deliveryTime = ref("");
+// const pointsToUse = ref(0);
+// const promoInput = ref("");
+// const appliedPromoCode = ref(null);
+// const promoDiscountAmount = ref(0);
+// const appliedPromoType = ref(null);
+// const promoMessage = ref("");
+// const promoSuccess = ref(false);
+// const isVerifyingPromo = ref(false);
+// const rawShippingRates = ref([]);
+// const isPageLoading = ref(true);
+
+// const availablePoints = ref(0);
+// const pointsInput = ref("");
+// const pointsUsed = ref(0);
+// const pointConversionRate = 1000;
+
+// const userType = ref("guest");
+// const useMemberVoucher = ref(false);
+// const MEMBER_VOUCHER_CODE = "SOLHERMEMBER";
+// const MEMBER_MIN_SPEND = 1000000;
+// const currentCurrency = ref(localStorage.getItem("currency") || "IDR");
+// const exchangeRates = ref({});
+
+// const updateCurrencyState = () => {
+//   currentCurrency.value = localStorage.getItem("currency") || "IDR";
+// };
+
+// // --- DATA CROSS-REFERENCING (KATALOG ASLI) ---
+// const catalogProducts = ref([]);
+// const getFreshProduct = (cartProduct) => {
+//   if (catalogProducts.value.length > 0 && cartProduct) {
+//     const fresh = catalogProducts.value.find((p) => p.id === cartProduct.id);
+//     if (fresh) return fresh;
+//   }
+//   return cartProduct;
+// };
+
+// // --- HELPER MULTI CURRENCY ---
+// const getPriceToDisplay = (product) => {
+//   if (!product) return { value: 0, curr: "IDR" };
+//   const curr = currentCurrency.value;
+//   if (curr === "IDR") return { value: Number(product.price), curr: "IDR" };
+
+//   try {
+//     const pricesObj =
+//       typeof product.prices === "string"
+//         ? JSON.parse(product.prices)
+//         : product.prices || {};
+//     const dbPrice =
+//       pricesObj[curr] ||
+//       pricesObj[curr.toLowerCase()] ||
+//       pricesObj[currentCurrency.value.toUpperCase()];
+//     if (dbPrice) return { value: parseFloat(dbPrice), curr: curr };
+//   } catch (e) {}
+
+//   return { value: Number(product.price), curr: "IDR" };
+// };
+
+// const getDiscountToDisplay = (product) => {
+//   if (!product) return null;
+//   const curr = currentCurrency.value;
+//   if (curr === "IDR")
+//     return product.discount_price
+//       ? { value: Number(product.discount_price), curr: "IDR" }
+//       : null;
+
+//   try {
+//     const discObj =
+//       typeof product.discount_prices === "string"
+//         ? JSON.parse(product.discount_prices)
+//         : product.discount_prices || {};
+//     const dbDisc =
+//       discObj[curr] ||
+//       discObj[curr.toLowerCase()] ||
+//       discObj[currentCurrency.value.toUpperCase()];
+//     if (dbDisc) return { value: parseFloat(dbDisc), curr: curr };
+//   } catch (e) {}
+
+//   return product.discount_price
+//     ? { value: Number(product.discount_price), curr: "IDR" }
+//     : null;
+// };
+
+// const formatCurrencyDisplay = (priceObj) => {
+//   if (!priceObj) return "";
+//   const { value, curr } = priceObj;
+//   const symbols = { USD: "$", SGD: "S$", EUR: "€", AUD: "A$", MYR: "RM", IDR: "Rp " };
+
+//   const formatter = new Intl.NumberFormat(curr === "IDR" ? "id-ID" : "en-US", {
+//     minimumFractionDigits: curr === "IDR" ? 0 : 2,
+//     maximumFractionDigits: curr === "IDR" ? 0 : 2,
+//   });
+
+//   return `${symbols[curr] || curr + " "}${formatter.format(value)}`;
+// };
+
+// const getActivePriceObj = (product) => {
+//   const isReseller = userType.value === "reseller";
+//   const wholesale = Number(product.wholesale_price) || 0;
+//   const voucher = Number(product.voucher_discount_price) || 0;
+
+//   if (appliedPromoType.value === "voucher" && voucher > 0) {
+//     return { value: voucher, curr: "IDR" };
+//   }
+
+//   const dynamicPriceObj = getPriceToDisplay(product);
+//   const dynamicDiscountObj = getDiscountToDisplay(product);
+
+//   if (isReseller && wholesale > 0 && checkoutCount.value >= 24) {
+//     return { value: wholesale, curr: "IDR" };
+//   } else if (
+//     dynamicDiscountObj &&
+//     dynamicDiscountObj.value > 0 &&
+//     dynamicDiscountObj.value < dynamicPriceObj.value
+//   ) {
+//     return dynamicDiscountObj;
+//   }
+//   return dynamicPriceObj;
+// };
+
+// const convertIDRtoActiveCurrency = (idrAmount) => {
+//   const curr = currentCurrency.value;
+//   if (curr === "IDR" || !exchangeRates.value[curr])
+//     return { value: idrAmount, curr: "IDR" };
+//   return { value: idrAmount * exchangeRates.value[curr], curr: curr };
+// };
+
+// // --- KALKULASI TOTAL ---
+// const checkoutItems = computed(() => {
+//   let baseItems = cartItems.value.filter((item) =>
+//     selectedItemIds.value.includes(item.id)
+//   );
+//   if (catalogProducts.value.length > 0) {
+//     baseItems = baseItems.map((item) => {
+//       const fresh = catalogProducts.value.find((p) => p.id === item.product_id);
+//       return fresh ? { ...item, product: fresh } : item;
+//     });
+//   }
+//   return baseItems;
+// });
+
+// const checkoutTotalIDR = computed(() => {
+//   return checkoutItems.value.reduce((sum, item) => {
+//     const freshProd = getFreshProduct(item.product);
+//     const isReseller = userType.value === "reseller";
+//     const wholesale = Number(freshProd.wholesale_price) || 0;
+//     const discount = Number(freshProd.discount_price) || 0;
+//     let priceToUse = Number(freshProd.price) || 0;
+
+//     if (isReseller && wholesale > 0 && checkoutCount.value >= 24) {
+//       priceToUse = wholesale;
+//     } else if (discount > 0 && discount < priceToUse) {
+//       priceToUse = discount;
+//     }
+
+//     if (
+//       appliedPromoType.value === "voucher" &&
+//       Number(freshProd.voucher_discount_price) > 0
+//     ) {
+//       priceToUse = Number(freshProd.voucher_discount_price);
+//     }
+//     return sum + priceToUse * item.quantity;
+//   }, 0);
+// });
+
+// const cartSubtotalObj = computed(() => {
+//   const curr = currentCurrency.value;
+//   const totalValue = checkoutItems.value.reduce((sum, item) => {
+//     const activeObj = getActivePriceObj(item.product);
+//     let val = activeObj.value;
+
+//     if (activeObj.curr === "IDR" && curr !== "IDR") {
+//       val = val * (exchangeRates.value[curr] || 1);
+//     }
+//     return sum + val * item.quantity;
+//   }, 0);
+//   return { value: totalValue, curr };
+// });
+
+// const actualPromoDiscountIDR = computed(() => {
+//   if (appliedPromoType.value === "claim") {
+//     const productDiscount = Math.floor(checkoutTotalIDR.value * 0.1);
+//     let shippingCost = 0;
+//     if (shippingMethod.value === "biteship" && selectedRate.value) {
+//       shippingCost = parseFloat(selectedRate.value.price) * checkoutCount.value;
+//     }
+//     const shippingSubsidy = Math.min(10000, shippingCost);
+//     return productDiscount + shippingSubsidy;
+//   }
+//   return promoDiscountAmount.value;
+// });
+// const actualPromoDiscountObj = computed(() =>
+//   convertIDRtoActiveCurrency(actualPromoDiscountIDR.value)
+// );
+
+// const maxPointsAllowed = computed(() => {
+//   const maxUsableAmount = Math.max(
+//     0,
+//     checkoutTotalIDR.value - actualPromoDiscountIDR.value
+//   );
+//   return Math.min(availablePoints.value, Math.floor(maxUsableAmount / 1000));
+// });
+
+// const appliedPointDiscountIDR = computed(() => pointsUsed.value * 1000);
+// const appliedPointDiscountObj = computed(() =>
+//   convertIDRtoActiveCurrency(appliedPointDiscountIDR.value)
+// );
+
+// const shippingCostIDR = computed(() =>
+//   shippingMethod.value === "biteship" && selectedRate.value
+//     ? parseFloat(selectedRate.value.price) * checkoutCount.value
+//     : 0
+// );
+// const shippingCostObj = computed(() => convertIDRtoActiveCurrency(shippingCostIDR.value));
+
+// const grandTotalObj = computed(() => {
+//   return {
+//     value:
+//       cartSubtotalObj.value.value +
+//       shippingCostObj.value.value -
+//       actualPromoDiscountObj.value.value -
+//       appliedPointDiscountObj.value.value,
+//     curr: currentCurrency.value,
+//   };
+// });
+
+// const parseColorName = (colorString) => {
+//   if (!colorString) return "";
+//   try {
+//     const parsed = JSON.parse(colorString);
+//     if (parsed.name) return parsed.name;
+//   } catch {}
+//   return colorString.includes("|") ? colorString.split("|")[0] : colorString;
+// };
+
+// const parseColorHex = (colorString) => {
+//   if (!colorString) return "#cccccc";
+//   try {
+//     const parsed = JSON.parse(colorString);
+//     if (parsed.hex) return parsed.hex;
+//   } catch {}
+//   return colorString.includes("|") ? colorString.split("|")[1] : colorString;
+// };
+
+// const imageErrors = ref({});
+// const handleImageError = (company) => {
+//   imageErrors.value[company] = true;
+// };
+
+// const destinationInfo = computed(() => {
+//   if (!selectedAddressId.value || !addresses.value) return null;
+//   const addr = addresses.value.find((a) => a.id === selectedAddressId.value);
+//   if (!addr) return null;
+
+//   return {
+//     name: addr.receiver?.full_name || "Unknown",
+//     phone: userData.value?.phone || "No Phone Provided",
+//     address: `${addr.details?.location || ""}, ${addr.details?.city || ""}, ${
+//       addr.details?.province || ""
+//     }`,
+//     postal_code: addr.postal_code || addr.details?.postal_code || "",
+//     country: addr.region || addr.details?.region || "Indonesia",
+//   };
+// });
+
+// const getCourierLogo = (company) => {
+//   const baseUrl = "/courier_images/";
+//   const map = {
+//     jne: "jne.png",
+//     sicepat: "sicepat.png",
+//     jnt: "jnt.png",
+//     anteraja: "anteraja.png",
+//     gojek: "gojek.png",
+//     grab: "grab.png",
+//     paxel: "paxel.png",
+//     ninja: "ninja.png",
+//     dhl: "dhl.png",
+//   };
+//   return map[company.toLowerCase()] ? baseUrl + map[company.toLowerCase()] : null;
+// };
+
+// const isModalOpen = ref(false);
+// const countries = ref(Country.getAllCountries());
+// const filteredProvinces = ref([]);
+// const form = ref({
+//   id: null,
+//   region: "Indonesia",
+//   first_name_address: "",
+//   last_name_address: "",
+//   address_location: "",
+//   location_type: "",
+//   city: "",
+//   province: "",
+//   postal_code: "",
+//   latitude: null,
+//   longitude: null,
+//   is_default: true,
+// });
+
+// const fetchProvinces = () => {
+//   const selectedCountry = countries.value.find((c) => c.name === form.value.region);
+//   if (selectedCountry) {
+//     const states = State.getStatesOfCountry(selectedCountry.isoCode);
+//     filteredProvinces.value = states.map((s) => s.name);
+//   } else {
+//     filteredProvinces.value = [];
+//   }
+// };
+
+// const openModal = () => {
+//   form.value = {
+//     region: "Indonesia",
+//     is_default: true,
+//     first_name_address: userData.value?.first_name || "",
+//     last_name_address: userData.value?.last_name || "",
+//     address_location: "",
+//     location_type: "home",
+//     city: "",
+//     province: "",
+//     postal_code: "",
+//     latitude: null,
+//     longitude: null,
+//   };
+//   fetchProvinces();
+//   isModalOpen.value = true;
+// };
+
+// const handleSearchInput = () => {
+//   if (debounceTimeout) clearTimeout(debounceTimeout);
+//   if (searchQuery.value.length < 3) {
+//     searchResults.value = [];
+//     return;
+//   }
+//   debounceTimeout = setTimeout(async () => {
+//     try {
+//       const res = await axios.get(
+//         `https://nominatim.openstreetmap.org/search?format=json&q=${searchQuery.value}&countrycodes=id&limit=5`
+//       );
+//       searchResults.value = res.data;
+//     } catch (error) {}
+//   }, 500);
+// };
+
+// const selectSearchResult = (result) => {
+//   const lat = parseFloat(result.lat);
+//   const lng = parseFloat(result.lon);
+//   if (map.value && map.value.leafletObject) map.value.leafletObject.flyTo([lat, lng], 16);
+//   else {
+//     center.value = [lat, lng];
+//     zoom.value = 16;
+//   }
+//   markerLatLng.value = [lat, lng];
+//   form.value.latitude = lat.toString();
+//   form.value.longitude = lng.toString();
+//   form.value.address_location = result.display_name;
+//   searchResults.value = [];
+//   searchQuery.value = "";
+// };
+
+// const onMapClick = (event) => {
+//   const { lat, lng } = event.latlng;
+//   updateLocation(lat, lng);
+// };
+// const onMarkerDrag = (event) => {
+//   const { lat, lng } = event.target.getLatLng();
+//   updateLocation(lat, lng);
+// };
+// const updateLocation = (lat, lng) => {
+//   markerLatLng.value = [lat, lng];
+//   form.value.latitude = lat.toString();
+//   form.value.longitude = lng.toString();
+//   reverseGeocode(lat, lng);
+// };
+
+// const reverseGeocode = async (lat, lng) => {
+//   try {
+//     const res = await axios.get(
+//       `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+//     );
+//     if (res.data && res.data.display_name) {
+//       form.value.address_location = res.data.display_name;
+//       if (res.data.address && res.data.address.postcode)
+//         form.value.postal_code = res.data.address.postcode;
+//     }
+//   } catch (error) {}
+// };
+
+// const getCurrentLocation = () => {
+//   setIsGettingLocation(true);
+//   if (navigator.geolocation) {
+//     navigator.geolocation.getCurrentPosition(
+//       (position) => {
+//         const lat = position.coords.latitude;
+//         const lng = position.coords.longitude;
+//         if (map.value && map.value.leafletObject)
+//           map.value.leafletObject.flyTo([lat, lng], 16);
+//         else {
+//           center.value = [lat, lng];
+//           zoom.value = 16;
+//         }
+//         updateLocation(lat, lng);
+//         setIsGettingLocation(false);
+//       },
+//       () => {
+//         Swal.fire("Error", "Please allow location access.", "error");
+//         setIsGettingLocation(false);
+//       }
+//     );
+//   }
+// };
+
+// const map = ref(null);
+// const zoom = ref(13);
+// const center = ref([-7.250445, 112.768845]);
+// const markerLatLng = ref([-7.250445, 112.768845]);
+// const searchQuery = ref("");
+// const searchResults = ref([]);
+// let debounceTimeout = null;
+
+// const saveAddress = async () => {
+//   try {
+//     const res = await axios.post(`${BASE_URL}/addresses`, form.value, getAxiosConfig());
+//     isModalOpen.value = false;
+//     const resAddr = await axios.get(`${BASE_URL}/addresses`, getAxiosConfig());
+//     addresses.value = resAddr.data.data;
+//     selectedAddressId.value =
+//       res.data.id || res.data.data?.id || addresses.value[addresses.value.length - 1].id;
+//     Swal.fire({
+//       toast: true,
+//       position: "top-end",
+//       icon: "success",
+//       title: "Address Saved!",
+//       showConfirmButton: false,
+//       timer: 1500,
+//     });
+//   } catch (e) {
+//     Swal.fire("Error", "Failed to save address", "error");
+//   }
+// };
+
+// const isButtonDisabled = computed(() => {
+//   if (isProcessing.value || cartItems.value.length === 0 || !selectedAddressId.value)
+//     return true;
+//   if (shippingMethod.value === "biteship") {
+//     if (!selectedRate.value) return true;
+//     if (
+//       deliveryType.value === "scheduled" &&
+//       (!deliveryDate.value || !deliveryTime.value)
+//     )
+//       return true;
+//   }
+//   return false;
+// });
+
+// watch(selectedAddressId, async (newVal) => {
+//   if (newVal) {
+//     if (!selectedItemIds || selectedItemIds.length === 0) return;
+//     selectedRate.value = null;
+//     isLoadingRates.value = true;
+//     rawShippingRates.value = [];
+//     try {
+//       const res = await axios.post(
+//         `${BASE_URL}/shipping/rates`,
+//         { address_id: newVal, cart_ids: selectedItemIds },
+//         getAxiosConfig()
+//       );
+//       if (res.data && res.data.data) {
+//         rawShippingRates.value = res.data.data;
+//       } else if (res.data && res.data.rates) {
+//         rawShippingRates.value = res.data.rates;
+//       } else if (res.data && res.data.pricing) {
+//         rawShippingRates.value = res.data.pricing;
+//       }
+//     } catch (error) {
+//       if (error.response?.status === 401) return router.push("/login");
+//     } finally {
+//       isLoadingRates.value = false;
+//     }
+//   }
+// });
+
+// const processedShippingRates = computed(() => {
+//   if (!rawShippingRates.value || rawShippingRates.value.length === 0) return [];
+//   return rawShippingRates.value.map((rate) => {
+//     const isShippo = rate.provider !== undefined;
+//     return {
+//       ...rate,
+//       company: isShippo ? rate.provider : rate.company,
+//       type: isShippo ? rate.service_name : rate.type,
+//       duration: isShippo ? rate.etd : rate.duration,
+//       courier_name: isShippo ? "Global Express" : rate.courier_name,
+//       price: rate.price,
+//       is_disabled: false,
+//       disable_reason: "",
+//     };
+//   });
+// });
+
+// const handlePayment = async () => {
+//   isProcessing.value = true;
+//   try {
+//     const payload = {
+//       address_id: selectedAddressId.value,
+//       shipping_method: shippingMethod.value,
+//       use_points: pointsUsed.value,
+//       cart_ids: selectedItemIds,
+//       courier_company:
+//         shippingMethod.value === "biteship" ? selectedRate.value?.company : null,
+//       courier_type: shippingMethod.value === "biteship" ? selectedRate.value?.type : null,
+//       shipping_cost:
+//         shippingMethod.value === "biteship" ? selectedRate.value?.price : null,
+//       delivery_type: shippingMethod.value === "biteship" ? deliveryType.value : null,
+//       delivery_date: shippingMethod.value === "biteship" ? deliveryDate.value : null,
+//       delivery_time: shippingMethod.value === "biteship" ? deliveryTime.value : null,
+//       promo_code: appliedPromoCode.value,
+//       promo_type: appliedPromoType.value,
+//       currency: currentCurrency.value,
+//       referral_code: localStorage.getItem("affiliate_ref"),
+//     };
+//     const res = await axios.post(`${BASE_URL}/checkout`, payload, getAxiosConfig());
+//     if (res.data.checkout_url) {
+//       clearSelectedCart();
+//       window.location.href = res.data.checkout_url;
+//     }
+//   } catch (error) {
+//     Swal.fire(
+//       "Payment Error",
+//       error.response?.data?.message || "Failed to create invoice",
+//       "error"
+//     );
+//   } finally {
+//     isProcessing.value = false;
+//   }
+// };
+
+// // onMounted(async () => {
+// //   window.addEventListener("currency-changed", updateCurrencyState);
+// //   window.addEventListener("storage", (e) => {
+// //     if (e.key === "currency") updateCurrencyState();
+// //   });
+
+// //   try {
+// //     const res = await axios.get(`${BASE_URL}/exchange-rates`);
+// //     if (res.data && res.data.data && res.data.data.rates) {
+// //       exchangeRates.value = res.data.data.rates;
+// //     }
+// //   } catch (e) {}
+
+// //   try {
+// //     const resCatalog = await axios.get(`${BASE_URL}/products`);
+// //     const dataCat =
+// //       resCatalog.data?.data?.data || resCatalog.data?.data || resCatalog.data;
+// //     if (Array.isArray(dataCat)) {
+// //       setCatalogProducts(dataCat);
+// //     }
+// //   } catch (e) {}
+
+// //   try {
+// //     const user = localStorage.getItem("user_data");
+// //     if (user) {
+// //       userData.value = JSON.parse(user);
+// //       setAvailablePoints(userData.value.point || 0);
+// //       setUserType(userData.value.usertype || "user");
+// //     }
+// //     const resAddr = await axios.get(`${BASE_URL}/addresses`, getAxiosConfig());
+// //     addresses.value = resAddr.data.data || resAddr.data;
+// //     if (addresses.value.length > 0) {
+// //       const defaultAddr = addresses.value.find((a) => a.is_default);
+// //       selectedAddressId.value = defaultAddr ? defaultAddr.id : addresses.value[0].id;
+// //     }
+
+// //     if (selectedItemIds.length === 0) {
+// //       router.push(`${urlPrefix}/cart`);
+// //     } else {
+// //       const now = new Date();
+// //       now.setHours(now.getHours() + 1);
+// //       deliveryDate.value = now.toISOString().split("T")[0];
+// //       deliveryTime.value = `${String(now.getHours()).padStart(2, "0")}:${String(
+// //         now.getMinutes()
+// //       ).padStart(2, "0")}`;
+// //     }
+// //   } catch (error) {
+// //   } finally {
+// //     isPageLoading.value = false;
+// //   }
+// // });
+
+// onMounted(async () => {
+//   window.addEventListener("currency-changed", updateCurrencyState);
+//   window.addEventListener("storage", (e) => {
+//     if (e.key === "currency") updateCurrencyState();
+//   });
+
+//   try {
+//     const res = await axios.get(`${BASE_URL}/exchange-rates`);
+//     if (res.data && res.data.data && res.data.data.rates) {
+//       exchangeRates.value = res.data.data.rates;
+//     }
+//   } catch (e) {}
+
+//   try {
+//     const resCatalog = await axios.get(`${BASE_URL}/products`);
+//     const dataCat =
+//       resCatalog.data?.data?.data || resCatalog.data?.data || resCatalog.data;
+//     if (Array.isArray(dataCat)) {
+//       setCatalogProducts(dataCat);
+//     }
+//   } catch (e) {}
+
+//   try {
+//     // 👇 PERBAIKAN 1: Dukung kedua format key ("user" untuk Vue, "user_data" untuk React)
+//     const userStr = localStorage.getItem("user") || localStorage.getItem("user_data");
+//     if (userStr) {
+//       userData.value = JSON.parse(userStr);
+//       setAvailablePoints(userData.value.point || 0);
+//       setUserType(userData.value.usertype || "user");
+//     }
+
+//     // 👇 PERBAIKAN 2: SINKRONISASI REAL-TIME KE DATABASE
+//     try {
+//       const resUser = await axios.get(`${BASE_URL}/user`, getAxiosConfig());
+//       if (resUser.data) {
+//         userData.value = resUser.data;
+//         setAvailablePoints(resUser.data.point || 0);
+//         setUserType(resUser.data.usertype || "user");
+//         // Update local storage agar cache selalu segar
+//         localStorage.setItem("user", JSON.stringify(resUser.data));
+//       }
+//     } catch (syncError) {
+//       console.warn("Background user sync failed, using cached data.");
+//     }
+
+//     const resAddr = await axios.get(`${BASE_URL}/addresses`, getAxiosConfig());
+//     addresses.value = resAddr.data.data || resAddr.data;
+//     if (addresses.value.length > 0) {
+//       const defaultAddr = addresses.value.find((a) => a.is_default);
+//       selectedAddressId.value = defaultAddr ? defaultAddr.id : addresses.value[0].id;
+//     }
+
+//     if (selectedItemIds.length === 0) {
+//       router.push(`${urlPrefix}/cart`);
+//     } else {
+//       const now = new Date();
+//       now.setHours(now.getHours() + 1);
+//       deliveryDate.value = now.toISOString().split("T")[0];
+//       deliveryTime.value = `${String(now.getHours()).padStart(2, "0")}:${String(
+//         now.getMinutes()
+//       ).padStart(2, "0")}`;
+//     }
+//   } catch (error) {
+//   } finally {
+//     isPageLoading.value = false;
+//   }
+// });
+
+// onUnmounted(() => {
+//   window.removeEventListener("currency-changed", updateCurrencyState);
+// });
+
+// const calculateEarnedPoints = computed(() => Math.floor(checkoutTotalIDR.value / 100000));
+
+// const handleMemberToggle = async () => {
+//   if (useMemberVoucher.value) {
+//     if (checkoutTotalIDR.value < MEMBER_MIN_SPEND) {
+//       Swal.fire({
+//         toast: true,
+//         position: "top-end",
+//         icon: "warning",
+//         title: `Min. spend is Rp ${MEMBER_MIN_SPEND.toLocaleString("id-ID")}`,
+//         showConfirmButton: false,
+//         timer: 3000,
+//       });
+//       useMemberVoucher.value = false;
+//       return;
+//     }
+//     promoInput.value = MEMBER_VOUCHER_CODE;
+//     await applyPromo();
+//     if (!promoSuccess.value) useMemberVoucher.value = false;
+//   } else {
+//     if (appliedPromoCode.value === MEMBER_VOUCHER_CODE) removePromo();
+//   }
+// };
+
+// const applyPromo = async () => {
+//   if (!promoInput.value) return;
+//   isVerifyingPromo.value = true;
+//   try {
+//     const codeToBeApplied = promoInput.value.toUpperCase();
+//     const res = await axios.post(
+//       `${BASE_URL}/promo/verify`,
+//       {
+//         promo_code: codeToBeApplied,
+//         cart_items: checkoutItems.value.map((item) => ({ product_id: item.product_id })),
+//       },
+//       getAxiosConfig()
+//     );
+//     if (
+//       codeToBeApplied === MEMBER_VOUCHER_CODE &&
+//       checkoutTotalIDR.value < MEMBER_MIN_SPEND
+//     )
+//       throw new Error(`Minimum spend is Rp ${MEMBER_MIN_SPEND.toLocaleString("id-ID")}`);
+//     else if (codeToBeApplied !== MEMBER_VOUCHER_CODE && checkoutTotalIDR.value < 499000)
+//       throw new Error("Minimum spend is Rp 499.000");
+
+//     promoSuccess.value = true;
+//     promoMessage.value = "✅ " + res.data.message;
+//     appliedPromoCode.value = codeToBeApplied;
+//     promoDiscountAmount.value = Math.min(res.data.discount_value, checkoutTotalIDR.value);
+//     setAppliedPromoType(res.data.promo_type);
+
+//     if (appliedPromoCode.value === MEMBER_VOUCHER_CODE) useMemberVoucher.value = true;
+//     if (pointsToUse.value > maxPointsAllowed.value)
+//       pointsToUse.value = maxPointsAllowed.value;
+//   } catch (error) {
+//     promoSuccess.value = false;
+//     promoMessage.value =
+//       "❌ " + (error.response?.data?.message || error.message || "Invalid promo code.");
+//     appliedPromoCode.value = null;
+//     promoDiscountAmount.value = 0;
+//     setAppliedPromoType(null);
+//     useMemberVoucher.value = false;
+//   } finally {
+//     isVerifyingPromo.value = false;
+//   }
+// };
+
+// const removePromo = () => {
+//   promoInput.value = "";
+//   appliedPromoCode.value = null;
+//   appliedPromoType.value = null;
+//   promoDiscountAmount.value = 0;
+//   promoMessage.value = "";
+//   promoSuccess.value = false;
+//   useMemberVoucher.value = false;
+// };
+// const useAllPoints = () => {
+//   pointsToUse.value = maxPointsAllowed.value;
+// };
+
 import { ref, onMounted, onUnmounted, watch, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import axios from "axios";
@@ -4408,7 +5183,7 @@ const pointConversionRate = 1000;
 const userType = ref("guest");
 const useMemberVoucher = ref(false);
 const MEMBER_VOUCHER_CODE = "SOLHERMEMBER";
-const MEMBER_MIN_SPEND = 1000000;
+const MEMBER_MIN_SPEND = 500000; // Sesuai permintaan Anda sebelumnya
 const currentCurrency = ref(localStorage.getItem("currency") || "IDR");
 const exchangeRates = ref({});
 
@@ -4924,122 +5699,72 @@ const handlePayment = async () => {
   }
 };
 
-// onMounted(async () => {
-//   window.addEventListener("currency-changed", updateCurrencyState);
-//   window.addEventListener("storage", (e) => {
-//     if (e.key === "currency") updateCurrencyState();
-//   });
-
-//   try {
-//     const res = await axios.get(`${BASE_URL}/exchange-rates`);
-//     if (res.data && res.data.data && res.data.data.rates) {
-//       exchangeRates.value = res.data.data.rates;
-//     }
-//   } catch (e) {}
-
-//   try {
-//     const resCatalog = await axios.get(`${BASE_URL}/products`);
-//     const dataCat =
-//       resCatalog.data?.data?.data || resCatalog.data?.data || resCatalog.data;
-//     if (Array.isArray(dataCat)) {
-//       setCatalogProducts(dataCat);
-//     }
-//   } catch (e) {}
-
-//   try {
-//     const user = localStorage.getItem("user_data");
-//     if (user) {
-//       userData.value = JSON.parse(user);
-//       setAvailablePoints(userData.value.point || 0);
-//       setUserType(userData.value.usertype || "user");
-//     }
-//     const resAddr = await axios.get(`${BASE_URL}/addresses`, getAxiosConfig());
-//     addresses.value = resAddr.data.data || resAddr.data;
-//     if (addresses.value.length > 0) {
-//       const defaultAddr = addresses.value.find((a) => a.is_default);
-//       selectedAddressId.value = defaultAddr ? defaultAddr.id : addresses.value[0].id;
-//     }
-
-//     if (selectedItemIds.length === 0) {
-//       router.push(`${urlPrefix}/cart`);
-//     } else {
-//       const now = new Date();
-//       now.setHours(now.getHours() + 1);
-//       deliveryDate.value = now.toISOString().split("T")[0];
-//       deliveryTime.value = `${String(now.getHours()).padStart(2, "0")}:${String(
-//         now.getMinutes()
-//       ).padStart(2, "0")}`;
-//     }
-//   } catch (error) {
-//   } finally {
-//     isPageLoading.value = false;
-//   }
-// });
-
 onMounted(async () => {
   window.addEventListener("currency-changed", updateCurrencyState);
   window.addEventListener("storage", (e) => {
     if (e.key === "currency") updateCurrencyState();
   });
 
+  // Tembak Promise.all agar semua data jalan bersamaan (mempercepat loading)
   try {
-    const res = await axios.get(`${BASE_URL}/exchange-rates`);
-    if (res.data && res.data.data && res.data.data.rates) {
-      exchangeRates.value = res.data.data.rates;
-    }
-  } catch (e) {}
+    const [resExchange, resCatalog, resUser, resAddr] = await Promise.allSettled([
+      axios.get(`${BASE_URL}/exchange-rates`),
+      axios.get(`${BASE_URL}/products`),
+      axios.get(`${BASE_URL}/user`, getAxiosConfig()),
+      axios.get(`${BASE_URL}/addresses`, getAxiosConfig())
+    ]);
 
-  try {
-    const resCatalog = await axios.get(`${BASE_URL}/products`);
-    const dataCat =
-      resCatalog.data?.data?.data || resCatalog.data?.data || resCatalog.data;
-    if (Array.isArray(dataCat)) {
-      setCatalogProducts(dataCat);
-    }
-  } catch (e) {}
-
-  try {
-    // 👇 PERBAIKAN 1: Dukung kedua format key ("user" untuk Vue, "user_data" untuk React)
-    const userStr = localStorage.getItem("user") || localStorage.getItem("user_data");
-    if (userStr) {
-      userData.value = JSON.parse(userStr);
-      setAvailablePoints(userData.value.point || 0);
-      setUserType(userData.value.usertype || "user");
+    // 1. Set Exchange Rates
+    if (resExchange.status === 'fulfilled' && resExchange.value.data?.data?.rates) {
+      exchangeRates.value = resExchange.value.data.data.rates;
     }
 
-    // 👇 PERBAIKAN 2: SINKRONISASI REAL-TIME KE DATABASE
-    try {
-      const resUser = await axios.get(`${BASE_URL}/user`, getAxiosConfig());
-      if (resUser.data) {
-        userData.value = resUser.data;
-        setAvailablePoints(resUser.data.point || 0);
-        setUserType(resUser.data.usertype || "user");
-        // Update local storage agar cache selalu segar
-        localStorage.setItem("user", JSON.stringify(resUser.data));
+    // 2. Set Catalog
+    if (resCatalog.status === 'fulfilled') {
+      const dataCat = resCatalog.value.data?.data?.data || resCatalog.value.data?.data || resCatalog.value.data;
+      if (Array.isArray(dataCat)) {
+        setCatalogProducts(dataCat);
       }
-    } catch (syncError) {
-      console.warn("Background user sync failed, using cached data.");
     }
 
-    const resAddr = await axios.get(`${BASE_URL}/addresses`, getAxiosConfig());
-    addresses.value = resAddr.data.data || resAddr.data;
-    if (addresses.value.length > 0) {
-      const defaultAddr = addresses.value.find((a) => a.is_default);
-      selectedAddressId.value = defaultAddr ? defaultAddr.id : addresses.value[0].id;
+    // 3. Set User Data
+    if (resUser.status === 'fulfilled' && resUser.value.data) {
+      userData.value = resUser.value.data;
+      setAvailablePoints(resUser.value.data.point || 0);
+      setUserType(resUser.value.data.usertype || "user");
+      localStorage.setItem("user", JSON.stringify(resUser.value.data));
+    } else {
+      // Fallback jika API user gagal
+      const userStr = localStorage.getItem("user") || localStorage.getItem("user_data");
+      if (userStr) {
+        userData.value = JSON.parse(userStr);
+        setAvailablePoints(userData.value.point || 0);
+        setUserType(userData.value.usertype || "user");
+      }
     }
 
+    // 4. Set Addresses
+    if (resAddr.status === 'fulfilled') {
+      addresses.value = resAddr.value.data.data || resAddr.value.data;
+      if (addresses.value.length > 0) {
+        const defaultAddr = addresses.value.find((a) => a.is_default);
+        selectedAddressId.value = defaultAddr ? defaultAddr.id : addresses.value[0].id;
+      }
+    }
+
+    // Redirect jika keranjang kosong
     if (selectedItemIds.length === 0) {
       router.push(`${urlPrefix}/cart`);
     } else {
       const now = new Date();
       now.setHours(now.getHours() + 1);
       deliveryDate.value = now.toISOString().split("T")[0];
-      deliveryTime.value = `${String(now.getHours()).padStart(2, "0")}:${String(
-        now.getMinutes()
-      ).padStart(2, "0")}`;
+      deliveryTime.value = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
     }
   } catch (error) {
+    console.error("Initialization error", error);
   } finally {
+    // Matikan loading spinner DI AKHIR, setelah semua data termasuk address dirender
     isPageLoading.value = false;
   }
 });
@@ -5097,7 +5822,9 @@ const applyPromo = async () => {
     promoMessage.value = "✅ " + res.data.message;
     appliedPromoCode.value = codeToBeApplied;
     promoDiscountAmount.value = Math.min(res.data.discount_value, checkoutTotalIDR.value);
-    setAppliedPromoType(res.data.promo_type);
+    
+    // 👇 PERBAIKAN: Mengubah ref() dengan .value 👇
+    appliedPromoType.value = res.data.promo_type;
 
     if (appliedPromoCode.value === MEMBER_VOUCHER_CODE) useMemberVoucher.value = true;
     if (pointsToUse.value > maxPointsAllowed.value)
@@ -5108,7 +5835,10 @@ const applyPromo = async () => {
       "❌ " + (error.response?.data?.message || error.message || "Invalid promo code.");
     appliedPromoCode.value = null;
     promoDiscountAmount.value = 0;
-    setAppliedPromoType(null);
+    
+    // 👇 PERBAIKAN: Mengubah ref() dengan .value 👇
+    appliedPromoType.value = null;
+    
     useMemberVoucher.value = false;
   } finally {
     isVerifyingPromo.value = false;
