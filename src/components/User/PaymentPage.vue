@@ -4924,6 +4924,58 @@ const handlePayment = async () => {
   }
 };
 
+// onMounted(async () => {
+//   window.addEventListener("currency-changed", updateCurrencyState);
+//   window.addEventListener("storage", (e) => {
+//     if (e.key === "currency") updateCurrencyState();
+//   });
+
+//   try {
+//     const res = await axios.get(`${BASE_URL}/exchange-rates`);
+//     if (res.data && res.data.data && res.data.data.rates) {
+//       exchangeRates.value = res.data.data.rates;
+//     }
+//   } catch (e) {}
+
+//   try {
+//     const resCatalog = await axios.get(`${BASE_URL}/products`);
+//     const dataCat =
+//       resCatalog.data?.data?.data || resCatalog.data?.data || resCatalog.data;
+//     if (Array.isArray(dataCat)) {
+//       setCatalogProducts(dataCat);
+//     }
+//   } catch (e) {}
+
+//   try {
+//     const user = localStorage.getItem("user_data");
+//     if (user) {
+//       userData.value = JSON.parse(user);
+//       setAvailablePoints(userData.value.point || 0);
+//       setUserType(userData.value.usertype || "user");
+//     }
+//     const resAddr = await axios.get(`${BASE_URL}/addresses`, getAxiosConfig());
+//     addresses.value = resAddr.data.data || resAddr.data;
+//     if (addresses.value.length > 0) {
+//       const defaultAddr = addresses.value.find((a) => a.is_default);
+//       selectedAddressId.value = defaultAddr ? defaultAddr.id : addresses.value[0].id;
+//     }
+
+//     if (selectedItemIds.length === 0) {
+//       router.push(`${urlPrefix}/cart`);
+//     } else {
+//       const now = new Date();
+//       now.setHours(now.getHours() + 1);
+//       deliveryDate.value = now.toISOString().split("T")[0];
+//       deliveryTime.value = `${String(now.getHours()).padStart(2, "0")}:${String(
+//         now.getMinutes()
+//       ).padStart(2, "0")}`;
+//     }
+//   } catch (error) {
+//   } finally {
+//     isPageLoading.value = false;
+//   }
+// });
+
 onMounted(async () => {
   window.addEventListener("currency-changed", updateCurrencyState);
   window.addEventListener("storage", (e) => {
@@ -4947,12 +4999,28 @@ onMounted(async () => {
   } catch (e) {}
 
   try {
-    const user = localStorage.getItem("user_data");
-    if (user) {
-      userData.value = JSON.parse(user);
+    // 👇 PERBAIKAN 1: Dukung kedua format key ("user" untuk Vue, "user_data" untuk React)
+    const userStr = localStorage.getItem("user") || localStorage.getItem("user_data");
+    if (userStr) {
+      userData.value = JSON.parse(userStr);
       setAvailablePoints(userData.value.point || 0);
       setUserType(userData.value.usertype || "user");
     }
+
+    // 👇 PERBAIKAN 2: SINKRONISASI REAL-TIME KE DATABASE
+    try {
+      const resUser = await axios.get(`${BASE_URL}/user`, getAxiosConfig());
+      if (resUser.data) {
+        userData.value = resUser.data;
+        setAvailablePoints(resUser.data.point || 0);
+        setUserType(resUser.data.usertype || "user");
+        // Update local storage agar cache selalu segar
+        localStorage.setItem("user", JSON.stringify(resUser.data));
+      }
+    } catch (syncError) {
+      console.warn("Background user sync failed, using cached data.");
+    }
+
     const resAddr = await axios.get(`${BASE_URL}/addresses`, getAxiosConfig());
     addresses.value = resAddr.data.data || resAddr.data;
     if (addresses.value.length > 0) {
