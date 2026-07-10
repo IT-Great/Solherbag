@@ -9928,7 +9928,7 @@ const availablePoints = ref(0);
 const userType = ref("guest");
 const useMemberVoucher = ref(false);
 const MEMBER_VOUCHER_CODE = "SOLHERMEMBER";
-const MEMBER_MIN_SPEND = 500000; 
+const MEMBER_MIN_SPEND = 500000;
 const currentCurrency = ref(localStorage.getItem("currency") || "IDR");
 const exchangeRates = ref({});
 
@@ -9953,8 +9953,14 @@ const getPriceToDisplay = (product) => {
   if (curr === "IDR") return { value: Number(product.price), curr: "IDR" };
 
   try {
-    const pricesObj = typeof product.prices === "string" ? JSON.parse(product.prices) : product.prices || {};
-    const dbPrice = pricesObj[curr] || pricesObj[curr.toLowerCase()] || pricesObj[currentCurrency.value.toUpperCase()];
+    const pricesObj =
+      typeof product.prices === "string"
+        ? JSON.parse(product.prices)
+        : product.prices || {};
+    const dbPrice =
+      pricesObj[curr] ||
+      pricesObj[curr.toLowerCase()] ||
+      pricesObj[currentCurrency.value.toUpperCase()];
     if (dbPrice) return { value: parseFloat(dbPrice), curr: curr };
   } catch (e) {}
 
@@ -9964,15 +9970,26 @@ const getPriceToDisplay = (product) => {
 const getDiscountToDisplay = (product) => {
   if (!product) return null;
   const curr = currentCurrency.value;
-  if (curr === "IDR") return product.discount_price ? { value: Number(product.discount_price), curr: "IDR" } : null;
+  if (curr === "IDR")
+    return product.discount_price
+      ? { value: Number(product.discount_price), curr: "IDR" }
+      : null;
 
   try {
-    const discObj = typeof product.discount_prices === "string" ? JSON.parse(product.discount_prices) : product.discount_prices || {};
-    const dbDisc = discObj[curr] || discObj[curr.toLowerCase()] || discObj[currentCurrency.value.toUpperCase()];
+    const discObj =
+      typeof product.discount_prices === "string"
+        ? JSON.parse(product.discount_prices)
+        : product.discount_prices || {};
+    const dbDisc =
+      discObj[curr] ||
+      discObj[curr.toLowerCase()] ||
+      discObj[currentCurrency.value.toUpperCase()];
     if (dbDisc) return { value: parseFloat(dbDisc), curr: curr };
   } catch (e) {}
 
-  return product.discount_price ? { value: Number(product.discount_price), curr: "IDR" } : null;
+  return product.discount_price
+    ? { value: Number(product.discount_price), curr: "IDR" }
+    : null;
 };
 
 const formatCurrencyDisplay = (priceObj) => {
@@ -10002,7 +10019,11 @@ const getActivePriceObj = (product) => {
 
   if (isReseller && wholesale > 0 && checkoutCount.value >= 24) {
     return { value: wholesale, curr: "IDR" };
-  } else if (dynamicDiscountObj && dynamicDiscountObj.value > 0 && dynamicDiscountObj.value < dynamicPriceObj.value) {
+  } else if (
+    dynamicDiscountObj &&
+    dynamicDiscountObj.value > 0 &&
+    dynamicDiscountObj.value < dynamicPriceObj.value
+  ) {
     return dynamicDiscountObj;
   }
   return dynamicPriceObj;
@@ -10010,7 +10031,8 @@ const getActivePriceObj = (product) => {
 
 const convertIDRtoActiveCurrency = (idrAmount) => {
   const curr = currentCurrency.value;
-  if (curr === "IDR" || !exchangeRates.value[curr]) return { value: idrAmount, curr: "IDR" };
+  if (curr === "IDR" || !exchangeRates.value[curr])
+    return { value: idrAmount, curr: "IDR" };
   return { value: idrAmount * exchangeRates.value[curr], curr: curr };
 };
 
@@ -10018,7 +10040,7 @@ const convertIDRtoActiveCurrency = (idrAmount) => {
 const checkoutItems = computed(() => {
   const ids = selectedItemIds?.value || selectedItemIds || [];
   let baseItems = (cartItems.value || []).filter((item) => ids.includes(item.id));
-  
+
   if (catalogProducts.value.length > 0) {
     baseItems = baseItems.map((item) => {
       const fresh = catalogProducts.value.find((p) => p.id === item.product_id);
@@ -10027,7 +10049,6 @@ const checkoutItems = computed(() => {
   }
   return baseItems;
 });
-
 
 const checkoutTotalIDR = computed(() => {
   return checkoutItems.value.reduce((sum, item) => {
@@ -10043,7 +10064,10 @@ const checkoutTotalIDR = computed(() => {
       priceToUse = discount;
     }
 
-    if (appliedPromoType.value === "voucher" && Number(freshProd.voucher_discount_price) > 0) {
+    if (
+      appliedPromoType.value === "voucher" &&
+      Number(freshProd.voucher_discount_price) > 0
+    ) {
       priceToUse = Number(freshProd.voucher_discount_price);
     }
     return sum + priceToUse * item.quantity;
@@ -10076,10 +10100,15 @@ const actualPromoDiscountIDR = computed(() => {
   }
   return promoDiscountAmount.value;
 });
-const actualPromoDiscountObj = computed(() => convertIDRtoActiveCurrency(actualPromoDiscountIDR.value));
+const actualPromoDiscountObj = computed(() =>
+  convertIDRtoActiveCurrency(actualPromoDiscountIDR.value)
+);
 
 const maxPointsAllowed = computed(() => {
-  const maxUsableAmount = Math.max(0, checkoutTotalIDR.value - actualPromoDiscountIDR.value);
+  const maxUsableAmount = Math.max(
+    0,
+    checkoutTotalIDR.value - actualPromoDiscountIDR.value
+  );
   return Math.min(availablePoints.value, Math.floor(maxUsableAmount / 1000));
 });
 
@@ -10090,14 +10119,24 @@ watch([pointsToUse, maxPointsAllowed], () => {
 });
 
 const appliedPointDiscountIDR = computed(() => (pointsToUse.value || 0) * 1000);
-const appliedPointDiscountObj = computed(() => convertIDRtoActiveCurrency(appliedPointDiscountIDR.value));
+const appliedPointDiscountObj = computed(() =>
+  convertIDRtoActiveCurrency(appliedPointDiscountIDR.value)
+);
 
-const shippingCostIDR = computed(() => shippingMethod.value === "biteship" && selectedRate.value ? parseFloat(selectedRate.value.price) * checkoutCount.value : 0);
+const shippingCostIDR = computed(() =>
+  shippingMethod.value === "biteship" && selectedRate.value
+    ? parseFloat(selectedRate.value.price) * checkoutCount.value
+    : 0
+);
 const shippingCostObj = computed(() => convertIDRtoActiveCurrency(shippingCostIDR.value));
 
 const grandTotalObj = computed(() => {
   return {
-    value: cartSubtotalObj.value.value + shippingCostObj.value.value - actualPromoDiscountObj.value.value - appliedPointDiscountObj.value.value,
+    value:
+      cartSubtotalObj.value.value +
+      shippingCostObj.value.value -
+      actualPromoDiscountObj.value.value -
+      appliedPointDiscountObj.value.value,
     curr: currentCurrency.value,
   };
 });
@@ -10121,7 +10160,9 @@ const parseColorHex = (colorString) => {
 };
 
 const imageErrors = ref({});
-const handleImageError = (company) => { imageErrors.value[company] = true; };
+const handleImageError = (company) => {
+  imageErrors.value[company] = true;
+};
 
 const destinationInfo = computed(() => {
   if (!selectedAddressId.value || !addresses.value) return null;
@@ -10131,7 +10172,9 @@ const destinationInfo = computed(() => {
   return {
     name: addr.receiver?.full_name || "Unknown",
     phone: userData.value?.phone || "No Phone Provided",
-    address: `${addr.details?.location || ""}, ${addr.details?.city || ""}, ${addr.details?.province || ""}`,
+    address: `${addr.details?.location || ""}, ${addr.details?.city || ""}, ${
+      addr.details?.province || ""
+    }`,
     postal_code: addr.postal_code || addr.details?.postal_code || "",
     country: addr.region || addr.details?.region || "Indonesia",
   };
@@ -10140,9 +10183,15 @@ const destinationInfo = computed(() => {
 const getCourierLogo = (company) => {
   const baseUrl = "/courier_images/";
   const map = {
-    jne: "jne.png", sicepat: "sicepat.png", jnt: "jnt.png",
-    anteraja: "anteraja.png", gojek: "gojek.png", grab: "grab.png",
-    paxel: "paxel.png", ninja: "ninja.png", dhl: "dhl.png",
+    jne: "jne.png",
+    sicepat: "sicepat.png",
+    jnt: "jnt.png",
+    anteraja: "anteraja.png",
+    gojek: "gojek.png",
+    grab: "grab.png",
+    paxel: "paxel.png",
+    ninja: "ninja.png",
+    dhl: "dhl.png",
   };
   return map[company.toLowerCase()] ? baseUrl + map[company.toLowerCase()] : null;
 };
@@ -10151,9 +10200,18 @@ const isModalOpen = ref(false);
 const countries = ref(Country.getAllCountries());
 const filteredProvinces = ref([]);
 const form = ref({
-  id: null, region: "Indonesia", first_name_address: "", last_name_address: "",
-  address_location: "", location_type: "", city: "", province: "",
-  postal_code: "", latitude: null, longitude: null, is_default: true,
+  id: null,
+  region: "Indonesia",
+  first_name_address: "",
+  last_name_address: "",
+  address_location: "",
+  location_type: "",
+  city: "",
+  province: "",
+  postal_code: "",
+  latitude: null,
+  longitude: null,
+  is_default: true,
 });
 
 const fetchProvinces = () => {
@@ -10168,13 +10226,19 @@ const fetchProvinces = () => {
 
 const openModal = () => {
   form.value = {
-    region: "Indonesia", is_default: true,
+    region: "Indonesia",
+    is_default: true,
     first_name_address: userData.value?.first_name || "",
     last_name_address: userData.value?.last_name || "",
-    address_location: "", location_type: "home", city: "",
-    province: "", postal_code: "", latitude: null, longitude: null,
+    address_location: "",
+    location_type: "home",
+    city: "",
+    province: "",
+    postal_code: "",
+    latitude: null,
+    longitude: null,
   };
-  fetchProvinces(); 
+  fetchProvinces();
   isModalOpen.value = true;
 };
 
@@ -10186,7 +10250,9 @@ const handleSearchInput = () => {
   }
   debounceTimeout = setTimeout(async () => {
     try {
-      const res = await axios.get(`https://nominatim.openstreetmap.org/search?format=json&q=${searchQuery.value}&countrycodes=id&limit=5`);
+      const res = await axios.get(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${searchQuery.value}&countrycodes=id&limit=5`
+      );
       searchResults.value = res.data;
     } catch (error) {}
   }, 500);
@@ -10196,27 +10262,42 @@ const selectSearchResult = (result) => {
   const lat = parseFloat(result.lat);
   const lng = parseFloat(result.lon);
   if (map.value && map.value.leafletObject) map.value.leafletObject.flyTo([lat, lng], 16);
-  else { center.value = [lat, lng]; zoom.value = 16; }
+  else {
+    center.value = [lat, lng];
+    zoom.value = 16;
+  }
   markerLatLng.value = [lat, lng];
-  form.value.latitude = lat.toString(); form.value.longitude = lng.toString();
+  form.value.latitude = lat.toString();
+  form.value.longitude = lng.toString();
   form.value.address_location = result.display_name;
-  searchResults.value = []; searchQuery.value = "";
+  searchResults.value = [];
+  searchQuery.value = "";
 };
 
-const onMapClick = (event) => { const { lat, lng } = event.latlng; updateLocation(lat, lng); };
-const onMarkerDrag = (event) => { const { lat, lng } = event.target.getLatLng(); updateLocation(lat, lng); };
+const onMapClick = (event) => {
+  const { lat, lng } = event.latlng;
+  updateLocation(lat, lng);
+};
+const onMarkerDrag = (event) => {
+  const { lat, lng } = event.target.getLatLng();
+  updateLocation(lat, lng);
+};
 const updateLocation = (lat, lng) => {
   markerLatLng.value = [lat, lng];
-  form.value.latitude = lat.toString(); form.value.longitude = lng.toString();
+  form.value.latitude = lat.toString();
+  form.value.longitude = lng.toString();
   reverseGeocode(lat, lng);
 };
 
 const reverseGeocode = async (lat, lng) => {
   try {
-    const res = await axios.get(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
+    const res = await axios.get(
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+    );
     if (res.data && res.data.display_name) {
       form.value.address_location = res.data.display_name;
-      if (res.data.address && res.data.address.postcode) form.value.postal_code = res.data.address.postcode;
+      if (res.data.address && res.data.address.postcode)
+        form.value.postal_code = res.data.address.postcode;
     }
   } catch (error) {}
 };
@@ -10226,13 +10307,21 @@ const getCurrentLocation = () => {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        const lat = position.coords.latitude; const lng = position.coords.longitude;
-        if (map.value && map.value.leafletObject) map.value.leafletObject.flyTo([lat, lng], 16);
-        else { center.value = [lat, lng]; zoom.value = 16; }
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        if (map.value && map.value.leafletObject)
+          map.value.leafletObject.flyTo([lat, lng], 16);
+        else {
+          center.value = [lat, lng];
+          zoom.value = 16;
+        }
         updateLocation(lat, lng);
         setIsGettingLocation(false);
       },
-      () => { Swal.fire("Error", "Please allow location access.", "error"); setIsGettingLocation(false); }
+      () => {
+        Swal.fire("Error", "Please allow location access.", "error");
+        setIsGettingLocation(false);
+      }
     );
   }
 };
@@ -10250,22 +10339,35 @@ const saveAddress = async () => {
     const res = await axios.post(`${BASE_URL}/addresses`, form.value, getAxiosConfig());
     isModalOpen.value = false;
     const resAddr = await axios.get(`${BASE_URL}/addresses`, getAxiosConfig());
-    
+
     const addrData = resAddr.data?.data !== undefined ? resAddr.data.data : resAddr.data;
     addresses.value = Array.isArray(addrData) ? addrData : [];
-    
-    selectedAddressId.value = res.data.id || addresses.value[addresses.value.length - 1]?.id;
-    Swal.fire({ toast: true, position: "top-end", icon: "success", title: "Address Saved!", showConfirmButton: false, timer: 1500 });
+
+    selectedAddressId.value =
+      res.data.id || addresses.value[addresses.value.length - 1]?.id;
+    Swal.fire({
+      toast: true,
+      position: "top-end",
+      icon: "success",
+      title: "Address Saved!",
+      showConfirmButton: false,
+      timer: 1500,
+    });
   } catch (e) {
     Swal.fire("Error", "Failed to save address", "error");
   }
 };
 
 const isButtonDisabled = computed(() => {
-  if (isProcessing.value || cartItems.value.length === 0 || !selectedAddressId.value) return true;
+  if (isProcessing.value || cartItems.value.length === 0 || !selectedAddressId.value)
+    return true;
   if (shippingMethod.value === "biteship") {
     if (!selectedRate.value) return true;
-    if (deliveryType.value === "scheduled" && (!deliveryDate.value || !deliveryTime.value)) return true;
+    if (
+      deliveryType.value === "scheduled" &&
+      (!deliveryDate.value || !deliveryTime.value)
+    )
+      return true;
   }
   return false;
 });
@@ -10274,7 +10376,7 @@ watch(selectedAddressId, async (newVal) => {
   if (newVal) {
     const ids = selectedItemIds?.value || selectedItemIds;
     if (!ids || ids.length === 0) return;
-    
+
     selectedRate.value = null;
     isLoadingRates.value = true;
     rawShippingRates.value = [];
@@ -10325,9 +10427,11 @@ const handlePayment = async () => {
       shipping_method: shippingMethod.value,
       use_points: pointsToUse.value || 0,
       cart_ids: ids,
-      courier_company: shippingMethod.value === "biteship" ? selectedRate.value?.company : null,
+      courier_company:
+        shippingMethod.value === "biteship" ? selectedRate.value?.company : null,
       courier_type: shippingMethod.value === "biteship" ? selectedRate.value?.type : null,
-      shipping_cost: shippingMethod.value === "biteship" ? selectedRate.value?.price : null,
+      shipping_cost:
+        shippingMethod.value === "biteship" ? selectedRate.value?.price : null,
       delivery_type: shippingMethod.value === "biteship" ? deliveryType.value : null,
       delivery_date: shippingMethod.value === "biteship" ? deliveryDate.value : null,
       delivery_time: shippingMethod.value === "biteship" ? deliveryTime.value : null,
@@ -10342,7 +10446,11 @@ const handlePayment = async () => {
       window.location.href = res.data.checkout_url;
     }
   } catch (error) {
-    Swal.fire("Payment Error", error.response?.data?.message || "Failed to create invoice", "error");
+    Swal.fire(
+      "Payment Error",
+      error.response?.data?.message || "Failed to create invoice",
+      "error"
+    );
   } finally {
     isProcessing.value = false;
   }
@@ -10350,17 +10458,24 @@ const handlePayment = async () => {
 
 onMounted(async () => {
   window.addEventListener("currency-changed", updateCurrencyState);
-  window.addEventListener("storage", (e) => { if (e.key === "currency") updateCurrencyState(); });
+  window.addEventListener("storage", (e) => {
+    if (e.key === "currency") updateCurrencyState();
+  });
 
   try {
     const resExchange = await axios.get(`${BASE_URL}/exchange-rates`);
-    if (resExchange.data?.data?.rates) { exchangeRates.value = resExchange.data.data.rates; }
+    if (resExchange.data?.data?.rates) {
+      exchangeRates.value = resExchange.data.data.rates;
+    }
   } catch (e) {}
 
   try {
     const resCatalog = await axios.get(`${BASE_URL}/products`);
-    const dataCat = resCatalog.data?.data?.data || resCatalog.data?.data || resCatalog.data;
-    if (Array.isArray(dataCat)) { catalogProducts.value = dataCat; }
+    const dataCat =
+      resCatalog.data?.data?.data || resCatalog.data?.data || resCatalog.data;
+    if (Array.isArray(dataCat)) {
+      catalogProducts.value = dataCat;
+    }
   } catch (e) {}
 
   try {
@@ -10370,7 +10485,7 @@ onMounted(async () => {
       availablePoints.value = userData.value.point || 0;
       userType.value = userData.value.usertype || "user";
     }
-    
+
     const resUser = await axios.get(`${BASE_URL}/user`, getAxiosConfig());
     if (resUser.data) {
       userData.value = resUser.data;
@@ -10397,7 +10512,9 @@ onMounted(async () => {
       const now = new Date();
       now.setHours(now.getHours() + 1);
       deliveryDate.value = now.toISOString().split("T")[0];
-      deliveryTime.value = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+      deliveryTime.value = `${String(now.getHours()).padStart(2, "0")}:${String(
+        now.getMinutes()
+      ).padStart(2, "0")}`;
     }
   } catch (error) {
   } finally {
@@ -10415,9 +10532,12 @@ const handleMemberToggle = async () => {
   if (useMemberVoucher.value) {
     if (checkoutTotalIDR.value < MEMBER_MIN_SPEND) {
       Swal.fire({
-        toast: true, position: "top-end", icon: "warning",
+        toast: true,
+        position: "top-end",
+        icon: "warning",
         title: `Min. spend is Rp ${MEMBER_MIN_SPEND.toLocaleString("id-ID")}`,
-        showConfirmButton: false, timer: 3000,
+        showConfirmButton: false,
+        timer: 3000,
       });
       useMemberVoucher.value = false;
       return;
@@ -10443,7 +10563,10 @@ const applyPromo = async () => {
       },
       getAxiosConfig()
     );
-    if (codeToBeApplied === MEMBER_VOUCHER_CODE && checkoutTotalIDR.value < MEMBER_MIN_SPEND)
+    if (
+      codeToBeApplied === MEMBER_VOUCHER_CODE &&
+      checkoutTotalIDR.value < MEMBER_MIN_SPEND
+    )
       throw new Error(`Minimum spend is Rp ${MEMBER_MIN_SPEND.toLocaleString("id-ID")}`);
     else if (codeToBeApplied !== MEMBER_VOUCHER_CODE && checkoutTotalIDR.value < 499000)
       throw new Error("Minimum spend is Rp 499.000");
@@ -10452,19 +10575,21 @@ const applyPromo = async () => {
     promoMessage.value = "✅ " + res.data.message;
     appliedPromoCode.value = codeToBeApplied;
     promoDiscountAmount.value = Math.min(res.data.discount_value, checkoutTotalIDR.value);
-    
+
     appliedPromoType.value = res.data.promo_type;
 
     if (appliedPromoCode.value === MEMBER_VOUCHER_CODE) useMemberVoucher.value = true;
-    if (pointsToUse.value > maxPointsAllowed.value) pointsToUse.value = maxPointsAllowed.value;
+    if (pointsToUse.value > maxPointsAllowed.value)
+      pointsToUse.value = maxPointsAllowed.value;
   } catch (error) {
     promoSuccess.value = false;
-    promoMessage.value = "❌ " + (error.response?.data?.message || error.message || "Invalid promo code.");
+    promoMessage.value =
+      "❌ " + (error.response?.data?.message || error.message || "Invalid promo code.");
     appliedPromoCode.value = null;
     promoDiscountAmount.value = 0;
-    
+
     appliedPromoType.value = null;
-    
+
     useMemberVoucher.value = false;
   } finally {
     isVerifyingPromo.value = false;
@@ -10472,23 +10597,69 @@ const applyPromo = async () => {
 };
 
 const removePromo = () => {
-  promoInput.value = ""; appliedPromoCode.value = null; appliedPromoType.value = null;
-  promoDiscountAmount.value = 0; promoMessage.value = "";
-  promoSuccess.value = false; useMemberVoucher.value = false;
+  promoInput.value = "";
+  appliedPromoCode.value = null;
+  appliedPromoType.value = null;
+  promoDiscountAmount.value = 0;
+  promoMessage.value = "";
+  promoSuccess.value = false;
+  useMemberVoucher.value = false;
 };
 
-const useAllPoints = () => { pointsToUse.value = maxPointsAllowed.value; };
+const useAllPoints = () => {
+  pointsToUse.value = maxPointsAllowed.value;
+};
 </script>
 
 <style scoped>
-.animate-bounce-1 { animation: bounceDots 1.4s infinite ease-in-out both; animation-delay: -0.32s; }
-.animate-bounce-2 { animation: bounceDots 1.4s infinite ease-in-out both; animation-delay: -0.16s; }
-.animate-bounce-3 { animation: bounceDots 1.4s infinite ease-in-out both; }
-@keyframes bounceDots { 0%, 80%, 100% { transform: scale(0); opacity: 0.5; } 40% { transform: scale(1); opacity: 1; } }
-.animate-fade-in { animation: fadeIn 0.8s ease-out; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-.custom-scrollbar::-webkit-scrollbar { height: 6px; width: 6px; }
-.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-.custom-scrollbar::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
-.custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #d1d5db; }
+.animate-bounce-1 {
+  animation: bounceDots 1.4s infinite ease-in-out both;
+  animation-delay: -0.32s;
+}
+.animate-bounce-2 {
+  animation: bounceDots 1.4s infinite ease-in-out both;
+  animation-delay: -0.16s;
+}
+.animate-bounce-3 {
+  animation: bounceDots 1.4s infinite ease-in-out both;
+}
+@keyframes bounceDots {
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.custom-scrollbar::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #e5e7eb;
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #d1d5db;
+}
 </style>
