@@ -1813,7 +1813,7 @@ onMounted(fetchData);
 }
 </style> -->
 
-<template>
+<!-- <template>
   <div
     v-if="isPageLoading"
     class="z-[100] fixed inset-0 flex flex-col justify-center items-center bg-white"
@@ -3387,9 +3387,9 @@ onMounted(fetchData);
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #d1d5db;
 }
-</style>
+</style> -->
 
-<!-- <template>
+<template>
   <div
     v-if="isPageLoading"
     class="z-[100] fixed inset-0 flex flex-col justify-center items-center bg-white"
@@ -5112,4 +5112,4 @@ const useAllPoints = () => {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #d1d5db;
 }
-</style> -->
+</style>
