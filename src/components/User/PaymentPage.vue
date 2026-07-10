@@ -6122,6 +6122,11 @@ const isVerifyingPromo = ref(false);
 const rawShippingRates = ref([]);
 const isPageLoading = ref(true);
 
+const availablePoints = ref(0);
+const pointsInput = ref("");
+const pointsUsed = ref(0);
+const pointConversionRate = 1000;
+
 const userType = ref("guest");
 const useMemberVoucher = ref(false);
 const MEMBER_VOUCHER_CODE = "SOLHERMEMBER";
