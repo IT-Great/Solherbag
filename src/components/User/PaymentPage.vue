@@ -9618,6 +9618,7 @@ const useAllPoints = () => {
     </div>
 
     <!-- MODAL ALAMAT -->
+    <Teleport to="body">
     <div
       v-if="isModalOpen"
       class="fixed inset-0 z-50 flex items-center justify-center p-4 pt-10 pb-10 overflow-y-auto bg-black/60 backdrop-blur-sm animate-fade-in-up"
@@ -9872,6 +9873,7 @@ const useAllPoints = () => {
         </div>
       </div>
     </div>
+    </Teleport>
   </div>
 </template>
 
