@@ -6111,7 +6111,6 @@ const deliveryType = ref("now");
 const deliveryDate = ref("");
 const deliveryTime = ref("");
 const pointsToUse = ref(0);
-const pointConversionRate = 1000;
 const promoInput = ref("");
 const appliedPromoCode = ref(null);
 const promoDiscountAmount = ref(0);
