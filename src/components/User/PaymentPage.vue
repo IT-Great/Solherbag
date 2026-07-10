@@ -7770,6 +7770,7 @@ const useAllPoints = () => { pointsToUse.value = maxPointsAllowed.value; };
                     placeholder="0"
                   />
                   <button
+                    type="button"
                     @click="useAllPoints"
                     class="bg-yellow-100 text-yellow-800 text-[10px] font-bold uppercase px-3 rounded-lg hover:bg-yellow-200 transition"
                   >
