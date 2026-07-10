@@ -6074,7 +6074,7 @@ const MapCenterUpdater = {
 </template>
 
 <script setup>
-import { ref, onMounted, watch, computed } from "vue";
+import { ref, onMounted, onUnmounted, watch, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import axios from "axios";
 import Swal from "sweetalert2";
