@@ -3388,7 +3388,8 @@ onMounted(fetchData);
   background: #d1d5db;
 }
 </style> -->
-<!-- <template>
+
+<template>
   <div
     v-if="isPageLoading"
     class="z-[100] fixed inset-0 flex flex-col justify-center items-center bg-white"
@@ -3891,7 +3892,7 @@ onMounted(fetchData);
                     v-model="promoInput"
                     :disabled="!!appliedPromoCode || isVerifyingPromo || useMemberVoucher"
                     :placeholder="$t('payment.enter_promo_code')"
-                    class="flex-1 px-3 py-2 text-sm uppercase bg-white border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-gray-900 disabled:bg-gray-100 transition-colors"
+                    class="flex-1 px-3 py-2 text-sm uppercase transition-colors bg-white border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-gray-900 disabled:bg-gray-100"
                   />
                   <button
                     v-if="!appliedPromoCode"
@@ -4145,7 +4146,7 @@ onMounted(fetchData);
             >
               <span
                 v-if="isGettingLocation"
-                class="w-4 h-4 border-2 rounded-full border-black border-t-transparent animate-spin"
+                class="w-4 h-4 border-2 border-black rounded-full border-t-transparent animate-spin"
               ></span>
               <svg
                 v-else
@@ -4222,7 +4223,7 @@ onMounted(fetchData);
                     type="text"
                     required
                     v-model="formData.first_name_address"
-                    class="w-full p-3 text-sm font-medium border border-gray-300 rounded-xl focus:ring-2 focus:ring-black outline-none transition-all"
+                    class="w-full p-3 text-sm font-medium transition-all border border-gray-300 outline-none rounded-xl focus:ring-2 focus:ring-black"
                   />
                 </div>
                 <div>
@@ -4234,7 +4235,7 @@ onMounted(fetchData);
                     type="text"
                     required
                     v-model="formData.last_name_address"
-                    class="w-full p-3 text-sm font-medium border border-gray-300 rounded-xl focus:ring-2 focus:ring-black outline-none transition-all"
+                    class="w-full p-3 text-sm font-medium transition-all border border-gray-300 outline-none rounded-xl focus:ring-2 focus:ring-black"
                   />
                 </div>
               </div>
@@ -4246,7 +4247,7 @@ onMounted(fetchData);
                 >
                 <select
                   v-model="formData.location_type"
-                  class="w-full p-3 text-sm font-medium border border-gray-300 rounded-xl focus:ring-2 focus:ring-black outline-none bg-white transition-all"
+                  class="w-full p-3 text-sm font-medium transition-all bg-white border border-gray-300 outline-none rounded-xl focus:ring-2 focus:ring-black"
                 >
                   <option value="home">{{ $t("payment.option_home") }}</option>
                   <option value="office">{{ $t("payment.option_office") }}</option>
@@ -4264,7 +4265,7 @@ onMounted(fetchData);
                   rows="3"
                   :placeholder="$t('payment.placeholder_full_address')"
                   v-model="formData.address_location"
-                  class="w-full p-3 text-sm font-medium border border-gray-300 rounded-xl focus:ring-2 focus:ring-black outline-none resize-none bg-white transition-all"
+                  class="w-full p-3 text-sm font-medium transition-all bg-white border border-gray-300 outline-none resize-none rounded-xl focus:ring-2 focus:ring-black"
                 ></textarea>
               </div>
 
@@ -4277,7 +4278,7 @@ onMounted(fetchData);
                   <select
                     v-if="filteredProvinces.length > 0"
                     v-model="formData.province"
-                    class="w-full p-3 text-sm font-medium border border-gray-300 rounded-xl focus:ring-2 focus:ring-black outline-none bg-white transition-all"
+                    class="w-full p-3 text-sm font-medium transition-all bg-white border border-gray-300 outline-none rounded-xl focus:ring-2 focus:ring-black"
                     required
                   >
                     <option value="" disabled>{{ $t("payment.select_province") }}</option>
@@ -4289,7 +4290,7 @@ onMounted(fetchData);
                     v-else
                     v-model="formData.province"
                     placeholder="State/Province"
-                    class="w-full p-3 text-sm font-medium border border-gray-300 rounded-xl focus:ring-2 focus:ring-black outline-none bg-white transition-all"
+                    class="w-full p-3 text-sm font-medium transition-all bg-white border border-gray-300 outline-none rounded-xl focus:ring-2 focus:ring-black"
                     required
                   />
                 </div>
@@ -4302,7 +4303,7 @@ onMounted(fetchData);
                     type="text"
                     required
                     v-model="formData.city"
-                    class="w-full p-3 text-sm font-medium border border-gray-300 rounded-xl focus:ring-2 focus:ring-black outline-none transition-all"
+                    class="w-full p-3 text-sm font-medium transition-all border border-gray-300 outline-none rounded-xl focus:ring-2 focus:ring-black"
                   />
                 </div>
                 <div>
@@ -4314,7 +4315,7 @@ onMounted(fetchData);
                     type="text"
                     required
                     v-model="formData.postal_code"
-                    class="w-full p-3 text-sm font-medium border border-gray-300 rounded-xl focus:ring-2 focus:ring-black outline-none transition-all"
+                    class="w-full p-3 text-sm font-medium transition-all border border-gray-300 outline-none rounded-xl focus:ring-2 focus:ring-black"
                   />
                 </div>
               </div>
@@ -4330,7 +4331,7 @@ onMounted(fetchData);
                   type="checkbox"
                   id="is_default"
                   v-model="formData.is_default"
-                  class="w-5 h-5 rounded cursor-pointer text-black focus:ring-black accent-black"
+                  class="w-5 h-5 text-black rounded cursor-pointer focus:ring-black accent-black"
                   @click.stop
                 />
                 <label
@@ -4353,7 +4354,7 @@ onMounted(fetchData);
               </button>
               <button
                 type="submit"
-                class="px-6 py-3 text-sm font-bold text-white transition-all shadow-md bg-black rounded-xl hover:bg-gray-800 hover:shadow-lg"
+                class="px-6 py-3 text-sm font-bold text-white transition-all bg-black shadow-md rounded-xl hover:bg-gray-800 hover:shadow-lg"
               >
                 {{
                   editingId
@@ -5109,8 +5110,9 @@ const MapCenterUpdater = {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #d1d5db;
 }
-</style> -->
-<template>
+</style> 
+
+<!-- <template>
   <div
     v-if="isPageLoading"
     class="z-[100] fixed inset-0 flex flex-col justify-center items-center bg-white"
@@ -6833,4 +6835,4 @@ const useAllPoints = () => {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #d1d5db;
 }
-</style>
+</style> -->
