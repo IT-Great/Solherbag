@@ -9618,95 +9618,286 @@ const useAllPoints = () => {
     </div>
 
     <!-- MODAL ALAMAT -->
-    <Teleport to="body">
-    <div
-      v-if="isModalOpen"
-      class="fixed inset-0 z-50 flex items-center justify-center p-4 pt-10 pb-10 overflow-y-auto bg-black/60 backdrop-blur-sm animate-fade-in-up"
-    >
+    <!-- <Teleport to="body">
       <div
-        class="flex flex-col w-full max-w-5xl my-auto overflow-hidden bg-white shadow-2xl rounded-3xl"
+        v-if="isModalOpen"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 pt-10 pb-10 overflow-y-auto bg-black/60 backdrop-blur-sm animate-fade-in-up"
       >
         <div
-          class="flex items-center justify-between p-6 border-b border-gray-100 bg-gray-50 shrink-0 md:p-8 md:pb-6"
+          class="flex flex-col w-full max-w-5xl my-auto overflow-hidden bg-white shadow-2xl rounded-3xl"
         >
-          <h3 class="text-xl font-extrabold tracking-tight text-gray-900">
-            {{
-              editingId ? $t("modal_edit_address_title") : $t("modal_add_address_title")
-            }}
-          </h3>
-          <button
-            @click="isModalOpen = false"
-            class="p-2 text-gray-400 transition-colors bg-white border border-gray-200 rounded-full hover:text-gray-900 hover:bg-gray-100 focus:outline-none"
-          >
-            ✕
-          </button>
-        </div>
-
-        <div class="flex flex-col md:flex-row h-auto md:h-[650px] overflow-hidden">
           <div
-            class="relative w-full bg-gray-100 border-b border-gray-200 h-72 md:h-full md:w-5/12 md:border-b-0 md:border-r shrink-0"
+            class="flex items-center justify-between p-6 border-b border-gray-100 bg-gray-50 shrink-0 md:p-8 md:pb-6"
           >
-            <l-map
-              ref="map"
-              v-model:zoom="zoom"
-              :center="center"
-              :use-global-leaflet="false"
-              @click="onMapClick"
-              style="height: 100%; width: 100%"
-            >
-              <l-tile-layer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                layer-type="base"
-                name="OpenStreetMap"
-              ></l-tile-layer>
-              <l-marker
-                :lat-lng="markerLatLng"
-                draggable
-                @update:latLng="onMarkerDrag"
-              ></l-marker>
-            </l-map>
-
+            <h3 class="text-xl font-extrabold tracking-tight text-gray-900">
+              {{ editingId ? $t("modal_edit_address_title") : $t("add_address") }}
+            </h3>
             <button
-              type="button"
-              @click="getCurrentLocation"
-              :disabled="isGettingLocation"
-              class="absolute z-[1000] bottom-6 left-1/2 -translate-x-1/2 md:left-auto md:-translate-x-0 md:right-6 flex items-center gap-2 bg-white text-gray-900 px-5 py-2.5 rounded-full shadow-xl font-bold text-xs hover:bg-gray-50 border border-gray-200 transition-all hover:-translate-y-0.5"
+              @click="isModalOpen = false"
+              class="p-2 text-gray-400 transition-colors bg-white border border-gray-200 rounded-full hover:text-gray-900 hover:bg-gray-100 focus:outline-none"
             >
-              <span
-                v-if="isGettingLocation"
-                class="w-4 h-4 border-2 rounded-full border-[#006A4E] border-t-transparent animate-spin"
-              ></span>
-              <svg
-                v-else
-                class="w-4 h-4 text-[#006A4E]"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                />
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-              </svg>
-              {{ $t("payment.current_loc") }}
+              ✕
             </button>
           </div>
 
-          <form
-            @submit.prevent="saveAddress"
-            class="flex flex-col flex-1 p-6 space-y-6 overflow-y-auto bg-white sm:p-8 custom-scrollbar"
+          <div class="flex flex-col md:flex-row h-auto md:h-[650px] overflow-hidden">
+            <div
+              class="relative w-full bg-gray-100 border-b border-gray-200 h-72 md:h-full md:w-5/12 md:border-b-0 md:border-r shrink-0"
+            >
+              <l-map
+                ref="map"
+                v-model:zoom="zoom"
+                :center="center"
+                :use-global-leaflet="false"
+                @click="onMapClick"
+                style="height: 100%; width: 100%"
+              >
+                <l-tile-layer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  layer-type="base"
+                  name="OpenStreetMap"
+                ></l-tile-layer>
+                <l-marker
+                  :lat-lng="markerLatLng"
+                  draggable
+                  @update:latLng="onMarkerDrag"
+                ></l-marker>
+              </l-map>
+
+              <button
+                type="button"
+                @click="getCurrentLocation"
+                :disabled="isGettingLocation"
+                class="absolute z-[1000] bottom-6 left-1/2 -translate-x-1/2 md:left-auto md:-translate-x-0 md:right-6 flex items-center gap-2 bg-white text-gray-900 px-5 py-2.5 rounded-full shadow-xl font-bold text-xs hover:bg-gray-50 border border-gray-200 transition-all hover:-translate-y-0.5"
+              >
+                <span
+                  v-if="isGettingLocation"
+                  class="w-4 h-4 border-2 rounded-full border-[#006A4E] border-t-transparent animate-spin"
+                ></span>
+                <svg
+                  v-else
+                  class="w-4 h-4 text-[#006A4E]"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+                {{ $t("payment.current_loc") }}
+              </button>
+            </div>
+
+            <form
+              @submit.prevent="saveAddress"
+              class="flex flex-col flex-1 p-6 space-y-6 overflow-y-auto bg-white sm:p-8 custom-scrollbar"
+            >
+              <div
+                class="flex gap-3 p-4 border border-blue-100 rounded-2xl bg-blue-50/50"
+              >
+                <svg
+                  class="w-5 h-5 text-blue-500 shrink-0"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <p class="text-xs leading-relaxed text-blue-800">
+                  {{ $t("map_pinned") }}
+                </p>
+              </div>
+
+              <div class="space-y-5">
+                <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
+                  <div>
+                    <label
+                      class="block mb-1.5 text-[10px] font-bold text-gray-500 uppercase tracking-widest"
+                      >{{ $t("first_name") }}</label
+                    >
+                    <input
+                      type="text"
+                      required
+                      v-model="form.first_name_address"
+                      class="w-full p-3 text-sm font-medium border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#006A4E] outline-none transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      class="block mb-1.5 text-[10px] font-bold text-gray-500 uppercase tracking-widest"
+                      >{{ $t("last_name") }}</label
+                    >
+                    <input
+                      type="text"
+                      required
+                      v-model="form.last_name_address"
+                      class="w-full p-3 text-sm font-medium border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#006A4E] outline-none transition-all"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label
+                    class="block mb-1.5 text-[10px] font-bold text-gray-500 uppercase tracking-widest"
+                    >{{ $t("label_address_type") }}</label
+                  >
+                  <select
+                    v-model="form.location_type"
+                    class="w-full p-3 text-sm font-medium border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#006A4E] outline-none bg-white transition-all"
+                  >
+                    <option value="home">{{ $t("option_home") }}</option>
+                    <option value="office">{{ $t("option_office") }}</option>
+                    <option value="other">{{ $t("option_other") }}</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label
+                    class="block mb-1.5 text-[10px] font-bold text-gray-500 uppercase tracking-widest"
+                    >{{ $t("label_full_address") }}</label
+                  >
+                  <textarea
+                    required
+                    rows="3"
+                    v-model="form.address_location"
+                    class="w-full p-3 text-sm font-medium border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#006A4E] outline-none resize-none bg-white transition-all"
+                  ></textarea>
+                </div>
+
+                <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                  <div>
+                    <label
+                      class="block mb-1.5 text-[10px] font-bold text-gray-500 uppercase tracking-widest"
+                      >{{ $t("label_region") }}</label
+                    >
+                    <input
+                      type="text"
+                      required
+                      v-model="form.region"
+                      class="w-full p-3 text-sm font-medium border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#006A4E] outline-none transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      class="block mb-1.5 text-[10px] font-bold text-gray-500 uppercase tracking-widest"
+                      >{{ $t("label_city") }}</label
+                    >
+                    <input
+                      type="text"
+                      required
+                      v-model="form.city"
+                      class="w-full p-3 text-sm font-medium border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#006A4E] outline-none transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      class="block mb-1.5 text-[10px] font-bold text-gray-500 uppercase tracking-widest"
+                      >{{ $t("label_province") }}</label
+                    >
+                    <input
+                      type="text"
+                      required
+                      v-model="form.province"
+                      class="w-full p-3 text-sm font-medium border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#006A4E] outline-none transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      class="block mb-1.5 text-[10px] font-bold text-gray-500 uppercase tracking-widest"
+                      >{{ $t("label_postal_code") }}</label
+                    >
+                    <input
+                      type="text"
+                      required
+                      v-model="form.postal_code"
+                      class="w-full p-3 text-sm font-medium border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#006A4E] outline-none transition-all"
+                    />
+                  </div>
+                </div>
+
+                <input type="hidden" :value="form.latitude" />
+                <input type="hidden" :value="form.longitude" />
+
+                <div
+                  class="flex items-center gap-3 p-4 mt-2 transition-colors border border-gray-200 cursor-pointer rounded-xl bg-gray-50 hover:bg-gray-100"
+                  @click="form.is_default = !form.is_default"
+                >
+                  <input
+                    type="checkbox"
+                    id="is_default"
+                    v-model="form.is_default"
+                    class="w-5 h-5 rounded cursor-pointer text-[#006A4E] focus:ring-[#006A4E] accent-[#006A4E]"
+                    @click.stop
+                  />
+                  <label
+                    for="is_default"
+                    class="text-sm font-bold text-gray-800 cursor-pointer select-none"
+                    @click.stop
+                  >
+                    {{ $t("label_set_default_address") }}
+                  </label>
+                </div>
+              </div>
+
+              <div class="flex justify-end gap-3 pt-6 mt-auto border-t border-gray-100">
+                <button
+                  type="button"
+                  @click="isModalOpen = false"
+                  class="px-6 py-3 text-sm font-bold text-gray-600 transition-colors bg-gray-100 rounded-xl hover:bg-gray-200"
+                >
+                  {{ $t("btn_cancel") }}
+                </button>
+                <button
+                  type="submit"
+                  class="px-6 py-3 text-sm font-bold text-white transition-all shadow-md bg-[#006A4E] rounded-xl hover:bg-emerald-900 hover:shadow-lg"
+                >
+                  {{ editingId ? $t("btn_update_address") : $t("btn_save_address") }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </Teleport> -->
+
+    <Teleport to="body">
+      <div
+        v-if="isModalOpen"
+        class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm sm:p-6"
+      >
+        <div
+          class="relative w-full max-w-2xl bg-white shadow-2xl rounded-3xl animate-fade-in flex flex-col max-h-[90vh] md:max-h-[85vh]"
+        >
+          <div
+            class="flex items-center justify-between p-6 border-b border-gray-100 bg-gray-50 shrink-0 md:p-8 md:pb-6"
           >
-            <div class="flex gap-3 p-4 border border-blue-100 rounded-2xl bg-blue-50/50">
+            <h3 class="text-xl font-extrabold tracking-tight text-gray-900">
+              {{
+                editingId ? $t("modal_edit_address_title") : $t("modal_add_address_title")
+              }}
+            </h3>
+            <button
+              @click="isModalOpen = false"
+              class="p-2 text-gray-400 transition-colors bg-white border border-gray-200 rounded-full hover:text-gray-900 hover:bg-gray-100 focus:outline-none"
+            >
               <svg
-                class="w-5 h-5 text-blue-500 shrink-0"
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -9715,164 +9906,280 @@ const useAllPoints = () => {
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
-                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  d="M6 18L18 6M6 6l12 12"
                 />
               </svg>
-              <p class="text-xs leading-relaxed text-blue-800">
-                {{ $t("guide_map_text") }}
-              </p>
-            </div>
+            </button>
+          </div>
 
-            <div class="space-y-5">
-              <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
+          <div class="p-6 overflow-y-auto custom-scrollbar md:p-8 grow">
+            <form @submit.prevent="saveAddress" class="space-y-5">
+              <div
+                class="flex items-center gap-3 p-3.5 border border-blue-100 bg-blue-50 rounded-xl"
+              >
+                <input
+                  type="checkbox"
+                  v-model="form.is_default"
+                  id="def"
+                  class="w-4 h-4 text-blue-600 border-gray-300 rounded cursor-pointer focus:ring-blue-500"
+                />
+                <label
+                  for="def"
+                  class="text-sm font-medium text-blue-900 cursor-pointer select-none"
+                >
+                  {{ $t("payment.default") }} Shipping Address
+                </label>
+              </div>
+
+              <div>
+                <label
+                  class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
+                  >Country</label
+                >
+                <select
+                  v-model="form.country"
+                  @change="fetchProvinces"
+                  class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  required
+                >
+                  <option v-for="c in countries" :key="c.isoCode" :value="c.name">
+                    {{ c.name }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                   <label
-                    class="block mb-1.5 text-[10px] font-bold text-gray-500 uppercase tracking-widest"
-                    >{{ $t("label_first_name") }}</label
+                    class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
+                    >{{ $t("payment.first_name") }}</label
                   >
                   <input
                     type="text"
                     required
                     v-model="form.first_name_address"
-                    class="w-full p-3 text-sm font-medium border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#006A4E] outline-none transition-all"
+                    class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   />
                 </div>
                 <div>
                   <label
-                    class="block mb-1.5 text-[10px] font-bold text-gray-500 uppercase tracking-widest"
-                    >{{ $t("label_last_name") }}</label
+                    class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
+                    >{{ $t("payment.last_name") }}</label
                   >
                   <input
                     type="text"
                     required
                     v-model="form.last_name_address"
-                    class="w-full p-3 text-sm font-medium border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#006A4E] outline-none transition-all"
+                    class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   />
                 </div>
               </div>
 
               <div>
                 <label
-                  class="block mb-1.5 text-[10px] font-bold text-gray-500 uppercase tracking-widest"
-                  >{{ $t("label_address_type") }}</label
+                  class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
+                  >Address Type</label
                 >
                 <select
                   v-model="form.location_type"
-                  class="w-full p-3 text-sm font-medium border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#006A4E] outline-none bg-white transition-all"
+                  class="w-full p-3 text-sm font-medium transition-all bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#006A4E] outline-none"
                 >
-                  <option value="home">{{ $t("option_home") }}</option>
-                  <option value="office">{{ $t("option_office") }}</option>
-                  <option value="other">{{ $t("option_other") }}</option>
+                  <option value="home">Home</option>
+                  <option value="office">Office</option>
+                  <option value="other">Other</option>
                 </select>
               </div>
 
               <div>
                 <label
-                  class="block mb-1.5 text-[10px] font-bold text-gray-500 uppercase tracking-widest"
-                  >{{ $t("label_full_address") }}</label
+                  class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
+                  >Full Address</label
                 >
                 <textarea
                   required
                   rows="3"
                   v-model="form.address_location"
-                  class="w-full p-3 text-sm font-medium border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#006A4E] outline-none resize-none bg-white transition-all"
+                  placeholder="Street name, building, house number..."
+                  class="w-full p-3 text-sm font-medium transition-all bg-white border border-gray-300 resize-none rounded-xl focus:ring-2 focus:ring-[#006A4E] outline-none"
                 ></textarea>
               </div>
 
-              <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+              <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                   <label
-                    class="block mb-1.5 text-[10px] font-bold text-gray-500 uppercase tracking-widest"
-                    >{{ $t("label_region") }}</label
+                    class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
+                    >Province / State</label
                   >
-                  <input
-                    type="text"
+                  <select
+                    v-if="filteredProvinces.length > 0"
+                    v-model="form.province"
+                    class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                     required
-                    v-model="form.region"
-                    class="w-full p-3 text-sm font-medium border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#006A4E] outline-none transition-all"
+                  >
+                    <option value="" disabled>Select Province</option>
+                    <option v-for="p in filteredProvinces" :key="p" :value="p">
+                      {{ p }}
+                    </option>
+                  </select>
+                  <input
+                    v-else
+                    v-model="form.province"
+                    placeholder="State/Province"
+                    class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    required
                   />
                 </div>
                 <div>
                   <label
-                    class="block mb-1.5 text-[10px] font-bold text-gray-500 uppercase tracking-widest"
-                    >{{ $t("label_city") }}</label
+                    class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
+                    >City</label
                   >
                   <input
                     type="text"
                     required
                     v-model="form.city"
-                    class="w-full p-3 text-sm font-medium border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#006A4E] outline-none transition-all"
+                    class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   />
                 </div>
+              </div>
+
+              <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                   <label
-                    class="block mb-1.5 text-[10px] font-bold text-gray-500 uppercase tracking-widest"
-                    >{{ $t("label_province") }}</label
+                    class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
+                    >Region / District</label
                   >
                   <input
                     type="text"
                     required
-                    v-model="form.province"
-                    class="w-full p-3 text-sm font-medium border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#006A4E] outline-none transition-all"
+                    v-model="form.region"
+                    class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   />
                 </div>
                 <div>
                   <label
-                    class="block mb-1.5 text-[10px] font-bold text-gray-500 uppercase tracking-widest"
-                    >{{ $t("label_postal_code") }}</label
+                    class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
+                    >Postal Code</label
                   >
                   <input
                     type="text"
                     required
                     v-model="form.postal_code"
-                    class="w-full p-3 text-sm font-medium border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#006A4E] outline-none transition-all"
+                    class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   />
+                </div>
+              </div>
+
+              <div
+                class="relative overflow-hidden border border-gray-200 rounded-2xl mt-4"
+              >
+                <div
+                  class="flex items-start gap-2 px-4 py-3 border-b bg-amber-50 border-amber-100"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="shrink-0 w-4 h-4 mt-0.5 text-amber-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                    />
+                  </svg>
+                  <p class="text-[11px] text-amber-800 leading-relaxed">
+                    <span class="font-bold">Pin Location:</span> Ensure the pin matches
+                    your exact delivery point.
+                  </p>
+                </div>
+
+                <div
+                  class="flex flex-col sm:flex-row items-center justify-between gap-2 p-3 border-b border-gray-200 bg-gray-50"
+                >
+                  <div class="relative w-full sm:flex-1">
+                    <input
+                      type="text"
+                      v-model="searchQuery"
+                      @input="handleSearchInput"
+                      placeholder="Search area (e.g. Tunjungan Plaza)"
+                      class="w-full px-3 py-2.5 text-xs transition-colors border border-gray-300 outline-none rounded-xl focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                    <div
+                      v-if="searchResults.length > 0"
+                      class="absolute z-[999] mt-1 w-full bg-white border border-gray-200 rounded-xl shadow-lg max-h-40 overflow-y-auto custom-scrollbar"
+                    >
+                      <div
+                        v-for="(result, idx) in searchResults"
+                        :key="idx"
+                        @click="selectSearchResult(result)"
+                        class="px-3 py-2.5 text-xs text-gray-700 border-b cursor-pointer hover:bg-blue-50 last:border-0"
+                      >
+                        {{ result.display_name }}
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    @click="getCurrentLocation"
+                    class="w-full sm:w-auto px-4 py-2.5 text-[10px] font-bold tracking-wider text-blue-700 uppercase transition-colors bg-blue-100 rounded-xl hover:bg-blue-200"
+                  >
+                    Current Loc
+                  </button>
+                </div>
+
+                <div class="relative z-0 w-full h-40 sm:h-56">
+                  <l-map
+                    ref="map"
+                    v-model:zoom="zoom"
+                    :center="center"
+                    :use-global-leaflet="false"
+                    @click="onMapClick"
+                  >
+                    <l-tile-layer
+                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                      layer-type="base"
+                      name="OpenStreetMap"
+                    ></l-tile-layer>
+                    <l-marker
+                      :lat-lng="markerLatLng"
+                      draggable
+                      @update:latLng="onMarkerDrag"
+                    ></l-marker>
+                  </l-map>
+                  <div
+                    class="absolute z-[400] px-2 py-1 font-mono text-[9px] text-gray-600 bg-white/90 rounded shadow bottom-2 right-2 backdrop-blur pointer-events-none border border-gray-200"
+                  >
+                    {{ form.latitude ? parseFloat(form.latitude).toFixed(5) : "-" }},
+                    {{ form.longitude ? parseFloat(form.longitude).toFixed(5) : "-" }}
+                  </div>
                 </div>
               </div>
 
               <input type="hidden" :value="form.latitude" />
               <input type="hidden" :value="form.longitude" />
 
-              <div
-                class="flex items-center gap-3 p-4 mt-2 transition-colors border border-gray-200 cursor-pointer rounded-xl bg-gray-50 hover:bg-gray-100"
-                @click="form.is_default = !form.is_default"
-              >
-                <input
-                  type="checkbox"
-                  id="is_default"
-                  v-model="form.is_default"
-                  class="w-5 h-5 rounded cursor-pointer text-[#006A4E] focus:ring-[#006A4E] accent-[#006A4E]"
-                  @click.stop
-                />
-                <label
-                  for="is_default"
-                  class="text-sm font-bold text-gray-800 cursor-pointer select-none"
-                  @click.stop
+              <div class="flex justify-end gap-3 pt-6 mt-auto border-t border-gray-100">
+                <button
+                  type="button"
+                  @click="isModalOpen = false"
+                  class="px-6 py-3 text-sm font-bold text-gray-600 transition-colors bg-gray-100 rounded-xl hover:bg-gray-200"
                 >
-                  {{ $t("label_set_default_address") }}
-                </label>
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  class="px-6 py-3 text-sm font-bold text-white transition-all shadow-md bg-[#006A4E] rounded-xl hover:bg-emerald-900 hover:shadow-lg"
+                >
+                  {{ editingId ? "Update Address" : "Save Address" }}
+                </button>
               </div>
-            </div>
-
-            <div class="flex justify-end gap-3 pt-6 mt-auto border-t border-gray-100">
-              <button
-                type="button"
-                @click="isModalOpen = false"
-                class="px-6 py-3 text-sm font-bold text-gray-600 transition-colors bg-gray-100 rounded-xl hover:bg-gray-200"
-              >
-                {{ $t("btn_cancel") }}
-              </button>
-              <button
-                type="submit"
-                class="px-6 py-3 text-sm font-bold text-white transition-all shadow-md bg-[#006A4E] rounded-xl hover:bg-emerald-900 hover:shadow-lg"
-              >
-                {{ editingId ? $t("btn_update_address") : $t("btn_save_address") }}
-              </button>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
     </Teleport>
   </div>
 </template>
