@@ -12193,33 +12193,66 @@ const reverseGeocode = async (lat, lng) => {
   } catch (error) {}
 };
 
+// const getCurrentLocation = () => {
+//   setIsGettingLocation(true);
+//   if (navigator.geolocation) {
+//     navigator.geolocation.getCurrentPosition(
+//       (position) => {
+//         const lat = position.coords.latitude;
+//         const lng = position.coords.longitude;
+
+//         center.value = [lat, lng];
+//         zoom.value = 16;
+
+//         if (map.value && map.value.leafletObject) {
+//           map.value.leafletObject.flyTo([lat, lng], 16);
+//         }
+
+//         updateLocation(lat, lng);
+//         setIsGettingLocation(false);
+//       },
+//       () => {
+//         Swal.fire("Error", "Please allow location access.", "error");
+//         setIsGettingLocation(false);
+//       },
+//       { enableHighAccuracy: true, timeout: 10000 }
+//     );
+//   } else {
+//     Swal.fire("Error", "Geolocation not supported", "error");
+//     setIsGettingLocation(false);
+//   }
+// };
+
+// 👇 Tambahkan deklarasi ref ini agar Vue mengenali statenya
+const isGettingLocation = ref(false);
+
 const getCurrentLocation = () => {
-  setIsGettingLocation(true);
+  // 👇 Ubah setIsGettingLocation menjadi .value
+  isGettingLocation.value = true;
+  
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
-
-        center.value = [lat, lng];
-        zoom.value = 16;
-
-        if (map.value && map.value.leafletObject) {
+        if (map.value && map.value.leafletObject)
           map.value.leafletObject.flyTo([lat, lng], 16);
+        else {
+          center.value = [lat, lng];
+          zoom.value = 16;
         }
-
         updateLocation(lat, lng);
-        setIsGettingLocation(false);
+        isGettingLocation.value = false; // 👇 Perbaiki di sini
       },
       () => {
         Swal.fire("Error", "Please allow location access.", "error");
-        setIsGettingLocation(false);
+        isGettingLocation.value = false; // 👇 Perbaiki di sini
       },
-      { enableHighAccuracy: true, timeout: 10000 }
+      { enableHighAccuracy: true, timeout: 10000 } // Memastikan GPS presisi tinggi
     );
   } else {
-    Swal.fire("Error", "Geolocation not supported", "error");
-    setIsGettingLocation(false);
+    Swal.fire("Error", "Geolocation not supported by this browser.", "error");
+    isGettingLocation.value = false;
   }
 };
 
