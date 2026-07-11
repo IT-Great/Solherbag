@@ -12224,12 +12224,12 @@ const reverseGeocode = async (lat, lng) => {
 // };
 
 // 👇 Tambahkan deklarasi ref ini agar Vue mengenali statenya
-const isGettingLocation = ref(false);
+// const isGettingLocation = ref(false);
 
 const getCurrentLocation = () => {
   // 👇 Ubah setIsGettingLocation menjadi .value
   isGettingLocation.value = true;
-  
+
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       (position) => {
