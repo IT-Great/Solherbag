@@ -11438,9 +11438,7 @@ const useAllPoints = () => {
             class="flex items-center justify-between p-6 border-b border-gray-100 bg-gray-50 shrink-0 md:p-8 md:pb-6"
           >
             <h3 class="text-xl font-extrabold tracking-tight text-gray-900">
-              {{
-                editingId ? $t("modal_edit_address_title") : $t("modal_add_address_title")
-              }}
+              {{ editingId ? $t("modal_edit_address_title") : $t("add_address") }}
             </h3>
             <button
               @click="isModalOpen = false"
