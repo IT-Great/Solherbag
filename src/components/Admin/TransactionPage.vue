@@ -5036,7 +5036,7 @@ onUnmounted(() => {
 </style> -->
 
 <!-- Menghapus fungsi fetchBulkTracking method -->
-<!-- <template>
+<template>
   <div
     class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[600px]"
   >
@@ -5081,9 +5081,7 @@ onUnmounted(() => {
     </div>
 
     <div class="mb-8 space-y-4">
-      <div
-        class="flex items-center gap-4 pb-2 overflow-x-auto border-b border-gray-100"
-      >
+      <div class="flex items-center gap-4 pb-2 overflow-x-auto border-b border-gray-100">
         <span
           class="text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap"
           >Transaction:</span
@@ -5114,9 +5112,7 @@ onUnmounted(() => {
         </button>
       </div>
 
-      <div
-        class="flex items-center gap-4 pb-2 overflow-x-auto border-b border-gray-100"
-      >
+      <div class="flex items-center gap-4 pb-2 overflow-x-auto border-b border-gray-100">
         <span
           class="text-[10px] font-bold text-gray-400 uppercase tracking-widest whitespace-nowrap"
           >Shipping:</span
@@ -5148,13 +5144,9 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <div
-      class="flex flex-col items-center justify-between gap-4 mb-6 md:flex-row"
-    >
+    <div class="flex flex-col items-center justify-between gap-4 mb-6 md:flex-row">
       <div class="relative w-full md:w-80">
-        <span
-          class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400"
-        >
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="w-5 h-5"
@@ -5224,9 +5216,7 @@ onUnmounted(() => {
 
         <div class="w-px h-6 mx-1 bg-gray-200"></div>
 
-        <span class="text-xs font-bold tracking-wide text-gray-400 uppercase"
-          >Show:</span
-        >
+        <span class="text-xs font-bold tracking-wide text-gray-400 uppercase">Show:</span>
         <select
           v-model="itemsPerPage"
           class="px-3 py-2 text-sm font-bold border border-gray-200 outline-none cursor-pointer bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
@@ -5249,9 +5239,7 @@ onUnmounted(() => {
 
       <table class="w-full text-left border-collapse min-w-[900px]">
         <thead>
-          <tr
-            class="border-b text-gray-400 text-[10px] uppercase tracking-widest"
-          >
+          <tr class="border-b text-gray-400 text-[10px] uppercase tracking-widest">
             <th class="pb-4 pl-2">Order Details</th>
             <th class="pb-4 no-export">Product Sample</th>
             <th class="pb-4">Logistics (Pay & Ship)</th>
@@ -5349,9 +5337,7 @@ onUnmounted(() => {
                       :src="getPaymentLogo(trx.payment_method)"
                       class="object-contain w-full h-full"
                     />
-                    <span v-else class="text-[8px] font-bold text-gray-400"
-                      >PAY</span
-                    >
+                    <span v-else class="text-[8px] font-bold text-gray-400">PAY</span>
                   </div>
                   <div>
                     <p class="font-bold text-gray-800 text-[11px] uppercase">
@@ -5382,9 +5368,7 @@ onUnmounted(() => {
                       :src="getCourierLogo(trx.courier_company)"
                       class="object-contain w-full h-full"
                     />
-                    <span v-else class="text-[8px] font-bold text-gray-400"
-                      >SHIP</span
-                    >
+                    <span v-else class="text-[8px] font-bold text-gray-400">SHIP</span>
                   </div>
                   <div>
                     <p
@@ -5436,18 +5420,15 @@ onUnmounted(() => {
             <td class="py-6 w-[15%] pr-2">
               <div class="flex flex-col gap-1.5">
                 <div class="flex justify-between text-[10px] text-gray-500">
-                  <span>Subtotal:</span
-                  ><span>{{ formatPrice(trx.total_amount) }}</span>
+                  <span>Subtotal:</span><span>{{ formatPrice(trx.total_amount) }}</span>
                 </div>
                 <div class="flex justify-between text-[10px] text-gray-500">
-                  <span>Shipping:</span
-                  ><span>{{ formatPrice(trx.shipping_cost) }}</span>
+                  <span>Shipping:</span><span>{{ formatPrice(trx.shipping_cost) }}</span>
                 </div>
                 <div
                   class="flex justify-between text-sm font-bold text-black border-t border-dashed border-gray-200 pt-1.5 mt-1"
                 >
-                  <span>Total:</span
-                  ><span>{{ formatPrice(getGrandTotal(trx)) }}</span>
+                  <span>Total:</span><span>{{ formatPrice(getGrandTotal(trx)) }}</span>
                 </div>
 
                 <div
@@ -5551,17 +5532,12 @@ onUnmounted(() => {
                   View Detail
                 </button>
               </div>
-              <span v-else class="text-gray-300 text-[10px] italic"
-                >No Action</span
-              >
+              <span v-else class="text-gray-300 text-[10px] italic">No Action</span>
             </td>
           </tr>
 
           <tr v-if="!isLoading && paginatedTransactions.length === 0">
-            <td
-              colspan="7"
-              class="py-20 font-serif italic text-center text-gray-400"
-            >
+            <td colspan="7" class="py-20 font-serif italic text-center text-gray-400">
               {{
                 searchQuery
                   ? "No transactions match your search."
@@ -5580,9 +5556,7 @@ onUnmounted(() => {
       <p class="text-sm text-gray-400">
         Showing <span class="font-bold text-black">{{ showingStart }}</span> to
         <span class="font-bold text-black">{{ showingEnd }}</span> of
-        <span class="font-bold text-black">{{
-          filteredTransactions.length
-        }}</span>
+        <span class="font-bold text-black">{{ filteredTransactions.length }}</span>
         orders
       </p>
       <div class="flex gap-2">
@@ -6222,12 +6196,9 @@ const getShippingTabCount = (tabValue) => {
     if (tabValue === "returning")
       return ["return_in_transit", "returned"].includes(shipStatus);
     if (tabValue === "issues")
-      return [
-        "cancelled",
-        "rejected",
-        "disposed",
-        "courier_not_found",
-      ].includes(shipStatus);
+      return ["cancelled", "rejected", "disposed", "courier_not_found"].includes(
+        shipStatus
+      );
 
     return shipStatus === tabValue;
   }).length;
@@ -6243,8 +6214,7 @@ const filteredTransactions = computed(() => {
         order.order_id.toLowerCase().includes(query) ||
         order.user.first_name.toLowerCase().includes(query) ||
         order.user.email.toLowerCase().includes(query) ||
-        (order.tracking_number &&
-          order.tracking_number.toLowerCase().includes(query));
+        (order.tracking_number && order.tracking_number.toLowerCase().includes(query));
     }
 
     // 2. Transaction Tab Match
@@ -6273,15 +6243,11 @@ const filteredTransactions = computed(() => {
 
         // [PERBAIKAN 3] Penyesuaian klasifikasi filter
         if (activeShippingTab.value === "placed")
-          matchShipping = ["pending", "placed", "confirmed"].includes(
-            shipStatus,
-          );
+          matchShipping = ["pending", "placed", "confirmed"].includes(shipStatus);
         else if (activeShippingTab.value === "dropping_off")
           matchShipping = ["picked", "dropping_off"].includes(shipStatus);
         else if (activeShippingTab.value === "returning")
-          matchShipping = ["return_in_transit", "returned"].includes(
-            shipStatus,
-          );
+          matchShipping = ["return_in_transit", "returned"].includes(shipStatus);
         else if (activeShippingTab.value === "issues")
           matchShipping = [
             "cancelled",
@@ -6304,7 +6270,7 @@ const resetFilters = () => {
 };
 
 const totalPages = computed(() =>
-  Math.ceil(filteredTransactions.value.length / itemsPerPage.value),
+  Math.ceil(filteredTransactions.value.length / itemsPerPage.value)
 );
 
 const paginatedTransactions = computed(() => {
@@ -6315,13 +6281,10 @@ const paginatedTransactions = computed(() => {
 const showingStart = computed(() =>
   filteredTransactions.value.length === 0
     ? 0
-    : (currentPage.value - 1) * itemsPerPage.value + 1,
+    : (currentPage.value - 1) * itemsPerPage.value + 1
 );
 const showingEnd = computed(() =>
-  Math.min(
-    currentPage.value * itemsPerPage.value,
-    filteredTransactions.value.length,
-  ),
+  Math.min(currentPage.value * itemsPerPage.value, filteredTransactions.value.length)
 );
 
 // Pagination Visual (Max 7 box)
@@ -6330,20 +6293,16 @@ const visiblePages = computed(() => {
   const total = totalPages.value;
   const maxVisible = 7;
 
-  if (total <= maxVisible)
-    return Array.from({ length: total }, (_, i) => i + 1);
+  if (total <= maxVisible) return Array.from({ length: total }, (_, i) => i + 1);
   if (current <= 4) return [1, 2, 3, 4, 5, "...", total];
   if (current >= total - 3)
     return [1, "...", total - 4, total - 3, total - 2, total - 1, total];
   return [1, "...", current - 1, current, current + 1, "...", total];
 });
 
-watch(
-  [searchQuery, itemsPerPage, activeTransactionTab, activeShippingTab],
-  () => {
-    currentPage.value = 1;
-  },
-);
+watch([searchQuery, itemsPerPage, activeTransactionTab, activeShippingTab], () => {
+  currentPage.value = 1;
+});
 
 const goToDetail = (trx) => {
   router.push({
@@ -6393,10 +6352,10 @@ const getPaymentStatusText = (status) =>
   ].includes(status)
     ? "PAID"
     : status === "cancelled"
-      ? "CANCELLED"
-      : status === "refunded"
-        ? "REFUNDED"
-        : "UNPAID";
+    ? "CANCELLED"
+    : status === "refunded"
+    ? "REFUNDED"
+    : "UNPAID";
 
 const getPaymentStatusColor = (status) =>
   [
@@ -6408,10 +6367,10 @@ const getPaymentStatusColor = (status) =>
   ].includes(status)
     ? "text-green-600"
     : status === "cancelled"
-      ? "text-red-500"
-      : status === "refunded"
-        ? "text-teal-600"
-        : "text-orange-500";
+    ? "text-red-500"
+    : status === "refunded"
+    ? "text-teal-600"
+    : "text-orange-500";
 
 const getCourierLogo = (company) => {
   if (!company) return null;
@@ -6442,17 +6401,15 @@ const calculateTimeLeft = (referenceDate) => {
   const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
   const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-  return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+  return `${hours.toString().padStart(2, "0")}:${minutes
+    .toString()
+    .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 };
 
 // [BARU] Fungsi auto cancel (Admin side fallback)
 const autoCancelSilent = async (id) => {
   try {
-    await axios.post(
-      `${BASE_URL}/admin/transactions/${id}/cancel`,
-      {},
-      axiosConfig,
-    ); // Pastikan rute admin cancel ada jika diperlukan, atau andalkan backend
+    await axios.post(`${BASE_URL}/admin/transactions/${id}/cancel`, {}, axiosConfig); // Pastikan rute admin cancel ada jika diperlukan, atau andalkan backend
     fetchTransactions();
   } catch (e) {
     console.error("Auto cancel failed", e);
@@ -6560,7 +6517,7 @@ const exportToExcel = () => {
   XLSX.utils.book_append_sheet(workbook, worksheet, "Transactions");
   XLSX.writeFile(
     workbook,
-    `Transaction_Data_${new Date().toISOString().split("T")[0]}.xlsx`,
+    `Transaction_Data_${new Date().toISOString().split("T")[0]}.xlsx`
   );
 };
 
@@ -6585,28 +6542,21 @@ const statusClass = (status) => {
 const shippingStatusClass = (status) => {
   if (!status) return "bg-gray-50 border-gray-200 text-gray-500";
   const str = status.toLowerCase();
-  if (["delivered"].includes(str))
-    return "bg-green-50 border-green-200 text-green-700";
+  if (["delivered"].includes(str)) return "bg-green-50 border-green-200 text-green-700";
 
   // [PERBAIKAN 6] Penyesuaian warna class
   if (["cancelled", "rejected", "disposed", "courier_not_found"].includes(str))
     return "bg-red-50 border-red-200 text-red-700";
   if (["on_hold", "return_in_transit", "returned"].includes(str))
     return "bg-amber-50 border-amber-200 text-amber-700";
-  if (
-    ["picking_up", "picked", "dropping_off", "allocated", "confirmed"].includes(
-      str,
-    )
-  )
+  if (["picking_up", "picked", "dropping_off", "allocated", "confirmed"].includes(str))
     return "bg-blue-50 border-blue-200 text-blue-700";
 
   return "bg-gray-50 border-gray-200 text-gray-600";
 };
 
 const formatPrice = (v) =>
-  new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(
-    v,
-  );
+  new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(v);
 const formatDate = (date) =>
   new Date(date).toLocaleDateString("id-ID", {
     day: "2-digit",
@@ -6620,9 +6570,7 @@ const formatStatus = (s) => s.replace(/_/g, " ");
 const handleRefundAction = async (id, action) => {
   const endpoint = action === "approve" ? "refund-approve" : "refund-reject";
   const confirmText =
-    action === "approve"
-      ? "Approve this refund request?"
-      : "Reject this refund request?";
+    action === "approve" ? "Approve this refund request?" : "Reject this refund request?";
   const result = await Swal.fire({
     title: "Confirm Action",
     text: confirmText,
@@ -6636,7 +6584,7 @@ const handleRefundAction = async (id, action) => {
       await axios.post(
         `${BASE_URL}/admin/transactions/${id}/${endpoint}`,
         {},
-        axiosConfig,
+        axiosConfig
       );
       Swal.fire("Success", `Refund ${action}d successfully`, "success");
       fetchTransactions();
@@ -6661,7 +6609,8 @@ onUnmounted(() => {
     display: none !important;
   }
 }
-</style> -->
+</style>
+-->
 
 <!-- <template>
   <div
@@ -8090,7 +8039,7 @@ onUnmounted(() => {
     transform: translateY(0);
   }
 }
-</style> -->
+</style>
 
 <template>
   <div
