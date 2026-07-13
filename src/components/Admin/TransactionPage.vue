@@ -10005,10 +10005,10 @@ const itemsPerPage = ref(10);
 const countdowns = ref({});
 let timerInterval = null;
 
-// 👇 [PERBAIKAN] Menggunakan fungsi getAxiosConfig agar Token selalu baru dari LocalStorage
+// 👇 [PERBAIKAN] Menggunakan "admin_token" sesuai dengan sistem admin
 const getAxiosConfig = () => {
   return {
-    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
   };
 };
 
@@ -10397,7 +10397,6 @@ const exportToPDF = () => {
 };
 
 const exportToExcel = () => {
-  // Gunakan mata uang yang sedang aktif
   const curr = currentCurrency.value || "IDR";
 
   const excelData = paginatedTransactions.value.map((item, index) => ({
@@ -10416,7 +10415,6 @@ const exportToExcel = () => {
         ? "In-Store Pickup"
         : `${item.courier_company} - ${item.courier_type}`,
     "Tracking Number": item.tracking_number || "-",
-    // 👇 Multi-currency Headers untuk Excel Output 👇
     [`Subtotal (${curr})`]: convertIDRtoActiveCurrency(parseFloat(item.total_amount))
       .value,
     [`Shipping Cost (${curr})`]: convertIDRtoActiveCurrency(
@@ -10515,7 +10513,6 @@ const handleRefundAction = async (id, action) => {
 };
 
 onMounted(async () => {
-  // Daftarkan listener event jika sewaktu-waktu currency berubah
   window.addEventListener("currency-changed", updateCurrencyState);
   window.addEventListener("storage", (e) => {
     if (e.key === "currency") updateCurrencyState();
