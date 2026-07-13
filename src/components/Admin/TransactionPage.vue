@@ -8039,7 +8039,7 @@ onUnmounted(() => {
 }
 </style> -->
 
-<template>
+<!-- <template>
   <div
     class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[600px]"
   >
@@ -8279,7 +8279,7 @@ onUnmounted(() => {
             <td class="py-6 pl-2 w-[15%]">
               <div class="flex flex-col gap-1">
                 <span
-                  class="font-mono text-sm font-bold text-black flex items-center gap-2"
+                  class="flex items-center gap-2 font-mono text-sm font-bold text-black"
                 >
                   {{ trx.order_id }}
                   <span
@@ -9261,6 +9261,1001 @@ const handleRefundAction = async (id, action) => {
 
 onMounted(async () => {
   // Daftarkan listener event jika sewaktu-waktu currency berubah
+  window.addEventListener("currency-changed", updateCurrencyState);
+  window.addEventListener("storage", (e) => {
+    if (e.key === "currency") updateCurrencyState();
+  });
+
+  await fetchRates();
+  fetchTransactions();
+});
+
+onUnmounted(() => {
+  if (timerInterval) clearInterval(timerInterval);
+  window.removeEventListener("currency-changed", updateCurrencyState);
+});
+</script>
+
+<style scoped>
+@media print {
+  .export-header {
+    display: block !important;
+  }
+  .no-export {
+    display: none !important;
+  }
+}
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style> -->
+
+<template>
+  <div
+    class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[600px]"
+  >
+    <Breadcrumb />
+    <div
+      class="flex flex-col items-start justify-between gap-4 mb-8 md:flex-row md:items-center"
+    >
+      <div>
+        <h1 class="text-2xl font-bold text-gray-800">Transaction Monitoring</h1>
+        <p class="text-sm text-gray-500">
+          Manage and track all customer orders in real-time.
+        </p>
+      </div>
+      <div
+        class="flex items-center gap-4 px-6 py-3 border border-gray-100 bg-gray-50 rounded-2xl"
+      >
+        <div>
+          <span
+            class="block font-black text-[10px] text-gray-400 uppercase tracking-widest"
+            >Total Revenue</span
+          >
+          <span class="text-xl font-bold text-green-600">
+            {{ formatCurrencyDisplay(convertIDRtoActiveCurrency(totalRevenue)) }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-8 border-b border-gray-200">
+      <div class="flex gap-6 overflow-x-auto scrollbar-hide">
+        <button
+          v-for="tab in unifiedTabs"
+          :key="tab.value"
+          @click="activeUnifiedTab = tab.value"
+          :class="[
+            'pb-4 font-bold text-xs uppercase tracking-widest transition-colors whitespace-nowrap border-b-2 flex items-center gap-2',
+            activeUnifiedTab === tab.value
+              ? 'border-black text-black'
+              : 'border-transparent text-gray-400 hover:text-gray-700',
+          ]"
+        >
+          {{ tab.label }}
+          <span
+            v-if="getUnifiedTabCount(tab.value) > 0"
+            :class="
+              activeUnifiedTab === tab.value
+                ? 'bg-black text-white'
+                : 'bg-gray-200 text-gray-600'
+            "
+            class="px-2 py-0.5 rounded-full text-[9px] font-black"
+          >
+            {{ getUnifiedTabCount(tab.value) }}
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <div class="flex flex-col items-center justify-between gap-4 mb-6 md:flex-row">
+      <div class="relative w-full md:w-80">
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+        </span>
+        <input
+          v-model="searchQuery"
+          type="text"
+          placeholder="Search Order ID, Name, or Email..."
+          class="w-full py-2 pl-10 pr-4 text-sm transition border border-gray-200 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
+        />
+      </div>
+
+      <div class="flex flex-wrap items-center gap-3">
+        <button
+          @click="exportToPDF"
+          :disabled="paginatedTransactions.length === 0 || isLoading"
+          class="flex items-center gap-2 px-3 py-2 text-xs font-bold tracking-widest text-red-600 uppercase transition bg-red-50 hover:bg-red-100 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-4 h-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+            />
+          </svg>
+          PDF
+        </button>
+        <button
+          @click="exportToExcel"
+          :disabled="paginatedTransactions.length === 0 || isLoading"
+          class="flex items-center gap-2 px-3 py-2 text-xs font-bold tracking-widest text-green-600 uppercase transition bg-green-50 hover:bg-green-100 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-4 h-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+            />
+          </svg>
+          Excel
+        </button>
+
+        <div class="w-px h-6 mx-1 bg-gray-200"></div>
+
+        <span class="text-xs font-bold tracking-wide text-gray-400 uppercase">Show:</span>
+        <select
+          v-model="itemsPerPage"
+          class="px-3 py-2 text-sm font-bold border border-gray-200 outline-none cursor-pointer bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
+        >
+          <option :value="5">5</option>
+          <option :value="10">10</option>
+          <option :value="20">20</option>
+          <option :value="50">50</option>
+        </select>
+      </div>
+    </div>
+
+    <div v-if="isLoading" class="overflow-x-auto">
+      <table class="w-full text-left border-collapse min-w-[900px]">
+        <thead>
+          <tr class="border-b text-gray-400 text-[10px] uppercase tracking-widest">
+            <th class="pb-4 pl-2">Order Details</th>
+            <th class="pb-4">Product Sample</th>
+            <th class="pb-4">Logistics (Pay & Ship)</th>
+            <th class="pb-4">Financials</th>
+            <th class="pb-4">Trans. Status</th>
+            <th class="pb-4">Ship. Status</th>
+            <th class="pb-4 text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="i in 5" :key="i" class="border-b border-gray-50">
+            <td class="py-6 pl-2 w-[15%]">
+              <div class="space-y-2">
+                <div class="w-24 h-4 bg-gray-200 rounded animate-pulse"></div>
+                <div class="w-16 h-3 bg-gray-100 rounded animate-pulse"></div>
+                <div class="w-20 h-3 mt-4 bg-gray-200 rounded animate-pulse"></div>
+              </div>
+            </td>
+            <td class="py-6 w-[15%]">
+              <div class="flex -space-x-3">
+                <div class="w-10 h-10 bg-gray-200 border-2 border-white rounded-full animate-pulse"></div>
+                <div class="w-10 h-10 bg-gray-200 border-2 border-white rounded-full animate-pulse"></div>
+              </div>
+            </td>
+            <td class="py-6 w-[20%]">
+              <div class="space-y-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 bg-gray-200 rounded h-7 animate-pulse"></div>
+                  <div class="w-16 h-3 bg-gray-200 rounded animate-pulse"></div>
+                </div>
+                <div class="flex items-center gap-3">
+                  <div class="w-10 bg-gray-200 rounded h-7 animate-pulse"></div>
+                  <div class="w-20 h-3 bg-gray-200 rounded animate-pulse"></div>
+                </div>
+              </div>
+            </td>
+            <td class="py-6 w-[15%] pr-2">
+              <div class="space-y-2">
+                <div class="w-full h-3 bg-gray-100 rounded animate-pulse"></div>
+                <div class="w-full h-3 bg-gray-100 rounded animate-pulse"></div>
+                <div class="w-full h-4 mt-2 bg-gray-200 rounded animate-pulse"></div>
+              </div>
+            </td>
+            <td class="py-6 w-[10%]">
+              <div class="w-16 h-5 bg-gray-200 rounded-full animate-pulse"></div>
+            </td>
+            <td class="py-6 w-[10%]">
+              <div class="w-20 h-5 bg-gray-200 rounded-full animate-pulse"></div>
+            </td>
+            <td class="py-6 w-[10%]">
+              <div class="w-16 h-5 mx-auto bg-gray-200 rounded-full animate-pulse"></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div v-else class="overflow-x-auto" id="exportable-table">
+      <div class="hidden mb-4 export-header">
+        <h2 class="text-2xl font-bold text-black">Transaction Report</h2>
+        <p class="text-sm text-gray-500">
+          Generated on: {{ new Date().toLocaleString() }}
+        </p>
+      </div>
+
+      <table class="w-full text-left border-collapse min-w-[900px]">
+        <thead>
+          <tr class="border-b border-gray-100 text-gray-400 text-[10px] uppercase tracking-widest">
+            <th class="pb-4 pl-2">Order Details</th>
+            <th class="pb-4 no-export">Product Sample</th>
+            <th class="pb-4">Logistics (Pay & Ship)</th>
+            <th class="pb-4">Financials</th>
+            <th class="pb-4">Trans. Status</th>
+            <th class="pb-4">Ship. Status</th>
+            <th class="pb-4 text-center no-export">Action</th>
+          </tr>
+        </thead>
+        
+        <tbody v-if="paginatedTransactions.length > 0" class="text-sm text-gray-600">
+          <tr
+            v-for="trx in paginatedTransactions"
+            :key="trx.id"
+            class="align-top transition border-b cursor-pointer group hover:bg-gray-50 border-gray-50"
+            @click="goToDetail(trx)"
+          >
+            <td class="py-6 pl-2 w-[15%]">
+              <div class="flex flex-col gap-1">
+                <span class="flex items-center gap-2 font-mono text-sm font-bold text-black">
+                  {{ trx.order_id }}
+                  <span
+                    v-if="trx.user?.usertype === 'reseller' && getOrderQuantity(trx) >= 24"
+                    class="px-1.5 py-0.5 text-[8px] font-bold text-white bg-blue-600 rounded"
+                  >
+                    GROSIR
+                  </span>
+                </span>
+                
+                <span class="text-xs text-gray-400">
+                  {{ formatDate(trx.created_at) }}
+                </span>
+                <div class="mt-2">
+                  <span
+                    class="block font-bold text-gray-800 text-xs truncate max-w-[150px]"
+                    :title="trx.user.first_name + ' ' + trx.user.last_name"
+                  >
+                    {{ trx.user.first_name }} {{ trx.user.last_name }}
+                  </span>
+                  <span
+                    class="block text-gray-400 text-[10px] truncate max-w-[150px]"
+                    :title="trx.user.email"
+                  >
+                    {{ trx.user.email }}
+                  </span>
+                </div>
+                <div
+                  v-if="trx.status === 'pending' && countdowns[trx.id] !== 'Expired'"
+                  class="flex items-center gap-1 px-2 py-1 mt-2 text-red-600 rounded-md no-export bg-red-50 w-fit"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span class="font-mono font-bold text-[10px]">{{ countdowns[trx.id] }}</span>
+                </div>
+              </div>
+            </td>
+
+            <td class="py-6 w-[15%] no-export">
+              <div class="flex flex-col gap-2">
+                <div class="flex py-1 pl-1 -space-x-3 overflow-hidden">
+                  <img
+                    v-for="(detail, idx) in trx.details.slice(0, 3)"
+                    :key="idx"
+                    :src="detail.product.image_url || defaultBagIcon"
+                    class="inline-block object-cover w-10 h-10 bg-gray-100 border-2 border-white rounded-full shadow-sm"
+                  />
+                  <div
+                    v-if="trx.details.length > 3"
+                    class="flex items-center justify-center h-10 w-10 rounded-full border-2 border-white bg-gray-100 text-[10px] font-bold text-gray-500"
+                  >
+                    +{{ trx.details.length - 3 }}
+                  </div>
+                </div>
+                <span class="text-xs font-medium text-gray-500">{{ trx.details.length }} Items</span>
+              </div>
+            </td>
+
+            <td class="py-6 w-[20%]">
+              <div class="space-y-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-7 bg-white border border-gray-200 rounded flex justify-center items-center p-0.5 shrink-0 no-export">
+                    <img v-if="getPaymentLogo(trx.payment_method)" :src="getPaymentLogo(trx.payment_method)" class="object-contain w-full h-full" />
+                    <span v-else class="text-[8px] font-bold text-gray-400">PAY</span>
+                  </div>
+                  <div>
+                    <p class="font-bold text-gray-800 text-[11px] uppercase">
+                      {{ trx.payment_method ? trx.payment_method.replace(/_/g, " ") : "Not Selected" }}
+                    </p>
+                    <p :class="getPaymentStatusColor(trx.status)" class="text-[9px] font-bold uppercase tracking-wider">
+                      {{ getPaymentStatusText(trx.status) }}
+                    </p>
+                  </div>
+                </div>
+
+                <div v-if="trx.shipping_method !== 'free'" class="flex items-center gap-3">
+                  <div class="w-10 h-7 bg-white border border-gray-200 rounded flex justify-center items-center p-0.5 shrink-0 no-export">
+                    <img v-if="getCourierLogo(trx.courier_company)" :src="getCourierLogo(trx.courier_company)" class="object-contain w-full h-full" />
+                    <span v-else class="text-[8px] font-bold text-gray-400">SHIP</span>
+                  </div>
+                  <div>
+                    <p class="font-bold text-gray-800 text-[11px] uppercase truncate w-32">
+                      {{ trx.courier_company || "Pending" }} - {{ trx.courier_type || "-" }}
+                    </p>
+                    <p class="text-[10px] text-gray-500 font-mono">
+                      Resi:
+                      <span class="font-bold text-black">{{ trx.tracking_number || "Waiting..." }}</span>
+                    </p>
+                  </div>
+                </div>
+
+                <div v-else class="flex items-center gap-3">
+                  <div class="flex items-center justify-center w-10 p-1 text-gray-400 bg-gray-100 border border-gray-200 rounded h-7 shrink-0 no-export">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="font-bold text-gray-800 text-[11px] uppercase">No Courier</p>
+                    <p class="text-[10px] text-gray-500 font-medium mt-0.5">In-store Pickup</p>
+                  </div>
+                </div>
+              </div>
+            </td>
+
+            <td class="py-6 w-[15%] pr-2">
+              <div class="flex flex-col gap-1.5">
+                <div class="flex justify-between text-[10px] text-gray-500">
+                  <span>Subtotal:</span>
+                  <span>{{ formatCurrencyDisplay(convertIDRtoActiveCurrency(trx.total_amount)) }}</span>
+                </div>
+                <div class="flex justify-between text-[10px] text-gray-500">
+                  <span>Shipping:</span>
+                  <span>{{ formatCurrencyDisplay(convertIDRtoActiveCurrency(trx.shipping_cost)) }}</span>
+                </div>
+
+                <div v-if="trx.promo_discount > 0" class="flex justify-between text-[9px] text-green-600 font-bold">
+                  <span>Promo (<span class="font-mono">{{ trx.promo_code }}</span>)</span>
+                  <span>-{{ formatCurrencyDisplay(convertIDRtoActiveCurrency(trx.promo_discount)) }}</span>
+                </div>
+                <div v-if="trx.points_used > 0" class="flex justify-between text-[9px] text-yellow-600 font-bold">
+                  <span>Pts ({{ trx.points_used }})</span>
+                  <span>-{{ formatCurrencyDisplay(convertIDRtoActiveCurrency(trx.points_used * 1000)) }}</span>
+                </div>
+
+                <div class="flex justify-between text-sm font-bold text-black border-t border-dashed border-gray-200 pt-1.5 mt-1">
+                  <span>Total:</span>
+                  <span>{{ formatCurrencyDisplay(convertIDRtoActiveCurrency(getGrandTotal(trx))) }}</span>
+                </div>
+                
+                <div v-if="trx.point > 0 && trx.status === 'completed'" class="flex justify-between items-center text-[10px] text-yellow-600 font-bold bg-yellow-50 px-2 py-1 rounded border border-yellow-100 mt-1">
+                  <span class="flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                    Points Earned:
+                  </span>
+                  <span>+{{ trx.point }}</span>
+                </div>
+              </div>
+            </td>
+
+            <td class="py-6 w-[10%]">
+              <span :class="statusClass(trx.status)" class="px-3 py-1 rounded-full font-bold text-[9px] uppercase tracking-tighter block w-fit">
+                {{ formatStatus(trx.status) }}
+              </span>
+            </td>
+
+            <td class="py-6 w-[10%]">
+              <span v-if="trx.shipping_method === 'free'" class="px-3 py-1 rounded-full font-bold text-[9px] uppercase tracking-tighter block w-fit border bg-gray-100 text-gray-600">
+                In-Store Pickup
+              </span>
+              <span v-else :class="shippingStatusClass(trx.shipping_status)" class="px-3 py-1 rounded-full font-bold text-[9px] uppercase tracking-tighter block w-fit border">
+                {{ formatStatus(trx.shipping_status || "Pending") }}
+              </span>
+            </td>
+
+            <td class="py-6 text-center w-[15%] no-export" @click.stop>
+              <div v-if="trx.status === 'refund_requested'" class="flex flex-col items-center gap-3">
+                <div class="w-full p-3 text-left border border-red-100 bg-red-50 rounded-xl">
+                  <p class="font-bold text-[9px] text-red-600 uppercase tracking-widest mb-1 border-b border-red-100 pb-1">Refund Reason</p>
+                  <p class="text-[10px] text-gray-700 italic line-clamp-3 mb-2" :title="trx.refund_reason">
+                    "{{ trx.refund_reason || "No reason provided" }}"
+                  </p>
+                  <a v-if="trx.refund_proof_url" :href="trx.refund_proof_url" target="_blank" class="inline-flex items-center gap-1 text-[9px] font-bold text-blue-600 hover:underline bg-white px-2 py-1 rounded border border-blue-100 w-fit">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                    View Proof
+                  </a>
+                </div>
+
+                <div class="flex justify-center w-full gap-2">
+                  <button @click="handleRefundAction(trx.id, 'approve')" class="bg-green-100 hover:bg-green-200 py-2 flex-1 rounded-lg text-green-700 transition shadow-sm font-bold text-[10px] uppercase tracking-widest flex justify-center items-center gap-1" title="Approve Refund">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg> Accept
+                  </button>
+                  <button @click="handleRefundAction(trx.id, 'reject')" class="bg-red-100 hover:bg-red-200 py-2 flex-1 rounded-lg text-red-700 transition shadow-sm font-bold text-[10px] uppercase tracking-widest flex justify-center items-center gap-1" title="Reject Refund">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg> Deny
+                  </button>
+                </div>
+              </div>
+
+              <div v-else-if="['completed', 'processing'].includes(trx.status)" class="flex justify-center">
+                <button @click="goToDetail(trx)" class="text-[10px] font-bold text-blue-600 hover:underline">
+                  View Detail
+                </button>
+              </div>
+              <span v-else class="text-gray-300 text-[10px] italic">No Action</span>
+            </td>
+          </tr>
+        </tbody>
+        <tbody v-else>
+          <tr>
+            <td colspan="7" class="py-20 font-serif italic text-center text-gray-400">
+              {{ searchQuery ? "No transactions match your search." : "No transactions found." }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div
+      v-if="!isLoading && filteredTransactions.length > 0"
+      class="flex flex-col items-center justify-between gap-4 pt-6 mt-8 border-t border-gray-100 md:flex-row"
+    >
+      <p class="text-sm text-gray-400">
+        Showing <span class="font-bold text-black">{{ showingStart }}</span> to
+        <span class="font-bold text-black">{{ showingEnd }}</span> of
+        <span class="font-bold text-black">{{ filteredTransactions.length }}</span> orders
+      </p>
+
+      <div class="flex gap-2">
+        <button
+          @click="currentPage--"
+          :disabled="currentPage === 1"
+          class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
+        >
+          Previous
+        </button>
+
+        <div class="flex gap-1">
+          <button
+            v-for="(page, index) in visiblePages"
+            :key="index"
+            @click="typeof page === 'number' ? (currentPage = page) : null"
+            :disabled="page === '...'"
+            :class="[
+              currentPage === page
+                ? 'bg-black text-white border-black'
+                : 'hover:bg-gray-50 border-gray-200',
+              page === '...' ? 'cursor-default border-transparent hover:bg-transparent' : 'border',
+            ]"
+            class="flex items-center justify-center w-10 h-10 text-sm font-medium transition rounded-xl"
+          >
+            {{ page }}
+          </button>
+        </div>
+
+        <button
+          @click="currentPage++"
+          :disabled="currentPage === totalPages || totalPages === 0"
+          class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, computed, watch, onUnmounted } from "vue";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { BASE_URL } from "../../config/api.js";
+import { useRouter } from "vue-router";
+import html2pdf from "html2pdf.js";
+import * as XLSX from "xlsx";
+
+import defaultBagIcon from "../../assets/products/bag_icon.jpg";
+import Breadcrumb from "./Layout/Breadcrumb.vue";
+
+const transactions = ref([]);
+const isLoading = ref(true);
+const router = useRouter();
+
+const searchQuery = ref("");
+const currentPage = ref(1);
+const itemsPerPage = ref(10);
+
+const countdowns = ref({});
+let timerInterval = null;
+
+const axiosConfig = {
+  headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+};
+
+// --- STATE FILTER TABS ---
+const activeUnifiedTab = ref("all");
+
+const unifiedTabs = [
+  { label: "All Orders", value: "all" },
+  { label: "Unpaid", value: "unpaid" },
+  { label: "To Ship", value: "to_ship" },
+  { label: "In Transit", value: "shipping" },
+  { label: "Completed", value: "completed" },
+  { label: "Cancelled", value: "cancelled" },
+  { label: "Issues / Returns", value: "issues" },
+];
+
+// ============================================================================
+// 👇 [PERBAIKAN] INTEGRASI STATE & FUNGSI MULTI-CURRENCY 👇
+// ============================================================================
+const exchangeRates = ref({ IDR: 1 });
+const currentCurrency = ref(localStorage.getItem("currency") || "IDR");
+
+const updateCurrencyState = () => {
+  currentCurrency.value = localStorage.getItem("currency") || "IDR";
+};
+
+const fetchRates = async () => {
+  try {
+    const res = await axios.get(`${BASE_URL}/exchange-rates`);
+    if (res.data?.data?.rates) {
+      exchangeRates.value = res.data.data.rates;
+    }
+  } catch (error) {
+    console.error("Failed to fetch rates", error);
+  }
+};
+
+const convertIDRtoActiveCurrency = (idrAmount) => {
+  const amount = parseFloat(idrAmount) || 0;
+  if (
+    currentCurrency.value === "IDR" ||
+    !exchangeRates.value ||
+    !exchangeRates.value[currentCurrency.value]
+  ) {
+    return { value: amount, curr: "IDR" };
+  }
+  return {
+    value: amount * exchangeRates.value[currentCurrency.value],
+    curr: currentCurrency.value,
+  };
+};
+
+const formatCurrencyDisplay = (priceObj) => {
+  if (!priceObj) return "";
+  const symbols = { USD: "$", SGD: "S$", EUR: "€", AUD: "A$", MYR: "RM", IDR: "Rp " };
+  const formatter = new Intl.NumberFormat(priceObj.curr === "IDR" ? "id-ID" : "en-US", {
+    minimumFractionDigits: priceObj.curr === "IDR" ? 0 : 2,
+    maximumFractionDigits: priceObj.curr === "IDR" ? 0 : 2,
+  });
+  return `${symbols[priceObj.curr] || priceObj.curr + " "}${formatter.format(
+    priceObj.value
+  )}`;
+};
+
+const getOrderQuantity = (order) => {
+  if (!order || !order.details) return 0;
+  return order.details.reduce((sum, item) => sum + parseInt(item.quantity || 0), 0);
+};
+// ============================================================================
+
+const getUnifiedTabCount = (tabValue) => {
+  return transactions.value.filter((order) => {
+    if (tabValue === "all") return true;
+
+    const shipStatus = order.shipping_status ? order.shipping_status.toLowerCase() : "pending";
+
+    if (tabValue === "unpaid") return order.status === "pending";
+
+    if (tabValue === "to_ship") {
+      return (
+        order.status === "processing" &&
+        ["pending", "placed", "confirmed", "allocated", "picking_up", "picked"].includes(shipStatus)
+      );
+    }
+
+    if (tabValue === "shipping") return shipStatus === "dropping_off";
+
+    if (tabValue === "completed") return order.status === "completed" || shipStatus === "delivered";
+
+    if (tabValue === "cancelled") return order.status === "cancelled";
+
+    if (tabValue === "issues") {
+      return (
+        order.status.includes("refund") ||
+        ["returned", "shipping_failed"].includes(order.status) ||
+        ["on_hold", "return_in_transit", "rejected", "disposed", "courier_not_found"].includes(shipStatus)
+      );
+    }
+
+    return false;
+  }).length;
+};
+
+const filteredTransactions = computed(() => {
+  const query = searchQuery.value.toLowerCase();
+
+  let result = transactions.value.filter((order) => {
+    let matchSearch = true;
+    if (query) {
+      matchSearch =
+        order.order_id.toLowerCase().includes(query) ||
+        order.user.first_name.toLowerCase().includes(query) ||
+        order.user.email.toLowerCase().includes(query) ||
+        (order.tracking_number && order.tracking_number.toLowerCase().includes(query));
+    }
+
+    let matchTab = false;
+    const tabValue = activeUnifiedTab.value;
+    const shipStatus = order.shipping_status ? order.shipping_status.toLowerCase() : "pending";
+
+    if (tabValue === "all") {
+      matchTab = true;
+    } else if (tabValue === "unpaid") {
+      matchTab = order.status === "pending";
+    } else if (tabValue === "to_ship") {
+      matchTab =
+        order.status === "processing" &&
+        ["pending", "placed", "confirmed", "allocated", "picking_up", "picked"].includes(shipStatus);
+    } else if (tabValue === "shipping") {
+      matchTab = shipStatus === "dropping_off";
+    } else if (tabValue === "completed") {
+      matchTab = order.status === "completed" || shipStatus === "delivered";
+    } else if (tabValue === "cancelled") {
+      matchTab = order.status === "cancelled";
+    } else if (tabValue === "issues") {
+      matchTab =
+        order.status.includes("refund") ||
+        ["returned", "shipping_failed"].includes(order.status) ||
+        ["on_hold", "return_in_transit", "rejected", "disposed", "courier_not_found"].includes(shipStatus);
+    }
+
+    return matchSearch && matchTab;
+  });
+
+  result.sort((a, b) => {
+    const isARefund = a.status === "refund_requested" ? 1 : 0;
+    const isBRefund = b.status === "refund_requested" ? 1 : 0;
+    if (isARefund > isBRefund) return -1;
+    if (isARefund < isBRefund) return 1;
+    return b.id - a.id;
+  });
+
+  return result;
+});
+
+const resetFilters = () => {
+  activeUnifiedTab.value = "all";
+  searchQuery.value = "";
+};
+
+const totalPages = computed(() =>
+  Math.ceil(filteredTransactions.value.length / itemsPerPage.value)
+);
+
+const paginatedTransactions = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value;
+  return filteredTransactions.value.slice(start, start + itemsPerPage.value);
+});
+
+const showingStart = computed(() =>
+  filteredTransactions.value.length === 0
+    ? 0
+    : (currentPage.value - 1) * itemsPerPage.value + 1
+);
+const showingEnd = computed(() =>
+  Math.min(currentPage.value * itemsPerPage.value, filteredTransactions.value.length)
+);
+
+const visiblePages = computed(() => {
+  const current = currentPage.value;
+  const total = totalPages.value;
+  const maxVisible = 7;
+
+  if (total <= maxVisible) return Array.from({ length: total }, (_, i) => i + 1);
+  if (current <= 4) return [1, 2, 3, 4, 5, "...", total];
+  if (current >= total - 3)
+    return [1, "...", total - 4, total - 3, total - 2, total - 1, total];
+  return [1, "...", current - 1, current, current + 1, "...", total];
+});
+
+watch([searchQuery, itemsPerPage, activeUnifiedTab], () => {
+  currentPage.value = 1;
+});
+
+const goToDetail = (trx) => {
+  router.push({
+    name: "TransactionDetail",
+    params: { id: trx.id },
+    state: { transactionData: JSON.parse(JSON.stringify(trx)) },
+  });
+};
+
+const getGrandTotal = (trx) => {
+  if (!trx) return 0;
+  const total = parseFloat(trx.total_amount || 0);
+  const shipping = parseFloat(trx.shipping_cost || 0);
+  const promo = parseFloat(trx.promo_discount || 0);
+  const points = parseFloat((trx.points_used || 0) * 1000);
+  return total + shipping - promo - points;
+};
+
+const totalRevenue = computed(() => {
+  return transactions.value
+    .filter((t) => t.status === "completed")
+    .reduce((acc, curr) => acc + getGrandTotal(curr), 0);
+});
+
+const getPaymentLogo = (methodString) => {
+  if (!methodString) return null;
+  const channel = methodString.split(" ")[1]?.toLowerCase();
+  const map = {
+    bca: "bca.png", bni: "bni.png", bri: "bri.png", mandiri: "mandiri.png",
+    bsi: "bsi.png", permata: "permata.png", ovo: "ovo.png", dana: "dana.png",
+    linkaja: "linkaja.png", shopeepay: "shopeepay.png", alfamart: "alfamart.png",
+    indomaret: "indomaret.png", qris: "qris.png",
+  };
+  return map[channel] ? "/payment_images/" + map[channel] : null;
+};
+
+const getPaymentStatusText = (status) =>
+  ["completed", "processing", "refund_requested", "refund_approved", "refund_rejected"].includes(status)
+    ? "PAID"
+    : status === "cancelled" ? "CANCELLED" : status === "refunded" ? "REFUNDED" : "UNPAID";
+
+const getPaymentStatusColor = (status) =>
+  ["completed", "processing", "refund_requested", "refund_approved", "refund_rejected"].includes(status)
+    ? "text-green-600"
+    : status === "cancelled" ? "text-red-500" : status === "refunded" ? "text-teal-600" : "text-orange-500";
+
+const getCourierLogo = (company) => {
+  if (!company) return null;
+  const map = {
+    jne: "jne.png", sicepat: "sicepat.png", jnt: "jnt.png", anteraja: "anteraja.png",
+    gojek: "gojek.png", grab: "grab.png", paxel: "paxel.png", ninja: "ninja.png",
+  };
+  return map[company.toLowerCase()] ? "/courier_images/" + map[company.toLowerCase()] : null;
+};
+
+const calculateTimeLeft = (referenceDate) => {
+  if (!referenceDate) return "Expired";
+  const expiryTime = new Date(referenceDate).getTime() + 86400000;
+  const now = new Date().getTime();
+  const diff = expiryTime - now;
+
+  if (diff <= 0) return "Expired";
+
+  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+  return `${hours.toString().padStart(2, "0")}:${minutes
+    .toString()
+    .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+};
+
+const autoCancelSilent = async (id) => {
+  try {
+    await axios.post(`${BASE_URL}/admin/transactions/${id}/cancel`, {}, axiosConfig);
+    fetchTransactions();
+  } catch (e) {
+    console.error("Auto cancel failed", e);
+  }
+};
+
+const startTimers = () => {
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    transactions.value.forEach((trx) => {
+      if (["pending"].includes(trx.status)) {
+        const timeReference = trx.payment?.created_at || trx.created_at;
+        const timeLeft = calculateTimeLeft(timeReference);
+        countdowns.value[trx.id] = timeLeft;
+
+        if (timeLeft === "Expired" && !trx.isCancelling) {
+          trx.isCancelling = true;
+        }
+      }
+    });
+  }, 1000);
+};
+
+const fetchTransactions = async () => {
+  isLoading.value = true;
+  try {
+    const res = await axios.get(`${BASE_URL}/admin/transactions`, axiosConfig);
+    const filteredData = res.data.filter((o) => o.status !== "awaiting_payment");
+    transactions.value = filteredData.map((o) => ({
+      ...o,
+      isCancelling: false,
+    }));
+    startTimers();
+  } catch (error) {
+    Swal.fire("Error", "Failed to fetch transactions", "error");
+  } finally {
+    setTimeout(() => (isLoading.value = false), 500);
+  }
+};
+
+const exportToPDF = () => {
+  const element = document.getElementById("exportable-table");
+  const noExportElements = element.querySelectorAll(".no-export");
+  noExportElements.forEach((el) => el.classList.add("hidden"));
+  const headers = element.querySelectorAll(".export-header");
+  headers.forEach((h) => {
+    h.classList.remove("hidden");
+    h.classList.add("block");
+  });
+
+  const opt = {
+    margin: 0.3,
+    filename: `Transaction_Report_${new Date().toISOString().split("T")[0]}.pdf`,
+    image: { type: "jpeg", quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true },
+    jsPDF: { unit: "in", format: "letter", orientation: "landscape" },
+  };
+
+  html2pdf()
+    .set(opt)
+    .from(element)
+    .save()
+    .then(() => {
+      headers.forEach((h) => {
+        h.classList.add("hidden");
+        h.classList.remove("block");
+      });
+      noExportElements.forEach((el) => el.classList.remove("hidden"));
+    });
+};
+
+const exportToExcel = () => {
+  const curr = currentCurrency.value || "IDR";
+
+  const excelData = paginatedTransactions.value.map((item, index) => ({
+    No: index + 1,
+    "Order ID": item.order_id,
+    Date: formatDate(item.created_at),
+    "Customer Name": `${item.user.first_name} ${item.user.last_name}`,
+    Email: item.user.email,
+    "Total Items": item.details.length,
+    "Payment Method": item.payment_method
+      ? item.payment_method.replace(/_/g, " ").toUpperCase()
+      : "-",
+    "Payment Status": getPaymentStatusText(item.status),
+    "Shipping Method":
+      item.shipping_method === "free"
+        ? "In-Store Pickup"
+        : `${item.courier_company} - ${item.courier_type}`,
+    "Tracking Number": item.tracking_number || "-",
+    // 👇 Multi-currency Headers untuk Excel Output 👇
+    [`Subtotal (${curr})`]: convertIDRtoActiveCurrency(parseFloat(item.total_amount)).value,
+    [`Shipping Cost (${curr})`]: convertIDRtoActiveCurrency(parseFloat(item.shipping_cost)).value,
+    "Promo Code": item.promo_code || "-",
+    [`Promo Discount (${curr})`]: convertIDRtoActiveCurrency(parseFloat(item.promo_discount || 0)).value,
+    [`Points Discount (${curr})`]: convertIDRtoActiveCurrency(parseFloat((item.points_used || 0) * 1000)).value,
+    [`Grand Total (${curr})`]: convertIDRtoActiveCurrency(getGrandTotal(item)).value,
+    "Points Earned": item.status === "completed" ? item.point || 0 : 0,
+    "Transaction Status": item.status.replace(/_/g, " ").toUpperCase(),
+    "Shipping Status":
+      item.shipping_method === "free"
+        ? "IN-STORE"
+        : (item.shipping_status || "PENDING").toUpperCase(),
+  }));
+  const worksheet = XLSX.utils.json_to_sheet(excelData);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Transactions");
+  XLSX.writeFile(
+    workbook,
+    `Transaction_Data_${new Date().toISOString().split("T")[0]}.xlsx`
+  );
+};
+
+const statusClass = (status) => {
+  const map = {
+    pending: "bg-orange-100 text-orange-700",
+    processing: "bg-blue-100 text-blue-700",
+    completed: "bg-green-100 text-green-700",
+    cancelled: "bg-red-100 text-red-700",
+    refund_requested: "bg-purple-100 text-purple-700",
+    refund_approved: "bg-indigo-100 text-indigo-700",
+    refund_rejected: "bg-gray-200 text-gray-600 line-through",
+    refunded: "bg-teal-100 text-teal-700",
+    refund_manual_required: "bg-pink-100 text-pink-700",
+    returned: "bg-gray-800 text-white",
+    shipping_failed: "bg-red-800 text-white",
+  };
+  return map[status] || "bg-gray-100 text-gray-500";
+};
+
+const shippingStatusClass = (status) => {
+  if (!status) return "bg-gray-50 border-gray-200 text-gray-500";
+  const str = status.toLowerCase();
+  if (["delivered"].includes(str)) return "bg-green-50 border-green-200 text-green-700";
+  if (["cancelled", "rejected", "disposed", "courier_not_found"].includes(str))
+    return "bg-red-50 border-red-200 text-red-700";
+  if (["on_hold", "return_in_transit", "returned"].includes(str))
+    return "bg-amber-50 border-amber-200 text-amber-700";
+  if (["picking_up", "picked", "dropping_off", "allocated", "confirmed"].includes(str))
+    return "bg-blue-50 border-blue-200 text-blue-700";
+  return "bg-gray-50 border-gray-200 text-gray-600";
+};
+
+const formatDate = (date) =>
+  new Date(date).toLocaleDateString("id-ID", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+const formatStatus = (s) => s.replace(/_/g, " ");
+
+const handleRefundAction = async (id, action) => {
+  const endpoint = action === "approve" ? "refund-approve" : "refund-reject";
+  const confirmText =
+    action === "approve" ? "Approve this refund request?" : "Reject this refund request?";
+  const result = await Swal.fire({
+    title: "Confirm Action",
+    text: confirmText,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#000",
+    confirmButtonText: "Yes, proceed!",
+  });
+  if (result.isConfirmed) {
+    try {
+      await axios.post(
+        `${BASE_URL}/admin/transactions/${id}/${endpoint}`,
+        {},
+        axiosConfig
+      );
+      Swal.fire("Success", `Refund ${action}d successfully`, "success");
+      fetchTransactions();
+    } catch (err) {
+      Swal.fire("Error", "Action failed", "error");
+    }
+  }
+};
+
+onMounted(async () => {
   window.addEventListener("currency-changed", updateCurrencyState);
   window.addEventListener("storage", (e) => {
     if (e.key === "currency") updateCurrencyState();
