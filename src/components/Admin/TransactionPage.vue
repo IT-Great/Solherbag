@@ -1,44 +1,72 @@
-<!-- <template>
+<template>
   <div
     class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[600px]"
   >
-    <div v-if="isLoading" class="z-20 absolute inset-0 flex justify-center items-center bg-white/60 backdrop-blur-[2px] rounded-2xl transition-all duration-300">
+    <div
+      v-if="isLoading"
+      class="z-20 absolute inset-0 flex justify-center items-center bg-white/60 backdrop-blur-[2px] rounded-2xl transition-all duration-300"
+    >
       <div class="flex flex-col items-center">
-        <div class="w-12 h-12 border-4 border-gray-200 rounded-full border-t-black animate-spin"></div>
-        <p class="mt-4 text-xs font-bold tracking-widest text-black uppercase animate-pulse">Processing Data...</p>
+        <div
+          class="w-12 h-12 border-4 border-gray-200 rounded-full border-t-black animate-spin"
+        ></div>
+        <p
+          class="mt-4 text-xs font-bold tracking-widest text-black uppercase animate-pulse"
+        >
+          Processing Data...
+        </p>
       </div>
     </div>
 
-    <div class="flex flex-col items-start justify-between gap-4 mb-8 md:flex-row md:items-center">
+    <div
+      class="flex flex-col items-start justify-between gap-4 mb-8 md:flex-row md:items-center"
+    >
       <div>
         <h1 class="text-2xl font-bold text-gray-800">Transaction Monitoring</h1>
-        <p class="text-sm text-gray-500">Manage and track all customer orders in real-time.</p>
+        <p class="text-sm text-gray-500">
+          Manage and track all customer orders in real-time.
+        </p>
       </div>
       <div class="px-6 py-3 border border-gray-100 bg-gray-50 rounded-2xl">
-        <span class="block font-black text-[10px] text-gray-400 uppercase tracking-widest">Total Revenue</span>
-        <span class="text-xl font-bold text-green-600">{{ formatPrice(totalRevenue) }}</span>
+        <span class="block font-black text-[10px] text-gray-400 uppercase tracking-widest"
+          >Total Revenue</span
+        >
+        <span class="text-xl font-bold text-green-600">{{
+          formatPrice(totalRevenue)
+        }}</span>
       </div>
     </div>
 
     <div class="flex flex-col items-center justify-between gap-4 mb-6 md:flex-row">
       <div class="relative w-full md:w-80">
         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
           </svg>
         </span>
-        <input 
-          v-model="searchQuery" 
-          type="text" 
-          placeholder="Search Order ID, Name, or Email..." 
+        <input
+          v-model="searchQuery"
+          type="text"
+          placeholder="Search Order ID, Name, or Email..."
           class="w-full py-2 pl-10 pr-4 text-sm transition border border-gray-200 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
         />
       </div>
 
       <div class="flex items-center gap-3">
         <span class="text-xs font-bold tracking-wide text-gray-400 uppercase">Rows:</span>
-        <select 
-          v-model="itemsPerPage" 
+        <select
+          v-model="itemsPerPage"
           class="px-3 py-2 text-sm font-bold border border-gray-200 outline-none cursor-pointer bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
         >
           <option :value="5">5</option>
@@ -69,13 +97,17 @@
             class="transition border-b cursor-pointer group hover:bg-gray-50 border-gray-50"
           >
             <td class="py-6">
-              <span class="block font-mono text-sm font-bold text-black uppercase transition-colors group-hover:text-blue-600">
+              <span
+                class="block font-mono text-sm font-bold text-black uppercase transition-colors group-hover:text-blue-600"
+              >
                 {{ trx.order_id }}
               </span>
               <span class="text-xs text-gray-400">{{ formatDate(trx.created_at) }}</span>
             </td>
             <td class="py-6">
-              <span class="block text-sm font-bold text-gray-800">{{ trx.user.first_name }} {{ trx.user.last_name }}</span>
+              <span class="block text-sm font-bold text-gray-800"
+                >{{ trx.user.first_name }} {{ trx.user.last_name }}</span
+              >
               <span class="text-xs text-gray-400">{{ trx.user.email }}</span>
             </td>
             <td class="py-6">
@@ -96,10 +128,15 @@
               </div>
             </td>
             <td class="py-6">
-              <span class="font-bold text-black">{{ formatPrice(trx.total_amount) }}</span>
+              <span class="font-bold text-black">{{
+                formatPrice(trx.total_amount)
+              }}</span>
             </td>
             <td class="py-6">
-              <span :class="statusClass(trx.status)" class="px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-tighter">
+              <span
+                :class="statusClass(trx.status)"
+                class="px-3 py-1 rounded-full font-bold text-[10px] uppercase tracking-tighter"
+              >
                 {{ trx.status }}
               </span>
             </td>
@@ -116,40 +153,53 @@
               </select>
             </td>
           </tr>
-          
+
           <tr v-if="!isLoading && paginatedTransactions.length === 0">
             <td colspan="6" class="py-20 font-serif italic text-center text-gray-400">
-              {{ searchQuery ? 'No transactions match your search.' : 'No transactions found.' }}
+              {{
+                searchQuery
+                  ? "No transactions match your search."
+                  : "No transactions found."
+              }}
             </td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <div v-if="!isLoading && filteredTransactions.length > 0" class="flex flex-col items-center justify-between gap-4 pt-6 mt-8 border-t md:flex-row border-gray-50">
+    <div
+      v-if="!isLoading && filteredTransactions.length > 0"
+      class="flex flex-col items-center justify-between gap-4 pt-6 mt-8 border-t md:flex-row border-gray-50"
+    >
       <p class="text-sm text-gray-400">
-        Showing <span class="font-bold text-black">{{ showingStart }}</span> to <span class="font-bold text-black">{{ showingEnd }}</span> of <span class="font-bold text-black">{{ filteredTransactions.length }}</span> orders
+        Showing <span class="font-bold text-black">{{ showingStart }}</span> to
+        <span class="font-bold text-black">{{ showingEnd }}</span> of
+        <span class="font-bold text-black">{{ filteredTransactions.length }}</span> orders
       </p>
 
       <div class="flex gap-2">
-        <button 
-          @click="currentPage--" 
+        <button
+          @click="currentPage--"
           :disabled="currentPage === 1"
           class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           Previous
         </button>
-        <button 
-          v-for="page in displayedPages" 
-          :key="page" 
+        <button
+          v-for="page in displayedPages"
+          :key="page"
           @click="currentPage = page"
-          :class="currentPage === page ? 'bg-black text-white border-black' : 'hover:bg-gray-50 border-gray-200'"
+          :class="
+            currentPage === page
+              ? 'bg-black text-white border-black'
+              : 'hover:bg-gray-50 border-gray-200'
+          "
           class="flex items-center justify-center w-10 h-10 text-sm font-medium transition border rounded-xl"
         >
           {{ page }}
         </button>
-        <button 
-          @click="currentPage++" 
+        <button
+          @click="currentPage++"
           :disabled="currentPage === totalPages"
           class="px-4 py-2 text-sm font-medium transition border rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
         >
@@ -178,9 +228,9 @@ const itemsPerPage = ref(10); // Default 10 items
 
 const goToDetail = (trx) => {
   router.push({
-    name: 'TransactionDetail',
+    name: "TransactionDetail",
     params: { id: trx.id },
-    state: { transactionData: JSON.parse(JSON.stringify(trx)) } 
+    state: { transactionData: JSON.parse(JSON.stringify(trx)) },
   });
 };
 
@@ -200,15 +250,18 @@ const filteredTransactions = computed(() => {
   const query = searchQuery.value.toLowerCase();
   if (!query) return transactions.value;
 
-  return transactions.value.filter(t => 
-    t.order_id.toLowerCase().includes(query) ||
-    t.user.first_name.toLowerCase().includes(query) ||
-    t.user.last_name.toLowerCase().includes(query) ||
-    t.user.email.toLowerCase().includes(query)
+  return transactions.value.filter(
+    (t) =>
+      t.order_id.toLowerCase().includes(query) ||
+      t.user.first_name.toLowerCase().includes(query) ||
+      t.user.last_name.toLowerCase().includes(query) ||
+      t.user.email.toLowerCase().includes(query)
   );
 });
 
-const totalPages = computed(() => Math.ceil(filteredTransactions.value.length / itemsPerPage.value));
+const totalPages = computed(() =>
+  Math.ceil(filteredTransactions.value.length / itemsPerPage.value)
+);
 
 const paginatedTransactions = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage.value;
@@ -222,14 +275,16 @@ const showingStart = computed(() => {
   return (currentPage.value - 1) * itemsPerPage.value + 1;
 });
 
-const showingEnd = computed(() => Math.min(currentPage.value * itemsPerPage.value, filteredTransactions.value.length));
+const showingEnd = computed(() =>
+  Math.min(currentPage.value * itemsPerPage.value, filteredTransactions.value.length)
+);
 
 // Logic agar tombol pagination tidak terlalu panjang jika halaman banyak
 const displayedPages = computed(() => {
   const total = totalPages.value;
   const current = currentPage.value;
   const delta = 2; // Jumlah halaman yang muncul di kiri/kanan current page
-  
+
   let range = [];
   for (let i = Math.max(1, current - delta); i <= Math.min(total, current + delta); i++) {
     range.push(i);
@@ -262,7 +317,7 @@ const updateStatus = async (id, newStatus) => {
     const res = await axios.put(
       `${BASE_URL}/admin/transactions/${id}/status`,
       { status: newStatus },
-      axiosConfig,
+      axiosConfig
     );
 
     // Update data lokal agar tidak perlu fetch ulang seluruh tabel
@@ -295,9 +350,7 @@ const statusClass = (status) => {
 };
 
 const formatPrice = (v) =>
-  new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(
-    v,
-  );
+  new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(v);
 const formatDate = (date) =>
   new Date(date).toLocaleDateString("id-ID", {
     day: "2-digit",
@@ -315,7 +368,7 @@ onMounted(fetchTransactions);
 tr {
   transition: all 0.2s ease-in-out;
 }
-</style> -->
+</style>
 
 <!-- <template>
   <div class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[600px]">
