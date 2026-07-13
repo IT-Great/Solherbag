@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div
     class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[600px]"
   >
@@ -368,7 +368,7 @@ onMounted(fetchTransactions);
 tr {
   transition: all 0.2s ease-in-out;
 }
-</style>
+</style> -->
 
 <!-- <template>
   <div class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[600px]">
@@ -8092,7 +8092,7 @@ onUnmounted(() => {
 }
 </style> -->
 
-<!-- <template>
+<template>
   <div
     class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[600px]"
   >
@@ -9351,7 +9351,7 @@ onUnmounted(() => {
     transform: translateY(0);
   }
 }
-</style> -->
+</style>
 
 <!-- <template>
   <div
