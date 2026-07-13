@@ -9300,7 +9300,7 @@ onUnmounted(() => {
 }
 </style> -->
 
-<template>
+<!-- <template>
   <div
     class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[600px]"
   >
@@ -9540,7 +9540,7 @@ onUnmounted(() => {
             <td class="py-6 pl-2 w-[15%]">
               <div class="flex flex-col gap-1">
                 <span
-                  class="font-mono text-sm font-bold text-black flex items-center gap-2"
+                  class="flex items-center gap-2 font-mono text-sm font-bold text-black"
                 >
                   {{ trx.order_id }}
                   <span
@@ -10550,4 +10550,4 @@ onUnmounted(() => {
     transform: translateY(0);
   }
 }
-</style>
+</style> -->
