@@ -9322,9 +9322,9 @@ onUnmounted(() => {
             class="block font-black text-[10px] text-gray-400 uppercase tracking-widest"
             >Total Revenue</span
           >
-          <span class="text-xl font-bold text-green-600">
-            {{ formatCurrencyDisplay(convertIDRtoActiveCurrency(totalRevenue)) }}
-          </span>
+          <span class="text-xl font-bold text-green-600">{{
+            formatCurrencyDisplay(convertIDRtoActiveCurrency(totalRevenue))
+          }}</span>
         </div>
       </div>
     </div>
@@ -9467,8 +9467,12 @@ onUnmounted(() => {
             </td>
             <td class="py-6 w-[15%]">
               <div class="flex -space-x-3">
-                <div class="w-10 h-10 bg-gray-200 border-2 border-white rounded-full animate-pulse"></div>
-                <div class="w-10 h-10 bg-gray-200 border-2 border-white rounded-full animate-pulse"></div>
+                <div
+                  class="w-10 h-10 bg-gray-200 border-2 border-white rounded-full animate-pulse"
+                ></div>
+                <div
+                  class="w-10 h-10 bg-gray-200 border-2 border-white rounded-full animate-pulse"
+                ></div>
               </div>
             </td>
             <td class="py-6 w-[20%]">
@@ -9514,7 +9518,9 @@ onUnmounted(() => {
 
       <table class="w-full text-left border-collapse min-w-[900px]">
         <thead>
-          <tr class="border-b border-gray-100 text-gray-400 text-[10px] uppercase tracking-widest">
+          <tr
+            class="border-b border-gray-100 text-gray-400 text-[10px] uppercase tracking-widest"
+          >
             <th class="pb-4 pl-2">Order Details</th>
             <th class="pb-4 no-export">Product Sample</th>
             <th class="pb-4">Logistics (Pay & Ship)</th>
@@ -9524,7 +9530,6 @@ onUnmounted(() => {
             <th class="pb-4 text-center no-export">Action</th>
           </tr>
         </thead>
-        
         <tbody v-if="paginatedTransactions.length > 0" class="text-sm text-gray-600">
           <tr
             v-for="trx in paginatedTransactions"
@@ -9534,19 +9539,22 @@ onUnmounted(() => {
           >
             <td class="py-6 pl-2 w-[15%]">
               <div class="flex flex-col gap-1">
-                <span class="flex items-center gap-2 font-mono text-sm font-bold text-black">
+                <span
+                  class="font-mono text-sm font-bold text-black flex items-center gap-2"
+                >
                   {{ trx.order_id }}
                   <span
-                    v-if="trx.user?.usertype === 'reseller' && getOrderQuantity(trx) >= 24"
+                    v-if="
+                      trx.user?.usertype === 'reseller' && getOrderQuantity(trx) >= 24
+                    "
                     class="px-1.5 py-0.5 text-[8px] font-bold text-white bg-blue-600 rounded"
                   >
                     GROSIR
                   </span>
                 </span>
-                
-                <span class="text-xs text-gray-400">
-                  {{ formatDate(trx.created_at) }}
-                </span>
+                <span class="text-xs text-gray-400">{{
+                  formatDate(trx.created_at)
+                }}</span>
                 <div class="mt-2">
                   <span
                     class="block font-bold text-gray-800 text-xs truncate max-w-[150px]"
@@ -9565,10 +9573,23 @@ onUnmounted(() => {
                   v-if="trx.status === 'pending' && countdowns[trx.id] !== 'Expired'"
                   class="flex items-center gap-1 px-2 py-1 mt-2 text-red-600 rounded-md no-export bg-red-50 w-fit"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-3 h-3 animate-pulse"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
                   </svg>
-                  <span class="font-mono font-bold text-[10px]">{{ countdowns[trx.id] }}</span>
+                  <span class="font-mono font-bold text-[10px]">{{
+                    countdowns[trx.id]
+                  }}</span>
                 </div>
               </div>
             </td>
@@ -9589,52 +9610,98 @@ onUnmounted(() => {
                     +{{ trx.details.length - 3 }}
                   </div>
                 </div>
-                <span class="text-xs font-medium text-gray-500">{{ trx.details.length }} Items</span>
+                <span class="text-xs font-medium text-gray-500"
+                  >{{ trx.details.length }} Items</span
+                >
               </div>
             </td>
 
             <td class="py-6 w-[20%]">
               <div class="space-y-4">
                 <div class="flex items-center gap-3">
-                  <div class="w-10 h-7 bg-white border border-gray-200 rounded flex justify-center items-center p-0.5 shrink-0 no-export">
-                    <img v-if="getPaymentLogo(trx.payment_method)" :src="getPaymentLogo(trx.payment_method)" class="object-contain w-full h-full" />
+                  <div
+                    class="w-10 h-7 bg-white border border-gray-200 rounded flex justify-center items-center p-0.5 shrink-0 no-export"
+                  >
+                    <img
+                      v-if="getPaymentLogo(trx.payment_method)"
+                      :src="getPaymentLogo(trx.payment_method)"
+                      class="object-contain w-full h-full"
+                    />
                     <span v-else class="text-[8px] font-bold text-gray-400">PAY</span>
                   </div>
                   <div>
                     <p class="font-bold text-gray-800 text-[11px] uppercase">
-                      {{ trx.payment_method ? trx.payment_method.replace(/_/g, " ") : "Not Selected" }}
+                      {{
+                        trx.payment_method
+                          ? trx.payment_method.replace(/_/g, " ")
+                          : "Not Selected"
+                      }}
                     </p>
-                    <p :class="getPaymentStatusColor(trx.status)" class="text-[9px] font-bold uppercase tracking-wider">
+                    <p
+                      :class="getPaymentStatusColor(trx.status)"
+                      class="text-[9px] font-bold uppercase tracking-wider"
+                    >
                       {{ getPaymentStatusText(trx.status) }}
                     </p>
                   </div>
                 </div>
 
-                <div v-if="trx.shipping_method !== 'free'" class="flex items-center gap-3">
-                  <div class="w-10 h-7 bg-white border border-gray-200 rounded flex justify-center items-center p-0.5 shrink-0 no-export">
-                    <img v-if="getCourierLogo(trx.courier_company)" :src="getCourierLogo(trx.courier_company)" class="object-contain w-full h-full" />
+                <div
+                  v-if="trx.shipping_method !== 'free'"
+                  class="flex items-center gap-3"
+                >
+                  <div
+                    class="w-10 h-7 bg-white border border-gray-200 rounded flex justify-center items-center p-0.5 shrink-0 no-export"
+                  >
+                    <img
+                      v-if="getCourierLogo(trx.courier_company)"
+                      :src="getCourierLogo(trx.courier_company)"
+                      class="object-contain w-full h-full"
+                    />
                     <span v-else class="text-[8px] font-bold text-gray-400">SHIP</span>
                   </div>
                   <div>
-                    <p class="font-bold text-gray-800 text-[11px] uppercase truncate w-32">
-                      {{ trx.courier_company || "Pending" }} - {{ trx.courier_type || "-" }}
+                    <p
+                      class="font-bold text-gray-800 text-[11px] uppercase truncate w-32"
+                    >
+                      {{ trx.courier_company || "Pending" }} -
+                      {{ trx.courier_type || "-" }}
                     </p>
                     <p class="text-[10px] text-gray-500 font-mono">
                       Resi:
-                      <span class="font-bold text-black">{{ trx.tracking_number || "Waiting..." }}</span>
+                      <span class="font-bold text-black">{{
+                        trx.tracking_number || "Waiting..."
+                      }}</span>
                     </p>
                   </div>
                 </div>
 
                 <div v-else class="flex items-center gap-3">
-                  <div class="flex items-center justify-center w-10 p-1 text-gray-400 bg-gray-100 border border-gray-200 rounded h-7 shrink-0 no-export">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                  <div
+                    class="flex items-center justify-center w-10 p-1 text-gray-400 bg-gray-100 border border-gray-200 rounded h-7 shrink-0 no-export"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                      />
                     </svg>
                   </div>
                   <div>
-                    <p class="font-bold text-gray-800 text-[11px] uppercase">No Courier</p>
-                    <p class="text-[10px] text-gray-500 font-medium mt-0.5">In-store Pickup</p>
+                    <p class="font-bold text-gray-800 text-[11px] uppercase">
+                      No Courier
+                    </p>
+                    <p class="text-[10px] text-gray-500 font-medium mt-0.5">
+                      In-store Pickup
+                    </p>
                   </div>
                 </div>
               </div>
@@ -9644,31 +9711,69 @@ onUnmounted(() => {
               <div class="flex flex-col gap-1.5">
                 <div class="flex justify-between text-[10px] text-gray-500">
                   <span>Subtotal:</span>
-                  <span>{{ formatCurrencyDisplay(convertIDRtoActiveCurrency(trx.total_amount)) }}</span>
+                  <span>{{
+                    formatCurrencyDisplay(convertIDRtoActiveCurrency(trx.total_amount))
+                  }}</span>
                 </div>
                 <div class="flex justify-between text-[10px] text-gray-500">
                   <span>Shipping:</span>
-                  <span>{{ formatCurrencyDisplay(convertIDRtoActiveCurrency(trx.shipping_cost)) }}</span>
+                  <span>{{
+                    formatCurrencyDisplay(convertIDRtoActiveCurrency(trx.shipping_cost))
+                  }}</span>
                 </div>
 
-                <div v-if="trx.promo_discount > 0" class="flex justify-between text-[9px] text-green-600 font-bold">
-                  <span>Promo (<span class="font-mono">{{ trx.promo_code }}</span>)</span>
-                  <span>-{{ formatCurrencyDisplay(convertIDRtoActiveCurrency(trx.promo_discount)) }}</span>
+                <div
+                  v-if="trx.promo_discount > 0"
+                  class="flex justify-between text-[9px] text-green-600 font-bold"
+                >
+                  <span
+                    >Promo (<span class="font-mono">{{ trx.promo_code }}</span
+                    >)</span
+                  >
+                  <span
+                    >-{{
+                      formatCurrencyDisplay(
+                        convertIDRtoActiveCurrency(trx.promo_discount)
+                      )
+                    }}</span
+                  >
                 </div>
-                <div v-if="trx.points_used > 0" class="flex justify-between text-[9px] text-yellow-600 font-bold">
+                <div
+                  v-if="trx.points_used > 0"
+                  class="flex justify-between text-[9px] text-yellow-600 font-bold"
+                >
                   <span>Pts ({{ trx.points_used }})</span>
-                  <span>-{{ formatCurrencyDisplay(convertIDRtoActiveCurrency(trx.points_used * 1000)) }}</span>
+                  <span
+                    >-{{
+                      formatCurrencyDisplay(
+                        convertIDRtoActiveCurrency(trx.points_used * 1000)
+                      )
+                    }}</span
+                  >
                 </div>
 
-                <div class="flex justify-between text-sm font-bold text-black border-t border-dashed border-gray-200 pt-1.5 mt-1">
+                <div
+                  class="flex justify-between text-sm font-bold text-black border-t border-dashed border-gray-200 pt-1.5 mt-1"
+                >
                   <span>Total:</span>
-                  <span>{{ formatCurrencyDisplay(convertIDRtoActiveCurrency(getGrandTotal(trx))) }}</span>
+                  <span>{{
+                    formatCurrencyDisplay(convertIDRtoActiveCurrency(getGrandTotal(trx)))
+                  }}</span>
                 </div>
-                
-                <div v-if="trx.point > 0 && trx.status === 'completed'" class="flex justify-between items-center text-[10px] text-yellow-600 font-bold bg-yellow-50 px-2 py-1 rounded border border-yellow-100 mt-1">
+                <div
+                  v-if="trx.point > 0 && trx.status === 'completed'"
+                  class="flex justify-between items-center text-[10px] text-yellow-600 font-bold bg-yellow-50 px-2 py-1 rounded border border-yellow-100 mt-1"
+                >
                   <span class="flex items-center gap-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 20 20" fill="currentColor">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-3 h-3"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                      />
                     </svg>
                     Points Earned:
                   </span>
@@ -9678,45 +9783,132 @@ onUnmounted(() => {
             </td>
 
             <td class="py-6 w-[10%]">
-              <span :class="statusClass(trx.status)" class="px-3 py-1 rounded-full font-bold text-[9px] uppercase tracking-tighter block w-fit">
+              <span
+                :class="statusClass(trx.status)"
+                class="px-3 py-1 rounded-full font-bold text-[9px] uppercase tracking-tighter block w-fit"
+              >
                 {{ formatStatus(trx.status) }}
               </span>
             </td>
 
             <td class="py-6 w-[10%]">
-              <span v-if="trx.shipping_method === 'free'" class="px-3 py-1 rounded-full font-bold text-[9px] uppercase tracking-tighter block w-fit border bg-gray-100 text-gray-600">
-                In-Store Pickup
-              </span>
-              <span v-else :class="shippingStatusClass(trx.shipping_status)" class="px-3 py-1 rounded-full font-bold text-[9px] uppercase tracking-tighter block w-fit border">
+              <span
+                v-if="trx.shipping_method === 'free'"
+                class="px-3 py-1 rounded-full font-bold text-[9px] uppercase tracking-tighter block w-fit border bg-gray-100 text-gray-600"
+                >In-Store Pickup</span
+              >
+              <span
+                v-else
+                :class="shippingStatusClass(trx.shipping_status)"
+                class="px-3 py-1 rounded-full font-bold text-[9px] uppercase tracking-tighter block w-fit border"
+              >
                 {{ formatStatus(trx.shipping_status || "Pending") }}
               </span>
             </td>
 
             <td class="py-6 text-center w-[15%] no-export" @click.stop>
-              <div v-if="trx.status === 'refund_requested'" class="flex flex-col items-center gap-3">
-                <div class="w-full p-3 text-left border border-red-100 bg-red-50 rounded-xl">
-                  <p class="font-bold text-[9px] text-red-600 uppercase tracking-widest mb-1 border-b border-red-100 pb-1">Refund Reason</p>
-                  <p class="text-[10px] text-gray-700 italic line-clamp-3 mb-2" :title="trx.refund_reason">
+              <div
+                v-if="trx.status === 'refund_requested'"
+                class="flex flex-col items-center gap-3"
+              >
+                <div
+                  class="w-full p-3 text-left border border-red-100 bg-red-50 rounded-xl"
+                >
+                  <p
+                    class="font-bold text-[9px] text-red-600 uppercase tracking-widest mb-1 border-b border-red-100 pb-1"
+                  >
+                    Refund Reason
+                  </p>
+                  <p
+                    class="text-[10px] text-gray-700 italic line-clamp-3 mb-2"
+                    :title="trx.refund_reason"
+                  >
                     "{{ trx.refund_reason || "No reason provided" }}"
                   </p>
-                  <a v-if="trx.refund_proof_url" :href="trx.refund_proof_url" target="_blank" class="inline-flex items-center gap-1 text-[9px] font-bold text-blue-600 hover:underline bg-white px-2 py-1 rounded border border-blue-100 w-fit">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                  <a
+                    v-if="trx.refund_proof_url"
+                    :href="trx.refund_proof_url"
+                    target="_blank"
+                    class="inline-flex items-center gap-1 text-[9px] font-bold text-blue-600 hover:underline bg-white px-2 py-1 rounded border border-blue-100 w-fit"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-3 h-3"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                      />
+                    </svg>
                     View Proof
                   </a>
                 </div>
 
                 <div class="flex justify-center w-full gap-2">
-                  <button @click="handleRefundAction(trx.id, 'approve')" class="bg-green-100 hover:bg-green-200 py-2 flex-1 rounded-lg text-green-700 transition shadow-sm font-bold text-[10px] uppercase tracking-widest flex justify-center items-center gap-1" title="Approve Refund">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg> Accept
+                  <button
+                    @click="handleRefundAction(trx.id, 'approve')"
+                    class="bg-green-100 hover:bg-green-200 py-2 flex-1 rounded-lg text-green-700 transition shadow-sm font-bold text-[10px] uppercase tracking-widest flex justify-center items-center gap-1"
+                    title="Approve Refund"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-3 h-3"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                    Accept
                   </button>
-                  <button @click="handleRefundAction(trx.id, 'reject')" class="bg-red-100 hover:bg-red-200 py-2 flex-1 rounded-lg text-red-700 transition shadow-sm font-bold text-[10px] uppercase tracking-widest flex justify-center items-center gap-1" title="Reject Refund">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg> Deny
+                  <button
+                    @click="handleRefundAction(trx.id, 'reject')"
+                    class="bg-red-100 hover:bg-red-200 py-2 flex-1 rounded-lg text-red-700 transition shadow-sm font-bold text-[10px] uppercase tracking-widest flex justify-center items-center gap-1"
+                    title="Reject Refund"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-3 h-3"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                    Deny
                   </button>
                 </div>
               </div>
 
-              <div v-else-if="['completed', 'processing'].includes(trx.status)" class="flex justify-center">
-                <button @click="goToDetail(trx)" class="text-[10px] font-bold text-blue-600 hover:underline">
+              <div
+                v-else-if="['completed', 'processing'].includes(trx.status)"
+                class="flex justify-center"
+              >
+                <button
+                  @click="goToDetail(trx)"
+                  class="text-[10px] font-bold text-blue-600 hover:underline"
+                >
                   View Detail
                 </button>
               </div>
@@ -9727,7 +9919,11 @@ onUnmounted(() => {
         <tbody v-else>
           <tr>
             <td colspan="7" class="py-20 font-serif italic text-center text-gray-400">
-              {{ searchQuery ? "No transactions match your search." : "No transactions found." }}
+              {{
+                searchQuery
+                  ? "No transactions match your search."
+                  : "No transactions found."
+              }}
             </td>
           </tr>
         </tbody>
@@ -9741,7 +9937,8 @@ onUnmounted(() => {
       <p class="text-sm text-gray-400">
         Showing <span class="font-bold text-black">{{ showingStart }}</span> to
         <span class="font-bold text-black">{{ showingEnd }}</span> of
-        <span class="font-bold text-black">{{ filteredTransactions.length }}</span> orders
+        <span class="font-bold text-black">{{ filteredTransactions.length }}</span>
+        orders
       </p>
 
       <div class="flex gap-2">
@@ -9763,7 +9960,9 @@ onUnmounted(() => {
               currentPage === page
                 ? 'bg-black text-white border-black'
                 : 'hover:bg-gray-50 border-gray-200',
-              page === '...' ? 'cursor-default border-transparent hover:bg-transparent' : 'border',
+              page === '...'
+                ? 'cursor-default border-transparent hover:bg-transparent'
+                : 'border',
             ]"
             class="flex items-center justify-center w-10 h-10 text-sm font-medium transition rounded-xl"
           >
@@ -9806,8 +10005,11 @@ const itemsPerPage = ref(10);
 const countdowns = ref({});
 let timerInterval = null;
 
-const axiosConfig = {
-  headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+// 👇 [PERBAIKAN] Menggunakan fungsi getAxiosConfig agar Token selalu baru dari LocalStorage
+const getAxiosConfig = () => {
+  return {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  };
 };
 
 // --- STATE FILTER TABS ---
@@ -9824,7 +10026,7 @@ const unifiedTabs = [
 ];
 
 // ============================================================================
-// 👇 [PERBAIKAN] INTEGRASI STATE & FUNGSI MULTI-CURRENCY 👇
+// INTEGRASI STATE & FUNGSI MULTI-CURRENCY
 // ============================================================================
 const exchangeRates = ref({ IDR: 1 });
 const currentCurrency = ref(localStorage.getItem("currency") || "IDR");
@@ -9881,20 +10083,25 @@ const getUnifiedTabCount = (tabValue) => {
   return transactions.value.filter((order) => {
     if (tabValue === "all") return true;
 
-    const shipStatus = order.shipping_status ? order.shipping_status.toLowerCase() : "pending";
+    const shipStatus = order.shipping_status
+      ? order.shipping_status.toLowerCase()
+      : "pending";
 
     if (tabValue === "unpaid") return order.status === "pending";
 
     if (tabValue === "to_ship") {
       return (
         order.status === "processing" &&
-        ["pending", "placed", "confirmed", "allocated", "picking_up", "picked"].includes(shipStatus)
+        ["pending", "placed", "confirmed", "allocated", "picking_up", "picked"].includes(
+          shipStatus
+        )
       );
     }
 
     if (tabValue === "shipping") return shipStatus === "dropping_off";
 
-    if (tabValue === "completed") return order.status === "completed" || shipStatus === "delivered";
+    if (tabValue === "completed")
+      return order.status === "completed" || shipStatus === "delivered";
 
     if (tabValue === "cancelled") return order.status === "cancelled";
 
@@ -9902,7 +10109,13 @@ const getUnifiedTabCount = (tabValue) => {
       return (
         order.status.includes("refund") ||
         ["returned", "shipping_failed"].includes(order.status) ||
-        ["on_hold", "return_in_transit", "rejected", "disposed", "courier_not_found"].includes(shipStatus)
+        [
+          "on_hold",
+          "return_in_transit",
+          "rejected",
+          "disposed",
+          "courier_not_found",
+        ].includes(shipStatus)
       );
     }
 
@@ -9925,7 +10138,9 @@ const filteredTransactions = computed(() => {
 
     let matchTab = false;
     const tabValue = activeUnifiedTab.value;
-    const shipStatus = order.shipping_status ? order.shipping_status.toLowerCase() : "pending";
+    const shipStatus = order.shipping_status
+      ? order.shipping_status.toLowerCase()
+      : "pending";
 
     if (tabValue === "all") {
       matchTab = true;
@@ -9934,7 +10149,9 @@ const filteredTransactions = computed(() => {
     } else if (tabValue === "to_ship") {
       matchTab =
         order.status === "processing" &&
-        ["pending", "placed", "confirmed", "allocated", "picking_up", "picked"].includes(shipStatus);
+        ["pending", "placed", "confirmed", "allocated", "picking_up", "picked"].includes(
+          shipStatus
+        );
     } else if (tabValue === "shipping") {
       matchTab = shipStatus === "dropping_off";
     } else if (tabValue === "completed") {
@@ -9945,7 +10162,13 @@ const filteredTransactions = computed(() => {
       matchTab =
         order.status.includes("refund") ||
         ["returned", "shipping_failed"].includes(order.status) ||
-        ["on_hold", "return_in_transit", "rejected", "disposed", "courier_not_found"].includes(shipStatus);
+        [
+          "on_hold",
+          "return_in_transit",
+          "rejected",
+          "disposed",
+          "courier_not_found",
+        ].includes(shipStatus);
     }
 
     return matchSearch && matchTab;
@@ -9961,11 +10184,6 @@ const filteredTransactions = computed(() => {
 
   return result;
 });
-
-const resetFilters = () => {
-  activeUnifiedTab.value = "all";
-  searchQuery.value = "";
-};
 
 const totalPages = computed(() =>
   Math.ceil(filteredTransactions.value.length / itemsPerPage.value)
@@ -10028,31 +10246,68 @@ const getPaymentLogo = (methodString) => {
   if (!methodString) return null;
   const channel = methodString.split(" ")[1]?.toLowerCase();
   const map = {
-    bca: "bca.png", bni: "bni.png", bri: "bri.png", mandiri: "mandiri.png",
-    bsi: "bsi.png", permata: "permata.png", ovo: "ovo.png", dana: "dana.png",
-    linkaja: "linkaja.png", shopeepay: "shopeepay.png", alfamart: "alfamart.png",
-    indomaret: "indomaret.png", qris: "qris.png",
+    bca: "bca.png",
+    bni: "bni.png",
+    bri: "bri.png",
+    mandiri: "mandiri.png",
+    bsi: "bsi.png",
+    permata: "permata.png",
+    ovo: "ovo.png",
+    dana: "dana.png",
+    linkaja: "linkaja.png",
+    shopeepay: "shopeepay.png",
+    alfamart: "alfamart.png",
+    indomaret: "indomaret.png",
+    qris: "qris.png",
   };
   return map[channel] ? "/payment_images/" + map[channel] : null;
 };
 
 const getPaymentStatusText = (status) =>
-  ["completed", "processing", "refund_requested", "refund_approved", "refund_rejected"].includes(status)
+  [
+    "completed",
+    "processing",
+    "refund_requested",
+    "refund_approved",
+    "refund_rejected",
+  ].includes(status)
     ? "PAID"
-    : status === "cancelled" ? "CANCELLED" : status === "refunded" ? "REFUNDED" : "UNPAID";
+    : status === "cancelled"
+    ? "CANCELLED"
+    : status === "refunded"
+    ? "REFUNDED"
+    : "UNPAID";
 
 const getPaymentStatusColor = (status) =>
-  ["completed", "processing", "refund_requested", "refund_approved", "refund_rejected"].includes(status)
+  [
+    "completed",
+    "processing",
+    "refund_requested",
+    "refund_approved",
+    "refund_rejected",
+  ].includes(status)
     ? "text-green-600"
-    : status === "cancelled" ? "text-red-500" : status === "refunded" ? "text-teal-600" : "text-orange-500";
+    : status === "cancelled"
+    ? "text-red-500"
+    : status === "refunded"
+    ? "text-teal-600"
+    : "text-orange-500";
 
 const getCourierLogo = (company) => {
   if (!company) return null;
   const map = {
-    jne: "jne.png", sicepat: "sicepat.png", jnt: "jnt.png", anteraja: "anteraja.png",
-    gojek: "gojek.png", grab: "grab.png", paxel: "paxel.png", ninja: "ninja.png",
+    jne: "jne.png",
+    sicepat: "sicepat.png",
+    jnt: "jnt.png",
+    anteraja: "anteraja.png",
+    gojek: "gojek.png",
+    grab: "grab.png",
+    paxel: "paxel.png",
+    ninja: "ninja.png",
   };
-  return map[company.toLowerCase()] ? "/courier_images/" + map[company.toLowerCase()] : null;
+  return map[company.toLowerCase()]
+    ? "/courier_images/" + map[company.toLowerCase()]
+    : null;
 };
 
 const calculateTimeLeft = (referenceDate) => {
@@ -10069,15 +10324,6 @@ const calculateTimeLeft = (referenceDate) => {
   return `${hours.toString().padStart(2, "0")}:${minutes
     .toString()
     .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-};
-
-const autoCancelSilent = async (id) => {
-  try {
-    await axios.post(`${BASE_URL}/admin/transactions/${id}/cancel`, {}, axiosConfig);
-    fetchTransactions();
-  } catch (e) {
-    console.error("Auto cancel failed", e);
-  }
 };
 
 const startTimers = () => {
@@ -10100,7 +10346,7 @@ const startTimers = () => {
 const fetchTransactions = async () => {
   isLoading.value = true;
   try {
-    const res = await axios.get(`${BASE_URL}/admin/transactions`, axiosConfig);
+    const res = await axios.get(`${BASE_URL}/admin/transactions`, getAxiosConfig());
     const filteredData = res.data.filter((o) => o.status !== "awaiting_payment");
     transactions.value = filteredData.map((o) => ({
       ...o,
@@ -10108,7 +10354,12 @@ const fetchTransactions = async () => {
     }));
     startTimers();
   } catch (error) {
-    Swal.fire("Error", "Failed to fetch transactions", "error");
+    if (error.response?.status === 401) {
+      Swal.fire("Session Expired", "Please login again", "warning");
+      router.push("/login");
+    } else {
+      Swal.fire("Error", "Failed to fetch transactions", "error");
+    }
   } finally {
     setTimeout(() => (isLoading.value = false), 500);
   }
@@ -10146,6 +10397,7 @@ const exportToPDF = () => {
 };
 
 const exportToExcel = () => {
+  // Gunakan mata uang yang sedang aktif
   const curr = currentCurrency.value || "IDR";
 
   const excelData = paginatedTransactions.value.map((item, index) => ({
@@ -10165,11 +10417,18 @@ const exportToExcel = () => {
         : `${item.courier_company} - ${item.courier_type}`,
     "Tracking Number": item.tracking_number || "-",
     // 👇 Multi-currency Headers untuk Excel Output 👇
-    [`Subtotal (${curr})`]: convertIDRtoActiveCurrency(parseFloat(item.total_amount)).value,
-    [`Shipping Cost (${curr})`]: convertIDRtoActiveCurrency(parseFloat(item.shipping_cost)).value,
+    [`Subtotal (${curr})`]: convertIDRtoActiveCurrency(parseFloat(item.total_amount))
+      .value,
+    [`Shipping Cost (${curr})`]: convertIDRtoActiveCurrency(
+      parseFloat(item.shipping_cost)
+    ).value,
     "Promo Code": item.promo_code || "-",
-    [`Promo Discount (${curr})`]: convertIDRtoActiveCurrency(parseFloat(item.promo_discount || 0)).value,
-    [`Points Discount (${curr})`]: convertIDRtoActiveCurrency(parseFloat((item.points_used || 0) * 1000)).value,
+    [`Promo Discount (${curr})`]: convertIDRtoActiveCurrency(
+      parseFloat(item.promo_discount || 0)
+    ).value,
+    [`Points Discount (${curr})`]: convertIDRtoActiveCurrency(
+      parseFloat((item.points_used || 0) * 1000)
+    ).value,
     [`Grand Total (${curr})`]: convertIDRtoActiveCurrency(getGrandTotal(item)).value,
     "Points Earned": item.status === "completed" ? item.point || 0 : 0,
     "Transaction Status": item.status.replace(/_/g, " ").toUpperCase(),
@@ -10245,7 +10504,7 @@ const handleRefundAction = async (id, action) => {
       await axios.post(
         `${BASE_URL}/admin/transactions/${id}/${endpoint}`,
         {},
-        axiosConfig
+        getAxiosConfig()
       );
       Swal.fire("Success", `Refund ${action}d successfully`, "success");
       fetchTransactions();
@@ -10256,6 +10515,7 @@ const handleRefundAction = async (id, action) => {
 };
 
 onMounted(async () => {
+  // Daftarkan listener event jika sewaktu-waktu currency berubah
   window.addEventListener("currency-changed", updateCurrencyState);
   window.addEventListener("storage", (e) => {
     if (e.key === "currency") updateCurrencyState();
