@@ -1,40 +1,40 @@
 <!-- <template>
   <div class="space-y-8">
-    <div class="gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
-        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">Total Sales</p>
-        <p class="font-black text-gray-900 text-2xl">Rp 12.500.000</p>
-        <span class="font-medium text-green-500 text-xs">↑ 12% from last month</span>
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
+        <p class="mb-1 text-xs font-bold tracking-wider text-gray-400 uppercase">Total Sales</p>
+        <p class="text-2xl font-black text-gray-900">Rp 12.500.000</p>
+        <span class="text-xs font-medium text-green-500">↑ 12% from last month</span>
       </div>
 
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
-        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">Total Products</p>
-        <p class="font-black text-gray-900 text-2xl">48</p>
-        <span class="text-gray-400 text-xs">Active in collections</span>
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
+        <p class="mb-1 text-xs font-bold tracking-wider text-gray-400 uppercase">Total Products</p>
+        <p class="text-2xl font-black text-gray-900">48</p>
+        <span class="text-xs text-gray-400">Active in collections</span>
       </div>
 
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
-        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">Total Transactions</p>
-        <p class="font-black text-gray-900 text-2xl">1,240</p>
-        <span class="font-medium text-green-500 text-xs">↑ 5.4%</span>
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
+        <p class="mb-1 text-xs font-bold tracking-wider text-gray-400 uppercase">Total Transactions</p>
+        <p class="text-2xl font-black text-gray-900">1,240</p>
+        <span class="text-xs font-medium text-green-500">↑ 5.4%</span>
       </div>
 
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
-        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">Total Users</p>
-        <p class="font-black text-gray-900 text-2xl">856</p>
-        <span class="font-medium text-blue-500 text-xs">Registered members</span>
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
+        <p class="mb-1 text-xs font-bold tracking-wider text-gray-400 uppercase">Total Users</p>
+        <p class="text-2xl font-black text-gray-900">856</p>
+        <span class="text-xs font-medium text-blue-500">Registered members</span>
       </div>
     </div>
 
-    <div class="gap-6 grid grid-cols-1 lg:grid-cols-3">
-      <div class="lg:col-span-2 bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+      <div class="p-6 bg-white border border-gray-100 shadow-sm lg:col-span-2 rounded-2xl">
         <h3 class="mb-6 font-bold text-gray-800">Monthly Revenue Overview</h3>
         <div class="h-[300px]">
           <Line :data="revenueData" :options="chartOptions" />
         </div>
       </div>
 
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
         <h3 class="mb-6 font-bold text-gray-800">Popular Products</h3>
         <div class="flex justify-center h-[300px]">
           <Pie :data="pieData" :options="pieOptions" />
@@ -106,61 +106,61 @@ const pieOptions = {
 
 <!-- <template>
   <div class="space-y-8 animate-fade-in">
-    <div class="gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
         <p
-          class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider"
+          class="mb-1 text-xs font-bold tracking-wider text-gray-400 uppercase"
         >
           Total Sales
         </p>
-        <p class="font-black text-gray-900 text-2xl">
+        <p class="text-2xl font-black text-gray-900">
           {{ formatPrice(stats.total_sales) }}
         </p>
-        <span class="font-medium text-green-500 text-xs"
+        <span class="text-xs font-medium text-green-500"
           >Completed payments</span
         >
       </div>
 
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
         <p
-          class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider"
+          class="mb-1 text-xs font-bold tracking-wider text-gray-400 uppercase"
         >
           Total Products
         </p>
-        <p class="font-black text-gray-900 text-2xl">
+        <p class="text-2xl font-black text-gray-900">
           {{ stats.total_products }}
         </p>
-        <span class="text-gray-400 text-xs">Active pieces in collections</span>
+        <span class="text-xs text-gray-400">Active pieces in collections</span>
       </div>
 
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
         <p
-          class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider"
+          class="mb-1 text-xs font-bold tracking-wider text-gray-400 uppercase"
         >
           Total Transactions
         </p>
-        <p class="font-black text-gray-900 text-2xl">
+        <p class="text-2xl font-black text-gray-900">
           {{ stats.total_transactions }}
         </p>
-        <span class="text-gray-400 text-xs">All time orders</span>
+        <span class="text-xs text-gray-400">All time orders</span>
       </div>
 
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
         <p
-          class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider"
+          class="mb-1 text-xs font-bold tracking-wider text-gray-400 uppercase"
         >
           Total Users
         </p>
-        <p class="font-black text-gray-900 text-2xl">{{ stats.total_users }}</p>
-        <span class="font-medium text-blue-500 text-xs"
+        <p class="text-2xl font-black text-gray-900">{{ stats.total_users }}</p>
+        <span class="text-xs font-medium text-blue-500"
           >Registered members</span
         >
       </div>
     </div>
 
-    <div class="gap-6 grid grid-cols-1 lg:grid-cols-3">
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
       <div
-        class="lg:col-span-2 bg-white shadow-sm p-6 border border-gray-100 rounded-2xl"
+        class="p-6 bg-white border border-gray-100 shadow-sm lg:col-span-2 rounded-2xl"
       >
         <h3 class="mb-6 font-bold text-gray-800">Monthly Revenue Overview</h3>
         <div class="h-[300px]" v-if="!isLoading">
@@ -168,7 +168,7 @@ const pieOptions = {
         </div>
       </div>
 
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
         <h3 class="mb-6 font-bold text-gray-800">Popular Products</h3>
         <div class="flex justify-center h-[300px]" v-if="!isLoading">
           <Pie :data="pieData" :options="pieOptions" />
@@ -288,31 +288,31 @@ onMounted(fetchData);
 
 <!-- <template>
   <div class="space-y-8 animate-fade-in">
-    <div class="gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
-        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">Total Sales</p>
-        <p class="font-black text-gray-900 text-2xl">{{ formatPrice(stats.total_sales) }}</p>
-        <span class="font-medium text-green-500 text-xs">Completed payments</span>
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
+        <p class="mb-1 text-xs font-bold tracking-wider text-gray-400 uppercase">Total Sales</p>
+        <p class="text-2xl font-black text-gray-900">{{ formatPrice(stats.total_sales) }}</p>
+        <span class="text-xs font-medium text-green-500">Completed payments</span>
       </div>
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
-        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">Total Products</p>
-        <p class="font-black text-gray-900 text-2xl">{{ stats.total_products }}</p>
-        <span class="text-gray-400 text-xs">Active pieces in collections</span>
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
+        <p class="mb-1 text-xs font-bold tracking-wider text-gray-400 uppercase">Total Products</p>
+        <p class="text-2xl font-black text-gray-900">{{ stats.total_products }}</p>
+        <span class="text-xs text-gray-400">Active pieces in collections</span>
       </div>
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
-        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">Total Transactions</p>
-        <p class="font-black text-gray-900 text-2xl">{{ stats.total_transactions }}</p>
-        <span class="text-gray-400 text-xs">All time orders</span>
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
+        <p class="mb-1 text-xs font-bold tracking-wider text-gray-400 uppercase">Total Transactions</p>
+        <p class="text-2xl font-black text-gray-900">{{ stats.total_transactions }}</p>
+        <span class="text-xs text-gray-400">All time orders</span>
       </div>
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
-        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">Total Users</p>
-        <p class="font-black text-gray-900 text-2xl">{{ stats.total_users }}</p>
-        <span class="font-medium text-blue-500 text-xs">Registered members</span>
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
+        <p class="mb-1 text-xs font-bold tracking-wider text-gray-400 uppercase">Total Users</p>
+        <p class="text-2xl font-black text-gray-900">{{ stats.total_users }}</p>
+        <span class="text-xs font-medium text-blue-500">Registered members</span>
       </div>
     </div>
 
-    <div class="gap-6 grid grid-cols-1 lg:grid-cols-3">
-      <div class="lg:col-span-2 bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+      <div class="p-6 bg-white border border-gray-100 shadow-sm lg:col-span-2 rounded-2xl">
         <h3 class="mb-6 font-bold text-gray-800">Monthly Revenue Overview</h3>
         <div class="h-[300px]" v-if="!isLoading">
           <Line :data="revenueData" :options="chartOptions" />
@@ -320,7 +320,7 @@ onMounted(fetchData);
         <div v-else class="h-[300px] bg-gray-100 animate-pulse rounded-xl"></div>
       </div>
 
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
         <h3 class="mb-6 font-bold text-gray-800">Historical Best Sellers</h3>
         <div class="flex justify-center h-[300px]" v-if="!isLoading">
           <Pie :data="pieData" :options="pieOptions" />
@@ -329,40 +329,40 @@ onMounted(fetchData);
       </div>
     </div>
 
-    <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
-      <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
+    <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
+      <div class="flex items-center justify-between pb-4 mb-6 border-b border-gray-100">
         <div>
-          <h3 class="font-bold text-gray-800 text-lg flex items-center gap-2">
+          <h3 class="flex items-center gap-2 text-lg font-bold text-gray-800">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
             AI Sales Prediction (C4.5 Algorithm)
           </h3>
-          <p class="text-xs text-gray-500 mt-1">Predicting future bestsellers based on category trends, pricing, and scarcity rules.</p>
+          <p class="mt-1 text-xs text-gray-500">Predicting future bestsellers based on category trends, pricing, and scarcity rules.</p>
         </div>
       </div>
 
-      <div v-if="isLoading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div v-for="i in 4" :key="i" class="bg-gray-100 h-32 rounded-xl animate-pulse"></div>
+      <div v-if="isLoading" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div v-for="i in 4" :key="i" class="h-32 bg-gray-100 rounded-xl animate-pulse"></div>
       </div>
 
-      <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div v-else class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div 
           v-for="item in predictedProducts" 
           :key="item.id"
-          class="border border-gray-100 rounded-xl p-4 hover:shadow-md transition bg-gray-50/50 flex flex-col"
+          class="flex flex-col p-4 transition border border-gray-100 rounded-xl hover:shadow-md bg-gray-50/50"
         >
           <div class="flex items-start gap-4 mb-4">
-            <img :src="item.image" class="w-16 h-16 object-cover rounded-lg shadow-sm" />
+            <img :src="item.image" class="object-cover w-16 h-16 rounded-lg shadow-sm" />
             <div>
-              <p class="font-bold text-gray-900 text-sm line-clamp-2 leading-tight">{{ item.name }}</p>
+              <p class="text-sm font-bold leading-tight text-gray-900 line-clamp-2">{{ item.name }}</p>
               <p :class="item.color" class="font-black text-[10px] uppercase tracking-widest mt-1">{{ item.label }}</p>
             </div>
           </div>
           
-          <div class="mt-auto pt-3 border-t border-gray-200 border-dashed">
+          <div class="pt-3 mt-auto border-t border-gray-200 border-dashed">
             <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Prediction Factors:</p>
-            <p class="text-xs text-gray-600 italic">{{ item.reasons || 'No specific factors' }}</p>
+            <p class="text-xs italic text-gray-600">{{ item.reasons || 'No specific factors' }}</p>
             
             <div class="mt-3 w-full bg-gray-200 rounded-full h-1.5">
               <div class="bg-purple-600 h-1.5 rounded-full" :style="{ width: item.score + '%' }"></div>
@@ -482,31 +482,31 @@ onMounted(fetchData);
 
 <!-- <template>
   <div class="space-y-8 animate-fade-in">
-    <div class="gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
-        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">Total Sales</p>
-        <p class="font-black text-gray-900 text-2xl">{{ formatPrice(stats.total_sales) }}</p>
-        <span class="font-medium text-green-500 text-xs">Completed payments</span>
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
+        <p class="mb-1 text-xs font-bold tracking-wider text-gray-400 uppercase">Total Sales</p>
+        <p class="text-2xl font-black text-gray-900">{{ formatPrice(stats.total_sales) }}</p>
+        <span class="text-xs font-medium text-green-500">Completed payments</span>
       </div>
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
-        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">Total Products</p>
-        <p class="font-black text-gray-900 text-2xl">{{ stats.total_products }}</p>
-        <span class="text-gray-400 text-xs">Active pieces in collections</span>
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
+        <p class="mb-1 text-xs font-bold tracking-wider text-gray-400 uppercase">Total Products</p>
+        <p class="text-2xl font-black text-gray-900">{{ stats.total_products }}</p>
+        <span class="text-xs text-gray-400">Active pieces in collections</span>
       </div>
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
-        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">Total Transactions</p>
-        <p class="font-black text-gray-900 text-2xl">{{ stats.total_transactions }}</p>
-        <span class="text-gray-400 text-xs">All time orders</span>
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
+        <p class="mb-1 text-xs font-bold tracking-wider text-gray-400 uppercase">Total Transactions</p>
+        <p class="text-2xl font-black text-gray-900">{{ stats.total_transactions }}</p>
+        <span class="text-xs text-gray-400">All time orders</span>
       </div>
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
-        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">Total Users</p>
-        <p class="font-black text-gray-900 text-2xl">{{ stats.total_users }}</p>
-        <span class="font-medium text-blue-500 text-xs">Registered members</span>
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
+        <p class="mb-1 text-xs font-bold tracking-wider text-gray-400 uppercase">Total Users</p>
+        <p class="text-2xl font-black text-gray-900">{{ stats.total_users }}</p>
+        <span class="text-xs font-medium text-blue-500">Registered members</span>
       </div>
     </div>
 
-    <div class="gap-6 grid grid-cols-1 lg:grid-cols-3">
-      <div class="lg:col-span-2 bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+      <div class="p-6 bg-white border border-gray-100 shadow-sm lg:col-span-2 rounded-2xl">
         <h3 class="mb-6 font-bold text-gray-800">Monthly Revenue Overview</h3>
         <div class="h-[300px]" v-if="!isLoading">
           <Line :data="revenueData" :options="chartOptions" />
@@ -514,7 +514,7 @@ onMounted(fetchData);
         <div v-else class="h-[300px] bg-gray-100 animate-pulse rounded-xl"></div>
       </div>
 
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
         <h3 class="mb-6 font-bold text-gray-800">Historical Best Sellers</h3>
         <div class="flex justify-center h-[300px]" v-if="!isLoading">
           <Pie :data="pieData" :options="pieOptions" />
@@ -523,25 +523,25 @@ onMounted(fetchData);
       </div>
     </div>
 
-    <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
-      <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
+    <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
+      <div class="flex items-center justify-between pb-4 mb-6 border-b border-gray-100">
         <div>
-          <h3 class="font-bold text-gray-800 text-lg flex items-center gap-2">
+          <h3 class="flex items-center gap-2 text-lg font-bold text-gray-800">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
             Sales Prediction
           </h3>
-          <p class="text-xs text-gray-500 mt-1">Predicting future bestsellers based on category trends, pricing, and scarcity rules.</p>
+          <p class="mt-1 text-xs text-gray-500">Predicting future bestsellers based on category trends, pricing, and scarcity rules.</p>
         </div>
       </div>
 
       <div v-if="isLoading" class="flex flex-col gap-4">
-        <div v-for="i in 4" :key="`skel-${i}`" class="flex items-center gap-4 bg-gray-50 p-4 rounded-xl border border-gray-100">
+        <div v-for="i in 4" :key="`skel-${i}`" class="flex items-center gap-4 p-4 border border-gray-100 bg-gray-50 rounded-xl">
           <div class="w-16 h-16 bg-gray-200 rounded-lg animate-pulse shrink-0"></div>
           <div class="flex-grow space-y-2">
-            <div class="h-4 w-1/3 bg-gray-200 rounded animate-pulse"></div>
-            <div class="h-3 w-1/2 bg-gray-200 rounded animate-pulse"></div>
+            <div class="w-1/3 h-4 bg-gray-200 rounded animate-pulse"></div>
+            <div class="w-1/2 h-3 bg-gray-200 rounded animate-pulse"></div>
           </div>
           <div class="w-24 h-4 bg-gray-200 rounded animate-pulse"></div>
         </div>
@@ -551,41 +551,41 @@ onMounted(fetchData);
         <div 
           v-for="(item, index) in predictedProducts" 
           :key="item.id"
-          class="flex flex-col md:flex-row items-start md:items-center gap-4 border border-gray-100 rounded-xl p-4 hover:bg-gray-50 transition bg-white"
+          class="flex flex-col items-start gap-4 p-4 transition bg-white border border-gray-100 md:flex-row md:items-center rounded-xl hover:bg-gray-50"
         >
-          <div class="hidden md:flex items-center justify-center w-8 h-8 bg-gray-100 text-gray-400 font-bold rounded-full shrink-0 text-sm">
+          <div class="items-center justify-center hidden w-8 h-8 text-sm font-bold text-gray-400 bg-gray-100 rounded-full md:flex shrink-0">
             #{{ index + 1 }}
           </div>
 
-          <img :src="item.image" class="w-16 h-16 object-cover rounded-lg shadow-sm shrink-0 border border-gray-100" />
+          <img :src="item.image" class="object-cover w-16 h-16 border border-gray-100 rounded-lg shadow-sm shrink-0" />
           
           <div class="flex-grow min-w-0">
             <div class="flex items-center gap-3 mb-1">
-              <p class="font-bold text-gray-900 text-base truncate">{{ item.name }}</p>
+              <p class="text-base font-bold text-gray-900 truncate">{{ item.name }}</p>
               <span :class="item.color" class="font-black text-[9px] uppercase tracking-widest bg-gray-100 px-2 py-0.5 rounded-full shrink-0">
                 {{ item.label }}
               </span>
             </div>
             
-            <div class="text-xs text-gray-600 mt-1 flex gap-2">
+            <div class="flex gap-2 mt-1 text-xs text-gray-600">
               <span class="font-bold text-[10px] text-gray-400 uppercase tracking-widest shrink-0 mt-0.5">Factors:</span> 
               <span class="italic text-gray-500 break-words">{{ item.reasons || 'No specific factors' }}</span>
             </div>
           </div>
           
-          <div class="w-full md:w-48 shrink-0 mt-3 md:mt-0 flex flex-col justify-center">
-            <div class="flex justify-between items-center mb-1">
+          <div class="flex flex-col justify-center w-full mt-3 md:w-48 shrink-0 md:mt-0">
+            <div class="flex items-center justify-between mb-1">
               <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Match Score</span>
               <span class="text-xs font-black text-purple-700">{{ item.score }}%</span>
             </div>
-            <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-gradient-to-r from-purple-400 to-purple-600 h-2 rounded-full transition-all duration-1000" :style="{ width: item.score + '%' }"></div>
+            <div class="w-full h-2 bg-gray-200 rounded-full">
+              <div class="h-2 transition-all duration-1000 rounded-full bg-gradient-to-r from-purple-400 to-purple-600" :style="{ width: item.score + '%' }"></div>
             </div>
           </div>
 
         </div>
         
-        <div v-if="predictedProducts.length === 0" class="py-10 text-center text-gray-400 italic text-sm">
+        <div v-if="predictedProducts.length === 0" class="py-10 text-sm italic text-center text-gray-400">
           Not enough historical data to generate predictions.
         </div>
       </div>
@@ -705,13 +705,13 @@ onMounted(fetchData);
 </style> -->
 
 <!-- <template>
-  <div class="space-y-8 animate-fade-in pb-10">
+  <div class="pb-10 space-y-8 animate-fade-in">
     
-    <div class="gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
       
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl relative overflow-hidden">
-        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">Total Sales</p>
-        <p class="font-black text-gray-900 text-2xl">{{ formatPrice(stats.total_sales) }}</p>
+      <div class="relative p-6 overflow-hidden bg-white border border-gray-100 shadow-sm rounded-2xl">
+        <p class="mb-1 text-xs font-bold tracking-wider text-gray-400 uppercase">Total Sales</p>
+        <p class="text-2xl font-black text-gray-900">{{ formatPrice(stats.total_sales) }}</p>
         <div class="flex items-center gap-2 mt-2">
           <span :class="stats.sales_growth >= 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'" class="px-2 py-0.5 rounded font-bold text-[10px] flex items-center gap-1">
             <svg v-if="stats.sales_growth >= 0" class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
@@ -722,9 +722,9 @@ onMounted(fetchData);
         </div>
       </div>
 
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl relative overflow-hidden">
-        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">Active Products</p>
-        <p class="font-black text-gray-900 text-2xl">{{ stats.total_products }}</p>
+      <div class="relative p-6 overflow-hidden bg-white border border-gray-100 shadow-sm rounded-2xl">
+        <p class="mb-1 text-xs font-bold tracking-wider text-gray-400 uppercase">Active Products</p>
+        <p class="text-2xl font-black text-gray-900">{{ stats.total_products }}</p>
         <div class="flex items-center gap-2 mt-2">
           <span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-bold text-[10px]">
             +{{ stats.new_products_growth }} new
@@ -733,9 +733,9 @@ onMounted(fetchData);
         </div>
       </div>
 
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl relative overflow-hidden">
-        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">Total Orders</p>
-        <p class="font-black text-gray-900 text-2xl">{{ stats.total_transactions }}</p>
+      <div class="relative p-6 overflow-hidden bg-white border border-gray-100 shadow-sm rounded-2xl">
+        <p class="mb-1 text-xs font-bold tracking-wider text-gray-400 uppercase">Total Orders</p>
+        <p class="text-2xl font-black text-gray-900">{{ stats.total_transactions }}</p>
         <div class="flex items-center gap-2 mt-2">
           <span :class="stats.transaction_growth >= 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'" class="px-2 py-0.5 rounded font-bold text-[10px] flex items-center gap-1">
             <svg v-if="stats.transaction_growth >= 0" class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
@@ -746,9 +746,9 @@ onMounted(fetchData);
         </div>
       </div>
 
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl relative overflow-hidden">
-        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">Registered Users</p>
-        <p class="font-black text-gray-900 text-2xl">{{ stats.total_users }}</p>
+      <div class="relative p-6 overflow-hidden bg-white border border-gray-100 shadow-sm rounded-2xl">
+        <p class="mb-1 text-xs font-bold tracking-wider text-gray-400 uppercase">Registered Users</p>
+        <p class="text-2xl font-black text-gray-900">{{ stats.total_users }}</p>
         <div class="flex items-center gap-2 mt-2">
           <span class="bg-purple-100 text-purple-700 px-2 py-0.5 rounded font-bold text-[10px]">
             +{{ stats.new_users_growth }} joined
@@ -758,9 +758,9 @@ onMounted(fetchData);
       </div>
     </div>
 
-    <div class="gap-6 grid grid-cols-1 lg:grid-cols-3">
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
       
-      <div class="lg:col-span-2 bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
+      <div class="p-6 bg-white border border-gray-100 shadow-sm lg:col-span-2 rounded-2xl">
         <h3 class="mb-6 font-bold text-gray-800">Monthly Revenue Overview</h3>
         <div class="h-[300px]" v-if="!isLoading">
           <Line :data="revenueData" :options="chartOptions" />
@@ -768,21 +768,21 @@ onMounted(fetchData);
         <div v-else class="h-[300px] bg-gray-100 animate-pulse rounded-xl"></div>
       </div>
 
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl flex flex-col">
-        <div class="flex justify-between items-center mb-6">
+      <div class="flex flex-col p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
+        <div class="flex items-center justify-between mb-6">
           <h3 class="font-bold text-gray-800">Recent Live Orders</h3>
           <router-link to="/admin/transactions" class="text-[10px] font-bold text-blue-600 hover:underline uppercase tracking-widest">View All</router-link>
         </div>
         
-        <div class="flex-grow overflow-y-auto pr-2 custom-scrollbar">
+        <div class="flex-grow pr-2 overflow-y-auto custom-scrollbar">
           <div v-if="isLoading" class="space-y-4">
             <div v-for="i in 5" :key="i" class="h-12 bg-gray-50 rounded-xl animate-pulse"></div>
           </div>
           
           <div v-else-if="recentActivities.length > 0" class="space-y-4">
-            <div v-for="act in recentActivities" :key="act.id" class="flex justify-between items-center border-b border-gray-50 pb-3 last:border-0 last:pb-0">
+            <div v-for="act in recentActivities" :key="act.id" class="flex items-center justify-between pb-3 border-b border-gray-50 last:border-0 last:pb-0">
               <div>
-                <p class="font-bold text-xs text-gray-900">{{ act.customer }}</p>
+                <p class="text-xs font-bold text-gray-900">{{ act.customer }}</p>
                 <div class="flex items-center gap-2 mt-1">
                   <span class="text-[9px] text-gray-400 font-mono">{{ act.order_id }}</span>
                   <span class="text-[8px] text-gray-300">•</span>
@@ -790,7 +790,7 @@ onMounted(fetchData);
                 </div>
               </div>
               <div class="text-right">
-                <p class="font-bold text-sm text-gray-900">{{ formatPrice(act.amount) }}</p>
+                <p class="text-sm font-bold text-gray-900">{{ formatPrice(act.amount) }}</p>
                 <span 
                   :class="{
                     'text-amber-500 bg-amber-50': act.status === 'pending' || act.status === 'awaiting_payment',
@@ -806,34 +806,34 @@ onMounted(fetchData);
             </div>
           </div>
           
-          <div v-else class="h-full flex items-center justify-center text-gray-400 italic text-sm">
+          <div v-else class="flex items-center justify-center h-full text-sm italic text-gray-400">
             No recent activities.
           </div>
         </div>
       </div>
     </div>
 
-    <div class="gap-6 grid grid-cols-1 lg:grid-cols-3">
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
       
-      <div class="lg:col-span-2 bg-white shadow-sm p-6 border border-gray-100 rounded-2xl flex flex-col">
-        <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
+      <div class="flex flex-col p-6 bg-white border border-gray-100 shadow-sm lg:col-span-2 rounded-2xl">
+        <div class="flex items-center justify-between pb-4 mb-6 border-b border-gray-100">
           <div>
-            <h3 class="font-bold text-gray-800 text-lg flex items-center gap-2">
+            <h3 class="flex items-center gap-2 text-lg font-bold text-gray-800">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
               AI Sales Prediction (C4.5 Algorithm)
             </h3>
-            <p class="text-xs text-gray-500 mt-1">Predicting future bestsellers based on category trends, pricing, and scarcity rules.</p>
+            <p class="mt-1 text-xs text-gray-500">Predicting future bestsellers based on category trends, pricing, and scarcity rules.</p>
           </div>
         </div>
 
         <div v-if="isLoading" class="flex flex-col gap-4">
-          <div v-for="i in 4" :key="`skel-${i}`" class="flex items-center gap-4 bg-gray-50 p-4 rounded-xl border border-gray-100">
+          <div v-for="i in 4" :key="`skel-${i}`" class="flex items-center gap-4 p-4 border border-gray-100 bg-gray-50 rounded-xl">
             <div class="w-16 h-16 bg-gray-200 rounded-lg animate-pulse shrink-0"></div>
             <div class="flex-grow space-y-2">
-              <div class="h-4 w-1/3 bg-gray-200 rounded animate-pulse"></div>
-              <div class="h-3 w-1/2 bg-gray-200 rounded animate-pulse"></div>
+              <div class="w-1/3 h-4 bg-gray-200 rounded animate-pulse"></div>
+              <div class="w-1/2 h-3 bg-gray-200 rounded animate-pulse"></div>
             </div>
             <div class="w-24 h-4 bg-gray-200 rounded animate-pulse"></div>
           </div>
@@ -843,44 +843,44 @@ onMounted(fetchData);
           <div 
             v-for="(item, index) in predictedProducts" 
             :key="item.id"
-            class="flex flex-col md:flex-row items-start md:items-center gap-4 border border-gray-100 rounded-xl p-4 hover:bg-gray-50 transition bg-white"
+            class="flex flex-col items-start gap-4 p-4 transition bg-white border border-gray-100 md:flex-row md:items-center rounded-xl hover:bg-gray-50"
           >
-            <div class="hidden md:flex items-center justify-center w-8 h-8 bg-gray-100 text-gray-400 font-bold rounded-full shrink-0 text-sm">
+            <div class="items-center justify-center hidden w-8 h-8 text-sm font-bold text-gray-400 bg-gray-100 rounded-full md:flex shrink-0">
               #{{ index + 1 }}
             </div>
-            <img :src="item.image" class="w-16 h-16 object-cover rounded-lg shadow-sm shrink-0 border border-gray-100" />
+            <img :src="item.image" class="object-cover w-16 h-16 border border-gray-100 rounded-lg shadow-sm shrink-0" />
             
             <div class="flex-grow min-w-0">
               <div class="flex items-center gap-3 mb-1">
-                <p class="font-bold text-gray-900 text-base truncate">{{ item.name }}</p>
+                <p class="text-base font-bold text-gray-900 truncate">{{ item.name }}</p>
                 <span :class="item.color" class="font-black text-[9px] uppercase tracking-widest bg-gray-100 px-2 py-0.5 rounded-full shrink-0">
                   {{ item.label }}
                 </span>
               </div>
-              <div class="text-xs text-gray-600 mt-1 flex gap-2">
+              <div class="flex gap-2 mt-1 text-xs text-gray-600">
                 <span class="font-bold text-[10px] text-gray-400 uppercase tracking-widest shrink-0 mt-0.5">Factors:</span> 
                 <span class="italic text-gray-500 break-words">{{ item.reasons || 'No specific factors' }}</span>
               </div>
             </div>
             
-            <div class="w-full md:w-48 shrink-0 mt-3 md:mt-0 flex flex-col justify-center">
-              <div class="flex justify-between items-center mb-1">
+            <div class="flex flex-col justify-center w-full mt-3 md:w-48 shrink-0 md:mt-0">
+              <div class="flex items-center justify-between mb-1">
                 <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Match Score</span>
                 <span class="text-xs font-black text-purple-700">{{ item.score }}%</span>
               </div>
-              <div class="w-full bg-gray-200 rounded-full h-2">
-                <div class="bg-gradient-to-r from-purple-400 to-purple-600 h-2 rounded-full transition-all duration-1000" :style="{ width: item.score + '%' }"></div>
+              <div class="w-full h-2 bg-gray-200 rounded-full">
+                <div class="h-2 transition-all duration-1000 rounded-full bg-gradient-to-r from-purple-400 to-purple-600" :style="{ width: item.score + '%' }"></div>
               </div>
             </div>
           </div>
           
-          <div v-if="predictedProducts.length === 0" class="py-10 text-center text-gray-400 italic text-sm">
+          <div v-if="predictedProducts.length === 0" class="py-10 text-sm italic text-center text-gray-400">
             Not enough historical data to generate predictions.
           </div>
         </div>
       </div>
 
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl flex flex-col">
+      <div class="flex flex-col p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
         <h3 class="mb-6 font-bold text-gray-800">Historical Best Sellers</h3>
         <div class="flex justify-center h-[300px] flex-grow items-center" v-if="!isLoading">
           <Pie :data="pieData" :options="pieOptions" />
@@ -1023,207 +1023,17 @@ onMounted(fetchData);
 }
 </style> -->
 
-<template>
-  <!-- <div class="space-y-8 animate-fade-in pb-10">
-    
-    <div class="gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-      
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl relative overflow-hidden">
-        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">Total Sales</p>
-        <p class="font-black text-gray-900 text-2xl">{{ formatPrice(stats.total_sales) }}</p>
-        <div class="flex items-center gap-2 mt-2">
-          <span :class="stats.sales_growth >= 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'" class="px-2 py-0.5 rounded font-bold text-[10px] flex items-center gap-1">
-            <svg v-if="stats.sales_growth >= 0" class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
-            <svg v-else class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path></svg>
-            {{ Math.abs(stats.sales_growth) }}%
-          </span>
-          <span class="text-[10px] text-gray-400">vs last month</span>
-        </div>
-      </div>
-
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl relative overflow-hidden">
-        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">Active Products</p>
-        <p class="font-black text-gray-900 text-2xl">{{ stats.total_products }}</p>
-        <div class="flex items-center gap-2 mt-2">
-          <span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-bold text-[10px]">
-            +{{ stats.new_products_growth }} new
-          </span>
-          <span class="text-[10px] text-gray-400">added this month</span>
-        </div>
-      </div>
-
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl relative overflow-hidden">
-        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">Total Orders</p>
-        <p class="font-black text-gray-900 text-2xl">{{ stats.total_transactions }}</p>
-        <div class="flex items-center gap-2 mt-2">
-          <span :class="stats.transaction_growth >= 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'" class="px-2 py-0.5 rounded font-bold text-[10px] flex items-center gap-1">
-            <svg v-if="stats.transaction_growth >= 0" class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
-            <svg v-else class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path></svg>
-            {{ Math.abs(stats.transaction_growth) }}%
-          </span>
-          <span class="text-[10px] text-gray-400">vs last month</span>
-        </div>
-      </div>
-
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl relative overflow-hidden">
-        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">Registered Users</p>
-        <p class="font-black text-gray-900 text-2xl">{{ stats.total_users }}</p>
-        <div class="flex items-center gap-2 mt-2">
-          <span class="bg-purple-100 text-purple-700 px-2 py-0.5 rounded font-bold text-[10px]">
-            +{{ stats.new_users_growth }} joined
-          </span>
-          <span class="text-[10px] text-gray-400">this month</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="gap-6 grid grid-cols-1 lg:grid-cols-2">
-      
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
-        <h3 class="mb-6 font-bold text-gray-800">Monthly Revenue Overview</h3>
-        <div class="h-[300px]" v-if="!isLoading">
-          <Line :data="revenueData" :options="chartOptions" />
-        </div>
-        <div v-else class="h-[300px] bg-gray-100 animate-pulse rounded-xl"></div>
-      </div>
-
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
-        <div class="flex justify-between items-start mb-6">
-          <div>
-            <h3 class="font-bold text-gray-800">Average Daily Revenue</h3>
-            <p class="text-xs text-gray-500 mt-1">Historically, which day generates the most sales?</p>
-          </div>
-        </div>
-        <div class="h-[300px]" v-if="!isLoading">
-          <Bar :data="dailyAverageData" :options="barOptions" />
-        </div>
-        <div v-else class="h-[300px] bg-gray-100 animate-pulse rounded-xl"></div>
-      </div>
-
-    </div>
-
-    <div class="gap-6 grid grid-cols-1 lg:grid-cols-3">
-      
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl flex flex-col">
-        <div class="flex justify-between items-center mb-6">
-          <h3 class="font-bold text-gray-800">Recent Live Orders</h3>
-          <router-link to="/admin/transactions" class="text-[10px] font-bold text-blue-600 hover:underline uppercase tracking-widest">View All</router-link>
-        </div>
-        
-        <div class="flex-grow overflow-y-auto pr-2 custom-scrollbar">
-          <div v-if="isLoading" class="space-y-4">
-            <div v-for="i in 5" :key="i" class="h-12 bg-gray-50 rounded-xl animate-pulse"></div>
-          </div>
-          
-          <div v-else-if="recentActivities.length > 0" class="space-y-4">
-            <div v-for="act in recentActivities" :key="act.id" class="flex justify-between items-center border-b border-gray-50 pb-3 last:border-0 last:pb-0">
-              <div>
-                <p class="font-bold text-xs text-gray-900">{{ act.customer }}</p>
-                <div class="flex items-center gap-2 mt-1">
-                  <span class="text-[9px] text-gray-400 font-mono">{{ act.order_id }}</span>
-                  <span class="text-[8px] text-gray-300">•</span>
-                  <span class="text-[9px] text-gray-400">{{ act.time_ago }}</span>
-                </div>
-              </div>
-              <div class="text-right">
-                <p class="font-bold text-sm text-gray-900">{{ formatPrice(act.amount) }}</p>
-                <span 
-                  :class="{
-                    'text-amber-500 bg-amber-50': act.status === 'pending' || act.status === 'awaiting_payment',
-                    'text-blue-500 bg-blue-50': act.status === 'processing',
-                    'text-green-600 bg-green-50': act.status === 'completed',
-                    'text-red-500 bg-red-50': act.status === 'cancelled' || act.status === 'refunded'
-                  }"
-                  class="px-2 py-0.5 rounded text-[8px] font-bold uppercase tracking-widest inline-block mt-1"
-                >
-                  {{ act.status.replace('_', ' ') }}
-                </span>
-              </div>
-            </div>
-          </div>
-          
-          <div v-else class="h-full flex items-center justify-center text-gray-400 italic text-sm">
-            No recent activities.
-          </div>
-        </div>
-      </div>
-
-      <div class="lg:col-span-2 bg-white shadow-sm p-6 border border-gray-100 rounded-2xl flex flex-col">
-        <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
-          <div>
-            <h3 class="font-bold text-gray-800 text-lg flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-              AI Sales Prediction (C4.5 Algorithm)
-            </h3>
-            <p class="text-xs text-gray-500 mt-1">Predicting future bestsellers based on category trends, pricing, and scarcity rules.</p>
-          </div>
-        </div>
-
-        <div v-if="isLoading" class="flex flex-col gap-4">
-          <div v-for="i in 4" :key="`skel-${i}`" class="flex items-center gap-4 bg-gray-50 p-4 rounded-xl border border-gray-100">
-            <div class="w-16 h-16 bg-gray-200 rounded-lg animate-pulse shrink-0"></div>
-            <div class="flex-grow space-y-2">
-              <div class="h-4 w-1/3 bg-gray-200 rounded animate-pulse"></div>
-              <div class="h-3 w-1/2 bg-gray-200 rounded animate-pulse"></div>
-            </div>
-            <div class="w-24 h-4 bg-gray-200 rounded animate-pulse"></div>
-          </div>
-        </div>
-
-        <div v-else class="flex flex-col gap-4 overflow-y-auto max-h-[300px] pr-2 custom-scrollbar">
-          <div 
-            v-for="(item, index) in predictedProducts" 
-            :key="item.id"
-            class="flex flex-col md:flex-row items-start md:items-center gap-4 border border-gray-100 rounded-xl p-4 hover:bg-gray-50 transition bg-white"
-          >
-            <div class="hidden md:flex items-center justify-center w-8 h-8 bg-gray-100 text-gray-400 font-bold rounded-full shrink-0 text-sm">
-              #{{ index + 1 }}
-            </div>
-            <img :src="item.image" class="w-16 h-16 object-cover rounded-lg shadow-sm shrink-0 border border-gray-100" />
-            
-            <div class="flex-grow min-w-0">
-              <div class="flex items-center gap-3 mb-1">
-                <p class="font-bold text-gray-900 text-base truncate">{{ item.name }}</p>
-                <span :class="item.color" class="font-black text-[9px] uppercase tracking-widest bg-gray-100 px-2 py-0.5 rounded-full shrink-0">
-                  {{ item.label }}
-                </span>
-              </div>
-              <div class="text-xs text-gray-600 mt-1 flex gap-2">
-                <span class="font-bold text-[10px] text-gray-400 uppercase tracking-widest shrink-0 mt-0.5">Factors:</span> 
-                <span class="italic text-gray-500 break-words">{{ item.reasons || 'No specific factors' }}</span>
-              </div>
-            </div>
-            
-            <div class="w-full md:w-48 shrink-0 mt-3 md:mt-0 flex flex-col justify-center">
-              <div class="flex justify-between items-center mb-1">
-                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Match Score</span>
-                <span class="text-xs font-black text-purple-700">{{ item.score }}%</span>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-2">
-                <div class="bg-gradient-to-r from-purple-400 to-purple-600 h-2 rounded-full transition-all duration-1000" :style="{ width: item.score + '%' }"></div>
-              </div>
-            </div>
-          </div>
-          
-          <div v-if="predictedProducts.length === 0" class="py-10 text-center text-gray-400 italic text-sm">
-            Not enough historical data to generate predictions.
-          </div>
-        </div>
-      </div>
-    </div>
-  </div> -->
-  <div class="space-y-8 animate-fade-in pb-10">
+<!-- <template>
+  <div class="pb-10 space-y-8 animate-fade-in">
     <Breadcrumb />
-    <div class="gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
       <div
-        class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl relative overflow-hidden"
+        class="relative p-6 overflow-hidden bg-white border border-gray-100 shadow-sm rounded-2xl"
       >
-        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">
+        <p class="mb-1 text-xs font-bold tracking-wider text-gray-400 uppercase">
           Total Sales
         </p>
-        <p class="font-black text-gray-900 text-2xl">
+        <p class="text-2xl font-black text-gray-900">
           {{ formatPrice(stats.total_sales) }}
         </p>
         <div class="flex items-center gap-2 mt-2">
@@ -1270,12 +1080,12 @@ onMounted(fetchData);
       </div>
 
       <div
-        class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl relative overflow-hidden"
+        class="relative p-6 overflow-hidden bg-white border border-gray-100 shadow-sm rounded-2xl"
       >
-        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">
+        <p class="mb-1 text-xs font-bold tracking-wider text-gray-400 uppercase">
           Active Products
         </p>
-        <p class="font-black text-gray-900 text-2xl">{{ stats.total_products }}</p>
+        <p class="text-2xl font-black text-gray-900">{{ stats.total_products }}</p>
         <div class="flex items-center gap-2 mt-2">
           <span
             class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-bold text-[10px]"
@@ -1287,12 +1097,12 @@ onMounted(fetchData);
       </div>
 
       <div
-        class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl relative overflow-hidden"
+        class="relative p-6 overflow-hidden bg-white border border-gray-100 shadow-sm rounded-2xl"
       >
-        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">
+        <p class="mb-1 text-xs font-bold tracking-wider text-gray-400 uppercase">
           Total Orders
         </p>
-        <p class="font-black text-gray-900 text-2xl">{{ stats.total_transactions }}</p>
+        <p class="text-2xl font-black text-gray-900">{{ stats.total_transactions }}</p>
         <div class="flex items-center gap-2 mt-2">
           <span
             :class="
@@ -1337,12 +1147,12 @@ onMounted(fetchData);
       </div>
 
       <div
-        class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl relative overflow-hidden"
+        class="relative p-6 overflow-hidden bg-white border border-gray-100 shadow-sm rounded-2xl"
       >
-        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">
+        <p class="mb-1 text-xs font-bold tracking-wider text-gray-400 uppercase">
           Registered Users
         </p>
-        <p class="font-black text-gray-900 text-2xl">{{ stats.total_users }}</p>
+        <p class="text-2xl font-black text-gray-900">{{ stats.total_users }}</p>
         <div class="flex items-center gap-2 mt-2">
           <span
             class="bg-purple-100 text-purple-700 px-2 py-0.5 rounded font-bold text-[10px]"
@@ -1354,8 +1164,8 @@ onMounted(fetchData);
       </div>
     </div>
 
-    <div class="gap-6 grid grid-cols-1 lg:grid-cols-2">
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
         <h3 class="mb-6 font-bold text-gray-800">Monthly Revenue Overview</h3>
         <div class="h-[300px]" v-if="!isLoading">
           <Line :data="revenueData" :options="chartOptions" />
@@ -1363,11 +1173,11 @@ onMounted(fetchData);
         <div v-else class="h-[300px] bg-gray-100 animate-pulse rounded-xl"></div>
       </div>
 
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
-        <div class="flex justify-between items-start mb-6">
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
+        <div class="flex items-start justify-between mb-6">
           <div>
             <h3 class="font-bold text-gray-800">Average Daily Revenue</h3>
-            <p class="text-xs text-gray-500 mt-1">
+            <p class="mt-1 text-xs text-gray-500">
               Historically, which day generates the most sales?
             </p>
           </div>
@@ -1379,11 +1189,11 @@ onMounted(fetchData);
       </div>
     </div>
 
-    <div class="gap-6 grid grid-cols-1 lg:grid-cols-4">
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-4">
       <div
-        class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl flex flex-col lg:col-span-1"
+        class="flex flex-col p-6 bg-white border border-gray-100 shadow-sm rounded-2xl lg:col-span-1"
       >
-        <div class="flex justify-between items-center mb-6">
+        <div class="flex items-center justify-between mb-6">
           <h3 class="font-bold text-gray-800">Recent Live Orders</h3>
           <router-link
             to="/admin/transactions"
@@ -1405,10 +1215,10 @@ onMounted(fetchData);
             <div
               v-for="act in recentActivities"
               :key="act.id"
-              class="flex justify-between items-center border-b border-gray-50 pb-3 last:border-0 last:pb-0"
+              class="flex items-center justify-between pb-3 border-b border-gray-50 last:border-0 last:pb-0"
             >
               <div>
-                <p class="font-bold text-xs text-gray-900">{{ act.customer }}</p>
+                <p class="text-xs font-bold text-gray-900">{{ act.customer }}</p>
                 <div class="flex items-center gap-2 mt-1">
                   <span class="text-[9px] text-gray-400 font-mono">{{
                     act.order_id
@@ -1418,7 +1228,7 @@ onMounted(fetchData);
                 </div>
               </div>
               <div class="text-right">
-                <p class="font-bold text-sm text-gray-900">
+                <p class="text-sm font-bold text-gray-900">
                   {{ formatPrice(act.amount) }}
                 </p>
                 <span
@@ -1440,7 +1250,7 @@ onMounted(fetchData);
 
           <div
             v-else
-            class="h-full flex items-center justify-center text-gray-400 italic text-sm"
+            class="flex items-center justify-center h-full text-sm italic text-gray-400"
           >
             No recent activities.
           </div>
@@ -1448,11 +1258,11 @@ onMounted(fetchData);
       </div>
 
       <div
-        class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl flex flex-col lg:col-span-2"
+        class="flex flex-col p-6 bg-white border border-gray-100 shadow-sm rounded-2xl lg:col-span-2"
       >
-        <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
+        <div class="flex items-center justify-between pb-4 mb-6 border-b border-gray-100">
           <div>
-            <h3 class="font-bold text-gray-800 text-lg flex items-center gap-2">
+            <h3 class="flex items-center gap-2 text-lg font-bold text-gray-800">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="w-5 h-5 text-purple-600"
@@ -1469,7 +1279,7 @@ onMounted(fetchData);
               </svg>
               AI Sales Prediction (C4.5)
             </h3>
-            <p class="text-xs text-gray-500 mt-1">
+            <p class="mt-1 text-xs text-gray-500">
               Predicting future bestsellers based on categories & pricing.
             </p>
           </div>
@@ -1479,12 +1289,12 @@ onMounted(fetchData);
           <div
             v-for="i in 4"
             :key="`skel-${i}`"
-            class="flex items-center gap-4 bg-gray-50 p-4 rounded-xl border border-gray-100"
+            class="flex items-center gap-4 p-4 border border-gray-100 bg-gray-50 rounded-xl"
           >
             <div class="w-16 h-16 bg-gray-200 rounded-lg animate-pulse shrink-0"></div>
             <div class="flex-grow space-y-2">
-              <div class="h-4 w-1/3 bg-gray-200 rounded animate-pulse"></div>
-              <div class="h-3 w-1/2 bg-gray-200 rounded animate-pulse"></div>
+              <div class="w-1/3 h-4 bg-gray-200 rounded animate-pulse"></div>
+              <div class="w-1/2 h-3 bg-gray-200 rounded animate-pulse"></div>
             </div>
             <div class="w-24 h-4 bg-gray-200 rounded animate-pulse"></div>
           </div>
@@ -1497,20 +1307,18 @@ onMounted(fetchData);
           <div
             v-for="(item, index) in predictedProducts"
             :key="item.id"
-            class="flex flex-col md:flex-row items-start md:items-center gap-4 border border-gray-100 rounded-xl p-4 hover:bg-gray-50 transition bg-white"
+            class="flex flex-col items-start gap-4 p-4 transition bg-white border border-gray-100 md:flex-row md:items-center rounded-xl hover:bg-gray-50"
           >
             <div
-              class="hidden md:flex items-center justify-center w-8 h-8 bg-gray-100 text-gray-400 font-bold rounded-full shrink-0 text-sm"
+              class="items-center justify-center hidden w-8 h-8 text-sm font-bold text-gray-400 bg-gray-100 rounded-full md:flex shrink-0"
             >
               #{{ index + 1 }}
             </div>
-            <!-- <img :src="item.image" class="w-16 h-16 object-cover rounded-lg shadow-sm shrink-0 border border-gray-100" /> -->
-
             <img
               v-if="item.image"
               :src="item.image"
               @error="item.image = null"
-              class="w-16 h-16 object-cover rounded-lg shadow-sm shrink-0 border border-gray-100"
+              class="object-cover w-16 h-16 border border-gray-100 rounded-lg shadow-sm shrink-0"
             />
             <div
               v-else
@@ -1534,7 +1342,7 @@ onMounted(fetchData);
 
             <div class="flex-grow min-w-0">
               <div class="flex items-center gap-3 mb-1">
-                <p class="font-bold text-gray-900 text-sm truncate">{{ item.name }}</p>
+                <p class="text-sm font-bold text-gray-900 truncate">{{ item.name }}</p>
                 <span
                   :class="item.color"
                   class="font-black text-[9px] uppercase tracking-widest bg-gray-100 px-2 py-0.5 rounded-full shrink-0"
@@ -1554,9 +1362,9 @@ onMounted(fetchData);
             </div>
 
             <div
-              class="w-full md:w-32 shrink-0 mt-3 md:mt-0 flex flex-col justify-center"
+              class="flex flex-col justify-center w-full mt-3 md:w-32 shrink-0 md:mt-0"
             >
-              <div class="flex justify-between items-center mb-1">
+              <div class="flex items-center justify-between mb-1">
                 <span class="text-[9px] font-bold text-gray-400 uppercase tracking-wider"
                   >Match</span
                 >
@@ -1573,7 +1381,7 @@ onMounted(fetchData);
 
           <div
             v-if="predictedProducts.length === 0"
-            class="py-10 text-center text-gray-400 italic text-sm"
+            class="py-10 text-sm italic text-center text-gray-400"
           >
             Not enough historical data to generate predictions.
           </div>
@@ -1581,12 +1389,12 @@ onMounted(fetchData);
       </div>
 
       <div
-        class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl flex flex-col lg:col-span-1"
+        class="flex flex-col p-6 bg-white border border-gray-100 shadow-sm rounded-2xl lg:col-span-1"
       >
-        <h3 class="mb-2 font-bold text-gray-800 text-center md:text-left">
+        <h3 class="mb-2 font-bold text-center text-gray-800 md:text-left">
           Historical Best Sellers
         </h3>
-        <p class="text-xs text-gray-500 mb-6 text-center md:text-left">Top 5 items</p>
+        <p class="mb-6 text-xs text-center text-gray-500 md:text-left">Top 5 items</p>
         <div
           class="flex justify-center h-[250px] flex-grow items-center"
           v-if="!isLoading"
@@ -1825,6 +1633,714 @@ onMounted(fetchData);
   }
 }
 
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #e5e7eb;
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #d1d5db;
+}
+</style> -->
+
+<template>
+  <div class="space-y-8 animate-fade-in pb-10">
+    <Breadcrumb />
+
+    <div class="gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+      <div
+        class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl relative overflow-hidden"
+      >
+        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">
+          Total Sales
+        </p>
+        <p class="font-black text-gray-900 text-2xl">
+          {{ formatPrice(stats.total_sales) }}
+        </p>
+        <div class="flex items-center gap-2 mt-2">
+          <span
+            :class="
+              stats.sales_growth >= 0
+                ? 'bg-green-100 text-green-700'
+                : 'bg-red-100 text-red-700'
+            "
+            class="px-2 py-0.5 rounded font-bold text-[10px] flex items-center gap-1"
+          >
+            <svg
+              v-if="stats.sales_growth >= 0"
+              class="w-3 h-3"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+              ></path>
+            </svg>
+            <svg
+              v-else
+              class="w-3 h-3"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"
+              ></path>
+            </svg>
+            {{ Math.abs(stats.sales_growth) }}%
+          </span>
+          <span class="text-[10px] text-gray-400">vs last month</span>
+        </div>
+      </div>
+
+      <div
+        class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl relative overflow-hidden"
+      >
+        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">
+          Active Products
+        </p>
+        <p class="font-black text-gray-900 text-2xl">{{ stats.total_products }}</p>
+        <div class="flex items-center gap-2 mt-2">
+          <span
+            class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-bold text-[10px]"
+            >+{{ stats.new_products_growth }} new</span
+          >
+          <span class="text-[10px] text-gray-400">added this month</span>
+        </div>
+      </div>
+
+      <div
+        class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl relative overflow-hidden"
+      >
+        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">
+          Total Orders
+        </p>
+        <p class="font-black text-gray-900 text-2xl">{{ stats.total_transactions }}</p>
+        <div class="flex items-center gap-2 mt-2">
+          <span
+            :class="
+              stats.transaction_growth >= 0
+                ? 'bg-green-100 text-green-700'
+                : 'bg-red-100 text-red-700'
+            "
+            class="px-2 py-0.5 rounded font-bold text-[10px] flex items-center gap-1"
+          >
+            <svg
+              v-if="stats.transaction_growth >= 0"
+              class="w-3 h-3"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+              ></path>
+            </svg>
+            <svg
+              v-else
+              class="w-3 h-3"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"
+              ></path>
+            </svg>
+            {{ Math.abs(stats.transaction_growth) }}%
+          </span>
+          <span class="text-[10px] text-gray-400">vs last month</span>
+        </div>
+      </div>
+
+      <div
+        class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl relative overflow-hidden"
+      >
+        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">
+          Registered Users
+        </p>
+        <p class="font-black text-gray-900 text-2xl">{{ stats.total_users }}</p>
+        <div class="flex items-center gap-2 mt-2">
+          <span
+            class="bg-purple-100 text-purple-700 px-2 py-0.5 rounded font-bold text-[10px]"
+            >+{{ stats.new_users_growth }} joined</span
+          >
+          <span class="text-[10px] text-gray-400">this month</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="gap-6 grid grid-cols-1 lg:grid-cols-2">
+      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
+        <h3 class="mb-6 font-bold text-gray-800">Monthly Revenue Overview</h3>
+        <div class="h-[300px]" v-if="!isLoading">
+          <Line :data="revenueData" :options="chartOptions" />
+        </div>
+        <div v-else class="h-[300px] bg-gray-100 animate-pulse rounded-xl"></div>
+      </div>
+
+      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
+        <div class="flex justify-between items-start mb-6">
+          <div>
+            <h3 class="font-bold text-gray-800">Average Daily Revenue</h3>
+            <p class="text-xs text-gray-500 mt-1">
+              Historically, which day generates the most sales?
+            </p>
+          </div>
+        </div>
+        <div class="h-[300px]" v-if="!isLoading">
+          <Bar :data="dailyAverageData" :options="barOptions" />
+        </div>
+        <div v-else class="h-[300px] bg-gray-100 animate-pulse rounded-xl"></div>
+      </div>
+    </div>
+
+    <div class="gap-6 grid grid-cols-1 lg:grid-cols-4">
+      <div
+        class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl flex flex-col lg:col-span-1"
+      >
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="font-bold text-gray-800">Recent Live Orders</h3>
+          <router-link
+            to="/admin/transactions"
+            class="text-[10px] font-bold text-blue-600 hover:underline uppercase tracking-widest"
+            >View All</router-link
+          >
+        </div>
+
+        <div class="flex-grow overflow-y-auto pr-2 custom-scrollbar max-h-[350px]">
+          <div v-if="isLoading" class="space-y-4">
+            <div
+              v-for="i in 5"
+              :key="i"
+              class="h-12 bg-gray-50 rounded-xl animate-pulse"
+            ></div>
+          </div>
+          <div v-else-if="recentActivities.length > 0" class="space-y-4">
+            <div
+              v-for="act in recentActivities"
+              :key="act.id"
+              class="flex justify-between items-center border-b border-gray-50 pb-3 last:border-0 last:pb-0"
+            >
+              <div>
+                <p class="font-bold text-xs text-gray-900">{{ act.customer }}</p>
+                <div class="flex items-center gap-2 mt-1">
+                  <span class="text-[9px] text-gray-400 font-mono">{{
+                    act.order_id
+                  }}</span>
+                  <span class="text-[8px] text-gray-300">•</span>
+                  <span class="text-[9px] text-gray-400">{{ act.time_ago }}</span>
+                </div>
+              </div>
+              <div class="text-right">
+                <p class="font-bold text-sm text-gray-900">
+                  {{ formatPrice(act.amount) }}
+                </p>
+                <span
+                  :class="{
+                    'text-amber-500 bg-amber-50':
+                      act.status === 'pending' || act.status === 'awaiting_payment',
+                    'text-blue-500 bg-blue-50': act.status === 'processing',
+                    'text-green-600 bg-green-50': act.status === 'completed',
+                    'text-red-500 bg-red-50':
+                      act.status === 'cancelled' || act.status === 'refunded',
+                  }"
+                  class="px-2 py-0.5 rounded text-[8px] font-bold uppercase tracking-widest inline-block mt-1"
+                >
+                  {{ act.status.replace("_", " ") }}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            v-else
+            class="h-full flex items-center justify-center text-gray-400 italic text-sm"
+          >
+            No recent activities.
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl flex flex-col lg:col-span-2"
+      >
+        <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
+          <div>
+            <h3 class="font-bold text-gray-800 text-lg flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5 text-purple-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                />
+              </svg>
+              AI Sales Prediction (C4.5)
+            </h3>
+            <p class="text-xs text-gray-500 mt-1">
+              Predicting future bestsellers based on categories & pricing.
+            </p>
+          </div>
+        </div>
+
+        <div v-if="isLoading" class="flex flex-col gap-4">
+          <div
+            v-for="i in 4"
+            :key="`skel-${i}`"
+            class="flex items-center gap-4 bg-gray-50 p-4 rounded-xl border border-gray-100"
+          >
+            <div class="w-16 h-16 bg-gray-200 rounded-lg animate-pulse shrink-0"></div>
+            <div class="flex-grow space-y-2">
+              <div class="h-4 w-1/3 bg-gray-200 rounded animate-pulse"></div>
+              <div class="h-3 w-1/2 bg-gray-200 rounded animate-pulse"></div>
+            </div>
+            <div class="w-24 h-4 bg-gray-200 rounded animate-pulse"></div>
+          </div>
+        </div>
+
+        <div
+          v-else
+          class="flex flex-col gap-4 overflow-y-auto max-h-[350px] pr-2 custom-scrollbar"
+        >
+          <div
+            v-for="(item, index) in predictedProducts"
+            :key="item.id"
+            class="flex flex-col md:flex-row items-start md:items-center gap-4 border border-gray-100 rounded-xl p-4 hover:bg-gray-50 transition bg-white"
+          >
+            <div
+              class="hidden md:flex items-center justify-center w-8 h-8 bg-gray-100 text-gray-400 font-bold rounded-full shrink-0 text-sm"
+            >
+              #{{ index + 1 }}
+            </div>
+
+            <img
+              v-if="item.image"
+              :src="item.image"
+              @error="item.image = null"
+              class="w-16 h-16 object-cover rounded-lg shadow-sm shrink-0 border border-gray-100"
+            />
+            <div
+              v-else
+              class="flex items-center justify-center w-16 h-16 bg-gray-100 border border-gray-200 rounded-lg shadow-sm shrink-0"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-6 h-6 text-gray-300"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
+              </svg>
+            </div>
+
+            <div class="flex-grow min-w-0">
+              <div class="flex items-center gap-3 mb-1">
+                <p class="font-bold text-gray-900 text-sm truncate">{{ item.name }}</p>
+                <span
+                  :class="item.color"
+                  class="font-black text-[9px] uppercase tracking-widest bg-gray-100 px-2 py-0.5 rounded-full shrink-0"
+                  >{{ item.label }}</span
+                >
+              </div>
+              <div class="text-[10px] text-gray-600 mt-1 flex gap-2">
+                <span
+                  class="font-bold text-gray-400 uppercase tracking-widest shrink-0 mt-0.5"
+                  >Factors:</span
+                >
+                <span class="italic text-gray-500 break-words line-clamp-2">{{
+                  item.reasons || "No specific factors"
+                }}</span>
+              </div>
+            </div>
+
+            <div
+              class="w-full md:w-32 shrink-0 mt-3 md:mt-0 flex flex-col justify-center"
+            >
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-[9px] font-bold text-gray-400 uppercase tracking-wider"
+                  >Match</span
+                >
+                <span class="text-xs font-black text-purple-700">{{ item.score }}%</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-1.5">
+                <div
+                  class="bg-gradient-to-r from-purple-400 to-purple-600 h-1.5 rounded-full transition-all duration-1000"
+                  :style="{ width: item.score + '%' }"
+                ></div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            v-if="predictedProducts.length === 0"
+            class="py-10 text-center text-gray-400 italic text-sm"
+          >
+            Not enough historical data.
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl flex flex-col lg:col-span-1"
+      >
+        <h3 class="mb-2 font-bold text-gray-800 text-center md:text-left">
+          Historical Best Sellers
+        </h3>
+        <p class="text-xs text-gray-500 mb-6 text-center md:text-left">Top 5 items</p>
+        <div
+          class="flex justify-center h-[250px] flex-grow items-center"
+          v-if="!isLoading"
+        >
+          <Pie :data="pieData" :options="pieOptions" />
+        </div>
+        <div v-else class="h-[250px] bg-gray-100 animate-pulse rounded-xl mt-auto"></div>
+      </div>
+    </div>
+
+    <div class="gap-6 grid grid-cols-1 lg:grid-cols-3">
+      <div
+        class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl flex flex-col"
+      >
+        <h3 class="mb-1 font-bold text-gray-800">Most Returned Products</h3>
+        <p class="text-xs text-gray-500 mb-6">Items with highest issue/refund rates.</p>
+
+        <div class="flex-grow overflow-y-auto pr-2 custom-scrollbar max-h-[300px]">
+          <div v-if="isLoading" class="space-y-4">
+            <div
+              v-for="i in 5"
+              :key="i"
+              class="h-10 bg-gray-50 rounded-xl animate-pulse"
+            ></div>
+          </div>
+          <div v-else-if="returnedProducts.length > 0" class="space-y-4">
+            <div
+              v-for="prod in returnedProducts"
+              :key="prod.name"
+              class="flex items-center justify-between"
+            >
+              <div class="flex items-center gap-3">
+                <img
+                  v-if="prod.image"
+                  :src="prod.image"
+                  class="w-10 h-10 object-cover rounded shadow-sm border border-gray-100"
+                />
+                <div
+                  v-else
+                  class="w-10 h-10 bg-gray-100 rounded border border-gray-200"
+                ></div>
+                <p
+                  class="font-bold text-xs text-gray-800 truncate w-32"
+                  :title="prod.name"
+                >
+                  {{ prod.name }}
+                </p>
+              </div>
+              <span
+                class="bg-red-50 text-red-600 font-bold px-2 py-1 rounded text-[10px]"
+              >
+                {{ prod.total_returned }}x Returned
+              </span>
+            </div>
+          </div>
+          <div
+            v-else
+            class="h-full flex items-center justify-center text-gray-400 italic text-sm"
+          >
+            No return data.
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
+        <h3 class="mb-1 font-bold text-gray-800">Peak Order Hours</h3>
+        <p class="text-xs text-gray-500 mb-6">When do customers usually checkout?</p>
+
+        <div class="h-[250px]" v-if="!isLoading">
+          <Line :data="peakHoursData" :options="peakHoursOptions" />
+        </div>
+        <div v-else class="h-[250px] bg-gray-100 animate-pulse rounded-xl"></div>
+      </div>
+
+      <div
+        class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl flex flex-col"
+      >
+        <h3 class="mb-1 font-bold text-gray-800">Top Customers & Affiliates</h3>
+        <p class="text-xs text-gray-500 mb-6">Users generating the most revenue.</p>
+
+        <div class="flex-grow overflow-y-auto pr-2 custom-scrollbar max-h-[300px]">
+          <div v-if="isLoading" class="space-y-4">
+            <div
+              v-for="i in 5"
+              :key="i"
+              class="h-12 bg-gray-50 rounded-xl animate-pulse"
+            ></div>
+          </div>
+          <div v-else-if="topAffiliators.length > 0" class="space-y-4">
+            <div
+              v-for="(user, idx) in topAffiliators"
+              :key="user.email"
+              class="flex justify-between items-center border-b border-gray-50 pb-3 last:border-0 last:pb-0"
+            >
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-black text-[10px] shrink-0"
+                >
+                  #{{ idx + 1 }}
+                </div>
+                <div>
+                  <p class="font-bold text-xs text-gray-900 truncate w-24">
+                    {{ user.name }}
+                  </p>
+                  <span class="text-[9px] text-gray-400 capitalize">{{
+                    user.usertype
+                  }}</span>
+                </div>
+              </div>
+              <div class="text-right">
+                <p class="font-bold text-xs text-green-600">
+                  {{ formatPrice(user.total_generated) }}
+                </p>
+                <p class="text-[9px] font-mono text-gray-400 mt-0.5">
+                  {{ user.total_orders }} Orders
+                </p>
+              </div>
+            </div>
+          </div>
+          <div
+            v-else
+            class="h-full flex items-center justify-center text-gray-400 italic text-sm"
+          >
+            No user data.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import { BASE_URL } from "../../config/api.js";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+  Filler, // [BARU] Import Filler untuk area bawah line chart
+} from "chart.js";
+import { Line, Pie, Bar } from "vue-chartjs";
+import Breadcrumb from "./Layout/Breadcrumb.vue";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+  Filler
+);
+
+// State Original
+const stats = ref({
+  total_sales: 0,
+  sales_growth: 0,
+  total_products: 0,
+  new_products_growth: 0,
+  total_transactions: 0,
+  transaction_growth: 0,
+  total_users: 0,
+  new_users_growth: 0,
+});
+const revenueData = ref({ labels: [], datasets: [] });
+const dailyAverageData = ref({ labels: [], datasets: [] });
+const pieData = ref({ labels: [], datasets: [] });
+const predictedProducts = ref([]);
+const recentActivities = ref([]);
+
+// [BARU] State Analitik
+const returnedProducts = ref([]);
+const topAffiliators = ref([]);
+const peakHoursData = ref({ labels: [], datasets: [] });
+
+const isLoading = ref(true);
+
+const axiosConfig = {
+  headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
+};
+
+const fetchData = async () => {
+  isLoading.value = true;
+  try {
+    const res = await axios.get(`${BASE_URL}/admin/dashboard/master-data`, axiosConfig);
+    const data = res.data;
+
+    // 1-6. Mapping Original Data
+    stats.value = data.stats;
+    predictedProducts.value = data.predicted;
+    recentActivities.value = data.activities;
+
+    revenueData.value = {
+      labels: data.revenue.map((item) => item.month),
+      datasets: [
+        {
+          label: "Revenue (IDR)",
+          backgroundColor: "#000",
+          borderColor: "#000",
+          data: data.revenue.map((item) => item.total),
+          tension: 0.4,
+          fill: false,
+        },
+      ],
+    };
+
+    dailyAverageData.value = {
+      labels: data.daily.map((item) => item.day),
+      datasets: [
+        {
+          label: "Avg Daily Sales (IDR)",
+          backgroundColor: "#3b82f6",
+          borderRadius: 6,
+          data: data.daily.map((item) => item.average),
+        },
+      ],
+    };
+
+    pieData.value = {
+      labels: data.popular.map((item) => item.name),
+      datasets: [
+        {
+          backgroundColor: ["#1e1e1e", "#3b82f6", "#10b981", "#f59e0b", "#ef4444"],
+          data: data.popular.map((item) => item.total_sold),
+        },
+      ],
+    };
+
+    // [BARU] 7. Mapping Data Analitik Tambahan
+    returnedProducts.value = data.returned;
+    topAffiliators.value = data.top_affiliators;
+
+    // Mapping Peak Hours ke dalam Line Chart
+    peakHoursData.value = {
+      labels: data.peak_hours.map((item) => item.hour),
+      datasets: [
+        {
+          label: "Total Orders",
+          borderColor: "#8b5cf6", // Purple
+          backgroundColor: "rgba(139, 92, 246, 0.2)",
+          data: data.peak_hours.map((item) => item.orders),
+          tension: 0.4, // Kurva smooth
+          fill: true, // Mewarnai area bawah kurva
+        },
+      ],
+    };
+  } catch (err) {
+    console.error("Dashboard data failed", err);
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+const formatPrice = (v) =>
+  new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0,
+  }).format(v);
+
+// Pengaturan Konfigurasi Chart
+const chartOptions = { responsive: true, maintainAspectRatio: false };
+const barOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: { legend: { display: false } },
+  scales: {
+    y: {
+      beginAtZero: true,
+      ticks: {
+        callback: function (value) {
+          if (value >= 1000000) return (value / 1000000).toFixed(1) + "M";
+          if (value >= 1000) return (value / 1000).toFixed(0) + "K";
+          return value;
+        },
+      },
+    },
+  },
+};
+const pieOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: { legend: { position: "bottom" } },
+};
+
+// [BARU] Options untuk Line Chart Jam Puncak
+const peakHoursOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: { legend: { display: false } }, // Hilangkan legend agar lebih bersih
+  scales: {
+    y: { beginAtZero: true, suggestedMax: 5, ticks: { precision: 0 } },
+    x: { grid: { display: false } }, // Hilangkan garis vertikal agar rapi
+  },
+};
+
+onMounted(fetchData);
+</script>
+
+<style scoped>
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 .custom-scrollbar::-webkit-scrollbar {
   width: 4px;
 }
