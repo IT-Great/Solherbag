@@ -2645,7 +2645,7 @@ onUnmounted(() => {
                 v-if="getBundlePromo(product)"
                 class="mt-3 border-t border-gray-50 pt-3"
               >
-                <span
+                <!-- <span
                   class="inline-block px-2 py-1 text-[8px] font-black text-blue-700 bg-blue-50 border border-blue-100 rounded uppercase tracking-widest"
                 >
                   Bundle: Buy {{ getBundlePromo(product).qty }} for
@@ -2655,7 +2655,16 @@ onUnmounted(() => {
                       curr: "IDR",
                     })
                   }}
-                </span>
+                </span> -->
+                <span class="inline-block px-2 py-1 text-[8px] font-black text-blue-700 bg-blue-50 border border-blue-100 rounded uppercase tracking-widest">
+  Bundle: Buy {{ getBundlePromo(product).qty }} for
+  {{
+    formatCurrencyDisplay({
+      value: getBundlePromo(product).price,
+      curr: getBundlePromo(product).curr // <--- GUNAKAN CURRENCY DINAMIS
+    })
+  }}
+</span>
               </div>
             </div>
           </div>
@@ -2846,32 +2855,76 @@ const calculateDynamicDiscount = (product) => {
 // ==========================================
 // [BARU] HELPER BUNDLE PROMO DYNAMIC
 // ==========================================
+// const getBundlePromo = (product) => {
+//   if (!product || !product.category) return null;
+
+//   // Jika formatnya bersumber dari CategoryResource (ada array bundle_promo)
+//   if (product.category.bundle_promo && product.category.bundle_promo.is_active) {
+//     return product.category.bundle_promo;
+//   }
+
+//   // Jika formatnya bersumber dari Model Category mentah (raw database row)
+//   if (product.category.bundle_qty && product.category.bundle_price) {
+//     const now = new Date();
+//     const start = product.category.bundle_start_date
+//       ? convertToWIB(product.category.bundle_start_date)
+//       : null;
+//     const end = product.category.bundle_end_date
+//       ? convertToWIB(product.category.bundle_end_date)
+//       : null;
+
+//     if ((!start || now >= start) && (!end || now <= end)) {
+//       return {
+//         qty: product.category.bundle_qty,
+//         price: product.category.bundle_price,
+//       };
+//     }
+//   }
+//   return null;
+// };
+
 const getBundlePromo = (product) => {
   if (!product || !product.category) return null;
+  
+  const curr = currentCurrency.value || "IDR"; // Ambil status mata uang saat ini
 
-  // Jika formatnya bersumber dari CategoryResource (ada array bundle_promo)
+  // Parse JSON/Array (Jika formatnya dari endpoint CategoryResource atau Database)
+  let promoData = null;
   if (product.category.bundle_promo && product.category.bundle_promo.is_active) {
-    return product.category.bundle_promo;
-  }
-
-  // Jika formatnya bersumber dari Model Category mentah (raw database row)
-  if (product.category.bundle_qty && product.category.bundle_price) {
+    promoData = product.category.bundle_promo;
+  } else if (product.category.bundle_qty && product.category.bundle_price) {
     const now = new Date();
-    const start = product.category.bundle_start_date
-      ? convertToWIB(product.category.bundle_start_date)
-      : null;
-    const end = product.category.bundle_end_date
-      ? convertToWIB(product.category.bundle_end_date)
-      : null;
-
+    const start = product.category.bundle_start_date ? convertToWIB(product.category.bundle_start_date) : null;
+    const end = product.category.bundle_end_date ? convertToWIB(product.category.bundle_end_date) : null;
+    
     if ((!start || now >= start) && (!end || now <= end)) {
-      return {
-        qty: product.category.bundle_qty,
-        price: product.category.bundle_price,
-      };
+      promoData = { qty: product.category.bundle_qty, price: product.category.bundle_price };
     }
   }
-  return null;
+
+  if (!promoData) return null;
+
+  // 👇 PERBAIKAN: Baca array harga berdasarkan Currency 👇
+  let finalPrice = 0;
+  let finalCurr = "IDR";
+
+  // Pastikan promoData.price adalah objek JSON
+  if (typeof promoData.price === 'object') {
+     if (promoData.price[curr]) {
+         finalPrice = promoData.price[curr];
+         finalCurr = curr;
+     } else {
+         finalPrice = promoData.price["IDR"]; // Fallback jika USD/SGD kosong
+     }
+  } else {
+     finalPrice = promoData.price; // Legacy decimal format
+  }
+
+  return { 
+    qty: promoData.qty, 
+    price: finalPrice,
+    curr: finalCurr
+  };
 };
 // ==========================================
 

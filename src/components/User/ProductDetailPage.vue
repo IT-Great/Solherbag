@@ -1564,7 +1564,7 @@ onUnmounted(() => {
               <p class="mb-1 text-xs font-black tracking-widest uppercase text-amber-900">
                 Hot Bundle Deal!
               </p>
-              <p class="text-sm font-medium leading-snug text-amber-800">
+              <!-- <p class="text-sm font-medium leading-snug text-amber-800">
                 Buy
                 <span class="font-black">{{ getBundlePromo(product).qty }}</span> items
                 from the
@@ -1574,6 +1574,20 @@ onUnmounted(() => {
                   formatCurrencyDisplay({
                     value: getBundlePromo(product).price,
                     curr: "IDR",
+                  })
+                }}</span
+                >!
+              </p> -->
+              <p class="text-sm font-medium leading-snug text-amber-800">
+                Buy
+                <span class="font-black">{{ getBundlePromo(product).qty }}</span> items
+                from the
+                <strong>{{ product.category?.name || "this" }}</strong> collection and get
+                them all for just
+                <span class="font-black text-red-600">{{
+                  formatCurrencyDisplay({
+                    value: getBundlePromo(product).price,
+                    curr: getBundlePromo(product).curr, // <--- GUNAKAN CURRENCY DINAMIS
                   })
                 }}</span
                 >!
@@ -2033,14 +2047,42 @@ const calculateDynamicDiscount = (product) => {
 // ==========================================
 // [BARU] HELPER BUNDLE PROMO DYNAMIC
 // ==========================================
+// const getBundlePromo = (product) => {
+//   if (!product || !product.category) return null;
+
+//   if (product.category.bundle_promo && product.category.bundle_promo.is_active) {
+//     return product.category.bundle_promo;
+//   }
+
+//   if (product.category.bundle_qty && product.category.bundle_price) {
+//     const now = new Date();
+//     const start = product.category.bundle_start_date
+//       ? convertToWIB(product.category.bundle_start_date)
+//       : null;
+//     const end = product.category.bundle_end_date
+//       ? convertToWIB(product.category.bundle_end_date)
+//       : null;
+
+//     if ((!start || now >= start) && (!end || now <= end)) {
+//       return {
+//         qty: product.category.bundle_qty,
+//         price: product.category.bundle_price,
+//       };
+//     }
+//   }
+//   return null;
+// };
+
 const getBundlePromo = (product) => {
   if (!product || !product.category) return null;
 
-  if (product.category.bundle_promo && product.category.bundle_promo.is_active) {
-    return product.category.bundle_promo;
-  }
+  const curr = currentCurrency.value || "IDR"; // Ambil status mata uang saat ini
 
-  if (product.category.bundle_qty && product.category.bundle_price) {
+  // Parse JSON/Array (Jika formatnya dari endpoint CategoryResource atau Database)
+  let promoData = null;
+  if (product.category.bundle_promo && product.category.bundle_promo.is_active) {
+    promoData = product.category.bundle_promo;
+  } else if (product.category.bundle_qty && product.category.bundle_price) {
     const now = new Date();
     const start = product.category.bundle_start_date
       ? convertToWIB(product.category.bundle_start_date)
@@ -2050,13 +2092,36 @@ const getBundlePromo = (product) => {
       : null;
 
     if ((!start || now >= start) && (!end || now <= end)) {
-      return {
+      promoData = {
         qty: product.category.bundle_qty,
         price: product.category.bundle_price,
       };
     }
   }
-  return null;
+
+  if (!promoData) return null;
+
+  // 👇 PERBAIKAN: Baca array harga berdasarkan Currency 👇
+  let finalPrice = 0;
+  let finalCurr = "IDR";
+
+  // Pastikan promoData.price adalah objek JSON
+  if (typeof promoData.price === "object") {
+    if (promoData.price[curr]) {
+      finalPrice = promoData.price[curr];
+      finalCurr = curr;
+    } else {
+      finalPrice = promoData.price["IDR"]; // Fallback jika USD/SGD kosong
+    }
+  } else {
+    finalPrice = promoData.price; // Legacy decimal format
+  }
+
+  return {
+    qty: promoData.qty,
+    price: finalPrice,
+    curr: finalCurr,
+  };
 };
 // ==========================================
 
