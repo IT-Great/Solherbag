@@ -1097,12 +1097,368 @@
 //   };
 // }
 
+// import { ref, computed } from "vue";
+// import axios from "axios";
+// import Swal from "sweetalert2";
+// import { BASE_URL } from "../config/api.js";
+
+// const cartItems = ref([]);
+// const debounceTimers = new Map();
+// const selectedItemIds = ref([]);
+
+// // ==========================================
+// // HELPER WAKTU GLOBAL
+// // ==========================================
+// export const convertToWIB = (dateString) => {
+//   if (!dateString) return null;
+//   return new Date(dateString); 
+// };
+
+// // ==========================================
+// // HELPER MULTI-CURRENCY GLOBAL
+// // ==========================================
+
+// // Helper untuk membaca currency saat ini
+// const getCurrentCurrency = () => localStorage.getItem("currency") || "IDR";
+
+// // Helper harga dasar (Price)
+// export const getPriceToDisplay = (product, currentCurrencyStr = null) => {
+//   if (!product) return { value: 0, curr: "IDR" };
+//   const curr = currentCurrencyStr || getCurrentCurrency();
+//   if (curr === "IDR") return { value: product.price, curr: "IDR" };
+
+//   const prices = typeof product.prices === "string" ? JSON.parse(product.prices) : product.prices || {};
+
+//   if (prices[curr]) {
+//     return { value: parseFloat(prices[curr]), curr: curr };
+//   }
+//   return { value: product.price, curr: "IDR" };
+// };
+
+// // Helper harga diskon (Discount Price)
+// export const getDiscountToDisplay = (product, currentCurrencyStr = null) => {
+//   if (!product) return null;
+//   const curr = currentCurrencyStr || getCurrentCurrency();
+
+//   if (curr === "IDR") {
+//     return product.discount_price ? { value: product.discount_price, curr: "IDR" } : null;
+//   }
+
+//   const discountPrices = typeof product.discount_prices === "string" ? JSON.parse(product.discount_prices) : product.discount_prices || {};
+
+//   if (discountPrices[curr]) {
+//     return { value: parseFloat(discountPrices[curr]), curr: curr };
+//   }
+//   return product.discount_price ? { value: product.discount_price, curr: "IDR" } : null;
+// };
+
+// // Helper pengecekan status diskon
+// export const getDiscountStatus = (p, currentCurrencyStr = null) => {
+//   const discObj = getDiscountToDisplay(p, currentCurrencyStr);
+//   if (!p || !discObj || !discObj.value) return { active: false, upcoming: false, expired: false };
+
+//   const now = new Date();
+//   let active = true;
+//   let upcoming = false;
+//   let expired = false;
+
+//   if (p.discount_start_date) {
+//     const startDate = convertToWIB(p.discount_start_date);
+//     if (now < startDate) { active = false; upcoming = true; }
+//   }
+//   if (p.discount_end_date) {
+//     const endDate = convertToWIB(p.discount_end_date);
+//     if (now > endDate) { active = false; expired = true; }
+//   }
+
+//   return { active, upcoming, expired };
+// };
+
+// // Mendapatkan harga aktif terakhir (Diskon atau Normal)
+// export const getActivePrice = (product, currentCurrencyStr = null) => {
+//   if (!product) return 0;
+  
+//   if (getDiscountStatus(product, currentCurrencyStr).active) {
+//     const discObj = getDiscountToDisplay(product, currentCurrencyStr);
+//     return discObj ? discObj.value : 0;
+//   }
+//   const priceObj = getPriceToDisplay(product, currentCurrencyStr);
+//   return priceObj ? priceObj.value : 0;
+// };
+// // ==========================================
+
+// export function useCart() {
+//   // Tambahkan reaktivitas untuk currency di dalam composable
+//   const localCurrency = ref(getCurrentCurrency());
+
+//   // Anda bisa memanggil triggerCurrencyUpdate() dari komponen Vue
+//   // jika ingin composable ini me-render ulang perhitungan.
+//   const triggerCurrencyUpdate = () => {
+//     localCurrency.value = getCurrentCurrency();
+//   };
+
+//   const cartCount = computed(() => {
+//     return cartItems.value.reduce((acc, item) => acc + item.quantity, 0);
+//   });
+
+//   const checkoutCount = computed(() => {
+//     return cartItems.value
+//       .filter((item) => selectedItemIds.value.includes(item.id))
+//       .reduce((acc, item) => acc + item.quantity, 0);
+//   });
+
+//   const checkoutTotalAmount = computed(() => {
+//     return cartItems.value
+//       .filter((item) => selectedItemIds.value.includes(item.id))
+//       .reduce((acc, item) => {
+//         // Gunakan nilai mata uang lokal reaktif
+//         return acc + (item.quantity * getActivePrice(item.product, localCurrency.value));
+//       }, 0);
+//   });
+
+//   const isAllSelected = computed({
+//     get: () =>
+//       cartItems.value.length > 0 &&
+//       selectedItemIds.value.length === cartItems.value.length,
+//     set: (val) => {
+//       if (val) {
+//         selectedItemIds.value = cartItems.value.map((item) => item.id);
+//       } else {
+//         selectedItemIds.value = [];
+//       }
+//     },
+//   });
+
+//   const fetchCarts = async () => {
+//     const token = localStorage.getItem("token");
+//     if (!token) return;
+//     try {
+//       const res = await axios.get(`${BASE_URL}/carts`, {
+//         headers: { Authorization: `Bearer ${token}` },
+//       });
+      
+//       cartItems.value = res.data.map((item) => {
+//         const validPrice = getActivePrice(item.product); // Pakai global currency di awal muat
+        
+//         return { 
+//           ...item, 
+//           gross_amount: validPrice * item.quantity, 
+//           isSyncing: false 
+//         };
+//       });
+
+//       res.data.forEach((item) => {
+//         if (!selectedItemIds.value.includes(item.id)) {
+//           selectedItemIds.value.push(item.id);
+//         }
+//       });
+//     } catch (err) {
+//       console.error("Failed to load bag", err);
+//     }
+//   };
+
+//   const handleOptimisticAdd = async (
+//     { product, cartId, quantity = 1, color = null },
+//     onBounceCallback,
+//   ) => {
+//     const existingItem = cartItems.value.find(
+//       (item) => item.product_id === product.id && item.color === color,
+//     );
+
+//     if (existingItem) {
+//       handleQtyChange(existingItem, existingItem.quantity + quantity);
+//       if (onBounceCallback) onBounceCallback();
+
+//       if (!selectedItemIds.value.includes(existingItem.id)) {
+//         selectedItemIds.value.push(existingItem.id);
+//       }
+//       return;
+//     }
+
+//     const tempId = cartId || "temp_" + Date.now();
+//     const unitPrice = getActivePrice(product);
+
+//     const newItem = {
+//       id: tempId,
+//       product_id: product.id,
+//       quantity: quantity,
+//       gross_amount: unitPrice * quantity,
+//       color: color,
+//       isSyncing: !cartId,
+//       isCreating: !cartId,
+//       product: product,
+//     };
+
+//     cartItems.value.unshift(newItem);
+//     selectedItemIds.value.push(tempId);
+
+//     if (onBounceCallback) onBounceCallback();
+
+//     if (cartId) return;
+
+//     try {
+//       const token = localStorage.getItem("token");
+//       const res = await axios.post(
+//         `${BASE_URL}/carts`,
+//         {
+//           product_id: product.id,
+//           quantity: quantity,
+//           color: color,
+//         },
+//         { headers: { Authorization: `Bearer ${token}` } },
+//       );
+
+//       const realId = res.data.cart_id || res.data.id || res.data.data?.id;
+//       const itemInCart = cartItems.value.find((i) => i.id === tempId);
+
+//       if (itemInCart) {
+//         if (realId) {
+//           itemInCart.id = realId;
+//           itemInCart.isCreating = false;
+
+//           const selIndex = selectedItemIds.value.indexOf(tempId);
+//           if (selIndex !== -1) {
+//             selectedItemIds.value[selIndex] = realId;
+//           }
+
+//           if (itemInCart.quantity !== quantity) {
+//             syncQtyToDatabase(itemInCart);
+//           } else {
+//             itemInCart.isSyncing = false;
+//           }
+//         } else {
+//           throw new Error("Missing Cart ID from Server!");
+//         }
+//       } else {
+//         if (realId) {
+//           axios
+//             .delete(`${BASE_URL}/carts/${realId}`, {
+//               headers: { Authorization: `Bearer ${token}` },
+//             })
+//             .catch(() => {});
+//         }
+//       }
+//     } catch (error) {
+//       cartItems.value = cartItems.value.filter((i) => i.id !== tempId);
+//       selectedItemIds.value = selectedItemIds.value.filter(
+//         (id) => id !== tempId,
+//       );
+//       fetchCarts();
+//     }
+//   };
+
+//   const handleQtyChange = (item, newQty) => {
+//     if (newQty < 1) newQty = 1;
+//     if (newQty > item.product.stock) {
+//       newQty = item.product.stock;
+//       Swal.fire({
+//         toast: true,
+//         position: "top-end",
+//         icon: "warning",
+//         title: `Max stock is ${item.product.stock}`,
+//         showConfirmButton: false,
+//         timer: 2000,
+//       });
+//     }
+
+//     item.quantity = newQty;
+//     // Gunakan localCurrency reaktif jika perlu
+//     item.gross_amount = item.quantity * getActivePrice(item.product, localCurrency.value);
+//     item.isSyncing = true;
+
+//     if (!selectedItemIds.value.includes(item.id)) {
+//       selectedItemIds.value.push(item.id);
+//     }
+
+//     if (item.isCreating) return;
+
+//     if (debounceTimers.has(item.id)) clearTimeout(debounceTimers.get(item.id));
+
+//     const timerId = setTimeout(() => {
+//       syncQtyToDatabase(item);
+//       debounceTimers.delete(item.id);
+//     }, 600);
+
+//     debounceTimers.set(item.id, timerId);
+//   };
+
+//   const syncQtyToDatabase = async (item) => {
+//     if (String(item.id).startsWith("temp_")) {
+//       setTimeout(() => syncQtyToDatabase(item), 500);
+//       return;
+//     }
+//     try {
+//       const res = await axios.put(
+//         `${BASE_URL}/carts/${item.id}`,
+//         { quantity: item.quantity },
+//         {
+//           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+//         },
+//       );
+//       item.gross_amount = item.quantity * getActivePrice(item.product, localCurrency.value);
+//     } catch (error) {
+//       fetchCarts();
+//     } finally {
+//       item.isSyncing = false;
+//     }
+//   };
+
+//   const handleOptimisticDelete = async (id) => {
+//     const backupItems = [...cartItems.value];
+//     cartItems.value = cartItems.value.filter((item) => item.id !== id);
+//     selectedItemIds.value = selectedItemIds.value.filter((selId) => selId !== id);
+
+//     Swal.fire({
+//       toast: true, position: "top-end", icon: "success", title: "Item Removed", showConfirmButton: false, timer: 2000,
+//     });
+
+//     if (String(id).startsWith("temp_")) return;
+
+//     try {
+//       await axios.delete(`${BASE_URL}/carts/${id}`, {
+//         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+//       });
+//     } catch (error) {
+//       cartItems.value = backupItems;
+//       if (!selectedItemIds.value.includes(id)) selectedItemIds.value.push(id);
+//     }
+//   };
+
+//   const clearSelectedCart = () => {
+//     cartItems.value = cartItems.value.filter(
+//       (item) => !selectedItemIds.value.includes(item.id),
+//     );
+//     selectedItemIds.value = [];
+//   };
+
+//   return {
+//     cartItems,
+//     cartCount,
+//     checkoutCount,
+//     checkoutTotalAmount,
+//     selectedItemIds,
+//     isAllSelected,
+//     triggerCurrencyUpdate, // Ekspos ini agar komponen bisa memanggilnya
+//     localCurrency, // Ekspos ini
+//     fetchCarts,
+//     handleOptimisticAdd,
+//     handleQtyChange,
+//     handleOptimisticDelete,
+//     clearSelectedCart,
+//     handleQtyInput: (item) => {
+//       if (item.quantity === null || item.quantity === "") return;
+//       handleQtyChange(item, item.quantity);
+//     },
+//   };
+// }
+
 import { ref, computed } from "vue";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../config/api.js";
 
 const cartItems = ref([]);
+const cartSummary = ref(null); // [BARU] Menyimpan total harga resmi dari Backend
 const debounceTimers = new Map();
 const selectedItemIds = ref([]);
 
@@ -1117,11 +1473,8 @@ export const convertToWIB = (dateString) => {
 // ==========================================
 // HELPER MULTI-CURRENCY GLOBAL
 // ==========================================
-
-// Helper untuk membaca currency saat ini
 const getCurrentCurrency = () => localStorage.getItem("currency") || "IDR";
 
-// Helper harga dasar (Price)
 export const getPriceToDisplay = (product, currentCurrencyStr = null) => {
   if (!product) return { value: 0, curr: "IDR" };
   const curr = currentCurrencyStr || getCurrentCurrency();
@@ -1135,7 +1488,6 @@ export const getPriceToDisplay = (product, currentCurrencyStr = null) => {
   return { value: product.price, curr: "IDR" };
 };
 
-// Helper harga diskon (Discount Price)
 export const getDiscountToDisplay = (product, currentCurrencyStr = null) => {
   if (!product) return null;
   const curr = currentCurrencyStr || getCurrentCurrency();
@@ -1152,7 +1504,6 @@ export const getDiscountToDisplay = (product, currentCurrencyStr = null) => {
   return product.discount_price ? { value: product.discount_price, curr: "IDR" } : null;
 };
 
-// Helper pengecekan status diskon
 export const getDiscountStatus = (p, currentCurrencyStr = null) => {
   const discObj = getDiscountToDisplay(p, currentCurrencyStr);
   if (!p || !discObj || !discObj.value) return { active: false, upcoming: false, expired: false };
@@ -1174,7 +1525,6 @@ export const getDiscountStatus = (p, currentCurrencyStr = null) => {
   return { active, upcoming, expired };
 };
 
-// Mendapatkan harga aktif terakhir (Diskon atau Normal)
 export const getActivePrice = (product, currentCurrencyStr = null) => {
   if (!product) return 0;
   
@@ -1185,16 +1535,55 @@ export const getActivePrice = (product, currentCurrencyStr = null) => {
   const priceObj = getPriceToDisplay(product, currentCurrencyStr);
   return priceObj ? priceObj.value : 0;
 };
+
+// ==========================================
+// [BARU] BUNDLE PROMO HELPER
+// ==========================================
+export const getBundlePromo = (product) => {
+  if (!product || !product.category) return null;
+  
+  const curr = getCurrentCurrency();
+
+  let promoData = null;
+  if (product.category.bundle_promo && product.category.bundle_promo.is_active) {
+    promoData = product.category.bundle_promo;
+  } else if (product.category.bundle_qty && product.category.bundle_price) {
+    const now = new Date();
+    const start = product.category.bundle_start_date ? convertToWIB(product.category.bundle_start_date) : null;
+    const end = product.category.bundle_end_date ? convertToWIB(product.category.bundle_end_date) : null;
+    
+    if ((!start || now >= start) && (!end || now <= end)) {
+      promoData = { qty: product.category.bundle_qty, price: product.category.bundle_price };
+    }
+  }
+
+  if (!promoData) return null;
+
+  let finalPrice = 0;
+  let finalCurr = "IDR";
+
+  if (typeof promoData.price === 'object') {
+     if (promoData.price[curr]) {
+         finalPrice = promoData.price[curr];
+         finalCurr = curr;
+     } else {
+         finalPrice = promoData.price["IDR"]; 
+     }
+  } else {
+     finalPrice = promoData.price; 
+  }
+
+  return { qty: promoData.qty, price: finalPrice, curr: finalCurr };
+};
+
 // ==========================================
 
 export function useCart() {
-  // Tambahkan reaktivitas untuk currency di dalam composable
   const localCurrency = ref(getCurrentCurrency());
 
-  // Anda bisa memanggil triggerCurrencyUpdate() dari komponen Vue
-  // jika ingin composable ini me-render ulang perhitungan.
   const triggerCurrencyUpdate = () => {
     localCurrency.value = getCurrentCurrency();
+    fetchCarts(); // [PENTING] Meminta ulang data ke backend saat mata uang berubah agar summary akurat
   };
 
   const cartCount = computed(() => {
@@ -1207,19 +1596,22 @@ export function useCart() {
       .reduce((acc, item) => acc + item.quantity, 0);
   });
 
+  // [PERBAIKAN KRUSIAL] Total harga sekarang mengambil langsung dari summary backend
+  // karena hitungan bundle promo terlalu kompleks untuk direplikasi murni di frontend
   const checkoutTotalAmount = computed(() => {
+    // Jika semua item dipilih ATAU jumlah item dipilih sama dengan total item
+    if (cartSummary.value && selectedItemIds.value.length === cartItems.value.length) {
+      return cartSummary.value.grand_total;
+    }
+    
+    // Fallback hitungan manual jika user uncheck beberapa item (Namun Bundle mungkin tidak akurat)
     return cartItems.value
       .filter((item) => selectedItemIds.value.includes(item.id))
-      .reduce((acc, item) => {
-        // Gunakan nilai mata uang lokal reaktif
-        return acc + (item.quantity * getActivePrice(item.product, localCurrency.value));
-      }, 0);
+      .reduce((acc, item) => acc + (item.quantity * getActivePrice(item.product, localCurrency.value)), 0);
   });
 
   const isAllSelected = computed({
-    get: () =>
-      cartItems.value.length > 0 &&
-      selectedItemIds.value.length === cartItems.value.length,
+    get: () => cartItems.value.length > 0 && selectedItemIds.value.length === cartItems.value.length,
     set: (val) => {
       if (val) {
         selectedItemIds.value = cartItems.value.map((item) => item.id);
@@ -1233,21 +1625,21 @@ export function useCart() {
     const token = localStorage.getItem("token");
     if (!token) return;
     try {
-      const res = await axios.get(`${BASE_URL}/carts`, {
+      const res = await axios.get(`${BASE_URL}/carts?currency=${localCurrency.value}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       
-      cartItems.value = res.data.map((item) => {
-        const validPrice = getActivePrice(item.product); // Pakai global currency di awal muat
-        
-        return { 
-          ...item, 
-          gross_amount: validPrice * item.quantity, 
-          isSyncing: false 
-        };
+      // [PERBAIKAN] Menyimpan data sesuai format JSON dari Backend yang baru
+      cartItems.value = (res.data.items || res.data).map((item) => {
+        const validPrice = getActivePrice(item.product); 
+        return { ...item, gross_amount: validPrice * item.quantity, isSyncing: false };
       });
 
-      res.data.forEach((item) => {
+      if (res.data.summary) {
+        cartSummary.value = res.data.summary;
+      }
+
+      (res.data.items || res.data).forEach((item) => {
         if (!selectedItemIds.value.includes(item.id)) {
           selectedItemIds.value.push(item.id);
         }
@@ -1257,21 +1649,13 @@ export function useCart() {
     }
   };
 
-  const handleOptimisticAdd = async (
-    { product, cartId, quantity = 1, color = null },
-    onBounceCallback,
-  ) => {
-    const existingItem = cartItems.value.find(
-      (item) => item.product_id === product.id && item.color === color,
-    );
+  const handleOptimisticAdd = async ({ product, cartId, quantity = 1, color = null }, onBounceCallback) => {
+    const existingItem = cartItems.value.find((item) => item.product_id === product.id && item.color === color);
 
     if (existingItem) {
       handleQtyChange(existingItem, existingItem.quantity + quantity);
       if (onBounceCallback) onBounceCallback();
-
-      if (!selectedItemIds.value.includes(existingItem.id)) {
-        selectedItemIds.value.push(existingItem.id);
-      }
+      if (!selectedItemIds.value.includes(existingItem.id)) selectedItemIds.value.push(existingItem.id);
       return;
     }
 
@@ -1279,70 +1663,39 @@ export function useCart() {
     const unitPrice = getActivePrice(product);
 
     const newItem = {
-      id: tempId,
-      product_id: product.id,
-      quantity: quantity,
-      gross_amount: unitPrice * quantity,
-      color: color,
-      isSyncing: !cartId,
-      isCreating: !cartId,
-      product: product,
+      id: tempId, product_id: product.id, quantity: quantity,
+      gross_amount: unitPrice * quantity, color: color,
+      isSyncing: !cartId, isCreating: !cartId, product: product,
     };
 
     cartItems.value.unshift(newItem);
     selectedItemIds.value.push(tempId);
-
     if (onBounceCallback) onBounceCallback();
-
     if (cartId) return;
 
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.post(
-        `${BASE_URL}/carts`,
-        {
-          product_id: product.id,
-          quantity: quantity,
-          color: color,
-        },
-        { headers: { Authorization: `Bearer ${token}` } },
-      );
-
+      const res = await axios.post(`${BASE_URL}/carts`, { product_id: product.id, quantity: quantity, color: color }, { headers: { Authorization: `Bearer ${token}` } });
       const realId = res.data.cart_id || res.data.id || res.data.data?.id;
       const itemInCart = cartItems.value.find((i) => i.id === tempId);
 
       if (itemInCart) {
         if (realId) {
-          itemInCart.id = realId;
-          itemInCart.isCreating = false;
-
+          itemInCart.id = realId; itemInCart.isCreating = false;
           const selIndex = selectedItemIds.value.indexOf(tempId);
-          if (selIndex !== -1) {
-            selectedItemIds.value[selIndex] = realId;
-          }
-
+          if (selIndex !== -1) selectedItemIds.value[selIndex] = realId;
+          
           if (itemInCart.quantity !== quantity) {
             syncQtyToDatabase(itemInCart);
           } else {
             itemInCart.isSyncing = false;
+            fetchCarts(); // Perbarui summary total
           }
-        } else {
-          throw new Error("Missing Cart ID from Server!");
-        }
-      } else {
-        if (realId) {
-          axios
-            .delete(`${BASE_URL}/carts/${realId}`, {
-              headers: { Authorization: `Bearer ${token}` },
-            })
-            .catch(() => {});
         }
       }
     } catch (error) {
       cartItems.value = cartItems.value.filter((i) => i.id !== tempId);
-      selectedItemIds.value = selectedItemIds.value.filter(
-        (id) => id !== tempId,
-      );
+      selectedItemIds.value = selectedItemIds.value.filter((id) => id !== tempId);
       fetchCarts();
     }
   };
@@ -1351,34 +1704,21 @@ export function useCart() {
     if (newQty < 1) newQty = 1;
     if (newQty > item.product.stock) {
       newQty = item.product.stock;
-      Swal.fire({
-        toast: true,
-        position: "top-end",
-        icon: "warning",
-        title: `Max stock is ${item.product.stock}`,
-        showConfirmButton: false,
-        timer: 2000,
-      });
+      Swal.fire({ toast: true, position: "top-end", icon: "warning", title: `Max stock is ${item.product.stock}`, showConfirmButton: false, timer: 2000 });
     }
 
     item.quantity = newQty;
-    // Gunakan localCurrency reaktif jika perlu
     item.gross_amount = item.quantity * getActivePrice(item.product, localCurrency.value);
     item.isSyncing = true;
 
-    if (!selectedItemIds.value.includes(item.id)) {
-      selectedItemIds.value.push(item.id);
-    }
-
+    if (!selectedItemIds.value.includes(item.id)) selectedItemIds.value.push(item.id);
     if (item.isCreating) return;
 
     if (debounceTimers.has(item.id)) clearTimeout(debounceTimers.get(item.id));
-
     const timerId = setTimeout(() => {
       syncQtyToDatabase(item);
       debounceTimers.delete(item.id);
     }, 600);
-
     debounceTimers.set(item.id, timerId);
   };
 
@@ -1388,14 +1728,9 @@ export function useCart() {
       return;
     }
     try {
-      const res = await axios.put(
-        `${BASE_URL}/carts/${item.id}`,
-        { quantity: item.quantity },
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        },
-      );
+      await axios.put(`${BASE_URL}/carts/${item.id}`, { quantity: item.quantity }, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
       item.gross_amount = item.quantity * getActivePrice(item.product, localCurrency.value);
+      fetchCarts(); // Panggil ulang untuk merefresh Cart Summary (Bundle)
     } catch (error) {
       fetchCarts();
     } finally {
@@ -1407,17 +1742,12 @@ export function useCart() {
     const backupItems = [...cartItems.value];
     cartItems.value = cartItems.value.filter((item) => item.id !== id);
     selectedItemIds.value = selectedItemIds.value.filter((selId) => selId !== id);
-
-    Swal.fire({
-      toast: true, position: "top-end", icon: "success", title: "Item Removed", showConfirmButton: false, timer: 2000,
-    });
-
+    Swal.fire({ toast: true, position: "top-end", icon: "success", title: "Item Removed", showConfirmButton: false, timer: 2000 });
     if (String(id).startsWith("temp_")) return;
 
     try {
-      await axios.delete(`${BASE_URL}/carts/${id}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      await axios.delete(`${BASE_URL}/carts/${id}`, { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
+      fetchCarts(); // Hitung ulang summary bundle
     } catch (error) {
       cartItems.value = backupItems;
       if (!selectedItemIds.value.includes(id)) selectedItemIds.value.push(id);
@@ -1425,21 +1755,20 @@ export function useCart() {
   };
 
   const clearSelectedCart = () => {
-    cartItems.value = cartItems.value.filter(
-      (item) => !selectedItemIds.value.includes(item.id),
-    );
+    cartItems.value = cartItems.value.filter((item) => !selectedItemIds.value.includes(item.id));
     selectedItemIds.value = [];
   };
 
   return {
     cartItems,
+    cartSummary, // Ekspos ini ke CartPage.vue
     cartCount,
     checkoutCount,
     checkoutTotalAmount,
     selectedItemIds,
     isAllSelected,
-    triggerCurrencyUpdate, // Ekspos ini agar komponen bisa memanggilnya
-    localCurrency, // Ekspos ini
+    triggerCurrencyUpdate,
+    localCurrency,
     fetchCarts,
     handleOptimisticAdd,
     handleQtyChange,

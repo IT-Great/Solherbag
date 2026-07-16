@@ -12568,7 +12568,13 @@ const getAxiosConfig = () => ({
   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
 });
 
-const { cartItems, checkoutCount, selectedItemIds, clearSelectedCart } = useCart();
+const {
+  cartItems,
+  checkoutCount,
+  cartSummary,
+  selectedItemIds,
+  clearSelectedCart,
+} = useCart();
 
 const userData = ref(null);
 const addresses = ref([]);
@@ -12786,18 +12792,24 @@ const checkoutTotalIDR = computed(() => {
   }, 0);
 });
 
-const cartSubtotalObj = computed(() => {
-  const curr = currentCurrency.value;
-  const totalValue = checkoutItems.value.reduce((sum, item) => {
-    const activeObj = getActivePriceObj(item.product);
-    let val = activeObj.value;
+// const cartSubtotalObj = computed(() => {
+//   const curr = currentCurrency.value;
+//   const totalValue = checkoutItems.value.reduce((sum, item) => {
+//     const activeObj = getActivePriceObj(item.product);
+//     let val = activeObj.value;
 
-    if (activeObj.curr === "IDR" && curr !== "IDR") {
-      val = val * (exchangeRates.value[curr] || 1);
-    }
-    return sum + val * item.quantity;
-  }, 0);
-  return { value: totalValue, curr };
+//     if (activeObj.curr === "IDR" && curr !== "IDR") {
+//       val = val * (exchangeRates.value[curr] || 1);
+//     }
+//     return sum + val * item.quantity;
+//   }, 0);
+//   return { value: totalValue, curr };
+// });
+
+// Ganti blok cartSubtotalObj yang panjang dengan ini:
+const cartSubtotalObj = computed(() => {
+  // checkoutTotalAmount sudah merupakan hasil perhitungan final dari useCart.js (termasuk Bundle)
+  return { value: checkoutTotalAmount.value, curr: currentCurrency.value };
 });
 
 const actualPromoDiscountIDR = computed(() => {
@@ -13194,12 +13206,33 @@ onMounted(async () => {
   });
 
   try {
-    const [resExchange, resCatalog, resUser, resAddr] = await Promise.allSettled([
+    // const [resExchange, resCatalog, resUser, resAddr] = await Promise.allSettled([
+    //   axios.get(`${BASE_URL}/exchange-rates`),
+    //   axios.get(`${BASE_URL}/products`),
+    //   axios.get(`${BASE_URL}/user`, getAxiosConfig()),
+    //   axios.get(`${BASE_URL}/addresses`, getAxiosConfig()),
+    // ]);
+
+    const [
+      resExchange,
+      resCatalog,
+      resUser,
+      resAddr,
+      dummyCartFetch,
+    ] = await Promise.allSettled([
       axios.get(`${BASE_URL}/exchange-rates`),
       axios.get(`${BASE_URL}/products`),
       axios.get(`${BASE_URL}/user`, getAxiosConfig()),
       axios.get(`${BASE_URL}/addresses`, getAxiosConfig()),
+      axios.get(`${BASE_URL}/carts?currency=${currentCurrency.value}`, getAxiosConfig()), // Pastikan Backend merender Bundle terbaru
     ]);
+
+    // Update state Cart manual jika perlu
+    if (dummyCartFetch.status === "fulfilled") {
+      if (dummyCartFetch.value.data.summary) {
+        cartSummary.value = dummyCartFetch.value.data.summary;
+      }
+    }
 
     if (resExchange.status === "fulfilled" && resExchange.value.data?.data?.rates) {
       exchangeRates.value = resExchange.value.data.data.rates;
