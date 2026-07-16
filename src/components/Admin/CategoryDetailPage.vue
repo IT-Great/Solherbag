@@ -97,6 +97,36 @@
             {{ activeProductsCount }} Active
           </span>
         </div>
+        <div
+          v-if="category.bundle_promo?.qty"
+          class="bg-blue-50 border border-blue-100 p-6 rounded-xl min-w-[250px] shrink-0"
+        >
+          <p class="mb-3 text-xs font-bold tracking-widest text-blue-800 uppercase">
+            Active Bundle Promo
+          </p>
+          <div class="space-y-2">
+            <p class="text-sm font-medium text-blue-900">
+              Buy
+              <span class="font-black text-xl mx-1">{{ category.bundle_promo.qty }}</span>
+              for
+            </p>
+            <p class="text-2xl font-black text-blue-700">
+              {{ formatPrice(category.bundle_promo.price) }}
+            </p>
+            <div class="pt-2 mt-2 border-t border-blue-200">
+              <p class="text-[10px] text-blue-600 font-mono">
+                Ends:
+                {{ new Date(category.bundle_promo.end_date).toLocaleDateString("en-GB") }}
+              </p>
+              <span
+                :class="category.bundle_promo.is_active ? 'bg-green-500' : 'bg-red-500'"
+                class="inline-block px-2 py-0.5 mt-1 text-[9px] font-bold text-white uppercase rounded-full"
+              >
+                {{ category.bundle_promo.is_active ? "Live Now" : "Expired/Inactive" }}
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div>
