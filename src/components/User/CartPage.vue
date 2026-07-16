@@ -2310,26 +2310,79 @@ const updateCurrencyState = () => {
 // ============================================================================
 // 👇 [BARU] LOGIKA MENGHITUNG FOMO ALERT 👇
 // ============================================================================
+// const fomoAlerts = computed(() => {
+//   const alerts = [];
+
+//   // Hanya hitung dari barang yang ada di keranjang
+//   const groupedByCategory = cartItems.value.reduce((acc, item) => {
+//     const catId = item.product.category_id;
+//     if (!acc[catId]) acc[catId] = { category: item.product.category, totalQty: 0 };
+//     acc[catId].totalQty += item.quantity;
+//     return acc;
+//   }, {});
+
+//   Object.values(groupedByCategory).forEach((group) => {
+//     // Memanfaatkan object palsu untuk mengekstrak promo
+//     const pseudoProduct = { category: group.category };
+//     const promo = getBundlePromo(pseudoProduct);
+
+//     if (promo) {
+//       const remainder = group.totalQty % promo.qty;
+//       // Jika sisa pembagian > 0 (Artinya masih ada barang menggantung yang kena harga normal)
+//       // Hitung berapa barang lagi yang dibutuhkan untuk mencapai paket Bundle selanjutnya
+//       if (remainder > 0) {
+//         const neededQty = promo.qty - remainder;
+//         alerts.push({
+//           categoryName: group.category.name,
+//           neededQty: neededQty,
+//           bundleQty: promo.qty,
+//           bundlePrice: promo.price,
+//           bundleCurr: promo.curr,
+//         });
+//       }
+//     }
+//   });
+
+//   return alerts;
+// });
+// ============================================================================
+
+// ============================================================================
+// 👇 LOGIKA MENGHITUNG FOMO ALERT (DIPERBAIKI) 👇
+// ============================================================================
 const fomoAlerts = computed(() => {
   const alerts = [];
 
-  // Hanya hitung dari barang yang ada di keranjang
-  const groupedByCategory = cartItems.value.reduce((acc, item) => {
+  // Hanya hitung dari barang yang ada di keranjang yang DIPILIH (dicentang)
+  const selectedItems = cartItems.value.filter((item) =>
+    selectedItemIds.value.includes(item.id)
+  );
+
+  const groupedByCategory = selectedItems.reduce((acc, item) => {
     const catId = item.product.category_id;
-    if (!acc[catId]) acc[catId] = { category: item.product.category, totalQty: 0 };
+    if (!acc[catId]) {
+      acc[catId] = {
+        category: item.product.category,
+        totalQty: 0,
+      };
+    }
     acc[catId].totalQty += item.quantity;
     return acc;
   }, {});
 
   Object.values(groupedByCategory).forEach((group) => {
-    // Memanfaatkan object palsu untuk mengekstrak promo
-    const pseudoProduct = { category: group.category };
+    // Buat pseudoProduct yang lengkap agar helper getBundlePromo bisa membaca
+    const pseudoProduct = {
+      category: group.category,
+    };
+
     const promo = getBundlePromo(pseudoProduct);
 
+    // Pastikan promo ada DAN is_active (berdasarkan tanggal dan ketersediaan)
     if (promo) {
       const remainder = group.totalQty % promo.qty;
-      // Jika sisa pembagian > 0 (Artinya masih ada barang menggantung yang kena harga normal)
-      // Hitung berapa barang lagi yang dibutuhkan untuk mencapai paket Bundle selanjutnya
+
+      // FOMO Trigger: Jika ada barang yang tidak masuk hitungan paket
       if (remainder > 0) {
         const neededQty = promo.qty - remainder;
         alerts.push({

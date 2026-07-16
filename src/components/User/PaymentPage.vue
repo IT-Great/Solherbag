@@ -12571,6 +12571,7 @@ const getAxiosConfig = () => ({
 const {
   cartItems,
   checkoutCount,
+  checkoutTotalAmount,
   cartSummary,
   selectedItemIds,
   clearSelectedCart,

@@ -1539,15 +1539,58 @@ export const getActivePrice = (product, currentCurrencyStr = null) => {
 // ==========================================
 // [BARU] BUNDLE PROMO HELPER
 // ==========================================
+// export const getBundlePromo = (product) => {
+//   if (!product || !product.category) return null;
+  
+//   const curr = getCurrentCurrency();
+
+//   let promoData = null;
+//   if (product.category.bundle_promo && product.category.bundle_promo.is_active) {
+//     promoData = product.category.bundle_promo;
+//   } else if (product.category.bundle_qty && product.category.bundle_price) {
+//     const now = new Date();
+//     const start = product.category.bundle_start_date ? convertToWIB(product.category.bundle_start_date) : null;
+//     const end = product.category.bundle_end_date ? convertToWIB(product.category.bundle_end_date) : null;
+    
+//     if ((!start || now >= start) && (!end || now <= end)) {
+//       promoData = { qty: product.category.bundle_qty, price: product.category.bundle_price };
+//     }
+//   }
+
+//   if (!promoData) return null;
+
+//   let finalPrice = 0;
+//   let finalCurr = "IDR";
+
+//   if (typeof promoData.price === 'object') {
+//      if (promoData.price[curr]) {
+//          finalPrice = promoData.price[curr];
+//          finalCurr = curr;
+//      } else {
+//          finalPrice = promoData.price["IDR"]; 
+//      }
+//   } else {
+//      finalPrice = promoData.price; 
+//   }
+
+//   return { qty: promoData.qty, price: finalPrice, curr: finalCurr };
+// };
+
+// ==========================================
+// BUNDLE PROMO HELPER
+// ==========================================
 export const getBundlePromo = (product) => {
   if (!product || !product.category) return null;
   
   const curr = getCurrentCurrency();
 
   let promoData = null;
+  // Prioritaskan dari CategoryResource (jika dimuat via relasi Controller API)
   if (product.category.bundle_promo && product.category.bundle_promo.is_active) {
     promoData = product.category.bundle_promo;
-  } else if (product.category.bundle_qty && product.category.bundle_price) {
+  } 
+  // Fallback membaca langsung dari raw database column (jika object mentah)
+  else if (product.category.bundle_qty && product.category.bundle_price) {
     const now = new Date();
     const start = product.category.bundle_start_date ? convertToWIB(product.category.bundle_start_date) : null;
     const end = product.category.bundle_end_date ? convertToWIB(product.category.bundle_end_date) : null;
@@ -1562,15 +1605,23 @@ export const getBundlePromo = (product) => {
   let finalPrice = 0;
   let finalCurr = "IDR";
 
-  if (typeof promoData.price === 'object') {
-     if (promoData.price[curr]) {
-         finalPrice = promoData.price[curr];
+  // Periksa apakah price adalah String JSON (terkadang API Laravel mengirim string json jika tidak di-cast)
+  let parsedPrice = promoData.price;
+  if (typeof parsedPrice === 'string') {
+    try {
+      parsedPrice = JSON.parse(parsedPrice);
+    } catch(e) {}
+  }
+
+  if (typeof parsedPrice === 'object' && parsedPrice !== null) {
+     if (parsedPrice[curr]) {
+         finalPrice = parsedPrice[curr];
          finalCurr = curr;
      } else {
-         finalPrice = promoData.price["IDR"]; 
+         finalPrice = parsedPrice["IDR"]; 
      }
   } else {
-     finalPrice = promoData.price; 
+     finalPrice = parsedPrice; // Legacy mode (jika admin cuma ngisi IDR decimal)
   }
 
   return { qty: promoData.qty, price: finalPrice, curr: finalCurr };
