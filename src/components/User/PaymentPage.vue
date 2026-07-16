@@ -12572,7 +12572,8 @@ const {
   cartItems,
   checkoutCount,
   checkoutTotalAmount,
-  cartSummary,
+  // cartSummary,
+  bundleDiscountAmount, // <-- Ganti cartSummary menjadi ini
   selectedItemIds,
   clearSelectedCart,
 } = useCart();

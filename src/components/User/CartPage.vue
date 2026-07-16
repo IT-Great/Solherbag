@@ -2213,7 +2213,7 @@ onUnmounted(() => {
               <span class="font-bold text-black">{{ checkoutCount }}</span>
             </div>
 
-            <div
+            <!-- <div
               v-if="cartSummary && cartSummary.bundle_discount > 0"
               class="flex justify-between text-sm font-bold text-emerald-600 bg-emerald-50 px-3 py-2 rounded-xl border border-emerald-100"
             >
@@ -2226,6 +2226,23 @@ onUnmounted(() => {
                   formatCurrencyDisplay({
                     value: cartSummary.bundle_discount,
                     curr: cartSummary.currency,
+                  })
+                }}</span
+              >
+            </div> -->
+            <div
+              v-if="bundleDiscountAmount > 0"
+              class="flex justify-between text-sm font-bold text-emerald-600 bg-emerald-50 px-3 py-2 rounded-xl border border-emerald-100"
+            >
+              <span class="uppercase tracking-widest text-[10px] mt-0.5"
+                >Bundle Saved</span
+              >
+              <span
+                >-
+                {{
+                  formatCurrencyDisplay({
+                    value: bundleDiscountAmount,
+                    curr: currentCurrency,
                   })
                 }}</span
               >
@@ -2284,7 +2301,8 @@ const isProcessingCheckout = ref(false);
 
 const {
   cartItems,
-  cartSummary, // <-- Ambil state summary dari Composables
+  // cartSummary, // <-- Ambil state summary dari Composables
+  bundleDiscountAmount,
   cartCount,
   checkoutCount,
   checkoutTotalAmount,
