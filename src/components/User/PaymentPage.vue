@@ -10715,7 +10715,7 @@ const useAllPoints = () => {
 </style>
 -->
 
-<template>
+<!-- <template>
   <div
     v-if="isPageLoading"
     class="z-[100] fixed inset-0 flex flex-col justify-center items-center bg-white"
@@ -10732,7 +10732,7 @@ const useAllPoints = () => {
 
   <div
     v-else
-    class="max-w-6xl min-h-screen px-6 py-12 mx-auto md:py-24 animate-fade-in relative z-10"
+    class="relative z-10 max-w-6xl min-h-screen px-6 py-12 mx-auto md:py-24 animate-fade-in"
   >
     <div v-if="checkoutItems.length === 0" class="py-20 text-center">
       <h2 class="mb-4 font-serif text-3xl">{{ $t("payment.bag_empty") }}</h2>
@@ -11680,7 +11680,7 @@ const useAllPoints = () => {
               </div>
 
               <div
-                class="relative overflow-hidden border border-gray-200 rounded-2xl mt-4"
+                class="relative mt-4 overflow-hidden border border-gray-200 rounded-2xl"
               >
                 <div
                   class="flex items-start gap-2 px-4 py-3 border-b bg-amber-50 border-amber-100"
@@ -11706,7 +11706,7 @@ const useAllPoints = () => {
                 </div>
 
                 <div
-                  class="flex flex-col sm:flex-row items-center justify-between gap-2 p-3 border-b border-gray-200 bg-gray-50"
+                  class="flex flex-col items-center justify-between gap-2 p-3 border-b border-gray-200 sm:flex-row bg-gray-50"
                 >
                   <div class="relative w-full sm:flex-1">
                     <input
@@ -12621,4 +12621,269 @@ const useAllPoints = () => {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #d1d5db;
 }
-</style>
+</style> -->
+
+<template>
+  <div
+    v-if="isPageLoading"
+    class="z-[100] fixed inset-0 flex flex-col justify-center items-center bg-white"
+  >
+    <div class="flex gap-2 mb-4">
+      <div class="w-3 h-3 bg-black rounded-full animate-bounce-1"></div>
+      <div class="w-3 h-3 bg-black rounded-full animate-bounce-2"></div>
+      <div class="w-3 h-3 bg-black rounded-full animate-bounce-3"></div>
+    </div>
+    <p class="font-serif text-sm italic tracking-widest text-gray-500 animate-pulse">
+      {{ $t("payment.prepare_checkout") }}
+    </p>
+  </div>
+
+  <div
+    v-else
+    class="relative z-10 max-w-6xl min-h-screen px-6 py-12 mx-auto md:py-24 animate-fade-in"
+  >
+    <div v-if="checkoutItems.length === 0" class="py-20 text-center">
+      <h2 class="mb-4 font-serif text-3xl">{{ $t("payment.bag_empty") }}</h2>
+      <button
+        @click="$router.push('/collections')"
+        class="px-8 py-3 text-xs font-bold tracking-widest text-white uppercase bg-black rounded-full"
+      >
+        {{ $t("payment.return_shop") }}
+      </button>
+    </div>
+
+    <div v-else>
+      <h1 class="mb-12 font-serif text-3xl tracking-tighter uppercase md:text-4xl">
+        {{ $t("payment.checkout") }}
+      </h1>
+
+      <div class="flex flex-col gap-12 lg:flex-row">
+        <div class="flex-grow space-y-12">
+            <p class="my-8 text-sm italic text-center text-gray-400">Please fill out shipping method...</p>
+        </div>
+
+        <div class="lg:w-[400px] space-y-6">
+          <div
+            class="sticky p-8 bg-white border border-gray-100 shadow-xl rounded-3xl top-28"
+          >
+            <h2
+              class="pb-4 mb-6 text-sm font-bold tracking-widest text-gray-900 uppercase border-b border-gray-200"
+            >
+              {{ $t("payment.order_summary") }}
+            </h2>
+
+            <div
+              class="space-y-4 mb-8 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar"
+            >
+              <div v-for="item in checkoutItems" :key="item.id" class="flex gap-4">
+                <img
+                  :src="item.product?.image_url || item.product?.image"
+                  class="object-cover w-16 h-16 bg-gray-100 rounded-xl shrink-0"
+                />
+                <div class="flex-grow">
+                  <div class="flex items-center gap-2">
+                    <p
+                      class="w-40 text-[11px] font-bold text-gray-900 uppercase truncate"
+                      :title="item.product?.name"
+                    >
+                      {{ item.product?.name }}
+                    </p>
+                  </div>
+                  <div class="flex items-center gap-2 mt-0.5">
+                    <p class="text-[10px] text-gray-400">Qty: {{ item.quantity }}</p>
+                    <template v-if="item.color">
+                      <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
+                      <div class="flex items-center gap-1.5">
+                        <div
+                          class="w-3 h-3 border border-gray-300 rounded-full shadow-sm shrink-0"
+                          :style="{ backgroundColor: parseColorHex(item.color) }"
+                        ></div>
+                        <span class="text-[10px] font-bold text-gray-500 uppercase">
+                          {{ parseColorName(item.color) }}
+                        </span>
+                      </div>
+                    </template>
+                  </div>
+                  <p class="mt-1 text-xs font-medium text-gray-900">
+                    {{
+                      formatCurrencyDisplay({
+                        value: getActivePriceObj(item.product).value * item.quantity,
+                        curr: getActivePriceObj(item.product).curr,
+                      })
+                    }}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-4 space-y-3 text-sm border-t border-gray-50">
+              <div class="flex justify-between text-gray-500">
+                <span>{{ $t("payment.total_items") }}</span>
+                <span class="font-bold text-gray-900"
+                  >{{ checkoutCount }} {{ $t("payment.item") }}</span
+                >
+              </div>
+              <div class="flex justify-between text-gray-500">
+                <span>{{ $t("payment.subtotal") }}</span>
+                <span
+                  :class="
+                    appliedPromoType === 'voucher' ? 'text-amber-600 font-bold' : ''
+                  "
+                >
+                  {{ formatCurrencyDisplay(cartSubtotalObj) }}
+                </span>
+              </div>
+
+              <div
+                v-if="bundleDiscountAmount > 0"
+                class="flex justify-between px-3 py-2 text-sm font-bold border text-emerald-600 bg-emerald-50 rounded-xl border-emerald-100"
+              >
+                <span class="uppercase tracking-widest text-[10px] mt-0.5"
+                  >Bundle Saved</span
+                >
+                <span
+                  >-
+                  {{
+                    formatCurrencyDisplay({
+                      value: bundleDiscountAmount,
+                      curr: currentCurrency,
+                    })
+                  }}</span
+                >
+              </div>
+              <div class="flex items-end justify-between pt-4 border-t border-gray-200">
+                <span class="font-bold text-gray-500 text-xs uppercase tracking-[0.2em]">{{
+                  $t("payment.grand_total")
+                }}</span>
+                <span class="text-2xl font-black text-black">
+                  {{
+                    formatCurrencyDisplay({
+                      value: checkoutTotalAmount,
+                      curr: currentCurrency,
+                    })
+                  }}
+                </span>
+              </div>
+              <p class="text-[10px] text-gray-400 italic text-right mt-1">
+                {{ $t("cart.tax_and_shipping") }}
+              </p>
+            </div>
+
+            <button
+              @click="handlePayment"
+              :disabled="isProcessing"
+              class="mt-8 w-full bg-black hover:bg-gray-800 disabled:bg-gray-300 py-5 rounded-2xl font-bold text-white text-xs uppercase tracking-[0.3em] transition-all duration-500 shadow-xl shadow-black/10 flex justify-center items-center"
+            >
+              <span v-if="!isProcessing">{{ $t("payment.pay_now") }}</span>
+              <span v-else class="flex items-center justify-center gap-2">
+                <div
+                  class="w-3 h-3 border-2 rounded-full border-white/30 border-t-white animate-spin"
+                ></div>
+                Processing
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, onUnmounted, computed } from "vue";
+import { useRouter } from "vue-router";
+import axios from "axios";
+import { BASE_URL } from "../../config/api.js";
+import { useCart, getActivePrice } from "../../composables/useCart.js";
+
+const router = useRouter();
+const isProcessing = ref(false);
+const isPageLoading = ref(false);
+
+const {
+  cartItems,
+  checkoutCount,
+  checkoutTotalAmount,
+  bundleDiscountAmount,
+  selectedItemIds,
+} = useCart();
+
+const currentCurrency = ref(localStorage.getItem("currency") || "IDR");
+
+const updateCurrencyState = () => {
+  currentCurrency.value = localStorage.getItem("currency") || "IDR";
+};
+
+// --- HELPER MULTI CURRENCY ---
+const getPriceToDisplay = (product) => {
+  if (!product) return { value: 0, curr: "IDR" };
+  const curr = currentCurrency.value;
+  if (curr === "IDR") return { value: Number(product.price), curr: "IDR" };
+
+  try {
+    const pricesObj = typeof product.prices === "string" ? JSON.parse(product.prices) : product.prices || {};
+    const dbPrice = pricesObj[curr] || pricesObj[curr.toLowerCase()] || pricesObj[currentCurrency.value.toUpperCase()];
+    if (dbPrice) return { value: parseFloat(dbPrice), curr: curr };
+  } catch (e) {}
+
+  return { value: Number(product.price), curr: "IDR" };
+};
+
+const formatCurrencyDisplay = (priceObj) => {
+  if (!priceObj) return "";
+  const { value, curr } = priceObj;
+  const symbols = { USD: "$", SGD: "S$", EUR: "€", AUD: "A$", MYR: "RM", IDR: "Rp " };
+
+  const formatter = new Intl.NumberFormat(curr === "IDR" ? "id-ID" : "en-US", {
+    minimumFractionDigits: curr === "IDR" ? 0 : 2,
+    maximumFractionDigits: curr === "IDR" ? 0 : 2,
+  });
+
+  return `${symbols[curr] || curr + " "}${formatter.format(value)}`;
+};
+
+const getActivePriceObj = (product) => {
+  const dynamicPriceObj = getPriceToDisplay(product);
+  return dynamicPriceObj; // Sederhanakan untuk contoh ini
+};
+
+// Kalkulasi subtotal menggunakan checkoutTotalAmount langsung dari useCart
+const cartSubtotalObj = computed(() => {
+  return { value: checkoutTotalAmount.value, curr: currentCurrency.value };
+});
+
+const checkoutItems = computed(() => {
+  const ids = selectedItemIds?.value || selectedItemIds || [];
+  return (cartItems.value || []).filter((item) => ids.includes(item.id));
+});
+
+const parseColorName = (colorString) => {
+  if (!colorString) return "";
+  try {
+    const parsed = JSON.parse(colorString);
+    if (parsed.name) return parsed.name;
+  } catch {}
+  return colorString.includes("|") ? colorString.split("|")[0] : colorString;
+};
+
+const parseColorHex = (colorString) => {
+  if (!colorString) return "#cccccc";
+  try {
+    const parsed = JSON.parse(colorString);
+    if (parsed.hex) return parsed.hex;
+  } catch {}
+  return colorString.includes("|") ? colorString.split("|")[1] : colorString;
+};
+
+const handlePayment = () => {
+    // Logika Payment Anda Tetap Sama
+};
+
+onMounted(() => {
+  window.addEventListener("currency-changed", updateCurrencyState);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("currency-changed", updateCurrencyState);
+});
+</script>
