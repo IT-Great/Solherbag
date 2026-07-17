@@ -12677,9 +12677,9 @@ const applyPromo = async () => {
       );
     else if (
       codeToBeApplied !== MEMBER_VOUCHER_CODE &&
-      checkoutTotalIDR.value < 499000
+      checkoutTotalIDR.value < 1500000
     )
-      throw new Error("Minimum spend is Rp 499.000");
+      throw new Error("Minimum spend is Rp 1.500.000");
 
     promoSuccess.value = true;
     promoMessage.value = "✅ " + res.data.message;

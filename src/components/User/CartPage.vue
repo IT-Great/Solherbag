@@ -2196,6 +2196,75 @@ onUnmounted(() => {
               </div>
             </div>
           </TransitionGroup>
+          <div class="pt-12 border-t border-gray-100">
+            <h3 class="mb-6 text-sm font-bold tracking-widest text-gray-800 uppercase">
+              {{ $t("cart.you_may_also_like") }}
+            </h3>
+
+            <div v-if="isLoadingProducts" class="grid grid-cols-2 gap-6 md:grid-cols-4">
+              <div v-for="i in 4" :key="`skel-${i}`" class="flex flex-col gap-2">
+                <div class="bg-gray-200 aspect-square rounded-2xl animate-pulse"></div>
+                <div class="w-3/4 h-3 mt-1 bg-gray-200 rounded animate-pulse"></div>
+                <div class="w-1/2 h-3 bg-gray-200 rounded animate-pulse"></div>
+                <div
+                  class="w-full h-8 pt-2 mt-auto bg-gray-200 rounded-xl animate-pulse"
+                ></div>
+              </div>
+            </div>
+
+            <TransitionGroup
+              v-else-if="suggestedProducts.length > 0"
+              name="list"
+              tag="div"
+              class="grid grid-cols-2 gap-6 md:grid-cols-4"
+            >
+              <div
+                v-for="product in suggestedProducts"
+                :key="product.id"
+                class="flex flex-col group"
+              >
+                <div
+                  class="relative mb-3 overflow-hidden cursor-pointer aspect-square rounded-2xl bg-gray-50"
+                  @click="$router.push(`/products/${product.slug || product.id}`)"
+                >
+                  <img
+                    :src="product.image || defaultBagIcon"
+                    class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
+                    alt="Suggested Product"
+                  />
+
+                  <div
+                    v-if="getDiscountStatus(product, currentCurrency).active"
+                    class="absolute top-2 left-2 bg-red-600 text-white px-2 py-0.5 text-[8px] font-bold uppercase tracking-widest rounded-sm"
+                  >
+                    SALE
+                  </div>
+                </div>
+
+                <h4
+                  class="font-bold text-[10px] uppercase truncate tracking-wide text-gray-900 mb-1"
+                >
+                  {{ product.name }}
+                </h4>
+
+                <p class="mb-3 text-xs font-medium text-gray-600">
+                  {{
+                    formatCurrencyDisplay({
+                      value: getActivePrice(product, currentCurrency),
+                      curr: currentCurrency,
+                    })
+                  }}
+                </p>
+
+                <button
+                  @click="addSuggestedProduct(product)"
+                  class="mt-auto border border-gray-200 hover:border-black hover:bg-black hover:text-white rounded-xl py-2 px-3 text-[9px] font-bold uppercase tracking-widest transition-all duration-300"
+                >
+                  {{ $t("cart.add_this_product") }}
+                </button>
+              </div>
+            </TransitionGroup>
+          </div>
         </div>
       </div>
 
