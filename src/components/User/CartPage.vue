@@ -2434,6 +2434,7 @@ const handleCheckout = () => {
 };
 
 onMounted(() => {
+  fetchAllProducts();
   window.addEventListener("currency-changed", updateCurrencyState);
   window.addEventListener("storage", (e) => {
     if (e.key === "currency") updateCurrencyState();
