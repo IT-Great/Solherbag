@@ -10715,7 +10715,7 @@ const useAllPoints = () => {
 </style>
 -->
 
-<!-- <template>
+<template>
   <div
     v-if="isPageLoading"
     class="z-[100] fixed inset-0 flex flex-col justify-center items-center bg-white"
@@ -10725,7 +10725,9 @@ const useAllPoints = () => {
       <div class="w-3 h-3 bg-black rounded-full animate-bounce-2"></div>
       <div class="w-3 h-3 bg-black rounded-full animate-bounce-3"></div>
     </div>
-    <p class="font-serif text-sm italic tracking-widest text-gray-500 animate-pulse">
+    <p
+      class="font-serif text-sm italic tracking-widest text-gray-500 animate-pulse"
+    >
       {{ $t("payment.prepare_checkout") }}
     </p>
   </div>
@@ -10745,7 +10747,9 @@ const useAllPoints = () => {
     </div>
 
     <div v-else>
-      <h1 class="mb-12 font-serif text-3xl tracking-tighter uppercase md:text-4xl">
+      <h1
+        class="mb-12 font-serif text-3xl tracking-tighter uppercase md:text-4xl"
+      >
         {{ $t("payment.checkout") }}
       </h1>
 
@@ -10757,7 +10761,9 @@ const useAllPoints = () => {
                 class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white"
                 >1</span
               >
-              <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">
+              <h2
+                class="text-sm font-bold tracking-widest text-gray-900 uppercase"
+              >
                 {{ $t("payment.shipping_address") }}
               </h2>
             </div>
@@ -10806,9 +10812,11 @@ const useAllPoints = () => {
                     >
                   </div>
                   <p class="mt-2 text-sm leading-relaxed text-gray-600">
-                    {{ addr.details?.location || "" }}, {{ addr.details?.type || "" }}
+                    {{ addr.details?.location || "" }},
+                    {{ addr.details?.type || "" }}
                     <br />
-                    {{ addr.details?.city || "" }}, {{ addr.details?.province || "" }}
+                    {{ addr.details?.city || "" }},
+                    {{ addr.details?.province || "" }}
                     <br />
                     {{ addr.details?.region || "" }} -
                     {{ addr.details?.postal_code || "" }}
@@ -10830,7 +10838,9 @@ const useAllPoints = () => {
                 class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white"
                 >2</span
               >
-              <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">
+              <h2
+                class="text-sm font-bold tracking-widest text-gray-900 uppercase"
+              >
                 {{ $t("payment.shipping_method") }}
               </h2>
             </div>
@@ -10847,7 +10857,9 @@ const useAllPoints = () => {
                 class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white"
                 >2</span
               >
-              <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">
+              <h2
+                class="text-sm font-bold tracking-widest text-gray-900 uppercase"
+              >
                 {{ $t("payment.shipping_method") }}
               </h2>
             </div>
@@ -10870,7 +10882,9 @@ const useAllPoints = () => {
                 />
                 <div class="flex items-center justify-between flex-grow ml-4">
                   <div>
-                    <p class="text-sm font-bold tracking-wide text-gray-900 uppercase">
+                    <p
+                      class="text-sm font-bold tracking-wide text-gray-900 uppercase"
+                    >
                       {{ $t("payment.free_shipping") }}
                     </p>
                     <p class="mt-1 text-xs font-bold text-green-600">
@@ -10897,7 +10911,9 @@ const useAllPoints = () => {
                 />
                 <div class="flex items-center justify-between flex-grow ml-4">
                   <div>
-                    <p class="text-sm font-bold tracking-wide text-gray-900 uppercase">
+                    <p
+                      class="text-sm font-bold tracking-wide text-gray-900 uppercase"
+                    >
                       {{ $t("payment.standard") }}
                     </p>
                     <p class="mt-1 text-xs text-gray-500">
@@ -11050,9 +11066,9 @@ const useAllPoints = () => {
                         rate.is_disabled
                           ? 'opacity-40 bg-gray-100 border-gray-200 pointer-events-none select-none'
                           : selectedRate?.company === rate.company &&
-                            selectedRate?.type === rate.type
-                          ? 'border-black bg-gray-50 shadow-sm'
-                          : 'border-gray-200 hover:bg-gray-50 cursor-pointer transition-all',
+                              selectedRate?.type === rate.type
+                            ? 'border-black bg-gray-50 shadow-sm'
+                            : 'border-gray-200 hover:bg-gray-50 cursor-pointer transition-all',
                       ]"
                       class="relative flex flex-col p-4 border rounded-xl"
                     >
@@ -11078,7 +11094,8 @@ const useAllPoints = () => {
                             />
                             <span
                               v-show="
-                                imageErrors[rate.company] || !getCourierLogo(rate.company)
+                                imageErrors[rate.company] ||
+                                !getCourierLogo(rate.company)
                               "
                               class="text-xs font-black text-gray-300"
                             >
@@ -11089,7 +11106,8 @@ const useAllPoints = () => {
                             <p
                               class="text-sm font-bold tracking-wide text-gray-800 uppercase"
                             >
-                              {{ rate.company }} - {{ rate.type.replace("_", " ") }}
+                              {{ rate.company }} -
+                              {{ rate.type.replace("_", " ") }}
                             </p>
                             <p class="text-gray-500 text-[10px] mt-0.5">
                               {{ rate.courier_name }} ({{ rate.duration }})
@@ -11098,7 +11116,9 @@ const useAllPoints = () => {
                         </div>
                         <p class="text-sm font-black text-black">
                           {{
-                            formatCurrencyDisplay(convertIDRtoActiveCurrency(rate.price))
+                            formatCurrencyDisplay(
+                              convertIDRtoActiveCurrency(rate.price),
+                            )
                           }}
                         </p>
                       </div>
@@ -11107,7 +11127,8 @@ const useAllPoints = () => {
                         v-if="rate.is_disabled"
                         class="mt-3 ml-8 text-[10px] text-red-600 bg-red-50 px-3 py-1.5 rounded-lg border border-red-100 font-bold uppercase tracking-widest"
                       >
-                        ⚠️ {{ $t("payment.unavailable") }} {{ rate.disable_reason }}
+                        ⚠️ {{ $t("payment.unavailable") }}
+                        {{ rate.disable_reason }}
                       </div>
                     </label>
                   </div>
@@ -11130,7 +11151,11 @@ const useAllPoints = () => {
             <div
               class="space-y-4 mb-8 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar"
             >
-              <div v-for="item in checkoutItems" :key="item.id" class="flex gap-4">
+              <div
+                v-for="item in checkoutItems"
+                :key="item.id"
+                class="flex gap-4"
+              >
                 <img
                   :src="item.product?.image_url || item.product?.image"
                   class="object-cover w-16 h-16 bg-gray-100 rounded-xl shrink-0"
@@ -11154,15 +11179,21 @@ const useAllPoints = () => {
                     >
                   </div>
                   <div class="flex items-center gap-2 mt-0.5">
-                    <p class="text-[10px] text-gray-400">Qty: {{ item.quantity }}</p>
+                    <p class="text-[10px] text-gray-400">
+                      Qty: {{ item.quantity }}
+                    </p>
                     <template v-if="item.color">
                       <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
                       <div class="flex items-center gap-1.5">
                         <div
                           class="w-3 h-3 border border-gray-300 rounded-full shadow-sm shrink-0"
-                          :style="{ backgroundColor: parseColorHex(item.color) }"
+                          :style="{
+                            backgroundColor: parseColorHex(item.color),
+                          }"
                         ></div>
-                        <span class="text-[10px] font-bold text-gray-500 uppercase">
+                        <span
+                          class="text-[10px] font-bold text-gray-500 uppercase"
+                        >
                           {{ parseColorName(item.color) }}
                         </span>
                       </div>
@@ -11172,7 +11203,8 @@ const useAllPoints = () => {
                   <p class="mt-1 text-xs font-medium text-gray-900">
                     {{
                       formatCurrencyDisplay({
-                        value: getActivePriceObj(item.product).value * item.quantity,
+                        value:
+                          getActivePriceObj(item.product).value * item.quantity,
                         curr: getActivePriceObj(item.product).curr,
                       })
                     }}
@@ -11192,7 +11224,9 @@ const useAllPoints = () => {
                 <span>{{ $t("payment.subtotal") }}</span>
                 <span
                   :class="
-                    appliedPromoType === 'voucher' ? 'text-amber-600 font-bold' : ''
+                    appliedPromoType === 'voucher'
+                      ? 'text-amber-600 font-bold'
+                      : ''
                   "
                 >
                   {{ formatCurrencyDisplay(cartSubtotalObj) }}
@@ -11233,7 +11267,9 @@ const useAllPoints = () => {
                     </p>
                   </div>
 
-                  <label class="relative inline-flex items-center cursor-pointer">
+                  <label
+                    class="relative inline-flex items-center cursor-pointer"
+                  >
                     <input
                       type="checkbox"
                       v-model="useMemberVoucher"
@@ -11241,7 +11277,8 @@ const useAllPoints = () => {
                       class="sr-only peer"
                       :disabled="
                         isVerifyingPromo ||
-                        (checkoutTotalIDR < MEMBER_MIN_SPEND && !useMemberVoucher)
+                        (checkoutTotalIDR < MEMBER_MIN_SPEND &&
+                          !useMemberVoucher)
                       "
                     />
                     <div
@@ -11262,7 +11299,9 @@ const useAllPoints = () => {
                     type="text"
                     v-model="promoInput"
                     :disabled="
-                      appliedPromoCode !== null || isVerifyingPromo || useMemberVoucher
+                      appliedPromoCode !== null ||
+                      isVerifyingPromo ||
+                      useMemberVoucher
                     "
                     :placeholder="$t('payment.enter_promo_code')"
                     class="flex-1 bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-sm uppercase focus:ring-black outline-none disabled:bg-gray-100 disabled:text-gray-400 transition-colors"
@@ -11270,10 +11309,14 @@ const useAllPoints = () => {
                   <button
                     v-if="!appliedPromoCode"
                     type="submit"
-                    :disabled="!promoInput || isVerifyingPromo || useMemberVoucher"
+                    :disabled="
+                      !promoInput || isVerifyingPromo || useMemberVoucher
+                    "
                     class="bg-black text-white text-[10px] font-bold uppercase px-4 rounded-lg hover:bg-gray-800 transition disabled:bg-gray-300 w-20 flex justify-center items-center"
                   >
-                    <span v-if="!isVerifyingPromo">{{ $t("payment.apply") }}</span>
+                    <span v-if="!isVerifyingPromo">{{
+                      $t("payment.apply")
+                    }}</span>
                     <div
                       v-else
                       class="w-3 h-3 border-2 rounded-full border-white/40 border-t-white animate-spin"
@@ -11300,10 +11343,14 @@ const useAllPoints = () => {
                   class="flex justify-between text-[10px] md:text-xs font-medium text-emerald-600 mt-2"
                 >
                   <span class="pr-2 truncate">
-                    Promo (<span class="font-mono uppercase">{{ appliedPromoCode }}</span
+                    Promo (<span class="font-mono uppercase">{{
+                      appliedPromoCode
+                    }}</span
                     >)
                   </span>
-                  <span>- {{ formatCurrencyDisplay(actualPromoDiscountObj) }}</span>
+                  <span
+                    >- {{ formatCurrencyDisplay(actualPromoDiscountObj) }}</span
+                  >
                 </div>
               </div>
 
@@ -11358,9 +11405,11 @@ const useAllPoints = () => {
 
               <div class="flex items-start justify-between text-gray-500">
                 <span>{{ $t("payment.shipping") }}</span>
-                <span v-if="shippingMethod === 'free'" class="font-bold text-green-600">{{
-                  $t("payment.free")
-                }}</span>
+                <span
+                  v-if="shippingMethod === 'free'"
+                  class="font-bold text-green-600"
+                  >{{ $t("payment.free") }}</span
+                >
                 <div
                   v-else-if="shippingMethod === 'biteship' && selectedRate"
                   class="text-right"
@@ -11374,13 +11423,33 @@ const useAllPoints = () => {
                     }}
                   </span>
                   <p class="mt-1 text-[10px] text-gray-400">
-                    {{ formatCurrencyDisplay(shippingCostObj) }} x {{ checkoutCount }}
+                    {{ formatCurrencyDisplay(shippingCostObj) }} x
+                    {{ checkoutCount }}
                     {{ $t("payment.item") }}
                   </p>
                 </div>
                 <span v-else class="italic text-[10px]">{{
                   $t("payment.select_method")
                 }}</span>
+              </div>
+
+              <!-- TAMPILAN POTONGAN HARGA BUNDLE -->
+              <div
+                v-if="bundleDiscountAmount > 0"
+                class="flex justify-between px-3 py-2 my-2 text-sm font-bold border text-emerald-600 bg-emerald-50 rounded-xl border-emerald-100"
+              >
+                <span class="uppercase tracking-widest text-[10px] mt-0.5"
+                  >Bundle Saved</span
+                >
+                <span>
+                  -
+                  {{
+                    formatCurrencyDisplay({
+                      value: bundleDiscountAmount,
+                      curr: currentCurrency,
+                    })
+                  }}
+                </span>
               </div>
 
               <div
@@ -11438,7 +11507,11 @@ const useAllPoints = () => {
             class="flex items-center justify-between p-6 border-b border-gray-100 bg-gray-50 shrink-0 md:p-8 md:pb-6"
           >
             <h3 class="text-xl font-extrabold tracking-tight text-gray-900">
-              {{ editingId ? $t("modal_edit_address_title") : $t("profile.add_address") }}
+              {{
+                editingId
+                  ? $t("modal_edit_address_title")
+                  : $t("profile.add_address")
+              }}
             </h3>
             <button
               @click="isModalOpen = false"
@@ -11461,7 +11534,9 @@ const useAllPoints = () => {
             </button>
           </div>
 
-          <div class="flex flex-col md:flex-row h-auto md:h-[650px] overflow-hidden">
+          <div
+            class="flex flex-col md:flex-row h-auto md:h-[650px] overflow-hidden"
+          >
             <div
               class="relative w-full bg-gray-100 border-b border-gray-200 h-72 md:h-full md:w-5/12 md:border-b-0 md:border-r shrink-0"
             >
@@ -11551,7 +11626,11 @@ const useAllPoints = () => {
                   class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   required
                 >
-                  <option v-for="c in countries" :key="c.isoCode" :value="c.name">
+                  <option
+                    v-for="c in countries"
+                    :key="c.isoCode"
+                    :value="c.name"
+                  >
                     {{ c.name }}
                   </option>
                 </select>
@@ -11700,8 +11779,8 @@ const useAllPoints = () => {
                     />
                   </svg>
                   <p class="text-[11px] text-amber-800 leading-relaxed">
-                    <span class="font-bold">Pin Location:</span> Ensure the pin matches
-                    your exact delivery point.
+                    <span class="font-bold">Pin Location:</span> Ensure the pin
+                    matches your exact delivery point.
                   </p>
                 </div>
 
@@ -11736,7 +11815,9 @@ const useAllPoints = () => {
               <input type="hidden" :value="form.latitude" />
               <input type="hidden" :value="form.longitude" />
 
-              <div class="flex justify-end gap-3 pt-6 mt-auto border-t border-gray-100">
+              <div
+                class="flex justify-end gap-3 pt-6 mt-auto border-t border-gray-100"
+              >
                 <button
                   type="button"
                   @click="isModalOpen = false"
@@ -11773,9 +11854,13 @@ import L from "leaflet";
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: new URL("leaflet/dist/images/marker-icon-2x.png", import.meta.url).href,
+  iconRetinaUrl: new URL(
+    "leaflet/dist/images/marker-icon-2x.png",
+    import.meta.url,
+  ).href,
   iconUrl: new URL("leaflet/dist/images/marker-icon.png", import.meta.url).href,
-  shadowUrl: new URL("leaflet/dist/images/marker-shadow.png", import.meta.url).href,
+  shadowUrl: new URL("leaflet/dist/images/marker-shadow.png", import.meta.url)
+    .href,
 });
 
 const router = useRouter();
@@ -11784,7 +11869,14 @@ const getAxiosConfig = () => ({
   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
 });
 
-const { cartItems, checkoutCount, selectedItemIds, clearSelectedCart } = useCart();
+const {
+  cartItems,
+  checkoutCount,
+  checkoutTotalAmount,
+  bundleDiscountAmount,
+  selectedItemIds,
+  clearSelectedCart,
+} = useCart();
 
 const userData = ref(null);
 const addresses = ref([]);
@@ -11913,7 +12005,14 @@ const getDiscountToDisplay = (product) => {
 const formatCurrencyDisplay = (priceObj) => {
   if (!priceObj) return "";
   const { value, curr } = priceObj;
-  const symbols = { USD: "$", SGD: "S$", EUR: "€", AUD: "A$", MYR: "RM", IDR: "Rp " };
+  const symbols = {
+    USD: "$",
+    SGD: "S$",
+    EUR: "€",
+    AUD: "A$",
+    MYR: "RM",
+    IDR: "Rp ",
+  };
 
   const formatter = new Intl.NumberFormat(curr === "IDR" ? "id-ID" : "en-US", {
     minimumFractionDigits: curr === "IDR" ? 0 : 2,
@@ -11962,7 +12061,9 @@ const convertIDRtoActiveCurrency = (idrAmount) => {
 // --- KALKULASI TOTAL ---
 const checkoutItems = computed(() => {
   const ids = selectedItemIds?.value || selectedItemIds || [];
-  let baseItems = (cartItems.value || []).filter((item) => ids.includes(item.id));
+  let baseItems = (cartItems.value || []).filter((item) =>
+    ids.includes(item.id),
+  );
 
   if (catalogProducts.value.length > 0) {
     baseItems = baseItems.map((item) => {
@@ -12029,13 +12130,13 @@ const actualPromoDiscountIDR = computed(() => {
   return promoDiscountAmount.value;
 });
 const actualPromoDiscountObj = computed(() =>
-  convertIDRtoActiveCurrency(actualPromoDiscountIDR.value)
+  convertIDRtoActiveCurrency(actualPromoDiscountIDR.value),
 );
 
 const maxPointsAllowed = computed(() => {
   const maxUsableAmount = Math.max(
     0,
-    checkoutTotalIDR.value - actualPromoDiscountIDR.value
+    checkoutTotalIDR.value - actualPromoDiscountIDR.value,
   );
   return Math.min(availablePoints.value, Math.floor(maxUsableAmount / 1000));
 });
@@ -12048,23 +12149,40 @@ watch([pointsToUse, maxPointsAllowed], () => {
 
 const appliedPointDiscountIDR = computed(() => (pointsToUse.value || 0) * 1000);
 const appliedPointDiscountObj = computed(() =>
-  convertIDRtoActiveCurrency(appliedPointDiscountIDR.value)
+  convertIDRtoActiveCurrency(appliedPointDiscountIDR.value),
 );
 
 const shippingCostIDR = computed(() =>
   shippingMethod.value === "biteship" && selectedRate.value
     ? parseFloat(selectedRate.value.price) * checkoutCount.value
-    : 0
+    : 0,
 );
-const shippingCostObj = computed(() => convertIDRtoActiveCurrency(shippingCostIDR.value));
+const shippingCostObj = computed(() =>
+  convertIDRtoActiveCurrency(shippingCostIDR.value),
+);
+
+// const grandTotalObj = computed(() => {
+//   return {
+//     value:
+//       cartSubtotalObj.value.value +
+//       shippingCostObj.value.value -
+//       actualPromoDiscountObj.value.value -
+//       appliedPointDiscountObj.value.value,
+//     curr: currentCurrency.value,
+//   };
+// });
 
 const grandTotalObj = computed(() => {
-  return {
-    value:
-      cartSubtotalObj.value.value +
+  // Hitung total akhir agar tidak bernilai minus
+  const calculatedTotal = 
+      cartSubtotalObj.value.value -
+      bundleDiscountAmount.value +     // <--- POTONGAN DISKON BUNDLE DI SINI
       shippingCostObj.value.value -
       actualPromoDiscountObj.value.value -
-      appliedPointDiscountObj.value.value,
+      appliedPointDiscountObj.value.value;
+
+  return {
+    value: Math.max(0, calculatedTotal), // Mencegah nilai minus jika diskon lebih besar
     curr: currentCurrency.value,
   };
 });
@@ -12121,7 +12239,9 @@ const getCourierLogo = (company) => {
     ninja: "ninja.png",
     dhl: "dhl.png",
   };
-  return map[company.toLowerCase()] ? baseUrl + map[company.toLowerCase()] : null;
+  return map[company.toLowerCase()]
+    ? baseUrl + map[company.toLowerCase()]
+    : null;
 };
 
 const isModalOpen = ref(false);
@@ -12144,7 +12264,9 @@ const form = ref({
 });
 
 const fetchProvinces = () => {
-  const selectedCountry = countries.value.find((c) => c.name === form.value.country);
+  const selectedCountry = countries.value.find(
+    (c) => c.name === form.value.country,
+  );
   if (selectedCountry) {
     const states = State.getStatesOfCountry(selectedCountry.isoCode);
     filteredProvinces.value = states.map((s) => s.name);
@@ -12187,7 +12309,7 @@ const handleSearchInput = () => {
   debounceTimeout = setTimeout(async () => {
     try {
       const res = await axios.get(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${searchQuery.value}&countrycodes=id&limit=5`
+        `https://nominatim.openstreetmap.org/search?format=json&q=${searchQuery.value}&countrycodes=id&limit=5`,
       );
       searchResults.value = res.data;
     } catch (error) {}
@@ -12231,7 +12353,7 @@ const updateLocation = (lat, lng) => {
 const reverseGeocode = async (lat, lng) => {
   try {
     const res = await axios.get(
-      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`,
     );
     if (res.data && res.data.display_name) {
       form.value.address_location = res.data.display_name;
@@ -12265,7 +12387,7 @@ const getCurrentLocation = () => {
         Swal.fire("Error", "Please allow location access.", "error");
         isGettingLocation.value = false;
       },
-      { enableHighAccuracy: true, timeout: 10000 }
+      { enableHighAccuracy: true, timeout: 10000 },
     );
   } else {
     Swal.fire("Error", "Geolocation not supported", "error");
@@ -12283,11 +12405,16 @@ let debounceTimeout = null;
 
 const saveAddress = async () => {
   try {
-    const res = await axios.post(`${BASE_URL}/addresses`, form.value, getAxiosConfig());
+    const res = await axios.post(
+      `${BASE_URL}/addresses`,
+      form.value,
+      getAxiosConfig(),
+    );
     isModalOpen.value = false;
     const resAddr = await axios.get(`${BASE_URL}/addresses`, getAxiosConfig());
 
-    const addrData = resAddr.data?.data !== undefined ? resAddr.data.data : resAddr.data;
+    const addrData =
+      resAddr.data?.data !== undefined ? resAddr.data.data : resAddr.data;
     addresses.value = Array.isArray(addrData) ? addrData : [];
 
     selectedAddressId.value =
@@ -12306,7 +12433,11 @@ const saveAddress = async () => {
 };
 
 const isButtonDisabled = computed(() => {
-  if (isProcessing.value || cartItems.value.length === 0 || !selectedAddressId.value)
+  if (
+    isProcessing.value ||
+    cartItems.value.length === 0 ||
+    !selectedAddressId.value
+  )
     return true;
   if (shippingMethod.value === "biteship") {
     if (!selectedRate.value) return true;
@@ -12331,7 +12462,7 @@ watch(selectedAddressId, async (newVal) => {
       const res = await axios.post(
         `${BASE_URL}/shipping/rates`,
         { address_id: newVal, cart_ids: ids },
-        getAxiosConfig()
+        getAxiosConfig(),
       );
       if (res.data && res.data.data) {
         rawShippingRates.value = res.data.data;
@@ -12375,19 +12506,29 @@ const handlePayment = async () => {
       use_points: pointsToUse.value || 0,
       cart_ids: ids,
       courier_company:
-        shippingMethod.value === "biteship" ? selectedRate.value?.company : null,
-      courier_type: shippingMethod.value === "biteship" ? selectedRate.value?.type : null,
+        shippingMethod.value === "biteship"
+          ? selectedRate.value?.company
+          : null,
+      courier_type:
+        shippingMethod.value === "biteship" ? selectedRate.value?.type : null,
       shipping_cost:
         shippingMethod.value === "biteship" ? selectedRate.value?.price : null,
-      delivery_type: shippingMethod.value === "biteship" ? deliveryType.value : null,
-      delivery_date: shippingMethod.value === "biteship" ? deliveryDate.value : null,
-      delivery_time: shippingMethod.value === "biteship" ? deliveryTime.value : null,
+      delivery_type:
+        shippingMethod.value === "biteship" ? deliveryType.value : null,
+      delivery_date:
+        shippingMethod.value === "biteship" ? deliveryDate.value : null,
+      delivery_time:
+        shippingMethod.value === "biteship" ? deliveryTime.value : null,
       promo_code: appliedPromoCode.value,
       promo_type: appliedPromoType.value,
       currency: currentCurrency.value,
       referral_code: localStorage.getItem("affiliate_ref"),
     };
-    const res = await axios.post(`${BASE_URL}/checkout`, payload, getAxiosConfig());
+    const res = await axios.post(
+      `${BASE_URL}/checkout`,
+      payload,
+      getAxiosConfig(),
+    );
     if (res.data.checkout_url) {
       clearSelectedCart();
       window.location.href = res.data.checkout_url;
@@ -12396,7 +12537,7 @@ const handlePayment = async () => {
     Swal.fire(
       "Payment Error",
       error.response?.data?.message || "Failed to create invoice",
-      "error"
+      "error",
     );
   } finally {
     isProcessing.value = false;
@@ -12410,14 +12551,18 @@ onMounted(async () => {
   });
 
   try {
-    const [resExchange, resCatalog, resUser, resAddr] = await Promise.allSettled([
-      axios.get(`${BASE_URL}/exchange-rates`),
-      axios.get(`${BASE_URL}/products`),
-      axios.get(`${BASE_URL}/user`, getAxiosConfig()),
-      axios.get(`${BASE_URL}/addresses`, getAxiosConfig()),
-    ]);
+    const [resExchange, resCatalog, resUser, resAddr] =
+      await Promise.allSettled([
+        axios.get(`${BASE_URL}/exchange-rates`),
+        axios.get(`${BASE_URL}/products`),
+        axios.get(`${BASE_URL}/user`, getAxiosConfig()),
+        axios.get(`${BASE_URL}/addresses`, getAxiosConfig()),
+      ]);
 
-    if (resExchange.status === "fulfilled" && resExchange.value.data?.data?.rates) {
+    if (
+      resExchange.status === "fulfilled" &&
+      resExchange.value.data?.data?.rates
+    ) {
       exchangeRates.value = resExchange.value.data.data.rates;
     }
 
@@ -12437,7 +12582,8 @@ onMounted(async () => {
       userType.value = resUser.value.data.usertype || "user";
       localStorage.setItem("user", JSON.stringify(resUser.value.data));
     } else {
-      const userStr = localStorage.getItem("user") || localStorage.getItem("user_data");
+      const userStr =
+        localStorage.getItem("user") || localStorage.getItem("user_data");
       if (userStr) {
         userData.value = JSON.parse(userStr);
         availablePoints.value = userData.value.point || 0;
@@ -12453,7 +12599,9 @@ onMounted(async () => {
       addresses.value = Array.isArray(addrData) ? addrData : [];
       if (addresses.value.length > 0) {
         const defaultAddr = addresses.value.find((a) => a.is_default);
-        selectedAddressId.value = defaultAddr ? defaultAddr.id : addresses.value[0].id;
+        selectedAddressId.value = defaultAddr
+          ? defaultAddr.id
+          : addresses.value[0].id;
       }
     }
 
@@ -12465,7 +12613,7 @@ onMounted(async () => {
       now.setHours(now.getHours() + 1);
       deliveryDate.value = now.toISOString().split("T")[0];
       deliveryTime.value = `${String(now.getHours()).padStart(2, "0")}:${String(
-        now.getMinutes()
+        now.getMinutes(),
       ).padStart(2, "0")}`;
     }
   } catch (error) {
@@ -12479,7 +12627,9 @@ onUnmounted(() => {
   window.removeEventListener("currency-changed", updateCurrencyState);
 });
 
-const calculateEarnedPoints = computed(() => Math.floor(checkoutTotalIDR.value / 100000));
+const calculateEarnedPoints = computed(() =>
+  Math.floor(checkoutTotalIDR.value / 100000),
+);
 
 const handleMemberToggle = async () => {
   if (useMemberVoucher.value) {
@@ -12512,32 +12662,44 @@ const applyPromo = async () => {
       `${BASE_URL}/promo/verify`,
       {
         promo_code: codeToBeApplied,
-        cart_items: checkoutItems.value.map((item) => ({ product_id: item.product_id })),
+        cart_items: checkoutItems.value.map((item) => ({
+          product_id: item.product_id,
+        })),
       },
-      getAxiosConfig()
+      getAxiosConfig(),
     );
     if (
       codeToBeApplied === MEMBER_VOUCHER_CODE &&
       checkoutTotalIDR.value < MEMBER_MIN_SPEND
     )
-      throw new Error(`Minimum spend is Rp ${MEMBER_MIN_SPEND.toLocaleString("id-ID")}`);
-    else if (codeToBeApplied !== MEMBER_VOUCHER_CODE && checkoutTotalIDR.value < 499000)
+      throw new Error(
+        `Minimum spend is Rp ${MEMBER_MIN_SPEND.toLocaleString("id-ID")}`,
+      );
+    else if (
+      codeToBeApplied !== MEMBER_VOUCHER_CODE &&
+      checkoutTotalIDR.value < 499000
+    )
       throw new Error("Minimum spend is Rp 499.000");
 
     promoSuccess.value = true;
     promoMessage.value = "✅ " + res.data.message;
     appliedPromoCode.value = codeToBeApplied;
-    promoDiscountAmount.value = Math.min(res.data.discount_value, checkoutTotalIDR.value);
+    promoDiscountAmount.value = Math.min(
+      res.data.discount_value,
+      checkoutTotalIDR.value,
+    );
 
     appliedPromoType.value = res.data.promo_type;
 
-    if (appliedPromoCode.value === MEMBER_VOUCHER_CODE) useMemberVoucher.value = true;
+    if (appliedPromoCode.value === MEMBER_VOUCHER_CODE)
+      useMemberVoucher.value = true;
     if (pointsToUse.value > maxPointsAllowed.value)
       pointsToUse.value = maxPointsAllowed.value;
   } catch (error) {
     promoSuccess.value = false;
     promoMessage.value =
-      "❌ " + (error.response?.data?.message || error.message || "Invalid promo code.");
+      "❌ " +
+      (error.response?.data?.message || error.message || "Invalid promo code.");
     appliedPromoCode.value = null;
     promoDiscountAmount.value = 0;
 
@@ -12621,269 +12783,4 @@ const useAllPoints = () => {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #d1d5db;
 }
-</style> -->
-
-<template>
-  <div
-    v-if="isPageLoading"
-    class="z-[100] fixed inset-0 flex flex-col justify-center items-center bg-white"
-  >
-    <div class="flex gap-2 mb-4">
-      <div class="w-3 h-3 bg-black rounded-full animate-bounce-1"></div>
-      <div class="w-3 h-3 bg-black rounded-full animate-bounce-2"></div>
-      <div class="w-3 h-3 bg-black rounded-full animate-bounce-3"></div>
-    </div>
-    <p class="font-serif text-sm italic tracking-widest text-gray-500 animate-pulse">
-      {{ $t("payment.prepare_checkout") }}
-    </p>
-  </div>
-
-  <div
-    v-else
-    class="relative z-10 max-w-6xl min-h-screen px-6 py-12 mx-auto md:py-24 animate-fade-in"
-  >
-    <div v-if="checkoutItems.length === 0" class="py-20 text-center">
-      <h2 class="mb-4 font-serif text-3xl">{{ $t("payment.bag_empty") }}</h2>
-      <button
-        @click="$router.push('/collections')"
-        class="px-8 py-3 text-xs font-bold tracking-widest text-white uppercase bg-black rounded-full"
-      >
-        {{ $t("payment.return_shop") }}
-      </button>
-    </div>
-
-    <div v-else>
-      <h1 class="mb-12 font-serif text-3xl tracking-tighter uppercase md:text-4xl">
-        {{ $t("payment.checkout") }}
-      </h1>
-
-      <div class="flex flex-col gap-12 lg:flex-row">
-        <div class="flex-grow space-y-12">
-            <p class="my-8 text-sm italic text-center text-gray-400">Please fill out shipping method...</p>
-        </div>
-
-        <div class="lg:w-[400px] space-y-6">
-          <div
-            class="sticky p-8 bg-white border border-gray-100 shadow-xl rounded-3xl top-28"
-          >
-            <h2
-              class="pb-4 mb-6 text-sm font-bold tracking-widest text-gray-900 uppercase border-b border-gray-200"
-            >
-              {{ $t("payment.order_summary") }}
-            </h2>
-
-            <div
-              class="space-y-4 mb-8 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar"
-            >
-              <div v-for="item in checkoutItems" :key="item.id" class="flex gap-4">
-                <img
-                  :src="item.product?.image_url || item.product?.image"
-                  class="object-cover w-16 h-16 bg-gray-100 rounded-xl shrink-0"
-                />
-                <div class="flex-grow">
-                  <div class="flex items-center gap-2">
-                    <p
-                      class="w-40 text-[11px] font-bold text-gray-900 uppercase truncate"
-                      :title="item.product?.name"
-                    >
-                      {{ item.product?.name }}
-                    </p>
-                  </div>
-                  <div class="flex items-center gap-2 mt-0.5">
-                    <p class="text-[10px] text-gray-400">Qty: {{ item.quantity }}</p>
-                    <template v-if="item.color">
-                      <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                      <div class="flex items-center gap-1.5">
-                        <div
-                          class="w-3 h-3 border border-gray-300 rounded-full shadow-sm shrink-0"
-                          :style="{ backgroundColor: parseColorHex(item.color) }"
-                        ></div>
-                        <span class="text-[10px] font-bold text-gray-500 uppercase">
-                          {{ parseColorName(item.color) }}
-                        </span>
-                      </div>
-                    </template>
-                  </div>
-                  <p class="mt-1 text-xs font-medium text-gray-900">
-                    {{
-                      formatCurrencyDisplay({
-                        value: getActivePriceObj(item.product).value * item.quantity,
-                        curr: getActivePriceObj(item.product).curr,
-                      })
-                    }}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="pt-4 space-y-3 text-sm border-t border-gray-50">
-              <div class="flex justify-between text-gray-500">
-                <span>{{ $t("payment.total_items") }}</span>
-                <span class="font-bold text-gray-900"
-                  >{{ checkoutCount }} {{ $t("payment.item") }}</span
-                >
-              </div>
-              <div class="flex justify-between text-gray-500">
-                <span>{{ $t("payment.subtotal") }}</span>
-                <span
-                  :class="
-                    appliedPromoType === 'voucher' ? 'text-amber-600 font-bold' : ''
-                  "
-                >
-                  {{ formatCurrencyDisplay(cartSubtotalObj) }}
-                </span>
-              </div>
-
-              <div
-                v-if="bundleDiscountAmount > 0"
-                class="flex justify-between px-3 py-2 text-sm font-bold border text-emerald-600 bg-emerald-50 rounded-xl border-emerald-100"
-              >
-                <span class="uppercase tracking-widest text-[10px] mt-0.5"
-                  >Bundle Saved</span
-                >
-                <span
-                  >-
-                  {{
-                    formatCurrencyDisplay({
-                      value: bundleDiscountAmount,
-                      curr: currentCurrency,
-                    })
-                  }}</span
-                >
-              </div>
-              <div class="flex items-end justify-between pt-4 border-t border-gray-200">
-                <span class="font-bold text-gray-500 text-xs uppercase tracking-[0.2em]">{{
-                  $t("payment.grand_total")
-                }}</span>
-                <span class="text-2xl font-black text-black">
-                  {{
-                    formatCurrencyDisplay({
-                      value: checkoutTotalAmount,
-                      curr: currentCurrency,
-                    })
-                  }}
-                </span>
-              </div>
-              <p class="text-[10px] text-gray-400 italic text-right mt-1">
-                {{ $t("cart.tax_and_shipping") }}
-              </p>
-            </div>
-
-            <button
-              @click="handlePayment"
-              :disabled="isProcessing"
-              class="mt-8 w-full bg-black hover:bg-gray-800 disabled:bg-gray-300 py-5 rounded-2xl font-bold text-white text-xs uppercase tracking-[0.3em] transition-all duration-500 shadow-xl shadow-black/10 flex justify-center items-center"
-            >
-              <span v-if="!isProcessing">{{ $t("payment.pay_now") }}</span>
-              <span v-else class="flex items-center justify-center gap-2">
-                <div
-                  class="w-3 h-3 border-2 rounded-full border-white/30 border-t-white animate-spin"
-                ></div>
-                Processing
-              </span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
-<script setup>
-import { ref, onMounted, onUnmounted, computed } from "vue";
-import { useRouter } from "vue-router";
-import axios from "axios";
-import { BASE_URL } from "../../config/api.js";
-import { useCart, getActivePrice } from "../../composables/useCart.js";
-
-const router = useRouter();
-const isProcessing = ref(false);
-const isPageLoading = ref(false);
-
-const {
-  cartItems,
-  checkoutCount,
-  checkoutTotalAmount,
-  bundleDiscountAmount,
-  selectedItemIds,
-} = useCart();
-
-const currentCurrency = ref(localStorage.getItem("currency") || "IDR");
-
-const updateCurrencyState = () => {
-  currentCurrency.value = localStorage.getItem("currency") || "IDR";
-};
-
-// --- HELPER MULTI CURRENCY ---
-const getPriceToDisplay = (product) => {
-  if (!product) return { value: 0, curr: "IDR" };
-  const curr = currentCurrency.value;
-  if (curr === "IDR") return { value: Number(product.price), curr: "IDR" };
-
-  try {
-    const pricesObj = typeof product.prices === "string" ? JSON.parse(product.prices) : product.prices || {};
-    const dbPrice = pricesObj[curr] || pricesObj[curr.toLowerCase()] || pricesObj[currentCurrency.value.toUpperCase()];
-    if (dbPrice) return { value: parseFloat(dbPrice), curr: curr };
-  } catch (e) {}
-
-  return { value: Number(product.price), curr: "IDR" };
-};
-
-const formatCurrencyDisplay = (priceObj) => {
-  if (!priceObj) return "";
-  const { value, curr } = priceObj;
-  const symbols = { USD: "$", SGD: "S$", EUR: "€", AUD: "A$", MYR: "RM", IDR: "Rp " };
-
-  const formatter = new Intl.NumberFormat(curr === "IDR" ? "id-ID" : "en-US", {
-    minimumFractionDigits: curr === "IDR" ? 0 : 2,
-    maximumFractionDigits: curr === "IDR" ? 0 : 2,
-  });
-
-  return `${symbols[curr] || curr + " "}${formatter.format(value)}`;
-};
-
-const getActivePriceObj = (product) => {
-  const dynamicPriceObj = getPriceToDisplay(product);
-  return dynamicPriceObj; // Sederhanakan untuk contoh ini
-};
-
-// Kalkulasi subtotal menggunakan checkoutTotalAmount langsung dari useCart
-const cartSubtotalObj = computed(() => {
-  return { value: checkoutTotalAmount.value, curr: currentCurrency.value };
-});
-
-const checkoutItems = computed(() => {
-  const ids = selectedItemIds?.value || selectedItemIds || [];
-  return (cartItems.value || []).filter((item) => ids.includes(item.id));
-});
-
-const parseColorName = (colorString) => {
-  if (!colorString) return "";
-  try {
-    const parsed = JSON.parse(colorString);
-    if (parsed.name) return parsed.name;
-  } catch {}
-  return colorString.includes("|") ? colorString.split("|")[0] : colorString;
-};
-
-const parseColorHex = (colorString) => {
-  if (!colorString) return "#cccccc";
-  try {
-    const parsed = JSON.parse(colorString);
-    if (parsed.hex) return parsed.hex;
-  } catch {}
-  return colorString.includes("|") ? colorString.split("|")[1] : colorString;
-};
-
-const handlePayment = () => {
-    // Logika Payment Anda Tetap Sama
-};
-
-onMounted(() => {
-  window.addEventListener("currency-changed", updateCurrencyState);
-});
-
-onUnmounted(() => {
-  window.removeEventListener("currency-changed", updateCurrencyState);
-});
-</script>
+</style>

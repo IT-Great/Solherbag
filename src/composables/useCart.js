@@ -1651,6 +1651,46 @@ export function useCart() {
   // 👆 ======================================================= 👆
 
   // 👇 PERBAIKAN MUTLAK: FOMO Alert Membaca Seluruh Keranjang 👇
+  // const fomoAlerts = computed(() => {
+  //   const alerts = [];
+
+  //   const groupedByCategory = cartItems.value.reduce((acc, item) => {
+  //     const catId = item.product?.category_id || item.product?.category?.id;
+  //     if (!catId) return acc;
+
+  //     if (!acc[catId]) {
+  //       acc[catId] = {
+  //         category: item.product.category,
+  //         totalQty: 0,
+  //       };
+  //     }
+  //     acc[catId].totalQty += item.quantity;
+  //     return acc;
+  //   }, {});
+
+  //   Object.values(groupedByCategory).forEach((group) => {
+  //     const promo = getBundlePromo({ category: group.category });
+
+  //     if (promo && promo.price > 0) {
+  //       const remainder = group.totalQty % promo.qty;
+
+  //       if (remainder > 0) {
+  //         const neededQty = promo.qty - remainder;
+  //         alerts.push({
+  //           categoryName: group.category.name,
+  //           neededQty: neededQty,
+  //           bundleQty: promo.qty,
+  //           bundlePrice: promo.price,
+  //           bundleCurr: promo.curr,
+  //         });
+  //       }
+  //     }
+  //   });
+
+  //   return alerts;
+  // });
+
+  // 👇 PERBAIKAN LOGIKA: FOMO Alert Hanya Muncul Sebelum Bundle Tercapai 👇
   const fomoAlerts = computed(() => {
     const alerts = [];
 
@@ -1672,10 +1712,10 @@ export function useCart() {
       const promo = getBundlePromo({ category: group.category });
 
       if (promo && promo.price > 0) {
-        const remainder = group.totalQty % promo.qty;
-
-        if (remainder > 0) {
-          const neededQty = promo.qty - remainder;
+        // Hanya tampilkan FOMO jika qty di keranjang KURANG dari syarat minimum promo
+        if (group.totalQty > 0 && group.totalQty < promo.qty) {
+          const neededQty = promo.qty - group.totalQty;
+          
           alerts.push({
             categoryName: group.category.name,
             neededQty: neededQty,
