@@ -2344,7 +2344,7 @@ import { useRouter } from "vue-router";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
-import { useCart, getActivePrice } from "../../composables/useCart"; 
+import { useCart, getActivePrice, getDiscountStatus } from "../../composables/useCart"; 
 
 import defaultBagIcon from "../../assets/products/bag_icon.jpg";
 
@@ -2369,6 +2369,22 @@ const {
 
 const allProducts = ref([]);
 
+const isLoadingProducts = ref(false);
+const suggestedProducts = ref([]);
+
+const addSuggestedProduct = (product) => {
+  handleOptimisticAdd({ product: product, cartId: null }, () => {
+    Swal.fire({
+      title: "Added to Bag",
+      icon: "success",
+      toast: true,
+      position: "top-center",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  });
+};
+
 const currentCurrency = ref(localStorage.getItem("currency") || "IDR");
 
 const updateCurrencyState = () => {
@@ -2387,6 +2403,23 @@ const formatCurrencyDisplay = (priceObj) => {
   });
 
   return `${symbols[curr] || curr + " "}${formatter.format(value)}`;
+};
+
+const fetchAllProducts = async () => {
+  isLoadingProducts.value = true;
+  try {
+    const res = await axios.get(`${BASE_URL}/products`);
+    const data = res.data?.data?.data || res.data?.data || res.data;
+    if (Array.isArray(data)) {
+      allProducts.value = data;
+    }
+  } catch (err) {
+    console.error("Gagal mengambil daftar produk", err);
+  } finally {
+    setTimeout(() => {
+      isLoadingProducts.value = false;
+    }, 500);
+  }
 };
 
 const parseColorName = (colorString) => {
