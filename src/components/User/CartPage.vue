@@ -2369,8 +2369,21 @@ const {
 
 const allProducts = ref([]);
 
-const isLoadingProducts = ref(false);
-const suggestedProducts = ref([]);
+const isLoadingProducts = ref(true);
+
+const suggestedProducts = computed(() => {
+  if (allProducts.value.length === 0) return [];
+
+  const cartProductIds = cartItems.value.map((item) => item.product_id);
+
+  let availableProducts = allProducts.value.filter(
+    (p) => !cartProductIds.includes(p.id) && p.stock > 0
+  );
+
+  availableProducts.sort(() => 0.5 - Math.random());
+
+  return availableProducts.slice(0, 4);
+});
 
 const addSuggestedProduct = (product) => {
   handleOptimisticAdd({ product: product, cartId: null }, () => {
