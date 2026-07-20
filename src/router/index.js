@@ -2628,6 +2628,7 @@ import InvoicePage from "../components/Admin/InvoicePage.vue";
 import CartPage from "../components/User/CartPage.vue";
 import DetailMessageViewPage from "../components/Admin/DetailMessageViewPage.vue";
 import SubscriberPage from "../components/Admin/SubscriberPage.vue";
+import AdminReviewPage from "../components/Admin/AdminReviewPage.vue";
 import ForgotPasswordPage from "../components/User/ForgotPasswordPage.vue";
 import CodeVerificationPage from "../components/User/CodeVerificationPage.vue";
 import ResetPasswordPage from "../components/User/ResetPasswordPage.vue";
@@ -2707,6 +2708,7 @@ const routes = [
   { path: "/admin/transactions/:id", name: "TransactionDetail", component: TransactionDetailPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
   { path: "/admin/user_list", name: "UserList", component: UserListPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
   { path: "/admin/users/:id", name: "UserDetail", component: UserDetailPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  { path: "/admin/reviews", name: "AdminReviews", component: AdminReviewPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
   { path: "/admin/subscribers", name: "Subscribers", component: SubscriberPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
   { path: "/admin/messages", name: "MessageView", component: MessageViewPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
   { path: "/admin/messages/:id", name: "DetailMessage", component: DetailMessageViewPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
