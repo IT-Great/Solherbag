@@ -2,15 +2,40 @@
   <div
     class="relative min-h-[600px] p-8 bg-white border border-gray-100 shadow-sm rounded-2xl animate-fade-in"
   >
-    <!-- Header -->
-    <div class="flex flex-col items-center justify-between gap-4 mb-6 md:flex-row">
+    <!-- Header Area (Title & Export Button) -->
+    <div class="flex flex-col gap-4 mb-6 md:flex-row md:items-start md:justify-between">
       <div>
         <h1 class="text-2xl font-bold text-gray-800">Product Reviews</h1>
         <p class="text-sm text-gray-500">Manage and moderate customer product reviews.</p>
       </div>
 
+      <!-- Tombol Export CSV -->
+      <button
+        @click="exportToCSV"
+        class="inline-flex items-center justify-center px-4 py-2.5 text-xs font-bold tracking-widest text-white uppercase transition bg-black rounded-xl hover:bg-gray-800 shrink-0"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-4 h-4 mr-2"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+          />
+        </svg>
+        Export CSV
+      </button>
+    </div>
+
+    <!-- Filters Section -->
+    <div class="flex flex-col gap-3 mb-6 md:flex-row">
       <!-- Search Input -->
-      <div class="relative w-full md:w-80">
+      <div class="relative flex-1">
         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -31,22 +56,45 @@
           v-model="searchQuery"
           type="text"
           placeholder="Search product or customer..."
-          class="w-full py-2 pl-10 pr-4 text-sm transition border border-gray-200 bg-gray-50 rounded-xl focus:ring-2 focus:ring-black outline-none"
+          class="w-full py-2.5 pl-10 pr-4 text-sm transition border border-gray-200 bg-gray-50 rounded-xl focus:ring-2 focus:ring-black outline-none"
         />
       </div>
+
+      <!-- Filter Rating -->
+      <select
+        v-model="filterRating"
+        class="w-full md:w-40 py-2.5 pl-3 pr-8 text-sm transition border border-gray-200 bg-gray-50 rounded-xl focus:ring-2 focus:ring-black outline-none appearance-none"
+      >
+        <option value="">All Ratings</option>
+        <option value="5">5 Stars</option>
+        <option value="4">4 Stars</option>
+        <option value="3">3 Stars</option>
+        <option value="2">2 Stars</option>
+        <option value="1">1 Star</option>
+      </select>
+
+      <!-- Filter Status -->
+      <select
+        v-model="filterStatus"
+        class="w-full md:w-40 py-2.5 pl-3 pr-8 text-sm transition border border-gray-200 bg-gray-50 rounded-xl focus:ring-2 focus:ring-black outline-none appearance-none"
+      >
+        <option value="">All Status</option>
+        <option value="approved">Visible</option>
+        <option value="hidden">Hidden</option>
+      </select>
     </div>
 
     <!-- Table -->
-    <div class="overflow-x-auto">
+    <div class="overflow-x-auto border-t border-gray-100">
       <table class="w-full text-left border-collapse">
         <thead>
           <tr class="text-xs tracking-widest text-gray-400 uppercase border-b">
-            <th class="pb-4 pl-2 font-medium">Customer & Product</th>
-            <th class="pb-4 font-medium text-center">Rating</th>
-            <th class="pb-4 font-medium">Review</th>
-            <th class="pb-4 font-medium text-center">Date</th>
-            <th class="pb-4 font-medium text-center">Status</th>
-            <th class="pb-4 pr-2 font-medium text-right">Action</th>
+            <th class="py-4 pl-2 font-medium">Customer & Product</th>
+            <th class="py-4 font-medium text-center">Rating</th>
+            <th class="py-4 font-medium">Review</th>
+            <th class="py-4 font-medium text-center">Date</th>
+            <th class="py-4 font-medium text-center">Status</th>
+            <th class="py-4 pr-2 font-medium text-right">Action</th>
           </tr>
         </thead>
 
@@ -147,7 +195,7 @@
 
           <tr v-if="filteredReviews.length === 0">
             <td colspan="6" class="py-12 italic text-center text-gray-400">
-              No reviews found.
+              No reviews found matching your filters.
             </td>
           </tr>
         </tbody>
@@ -288,8 +336,13 @@ import { BASE_URL } from "../../config/api.js";
 const reviews = ref([]);
 const isLoading = ref(true);
 const isToggling = ref(false);
-const searchQuery = ref("");
 
+// Filter States
+const searchQuery = ref("");
+const filterRating = ref("");
+const filterStatus = ref("");
+
+// Modal States
 const showModal = ref(false);
 const selectedReview = ref(null);
 
@@ -307,14 +360,69 @@ const fetchReviews = async () => {
   }
 };
 
+// Computed property untuk Search, Rating, dan Status Filter
 const filteredReviews = computed(() => {
-  const query = searchQuery.value.toLowerCase();
-  return reviews.value.filter((r) => {
-    const custName = `${r.user.first_name} ${r.user.last_name}`.toLowerCase();
-    const prodName = r.product.name.toLowerCase();
-    return custName.includes(query) || prodName.includes(query);
-  });
+  let result = reviews.value;
+
+  // 1. Filter by Search Query
+  if (searchQuery.value) {
+    const query = searchQuery.value.toLowerCase();
+    result = result.filter((r) => {
+      const custName = `${r.user.first_name} ${r.user.last_name}`.toLowerCase();
+      const prodName = r.product.name.toLowerCase();
+      return custName.includes(query) || prodName.includes(query);
+    });
+  }
+
+  // 2. Filter by Rating
+  if (filterRating.value) {
+    result = result.filter((r) => r.rating == filterRating.value);
+  }
+
+  // 3. Filter by Status
+  if (filterStatus.value) {
+    const isApproved = filterStatus.value === "approved";
+    result = result.filter((r) => r.is_approved === isApproved);
+  }
+
+  return result;
 });
+
+// Fitur Export CSV
+const exportToCSV = () => {
+  if (filteredReviews.value.length === 0) {
+    return Swal.fire("Oops", "Tidak ada data untuk diexport", "info");
+  }
+
+  // Header CSV
+  let csvContent = "data:text/csv;charset=utf-8,";
+  csvContent += "Customer,Product,Rating,Comment,Status,Date\n";
+
+  // Looping Data
+  filteredReviews.value.forEach((r) => {
+    const cust = `${r.user.first_name} ${r.user.last_name}`;
+    const prod = r.product.name;
+
+    // Tangani tanda kutip ganda dan enter dalam komentar agar CSV tidak rusak
+    const rawComment = r.comment || "No comment";
+    const comment = rawComment.replace(/"/g, '""').replace(/\n/g, " ");
+
+    const status = r.is_approved ? "Visible" : "Hidden";
+    const date = new Date(r.created_at).toLocaleDateString("id-ID");
+
+    // Format ke row CSV
+    csvContent += `"${cust}","${prod}",${r.rating},"${comment}","${status}","${date}"\n`;
+  });
+
+  // Proses Download
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", `Reviews_Export_${new Date().getTime()}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
 
 const openDetail = (review) => {
   selectedReview.value = review;
@@ -332,7 +440,6 @@ const toggleVisibility = async (review) => {
       }
     );
 
-    // Update local state
     review.is_approved = !review.is_approved;
     Swal.fire({
       toast: true,
