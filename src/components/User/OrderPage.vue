@@ -9405,7 +9405,7 @@ onUnmounted(() => {
             {{ $t("order.tap_anywhere") }}
           </div>
 
-          <div
+          <!-- <div
             v-for="detail in order.details"
             :key="detail.id"
             class="flex items-center gap-4 py-4 border-b border-gray-50 last:border-0"
@@ -9432,6 +9432,49 @@ onUnmounted(() => {
             <p class="text-sm font-bold text-gray-900">
               {{ formatLocalPrice(detail.quantity * detail.price, order) }}
             </p>
+          </div> -->
+
+          <div
+            v-for="detail in order.details"
+            :key="detail.id"
+            class="flex items-center gap-4 py-4 border-b border-gray-50 last:border-0"
+          >
+            <img
+              :src="detail.product.image || defaultBagIcon"
+              class="object-cover w-16 h-16 bg-gray-100 border border-gray-100 rounded-lg shadow-sm"
+            />
+            <div class="flex-grow">
+              <h4 class="text-sm font-bold text-gray-900 uppercase">
+                {{ detail.product.name }}
+              </h4>
+              <p
+                v-if="detail.color"
+                class="text-[10px] text-gray-500 uppercase tracking-widest mt-0.5"
+              >
+                {{ $t("order.color") }}
+                <span class="font-bold text-gray-800">{{ detail.color }}</span>
+              </p>
+              <p class="text-xs text-gray-400">
+                {{ detail.quantity }} x {{ formatLocalPrice(detail.price, order) }}
+              </p>
+            </div>
+
+            <!-- 👇 MODIFIKASI AREA KANAN (HARGA & TOMBOL REVIEW) 👇 -->
+            <div class="flex flex-col items-end gap-2">
+              <p class="text-sm font-bold text-gray-900">
+                {{ formatLocalPrice(detail.quantity * detail.price, order) }}
+              </p>
+
+              <!-- Tombol Review: Hanya muncul jika order completed -->
+              <button
+                v-if="order.status === 'completed'"
+                @click.stop="openReviewModal(order.id, detail.product.id)"
+                class="px-3 py-1.5 text-[10px] font-bold tracking-widest text-white uppercase transition bg-black rounded-lg hover:bg-gray-800"
+              >
+                Write Review
+              </button>
+            </div>
+            <!-- 👆 AKHIR MODIFIKASI 👆 -->
           </div>
         </div>
 
@@ -9654,6 +9697,14 @@ onUnmounted(() => {
         </div>
       </div>
     </div>
+    <!-- 👇 TAMBAHKAN KOMPONEN MODAL DI SINI 👇 -->
+    <WriteReviewModal
+      v-if="showReviewModal"
+      :transaction-id="reviewTransactionId"
+      :product-id="reviewProductId"
+      @close="closeReviewModal"
+      @success="handleReviewSuccess"
+    />
   </div>
 </template>
 
@@ -9666,6 +9717,7 @@ import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 
 import defaultBagIcon from "../../assets/products/bag_icon.jpg";
+import WriteReviewModal from "../Admin/Layout/WriteReviewModal.vue";
 
 const userData = ref(null);
 const router = useRouter();
@@ -9683,6 +9735,32 @@ const activeShippingTab = ref("all");
 const activeUnifiedTab = ref("all");
 
 const isRedirecting = ref(false);
+
+// 👇 STATE UNTUK REVIEW MODAL 👇
+const showReviewModal = ref(false);
+const reviewTransactionId = ref(null);
+const reviewProductId = ref(null);
+
+// 👇 FUNGSI PENGONTROL REVIEW MODAL 👇
+const openReviewModal = (transactionId, productId) => {
+  reviewTransactionId.value = transactionId;
+  reviewProductId.value = productId;
+  showReviewModal.value = true;
+};
+
+const closeReviewModal = () => {
+  showReviewModal.value = false;
+  reviewTransactionId.value = null;
+  reviewProductId.value = null;
+};
+
+const handleReviewSuccess = () => {
+  // Apa yang terjadi setelah review sukses dikirim?
+  // Kita bisa memanggil ulang API pesanan agar data menjadi segar kembali,
+  // atau cukup menutup modal.
+  fetchOrders();
+};
+
 const exchangeRates = ref({ IDR: 1 }); // [BARU] Wadah untuk menyimpan kurs dari Backend
 
 const { t } = useI18n();
@@ -9892,7 +9970,7 @@ const fetchRates = async () => {
 const formatLocalPrice = (value, order) => {
   const safeValue = parseFloat(value || 0);
   const code = order?.currency_code || "IDR"; // Membaca mata uang dari DB
-  
+
   // Ambil multiplier dari cache kurs (jika IDR, nilainya 1)
   const rate = exchangeRates.value[code] || 1;
   const convertedValue = safeValue * rate;
@@ -9997,7 +10075,7 @@ const canPay = (status) => ["pending"].includes(status);
 const canCancel = (status) => ["pending", "processing"].includes(status);
 
 const handleOrderClick = (order) => {
-  if (isRedirecting.value) return; 
+  if (isRedirecting.value) return;
 
   if (canPay(order.status) && countdowns.value[order.id] !== "Expired") {
     redirectToPayment(order);
@@ -10005,7 +10083,7 @@ const handleOrderClick = (order) => {
 };
 
 const redirectToPayment = (order) => {
-  if (isRedirecting.value) return; 
+  if (isRedirecting.value) return;
 
   if (order.status === "pending" && order.payment?.checkout_url) {
     isRedirecting.value = true;
@@ -10022,7 +10100,7 @@ const redirectToPayment = (order) => {
 
     setTimeout(() => {
       window.location.href = order.payment.checkout_url;
-      
+
       setTimeout(() => {
         isRedirecting.value = false;
         Swal.close();
@@ -10224,7 +10302,7 @@ const formatDateTime = (date) =>
 onMounted(async () => {
   const user = localStorage.getItem("user");
   if (user) userData.value = JSON.parse(user);
-  
+
   // [BARU] Panggil fetchRates sebelum memuat pesanan
   await fetchRates();
   fetchOrders();
