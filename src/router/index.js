@@ -2740,6 +2740,7 @@ const routeToModuleMap = {
   "/admin/dashboard": "dashboard",
   "/admin/categories": "categories",
   "/admin/products": "products",
+  "/admin/reviews": "reviews",
   "/admin/stocks": "stocks",
   "/admin/transactions": "transactions",
   "/admin/messages": "messages",

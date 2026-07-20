@@ -1053,6 +1053,11 @@ const modules = ref([
     availableActions: ["menu", "create", "read", "update", "delete"],
   },
   {
+    id: "reviews",
+    name: "Product Reviews",
+    availableActions: ["menu", "read", "update"],
+  },
+  {
     id: "stocks",
     name: "Stock Management",
     availableActions: ["menu", "read", "update"],
