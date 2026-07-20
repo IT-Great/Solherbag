@@ -104,7 +104,7 @@
 import { ref } from "vue";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { BASE_URL } from "../../config/api.js";
+import { BASE_URL } from "../../../config/api.js";
 
 const props = defineProps(["transactionId", "productId"]);
 const emit = defineEmits(["close", "success"]);
