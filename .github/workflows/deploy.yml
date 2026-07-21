@@ -22,7 +22,7 @@ jobs:
             cd /var/www/html/solher-frontend
             
             # 2. Tarik update terbaru
-            git pull origin main
+            git pull
             
             # 3. Update NPM (hanya jika ada tambahan package baru)
             npm install
