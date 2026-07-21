@@ -1235,13 +1235,13 @@ watch(
               @mouseenter="isHomeDropdownOpen = true"
               @mouseleave="isHomeDropdownOpen = false"
             >
-              <!-- <router-link
+              <router-link
                 to="/"
                 class="transition cursor-pointer hover:text-gray-500"
                 :class="{ 'text-gray-500': isHomeDropdownOpen }"
               >
                 {{ $t("header.home") }}
-              </router-link> -->
+              </router-link>
 
               <transition name="fade-slide">
                 <div
@@ -1249,12 +1249,12 @@ watch(
                   class="absolute left-0 w-48 p-4 mt-2 bg-white border border-gray-100 shadow-xl top-full"
                 >
                   <div class="flex flex-col space-y-3">
-                    <router-link
+                    <!-- <router-link
                       to="/"
                       class="text-[10px] font-bold tracking-widest text-gray-700 uppercase transition hover:text-black"
                     >
                       {{ $t("header.main_home") }}
-                    </router-link>
+                    </router-link> -->
                     <router-link
                       to="/about-us"
                       class="text-[10px] font-bold tracking-widest text-gray-700 uppercase transition hover:text-black"
