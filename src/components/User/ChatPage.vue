@@ -1469,10 +1469,22 @@ const myId = ref(userData ? Number(userData.id) : null);
 const token = localStorage.getItem("token");
 
 // Deteksi apakah lawan bicara adalah AI
+// const isAiProfile = computed(() => {
+//   if (!receiverProfile.value) return false;
+//   return receiverProfile.value.usertype === 'ai' || 
+//          (receiverProfile.value.first_name && receiverProfile.value.first_name.toLowerCase().includes('ai'));
+// });
+
+// Deteksi apakah lawan bicara adalah AI
 const isAiProfile = computed(() => {
   if (!receiverProfile.value) return false;
-  return receiverProfile.value.usertype === 'ai' || 
-         (receiverProfile.value.first_name && receiverProfile.value.first_name.toLowerCase().includes('ai'));
+  
+  const type = receiverProfile.value.usertype?.toLowerCase() || '';
+  const fName = receiverProfile.value.first_name?.toLowerCase() || '';
+  const lName = receiverProfile.value.last_name?.toLowerCase() || '';
+  const email = receiverProfile.value.email?.toLowerCase() || '';
+  
+  return type === 'ai' || fName.includes('ai') || lName.includes('ai') || email.includes('ai@');
 });
 
 const scrollToBottom = () => {
@@ -1558,6 +1570,7 @@ const sendMessage = async () => {
   // Memicu animasi "Thinking" saat pesan terkirim ke AI
   if (isAiProfile.value) {
     isAiThinking.value = true;
+    scrollToBottom();
   }
 
   const formData = new FormData();
