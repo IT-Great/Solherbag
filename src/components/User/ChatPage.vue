@@ -2022,7 +2022,7 @@ const receiverId = Number(route.params.id);
 // 👇 DAFTAR PERTANYAAN CEPAT (Quick Replies) 👇
 const QUICK_REPLIES = [
   "Apa produk paling laris?",
-  "Cara pakai Ethereal Glow Brush?",
+  "Cara pakai kode promo",
   "Berapa hari pengirimannya?",
   "Ada promo apa hari ini?",
   "Cara refund barang cacat?",
