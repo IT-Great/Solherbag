@@ -519,14 +519,16 @@ const isLoading = ref(true);
 // Fungsi untuk mendeteksi apakah admin adalah AI
 const isAiUser = (user) => {
   if (!user) return false;
-  
-  const type = user.usertype?.toLowerCase() || '';
-  const fName = user.first_name?.toLowerCase() || '';
-  const lName = user.last_name?.toLowerCase() || '';
-  const email = user.email?.toLowerCase() || '';
-  
+
+  const type = user.usertype?.toLowerCase() || "";
+  const fName = user.first_name?.toLowerCase() || "";
+  const lName = user.last_name?.toLowerCase() || "";
+  const email = user.email?.toLowerCase() || "";
+
   // Deteksi dari usertype, nama depan, nama belakang, atau email
-  return type === 'ai' || fName.includes('ai') || lName.includes('ai') || email.includes('ai@');
+  return (
+    type === "ai" || fName.includes("ai") || lName.includes("ai") || email.includes("ai@")
+  );
 };
 
 const fetchAdmins = async () => {
