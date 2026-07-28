@@ -636,75 +636,13 @@ const markAsRead = async () => {
   } catch (e) {}
 };
 
-// const fetchMessages = async () => {
-//   if (!token) return;
-//   try {
-//     const res = await axios.get(`${BASE_URL}/chat/messages/${receiverId}`, {
-//       headers: { Authorization: `Bearer ${token}` },
-//     });
-
-//     messages.value = res.data;
-
-//     if (messages.value.length > 0) {
-//       const firstMessage = messages.value[0];
-//       receiverProfile.value =
-//         firstMessage.sender_id === receiverId
-//           ? firstMessage.sender
-//           : firstMessage.receiver;
-//     }
-
-//     scrollToBottom();
-//     markAsRead();
-//   } catch (error) {
-//     console.error("Gagal mengambil pesan", error);
-//   } finally {
-//     isLoading.value = false;
-//   }
-// };
-
-// Function untuk inisialisasi Pusher SECARA TEPAT WAKTU
-const setupPusherListener = () => {
-  if (myId.value && token && window.Echo) {
-    window.Echo.private(`chat.${myId.value}`)
-      .listen(".message.sent", (e) => {
-        if (e.message.sender_id === receiverId) {
-          messages.value.push(e.message);
-          scrollToBottom();
-          markAsRead();
-        }
-      })
-      .listen(".message.read", (e) => {
-        if (e.reader_id === receiverId) {
-          messages.value.forEach((m) => {
-            if (m.sender_id === myId.value) m.is_read = true;
-          });
-        }
-      })
-      .listen(".user.typing", (e) => {
-        if (e.typer_id === receiverId) {
-          isOpponentTyping.value = true;
-          clearTimeout(typingTimeout);
-          typingTimeout = setTimeout(() => (isOpponentTyping.value = false), 2000);
-        }
-      });
-  }
-};
-
 const fetchMessages = async () => {
   if (!token) return;
   try {
-    // 1. [PERBAIKAN] Minta Vue mengambil ID Solher Care, dan timpa ID asli Admin
-    const resSupport = await axios.get(`${BASE_URL}/chat/admins`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (resSupport.data && resSupport.data.length > 0) {
-      myId.value = resSupport.data[0].id; // Override menjadi ID Virtual (Solher Care)
-    }
-
-    // 2. Ambil riwayat percakapan
     const res = await axios.get(`${BASE_URL}/chat/messages/${receiverId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
+
     messages.value = res.data;
 
     if (messages.value.length > 0) {
@@ -717,15 +655,77 @@ const fetchMessages = async () => {
 
     scrollToBottom();
     markAsRead();
-
-    // 3. [PERBAIKAN] Nyalakan pendengar Pusher HANYA SETELAH myId berganti jadi ID Virtual
-    setupPusherListener();
   } catch (error) {
     console.error("Gagal mengambil pesan", error);
   } finally {
     isLoading.value = false;
   }
 };
+
+// Function untuk inisialisasi Pusher SECARA TEPAT WAKTU
+// const setupPusherListener = () => {
+//   if (myId.value && token && window.Echo) {
+//     window.Echo.private(`chat.${myId.value}`)
+//       .listen(".message.sent", (e) => {
+//         if (e.message.sender_id === receiverId) {
+//           messages.value.push(e.message);
+//           scrollToBottom();
+//           markAsRead();
+//         }
+//       })
+//       .listen(".message.read", (e) => {
+//         if (e.reader_id === receiverId) {
+//           messages.value.forEach((m) => {
+//             if (m.sender_id === myId.value) m.is_read = true;
+//           });
+//         }
+//       })
+//       .listen(".user.typing", (e) => {
+//         if (e.typer_id === receiverId) {
+//           isOpponentTyping.value = true;
+//           clearTimeout(typingTimeout);
+//           typingTimeout = setTimeout(() => (isOpponentTyping.value = false), 2000);
+//         }
+//       });
+//   }
+// };
+
+// const fetchMessages = async () => {
+//   if (!token) return;
+//   try {
+//     // 1. [PERBAIKAN] Minta Vue mengambil ID Solher Care, dan timpa ID asli Admin
+//     const resSupport = await axios.get(`${BASE_URL}/chat/admins`, {
+//       headers: { Authorization: `Bearer ${token}` },
+//     });
+//     if (resSupport.data && resSupport.data.length > 0) {
+//       myId.value = resSupport.data[0].id; // Override menjadi ID Virtual (Solher Care)
+//     }
+
+//     // 2. Ambil riwayat percakapan
+//     const res = await axios.get(`${BASE_URL}/chat/messages/${receiverId}`, {
+//       headers: { Authorization: `Bearer ${token}` },
+//     });
+//     messages.value = res.data;
+
+//     if (messages.value.length > 0) {
+//       const firstMessage = messages.value[0];
+//       receiverProfile.value =
+//         firstMessage.sender_id === receiverId
+//           ? firstMessage.sender
+//           : firstMessage.receiver;
+//     }
+
+//     scrollToBottom();
+//     markAsRead();
+
+//     // 3. [PERBAIKAN] Nyalakan pendengar Pusher HANYA SETELAH myId berganti jadi ID Virtual
+//     setupPusherListener();
+//   } catch (error) {
+//     console.error("Gagal mengambil pesan", error);
+//   } finally {
+//     isLoading.value = false;
+//   }
+// };
 
 // const sendMessage = async () => {
 //   if ((!newMessage.value.trim() && !selectedFile.value) || !myId.value) return;
@@ -833,52 +833,12 @@ const sendMessage = async () => {
   }
 };
 
-// onMounted(() => {
-//   // Cegah scroll body utama
-//   document.body.style.overflow = "hidden";
-//   fetchMessages();
-
-//   if (myId.value && token) {
-//     window.Pusher = Pusher;
-//     window.Echo = new Echo({
-//       broadcaster: "pusher",
-//       key: import.meta.env.VITE_PUSHER_APP_KEY,
-//       cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
-//       forceTLS: true,
-//       authEndpoint: `${BASE_URL}/broadcasting/auth`,
-//       auth: { headers: { Authorization: `Bearer ${token}` } },
-//     });
-
-//     window.Echo.private(`chat.${myId.value}`)
-//       .listen(".message.sent", (e) => {
-//         if (e.message.sender_id === receiverId) {
-//           messages.value.push(e.message);
-//           scrollToBottom();
-//           markAsRead();
-//         }
-//       })
-//       .listen(".message.read", (e) => {
-//         if (e.reader_id === receiverId) {
-//           messages.value.forEach((m) => {
-//             if (m.sender_id === myId.value) m.is_read = true;
-//           });
-//         }
-//       })
-//       .listen(".user.typing", (e) => {
-//         if (e.typer_id === receiverId) {
-//           isOpponentTyping.value = true;
-//           clearTimeout(typingTimeout);
-//           typingTimeout = setTimeout(() => (isOpponentTyping.value = false), 2000);
-//         }
-//       });
-//   }
-// });
-
 onMounted(() => {
+  // Cegah scroll body utama
   document.body.style.overflow = "hidden";
+  fetchMessages();
 
-  // Deklarasi Echo Dasar
-  if (token) {
+  if (myId.value && token) {
     window.Pusher = Pusher;
     window.Echo = new Echo({
       broadcaster: "pusher",
@@ -888,10 +848,50 @@ onMounted(() => {
       authEndpoint: `${BASE_URL}/broadcasting/auth`,
       auth: { headers: { Authorization: `Bearer ${token}` } },
     });
-  }
 
-  fetchMessages(); // Jalankan proses pengambilan pesan
+    window.Echo.private(`chat.${myId.value}`)
+      .listen(".message.sent", (e) => {
+        if (e.message.sender_id === receiverId) {
+          messages.value.push(e.message);
+          scrollToBottom();
+          markAsRead();
+        }
+      })
+      .listen(".message.read", (e) => {
+        if (e.reader_id === receiverId) {
+          messages.value.forEach((m) => {
+            if (m.sender_id === myId.value) m.is_read = true;
+          });
+        }
+      })
+      .listen(".user.typing", (e) => {
+        if (e.typer_id === receiverId) {
+          isOpponentTyping.value = true;
+          clearTimeout(typingTimeout);
+          typingTimeout = setTimeout(() => (isOpponentTyping.value = false), 2000);
+        }
+      });
+  }
 });
+
+// onMounted(() => {
+//   document.body.style.overflow = "hidden";
+
+//   // Deklarasi Echo Dasar
+//   if (token) {
+//     window.Pusher = Pusher;
+//     window.Echo = new Echo({
+//       broadcaster: "pusher",
+//       key: import.meta.env.VITE_PUSHER_APP_KEY,
+//       cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
+//       forceTLS: true,
+//       authEndpoint: `${BASE_URL}/broadcasting/auth`,
+//       auth: { headers: { Authorization: `Bearer ${token}` } },
+//     });
+//   }
+
+//   fetchMessages(); // Jalankan proses pengambilan pesan
+// });
 
 onUnmounted(() => {
   // Kembalikan kemampuan scroll
