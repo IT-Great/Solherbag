@@ -426,7 +426,7 @@ onUnmounted(() => {
 }
 </style> -->
 
-<template>
+<!-- <template>
   <div class="max-w-4xl min-h-screen px-6 py-24 mx-auto animate-fade-in">
     <div class="mb-10 text-center">
       <h1 class="font-serif text-4xl tracking-tighter uppercase md:text-5xl">
@@ -450,7 +450,6 @@ onUnmounted(() => {
         @click="$router.push(`/chat/${admin.id}`)"
         class="flex items-center p-6 transition-all duration-300 bg-white border border-gray-200 cursor-pointer rounded-2xl hover:shadow-lg hover:border-black group"
       >
-        <!-- Deteksi Avatar AI vs Manusia -->
         <img
           :src="
             isAiUser(admin)
@@ -575,4 +574,80 @@ onUnmounted(() => {
 .pop-leave-to {
   transform: scale(0);
 }
-</style>
+</style> -->
+
+<template>
+  <div class="max-w-4xl min-h-screen px-6 py-24 mx-auto animate-fade-in">
+    <div class="mb-10 text-center">
+      <h1 class="font-serif text-4xl tracking-tighter uppercase md:text-5xl">
+        Bantuan & Dukungan
+      </h1>
+      <p class="mt-4 font-serif italic text-gray-500">
+        Hubungi layanan pelanggan resmi kami
+      </p>
+    </div>
+
+    <div v-if="isLoading" class="flex justify-center py-20">
+      <div class="w-10 h-10 border-4 border-gray-200 rounded-full border-t-black animate-spin"></div>
+    </div>
+
+    <div v-else class="flex justify-center">
+      <div
+        v-for="admin in admins"
+        :key="admin.id"
+        @click="$router.push(`/chat/${admin.id}`)"
+        class="flex items-center w-full max-w-lg p-6 transition-all duration-300 bg-white border border-gray-200 cursor-pointer rounded-2xl hover:shadow-lg hover:border-black group"
+      >
+        <img
+          src="https://api.dicebear.com/7.x/initials/svg?seed=SC&backgroundColor=000000"
+          class="object-cover w-16 h-16 rounded-full shadow-sm"
+        />
+        <div class="flex-grow ml-4">
+          <h3 class="flex items-center gap-2 text-lg font-bold tracking-widest text-gray-900 uppercase group-hover:text-black">
+            {{ admin.first_name }} {{ admin.last_name }}
+            <!-- Tanda Verified Biru -->
+            <svg class="w-5 h-5 text-blue-500" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-1.1 14.6l-4.2-4.2 1.4-1.4 2.8 2.8 7.1-7.1 1.4 1.4-8.5 8.5z"/>
+            </svg>
+          </h3>
+          <p class="text-xs font-bold tracking-widest text-gray-400 uppercase">
+            Official Business Account
+          </p>
+        </div>
+
+        <transition name="pop">
+          <div
+            v-if="admin.unread_count > 0"
+            class="flex items-center justify-center w-6 h-6 mr-3 text-[10px] font-bold text-white bg-red-600 rounded-full shadow-md shrink-0"
+          >
+            {{ admin.unread_count > 99 ? "99+" : admin.unread_count }}
+          </div>
+        </transition>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import { BASE_URL } from "../../config/api";
+
+const admins = ref([]);
+const isLoading = ref(true);
+
+const fetchAdmins = async () => {
+  try {
+    const res = await axios.get(`${BASE_URL}/chat/admins`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    admins.value = res.data;
+  } catch (e) {
+    console.error(e);
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+onMounted(fetchAdmins);
+</script>

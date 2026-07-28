@@ -2620,10 +2620,18 @@ onUnmounted(() => {
         </div>
 
         <!-- 👇 DISCLAIMER AI 👇 -->
-        <div v-if="isAiProfile" class="px-4 pb-3 text-center">
+        <!-- <div v-if="isAiProfile" class="px-4 pb-3 text-center">
           <p class="text-[9px] leading-tight text-gray-400">
             Fitur AI ChatBot masih dalam tahap pengembangan. Kami mohon maaf jika terdapat
             respon yang keliru atau kurang sempurna.
+          </p>
+        </div> -->
+        <!-- 👇 DISCLAIMER HYBRID 👇 -->
+        <div class="px-4 pb-3 text-center bg-gray-50 border-t border-gray-100 pt-2">
+          <p class="text-[10px] leading-tight text-gray-400">
+            Asisten AI akan merespons pesan secara instan 24/7. Ketik
+            <strong>"Bicara dengan admin"</strong> kapan saja jika Anda membutuhkan
+            bantuan manusia.
           </p>
         </div>
       </div>
