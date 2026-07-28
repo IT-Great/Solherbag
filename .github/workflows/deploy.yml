@@ -20,12 +20,12 @@ jobs:
           script: |
             # 1. Pindah ke direktori proyek (UBAH SESUAI REPOSITORY)
             cd /var/www/html/solher-frontend
-            c
+            
             # 2. Tarik update terbaru
             git pull
             
             # 3. Update NPM (hanya jika ada tambahan package baru)
-            # npm install
+            npm install
             
             # 4. Compile ulang aset Frontend
             npm run build
