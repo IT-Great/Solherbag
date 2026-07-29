@@ -2280,7 +2280,7 @@ onUnmounted(() => {
 }
 </style> -->
 
-<template>
+<!-- <template>
   <div
     class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in"
     @click.self="$router.back()"
@@ -2288,7 +2288,6 @@ onUnmounted(() => {
     <div
       class="flex flex-col w-full max-w-2xl bg-[#F9FAFB] shadow-2xl rounded-2xl overflow-hidden h-[85vh] md:h-[75vh]"
     >
-      <!-- Header Info AI/Admin -->
       <div
         class="relative z-10 flex items-center px-6 py-4 bg-white border-b border-gray-200 shadow-sm shrink-0"
       >
@@ -2323,7 +2322,6 @@ onUnmounted(() => {
               {{ receiverProfile.first_name }} {{ receiverProfile.last_name }}
             </h2>
 
-            <!-- Tampilan AI sedang berpikir di Header -->
             <p
               v-if="isAiThinking"
               class="text-[10px] text-blue-500 font-bold uppercase tracking-widest flex items-center gap-1.5 mt-0.5 animate-pulse"
@@ -2366,7 +2364,6 @@ onUnmounted(() => {
         </button>
       </div>
 
-      <!-- Area Chat -->
       <div
         class="relative flex flex-col p-4 overflow-y-auto md:p-6 grow custom-scrollbar"
         ref="chatContainer"
@@ -2458,7 +2455,6 @@ onUnmounted(() => {
           </div>
         </div>
 
-        <!-- UI Chat Bubble Animasi Loading Khusus AI -->
         <div v-if="isAiThinking" class="flex justify-start w-full mb-4 animate-fade-in">
           <div
             class="flex items-center gap-1.5 px-5 py-4 bg-white border border-gray-200 rounded-r-2xl rounded-tl-2xl shadow-sm h-[46px]"
@@ -2479,9 +2475,7 @@ onUnmounted(() => {
         </div>
       </div>
 
-      <!-- 👇 AREA BAWAH (QUICK REPLIES, FORM INPUT, & DISCLAIMER) 👇 -->
       <div class="flex flex-col bg-white border-t border-gray-200 shrink-0">
-        <!-- UI Quick Replies (Hanya muncul jika lawan bicara adalah AI) -->
         <div
           v-if="isAiProfile"
           class="flex gap-2 px-3 pt-3 pb-2 overflow-x-auto border-b border-gray-50 custom-scrollbar scroll-smooth"
@@ -2497,7 +2491,6 @@ onUnmounted(() => {
           </button>
         </div>
 
-        <!-- Area Form Chat -->
         <div :class="['px-3 pt-2', isAiProfile ? 'pb-1' : 'pb-3']">
           <div v-if="filePreview" class="relative inline-block mb-3 ml-2">
             <img
@@ -2619,7 +2612,6 @@ onUnmounted(() => {
           </form>
         </div>
 
-        <!-- 👇 DISCLAIMER AI 👇 -->
         <div v-if="isAiProfile" class="px-4 pb-3 text-center">
           <p class="text-[9px] leading-tight text-gray-400">
             Fitur AI ChatBot masih dalam tahap pengembangan. Kami mohon maaf jika terdapat
@@ -2905,5 +2897,350 @@ onUnmounted(() => {
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background-color: #e5e7eb;
   border-radius: 20px;
+}
+</style> -->
+
+<!-- 1 akun untuk AI ChatBot dan CS Admin -->
+<template>
+  <div
+    class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in"
+    @click.self="$router.back()"
+  >
+    <div
+      class="flex flex-col w-full max-w-2xl bg-[#F9FAFB] shadow-2xl rounded-2xl overflow-hidden h-[85vh] md:h-[75vh]"
+    >
+      <div
+        class="relative z-10 flex items-center px-6 py-4 bg-white border-b border-gray-200 shadow-sm shrink-0"
+      >
+        <button
+          @click="$router.back()"
+          class="p-2 mr-4 text-gray-400 transition rounded-full bg-gray-50 hover:text-black hover:bg-gray-200 focus:outline-none"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+
+        <div v-if="receiverProfile" class="flex items-center gap-3">
+          <img
+            src="https://api.dicebear.com/7.x/initials/svg?seed=SC&backgroundColor=000000"
+            class="object-cover w-10 h-10 rounded-full shadow-sm"
+          />
+          <div>
+            <h2 class="text-sm font-bold tracking-widest text-black uppercase">
+              {{ receiverProfile.first_name }} {{ receiverProfile.last_name }}
+            </h2>
+            <p
+              v-if="isAiThinking"
+              class="text-[10px] text-blue-500 font-bold uppercase tracking-widest flex items-center gap-1.5 mt-0.5 animate-pulse"
+            >
+              <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span> Thinking...
+            </p>
+            <p
+              v-else
+              class="text-[10px] text-green-500 font-bold uppercase tracking-widest flex items-center gap-1.5 mt-0.5"
+            >
+              <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span> Online
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="relative flex flex-col p-4 overflow-y-auto md:p-6 grow custom-scrollbar"
+        ref="chatContainer"
+      >
+        <div
+          v-if="isLoading"
+          class="absolute inset-0 flex items-center justify-center bg-[#F9FAFB]/80 z-10"
+        >
+          <div
+            class="w-8 h-8 border-2 border-gray-300 rounded-full border-t-black animate-spin"
+          ></div>
+        </div>
+
+        <div
+          v-for="msg in messages"
+          :key="msg.id"
+          class="flex flex-col w-full mb-4"
+          :class="msg.sender_id === myId ? 'items-end' : 'items-start'"
+        >
+          <span
+            v-if="msg.sender_id !== myId"
+            class="text-[10px] font-bold tracking-widest uppercase mb-1 text-gray-400"
+          >
+            {{ msg.sender?.email === "ai@solher.com" ? "AI Bot" : "Admin Solher" }}
+          </span>
+          <div
+            :class="
+              msg.sender_id === myId
+                ? 'bg-black text-white rounded-l-2xl rounded-tr-2xl'
+                : msg.sender?.email === 'ai@solher.com'
+                ? 'bg-purple-600 text-white rounded-r-2xl rounded-tl-2xl shadow-purple-500/30'
+                : 'bg-white border border-gray-200 text-black rounded-r-2xl rounded-tl-2xl'
+            "
+            class="px-4 md:px-5 py-3 max-w-[85%] md:max-w-[75%] shadow-sm relative group min-w-[100px]"
+          >
+            <p
+              v-if="msg.message"
+              class="text-[13px] md:text-sm leading-relaxed whitespace-pre-wrap"
+            >
+              {{ msg.message }}
+            </p>
+            <div class="flex justify-end items-center gap-1.5 mt-1.5">
+              <span
+                class="text-[9px] opacity-70"
+                :class="
+                  msg.sender_id === myId || msg.sender?.email === 'ai@solher.com'
+                    ? 'text-gray-300'
+                    : 'text-gray-500'
+                "
+                >{{
+                  new Date(msg.created_at).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })
+                }}</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <div v-if="isAiThinking" class="flex justify-start w-full mb-4 animate-fade-in">
+          <div
+            class="flex items-center gap-1.5 px-5 py-4 bg-white border border-gray-200 rounded-r-2xl rounded-tl-2xl shadow-sm h-[46px]"
+          >
+            <span
+              class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+              style="animation-delay: 0ms"
+            ></span>
+            <span
+              class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+              style="animation-delay: 150ms"
+            ></span>
+            <span
+              class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+              style="animation-delay: 300ms"
+            ></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col bg-white border-t border-gray-200 shrink-0">
+        <div
+          class="flex gap-2 px-3 pt-3 pb-2 overflow-x-auto border-b border-gray-50 custom-scrollbar scroll-smooth"
+        >
+          <button
+            v-for="(replyText, idx) in QUICK_REPLIES"
+            :key="idx"
+            @click="handleSendQuickReply(replyText)"
+            :disabled="isAiThinking || isSending"
+            class="shrink-0 px-4 py-1.5 text-[11px] font-bold tracking-wide text-black bg-gray-100 border border-gray-200 rounded-full transition-colors hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+          >
+            {{ replyText }}
+          </button>
+        </div>
+
+        <form
+          @submit.prevent="sendMessage"
+          class="flex items-end gap-2 px-3 pt-2 pb-3 md:gap-3"
+        >
+          <input
+            v-model="newMessage"
+            type="text"
+            placeholder="Ketik pesan Anda..."
+            class="flex-grow p-3 text-xs transition border border-gray-200 outline-none md:p-4 md:text-sm bg-gray-50 rounded-2xl focus:ring-2 focus:ring-black focus:bg-white"
+          />
+          <button
+            type="submit"
+            :disabled="!newMessage.trim() || isSending || isAiThinking"
+            class="flex items-center justify-center w-10 h-10 text-white transition-all bg-black shadow-lg md:w-12 md:h-12 shrink-0 rounded-2xl hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <svg
+              v-if="!isSending"
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-4 h-4 md:w-5 md:h-5 ml-0.5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+              />
+            </svg>
+            <div
+              v-else
+              class="w-4 h-4 border-2 border-white rounded-full border-t-transparent animate-spin"
+            ></div>
+          </button>
+        </form>
+        <div class="px-4 pt-1 pb-3 text-center bg-gray-50 border-t border-gray-100">
+          <p class="text-[10px] leading-tight text-gray-400">
+            Asisten AI merespons 24/7. Ketik <strong>"Bicara dengan admin"</strong> untuk
+            bantuan manusia.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, onUnmounted, nextTick } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import axios from "axios";
+import { BASE_URL } from "../../config/api";
+import Echo from "laravel-echo";
+import Pusher from "pusher-js";
+
+const route = useRoute();
+const router = useRouter();
+const receiverId = Number(route.params.id);
+
+const QUICK_REPLIES = [
+  "Produk terbaru?",
+  "Berapa hari pengiriman?",
+  "Cara refund?",
+  "Bicara dengan Admin",
+];
+
+const messages = ref([]);
+const newMessage = ref("");
+const isLoading = ref(true);
+const isSending = ref(false);
+const chatContainer = ref(null);
+const receiverProfile = ref(null);
+const isAiThinking = ref(false);
+
+const userData = JSON.parse(localStorage.getItem("user"));
+const myId = ref(userData ? Number(userData.id) : null);
+const token = localStorage.getItem("token");
+
+const scrollToBottom = () => {
+  nextTick(() => {
+    if (chatContainer.value)
+      chatContainer.value.scrollTop = chatContainer.value.scrollHeight;
+  });
+};
+
+const fetchMessages = async () => {
+  if (!token) return;
+  try {
+    const res = await axios.get(`${BASE_URL}/chat/messages/${receiverId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    messages.value = res.data;
+    if (messages.value.length > 0) {
+      const firstMessage = messages.value[0];
+      receiverProfile.value =
+        firstMessage.sender_id === receiverId
+          ? firstMessage.sender
+          : firstMessage.receiver;
+    } else {
+      receiverProfile.value = { first_name: "Solher", last_name: "Care" };
+    }
+    scrollToBottom();
+  } catch (error) {
+    console.error("Gagal mengambil pesan", error);
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+const handleSendQuickReply = async (text) => {
+  if (isAiThinking.value || isSending.value) return;
+  newMessage.value = text;
+  await sendMessage();
+};
+
+const sendMessage = async () => {
+  if (!newMessage.value.trim() || !myId.value) return;
+  isSending.value = true;
+  isAiThinking.value = true;
+
+  const tempId = Date.now();
+  const sentMessage = newMessage.value;
+
+  messages.value.push({
+    id: tempId,
+    sender_id: myId.value,
+    message: sentMessage,
+    created_at: new Date().toISOString(),
+  });
+  scrollToBottom();
+  newMessage.value = "";
+
+  try {
+    const res = await axios.post(
+      `${BASE_URL}/chat/send`,
+      { receiver_id: receiverId, message: sentMessage },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    // Perbarui Optimistic Update
+    const index = messages.value.findIndex((m) => m.id === tempId);
+    if (index !== -1) messages.value[index] = res.data.user_message || res.data;
+
+    // Matikan AI thinking karena api selesai (tapi mungkin dibalas asinkron via Echo jika antre panjang,
+    // jika antre pendek, API bisa lsg balik bawa data). Namun karena kita pakai Job/Queue, balasan datang dr WebSockets.
+  } catch (error) {
+    console.error("Gagal", error);
+    isAiThinking.value = false;
+  } finally {
+    isSending.value = false;
+  }
+};
+
+onMounted(() => {
+  document.body.style.overflow = "hidden";
+  fetchMessages();
+
+  if (myId.value && token) {
+    window.Pusher = Pusher;
+    window.Echo = new Echo({
+      broadcaster: "pusher",
+      key: import.meta.env.VITE_PUSHER_APP_KEY,
+      cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
+      forceTLS: true,
+      authEndpoint: `${BASE_URL}/broadcasting/auth`,
+      auth: { headers: { Authorization: `Bearer ${token}` } },
+    });
+
+    window.Echo.private(`chat.${myId.value}`).listen(".MessageSent", (e) => {
+      const incomingMsg = e.message || e;
+      if (incomingMsg.sender_id !== myId.value) {
+        isAiThinking.value = false;
+        messages.value.push(incomingMsg);
+        scrollToBottom();
+      }
+    });
+  }
+});
+
+onUnmounted(() => {
+  document.body.style.overflow = "auto";
+  if (window.Echo && myId.value) window.Echo.leave(`chat.${myId.value}`);
+});
+</script>
+
+<style scoped>
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #e5e7eb;
+  border-radius: 10px;
 }
 </style>
