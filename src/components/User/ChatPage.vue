@@ -3218,7 +3218,7 @@ onMounted(() => {
       auth: { headers: { Authorization: `Bearer ${token}` } },
     });
 
-    window.Echo.private(`chat.${myId.value}`).listen(".MessageSent", (e) => {
+    window.Echo.private(`chat.${myId.value}`).listen(".message.sent", (e) => {
       const incomingMsg = e.message || e;
       if (incomingMsg.sender_id !== myId.value) {
         isAiThinking.value = false;

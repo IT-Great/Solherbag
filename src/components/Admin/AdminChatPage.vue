@@ -1124,7 +1124,7 @@ const setupPusher = () => {
   });
 
   // Sadap Kotak Pos Solher Care
-  window.Echo.private(`chat.${supportId.value}`).listen(".MessageSent", (e) => {
+  window.Echo.private(`chat.${supportId.value}`).listen(".message.sent", (e) => {
     const incomingMsg = e.message || e;
     if (incomingMsg.sender_id === receiverId || incomingMsg.receiver_id === receiverId) {
       messages.value.push(incomingMsg);
