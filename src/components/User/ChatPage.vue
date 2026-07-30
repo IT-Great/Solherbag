@@ -2901,7 +2901,7 @@ onUnmounted(() => {
 </style> -->
 
 <!-- 1 akun untuk AI ChatBot dan CS Admin -->
-<template>
+<!-- <template>
   <div
     class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in"
     @click.self="$router.back()"
@@ -3084,7 +3084,7 @@ onUnmounted(() => {
             ></div>
           </button>
         </form>
-        <div class="px-4 pt-1 pb-3 text-center bg-gray-50 border-t border-gray-100">
+        <div class="px-4 pt-1 pb-3 text-center border-t border-gray-100 bg-gray-50">
           <p class="text-[10px] leading-tight text-gray-400">
             Asisten AI merespons 24/7. Ketik <strong>"Bicara dengan admin"</strong> untuk
             bantuan manusia.
@@ -3242,5 +3242,456 @@ onUnmounted(() => {
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background-color: #e5e7eb;
   border-radius: 10px;
+}
+</style> -->
+<template>
+  <div
+    class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in"
+    @click.self="$router.back()"
+  >
+    <div
+      class="flex flex-col w-full max-w-2xl bg-[#F9FAFB] shadow-2xl rounded-2xl overflow-hidden h-[85vh] md:h-[75vh]"
+    >
+      <div
+        class="relative z-10 flex items-center px-6 py-4 bg-white border-b border-gray-200 shadow-sm shrink-0"
+      >
+        <button
+          @click="$router.back()"
+          class="p-2 mr-4 text-gray-400 transition rounded-full bg-gray-50 hover:text-black hover:bg-gray-200 focus:outline-none"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+
+        <!-- 👇 PERBAIKAN 1: Profil tidak akan pernah hilang -->
+        <div class="flex items-center gap-3">
+          <img
+            src="https://api.dicebear.com/7.x/initials/svg?seed=SC&backgroundColor=000000"
+            class="object-cover w-10 h-10 rounded-full shadow-sm"
+          />
+          <div>
+            <h2 class="text-sm font-bold tracking-widest text-black uppercase">
+              {{ receiverProfile.first_name }} {{ receiverProfile.last_name }}
+            </h2>
+            <p
+              v-if="isAiThinking"
+              class="text-[10px] text-purple-500 font-bold uppercase tracking-widest flex items-center gap-1.5 mt-0.5 animate-pulse"
+            >
+              <span class="w-1.5 h-1.5 bg-purple-500 rounded-full"></span> AI Thinking...
+            </p>
+            <p
+              v-else-if="isOpponentTyping"
+              class="text-[10px] text-blue-500 font-bold uppercase tracking-widest flex items-center gap-1.5 mt-0.5 animate-pulse"
+            >
+              <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span> Admin Typing...
+            </p>
+            <p
+              v-else
+              class="text-[10px] text-green-500 font-bold uppercase tracking-widest flex items-center gap-1.5 mt-0.5"
+            >
+              <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span> Online
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="relative flex flex-col p-4 overflow-y-auto md:p-6 grow custom-scrollbar"
+        ref="chatContainer"
+      >
+        <div
+          v-if="isLoading"
+          class="absolute inset-0 flex items-center justify-center bg-[#F9FAFB]/80 z-10"
+        >
+          <div
+            class="w-8 h-8 border-2 border-gray-300 rounded-full border-t-black animate-spin"
+          ></div>
+        </div>
+
+        <div
+          v-for="msg in messages"
+          :key="msg.id"
+          class="flex flex-col w-full mb-4"
+          :class="msg.sender_id === myId ? 'items-end' : 'items-start'"
+        >
+          <span
+            v-if="msg.sender_id !== myId"
+            class="text-[10px] font-bold tracking-widest uppercase mb-1 text-gray-400"
+          >
+            {{ msg.sender?.email === "ai@solher.com" ? "AI Bot" : "Admin Solher" }}
+          </span>
+          <div
+            :class="
+              msg.sender_id === myId
+                ? 'bg-black text-white rounded-l-2xl rounded-tr-2xl'
+                : msg.sender?.email === 'ai@solher.com'
+                ? 'bg-purple-600 text-white rounded-r-2xl rounded-tl-2xl shadow-purple-500/30'
+                : 'bg-white border border-gray-200 text-black rounded-r-2xl rounded-tl-2xl'
+            "
+            class="px-4 md:px-5 py-3 max-w-[85%] md:max-w-[75%] shadow-sm relative group min-w-[100px]"
+          >
+            <p
+              v-if="msg.message"
+              class="text-[13px] md:text-sm leading-relaxed whitespace-pre-wrap"
+            >
+              {{ msg.message }}
+            </p>
+            <div class="flex justify-end items-center gap-1.5 mt-1.5">
+              <span
+                class="text-[9px] opacity-70"
+                :class="
+                  msg.sender_id === myId || msg.sender?.email === 'ai@solher.com'
+                    ? 'text-gray-300'
+                    : 'text-gray-500'
+                "
+              >
+                {{
+                  new Date(msg.created_at).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })
+                }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 👇 PERBAIKAN 2: Animasi AI Thinking Berwarna Ungu -->
+        <div v-if="isAiThinking" class="flex justify-start w-full mb-4 animate-fade-in">
+          <div class="flex flex-col">
+            <span
+              class="text-[10px] font-bold tracking-widest uppercase mb-1 text-gray-400"
+              >AI Bot</span
+            >
+            <div
+              class="flex items-center gap-1.5 px-5 py-4 bg-purple-600 rounded-r-2xl rounded-tl-2xl shadow-md h-[46px]"
+            >
+              <span
+                class="w-2 h-2 bg-white rounded-full animate-bounce"
+                style="animation-delay: 0ms"
+              ></span>
+              <span
+                class="w-2 h-2 bg-white rounded-full animate-bounce"
+                style="animation-delay: 150ms"
+              ></span>
+              <span
+                class="w-2 h-2 bg-white rounded-full animate-bounce"
+                style="animation-delay: 300ms"
+              ></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 👇 PERBAIKAN 3: Animasi Admin Mengetik Berwarna Putih -->
+        <div
+          v-if="isOpponentTyping"
+          class="flex justify-start w-full mb-4 animate-fade-in"
+        >
+          <div class="flex flex-col">
+            <span
+              class="text-[10px] font-bold tracking-widest uppercase mb-1 text-gray-400"
+              >Admin Solher</span
+            >
+            <div
+              class="flex items-center gap-1.5 px-5 py-4 bg-white border border-gray-200 rounded-r-2xl rounded-tl-2xl shadow-sm h-[46px]"
+            >
+              <span
+                class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-pulse"
+                style="animation-delay: 0ms"
+              ></span>
+              <span
+                class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-pulse"
+                style="animation-delay: 150ms"
+              ></span>
+              <span
+                class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-pulse"
+                style="animation-delay: 300ms"
+              ></span>
+            </div>
+          </div>
+        </div>
+
+        <div ref="messagesEndRef"></div>
+      </div>
+
+      <div class="flex flex-col bg-white border-t border-gray-200 shrink-0">
+        <div
+          class="flex gap-2 px-3 pt-3 pb-2 overflow-x-auto border-b border-gray-50 custom-scrollbar scroll-smooth"
+        >
+          <button
+            v-for="(replyText, idx) in QUICK_REPLIES"
+            :key="idx"
+            @click="handleSendQuickReply(replyText)"
+            :disabled="isAiThinking || isSending"
+            class="shrink-0 px-4 py-1.5 text-[11px] font-bold tracking-wide text-black bg-gray-100 border border-gray-200 rounded-full transition-colors hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+          >
+            {{ replyText }}
+          </button>
+        </div>
+
+        <form
+          @submit.prevent="sendMessage"
+          class="flex items-end gap-2 px-3 pt-2 pb-3 md:gap-3"
+        >
+          <input
+            v-model="newMessage"
+            @input="handleTyping"
+            type="text"
+            placeholder="Ketik pesan Anda..."
+            class="flex-grow p-3 text-xs transition border border-gray-200 outline-none md:p-4 md:text-sm bg-gray-50 rounded-2xl focus:ring-2 focus:ring-black focus:bg-white"
+          />
+          <button
+            type="submit"
+            :disabled="!newMessage.trim() || isSending || isAiThinking"
+            class="flex items-center justify-center w-10 h-10 text-white transition-all bg-black shadow-lg md:w-12 md:h-12 shrink-0 rounded-2xl hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <svg
+              v-if="!isSending"
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-4 h-4 md:w-5 md:h-5 ml-0.5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+              />
+            </svg>
+            <div
+              v-else
+              class="w-4 h-4 border-2 border-white rounded-full border-t-transparent animate-spin"
+            ></div>
+          </button>
+        </form>
+        <div class="px-4 pt-1 pb-3 text-center bg-gray-50 border-t border-gray-100">
+          <p class="text-[10px] leading-tight text-gray-400">
+            Asisten AI merespons 24/7. Ketik <strong>"Bicara dengan admin"</strong> untuk
+            bantuan manusia.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, onUnmounted, nextTick } from "vue";
+import { useRoute } from "vue-router";
+import axios from "axios";
+import { BASE_URL } from "../../config/api";
+import Echo from "laravel-echo";
+import Pusher from "pusher-js";
+
+const route = useRoute();
+const receiverId = Number(route.params.id);
+
+const QUICK_REPLIES = [
+  "Produk terbaru?",
+  "Berapa hari pengiriman?",
+  "Cara refund?",
+  "Bicara dengan Admin",
+];
+
+const messages = ref([]);
+const newMessage = ref("");
+const isLoading = ref(true);
+const isSending = ref(false);
+const chatContainer = ref(null);
+const messagesEndRef = ref(null);
+
+// Diinisialisasi langsung agar tidak pernah hilang
+const receiverProfile = ref({ first_name: "Solher", last_name: "Care" });
+
+const isAiThinking = ref(false);
+const isOpponentTyping = ref(false);
+const isHumanMode = ref(false);
+
+let typingTimeout = null;
+let lastTypingTime = 0;
+
+const userData = JSON.parse(localStorage.getItem("user"));
+const myId = ref(userData ? Number(userData.id) : null);
+const token = localStorage.getItem("token");
+
+const scrollToBottom = () => {
+  nextTick(() => {
+    if (chatContainer.value) {
+      chatContainer.value.scrollTop = chatContainer.value.scrollHeight;
+    }
+  });
+};
+
+// 👇 PERBAIKAN 4: Cek Mode Berdasarkan Riwayat Chat Terakhir
+const evaluateChatMode = () => {
+  const replies = messages.value.filter((m) => m.sender_id !== myId.value);
+  if (replies.length > 0) {
+    const lastReply = replies[replies.length - 1];
+
+    // Jika pengirim BUKAN AI, ATAU jika AI baru saja bilang "menghubungkan Kakak dengan Admin"
+    if (
+      lastReply.sender?.email !== "ai@solher.com" ||
+      lastReply.message.includes("menghubungkan Kakak dengan Admin")
+    ) {
+      isHumanMode.value = true;
+    } else {
+      isHumanMode.value = false;
+    }
+  }
+};
+
+const handleTyping = () => {
+  const now = Date.now();
+  if (now - lastTypingTime > 1500) {
+    lastTypingTime = now;
+    axios
+      .post(
+        `${BASE_URL}/chat/typing`,
+        { receiver_id: receiverId },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .catch(() => {});
+  }
+};
+
+const fetchMessages = async () => {
+  if (!token) return;
+  try {
+    const res = await axios.get(`${BASE_URL}/chat/messages/${receiverId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    messages.value = res.data;
+    evaluateChatMode();
+    scrollToBottom();
+  } catch (error) {
+    console.error("Gagal mengambil pesan", error);
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+const handleSendQuickReply = async (text) => {
+  if (isAiThinking.value || isSending.value) return;
+  newMessage.value = text;
+  await sendMessage();
+};
+
+const sendMessage = async () => {
+  if (!newMessage.value.trim() || !myId.value) return;
+  isSending.value = true;
+
+  // 👇 Hanya tampilkan animasi AI Thinking jika statusnya masih Mode AI
+  if (!isHumanMode.value) {
+    isAiThinking.value = true;
+  }
+
+  const tempId = Date.now();
+  const sentMessage = newMessage.value;
+
+  messages.value.push({
+    id: tempId,
+    sender_id: myId.value,
+    message: sentMessage,
+    created_at: new Date().toISOString(),
+  });
+  scrollToBottom();
+  newMessage.value = "";
+
+  try {
+    const res = await axios.post(
+      `${BASE_URL}/chat/send`,
+      { receiver_id: receiverId, message: sentMessage },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    const index = messages.value.findIndex((m) => m.id === tempId);
+    if (index !== -1) messages.value[index] = res.data.user_message || res.data;
+  } catch (error) {
+    console.error("Gagal", error);
+    isAiThinking.value = false;
+  } finally {
+    isSending.value = false;
+  }
+};
+
+onMounted(() => {
+  document.body.style.overflow = "hidden";
+  fetchMessages();
+
+  if (myId.value && token) {
+    window.Pusher = Pusher;
+    window.Echo = new Echo({
+      broadcaster: "pusher",
+      key: import.meta.env.VITE_PUSHER_APP_KEY,
+      cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
+      forceTLS: true,
+      authEndpoint: `${BASE_URL}/broadcasting/auth`,
+      auth: { headers: { Authorization: `Bearer ${token}` } },
+    });
+
+    window.Echo.private(`chat.${myId.value}`)
+      .listen(".message.sent", (e) => {
+        const incomingMsg = e.message || e;
+        if (incomingMsg.sender_id !== myId.value) {
+          isAiThinking.value = false;
+          isOpponentTyping.value = false;
+          messages.value.push(incomingMsg);
+          evaluateChatMode(); // Cek lagi apakah Human sudah mengambil alih
+          scrollToBottom();
+        }
+      })
+      .listen(".user.typing", (e) => {
+        // Tampilkan indikator admin sedang mengetik
+        if (e.typer_id !== myId.value) {
+          isOpponentTyping.value = true;
+          isAiThinking.value = false; // Batalkan animasi AI jika Admin memotong
+          scrollToBottom();
+
+          clearTimeout(typingTimeout);
+          typingTimeout = setTimeout(() => {
+            isOpponentTyping.value = false;
+          }, 2000);
+        }
+      });
+  }
+});
+
+onUnmounted(() => {
+  document.body.style.overflow = "auto";
+  if (window.Echo && myId.value) window.Echo.leave(`chat.${myId.value}`);
+});
+</script>
+
+<style scoped>
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #e5e7eb;
+  border-radius: 10px;
+}
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 </style>
