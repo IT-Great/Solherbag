@@ -699,7 +699,8 @@ onMounted(() => {
   }, 100);
 });
 </script> -->
-<template>
+
+<!-- <template>
   <div
     class="z-[110] fixed inset-0 flex justify-center items-start px-6 pt-[73px]"
     @click="$emit('close')"
@@ -1092,6 +1093,434 @@ const clearRecentlyViewed = () => {
 const navigateToProduct = (id) => {
   emit("close");
   router.push(`/products/${id}`);
+};
+
+const viewAllResults = () => {
+  emit("close");
+  router.push({ path: "/collections", query: { search: searchInput.value } });
+};
+
+const fetchAllProducts = async () => {
+  try {
+    const res = await axios.get(`${BASE_URL}/products`);
+    const products = res.data?.data?.data || res.data?.data || res.data || [];
+    const validProducts = Array.isArray(products) ? products : [];
+
+    allProducts.value = validProducts;
+    localStorage.setItem("all_products_cache", JSON.stringify(validProducts));
+
+    if (randomProducts.value.length === 0) {
+      const shuffled = [...validProducts].sort(() => 0.5 - Math.random());
+      randomProducts.value = shuffled.slice(0, 6);
+    }
+  } catch (err) {
+    allProducts.value = [];
+  }
+};
+
+onMounted(() => {
+  loadRecentlyViewed();
+  loadAndShuffleCachedProducts();
+  fetchAllProducts();
+
+  setTimeout(() => {
+    searchInputRef.value?.focus();
+  }, 100);
+});
+</script> -->
+
+<template>
+  <div
+    class="z-[110] fixed inset-0 flex justify-center items-start px-6 pt-[73px]"
+    @click="$emit('close')"
+  >
+    <div class="absolute inset-0 bg-black/10 backdrop-blur-[2px]"></div>
+
+    <div
+      @click.stop
+      class="relative flex flex-col bg-white shadow-2xl border border-gray-100 rounded-b-[2rem] w-full max-w-2xl max-h-[75vh] overflow-hidden animate-slide-down"
+    >
+      <div class="px-8 py-6 border-b border-gray-100 bg-gray-50">
+        <div class="flex items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5 mr-4 text-gray-400"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+          <input
+            v-model="searchInput"
+            type="text"
+            :placeholder="$t('search_modal.search_products')"
+            class="flex-grow font-serif text-base placeholder-gray-300 bg-transparent border-none outline-none focus:ring-0"
+            ref="searchInputRef"
+          />
+          <button
+            v-if="searchInput"
+            @click="searchInput = ''"
+            class="ml-2 mr-2 text-gray-300 transition-all hover:text-red-500"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+          <button
+            @click="$emit('close')"
+            class="pl-4 ml-2 text-gray-400 transition-all border-l border-gray-200 hover:text-black"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex-grow px-8 py-8 overflow-y-auto custom-scrollbar">
+        <div v-if="searchInput">
+          <h3 class="mb-4 font-bold text-[9px] text-gray-400 uppercase tracking-[0.25em]">
+            {{ $t("search_modal.search_result") }}
+          </h3>
+
+          <div
+            v-if="filteredSearchResults.length > 0"
+            class="grid grid-cols-3 gap-4 md:grid-cols-4"
+          >
+            <div
+              v-for="product in filteredSearchResults.slice(0, 8)"
+              :key="product.id"
+              class="cursor-pointer group"
+              @click="navigateToProduct(product)"
+            >
+              <div
+                class="relative mb-2 overflow-hidden shadow-sm bg-gray-50 rounded-xl aspect-square"
+              >
+                <img
+                  :src="product.image || defaultBagIcon"
+                  class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+                />
+              </div>
+              <h4 class="font-bold text-[9px] text-gray-900 truncate uppercase">
+                {{ product.name }}
+              </h4>
+              <p class="mt-0.5 text-[8px] text-gray-400">
+                {{
+                  formatCurrencyDisplay(
+                    getDiscountToDisplay(product) && getDiscountStatus(product).active
+                      ? getDiscountToDisplay(product)
+                      : getPriceToDisplay(product)
+                  )
+                }}
+              </p>
+            </div>
+          </div>
+
+          <div v-else class="py-10 font-serif italic text-center text-gray-400">
+            {{ $t("search_modal.no_product_found") }} "{{ searchInput }}".
+          </div>
+
+          <div class="pt-6 mt-8 text-center border-t border-gray-100">
+            <button
+              @click="viewAllResults"
+              class="bg-black hover:bg-gray-800 text-white font-bold text-[10px] uppercase tracking-widest px-8 py-3 rounded-full transition-colors"
+            >
+              {{ $t("search_modal.view_all_results") }}
+            </button>
+          </div>
+        </div>
+
+        <div v-else>
+          <div v-if="recentlyViewed.length > 0" class="mb-10">
+            <div class="flex items-end justify-between mb-4">
+              <h3 class="font-bold text-[9px] text-gray-400 uppercase tracking-[0.25em]">
+                {{ $t("search_modal.recently_viewed") }}
+              </h3>
+              <button
+                @click="clearRecentlyViewed"
+                class="font-bold text-[9px] text-gray-300 hover:text-red-500 uppercase tracking-widest transition-colors"
+              >
+                {{ $t("search_modal.clear") }}
+              </button>
+            </div>
+            <div class="grid grid-cols-3 gap-4 md:grid-cols-4">
+              <div
+                v-for="item in recentlyViewed"
+                :key="item.id"
+                class="cursor-pointer group"
+                @click="navigateToProduct(item)"
+              >
+                <div
+                  class="relative mb-2 overflow-hidden shadow-sm bg-gray-50 rounded-xl aspect-square"
+                >
+                  <img
+                    :src="item.image || defaultBagIcon"
+                    class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+                  />
+                </div>
+                <h4 class="font-bold text-[9px] text-gray-900 truncate uppercase">
+                  {{ item.name }}
+                </h4>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h3
+              class="mb-4 font-bold text-[9px] text-gray-400 uppercase tracking-[0.25em]"
+            >
+              {{ $t("search_modal.you_may_also_like") }}
+            </h3>
+            <div
+              v-if="randomProducts.length === 0"
+              class="grid grid-cols-3 gap-4 md:grid-cols-4"
+            >
+              <div
+                v-for="i in 6"
+                :key="i"
+                class="bg-gray-100 animate-pulse rounded-xl aspect-square"
+              ></div>
+            </div>
+            <div class="grid grid-cols-3 gap-4 md:grid-cols-4">
+              <div
+                class="cursor-pointer group"
+                v-for="product in randomProducts"
+                :key="product.id"
+                @click="navigateToProduct(product)"
+              >
+                <div
+                  class="relative mb-2 overflow-hidden shadow-sm bg-gray-50 rounded-xl aspect-square"
+                >
+                  <img
+                    :src="product.image || defaultBagIcon"
+                    class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div
+                    v-if="
+                      getDiscountToDisplay(product) && getDiscountStatus(product).active
+                    "
+                    class="absolute top-2 left-2 bg-red-600 text-white px-2 py-0.5 font-bold text-[8px] uppercase tracking-widest rounded-sm z-10"
+                  >
+                    SALE
+                  </div>
+                </div>
+                <h4 class="font-bold text-[9px] text-gray-900 truncate uppercase">
+                  {{ product.name }}
+                </h4>
+                <p class="mt-0.5 text-[8px] text-gray-400">
+                  {{
+                    formatCurrencyDisplay(
+                      getDiscountToDisplay(product) && getDiscountStatus(product).active
+                        ? getDiscountToDisplay(product)
+                        : getPriceToDisplay(product)
+                    )
+                  }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, onUnmounted, computed } from "vue";
+import { useRouter } from "vue-router";
+import axios from "axios";
+import { BASE_URL } from "../../../config/api";
+import { useI18n } from "vue-i18n";
+import defaultBagIcon from "../../../assets/products/bag_icon.jpg";
+
+const emit = defineEmits(["close"]);
+const router = useRouter();
+
+const searchInput = ref("");
+const searchInputRef = ref(null);
+
+const recentlyViewed = ref([]);
+const randomProducts = ref([]);
+const allProducts = ref([]);
+
+const { t } = useI18n();
+
+const currentCurrency = ref(localStorage.getItem("currency") || "IDR");
+
+const updateCurrencyState = () => {
+  currentCurrency.value = localStorage.getItem("currency") || "IDR";
+};
+
+onMounted(() => {
+  window.addEventListener("currency-changed", updateCurrencyState);
+  window.addEventListener("storage", (e) => {
+    if (e.key === "currency") updateCurrencyState();
+  });
+});
+
+onUnmounted(() => {
+  window.removeEventListener("currency-changed", updateCurrencyState);
+});
+
+const getPriceToDisplay = (product) => {
+  const curr = currentCurrency.value;
+  if (curr === "IDR") return { value: product.price, curr: "IDR" };
+
+  const prices =
+    typeof product.prices === "string"
+      ? JSON.parse(product.prices)
+      : product.prices || {};
+
+  if (prices[curr]) {
+    return { value: parseFloat(prices[curr]), curr: curr };
+  }
+  return { value: product.price, curr: "IDR" };
+};
+
+const getDiscountToDisplay = (product) => {
+  const curr = currentCurrency.value;
+
+  if (curr === "IDR") {
+    return product.discount_price ? { value: product.discount_price, curr: "IDR" } : null;
+  }
+
+  const discountPrices =
+    typeof product.discount_prices === "string"
+      ? JSON.parse(product.discount_prices)
+      : product.discount_prices || {};
+
+  if (discountPrices[curr]) {
+    return { value: parseFloat(discountPrices[curr]), curr: curr };
+  }
+  return product.discount_price ? { value: product.discount_price, curr: "IDR" } : null;
+};
+
+const convertToWIB = (dateString) => {
+  if (!dateString) return null;
+  const date = new Date(dateString);
+  date.setHours(date.getHours() - 7);
+  return date;
+};
+
+const getDiscountStatus = (p) => {
+  const discObj = getDiscountToDisplay(p);
+  if (!p || !discObj || !discObj.value)
+    return { active: false, upcoming: false, expired: false };
+
+  const now = new Date();
+  let active = true;
+  let upcoming = false;
+  let expired = false;
+
+  if (p.discount_start_date) {
+    const startDate = convertToWIB(p.discount_start_date);
+    if (now < startDate) {
+      active = false;
+      upcoming = true;
+    }
+  }
+  if (p.discount_end_date) {
+    const endDate = convertToWIB(p.discount_end_date);
+    if (now > endDate) {
+      active = false;
+      expired = true;
+    }
+  }
+
+  return { active, upcoming, expired };
+};
+
+const formatCurrencyDisplay = (priceObj) => {
+  if (!priceObj) return "";
+  const { value, curr } = priceObj;
+
+  const symbols = {
+    USD: "$",
+    SGD: "S$",
+    EUR: "€",
+    AUD: "A$",
+    MYR: "RM",
+    IDR: "Rp ",
+  };
+
+  const formatter = new Intl.NumberFormat(curr === "IDR" ? "id-ID" : "en-US", {
+    minimumFractionDigits: curr === "IDR" ? 0 : 2,
+    maximumFractionDigits: curr === "IDR" ? 0 : 2,
+  });
+
+  return `${symbols[curr] || curr + " "}${formatter.format(value)}`;
+};
+
+const filteredSearchResults = computed(() => {
+  if (!searchInput.value) return [];
+  const query = searchInput.value.toLowerCase();
+  return allProducts.value.filter(
+    (product) =>
+      product.name.toLowerCase().includes(query) ||
+      product.category?.name.toLowerCase().includes(query)
+  );
+});
+
+const loadAndShuffleCachedProducts = () => {
+  const cachedAllProducts = localStorage.getItem("all_products_cache");
+  if (cachedAllProducts) {
+    const parsedProducts = JSON.parse(cachedAllProducts);
+    if (Array.isArray(parsedProducts) && parsedProducts.length > 0) {
+      const shuffled = [...parsedProducts].sort(() => 0.5 - Math.random());
+      randomProducts.value = shuffled.slice(0, 6);
+      return;
+    }
+  }
+
+  const fallbackRandom = localStorage.getItem("random_products");
+  randomProducts.value = fallbackRandom ? JSON.parse(fallbackRandom) : [];
+};
+
+const loadRecentlyViewed = () => {
+  const data = localStorage.getItem("recently_viewed");
+  recentlyViewed.value = data ? JSON.parse(data) : [];
+};
+
+const clearRecentlyViewed = () => {
+  localStorage.removeItem("recently_viewed");
+  recentlyViewed.value = [];
+};
+
+// 👇 PERBAIKAN: Fungsi Navigasi Diubah Menerima Object Product Secara Utuh 👇
+const navigateToProduct = (productObj) => {
+  emit("close");
+  router.push({
+    path: `/products/${productObj.slug || productObj.id}`,
+    state: { productData: JSON.stringify(productObj) },
+  });
 };
 
 const viewAllResults = () => {
