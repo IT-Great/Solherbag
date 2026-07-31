@@ -1893,7 +1893,7 @@ const handleSubmit = async () => {
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-4">
+        <!-- <div class="grid grid-cols-2 gap-4">
           <div>
             <label class="block mb-1 text-sm font-bold">Description (ID)</label>
             <textarea
@@ -1926,6 +1926,82 @@ const handleSubmit = async () => {
             <textarea
               v-model="form.design_en"
               placeholder="English Design Details"
+              class="w-full h-32 p-3 bg-gray-100 outline-none rounded-xl focus:ring-2 focus:ring-blue-500"
+            ></textarea>
+          </div>
+        </div> -->
+
+        <!-- 👇 TOMBOL AI COPYWRITER 👇 -->
+        <div
+          class="flex items-center justify-between mt-8 mb-4 border-t border-gray-200 pt-6"
+        >
+          <div>
+            <h3 class="text-lg font-bold text-gray-900">Product Story & Design</h3>
+            <p class="text-xs text-gray-500">
+              Isi manual atau gunakan AI untuk merevisi deskripsi otomatis beserta
+              terjemahannya.
+            </p>
+          </div>
+          <button
+            type="button"
+            @click="generateWithAI"
+            :disabled="isGeneratingAI || !form.name"
+            class="flex items-center gap-2 px-4 py-2 text-xs font-bold text-white transition-all bg-gradient-to-r from-purple-600 to-indigo-600 rounded-xl hover:shadow-lg hover:from-purple-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <svg
+              v-if="isGeneratingAI"
+              class="w-4 h-4 animate-spin"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+            <span v-else class="text-base">✨</span>
+            {{ isGeneratingAI ? "AI IS THINKING..." : "RE-GENERATE AI COPY" }}
+          </button>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block mb-1 text-sm font-bold">Description (ID)</label>
+            <textarea
+              v-model="form.description"
+              class="w-full h-40 p-3 bg-gray-100 outline-none rounded-xl focus:ring-2 focus:ring-blue-500"
+            ></textarea>
+          </div>
+          <div>
+            <label class="block mb-1 text-sm font-bold">Description (EN)</label>
+            <textarea
+              v-model="form.description_en"
+              class="w-full h-40 p-3 bg-gray-100 outline-none rounded-xl focus:ring-2 focus:ring-blue-500"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block mb-1 text-sm font-bold">Design Details (ID)</label>
+            <textarea
+              v-model="form.design"
+              class="w-full h-32 p-3 bg-gray-100 outline-none rounded-xl focus:ring-2 focus:ring-blue-500"
+            ></textarea>
+          </div>
+          <div>
+            <label class="block mb-1 text-sm font-bold">Design Details (EN)</label>
+            <textarea
+              v-model="form.design_en"
               class="w-full h-32 p-3 bg-gray-100 outline-none rounded-xl focus:ring-2 focus:ring-blue-500"
             ></textarea>
           </div>
@@ -1992,6 +2068,57 @@ const form = ref({
   strap_length: [],
   color: [],
 });
+
+const isGeneratingAI = ref(false);
+
+const generateWithAI = async () => {
+  if (!form.value.name) {
+    Swal.fire(
+      "Peringatan",
+      "Mohon isi Nama Produk terlebih dahulu agar AI bisa bekerja.",
+      "warning"
+    );
+    return;
+  }
+
+  isGeneratingAI.value = true;
+  const selectedCat = categories.value.find((c) => c.id === form.value.category_id);
+  const catName = selectedCat ? selectedCat.category_name : "";
+
+  try {
+    const res = await axios.post(
+      `${BASE_URL}/products/ai-copywriter`,
+      {
+        name: form.value.name,
+        material: form.value.material,
+        category_name: catName,
+      },
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
+      }
+    );
+
+    if (res.data.status === "success" && res.data.data) {
+      form.value.description = res.data.data.description_id;
+      form.value.description_en = res.data.data.description_en;
+      form.value.design = res.data.data.design_id;
+      form.value.design_en = res.data.data.design_en;
+
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "success",
+        title: "Re-Write AI Berhasil!",
+        showConfirmButton: false,
+        timer: 3000,
+      });
+    }
+  } catch (error) {
+    Swal.fire("Error", "Gagal memanggil AI. Silakan coba lagi.", "error");
+  } finally {
+    isGeneratingAI.value = false;
+  }
+};
 
 const newStrapLength = ref("");
 
