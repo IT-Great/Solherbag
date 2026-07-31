@@ -629,7 +629,7 @@ onMounted(() => {
               <th class="px-6 py-4 font-bold tracking-wider text-center">Aksi</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-100">
+          <!-- <tbody class="divide-y divide-gray-100">
             <tr v-if="withdrawals.length === 0">
               <td colspan="5" class="px-6 py-10 text-center text-gray-500">
                 Tidak ada riwayat pencairan dana.
@@ -663,6 +663,82 @@ onMounted(() => {
                   class="px-3 py-1 text-[10px] font-bold tracking-wider uppercase rounded-full border"
                 >
                   {{ req.status === "pending" ? "Menunggu Transfer" : "Selesai" }}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-center">
+                <button
+                  v-if="req.status === 'pending' && (canUpdate || isSuperAdmin)"
+                  @click="markAsTransferred(req)"
+                  class="px-4 py-2 text-xs font-bold text-white transition-colors bg-black rounded-lg hover:bg-gray-800"
+                >
+                  Tandai Selesai
+                </button>
+                <span v-else class="text-xs font-bold text-gray-400">Telah Diproses</span>
+              </td>
+            </tr>
+          </tbody> -->
+
+          <tbody class="divide-y divide-gray-100">
+            <tr v-if="withdrawals.length === 0">
+              <td colspan="5" class="px-6 py-10 text-center text-gray-500">
+                Tidak ada riwayat pencairan dana.
+              </td>
+            </tr>
+            <tr
+              v-for="req in withdrawals"
+              :key="req.id"
+              class="transition-colors hover:bg-gray-50"
+            >
+              <td class="px-6 py-4 text-gray-500">{{ req.date }}</td>
+              <td class="px-6 py-4 font-bold text-gray-900">{{ req.affiliate_name }}</td>
+              <td class="px-6 py-4">
+                <p class="font-bold text-gray-900">
+                  {{ req.bank_name }}
+                  <span
+                    v-if="req.bank_name.includes('Web3')"
+                    class="ml-2 text-[10px] bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded uppercase"
+                    >Blockchain</span
+                  >
+                </p>
+                <p class="mt-0.5 text-xs text-gray-600 font-mono">
+                  {{ req.account_number }}
+                </p>
+                <p
+                  v-if="req.account_name !== 'Crypto Wallet'"
+                  class="text-xs text-gray-500"
+                >
+                  a.n. {{ req.account_name }}
+                </p>
+
+                <p
+                  :class="
+                    req.admin_notes.includes('AUTO-PAYOUT')
+                      ? 'bg-purple-50 text-purple-700 border-purple-200'
+                      : 'bg-blue-50 text-blue-700 border-blue-100'
+                  "
+                  class="mt-2 text-[10px] font-bold p-1.5 rounded border w-fit"
+                >
+                  {{ req.admin_notes }}
+                </p>
+              </td>
+              <td class="px-6 py-4">
+                <span
+                  :class="
+                    req.status === 'pending'
+                      ? 'bg-yellow-100 text-yellow-700 border-yellow-200'
+                      : req.bank_name.includes('Web3')
+                      ? 'bg-purple-100 text-purple-700 border-purple-200 shadow-sm'
+                      : 'bg-green-100 text-green-700 border-green-200'
+                  "
+                  class="px-3 py-1 text-[10px] font-bold tracking-wider uppercase rounded-full border"
+                >
+                  {{
+                    req.status === "pending"
+                      ? "Menunggu Transfer"
+                      : req.bank_name.includes("Web3")
+                      ? "Selesai (Auto)"
+                      : "Selesai"
+                  }}
                 </span>
               </td>
               <td class="px-6 py-4 text-center">

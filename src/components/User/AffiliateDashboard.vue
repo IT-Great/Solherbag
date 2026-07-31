@@ -988,6 +988,110 @@ const copyLink = () => {
   });
 };
 
+// const openWithdrawalModal = () => {
+//   if (activeBalance.value < 50000) {
+//     Swal.fire({
+//       icon: "warning",
+//       title: t('affiliate_dashboard.warn_balance_title'),
+//       text: t('affiliate_dashboard.warn_balance_desc'),
+//       confirmButtonColor: "#000",
+//     });
+//     return;
+//   }
+
+//   Swal.fire({
+//     title: t('affiliate_dashboard.modal_withdraw_title'),
+//     html: `
+//       <div class="text-left">
+//         <p class="mb-4 text-sm text-gray-500">${t('affiliate_dashboard.modal_available_funds')} <strong>${formatPrice(
+//           activeBalance.value
+//         )}</strong></p>
+//         <div class="p-3 mb-4 text-[11px] leading-relaxed text-amber-800 bg-amber-50 border border-amber-200 rounded-lg">
+//           <strong>${t('affiliate_dashboard.modal_info_title')}</strong><br/>
+//           • ${t('affiliate_dashboard.modal_info_min')} <strong>Rp 50.000</strong><br/>
+//           • ${t('affiliate_dashboard.modal_info_max')}<br/>
+//           • ${t('affiliate_dashboard.modal_info_fee')}
+//         </div>
+//         <div class="mb-3">
+//           <label class="block mb-1 text-xs font-bold text-gray-700 uppercase">${t('affiliate_dashboard.label_bank')}</label>
+//           <input id="swal-bank" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black" placeholder="${t('affiliate_dashboard.placeholder_bank')}">
+//         </div>
+//         <div class="mb-3">
+//           <label class="block mb-1 text-xs font-bold text-gray-700 uppercase">${t('affiliate_dashboard.label_account_num')}</label>
+//           <input id="swal-acc-num" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black" placeholder="0123456789">
+//         </div>
+//         <div class="mb-3">
+//           <label class="block mb-1 text-xs font-bold text-gray-700 uppercase">${t('affiliate_dashboard.label_account_name')}</label>
+//           <input id="swal-acc-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black" placeholder="${t('affiliate_dashboard.placeholder_account_name')}">
+//         </div>
+//         <div class="mb-3">
+//           <label class="block mb-1 text-xs font-bold text-gray-700 uppercase">${t('affiliate_dashboard.label_amount')}</label>
+//           <input id="swal-amount" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black" value="${
+//             Math.min(activeBalance.value, 1000000) 
+//           }" min="50000" max="1000000">
+//         </div>
+//       </div>
+//     `,
+//     showCancelButton: true,
+//     confirmButtonText: t('affiliate_dashboard.btn_submit_withdraw'),
+//     cancelButtonText: t('affiliate_dashboard.btn_cancel'),
+//     confirmButtonColor: "#000",
+//     showLoaderOnConfirm: true,
+//     preConfirm: async () => {
+//       const bank_name = document.getElementById("swal-bank").value;
+//       const account_number = document.getElementById("swal-acc-num").value;
+//       const account_name = document.getElementById("swal-acc-name").value;
+//       const amount = parseFloat(document.getElementById("swal-amount").value);
+
+//       if (!bank_name || !account_number || !account_name || !amount) {
+//         Swal.showValidationMessage(t('affiliate_dashboard.val_empty_fields'));
+//         return false;
+//       }
+
+//       if (amount < 50000) {
+//         Swal.showValidationMessage(t('affiliate_dashboard.val_min_amount'));
+//         return false;
+//       }
+//       if (amount > 1000000) {
+//         Swal.showValidationMessage(t('affiliate_dashboard.val_max_amount'));
+//         return false;
+//       }
+//       if (amount > activeBalance.value) {
+//         Swal.showValidationMessage(t('affiliate_dashboard.val_exceed_balance'));
+//         return false;
+//       }
+
+//       try {
+//         const payload = { bank_name, account_number, account_name, amount };
+//         const res = await axios.post(`${BASE_URL}/affiliate/withdraw`, payload, {
+//           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+//         });
+//         return res.data;
+//       } catch (error) {
+//         Swal.showValidationMessage(
+//           `${t('affiliate_dashboard.val_fail_submit')} ${
+//             error.response?.data?.message || t('affiliate_dashboard.val_server_err')
+//           }`
+//         );
+//       }
+//     },
+//     allowOutsideClick: () => !Swal.isLoading(),
+//   }).then((result) => {
+//     if (result.isConfirmed) {
+//       activeBalance.value -=
+//         result.value.data?.amount_deducted ||
+//         document.getElementById("swal-amount").value;
+
+//       Swal.fire({
+//         title: t('affiliate_dashboard.succ_withdraw_title'),
+//         text: t('affiliate_dashboard.succ_withdraw_desc'),
+//         icon: "success",
+//         confirmButtonColor: "#000",
+//       });
+//     }
+//   });
+// };
+
 const openWithdrawalModal = () => {
   if (activeBalance.value < 50000) {
     Swal.fire({
@@ -1002,28 +1106,44 @@ const openWithdrawalModal = () => {
   Swal.fire({
     title: t('affiliate_dashboard.modal_withdraw_title'),
     html: `
-      <div class="text-left">
-        <p class="mb-4 text-sm text-gray-500">${t('affiliate_dashboard.modal_available_funds')} <strong>${formatPrice(
-          activeBalance.value
-        )}</strong></p>
-        <div class="p-3 mb-4 text-[11px] leading-relaxed text-amber-800 bg-amber-50 border border-amber-200 rounded-lg">
-          <strong>${t('affiliate_dashboard.modal_info_title')}</strong><br/>
-          • ${t('affiliate_dashboard.modal_info_min')} <strong>Rp 50.000</strong><br/>
-          • ${t('affiliate_dashboard.modal_info_max')}<br/>
-          • ${t('affiliate_dashboard.modal_info_fee')}
+      <div class="text-left font-sans">
+        <p class="mb-4 text-sm text-gray-500">${t('affiliate_dashboard.modal_available_funds')} <strong class="text-black">${formatPrice(activeBalance.value)}</strong></p>
+        
+        <div class="mb-4">
+          <label class="block mb-1 text-xs font-bold text-gray-700 uppercase">Metode Penarikan</label>
+          <select id="swal-method" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black font-medium" onchange="
+            const isCrypto = this.value === 'crypto';
+            document.getElementById('bank-group').style.display = isCrypto ? 'none' : 'block';
+            document.getElementById('acc-num-label').innerText = isCrypto ? 'Wallet Address (Polygon 0x...)' : '${t('affiliate_dashboard.label_account_num')}';
+            document.getElementById('swal-acc-num').placeholder = isCrypto ? '0x...' : '0123456789';
+            document.getElementById('crypto-info').style.display = isCrypto ? 'block' : 'none';
+          ">
+            <option value="bank">Transfer Bank (Proses 1-2 Hari)</option>
+            <option value="crypto">Web3 Auto-Payout (Instan - Bebas Biaya)</option>
+          </select>
         </div>
+
+        <div id="crypto-info" style="display:none;" class="p-3 mb-4 text-[11px] leading-relaxed text-indigo-800 bg-indigo-50 border border-indigo-200 rounded-lg">
+          <strong>🚀 SMART CONTRACT AUTO-PAYOUT</strong><br/>
+          Saldo Anda akan dikonversi ke USDT dan langsung ditransfer ke dompet digital Anda secara instan tanpa menunggu persetujuan Admin.
+        </div>
+
+        <div id="bank-group">
+          <div class="mb-3">
+            <label class="block mb-1 text-xs font-bold text-gray-700 uppercase">${t('affiliate_dashboard.label_bank')}</label>
+            <input id="swal-bank" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black" placeholder="${t('affiliate_dashboard.placeholder_bank')}">
+          </div>
+          <div class="mb-3">
+            <label class="block mb-1 text-xs font-bold text-gray-700 uppercase">${t('affiliate_dashboard.label_account_name')}</label>
+            <input id="swal-acc-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black" placeholder="${t('affiliate_dashboard.placeholder_account_name')}">
+          </div>
+        </div>
+
         <div class="mb-3">
-          <label class="block mb-1 text-xs font-bold text-gray-700 uppercase">${t('affiliate_dashboard.label_bank')}</label>
-          <input id="swal-bank" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black" placeholder="${t('affiliate_dashboard.placeholder_bank')}">
+          <label id="acc-num-label" class="block mb-1 text-xs font-bold text-gray-700 uppercase">${t('affiliate_dashboard.label_account_num')}</label>
+          <input id="swal-acc-num" type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black" placeholder="0123456789">
         </div>
-        <div class="mb-3">
-          <label class="block mb-1 text-xs font-bold text-gray-700 uppercase">${t('affiliate_dashboard.label_account_num')}</label>
-          <input id="swal-acc-num" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black" placeholder="0123456789">
-        </div>
-        <div class="mb-3">
-          <label class="block mb-1 text-xs font-bold text-gray-700 uppercase">${t('affiliate_dashboard.label_account_name')}</label>
-          <input id="swal-acc-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black" placeholder="${t('affiliate_dashboard.placeholder_account_name')}">
-        </div>
+
         <div class="mb-3">
           <label class="block mb-1 text-xs font-bold text-gray-700 uppercase">${t('affiliate_dashboard.label_amount')}</label>
           <input id="swal-amount" type="number" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-black focus:border-black" value="${
@@ -1038,40 +1158,37 @@ const openWithdrawalModal = () => {
     confirmButtonColor: "#000",
     showLoaderOnConfirm: true,
     preConfirm: async () => {
-      const bank_name = document.getElementById("swal-bank").value;
+      const method = document.getElementById("swal-method").value;
+      const bank_name = method === 'bank' ? document.getElementById("swal-bank").value : null;
+      const account_name = method === 'bank' ? document.getElementById("swal-acc-name").value : null;
       const account_number = document.getElementById("swal-acc-num").value;
-      const account_name = document.getElementById("swal-acc-name").value;
       const amount = parseFloat(document.getElementById("swal-amount").value);
 
-      if (!bank_name || !account_number || !account_name || !amount) {
+      if (!account_number || !amount || (method === 'bank' && (!bank_name || !account_name))) {
         Swal.showValidationMessage(t('affiliate_dashboard.val_empty_fields'));
         return false;
       }
 
-      if (amount < 50000) {
-        Swal.showValidationMessage(t('affiliate_dashboard.val_min_amount'));
-        return false;
-      }
-      if (amount > 1000000) {
-        Swal.showValidationMessage(t('affiliate_dashboard.val_max_amount'));
-        return false;
-      }
-      if (amount > activeBalance.value) {
-        Swal.showValidationMessage(t('affiliate_dashboard.val_exceed_balance'));
+      if (amount < 50000 || amount > 1000000 || amount > activeBalance.value) {
+        Swal.showValidationMessage("Nominal tidak valid.");
         return false;
       }
 
       try {
-        const payload = { bank_name, account_number, account_name, amount };
+        const payload = { 
+            withdrawal_method: method, 
+            bank_name, 
+            account_number, 
+            account_name, 
+            amount 
+        };
         const res = await axios.post(`${BASE_URL}/affiliate/withdraw`, payload, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
         return res.data;
       } catch (error) {
         Swal.showValidationMessage(
-          `${t('affiliate_dashboard.val_fail_submit')} ${
-            error.response?.data?.message || t('affiliate_dashboard.val_server_err')
-          }`
+          `Gagal: ${error.response?.data?.message || 'Error Server'}`
         );
       }
     },
@@ -1083,11 +1200,12 @@ const openWithdrawalModal = () => {
         document.getElementById("swal-amount").value;
 
       Swal.fire({
-        title: t('affiliate_dashboard.succ_withdraw_title'),
-        text: t('affiliate_dashboard.succ_withdraw_desc'),
+        title: result.value.message.includes("Web3") ? "Auto-Payout Berhasil! 🚀" : t('affiliate_dashboard.succ_withdraw_title'),
+        text: result.value.message,
         icon: "success",
         confirmButtonColor: "#000",
       });
+      fetchDashboardData();
     }
   });
 };
