@@ -2655,6 +2655,7 @@ import AffiliateDashboard from "../components/User/AffiliateDashboard.vue";
 import AdminAffiliateDashboard from "../components/Admin/AdminAffiliateDashboard.vue";
 import AffiliateLandingPage from "../components/User/AffiliateLandingPage.vue";
 import AccessPolicyManagement from "../components/Admin/AccessPolicyManagement.vue";
+import AdminNewsletterBuilder from "../components/Admin/AdminNewsletterBuilder.vue";
 
 const routes = [
   // ... (Semua route Anda yang ada di index.js asli biarkan sama persis di sini)
@@ -2710,6 +2711,7 @@ const routes = [
   { path: "/admin/users/:id", name: "UserDetail", component: UserDetailPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
   { path: "/admin/reviews", name: "AdminReviews", component: AdminReviewPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
   { path: "/admin/subscribers", name: "Subscribers", component: SubscriberPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  { path: "/admin/newsletters", name: "AdminNewsletters", component: AdminNewsletterBuilder, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
   { path: "/admin/messages", name: "MessageView", component: MessageViewPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
   { path: "/admin/messages/:id", name: "DetailMessage", component: DetailMessageViewPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
   { path: "/admin/category-coas", name: "CategoryCoa", component: CategoryCoaPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
