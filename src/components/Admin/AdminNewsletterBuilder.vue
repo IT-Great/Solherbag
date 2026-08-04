@@ -241,6 +241,8 @@ const loadUnlayerScript = () => {
 onMounted(async () => {
   try {
     await loadUnlayerScript();
+    
+    // 1. Inisialisasi Editor
     window.unlayer.init({
       id: "email-editor",
       displayMode: "email",
@@ -249,28 +251,33 @@ onMounted(async () => {
       },
     });
 
-    // 👇 [TAMBAHAN BARU] Mencegah buka Tab Baru & Mengirim Gambar ke Laravel 👇
-    window.unlayer.registerCallback('image', function (file, done) {
-      // Tangkap file yang di-drag
-      const formData = new FormData();
-      formData.append('file', file.attachments[0]); 
+    // 👇 [PERBAIKAN] 2. Tunggu sampai kanvas editor benar-benar siap (Ready)
+    window.unlayer.addEventListener('editor:ready', function () {
+      
+      // 3. Daftarkan Callback Upload Gambar
+      window.unlayer.registerCallback('image', function (file, done) {
+        // Tangkap file yang di-drag
+        const formData = new FormData();
+        formData.append('file', file.attachments[0]); 
 
-      // Tembak ke API Upload yang baru kita buat
-      axios.post(`${BASE_URL}/admin/newsletters/upload-image`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${localStorage.getItem("admin_token")}`
-        }
-      })
-      .then(response => {
-        // Beritahu Unlayer bahwa upload 100% sukses dan berikan URL-nya
-        done({ progress: 100, url: response.data.url });
-      })
-      .catch(error => {
-        console.error("Gagal Upload:", error);
-        Swal.fire("Gagal", "Gagal mengunggah gambar ke server.", "error");
-        done({ progress: 100, url: '' }); // Batalkan proses jika gagal
+        // Tembak ke API Upload Laravel
+        axios.post(`${BASE_URL}/admin/newsletters/upload-image`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${localStorage.getItem("admin_token")}`
+          }
+        })
+        .then(response => {
+          // Beritahu Unlayer bahwa upload 100% sukses dan render URL-nya di kanvas
+          done({ progress: 100, url: response.data.url });
+        })
+        .catch(error => {
+          console.error("Gagal Upload:", error);
+          Swal.fire("Gagal", "Gagal mengunggah gambar ke server. Pastikan ukuran gambar di bawah 5MB.", "error");
+          done({ progress: 100, url: '' }); // Batalkan proses render jika gagal
+        });
       });
+
     });
 
   } catch (error) {
