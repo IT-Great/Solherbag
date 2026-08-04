@@ -1,16 +1,15 @@
-<template>
+<!-- <template>
   <div
-    class="p-8 mx-auto max-w-5xl bg-white border border-gray-100 shadow-sm rounded-3xl animate-fade-in"
+    class="max-w-5xl p-8 mx-auto bg-white border border-gray-100 shadow-sm rounded-3xl animate-fade-in"
   >
-    <div class="mb-8 border-b pb-6">
+    <div class="pb-6 mb-8 border-b">
       <h1 class="text-2xl font-bold text-gray-900">Email Campaign Builder</h1>
-      <p class="text-sm text-gray-500 mt-1">
+      <p class="mt-1 text-sm text-gray-500">
         Buat dan kirimkan newsletter ke seluruh pelanggan aktif.
       </p>
     </div>
 
     <form @submit.prevent="sendBroadcast" class="space-y-6">
-      <!-- Input Subject -->
       <div>
         <label
           class="block mb-2 text-xs font-bold tracking-widest text-gray-700 uppercase"
@@ -25,7 +24,6 @@
         />
       </div>
 
-      <!-- HTML / Rich Text Editor -->
       <div>
         <label
           class="block mb-2 text-xs font-bold tracking-widest text-gray-700 uppercase"
@@ -40,11 +38,10 @@
           required
           rows="12"
           placeholder="<h2>Halo Sahabat Solher!</h2><p>Bulan ini kami punya promo spesial...</p>"
-          class="w-full px-4 py-3 text-sm font-mono transition border border-gray-300 outline-none resize-y rounded-xl bg-gray-50 focus:bg-white focus:ring-2 focus:ring-black"
+          class="w-full px-4 py-3 font-mono text-sm transition border border-gray-300 outline-none resize-y rounded-xl bg-gray-50 focus:bg-white focus:ring-2 focus:ring-black"
         ></textarea>
       </div>
 
-      <!-- Preview Box -->
       <div
         v-if="campaign.content"
         class="p-6 mt-4 border border-gray-200 rounded-xl bg-gray-50"
@@ -58,8 +55,7 @@
         ></div>
       </div>
 
-      <!-- Submit Button -->
-      <div class="pt-6 mt-8 border-t border-gray-200 flex justify-end">
+      <div class="flex justify-end pt-6 mt-8 border-t border-gray-200">
         <button
           type="submit"
           :disabled="isSending"
@@ -148,4 +144,166 @@ const sendBroadcast = async () => {
     isSending.value = false;
   }
 };
+</script> -->
+
+<template>
+  <div class="max-w-6xl p-8 mx-auto bg-white border border-gray-100 shadow-sm rounded-3xl animate-fade-in">
+    <div class="pb-6 mb-8 border-b">
+      <h1 class="text-2xl font-bold text-gray-900">Visual Email Campaign Builder</h1>
+      <p class="mt-1 text-sm text-gray-500">
+        Desain email buletin Anda layaknya profesional. Tarik dan lepas (Drag & Drop) elemen ke dalam kanvas.
+      </p>
+    </div>
+
+    <form @submit.prevent="sendBroadcast" class="space-y-6">
+      <!-- Input Subject -->
+      <div>
+        <label class="block mb-2 text-xs font-bold tracking-widest text-gray-700 uppercase">Subjek Email</label>
+        <input
+          v-model="campaign.subject"
+          type="text"
+          required
+          placeholder="Misal: 📢 Kejutan Spesial: Diskon 50% Hanya Hari Ini!"
+          class="w-full px-4 py-3 text-sm transition border border-gray-300 outline-none rounded-xl bg-gray-50 focus:bg-white focus:ring-2 focus:ring-black"
+        />
+      </div>
+
+      <!-- DRAG AND DROP EDITOR CONTAINER -->
+      <div>
+        <label class="block mb-2 text-xs font-bold tracking-widest text-gray-700 uppercase">Desain Email</label>
+        <div
+          id="email-editor"
+          class="w-full border border-gray-300 rounded-xl overflow-hidden min-h-[600px] h-[700px] bg-gray-50"
+        ></div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="flex justify-end pt-6 mt-8 border-t border-gray-200">
+        <button
+          type="submit"
+          :disabled="isSending"
+          class="flex items-center justify-center gap-2 px-8 py-3 text-sm font-bold tracking-[0.2em] text-white uppercase transition-all bg-black rounded-xl hover:bg-gray-800 disabled:bg-gray-400"
+        >
+          <svg v-if="!isSending" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+          </svg>
+          <div v-else class="w-5 h-5 border-2 rounded-full border-white/30 border-t-white animate-spin"></div>
+          {{ isSending ? 'Memproses Antrean...' : 'Broadcast ke Semua Subscriber' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { BASE_URL } from "../../config/api.js";
+
+const isSending = ref(false);
+const campaign = ref({
+  subject: "",
+  content: ""
+});
+
+// Fungsi untuk memuat script Unlayer secara dinamis (Agar tidak perlu install npm)
+const loadUnlayerScript = () => {
+  return new Promise((resolve, reject) => {
+    if (window.unlayer) return resolve();
+    const script = document.createElement("script");
+    script.src = "https://editor.unlayer.com/embed.js";
+    script.async = true;
+    script.onload = resolve;
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+};
+
+onMounted(async () => {
+  try {
+    // Tunggu script termuat, lalu inisialisasi Editor
+    await loadUnlayerScript();
+    window.unlayer.init({
+      id: "email-editor",
+      displayMode: "email",
+      appearance: {
+        theme: "light",
+      },
+      // Opsional: Anda bisa memuat template kosong atau default di sini
+    });
+  } catch (error) {
+    console.error("Gagal memuat Email Editor:", error);
+    Swal.fire("Error", "Gagal memuat Visual Editor. Pastikan Anda terhubung ke internet.", "error");
+  }
+});
+
+const sendBroadcast = () => {
+  if (!campaign.value.subject) {
+    return Swal.fire("Peringatan", "Subjek email tidak boleh kosong!", "warning");
+  }
+
+  // 1. Ekstrak kode HTML yang sudah jadi dari Unlayer Editor
+  window.unlayer.exportHtml(async (data) => {
+    const htmlCode = data.html;
+
+    if (!htmlCode || htmlCode.trim() === "") {
+      return Swal.fire("Peringatan", "Desain email Anda masih kosong!", "warning");
+    }
+
+    campaign.value.content = htmlCode;
+
+    // 2. Konfirmasi Pengiriman ke Admin
+    const result = await Swal.fire({
+      title: "Kirim Email Massal?",
+      text: "Newsletter ini akan dimasukkan ke antrean dan dikirimkan ke seluruh pelanggan aktif.",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#000",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, Broadcast Sekarang!",
+      cancelButtonText: "Batal"
+    });
+
+    if (!result.isConfirmed) return;
+
+    // 3. Kirim Payload ke API Laravel
+    isSending.value = true;
+    try {
+      const res = await axios.post(`${BASE_URL}/admin/newsletters/broadcast`, campaign.value, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` }
+      });
+
+      Swal.fire({
+        icon: "success",
+        title: "Antrean Dibuat!",
+        text: res.data.message,
+        confirmButtonColor: "#000",
+      });
+
+      // Reset input subjek setelah berhasil
+      campaign.value.subject = "";
+      
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Gagal Broadcast",
+        text: error.response?.data?.message || "Terjadi kesalahan sistem",
+        confirmButtonColor: "#000",
+      });
+    } finally {
+      isSending.value = false;
+    }
+  });
+};
 </script>
+
+<style scoped>
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
