@@ -146,7 +146,7 @@ const sendBroadcast = async () => {
 };
 </script> -->
 
-<template>
+<!-- <template>
   <div class="max-w-6xl p-8 mx-auto bg-white border border-gray-100 shadow-sm rounded-3xl animate-fade-in">
     <div class="pb-6 mb-8 border-b">
       <h1 class="text-2xl font-bold text-gray-900">Visual Email Campaign Builder</h1>
@@ -156,7 +156,6 @@ const sendBroadcast = async () => {
     </div>
 
     <form @submit.prevent="sendBroadcast" class="space-y-6">
-      <!-- Input Subject -->
       <div>
         <label class="block mb-2 text-xs font-bold tracking-widest text-gray-700 uppercase">Subjek Email</label>
         <input
@@ -168,7 +167,6 @@ const sendBroadcast = async () => {
         />
       </div>
 
-      <!-- DRAG AND DROP EDITOR CONTAINER -->
       <div>
         <label class="block mb-2 text-xs font-bold tracking-widest text-gray-700 uppercase">Desain Email</label>
         <div
@@ -177,7 +175,6 @@ const sendBroadcast = async () => {
         ></div>
       </div>
 
-      <!-- Submit Button -->
       <div class="flex justify-end pt-6 mt-8 border-t border-gray-200">
         <button
           type="submit"
@@ -326,6 +323,202 @@ const sendBroadcast = () => {
 
       // Reset input subjek setelah berhasil
       campaign.value.subject = "";
+      
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Gagal Broadcast",
+        text: error.response?.data?.message || "Terjadi kesalahan sistem",
+        confirmButtonColor: "#000",
+      });
+    } finally {
+      isSending.value = false;
+    }
+  });
+};
+</script>
+
+<style scoped>
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style> -->
+
+<template>
+  <div class="max-w-6xl p-8 mx-auto bg-white border border-gray-100 shadow-sm rounded-3xl animate-fade-in">
+    <div class="pb-6 mb-8 border-b">
+      <h1 class="text-2xl font-bold text-gray-900">Visual Email Campaign Builder</h1>
+      <p class="mt-1 text-sm text-gray-500">
+        Desain email buletin Anda layaknya profesional dan pilih target audiens secara presisi.
+      </p>
+    </div>
+
+    <form @submit.prevent="sendBroadcast" class="space-y-6">
+      
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <!-- Input Subject -->
+        <div>
+          <label class="block mb-2 text-xs font-bold tracking-widest text-gray-700 uppercase">Subjek Email</label>
+          <input
+            v-model="campaign.subject"
+            type="text"
+            required
+            placeholder="📢 Kejutan Spesial: Diskon 50% Hanya Hari Ini!"
+            class="w-full px-4 py-3 text-sm transition border border-gray-300 outline-none rounded-xl bg-gray-50 focus:bg-white focus:ring-2 focus:ring-black"
+          />
+        </div>
+
+        <!-- 👇 [BARU] Dropdown Segmentasi Audiens 👇 -->
+        <div>
+          <label class="block mb-2 text-xs font-bold tracking-widest text-gray-700 uppercase">Target Audiens</label>
+          <select
+            v-model="campaign.target_audience"
+            required
+            class="w-full px-4 py-3 text-sm transition border border-gray-300 outline-none appearance-none rounded-xl bg-gray-50 focus:bg-white focus:ring-2 focus:ring-black"
+          >
+            <option value="all">🌍 Semua Pelanggan Aktif</option>
+            <option value="registered">👑 Hanya Member (Akun Terdaftar)</option>
+            <option value="guest">👋 Hanya Pengunjung (Guest)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- DRAG AND DROP EDITOR CONTAINER -->
+      <div>
+        <label class="block mb-2 text-xs font-bold tracking-widest text-gray-700 uppercase">Desain Email</label>
+        <div
+          id="email-editor"
+          class="w-full border border-gray-300 rounded-xl overflow-hidden min-h-[600px] h-[700px] bg-gray-50"
+        ></div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="flex justify-end pt-6 mt-8 border-t border-gray-200">
+        <button
+          type="submit"
+          :disabled="isSending"
+          class="flex items-center justify-center gap-2 px-8 py-3 text-sm font-bold tracking-[0.2em] text-white uppercase transition-all bg-black rounded-xl hover:bg-gray-800 disabled:bg-gray-400"
+        >
+          <svg v-if="!isSending" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+          </svg>
+          <div v-else class="w-5 h-5 border-2 rounded-full border-white/30 border-t-white animate-spin"></div>
+          {{ isSending ? 'Memproses Antrean...' : 'Broadcast ke Target Terpilih' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { BASE_URL } from "../../config/api.js";
+
+const isSending = ref(false);
+const campaign = ref({
+  subject: "",
+  target_audience: "all", // 👇 Default value ke "Semua Pelanggan"
+  content: ""
+});
+
+const loadUnlayerScript = () => {
+  return new Promise((resolve, reject) => {
+    if (window.unlayer) return resolve();
+    const script = document.createElement("script");
+    script.src = "https://editor.unlayer.com/embed.js";
+    script.async = true;
+    script.onload = resolve;
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+};
+
+onMounted(async () => {
+  try {
+    await loadUnlayerScript();
+    
+    window.unlayer.init({
+      id: "email-editor",
+      displayMode: "email",
+      appearance: { theme: "light" },
+    });
+
+    window.unlayer.registerCallback('image', function (file, done) {
+      const formData = new FormData();
+      formData.append('file', file.attachments[0]); 
+
+      axios.post(`${BASE_URL}/admin/newsletters/upload-image`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${localStorage.getItem("admin_token")}`
+        }
+      })
+      .then(response => done({ progress: 100, url: response.data.url }))
+      .catch(error => {
+        Swal.fire("Gagal", "Gagal mengunggah gambar ke server.", "error");
+        done({ progress: 100, url: '' }); 
+      });
+    });
+
+  } catch (error) {
+    Swal.fire("Error", "Gagal memuat Visual Editor.", "error");
+  }
+});
+
+const sendBroadcast = () => {
+  if (!campaign.value.subject) {
+    return Swal.fire("Peringatan", "Subjek email tidak boleh kosong!", "warning");
+  }
+
+  window.unlayer.exportHtml(async (data) => {
+    const htmlCode = data.html;
+
+    if (!htmlCode || htmlCode.trim() === "") {
+      return Swal.fire("Peringatan", "Desain email Anda masih kosong!", "warning");
+    }
+
+    campaign.value.content = htmlCode;
+
+    // 👇 Tambahkan informasi target audiens ke dalam Popup Konfirmasi
+    const targetLabel = campaign.value.target_audience === 'all' ? 'Semua Pelanggan' 
+                      : campaign.value.target_audience === 'registered' ? 'Member Terdaftar' 
+                      : 'Pengunjung (Guest)';
+
+    const result = await Swal.fire({
+      title: "Konfirmasi Pengiriman",
+      html: `Pesan ini akan dikirim ke target: <br><b class="text-lg text-emerald-600">${targetLabel}</b>.<br><br>Lanjutkan?`,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#000",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, Kirim Sekarang!",
+      cancelButtonText: "Batal"
+    });
+
+    if (!result.isConfirmed) return;
+
+    isSending.value = true;
+    try {
+      const res = await axios.post(`${BASE_URL}/admin/newsletters/broadcast`, campaign.value, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` }
+      });
+
+      Swal.fire({
+        icon: "success",
+        title: "Terkirim ke Antrean!",
+        text: res.data.message,
+        confirmButtonColor: "#000",
+      });
+
+      campaign.value.subject = "";
+      // Reset editor (Opsional, tapi bagus untuk UX)
+      window.unlayer.loadDesign({}); 
       
     } catch (error) {
       Swal.fire({
