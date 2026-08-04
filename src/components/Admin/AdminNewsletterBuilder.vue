@@ -220,9 +220,26 @@ const loadUnlayerScript = () => {
   });
 };
 
+// onMounted(async () => {
+//   try {
+//     // Tunggu script termuat, lalu inisialisasi Editor
+//     await loadUnlayerScript();
+//     window.unlayer.init({
+//       id: "email-editor",
+//       displayMode: "email",
+//       appearance: {
+//         theme: "light",
+//       },
+//       // Opsional: Anda bisa memuat template kosong atau default di sini
+//     });
+//   } catch (error) {
+//     console.error("Gagal memuat Email Editor:", error);
+//     Swal.fire("Error", "Gagal memuat Visual Editor. Pastikan Anda terhubung ke internet.", "error");
+//   }
+// });
+
 onMounted(async () => {
   try {
-    // Tunggu script termuat, lalu inisialisasi Editor
     await loadUnlayerScript();
     window.unlayer.init({
       id: "email-editor",
@@ -230,8 +247,32 @@ onMounted(async () => {
       appearance: {
         theme: "light",
       },
-      // Opsional: Anda bisa memuat template kosong atau default di sini
     });
+
+    // 👇 [TAMBAHAN BARU] Mencegah buka Tab Baru & Mengirim Gambar ke Laravel 👇
+    window.unlayer.registerCallback('image', function (file, done) {
+      // Tangkap file yang di-drag
+      const formData = new FormData();
+      formData.append('file', file.attachments[0]); 
+
+      // Tembak ke API Upload yang baru kita buat
+      axios.post(`${BASE_URL}/admin/newsletters/upload-image`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${localStorage.getItem("admin_token")}`
+        }
+      })
+      .then(response => {
+        // Beritahu Unlayer bahwa upload 100% sukses dan berikan URL-nya
+        done({ progress: 100, url: response.data.url });
+      })
+      .catch(error => {
+        console.error("Gagal Upload:", error);
+        Swal.fire("Gagal", "Gagal mengunggah gambar ke server.", "error");
+        done({ progress: 100, url: '' }); // Batalkan proses jika gagal
+      });
+    });
+
   } catch (error) {
     console.error("Gagal memuat Email Editor:", error);
     Swal.fire("Error", "Gagal memuat Visual Editor. Pastikan Anda terhubung ke internet.", "error");
