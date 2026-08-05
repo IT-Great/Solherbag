@@ -10725,9 +10725,7 @@ const useAllPoints = () => {
       <div class="w-3 h-3 bg-black rounded-full animate-bounce-2"></div>
       <div class="w-3 h-3 bg-black rounded-full animate-bounce-3"></div>
     </div>
-    <p
-      class="font-serif text-sm italic tracking-widest text-gray-500 animate-pulse"
-    >
+    <p class="font-serif text-sm italic tracking-widest text-gray-500 animate-pulse">
       {{ $t("payment.prepare_checkout") }}
     </p>
   </div>
@@ -10747,9 +10745,7 @@ const useAllPoints = () => {
     </div>
 
     <div v-else>
-      <h1
-        class="mb-12 font-serif text-3xl tracking-tighter uppercase md:text-4xl"
-      >
+      <h1 class="mb-12 font-serif text-3xl tracking-tighter uppercase md:text-4xl">
         {{ $t("payment.checkout") }}
       </h1>
 
@@ -10761,9 +10757,7 @@ const useAllPoints = () => {
                 class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white"
                 >1</span
               >
-              <h2
-                class="text-sm font-bold tracking-widest text-gray-900 uppercase"
-              >
+              <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">
                 {{ $t("payment.shipping_address") }}
               </h2>
             </div>
@@ -10838,9 +10832,7 @@ const useAllPoints = () => {
                 class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white"
                 >2</span
               >
-              <h2
-                class="text-sm font-bold tracking-widest text-gray-900 uppercase"
-              >
+              <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">
                 {{ $t("payment.shipping_method") }}
               </h2>
             </div>
@@ -10857,9 +10849,7 @@ const useAllPoints = () => {
                 class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white"
                 >2</span
               >
-              <h2
-                class="text-sm font-bold tracking-widest text-gray-900 uppercase"
-              >
+              <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">
                 {{ $t("payment.shipping_method") }}
               </h2>
             </div>
@@ -10882,9 +10872,7 @@ const useAllPoints = () => {
                 />
                 <div class="flex items-center justify-between flex-grow ml-4">
                   <div>
-                    <p
-                      class="text-sm font-bold tracking-wide text-gray-900 uppercase"
-                    >
+                    <p class="text-sm font-bold tracking-wide text-gray-900 uppercase">
                       {{ $t("payment.free_shipping") }}
                     </p>
                     <p class="mt-1 text-xs font-bold text-green-600">
@@ -10911,9 +10899,7 @@ const useAllPoints = () => {
                 />
                 <div class="flex items-center justify-between flex-grow ml-4">
                   <div>
-                    <p
-                      class="text-sm font-bold tracking-wide text-gray-900 uppercase"
-                    >
+                    <p class="text-sm font-bold tracking-wide text-gray-900 uppercase">
                       {{ $t("payment.standard") }}
                     </p>
                     <p class="mt-1 text-xs text-gray-500">
@@ -11066,9 +11052,9 @@ const useAllPoints = () => {
                         rate.is_disabled
                           ? 'opacity-40 bg-gray-100 border-gray-200 pointer-events-none select-none'
                           : selectedRate?.company === rate.company &&
-                              selectedRate?.type === rate.type
-                            ? 'border-black bg-gray-50 shadow-sm'
-                            : 'border-gray-200 hover:bg-gray-50 cursor-pointer transition-all',
+                            selectedRate?.type === rate.type
+                          ? 'border-black bg-gray-50 shadow-sm'
+                          : 'border-gray-200 hover:bg-gray-50 cursor-pointer transition-all',
                       ]"
                       class="relative flex flex-col p-4 border rounded-xl"
                     >
@@ -11094,8 +11080,7 @@ const useAllPoints = () => {
                             />
                             <span
                               v-show="
-                                imageErrors[rate.company] ||
-                                !getCourierLogo(rate.company)
+                                imageErrors[rate.company] || !getCourierLogo(rate.company)
                               "
                               class="text-xs font-black text-gray-300"
                             >
@@ -11116,9 +11101,7 @@ const useAllPoints = () => {
                         </div>
                         <p class="text-sm font-black text-black">
                           {{
-                            formatCurrencyDisplay(
-                              convertIDRtoActiveCurrency(rate.price),
-                            )
+                            formatCurrencyDisplay(convertIDRtoActiveCurrency(rate.price))
                           }}
                         </p>
                       </div>
@@ -11151,11 +11134,7 @@ const useAllPoints = () => {
             <div
               class="space-y-4 mb-8 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar"
             >
-              <div
-                v-for="item in checkoutItems"
-                :key="item.id"
-                class="flex gap-4"
-              >
+              <div v-for="item in checkoutItems" :key="item.id" class="flex gap-4">
                 <img
                   :src="item.product?.image_url || item.product?.image"
                   class="object-cover w-16 h-16 bg-gray-100 rounded-xl shrink-0"
@@ -11179,9 +11158,7 @@ const useAllPoints = () => {
                     >
                   </div>
                   <div class="flex items-center gap-2 mt-0.5">
-                    <p class="text-[10px] text-gray-400">
-                      Qty: {{ item.quantity }}
-                    </p>
+                    <p class="text-[10px] text-gray-400">Qty: {{ item.quantity }}</p>
                     <template v-if="item.color">
                       <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
                       <div class="flex items-center gap-1.5">
@@ -11191,9 +11168,7 @@ const useAllPoints = () => {
                             backgroundColor: parseColorHex(item.color),
                           }"
                         ></div>
-                        <span
-                          class="text-[10px] font-bold text-gray-500 uppercase"
-                        >
+                        <span class="text-[10px] font-bold text-gray-500 uppercase">
                           {{ parseColorName(item.color) }}
                         </span>
                       </div>
@@ -11203,8 +11178,7 @@ const useAllPoints = () => {
                   <p class="mt-1 text-xs font-medium text-gray-900">
                     {{
                       formatCurrencyDisplay({
-                        value:
-                          getActivePriceObj(item.product).value * item.quantity,
+                        value: getActivePriceObj(item.product).value * item.quantity,
                         curr: getActivePriceObj(item.product).curr,
                       })
                     }}
@@ -11224,9 +11198,7 @@ const useAllPoints = () => {
                 <span>{{ $t("payment.subtotal") }}</span>
                 <span
                   :class="
-                    appliedPromoType === 'voucher'
-                      ? 'text-amber-600 font-bold'
-                      : ''
+                    appliedPromoType === 'voucher' ? 'text-amber-600 font-bold' : ''
                   "
                 >
                   {{ formatCurrencyDisplay(cartSubtotalObj) }}
@@ -11267,9 +11239,7 @@ const useAllPoints = () => {
                     </p>
                   </div>
 
-                  <label
-                    class="relative inline-flex items-center cursor-pointer"
-                  >
+                  <label class="relative inline-flex items-center cursor-pointer">
                     <input
                       type="checkbox"
                       v-model="useMemberVoucher"
@@ -11277,8 +11247,7 @@ const useAllPoints = () => {
                       class="sr-only peer"
                       :disabled="
                         isVerifyingPromo ||
-                        (checkoutTotalIDR < MEMBER_MIN_SPEND &&
-                          !useMemberVoucher)
+                        (checkoutTotalIDR < MEMBER_MIN_SPEND && !useMemberVoucher)
                       "
                     />
                     <div
@@ -11299,9 +11268,7 @@ const useAllPoints = () => {
                     type="text"
                     v-model="promoInput"
                     :disabled="
-                      appliedPromoCode !== null ||
-                      isVerifyingPromo ||
-                      useMemberVoucher
+                      appliedPromoCode !== null || isVerifyingPromo || useMemberVoucher
                     "
                     :placeholder="$t('payment.enter_promo_code')"
                     class="flex-1 bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-sm uppercase focus:ring-black outline-none disabled:bg-gray-100 disabled:text-gray-400 transition-colors"
@@ -11309,14 +11276,10 @@ const useAllPoints = () => {
                   <button
                     v-if="!appliedPromoCode"
                     type="submit"
-                    :disabled="
-                      !promoInput || isVerifyingPromo || useMemberVoucher
-                    "
+                    :disabled="!promoInput || isVerifyingPromo || useMemberVoucher"
                     class="bg-black text-white text-[10px] font-bold uppercase px-4 rounded-lg hover:bg-gray-800 transition disabled:bg-gray-300 w-20 flex justify-center items-center"
                   >
-                    <span v-if="!isVerifyingPromo">{{
-                      $t("payment.apply")
-                    }}</span>
+                    <span v-if="!isVerifyingPromo">{{ $t("payment.apply") }}</span>
                     <div
                       v-else
                       class="w-3 h-3 border-2 rounded-full border-white/40 border-t-white animate-spin"
@@ -11343,14 +11306,10 @@ const useAllPoints = () => {
                   class="flex justify-between text-[10px] md:text-xs font-medium text-emerald-600 mt-2"
                 >
                   <span class="pr-2 truncate">
-                    Promo (<span class="font-mono uppercase">{{
-                      appliedPromoCode
-                    }}</span
+                    Promo (<span class="font-mono uppercase">{{ appliedPromoCode }}</span
                     >)
                   </span>
-                  <span
-                    >- {{ formatCurrencyDisplay(actualPromoDiscountObj) }}</span
-                  >
+                  <span>- {{ formatCurrencyDisplay(actualPromoDiscountObj) }}</span>
                 </div>
               </div>
 
@@ -11405,11 +11364,9 @@ const useAllPoints = () => {
 
               <div class="flex items-start justify-between text-gray-500">
                 <span>{{ $t("payment.shipping") }}</span>
-                <span
-                  v-if="shippingMethod === 'free'"
-                  class="font-bold text-green-600"
-                  >{{ $t("payment.free") }}</span
-                >
+                <span v-if="shippingMethod === 'free'" class="font-bold text-green-600">{{
+                  $t("payment.free")
+                }}</span>
                 <div
                   v-else-if="shippingMethod === 'biteship' && selectedRate"
                   class="text-right"
@@ -11507,11 +11464,7 @@ const useAllPoints = () => {
             class="flex items-center justify-between p-6 border-b border-gray-100 bg-gray-50 shrink-0 md:p-8 md:pb-6"
           >
             <h3 class="text-xl font-extrabold tracking-tight text-gray-900">
-              {{
-                editingId
-                  ? $t("modal_edit_address_title")
-                  : $t("profile.add_address")
-              }}
+              {{ editingId ? $t("modal_edit_address_title") : $t("profile.add_address") }}
             </h3>
             <button
               @click="isModalOpen = false"
@@ -11534,9 +11487,7 @@ const useAllPoints = () => {
             </button>
           </div>
 
-          <div
-            class="flex flex-col md:flex-row h-auto md:h-[650px] overflow-hidden"
-          >
+          <div class="flex flex-col md:flex-row h-auto md:h-[650px] overflow-hidden">
             <div
               class="relative w-full bg-gray-100 border-b border-gray-200 h-72 md:h-full md:w-5/12 md:border-b-0 md:border-r shrink-0"
             >
@@ -11626,11 +11577,7 @@ const useAllPoints = () => {
                   class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   required
                 >
-                  <option
-                    v-for="c in countries"
-                    :key="c.isoCode"
-                    :value="c.name"
-                  >
+                  <option v-for="c in countries" :key="c.isoCode" :value="c.name">
                     {{ c.name }}
                   </option>
                 </select>
@@ -11779,8 +11726,8 @@ const useAllPoints = () => {
                     />
                   </svg>
                   <p class="text-[11px] text-amber-800 leading-relaxed">
-                    <span class="font-bold">Pin Location:</span> Ensure the pin
-                    matches your exact delivery point.
+                    <span class="font-bold">Pin Location:</span> Ensure the pin matches
+                    your exact delivery point.
                   </p>
                 </div>
 
@@ -11815,9 +11762,7 @@ const useAllPoints = () => {
               <input type="hidden" :value="form.latitude" />
               <input type="hidden" :value="form.longitude" />
 
-              <div
-                class="flex justify-end gap-3 pt-6 mt-auto border-t border-gray-100"
-              >
+              <div class="flex justify-end gap-3 pt-6 mt-auto border-t border-gray-100">
                 <button
                   type="button"
                   @click="isModalOpen = false"
@@ -11854,13 +11799,9 @@ import L from "leaflet";
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: new URL(
-    "leaflet/dist/images/marker-icon-2x.png",
-    import.meta.url,
-  ).href,
+  iconRetinaUrl: new URL("leaflet/dist/images/marker-icon-2x.png", import.meta.url).href,
   iconUrl: new URL("leaflet/dist/images/marker-icon.png", import.meta.url).href,
-  shadowUrl: new URL("leaflet/dist/images/marker-shadow.png", import.meta.url)
-    .href,
+  shadowUrl: new URL("leaflet/dist/images/marker-shadow.png", import.meta.url).href,
 });
 
 const router = useRouter();
@@ -12061,9 +12002,7 @@ const convertIDRtoActiveCurrency = (idrAmount) => {
 // --- KALKULASI TOTAL ---
 const checkoutItems = computed(() => {
   const ids = selectedItemIds?.value || selectedItemIds || [];
-  let baseItems = (cartItems.value || []).filter((item) =>
-    ids.includes(item.id),
-  );
+  let baseItems = (cartItems.value || []).filter((item) => ids.includes(item.id));
 
   if (catalogProducts.value.length > 0) {
     baseItems = baseItems.map((item) => {
@@ -12130,13 +12069,13 @@ const actualPromoDiscountIDR = computed(() => {
   return promoDiscountAmount.value;
 });
 const actualPromoDiscountObj = computed(() =>
-  convertIDRtoActiveCurrency(actualPromoDiscountIDR.value),
+  convertIDRtoActiveCurrency(actualPromoDiscountIDR.value)
 );
 
 const maxPointsAllowed = computed(() => {
   const maxUsableAmount = Math.max(
     0,
-    checkoutTotalIDR.value - actualPromoDiscountIDR.value,
+    checkoutTotalIDR.value - actualPromoDiscountIDR.value
   );
   return Math.min(availablePoints.value, Math.floor(maxUsableAmount / 1000));
 });
@@ -12149,17 +12088,15 @@ watch([pointsToUse, maxPointsAllowed], () => {
 
 const appliedPointDiscountIDR = computed(() => (pointsToUse.value || 0) * 1000);
 const appliedPointDiscountObj = computed(() =>
-  convertIDRtoActiveCurrency(appliedPointDiscountIDR.value),
+  convertIDRtoActiveCurrency(appliedPointDiscountIDR.value)
 );
 
 const shippingCostIDR = computed(() =>
   shippingMethod.value === "biteship" && selectedRate.value
     ? parseFloat(selectedRate.value.price) * checkoutCount.value
-    : 0,
+    : 0
 );
-const shippingCostObj = computed(() =>
-  convertIDRtoActiveCurrency(shippingCostIDR.value),
-);
+const shippingCostObj = computed(() => convertIDRtoActiveCurrency(shippingCostIDR.value));
 
 // const grandTotalObj = computed(() => {
 //   return {
@@ -12174,12 +12111,12 @@ const shippingCostObj = computed(() =>
 
 const grandTotalObj = computed(() => {
   // Hitung total akhir agar tidak bernilai minus
-  const calculatedTotal = 
-      cartSubtotalObj.value.value -
-      bundleDiscountAmount.value +     // <--- POTONGAN DISKON BUNDLE DI SINI
-      shippingCostObj.value.value -
-      actualPromoDiscountObj.value.value -
-      appliedPointDiscountObj.value.value;
+  const calculatedTotal =
+    cartSubtotalObj.value.value -
+    bundleDiscountAmount.value + // <--- POTONGAN DISKON BUNDLE DI SINI
+    shippingCostObj.value.value -
+    actualPromoDiscountObj.value.value -
+    appliedPointDiscountObj.value.value;
 
   return {
     value: Math.max(0, calculatedTotal), // Mencegah nilai minus jika diskon lebih besar
@@ -12239,9 +12176,7 @@ const getCourierLogo = (company) => {
     ninja: "ninja.png",
     dhl: "dhl.png",
   };
-  return map[company.toLowerCase()]
-    ? baseUrl + map[company.toLowerCase()]
-    : null;
+  return map[company.toLowerCase()] ? baseUrl + map[company.toLowerCase()] : null;
 };
 
 const isModalOpen = ref(false);
@@ -12264,9 +12199,7 @@ const form = ref({
 });
 
 const fetchProvinces = () => {
-  const selectedCountry = countries.value.find(
-    (c) => c.name === form.value.country,
-  );
+  const selectedCountry = countries.value.find((c) => c.name === form.value.country);
   if (selectedCountry) {
     const states = State.getStatesOfCountry(selectedCountry.isoCode);
     filteredProvinces.value = states.map((s) => s.name);
@@ -12309,7 +12242,7 @@ const handleSearchInput = () => {
   debounceTimeout = setTimeout(async () => {
     try {
       const res = await axios.get(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${searchQuery.value}&countrycodes=id&limit=5`,
+        `https://nominatim.openstreetmap.org/search?format=json&q=${searchQuery.value}&countrycodes=id&limit=5`
       );
       searchResults.value = res.data;
     } catch (error) {}
@@ -12353,7 +12286,7 @@ const updateLocation = (lat, lng) => {
 const reverseGeocode = async (lat, lng) => {
   try {
     const res = await axios.get(
-      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`,
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
     );
     if (res.data && res.data.display_name) {
       form.value.address_location = res.data.display_name;
@@ -12387,7 +12320,7 @@ const getCurrentLocation = () => {
         Swal.fire("Error", "Please allow location access.", "error");
         isGettingLocation.value = false;
       },
-      { enableHighAccuracy: true, timeout: 10000 },
+      { enableHighAccuracy: true, timeout: 10000 }
     );
   } else {
     Swal.fire("Error", "Geolocation not supported", "error");
@@ -12405,16 +12338,11 @@ let debounceTimeout = null;
 
 const saveAddress = async () => {
   try {
-    const res = await axios.post(
-      `${BASE_URL}/addresses`,
-      form.value,
-      getAxiosConfig(),
-    );
+    const res = await axios.post(`${BASE_URL}/addresses`, form.value, getAxiosConfig());
     isModalOpen.value = false;
     const resAddr = await axios.get(`${BASE_URL}/addresses`, getAxiosConfig());
 
-    const addrData =
-      resAddr.data?.data !== undefined ? resAddr.data.data : resAddr.data;
+    const addrData = resAddr.data?.data !== undefined ? resAddr.data.data : resAddr.data;
     addresses.value = Array.isArray(addrData) ? addrData : [];
 
     selectedAddressId.value =
@@ -12433,11 +12361,7 @@ const saveAddress = async () => {
 };
 
 const isButtonDisabled = computed(() => {
-  if (
-    isProcessing.value ||
-    cartItems.value.length === 0 ||
-    !selectedAddressId.value
-  )
+  if (isProcessing.value || cartItems.value.length === 0 || !selectedAddressId.value)
     return true;
   if (shippingMethod.value === "biteship") {
     if (!selectedRate.value) return true;
@@ -12462,7 +12386,7 @@ watch(selectedAddressId, async (newVal) => {
       const res = await axios.post(
         `${BASE_URL}/shipping/rates`,
         { address_id: newVal, cart_ids: ids },
-        getAxiosConfig(),
+        getAxiosConfig()
       );
       if (res.data && res.data.data) {
         rawShippingRates.value = res.data.data;
@@ -12506,29 +12430,19 @@ const handlePayment = async () => {
       use_points: pointsToUse.value || 0,
       cart_ids: ids,
       courier_company:
-        shippingMethod.value === "biteship"
-          ? selectedRate.value?.company
-          : null,
-      courier_type:
-        shippingMethod.value === "biteship" ? selectedRate.value?.type : null,
+        shippingMethod.value === "biteship" ? selectedRate.value?.company : null,
+      courier_type: shippingMethod.value === "biteship" ? selectedRate.value?.type : null,
       shipping_cost:
         shippingMethod.value === "biteship" ? selectedRate.value?.price : null,
-      delivery_type:
-        shippingMethod.value === "biteship" ? deliveryType.value : null,
-      delivery_date:
-        shippingMethod.value === "biteship" ? deliveryDate.value : null,
-      delivery_time:
-        shippingMethod.value === "biteship" ? deliveryTime.value : null,
+      delivery_type: shippingMethod.value === "biteship" ? deliveryType.value : null,
+      delivery_date: shippingMethod.value === "biteship" ? deliveryDate.value : null,
+      delivery_time: shippingMethod.value === "biteship" ? deliveryTime.value : null,
       promo_code: appliedPromoCode.value,
       promo_type: appliedPromoType.value,
       currency: currentCurrency.value,
       referral_code: localStorage.getItem("affiliate_ref"),
     };
-    const res = await axios.post(
-      `${BASE_URL}/checkout`,
-      payload,
-      getAxiosConfig(),
-    );
+    const res = await axios.post(`${BASE_URL}/checkout`, payload, getAxiosConfig());
     if (res.data.checkout_url) {
       clearSelectedCart();
       window.location.href = res.data.checkout_url;
@@ -12537,7 +12451,7 @@ const handlePayment = async () => {
     Swal.fire(
       "Payment Error",
       error.response?.data?.message || "Failed to create invoice",
-      "error",
+      "error"
     );
   } finally {
     isProcessing.value = false;
@@ -12551,18 +12465,14 @@ onMounted(async () => {
   });
 
   try {
-    const [resExchange, resCatalog, resUser, resAddr] =
-      await Promise.allSettled([
-        axios.get(`${BASE_URL}/exchange-rates`),
-        axios.get(`${BASE_URL}/products`),
-        axios.get(`${BASE_URL}/user`, getAxiosConfig()),
-        axios.get(`${BASE_URL}/addresses`, getAxiosConfig()),
-      ]);
+    const [resExchange, resCatalog, resUser, resAddr] = await Promise.allSettled([
+      axios.get(`${BASE_URL}/exchange-rates`),
+      axios.get(`${BASE_URL}/products`),
+      axios.get(`${BASE_URL}/user`, getAxiosConfig()),
+      axios.get(`${BASE_URL}/addresses`, getAxiosConfig()),
+    ]);
 
-    if (
-      resExchange.status === "fulfilled" &&
-      resExchange.value.data?.data?.rates
-    ) {
+    if (resExchange.status === "fulfilled" && resExchange.value.data?.data?.rates) {
       exchangeRates.value = resExchange.value.data.data.rates;
     }
 
@@ -12582,8 +12492,7 @@ onMounted(async () => {
       userType.value = resUser.value.data.usertype || "user";
       localStorage.setItem("user", JSON.stringify(resUser.value.data));
     } else {
-      const userStr =
-        localStorage.getItem("user") || localStorage.getItem("user_data");
+      const userStr = localStorage.getItem("user") || localStorage.getItem("user_data");
       if (userStr) {
         userData.value = JSON.parse(userStr);
         availablePoints.value = userData.value.point || 0;
@@ -12599,9 +12508,7 @@ onMounted(async () => {
       addresses.value = Array.isArray(addrData) ? addrData : [];
       if (addresses.value.length > 0) {
         const defaultAddr = addresses.value.find((a) => a.is_default);
-        selectedAddressId.value = defaultAddr
-          ? defaultAddr.id
-          : addresses.value[0].id;
+        selectedAddressId.value = defaultAddr ? defaultAddr.id : addresses.value[0].id;
       }
     }
 
@@ -12613,7 +12520,7 @@ onMounted(async () => {
       now.setHours(now.getHours() + 1);
       deliveryDate.value = now.toISOString().split("T")[0];
       deliveryTime.value = `${String(now.getHours()).padStart(2, "0")}:${String(
-        now.getMinutes(),
+        now.getMinutes()
       ).padStart(2, "0")}`;
     }
   } catch (error) {
@@ -12627,9 +12534,7 @@ onUnmounted(() => {
   window.removeEventListener("currency-changed", updateCurrencyState);
 });
 
-const calculateEarnedPoints = computed(() =>
-  Math.floor(checkoutTotalIDR.value / 100000),
-);
+const calculateEarnedPoints = computed(() => Math.floor(checkoutTotalIDR.value / 100000));
 
 const handleMemberToggle = async () => {
   if (useMemberVoucher.value) {
@@ -12653,6 +12558,54 @@ const handleMemberToggle = async () => {
   }
 };
 
+// const applyPromo = async () => {
+//   if (!promoInput.value) return;
+//   isVerifyingPromo.value = true;
+//   try {
+//     const codeToBeApplied = promoInput.value.toUpperCase();
+//     const res = await axios.post(
+//       `${BASE_URL}/promo/verify`,
+//       {
+//         promo_code: codeToBeApplied,
+//         cart_items: checkoutItems.value.map((item) => ({
+//           product_id: item.product_id,
+//         })),
+//       },
+//       getAxiosConfig()
+//     );
+//     if (
+//       codeToBeApplied === MEMBER_VOUCHER_CODE &&
+//       checkoutTotalIDR.value < MEMBER_MIN_SPEND
+//     )
+//       throw new Error(`Minimum spend is Rp ${MEMBER_MIN_SPEND.toLocaleString("id-ID")}`);
+//     else if (codeToBeApplied !== MEMBER_VOUCHER_CODE && checkoutTotalIDR.value < 1500000)
+//       throw new Error("Minimum spend is Rp 1.500.000");
+
+//     promoSuccess.value = true;
+//     promoMessage.value = "✅ " + res.data.message;
+//     appliedPromoCode.value = codeToBeApplied;
+//     promoDiscountAmount.value = Math.min(res.data.discount_value, checkoutTotalIDR.value);
+
+//     appliedPromoType.value = res.data.promo_type;
+
+//     if (appliedPromoCode.value === MEMBER_VOUCHER_CODE) useMemberVoucher.value = true;
+//     if (pointsToUse.value > maxPointsAllowed.value)
+//       pointsToUse.value = maxPointsAllowed.value;
+//   } catch (error) {
+//     promoSuccess.value = false;
+//     promoMessage.value =
+//       "❌ " + (error.response?.data?.message || error.message || "Invalid promo code.");
+//     appliedPromoCode.value = null;
+//     promoDiscountAmount.value = 0;
+
+//     appliedPromoType.value = null;
+
+//     useMemberVoucher.value = false;
+//   } finally {
+//     isVerifyingPromo.value = false;
+//   }
+// };
+
 const applyPromo = async () => {
   if (!promoInput.value) return;
   isVerifyingPromo.value = true;
@@ -12664,42 +12617,34 @@ const applyPromo = async () => {
         promo_code: codeToBeApplied,
         cart_items: checkoutItems.value.map((item) => ({
           product_id: item.product_id,
+          quantity: item.quantity, // 👇 [WAJIB] Tambahkan agar Backend bisa menghitung jumlah barang
         })),
       },
-      getAxiosConfig(),
+      getAxiosConfig()
     );
+
+    // 👇 [PERBAIKAN] Hanya batasi untuk kode member. Hapus limit 1.5jt agar backend leluasa mengecek
     if (
       codeToBeApplied === MEMBER_VOUCHER_CODE &&
       checkoutTotalIDR.value < MEMBER_MIN_SPEND
-    )
-      throw new Error(
-        `Minimum spend is Rp ${MEMBER_MIN_SPEND.toLocaleString("id-ID")}`,
-      );
-    else if (
-      codeToBeApplied !== MEMBER_VOUCHER_CODE &&
-      checkoutTotalIDR.value < 1500000
-    )
-      throw new Error("Minimum spend is Rp 1.500.000");
+    ) {
+      throw new Error(`Minimum spend is Rp ${MEMBER_MIN_SPEND.toLocaleString("id-ID")}`);
+    }
 
     promoSuccess.value = true;
     promoMessage.value = "✅ " + res.data.message;
     appliedPromoCode.value = codeToBeApplied;
-    promoDiscountAmount.value = Math.min(
-      res.data.discount_value,
-      checkoutTotalIDR.value,
-    );
+    promoDiscountAmount.value = Math.min(res.data.discount_value, checkoutTotalIDR.value);
 
     appliedPromoType.value = res.data.promo_type;
 
-    if (appliedPromoCode.value === MEMBER_VOUCHER_CODE)
-      useMemberVoucher.value = true;
+    if (appliedPromoCode.value === MEMBER_VOUCHER_CODE) useMemberVoucher.value = true;
     if (pointsToUse.value > maxPointsAllowed.value)
       pointsToUse.value = maxPointsAllowed.value;
   } catch (error) {
     promoSuccess.value = false;
     promoMessage.value =
-      "❌ " +
-      (error.response?.data?.message || error.message || "Invalid promo code.");
+      "❌ " + (error.response?.data?.message || error.message || "Invalid promo code.");
     appliedPromoCode.value = null;
     promoDiscountAmount.value = 0;
 
