@@ -11366,14 +11366,14 @@ const useAllPoints = () => {
                     v-model.number="pointsToUse"
                     :max="maxUsablePoints"
                     min="0"
-                    :disabled="appliedPromoCode === 'VOUCHERTAS'"
+                    :disabled="appliedPromoCode === 'SOLHOST34'"
                     class="flex-1 bg-white border border-yellow-300 rounded-lg px-3 py-1.5 text-sm focus:ring-yellow-500 outline-none disabled:bg-gray-100 disabled:text-gray-400"
                     placeholder="0"
                   />
                   <button
                     type="button"
                     @click="useAllPoints"
-                    :disabled="appliedPromoCode === 'VOUCHERTAS'"
+                    :disabled="appliedPromoCode === 'SOLHOST34'"
                     class="bg-yellow-100 text-yellow-800 text-[10px] font-bold uppercase px-3 rounded-lg hover:bg-yellow-200 transition disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {{ $t("payment.use_all") }}
@@ -11382,7 +11382,7 @@ const useAllPoints = () => {
 
                 <!-- 👇 Peringatan UI Anti-Gabung Promo 👇 -->
                 <p
-                  v-if="appliedPromoCode === 'VOUCHERTAS'"
+                  v-if="appliedPromoCode === 'SOLHOST34'"
                   class="text-[9px] text-red-500 mt-1 italic font-medium text-right"
                 >
                   *Poin tidak dapat digabung dengan Voucher Tas
@@ -12679,7 +12679,7 @@ const applyPromo = async () => {
 
     if (appliedPromoCode.value === MEMBER_VOUCHER_CODE) useMemberVoucher.value = true;
     // 👇 [BARU] Otomatis kosongkan poin jika voucher tas dipakai 👇
-    if (appliedPromoCode.value === "VOUCHERTAS") {
+    if (appliedPromoCode.value === "SOLHOST34") {
       pointsToUse.value = 0;
     }
     if (pointsToUse.value > maxPointsAllowed.value)
