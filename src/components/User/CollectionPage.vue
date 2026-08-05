@@ -2618,7 +2618,7 @@ onUnmounted(() => {
                         {{ formatCurrencyDisplay(getPriceToDisplay(product)) }}
                       </p>
 
-                      <p
+                      <!-- <p
                         class="text-[9px] text-amber-600 font-bold bg-amber-50 px-2 py-0.5 rounded mt-1 uppercase tracking-widest text-center md:text-left"
                       >
                         Sale {{ formatCurrencyDisplay(getDiscountToDisplay(product)) }} is
@@ -2629,7 +2629,7 @@ onUnmounted(() => {
                             product.discount_end_date
                           )
                         }}
-                      </p>
+                      </p> -->
                     </div>
                   </template>
                 </template>
@@ -2656,15 +2656,17 @@ onUnmounted(() => {
                     })
                   }}
                 </span> -->
-                <span class="inline-block px-2 py-1 text-[8px] font-black text-blue-700 bg-blue-50 border border-blue-100 rounded uppercase tracking-widest">
-  Bundle: Buy {{ getBundlePromo(product).qty }} for
-  {{
-    formatCurrencyDisplay({
-      value: getBundlePromo(product).price,
-      curr: getBundlePromo(product).curr // <--- GUNAKAN CURRENCY DINAMIS
-    })
-  }}
-</span>
+                <span
+                  class="inline-block px-2 py-1 text-[8px] font-black text-blue-700 bg-blue-50 border border-blue-100 rounded uppercase tracking-widest"
+                >
+                  Bundle: Buy {{ getBundlePromo(product).qty }} for
+                  {{
+                    formatCurrencyDisplay({
+                      value: getBundlePromo(product).price,
+                      curr: getBundlePromo(product).curr, // <--- GUNAKAN CURRENCY DINAMIS
+                    })
+                  }}
+                </span>
               </div>
             </div>
           </div>
@@ -2885,7 +2887,7 @@ const calculateDynamicDiscount = (product) => {
 
 const getBundlePromo = (product) => {
   if (!product || !product.category) return null;
-  
+
   const curr = currentCurrency.value || "IDR"; // Ambil status mata uang saat ini
 
   // Parse JSON/Array (Jika formatnya dari endpoint CategoryResource atau Database)
@@ -2894,11 +2896,18 @@ const getBundlePromo = (product) => {
     promoData = product.category.bundle_promo;
   } else if (product.category.bundle_qty && product.category.bundle_price) {
     const now = new Date();
-    const start = product.category.bundle_start_date ? convertToWIB(product.category.bundle_start_date) : null;
-    const end = product.category.bundle_end_date ? convertToWIB(product.category.bundle_end_date) : null;
-    
+    const start = product.category.bundle_start_date
+      ? convertToWIB(product.category.bundle_start_date)
+      : null;
+    const end = product.category.bundle_end_date
+      ? convertToWIB(product.category.bundle_end_date)
+      : null;
+
     if ((!start || now >= start) && (!end || now <= end)) {
-      promoData = { qty: product.category.bundle_qty, price: product.category.bundle_price };
+      promoData = {
+        qty: product.category.bundle_qty,
+        price: product.category.bundle_price,
+      };
     }
   }
 
@@ -2909,21 +2918,21 @@ const getBundlePromo = (product) => {
   let finalCurr = "IDR";
 
   // Pastikan promoData.price adalah objek JSON
-  if (typeof promoData.price === 'object') {
-     if (promoData.price[curr]) {
-         finalPrice = promoData.price[curr];
-         finalCurr = curr;
-     } else {
-         finalPrice = promoData.price["IDR"]; // Fallback jika USD/SGD kosong
-     }
+  if (typeof promoData.price === "object") {
+    if (promoData.price[curr]) {
+      finalPrice = promoData.price[curr];
+      finalCurr = curr;
+    } else {
+      finalPrice = promoData.price["IDR"]; // Fallback jika USD/SGD kosong
+    }
   } else {
-     finalPrice = promoData.price; // Legacy decimal format
+    finalPrice = promoData.price; // Legacy decimal format
   }
 
-  return { 
-    qty: promoData.qty, 
+  return {
+    qty: promoData.qty,
     price: finalPrice,
-    curr: finalCurr
+    curr: finalCurr,
   };
 };
 // ==========================================
