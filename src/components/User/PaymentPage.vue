@@ -11337,7 +11337,7 @@ const useAllPoints = () => {
                     >{{ $t("payment.bal") }} {{ availablePoints }} Pts</span
                   >
                 </div>
-                <div class="flex gap-2">
+                <!-- <div class="flex gap-2">
                   <input
                     type="number"
                     v-model.number="pointsToUse"
@@ -11356,6 +11356,39 @@ const useAllPoints = () => {
                 </div>
                 <p
                   v-if="pointsToUse > 0"
+                  class="text-[10px] text-green-600 mt-1 font-medium text-right"
+                >
+                  - {{ formatCurrencyDisplay(appliedPointDiscountObj) }}
+                </p> -->
+                <div class="flex gap-2">
+                  <input
+                    type="number"
+                    v-model.number="pointsToUse"
+                    :max="maxUsablePoints"
+                    min="0"
+                    :disabled="appliedPromoCode === 'VOUCHERTAS'"
+                    class="flex-1 bg-white border border-yellow-300 rounded-lg px-3 py-1.5 text-sm focus:ring-yellow-500 outline-none disabled:bg-gray-100 disabled:text-gray-400"
+                    placeholder="0"
+                  />
+                  <button
+                    type="button"
+                    @click="useAllPoints"
+                    :disabled="appliedPromoCode === 'VOUCHERTAS'"
+                    class="bg-yellow-100 text-yellow-800 text-[10px] font-bold uppercase px-3 rounded-lg hover:bg-yellow-200 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {{ $t("payment.use_all") }}
+                  </button>
+                </div>
+
+                <!-- 👇 Peringatan UI Anti-Gabung Promo 👇 -->
+                <p
+                  v-if="appliedPromoCode === 'VOUCHERTAS'"
+                  class="text-[9px] text-red-500 mt-1 italic font-medium text-right"
+                >
+                  *Poin tidak dapat digabung dengan Voucher Tas
+                </p>
+                <p
+                  v-else-if="pointsToUse > 0"
                   class="text-[10px] text-green-600 mt-1 font-medium text-right"
                 >
                   - {{ formatCurrencyDisplay(appliedPointDiscountObj) }}
@@ -12645,6 +12678,10 @@ const applyPromo = async () => {
     appliedPromoType.value = res.data.promo_type;
 
     if (appliedPromoCode.value === MEMBER_VOUCHER_CODE) useMemberVoucher.value = true;
+    // 👇 [BARU] Otomatis kosongkan poin jika voucher tas dipakai 👇
+    if (appliedPromoCode.value === "VOUCHERTAS") {
+      pointsToUse.value = 0;
+    }
     if (pointsToUse.value > maxPointsAllowed.value)
       pointsToUse.value = maxPointsAllowed.value;
   } catch (error) {
