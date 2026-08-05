@@ -12056,18 +12056,24 @@ const cartSubtotalObj = computed(() => {
   return { value: totalValue, curr };
 });
 
+// const actualPromoDiscountIDR = computed(() => {
+//   if (appliedPromoType.value === "claim") {
+//     const productDiscount = Math.floor(checkoutTotalIDR.value * 0.1);
+//     let shippingCost = 0;
+//     if (shippingMethod.value === "biteship" && selectedRate.value) {
+//       shippingCost = parseFloat(selectedRate.value.price) * checkoutCount.value;
+//     }
+//     const shippingSubsidy = Math.min(10000, shippingCost);
+//     return productDiscount + shippingSubsidy;
+//   }
+//   return promoDiscountAmount.value;
+// });
+
 const actualPromoDiscountIDR = computed(() => {
-  if (appliedPromoType.value === "claim") {
-    const productDiscount = Math.floor(checkoutTotalIDR.value * 0.1);
-    let shippingCost = 0;
-    if (shippingMethod.value === "biteship" && selectedRate.value) {
-      shippingCost = parseFloat(selectedRate.value.price) * checkoutCount.value;
-    }
-    const shippingSubsidy = Math.min(10000, shippingCost);
-    return productDiscount + shippingSubsidy;
-  }
+  // Langsung gunakan nominal diskon yang sudah divalidasi dan dikirim dari Backend
   return promoDiscountAmount.value;
 });
+
 const actualPromoDiscountObj = computed(() =>
   convertIDRtoActiveCurrency(actualPromoDiscountIDR.value)
 );
