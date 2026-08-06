@@ -11400,7 +11400,7 @@ const useAllPoints = () => {
                 <span v-if="shippingMethod === 'free'" class="font-bold text-green-600">{{
                   $t("payment.free")
                 }}</span>
-                <div
+                <!-- <div
                   v-else-if="shippingMethod === 'biteship' && selectedRate"
                   class="text-right"
                 >
@@ -11417,6 +11417,22 @@ const useAllPoints = () => {
                     {{ checkoutCount }}
                     {{ $t("payment.item") }}
                   </p>
+                </div> -->
+
+                <!-- 👇 [PERBAIKAN] Tampilkan harga ongkir apa adanya 👇 -->
+                <div
+                  v-else-if="shippingMethod === 'biteship' && selectedRate"
+                  class="text-right"
+                >
+                  <span class="block font-medium text-gray-900">
+                    {{
+                      formatCurrencyDisplay({
+                        value: shippingCostObj.value, // Hapus perkalian di sini
+                        curr: shippingCostObj.curr,
+                      })
+                    }}
+                  </span>
+                  <!-- Baris <p> formatCurrencyDisplay x checkoutCount DIHAPUS karena ongkir tidak dihitung per biji -->
                 </div>
                 <span v-else class="italic text-[10px]">{{
                   $t("payment.select_method")
@@ -12130,9 +12146,16 @@ const appliedPointDiscountObj = computed(() =>
   convertIDRtoActiveCurrency(appliedPointDiscountIDR.value)
 );
 
+// const shippingCostIDR = computed(() =>
+//   shippingMethod.value === "biteship" && selectedRate.value
+//     ? parseFloat(selectedRate.value.price) * checkoutCount.value
+//     : 0
+// );
+
+// 👇 [PERBAIKAN] Hapus perkalian "* checkoutCount.value" 👇
 const shippingCostIDR = computed(() =>
   shippingMethod.value === "biteship" && selectedRate.value
-    ? parseFloat(selectedRate.value.price) * checkoutCount.value
+    ? parseFloat(selectedRate.value.price)
     : 0
 );
 const shippingCostObj = computed(() => convertIDRtoActiveCurrency(shippingCostIDR.value));
