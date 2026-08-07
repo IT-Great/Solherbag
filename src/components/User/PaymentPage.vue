@@ -11898,6 +11898,17 @@ const MEMBER_MIN_SPEND = 500000;
 const currentCurrency = ref(localStorage.getItem("currency") || "IDR");
 const exchangeRates = ref({});
 
+// 1. Generate UUID bawaan browser
+const idempotencyKey = crypto.randomUUID();
+
+// 2. Sisipkan ke dalam Header Axios
+const res = await axios.post(`${BASE_URL}/checkout`, payload, {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem("token")}`,
+    "X-Idempotency-Key": idempotencyKey, // 👈 TAMBAHKAN INI
+  },
+});
+
 const updateCurrencyState = () => {
   currentCurrency.value = localStorage.getItem("currency") || "IDR";
 };
