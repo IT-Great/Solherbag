@@ -12482,46 +12482,6 @@ const processedShippingRates = computed(() => {
   });
 });
 
-// const handlePayment = async () => {
-//   isProcessing.value = true;
-//   try {
-//     const ids = selectedItemIds?.value || selectedItemIds;
-//     const payload = {
-//       address_id: selectedAddressId.value,
-//       shipping_method: shippingMethod.value,
-//       use_points: pointsToUse.value || 0,
-//       cart_ids: ids,
-//       courier_company:
-//         shippingMethod.value === "biteship" ? selectedRate.value?.company : null,
-//       courier_type: shippingMethod.value === "biteship" ? selectedRate.value?.type : null,
-//       shipping_cost:
-//         shippingMethod.value === "biteship" ? selectedRate.value?.price : null,
-//       delivery_type: shippingMethod.value === "biteship" ? deliveryType.value : null,
-//       delivery_date: shippingMethod.value === "biteship" ? deliveryDate.value : null,
-//       delivery_time: shippingMethod.value === "biteship" ? deliveryTime.value : null,
-//       promo_code: appliedPromoCode.value,
-//       promo_type: appliedPromoType.value,
-//       currency: currentCurrency.value,
-//       referral_code: localStorage.getItem("affiliate_ref"),
-//     };
-//     const res = await axios.post(`${BASE_URL}/checkout`, payload, getAxiosConfig());
-//     if (res.data.checkout_url) {
-//       clearSelectedCart();
-//       window.location.href = res.data.checkout_url;
-//     }
-//   } catch (error) {
-//     Swal.fire(
-//       "Payment Error",
-//       error.response?.data?.message || "Failed to create invoice",
-//       "error"
-//     );
-//   } finally {
-//     isProcessing.value = false;
-//   }
-// };
-
-// Di dalam <script setup> PaymentPage.vue:
-
 const handlePayment = async () => {
   isProcessing.value = true;
   try {
@@ -12531,9 +12491,11 @@ const handlePayment = async () => {
       shipping_method: shippingMethod.value,
       use_points: pointsToUse.value || 0,
       cart_ids: ids,
-      courier_company: shippingMethod.value === "biteship" ? selectedRate.value?.company : null,
+      courier_company:
+        shippingMethod.value === "biteship" ? selectedRate.value?.company : null,
       courier_type: shippingMethod.value === "biteship" ? selectedRate.value?.type : null,
-      shipping_cost: shippingMethod.value === "biteship" ? selectedRate.value?.price : null,
+      shipping_cost:
+        shippingMethod.value === "biteship" ? selectedRate.value?.price : null,
       delivery_type: shippingMethod.value === "biteship" ? deliveryType.value : null,
       delivery_date: shippingMethod.value === "biteship" ? deliveryDate.value : null,
       delivery_time: shippingMethod.value === "biteship" ? deliveryTime.value : null,
@@ -12542,34 +12504,10 @@ const handlePayment = async () => {
       currency: currentCurrency.value,
       referral_code: localStorage.getItem("affiliate_ref"),
     };
-
-    // Tampilkan Indikator Loading Instan
-    Swal.fire({
-      title: "Memproses Pesanan...",
-      text: "Mohon tunggu, pesanan Anda sedang disiapkan secara aman.",
-      allowOutsideClick: false,
-      showConfirmButton: false,
-      didOpen: () => {
-        Swal.showLoading();
-      },
-    });
-
     const res = await axios.post(`${BASE_URL}/checkout`, payload, getAxiosConfig());
-
-    // JIKA ASYNC CHECKOUT DITERIMA (HTTP 202)
-    if (res.status === 202) {
+    if (res.data.checkout_url) {
       clearSelectedCart();
-
-      // Pasang Listener WebSocket untuk menunggu URL Pembayaran
-      if (window.Echo && userData.value?.id) {
-        window.Echo.channel(`user.${userData.value.id}`)
-          .listen('.checkout.completed', (e) => {
-            if (e.checkoutUrl) {
-              Swal.close();
-              window.location.href = e.checkoutUrl; // Auto-redirect setelah Job selesai
-            }
-          });
-      }
+      window.location.href = res.data.checkout_url;
     }
   } catch (error) {
     Swal.fire(
@@ -12577,6 +12515,7 @@ const handlePayment = async () => {
       error.response?.data?.message || "Failed to create invoice",
       "error"
     );
+  } finally {
     isProcessing.value = false;
   }
 };
