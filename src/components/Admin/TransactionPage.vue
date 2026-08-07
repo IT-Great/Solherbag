@@ -8233,9 +8233,65 @@ const handleDeleteTransaction = async (id, orderId) => {
   }
 };
 
-onMounted(fetchTransactions);
+// onMounted(fetchTransactions);
+// onUnmounted(() => {
+//   if (timerInterval) clearInterval(timerInterval);
+// });
+
+onMounted(async () => {
+  const userStr = localStorage.getItem("user");
+  let userId = null;
+  if (userStr) {
+    const userObj = JSON.parse(userStr);
+    userData.value = userObj;
+    userId = userObj.id;
+  }
+
+  await fetchRates();
+  fetchTransactions();
+
+  // 👇 [BARU] WEBSOCKET LISTENER 👇
+  if (window.Echo && userId) {
+    window.Echo.channel(`user.${userId}`)
+      .listen('.shipping.updated', (e) => {
+        // e.transaction berisi data terbaru dari database
+        console.log("WebSocket Received:", e.message);
+
+        // Update data array secara reaktif TANPA hit API lagi!
+        const index = transactions.value.findIndex(t => t.id === e.transaction.id);
+        if (index !== -1) {
+          // Ganti objek lama dengan objek terbaru dari socket
+          transactions.value[index] = {
+            ...transactions.value[index],
+            status: e.transaction.status,
+            shipping_status: e.transaction.shipping_status,
+            tracking_number: e.transaction.tracking_number
+          };
+          
+          // Tampilkan notifikasi kecil di sudut kanan
+          Swal.fire({
+            toast: true,
+            position: "top-end",
+            icon: "info",
+            title: "Update Pengiriman!",
+            text: e.message,
+            showConfirmButton: false,
+            timer: 4000,
+          });
+        }
+      });
+  }
+});
+
 onUnmounted(() => {
   if (timerInterval) clearInterval(timerInterval);
+  
+  // Jangan lupa matikan listener saat pindah halaman
+  const userStr = localStorage.getItem("user");
+  if (userStr && window.Echo) {
+     const userId = JSON.parse(userStr).id;
+     window.Echo.leaveChannel(`user.${userId}`);
+  }
 });
 </script>
 

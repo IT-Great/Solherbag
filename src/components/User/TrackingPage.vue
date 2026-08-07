@@ -3387,13 +3387,30 @@ const formatDate = (dateString) => {
   return new Date(dateString).toLocaleDateString("en-US", options);
 };
 
+// onMounted(async () => {
+//   const user = localStorage.getItem("user");
+//   if (user) {
+//     userData.value = JSON.parse(user);
+//   }
+
+//   // Register event listener untuk multi-currency
+//   window.addEventListener("currency-changed", updateCurrencyState);
+//   window.addEventListener("storage", (e) => {
+//     if (e.key === "currency") updateCurrencyState();
+//   });
+
+//   await fetchRates();
+//   fetchAllData();
+// });
+
 onMounted(async () => {
-  const user = localStorage.getItem("user");
-  if (user) {
-    userData.value = JSON.parse(user);
+  const userStr = localStorage.getItem("user");
+  let userId = null;
+  if (userStr) {
+    userData.value = JSON.parse(userStr);
+    userId = JSON.parse(userStr).id;
   }
 
-  // Register event listener untuk multi-currency
   window.addEventListener("currency-changed", updateCurrencyState);
   window.addEventListener("storage", (e) => {
     if (e.key === "currency") updateCurrencyState();
@@ -3401,6 +3418,25 @@ onMounted(async () => {
 
   await fetchRates();
   fetchAllData();
+
+  // 👇 [BARU] WEBSOCKET LISTENER 👇
+  if (window.Echo && userId) {
+    window.Echo.channel(`user.${userId}`)
+      .listen('.shipping.updated', (e) => {
+        // Cek apakah socket yang masuk sesuai dengan halaman pesanan yang sedang dibuka
+        if (transaction.value && transaction.value.id === e.transaction.id) {
+           console.log("Live Tracking Updated!");
+           
+           // Update state transaction Vue
+           transaction.value.status = e.transaction.status;
+           transaction.value.shipping_status = e.transaction.shipping_status;
+           transaction.value.tracking_number = e.transaction.tracking_number;
+
+           // Paksa fetch ulang data spesifik biteship agar History Timeline termutakhir
+           fetchTrackingData(e.transaction.id);
+        }
+      });
+  }
 });
 
 onUnmounted(() => {
