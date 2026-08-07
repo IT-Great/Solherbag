@@ -3403,7 +3403,7 @@ onMounted(async () => {
     if (e.key === "currency") updateCurrencyState();
   });
 
-  await fetchRates();
+  // await fetchRates();
   fetchData();
 
   // 👇 [BARU] WEBSOCKET LISTENER 👇
