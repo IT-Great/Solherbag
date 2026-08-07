@@ -3398,10 +3398,10 @@ onMounted(async () => {
     userId = JSON.parse(userStr).id;
   }
 
-  window.addEventListener("currency-changed", updateCurrencyState);
-  window.addEventListener("storage", (e) => {
-    if (e.key === "currency") updateCurrencyState();
-  });
+  // window.addEventListener("currency-changed", updateCurrencyState);
+  // window.addEventListener("storage", (e) => {
+  //   if (e.key === "currency") updateCurrencyState();
+  // });
 
   // await fetchRates();
   fetchData();
