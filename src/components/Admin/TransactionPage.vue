@@ -7313,7 +7313,7 @@ onUnmounted(() => {
                 </div>
               </div>
 
-              <div
+              <!-- <div
                 v-else-if="['completed', 'processing'].includes(trx.status)"
                 class="flex justify-center"
               >
@@ -7323,8 +7323,69 @@ onUnmounted(() => {
                 >
                   View Detail
                 </button>
+              </div> -->
+              <div
+                v-else-if="
+                  ['completed', 'processing', 'pending', 'cancelled'].includes(trx.status)
+                "
+                class="flex flex-col items-center justify-center gap-2"
+              >
+                <button
+                  @click="goToDetail(trx)"
+                  class="text-[10px] font-bold text-blue-600 hover:underline"
+                >
+                  View Detail
+                </button>
+
+                <!-- TOMBOL HAPUS BARU -->
+                <button
+                  @click="handleDeleteTransaction(trx.id, trx.order_id)"
+                  class="flex items-center gap-1 text-[9px] font-bold text-red-500 hover:text-red-700 transition"
+                  title="Hapus Permanen Transaksi"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-3 h-3"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                    />
+                  </svg>
+                  Delete
+                </button>
               </div>
-              <span v-else class="text-gray-300 text-[10px] italic">No Action</span>
+              <!-- <span v-else class="text-gray-300 text-[10px] italic">No Action</span> -->
+              <div v-else class="flex flex-col items-center justify-center gap-2">
+                <span class="text-gray-300 text-[10px] italic">No Action</span>
+                <!-- TOMBOL HAPUS BARU UNTUK STATUS LAIN -->
+                <button
+                  @click="handleDeleteTransaction(trx.id, trx.order_id)"
+                  class="flex items-center gap-1 text-[9px] font-bold text-red-500 hover:text-red-700 transition"
+                  title="Hapus Permanen Transaksi"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-3 h-3"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                    />
+                  </svg>
+                  Delete
+                </button>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -8141,6 +8202,33 @@ const handleRefundAction = async (id, action) => {
       fetchTransactions();
     } catch (err) {
       Swal.fire("Error", "Action failed", "error");
+    }
+  }
+};
+
+const handleDeleteTransaction = async (id, orderId) => {
+  const result = await Swal.fire({
+    title: "Hapus Transaksi?",
+    html: `Anda akan menghapus transaksi <b>${orderId}</b> secara permanen.<br/>Stok barang akan dikembalikan ke sistem.`,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Ya, Hapus!",
+    cancelButtonText: "Batal",
+  });
+
+  if (result.isConfirmed) {
+    try {
+      await axios.delete(`${BASE_URL}/admin/transactions/${id}`, axiosConfig);
+      Swal.fire("Terhapus!", "Transaksi berhasil dihapus dari sistem.", "success");
+      fetchTransactions(); // Refresh data tabel
+    } catch (err) {
+      Swal.fire(
+        "Gagal!",
+        err.response?.data?.message || "Terjadi kesalahan saat menghapus transaksi.",
+        "error"
+      );
     }
   }
 };
