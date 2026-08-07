@@ -11898,17 +11898,6 @@ const MEMBER_MIN_SPEND = 500000;
 const currentCurrency = ref(localStorage.getItem("currency") || "IDR");
 const exchangeRates = ref({});
 
-// 1. Generate UUID bawaan browser
-const idempotencyKey = crypto.randomUUID();
-
-// 2. Sisipkan ke dalam Header Axios
-const res = await axios.post(`${BASE_URL}/checkout`, payload, {
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
-    "X-Idempotency-Key": idempotencyKey, // 👈 TAMBAHKAN INI
-  },
-});
-
 const updateCurrencyState = () => {
   currentCurrency.value = localStorage.getItem("currency") || "IDR";
 };
@@ -12493,6 +12482,44 @@ const processedShippingRates = computed(() => {
   });
 });
 
+// const handlePayment = async () => {
+//   isProcessing.value = true;
+//   try {
+//     const ids = selectedItemIds?.value || selectedItemIds;
+//     const payload = {
+//       address_id: selectedAddressId.value,
+//       shipping_method: shippingMethod.value,
+//       use_points: pointsToUse.value || 0,
+//       cart_ids: ids,
+//       courier_company:
+//         shippingMethod.value === "biteship" ? selectedRate.value?.company : null,
+//       courier_type: shippingMethod.value === "biteship" ? selectedRate.value?.type : null,
+//       shipping_cost:
+//         shippingMethod.value === "biteship" ? selectedRate.value?.price : null,
+//       delivery_type: shippingMethod.value === "biteship" ? deliveryType.value : null,
+//       delivery_date: shippingMethod.value === "biteship" ? deliveryDate.value : null,
+//       delivery_time: shippingMethod.value === "biteship" ? deliveryTime.value : null,
+//       promo_code: appliedPromoCode.value,
+//       promo_type: appliedPromoType.value,
+//       currency: currentCurrency.value,
+//       referral_code: localStorage.getItem("affiliate_ref"),
+//     };
+//     const res = await axios.post(`${BASE_URL}/checkout`, payload, getAxiosConfig());
+//     if (res.data.checkout_url) {
+//       clearSelectedCart();
+//       window.location.href = res.data.checkout_url;
+//     }
+//   } catch (error) {
+//     Swal.fire(
+//       "Payment Error",
+//       error.response?.data?.message || "Failed to create invoice",
+//       "error"
+//     );
+//   } finally {
+//     isProcessing.value = false;
+//   }
+// };
+
 const handlePayment = async () => {
   isProcessing.value = true;
   try {
@@ -12515,7 +12542,18 @@ const handlePayment = async () => {
       currency: currentCurrency.value,
       referral_code: localStorage.getItem("affiliate_ref"),
     };
-    const res = await axios.post(`${BASE_URL}/checkout`, payload, getAxiosConfig());
+
+    // 👇 [PERBAIKAN] Generate UUID bawaan browser di sini
+    const idempotencyKey = crypto.randomUUID();
+
+    // 👇 Sisipkan header khusus ke Axios
+    const res = await axios.post(`${BASE_URL}/checkout`, payload, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "X-Idempotency-Key": idempotencyKey,
+      }
+    });
+
     if (res.data.checkout_url) {
       clearSelectedCart();
       window.location.href = res.data.checkout_url;
