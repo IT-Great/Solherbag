@@ -3286,11 +3286,13 @@ onUnmounted(() => {
               <div
                 class="flex items-center justify-center w-10 h-10 font-serif text-lg font-bold text-gray-800 bg-gray-100 rounded-full"
               >
-                {{ review.user?.name ? review.user.name.charAt(0).toUpperCase() : "S" }}
+                {{
+                  review.user?.first_name ? review.user.first_name.charAt(0).toUpperCase() : "S"
+                }}
               </div>
               <div class="flex-1 overflow-hidden">
                 <p class="text-xs font-bold text-gray-900 uppercase truncate">
-                  {{ review.user?.name || "Verified Buyer" }}
+                  {{ review.user?.first_name || "Verified Buyer" }}
                 </p>
                 <p class="text-[10px] text-gray-500 truncate mt-0.5">
                   Purchased:
