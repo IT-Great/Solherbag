@@ -2339,7 +2339,7 @@ onUnmounted(() => {
 </style> -->
 
 <template>
-  <div class="relative bg-[#F3F4F6] px-6 md:px-12 pt-12 pb-24 min-h-screen">
+  <div class="relative bg-[#F3F4F6] px-6 md:px-12 pt-4 pb-24 min-h-screen">
     <div
       v-if="isLoading"
       class="z-[100] fixed inset-0 flex flex-col justify-center items-center bg-[#F3F4F6]/80 backdrop-blur-sm transition-all duration-300"
@@ -2354,11 +2354,76 @@ onUnmounted(() => {
       </p>
     </div>
 
-    <div class="mx-auto mb-10 max-w-7xl">
-      <h1 class="mb-8 text-3xl font-bold tracking-tight text-black uppercase">
-        {{ $t("collection.products") }}
-      </h1>
+    <!-- 👇 [BARU] 1. FLASH SALE COUNTDOWN BANNER (URGENCY) 👇 -->
+    <div class="w-full mx-auto mb-10 overflow-hidden shadow-2xl max-w-7xl rounded-xl">
+      <div
+        class="relative flex flex-col items-center justify-center gap-3 px-4 py-4 overflow-hidden text-white bg-red-600 md:flex-row md:py-3 md:gap-6"
+      >
+        <!-- Efek kilat background -->
+        <div
+          class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full animate-[shimmer_2s_infinite]"
+        ></div>
 
+        <div class="z-10 flex items-center gap-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-6 h-6 animate-pulse"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          <span
+            class="text-sm font-black tracking-widest uppercase md:text-base text-shadow-sm"
+          >
+            Flash Sale Ends In
+          </span>
+        </div>
+
+        <!-- Timer Digital -->
+        <div class="z-10 flex gap-2">
+          <div
+            class="bg-black/40 backdrop-blur-sm rounded-md px-3 py-1.5 min-w-[48px] text-center shadow-inner"
+          >
+            <span class="font-mono text-xl font-bold">{{
+              formatTime(timeLeft.hours)
+            }}</span>
+            <span class="block text-[8px] uppercase tracking-widest -mt-1 opacity-80"
+              >Hrs</span
+            >
+          </div>
+          <span class="self-start mt-1 text-xl font-bold animate-pulse">:</span>
+          <div
+            class="bg-black/40 backdrop-blur-sm rounded-md px-3 py-1.5 min-w-[48px] text-center shadow-inner"
+          >
+            <span class="font-mono text-xl font-bold">{{
+              formatTime(timeLeft.minutes)
+            }}</span>
+            <span class="block text-[8px] uppercase tracking-widest -mt-1 opacity-80"
+              >Min</span
+            >
+          </div>
+          <span class="self-start mt-1 text-xl font-bold animate-pulse">:</span>
+          <div
+            class="bg-red-800/80 backdrop-blur-sm rounded-md px-3 py-1.5 min-w-[48px] text-center shadow-inner ring-1 ring-white/30"
+          >
+            <span class="font-mono text-xl font-bold animate-pulse">{{
+              formatTime(timeLeft.seconds)
+            }}</span>
+            <span class="block text-[8px] uppercase tracking-widest -mt-1 opacity-80"
+              >Sec</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 👆 ========================================= 👆 -->
+
+    <div class="mx-auto mb-10 max-w-7xl">
       <div class="flex flex-col justify-between gap-4 mb-12 md:flex-row md:items-center">
         <div class="relative w-full md:w-80">
           <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
@@ -2390,12 +2455,12 @@ onUnmounted(() => {
             @click="toggleSaleFilter"
             :class="[
               showOnlySale
-                ? 'bg-red-600 text-white border-red-600'
+                ? 'bg-red-600 text-white border-red-600 shadow-[0_0_15px_rgba(220,38,38,0.5)]'
                 : 'bg-white text-red-500 hover:bg-red-50 border-red-100',
             ]"
-            class="flex-1 md:flex-none px-5 py-3 text-[10px] sm:text-xs font-bold tracking-widest uppercase transition border rounded-full shadow-sm whitespace-nowrap text-center"
+            class="flex-1 md:flex-none px-5 py-3 text-[10px] sm:text-xs font-bold tracking-widest uppercase transition-all duration-300 border rounded-full shadow-sm whitespace-nowrap text-center"
           >
-            {{ $t("collection.sale") }}
+            🔥 {{ $t("collection.sale") }}
           </button>
 
           <div class="relative flex-1 min-w-[140px] md:flex-none">
@@ -2410,7 +2475,7 @@ onUnmounted(() => {
               </option>
             </select>
             <div
-              class="absolute inset-y-0 right-3 flex items-center pointer-events-none text-gray-400"
+              class="absolute inset-y-0 flex items-center text-gray-400 pointer-events-none right-3"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -2438,11 +2503,16 @@ onUnmounted(() => {
           <div
             v-for="product in paginatedProducts"
             :key="product.id"
-            class="cursor-pointer group"
+            class="relative cursor-pointer group"
             @click="goToDetail(product)"
           >
+            <!-- 👇 [BARU] 2. OVERLAY SCARCITY (HOVER) 👇 -->
             <div
-              class="relative bg-white shadow-sm mb-4 rounded-sm aspect-[4/5] overflow-hidden group/slider"
+              class="absolute transition-all duration-300 pointer-events-none -inset-2 bg-red-50/0 group-hover:bg-red-50/50 rounded-xl -z-10 blur-sm"
+            ></div>
+
+            <div
+              class="relative bg-white shadow-sm mb-4 rounded-sm aspect-[4/5] overflow-hidden group/slider border border-transparent group-hover:border-red-200 transition-colors"
             >
               <div
                 class="flex w-full h-full transition-transform duration-500 ease-in-out"
@@ -2471,10 +2541,11 @@ onUnmounted(() => {
                 </template>
               </div>
 
+              <!-- Slider Buttons -->
               <button
                 v-if="getMediaArray(product).length > 1"
                 @click.stop="prevSlide(product.id, getMediaArray(product).length - 1)"
-                class="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-1.5 rounded-full opacity-0 group-hover/slider:opacity-100 transition z-10 shadow-sm text-black"
+                class="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-1.5 rounded-full opacity-0 group-hover/slider:opacity-100 transition z-10 shadow-md text-black hover:text-red-600"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -2491,11 +2562,10 @@ onUnmounted(() => {
                   />
                 </svg>
               </button>
-
               <button
                 v-if="getMediaArray(product).length > 1"
                 @click.stop="nextSlide(product.id, getMediaArray(product).length - 1)"
-                class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-1.5 rounded-full opacity-0 group-hover/slider:opacity-100 transition z-10 shadow-sm text-black"
+                class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-1.5 rounded-full opacity-0 group-hover/slider:opacity-100 transition z-10 shadow-md text-black hover:text-red-600"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -2513,37 +2583,23 @@ onUnmounted(() => {
                 </svg>
               </button>
 
-              <div
-                class="absolute left-0 right-0 z-10 flex justify-center gap-1 bottom-2"
-                v-if="getMediaArray(product).length > 1"
-              >
-                <div
-                  v-for="(m, idx) in getMediaArray(product)"
-                  :key="idx"
-                  :class="
-                    (activeSlides[product.id] || 0) === idx
-                      ? 'w-3 bg-black'
-                      : 'w-1 bg-white/80'
-                  "
-                  class="h-1 transition-all duration-300 rounded-full shadow-sm"
-                ></div>
-              </div>
-
+              <!-- Discount Tag -->
               <div
                 v-if="getDiscountToDisplay(product) && getDiscountStatus(product).active"
-                class="top-2 right-2 absolute bg-red-600 px-2 py-1 rounded-sm font-bold text-[8px] text-white uppercase tracking-tighter z-20"
+                class="top-2 right-2 absolute bg-red-600 shadow-[0_2px_10px_rgba(220,38,38,0.5)] px-2.5 py-1 rounded font-black text-[10px] text-white uppercase tracking-wider z-20 animate-pulse"
               >
-                -{{ calculateDynamicDiscount(product) }}%
+                SAVE {{ calculateDynamicDiscount(product) }}%
               </div>
 
+              <!-- Wishlist -->
               <button
                 @click.stop="toggleWishlist(product.id)"
-                class="absolute top-2 left-2 z-20 p-1.5 bg-white/80 hover:bg-white rounded-full shadow-sm transition-transform hover:scale-110"
+                class="absolute top-2 left-2 z-20 p-1.5 bg-white/90 hover:bg-white rounded-full shadow-md transition-transform hover:scale-110"
               >
                 <svg
                   v-if="isFavorited(product.id)"
                   xmlns="http://www.w3.org/2000/svg"
-                  class="w-4 h-4 text-red-500"
+                  class="w-4 h-4 text-red-600 drop-shadow-md"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                   stroke="none"
@@ -2555,11 +2611,11 @@ onUnmounted(() => {
                 <svg
                   v-else
                   xmlns="http://www.w3.org/2000/svg"
-                  class="w-4 h-4 text-gray-400 hover:text-red-500"
+                  class="w-4 h-4 text-gray-500 hover:text-red-500"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  stroke-width="2"
+                  stroke-width="2.5"
                 >
                   <path
                     stroke-linecap="round"
@@ -2569,28 +2625,43 @@ onUnmounted(() => {
                 </svg>
               </button>
 
+              <!-- 👇 [BARU] 3. AGGRESSIVE LOW STOCK BADGE 👇 -->
               <div
                 v-if="product.stock <= 5 && product.stock > 0"
-                class="bottom-2 left-2 absolute bg-amber-500/90 backdrop-blur-sm px-2 py-1 rounded-md font-bold text-[9px] text-white uppercase tracking-widest z-20 shadow-sm animate-pulse"
+                class="bottom-0 w-full absolute bg-gradient-to-t from-red-700 to-red-500/90 backdrop-blur-[2px] py-1.5 px-2 text-center z-20 shadow-[0_-4px_15px_rgba(220,38,38,0.4)]"
               >
-                Only {{ product.stock }} left!
+                <div class="flex items-center justify-center gap-1.5 animate-pulse">
+                  <span class="relative flex w-2 h-2">
+                    <span
+                      class="absolute inline-flex w-full h-full bg-white rounded-full opacity-75 animate-ping"
+                    ></span>
+                    <span
+                      class="relative inline-flex w-2 h-2 bg-white rounded-full"
+                    ></span>
+                  </span>
+                  <span
+                    class="font-black text-[10px] text-white uppercase tracking-widest text-shadow"
+                  >
+                    HURRY! ONLY {{ product.stock }} LEFT
+                  </span>
+                </div>
               </div>
 
               <div
                 v-else-if="product.stock <= 0"
-                class="absolute inset-0 bg-white/60 backdrop-blur-[1px] flex justify-center items-center z-20"
+                class="absolute inset-0 bg-white/60 backdrop-blur-[2px] flex justify-center items-center z-20"
               >
                 <span
-                  class="px-4 py-1 text-xs font-bold tracking-widest text-white uppercase transform bg-black rounded shadow-lg -rotate-12"
+                  class="px-6 py-2 text-sm font-black tracking-widest text-white uppercase transform bg-black border border-gray-800 rounded shadow-2xl -rotate-12"
                 >
                   Sold Out
                 </span>
               </div>
             </div>
 
-            <div class="space-y-2 text-center md:text-left">
+            <div class="relative space-y-1 text-center md:text-left">
               <h3
-                class="text-xs font-medium tracking-widest text-gray-900 uppercase truncate md:text-sm"
+                class="text-xs font-bold tracking-widest text-gray-900 uppercase truncate transition-colors md:text-sm group-hover:text-red-600"
               >
                 {{ product.name }}
               </h3>
@@ -2604,7 +2675,9 @@ onUnmounted(() => {
                   "
                 >
                   <template v-if="getDiscountStatus(product).active">
-                    <p class="text-sm font-bold text-red-600 md:text-base">
+                    <p
+                      class="text-sm font-black text-red-600 md:text-base drop-shadow-sm"
+                    >
                       {{ formatCurrencyDisplay(getDiscountToDisplay(product)) }}
                     </p>
                     <p class="text-xs text-gray-400 line-through md:text-sm">
@@ -2613,57 +2686,55 @@ onUnmounted(() => {
                   </template>
 
                   <template v-else-if="getDiscountStatus(product).upcoming">
-                    <div class="flex flex-col items-center w-full md:items-start">
-                      <p class="text-sm font-semibold text-gray-600 md:text-base">
-                        {{ formatCurrencyDisplay(getPriceToDisplay(product)) }}
-                      </p>
-
-                      <!-- <p
-                        class="text-[9px] text-amber-600 font-bold bg-amber-50 px-2 py-0.5 rounded mt-1 uppercase tracking-widest text-center md:text-left"
-                      >
-                        Sale {{ formatCurrencyDisplay(getDiscountToDisplay(product)) }} is
-                        scheduled:
-                        {{
-                          formatUpcomingDate(
-                            product.discount_start_date,
-                            product.discount_end_date
-                          )
-                        }}
-                      </p> -->
-                    </div>
+                    <p class="text-sm font-bold text-gray-800 md:text-base">
+                      {{ formatCurrencyDisplay(getPriceToDisplay(product)) }}
+                    </p>
                   </template>
                 </template>
 
                 <template v-else>
-                  <p class="text-sm font-semibold text-gray-600 md:text-base">
+                  <p class="text-sm font-bold text-gray-800 md:text-base">
                     {{ formatCurrencyDisplay(getPriceToDisplay(product)) }}
                   </p>
                 </template>
               </div>
 
+              <!-- 👇 [BARU] 4. FAKE SOCIAL PROOF (COMPETITION) 👇 -->
+              <div v-if="product.stock > 0" class="mt-2 text-left">
+                <p
+                  class="text-[9.5px] font-bold text-red-600 flex items-center justify-center md:justify-start gap-1"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-3 h-3 animate-bounce"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                    />
+                  </svg>
+                  In {{ getSimulatedCartCount(product.id) }} carts right now!
+                </p>
+              </div>
+
+              <!-- Bundle Promo -->
               <div
                 v-if="getBundlePromo(product)"
-                class="mt-3 border-t border-gray-50 pt-3"
+                class="pt-2 mt-2 border-t border-gray-100/50"
               >
-                <!-- <span
-                  class="inline-block px-2 py-1 text-[8px] font-black text-blue-700 bg-blue-50 border border-blue-100 rounded uppercase tracking-widest"
-                >
-                  Bundle: Buy {{ getBundlePromo(product).qty }} for
-                  {{
-                    formatCurrencyDisplay({
-                      value: getBundlePromo(product).price,
-                      curr: "IDR",
-                    })
-                  }}
-                </span> -->
                 <span
-                  class="inline-block px-2 py-1 text-[8px] font-black text-blue-700 bg-blue-50 border border-blue-100 rounded uppercase tracking-widest"
+                  class="inline-block px-2 py-1 text-[9px] font-black text-white bg-blue-600 rounded uppercase tracking-widest shadow-md animate-pulse"
                 >
-                  Bundle: Buy {{ getBundlePromo(product).qty }} for
+                  HOT BUNDLE: {{ getBundlePromo(product).qty }} FOR
                   {{
                     formatCurrencyDisplay({
                       value: getBundlePromo(product).price,
-                      curr: getBundlePromo(product).curr, // <--- GUNAKAN CURRENCY DINAMIS
+                      curr: getBundlePromo(product).curr,
                     })
                   }}
                 </span>
@@ -2672,11 +2743,12 @@ onUnmounted(() => {
           </div>
         </div>
 
+        <!-- Pagination -->
         <div class="flex items-center justify-center gap-4 mt-20">
           <button
             @click="currentPage--"
             :disabled="currentPage === 1"
-            class="p-2 transition bg-white rounded-full shadow-sm hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
+            class="p-2 transition bg-white rounded-full shadow-sm hover:bg-gray-50 hover:text-red-600 disabled:opacity-30 disabled:cursor-not-allowed"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -2693,14 +2765,13 @@ onUnmounted(() => {
               />
             </svg>
           </button>
-
-          <span class="text-xs font-bold tracking-widest uppercase">
+          <span class="text-xs font-bold tracking-widest text-gray-700 uppercase">
             {{ $t("collection.page", { current: currentPage, total: totalPages || 1 }) }}
           </span>
           <button
             @click="currentPage++"
             :disabled="currentPage === totalPages || totalPages === 0"
-            class="p-2 transition bg-white rounded-full shadow-sm hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
+            class="p-2 transition bg-white rounded-full shadow-sm hover:bg-gray-50 hover:text-red-600 disabled:opacity-30 disabled:cursor-not-allowed"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -2720,13 +2791,28 @@ onUnmounted(() => {
         </div>
       </div>
 
-      <div v-else-if="!isLoading" class="py-24 text-center">
+      <!-- No Items State -->
+      <div v-else-if="!isLoading" class="py-32 text-center">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-16 h-16 mx-auto mb-4 text-gray-300"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+            d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
+          />
+        </svg>
         <p class="font-serif text-xl italic text-gray-400">
           {{ $t("collection.no_items") }}
         </p>
         <button
           @click="resetAllFilters"
-          class="mt-4 text-sm font-bold tracking-widest text-black underline uppercase"
+          class="px-6 py-2 mt-6 text-xs font-bold tracking-widest text-white uppercase transition-transform bg-black rounded-full shadow-lg hover:scale-105"
         >
           {{ $t("collection.reset_filters") }}
         </button>
@@ -2761,19 +2847,46 @@ const itemsPerPage = 12;
 
 const userWishlists = ref([]);
 const isAuthenticated = !!localStorage.getItem("token");
-
 const isFavorited = (id) => userWishlists.value.includes(id);
-
 const activeSlides = ref({});
 const { t } = useI18n();
-
 const currentCurrency = ref(localStorage.getItem("currency") || "IDR");
+
+// 👇 TIMER STATE UNTUK FLASH SALE 👇
+const timeLeft = ref({ hours: 2, minutes: 45, seconds: 30 });
+let timerInterval = null;
+
+const formatTime = (value) => {
+  return value < 10 ? `0${value}` : value;
+};
+
+const startCountdown = () => {
+  // Simulasi Countdown selama 2 jam 45 menit 30 detik
+  let totalSeconds = 2 * 3600 + 45 * 60 + 30;
+
+  timerInterval = setInterval(() => {
+    totalSeconds--;
+    if (totalSeconds <= 0) {
+      totalSeconds = 2 * 3600 + 59 * 60; // Reset timer otomatis untuk demo FOMO tak berujung
+    }
+    timeLeft.value.hours = Math.floor(totalSeconds / 3600);
+    timeLeft.value.minutes = Math.floor((totalSeconds % 3600) / 60);
+    timeLeft.value.seconds = totalSeconds % 60;
+  }, 1000);
+};
+
+// Simulasi keranjang aktif yang angkanya konsisten berdasarkan ID produk
+const getSimulatedCartCount = (id) => {
+  return (id % 18) + 5; // Menghasilkan angka acak antara 5 hingga 22
+};
 
 const updateCurrencyState = () => {
   currentCurrency.value = localStorage.getItem("currency") || "IDR";
 };
 
 onMounted(() => {
+  startCountdown(); // Jalankan Timer FOMO
+
   window.addEventListener("currency-changed", updateCurrencyState);
   window.addEventListener("storage", (e) => {
     if (e.key === "currency") updateCurrencyState();
@@ -2791,6 +2904,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
+  if (timerInterval) clearInterval(timerInterval); // Bersihkan interval
   window.removeEventListener("currency-changed", updateCurrencyState);
 });
 
@@ -2854,43 +2968,11 @@ const calculateDynamicDiscount = (product) => {
   return Math.round(((priceObj.value - discObj.value) / priceObj.value) * 100);
 };
 
-// ==========================================
-// [BARU] HELPER BUNDLE PROMO DYNAMIC
-// ==========================================
-// const getBundlePromo = (product) => {
-//   if (!product || !product.category) return null;
-
-//   // Jika formatnya bersumber dari CategoryResource (ada array bundle_promo)
-//   if (product.category.bundle_promo && product.category.bundle_promo.is_active) {
-//     return product.category.bundle_promo;
-//   }
-
-//   // Jika formatnya bersumber dari Model Category mentah (raw database row)
-//   if (product.category.bundle_qty && product.category.bundle_price) {
-//     const now = new Date();
-//     const start = product.category.bundle_start_date
-//       ? convertToWIB(product.category.bundle_start_date)
-//       : null;
-//     const end = product.category.bundle_end_date
-//       ? convertToWIB(product.category.bundle_end_date)
-//       : null;
-
-//     if ((!start || now >= start) && (!end || now <= end)) {
-//       return {
-//         qty: product.category.bundle_qty,
-//         price: product.category.bundle_price,
-//       };
-//     }
-//   }
-//   return null;
-// };
-
 const getBundlePromo = (product) => {
   if (!product || !product.category) return null;
 
-  const curr = currentCurrency.value || "IDR"; // Ambil status mata uang saat ini
+  const curr = currentCurrency.value || "IDR";
 
-  // Parse JSON/Array (Jika formatnya dari endpoint CategoryResource atau Database)
   let promoData = null;
   if (product.category.bundle_promo && product.category.bundle_promo.is_active) {
     promoData = product.category.bundle_promo;
@@ -2913,20 +2995,18 @@ const getBundlePromo = (product) => {
 
   if (!promoData) return null;
 
-  // 👇 PERBAIKAN: Baca array harga berdasarkan Currency 👇
   let finalPrice = 0;
   let finalCurr = "IDR";
 
-  // Pastikan promoData.price adalah objek JSON
   if (typeof promoData.price === "object") {
     if (promoData.price[curr]) {
       finalPrice = promoData.price[curr];
       finalCurr = curr;
     } else {
-      finalPrice = promoData.price["IDR"]; // Fallback jika USD/SGD kosong
+      finalPrice = promoData.price["IDR"];
     }
   } else {
-    finalPrice = promoData.price; // Legacy decimal format
+    finalPrice = promoData.price;
   }
 
   return {
@@ -2935,7 +3015,6 @@ const getBundlePromo = (product) => {
     curr: finalCurr,
   };
 };
-// ==========================================
 
 const getMediaArray = (prod) => {
   let media = [{ type: "image", url: prod.image || defaultBagIcon }];
@@ -2976,6 +3055,7 @@ const toggleWishlist = async (productId) => {
       icon: "info",
       title: "Login Required",
       text: "Please login to add favorites.",
+      confirmButtonColor: "#000",
     });
     return;
   }
@@ -3041,25 +3121,6 @@ const getDiscountStatus = (p) => {
     }
   }
   return { active, upcoming, expired };
-};
-
-const formatUpcomingDate = (startDateStr, endDateStr) => {
-  if (!startDateStr) return "";
-  const start = convertToWIB(startDateStr);
-  const end = endDateStr ? convertToWIB(endDateStr) : null;
-  const options = {
-    day: "2-digit",
-    month: "short",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  };
-  const startFormatted = start.toLocaleString("id-ID", options).replace(/\./g, ":");
-  if (end) {
-    const endFormatted = end.toLocaleString("id-ID", options).replace(/\./g, ":");
-    return `${startFormatted} to ${endFormatted} WIB`;
-  }
-  return `${startFormatted} WIB`;
 };
 
 const filteredProducts = computed(() => {
@@ -3183,6 +3244,14 @@ onUnmounted(() => {
     opacity: 1;
   }
 }
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) skewX(-15deg);
+  }
+  100% {
+    transform: translateX(200%) skewX(-15deg);
+  }
+}
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -3191,5 +3260,11 @@ onUnmounted(() => {
 }
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+.text-shadow-sm {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+.text-shadow {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
 }
 </style>
