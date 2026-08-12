@@ -2857,7 +2857,7 @@ onUnmounted(() => {
           </div>
         </div>
 
-        <!-- Varian Warna Premium -->
+        <!-- 👇 [DIUBAH] Varian Warna Premium dengan Pill Label 👇 -->
         <div v-if="siblingColors.length > 0" class="mb-8">
           <div class="flex items-center justify-between mb-3">
             <span class="text-[10px] font-bold tracking-widest uppercase text-gray-500">{{
@@ -2867,29 +2867,35 @@ onUnmounted(() => {
               extractColorName(product.name)
             }}</span>
           </div>
-          <div class="flex flex-wrap gap-3">
+          <div class="flex flex-wrap gap-2.5">
             <div
               v-for="sibling in siblingColors"
               :key="sibling.id"
               @click="goToColorVariant(sibling)"
-              class="relative w-10 h-10 transition-all duration-200 rounded-full cursor-pointer"
-              :title="extractColorName(sibling.name)"
+              class="flex items-center gap-2.5 px-3 py-1.5 transition-all duration-300 border cursor-pointer rounded-full"
+              :class="
+                product.id === sibling.id
+                  ? 'border-black ring-1 ring-black bg-gray-50 shadow-sm scale-[1.02]'
+                  : 'border-gray-200 hover:border-gray-400 hover:bg-gray-50'
+              "
+              :title="sibling.name"
             >
+              <!-- Lingkaran Warna -->
               <div
-                class="absolute inset-0 rounded-full"
-                :class="
-                  product.id === sibling.id
-                    ? 'ring-2 ring-black ring-offset-2'
-                    : 'hover:ring-1 hover:ring-gray-400 hover:ring-offset-1'
-                "
-              ></div>
-              <div
-                class="w-full h-full border border-gray-200 rounded-full shadow-sm"
+                class="w-4 h-4 border border-gray-300 rounded-full shadow-inner shrink-0"
                 :style="{ backgroundColor: extractColorHex(sibling.name) }"
               ></div>
+              <!-- Teks Nama Warna -->
+              <span
+                class="text-[10px] font-bold tracking-wider uppercase"
+                :class="product.id === sibling.id ? 'text-black' : 'text-gray-600'"
+              >
+                {{ extractColorName(sibling.name) }}
+              </span>
             </div>
           </div>
         </div>
+        <!-- 👆 AKHIR VARIAN WARNA 👆 -->
 
         <!-- Spesifikasi Cepat (Grid) -->
         <div
