@@ -2541,59 +2541,55 @@ onUnmounted(() => {
     v-if="isLoading"
     class="z-[100] fixed inset-0 flex flex-col justify-center items-center bg-white"
   >
-    <div
-      class="w-12 h-12 border-4 border-gray-100 rounded-full border-t-black animate-spin"
-    ></div>
-    <p class="mt-4 font-serif italic text-gray-400 animate-pulse">
+    <div class="flex gap-2 mb-4">
+      <div
+        class="w-2.5 h-2.5 bg-black rounded-full animate-bounce"
+        style="animation-delay: -0.3s"
+      ></div>
+      <div
+        class="w-2.5 h-2.5 bg-black rounded-full animate-bounce"
+        style="animation-delay: -0.15s"
+      ></div>
+      <div class="w-2.5 h-2.5 bg-black rounded-full animate-bounce"></div>
+    </div>
+    <p class="font-serif text-sm italic tracking-widest text-gray-500 uppercase">
       {{ $t("product_detail.loading_solher") }}
     </p>
   </div>
 
   <div
     v-else-if="product"
-    class="px-6 py-8 mx-auto md:py-16 max-w-7xl animate-fade-in relative pb-32 md:pb-16"
+    class="px-5 py-10 mx-auto md:px-8 md:py-16 max-w-[1400px] animate-fade-in"
   >
-    <!-- 👇 CRO: Breadcrumb Navigation 👇 -->
-    <nav
-      class="flex items-center text-[10px] sm:text-xs text-gray-400 mb-6 sm:mb-8 tracking-widest uppercase overflow-x-auto whitespace-nowrap custom-scrollbar pb-2"
-    >
-      <router-link to="/" class="hover:text-black transition-colors">Home</router-link>
+    <!-- Breadcrumb -->
+    <nav class="flex mb-8 text-[10px] font-bold tracking-widest text-gray-400 uppercase">
+      <router-link to="/" class="transition-colors hover:text-black">Home</router-link>
       <span class="mx-2">/</span>
-      <router-link to="/collections" class="hover:text-black transition-colors"
+      <router-link to="/collections" class="transition-colors hover:text-black"
         >Collections</router-link
       >
       <span class="mx-2">/</span>
-      <span
-        v-if="product.category"
-        class="hover:text-black transition-colors cursor-pointer"
-        @click="router.push(`/collections?category=${product.category.name}`)"
-      >
-        {{ product.category.name }}
-      </span>
-      <span v-if="product.category" class="mx-2">/</span>
-      <span class="text-black font-bold truncate">{{ product.name }}</span>
+      <span class="text-black">{{ product.category?.name || "Accessories" }}</span>
     </nav>
 
     <div class="flex flex-col gap-10 lg:flex-row lg:gap-20">
-      <!-- KIRI: PRODUCT GALLERY -->
-      <div class="flex flex-col w-full gap-4 select-none lg:w-1/2 sticky top-24 h-fit">
-        <div
-          class="relative bg-gray-50 aspect-[4/5] overflow-hidden group rounded-2xl border border-gray-100 shadow-sm"
-        >
+      <!-- ================= KIRI: MEDIA GALLERY ================= -->
+      <div class="flex flex-col w-full gap-4 select-none lg:w-[55%] xl:w-[60%]">
+        <div class="relative bg-gray-50 aspect-[4/5] overflow-hidden group">
           <div
-            class="flex w-full h-full transition-transform duration-500 ease-out"
+            class="flex w-full h-full transition-transform duration-700 ease-in-out"
             :style="{ transform: `translateX(-${activeSlide * 100}%)` }"
           >
             <template v-for="(media, index) in allMedia" :key="index">
               <div
-                class="relative flex-shrink-0 w-full h-full cursor-zoom-in"
+                class="relative flex-shrink-0 w-full h-full"
                 @mousemove="handleZoom"
                 @mouseleave="resetZoom"
               >
                 <img
                   v-if="media.type === 'image'"
                   :src="media.url"
-                  class="object-cover w-full h-full main-product-image transition-transform duration-700 hover:scale-[1.8]"
+                  class="object-cover w-full h-full main-product-image transition-transform duration-700 hover:scale-[2] cursor-zoom-in"
                   alt="Product Image"
                 />
                 <video
@@ -2610,28 +2606,17 @@ onUnmounted(() => {
             </template>
           </div>
 
-          <!-- Badges -->
-          <div class="absolute flex flex-col gap-2 top-4 left-4 z-10">
-            <div
-              v-if="getDiscountToDisplay(product) && getDiscountStatus(product).active"
-              class="bg-red-600 text-white px-3 py-1 font-black text-[10px] uppercase tracking-widest shadow-lg rounded-sm"
-            >
-              -{{ calculateDynamicDiscount(product) }}% SALE
-            </div>
-
-            <div
-              v-if="product.stock <= 0"
-              class="bg-black text-white px-3 py-1 font-black text-[10px] uppercase tracking-widest shadow-lg rounded-sm"
-            >
-              SOLD OUT
-            </div>
+          <div
+            v-if="getDiscountToDisplay(product) && getDiscountStatus(product).active"
+            class="absolute top-5 left-5 bg-red-600 text-white px-3 py-1 font-bold text-[10px] uppercase tracking-widest shadow-md z-10"
+          >
+            -{{ calculateDynamicDiscount(product) }}% SALE
           </div>
 
-          <!-- Slider Controls -->
           <button
             v-if="allMedia.length > 1"
             @click="prevSlide"
-            class="absolute z-10 flex items-center justify-center w-10 h-10 text-black transition -translate-y-1/2 rounded-full shadow-lg opacity-0 left-4 top-1/2 bg-white/90 hover:bg-white group-hover:opacity-100 hover:scale-110"
+            class="absolute z-10 flex items-center justify-center w-12 h-12 text-black transition -translate-y-1/2 rounded-full opacity-0 left-4 top-1/2 bg-white/90 hover:bg-white hover:scale-110 group-hover:opacity-100 shadow-[0_4px_20px_rgba(0,0,0,0.08)]"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -2643,7 +2628,7 @@ onUnmounted(() => {
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                stroke-width="2"
+                stroke-width="1.5"
                 d="M15 19l-7-7 7-7"
               />
             </svg>
@@ -2652,7 +2637,7 @@ onUnmounted(() => {
           <button
             v-if="allMedia.length > 1"
             @click="nextSlide"
-            class="absolute z-10 flex items-center justify-center w-10 h-10 text-black transition -translate-y-1/2 rounded-full shadow-lg opacity-0 right-4 top-1/2 bg-white/90 hover:bg-white group-hover:opacity-100 hover:scale-110"
+            class="absolute z-10 flex items-center justify-center w-12 h-12 text-black transition -translate-y-1/2 rounded-full opacity-0 right-4 top-1/2 bg-white/90 hover:bg-white hover:scale-110 group-hover:opacity-100 shadow-[0_4px_20px_rgba(0,0,0,0.08)]"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -2664,35 +2649,16 @@ onUnmounted(() => {
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                stroke-width="2"
+                stroke-width="1.5"
                 d="M9 5l7 7-7 7"
               />
             </svg>
           </button>
-
-          <!-- Slider Dots -->
-          <div
-            class="absolute left-0 right-0 z-10 flex justify-center gap-2 bottom-4"
-            v-if="allMedia.length > 1"
-          >
-            <button
-              v-for="(m, idx) in allMedia"
-              :key="idx"
-              @click="activeSlide = idx"
-              :class="
-                activeSlide === idx
-                  ? 'w-8 bg-black'
-                  : 'w-2 bg-gray-400/80 hover:bg-gray-600'
-              "
-              class="h-2 transition-all duration-300 rounded-full shadow-sm"
-            ></button>
-          </div>
         </div>
 
-        <!-- Thumbnail Gallery -->
         <div
           v-if="allMedia.length > 1"
-          class="flex gap-3 pb-2 overflow-x-auto custom-scrollbar"
+          class="flex gap-3 pb-2 mt-2 overflow-x-auto custom-scrollbar"
         >
           <div
             v-for="(media, idx) in allMedia"
@@ -2700,10 +2666,10 @@ onUnmounted(() => {
             @click="activeSlide = idx"
             :class="
               activeSlide === idx
-                ? 'ring-2 ring-black border-transparent opacity-100 shadow-md transform -translate-y-1'
-                : 'border-gray-200 opacity-60 hover:opacity-100 hover:border-gray-300'
+                ? 'border-black opacity-100'
+                : 'border-transparent opacity-50 hover:opacity-100'
             "
-            class="relative w-20 h-24 overflow-hidden transition-all duration-300 border-2 cursor-pointer shrink-0 bg-gray-50 rounded-lg"
+            class="relative w-[72px] h-[90px] overflow-hidden transition-all duration-300 border-b-2 cursor-pointer shrink-0 bg-gray-50"
           >
             <img
               v-if="media.type === 'image'"
@@ -2712,11 +2678,11 @@ onUnmounted(() => {
             />
             <div
               v-else
-              class="relative flex items-center justify-center w-full h-full text-gray-500 bg-gray-200"
+              class="relative flex items-center justify-center w-full h-full text-white bg-gray-800"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="absolute z-10 w-8 h-8"
+                class="w-6 h-6"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -2724,13 +2690,13 @@ onUnmounted(() => {
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  stroke-width="2"
+                  stroke-width="1.5"
                   d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
                 />
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  stroke-width="2"
+                  stroke-width="1.5"
                   d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
@@ -2739,55 +2705,25 @@ onUnmounted(() => {
         </div>
       </div>
 
-      <!-- KANAN: PRODUCT DETAILS -->
-      <div class="w-full lg:w-1/2 flex flex-col">
-        <div class="flex items-start justify-between gap-4">
-          <div>
+      <!-- ================= KANAN: PRODUCT DETAILS (STICKY) ================= -->
+      <div class="w-full lg:w-[45%] xl:w-[40%]">
+        <div class="sticky top-24">
+          <div class="flex items-start justify-between gap-4 mb-2">
             <h1
-              class="font-serif text-3xl sm:text-4xl tracking-tight uppercase text-gray-900 leading-tight"
+              class="font-serif text-3xl leading-tight tracking-tight text-gray-900 md:text-4xl"
             >
               {{ product.name }}
             </h1>
-
-            <!-- 👇 CRO: Social Proof (Rating) 👇 -->
-            <div
-              v-if="product.rating || product.reviews_avg_rating"
-              class="flex items-center gap-2 mt-2"
-            >
-              <div class="flex text-yellow-400">
-                <svg
-                  v-for="i in 5"
-                  :key="i"
-                  class="w-4 h-4 fill-current"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                  />
-                </svg>
-              </div>
-              <span
-                class="text-xs font-bold text-gray-600 hover:text-black cursor-pointer transition-colors underline decoration-gray-300 underline-offset-4"
-              >
-                {{ product.reviews_count || product.rating_count || "10+" }} Ulasan
-              </span>
-            </div>
-          </div>
-
-          <!-- Tombol Wishlist & Share -->
-          <div class="flex flex-col gap-2 shrink-0">
             <button
               @click="toggleWishlist(product.id)"
-              class="p-3 transition-colors rounded-full bg-gray-50 border border-gray-100 hover:bg-red-50 hover:border-red-100 group shadow-sm"
-              title="Add to Wishlist"
+              class="flex-shrink-0 p-3 mt-1 transition-all rounded-full bg-gray-50 hover:bg-red-50 hover:scale-105"
             >
               <svg
                 v-if="isFavorited"
                 xmlns="http://www.w3.org/2000/svg"
-                class="w-5 h-5 text-red-500 transition-transform transform group-hover:scale-110"
+                class="w-5 h-5 text-red-500"
                 fill="currentColor"
                 viewBox="0 0 24 24"
-                stroke="none"
               >
                 <path
                   d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z"
@@ -2796,11 +2732,11 @@ onUnmounted(() => {
               <svg
                 v-else
                 xmlns="http://www.w3.org/2000/svg"
-                class="w-5 h-5 text-gray-400 transition-transform transform group-hover:text-red-500 group-hover:scale-110"
+                class="w-5 h-5 text-gray-400"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                stroke-width="2"
+                stroke-width="1.5"
               >
                 <path
                   stroke-linecap="round"
@@ -2809,225 +2745,106 @@ onUnmounted(() => {
                 />
               </svg>
             </button>
-            <button
-              @click="handleShare"
-              class="p-3 transition-colors rounded-full bg-gray-50 border border-gray-100 hover:bg-blue-50 hover:border-blue-100 group shadow-sm"
-              title="Share Product"
+          </div>
+
+          <!-- Rating & Social Proof (CRO) -->
+          <div class="flex items-center gap-4 mb-6">
+            <div
+              v-if="product.rating || product.reviews_avg_rating"
+              class="flex items-center gap-1.5"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="w-5 h-5 text-gray-400 transition-transform transform group-hover:text-blue-500 group-hover:scale-110"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
+              <div class="flex text-yellow-400">
+                <svg
+                  v-for="i in 5"
+                  :key="i"
+                  class="w-3.5 h-3.5 fill-current"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  />
+                </svg>
+              </div>
+              <span
+                class="text-xs text-gray-500 transition-colors cursor-pointer hover:text-black hover:underline"
+                >{{ product.reviews_count || product.rating_count || "12" }} Reviews</span
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
-                />
-              </svg>
-            </button>
+            </div>
+            <div class="w-px h-3 bg-gray-300"></div>
+            <div class="flex items-center gap-1.5 text-xs text-gray-500">
+              <span class="relative flex w-2 h-2"
+                ><span
+                  class="absolute inline-flex w-full h-full bg-green-400 rounded-full opacity-75 animate-ping"
+                ></span
+                ><span
+                  class="relative inline-flex w-2 h-2 bg-green-500 rounded-full"
+                ></span
+              ></span>
+              {{ viewCount }} people looking at this
+            </div>
           </div>
-        </div>
 
-        <!-- 👇 CRO: Live Stock Urgency (FOMO) 👇 -->
-        <div class="mt-4 mb-2">
-          <div
-            v-if="product.stock > 5"
-            class="inline-flex items-center gap-1.5 px-3 py-1 text-[10px] font-bold text-green-700 uppercase bg-green-50 border border-green-200 rounded-full tracking-widest shadow-sm"
-          >
-            <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span> In
-            Stock (Ready to Ship)
-          </div>
-          <div
-            v-else-if="product.stock > 0 && product.stock <= 5"
-            class="inline-flex items-center gap-1.5 px-3 py-1 text-[10px] font-bold text-red-700 uppercase bg-red-50 border border-red-200 rounded-full tracking-widest shadow-sm"
-          >
-            <span class="w-1.5 h-1.5 bg-red-600 rounded-full animate-pulse"></span> Hurry!
-            Only {{ product.stock }} left
-          </div>
-        </div>
-
-        <!-- Harga -->
-        <div class="flex flex-wrap items-end gap-3 mt-2">
-          <template
-            v-if="getDiscountToDisplay(product) && !getDiscountStatus(product).expired"
-          >
-            <template v-if="getDiscountStatus(product).active">
-              <p class="text-3xl sm:text-4xl font-black text-red-600">
-                {{ formatCurrencyDisplay(getDiscountToDisplay(product)) }}
-              </p>
-              <p class="text-lg text-gray-400 line-through font-medium mb-1">
+          <!-- Harga -->
+          <div class="flex items-end gap-3 mb-6">
+            <template
+              v-if="getDiscountToDisplay(product) && !getDiscountStatus(product).expired"
+            >
+              <template v-if="getDiscountStatus(product).active">
+                <p class="text-2xl font-bold text-red-600 md:text-3xl">
+                  {{ formatCurrencyDisplay(getDiscountToDisplay(product)) }}
+                </p>
+                <p class="mb-1 text-sm text-gray-400 line-through md:text-base">
+                  {{ formatCurrencyDisplay(getPriceToDisplay(product)) }}
+                </p>
+              </template>
+            </template>
+            <template v-else>
+              <p class="text-2xl font-medium text-gray-900 md:text-3xl">
                 {{ formatCurrencyDisplay(getPriceToDisplay(product)) }}
               </p>
             </template>
-          </template>
-          <template v-else>
-            <p class="text-3xl sm:text-4xl font-black text-gray-900">
-              {{ formatCurrencyDisplay(getPriceToDisplay(product)) }}
-            </p>
-          </template>
-        </div>
+          </div>
 
-        <!-- Promo Bundle -->
-        <div v-if="getBundlePromo(product)" class="mt-6">
-          <div
-            class="flex items-start gap-3 p-4 border border-amber-200 bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl shadow-sm"
-          >
-            <span class="text-2xl origin-bottom animate-bounce mt-1">🔥</span>
-            <div>
-              <p
-                class="mb-0.5 text-[10px] font-black tracking-widest uppercase text-amber-700"
-              >
-                Special Bundle Offer!
-              </p>
-              <p class="text-sm font-medium leading-snug text-gray-800">
-                Buy
-                <span class="font-black">{{ getBundlePromo(product).qty }}</span> items
-                from the
-                <strong>{{ product.category?.name || "this" }}</strong> collection for
-                just
-                <span class="font-black text-red-600">{{
-                  formatCurrencyDisplay({
-                    value: getBundlePromo(product).price,
-                    curr: getBundlePromo(product).curr,
-                  })
-                }}</span
-                >!
-              </p>
-              <p
-                class="mt-1 text-[9px] font-bold tracking-widest text-amber-600/70 uppercase"
-              >
-                Mix & match allowed. Applied automatically.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Varian Warna -->
-        <div v-if="siblingColors.length > 0" class="mt-8">
-          <div class="flex items-center justify-between mb-3">
-            <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest"
-              >Available Colors</span
-            >
-            <span class="text-xs font-bold text-gray-900">{{
-              extractColorName(product.name)
-            }}</span>
-          </div>
-          <div class="flex flex-wrap gap-3">
-            <div
-              v-for="sibling in siblingColors"
-              :key="sibling.id"
-              @click="goToColorVariant(sibling)"
-              :class="
-                product.id === sibling.id
-                  ? 'ring-2 ring-black ring-offset-2 scale-110 shadow-md'
-                  : 'border border-gray-200 hover:border-gray-400 hover:scale-105'
-              "
-              class="relative w-10 h-10 rounded-full cursor-pointer transition-all duration-200"
-              :title="extractColorName(sibling.name)"
-            >
-              <!-- Thumbnail gambar warna -->
-              <img
-                :src="sibling.image || defaultBagIcon"
-                class="w-full h-full object-cover rounded-full"
-                alt="Color variant"
-              />
-            </div>
-          </div>
-        </div>
-
-        <!-- Spesifikasi Ringkas -->
-        <div
-          v-if="product.material || product.weight || product.length"
-          class="mt-8 p-5 bg-gray-50 border border-gray-100 rounded-2xl grid grid-cols-2 gap-y-4 gap-x-6"
-        >
-          <div v-if="product.material">
-            <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">
-              {{ $t("product_detail.material") }}
-            </p>
-            <p class="text-sm font-semibold text-gray-900">{{ product.material }}</p>
-          </div>
-          <div v-if="product.weight">
-            <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">
-              {{ $t("product_detail.weight") }}
-            </p>
-            <p class="text-sm font-semibold text-gray-900">{{ product.weight }} g</p>
-          </div>
-          <div v-if="product.length || product.width">
-            <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">
-              {{ $t("product_detail.dimensions") }}
-            </p>
-            <p class="text-sm font-mono font-semibold text-gray-900">
-              {{ product.length || "-" }} x {{ product.width || "-" }} x
-              {{ product.height || "-" }} cm
-            </p>
-          </div>
-          <div v-if="product.strap_length">
-            <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">
-              {{ $t("product_detail.strap_length") }}
-            </p>
-            <div class="flex flex-wrap gap-1">
+          <!-- Urgensi Stok (CRO) -->
+          <div v-if="product.stock > 0 && product.stock <= 10" class="mb-8">
+            <div class="flex justify-between text-xs font-bold mb-1.5">
               <span
-                v-if="Array.isArray(product.strap_length)"
-                v-for="(strap, idx) in product.strap_length"
-                :key="idx"
-                class="text-xs font-semibold text-gray-900 bg-white border border-gray-200 px-2 py-0.5 rounded shadow-sm"
-                >{{ strap }}</span
+                class="flex items-center gap-1 tracking-widest uppercase text-amber-600"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-3.5 w-3.5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                Selling Fast</span
               >
-              <span v-else class="text-sm font-semibold text-gray-900">{{
-                product.strap_length
-              }}</span>
+              <span class="text-gray-600">Only {{ product.stock }} left</span>
             </div>
-          </div>
-        </div>
-
-        <!-- Kuantitas & Tombol Beli (Desktop Version) -->
-        <div class="hidden md:block mt-8">
-          <div v-if="product.stock > 0" class="flex items-center gap-4 mb-4">
-            <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{{
-              $t("product_detail.quantity")
-            }}</span>
-            <div
-              class="flex items-center border border-gray-200 bg-white rounded-xl shadow-sm w-fit"
-            >
-              <button
-                @click="decreaseQuantity"
-                class="px-4 py-2.5 text-lg font-bold text-gray-600 hover:bg-gray-50 rounded-l-xl transition-colors"
-              >
-                −
-              </button>
-              <input
-                type="number"
-                v-model.number="selectedQuantity"
-                @change="validateQuantity"
-                class="w-12 p-0 text-sm font-bold text-center bg-transparent border-none focus:ring-0"
-              />
-              <button
-                @click="increaseQuantity"
-                class="px-4 py-2.5 text-lg font-bold text-gray-600 hover:bg-gray-50 rounded-r-xl transition-colors"
-              >
-                +
-              </button>
+            <div class="w-full h-1 overflow-hidden bg-gray-100 rounded-full">
+              <div
+                class="h-full rounded-full bg-amber-500"
+                :style="{ width: `${(product.stock / 20) * 100}%` }"
+              ></div>
             </div>
           </div>
 
-          <div class="flex gap-4">
-            <button
-              @click="handleAction('cart')"
-              :disabled="product.stock === 0"
-              class="flex-1 py-4 text-xs font-bold tracking-[0.2em] uppercase transition-all duration-300 border-2 rounded-xl flex items-center justify-center gap-2"
-              :class="
-                product.stock === 0
-                  ? 'bg-gray-100 text-gray-400 border-gray-100 cursor-not-allowed'
-                  : 'bg-white text-black border-black hover:bg-gray-50 hover:shadow-md'
-              "
-            >
+          <!-- Hot Bundle Deal -->
+          <div
+            v-if="getBundlePromo(product)"
+            class="flex items-center gap-3 p-4 mb-8 border bg-orange-50/50 border-orange-200/60 rounded-xl"
+          >
+            <div class="p-2 text-orange-500 bg-orange-100 rounded-lg">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="w-4 h-4"
+                class="w-5 h-5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -3036,9 +2853,97 @@ onUnmounted(() => {
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
-                  d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
                 />
               </svg>
+            </div>
+            <div>
+              <p
+                class="text-[10px] font-black tracking-widest uppercase text-orange-800 mb-0.5"
+              >
+                Bundle Deal
+              </p>
+              <p class="text-sm font-medium text-orange-900">
+                Buy <strong>{{ getBundlePromo(product).qty }}</strong> items for
+                <span class="font-bold">{{
+                  formatCurrencyDisplay({
+                    value: getBundlePromo(product).price,
+                    curr: getBundlePromo(product).curr,
+                  })
+                }}</span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Pilihan Warna -->
+          <div v-if="siblingColors.length > 0" class="mb-8">
+            <p class="mb-3 text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+              Color:
+              <span class="ml-1 text-gray-900">{{ extractColorName(product.name) }}</span>
+            </p>
+            <div class="flex flex-wrap gap-3">
+              <div
+                v-for="sibling in siblingColors"
+                :key="sibling.id"
+                @click="goToColorVariant(sibling)"
+                class="relative flex items-center justify-center w-8 h-8 transition-all duration-300 rounded-full cursor-pointer"
+                :class="
+                  product.id === sibling.id
+                    ? 'ring-1 ring-offset-2 ring-black scale-110'
+                    : 'ring-1 ring-gray-200 hover:ring-gray-400'
+                "
+                :title="extractColorName(sibling.name)"
+              >
+                <div
+                  class="w-full h-full border rounded-full border-black/10"
+                  :style="{ backgroundColor: extractColorHex(sibling.name) }"
+                ></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quantity -->
+          <div v-if="product.stock > 0" class="flex items-center gap-4 mb-8">
+            <span
+              class="text-[10px] font-bold text-gray-500 uppercase tracking-widest w-12"
+              >{{ $t("product_detail.quantity") }}</span
+            >
+            <div
+              class="flex items-center w-32 overflow-hidden border border-gray-300 rounded-lg h-11"
+            >
+              <button
+                @click="decreaseQuantity"
+                class="w-10 h-full text-gray-500 transition-colors hover:bg-gray-50 hover:text-black"
+              >
+                -
+              </button>
+              <input
+                type="number"
+                v-model.number="selectedQuantity"
+                @change="validateQuantity"
+                class="w-full h-full p-0 text-sm font-bold text-center border-none focus:ring-0"
+              />
+              <button
+                @click="increaseQuantity"
+                class="w-10 h-full text-gray-500 transition-colors hover:bg-gray-50 hover:text-black"
+              >
+                +
+              </button>
+            </div>
+          </div>
+
+          <!-- Call to Actions -->
+          <div class="flex flex-col gap-3 mb-10">
+            <button
+              @click="handleAction('cart')"
+              :disabled="product.stock === 0"
+              class="w-full py-4 text-xs font-bold tracking-widest uppercase transition-all duration-300 border border-black group"
+              :class="
+                product.stock === 0
+                  ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
+                  : 'bg-white text-black hover:bg-black hover:text-white'
+              "
+            >
               {{
                 product.stock === 0
                   ? $t("product_detail.out_of_stock")
@@ -3049,64 +2954,51 @@ onUnmounted(() => {
             <button
               @click="handleAction('buy')"
               :disabled="product.stock === 0"
-              class="flex-1 py-4 text-xs font-bold tracking-[0.2em] uppercase transition-all duration-300 rounded-xl border-2 border-transparent shadow-lg flex items-center justify-center gap-2"
+              class="w-full py-4 text-xs font-bold tracking-widest uppercase transition-all duration-300"
               :class="
                 product.stock === 0
-                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed shadow-none'
-                  : 'bg-black text-white hover:bg-gray-900 hover:shadow-xl hover:-translate-y-0.5'
+                  ? 'hidden'
+                  : 'bg-black text-white hover:bg-gray-900 shadow-[0_10px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_5px_10px_rgba(0,0,0,0.1)] hover:-translate-y-0.5'
               "
             >
               {{ $t("product_detail.buy_it_now") }}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="w-4 h-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M14 5l7 7m0 0l-7 7m7-7H3"
-                />
-              </svg>
             </button>
           </div>
-        </div>
 
-        <!-- 👇 CRO: Trust Badges 👇 -->
-        <div class="grid grid-cols-3 gap-2 mt-8 py-6 border-y border-gray-100">
-          <div class="flex flex-col items-center justify-center text-center gap-2">
+          <!-- Trust Badges -->
+          <div
+            class="grid grid-cols-3 gap-2 px-2 py-4 mb-8 border-gray-100 border-y bg-gray-50/50 rounded-xl"
+          >
             <div
-              class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center"
+              class="flex flex-col items-center justify-center text-center gap-1.5 px-2"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="w-5 h-5"
+                class="w-5 h-5 text-gray-700"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
               >
                 <path
+                  d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"
+                />
+                <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  stroke-width="1.5"
+                  d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"
                 />
               </svg>
+              <span class="text-[9px] font-bold text-gray-500 uppercase tracking-wider"
+                >Fast Delivery</span
+              >
             </div>
-            <span class="text-[9px] font-bold text-gray-600 uppercase tracking-wider"
-              >100% Original</span
-            >
-          </div>
-          <div class="flex flex-col items-center justify-center text-center gap-2">
             <div
-              class="w-10 h-10 bg-green-50 text-green-600 rounded-full flex items-center justify-center"
+              class="flex flex-col items-center justify-center text-center gap-1.5 px-2 border-x border-gray-200"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="w-5 h-5"
+                class="w-5 h-5 text-gray-700"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -3114,22 +3006,20 @@ onUnmounted(() => {
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  stroke-width="2"
+                  stroke-width="1.5"
                   d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
                 />
               </svg>
+              <span class="text-[9px] font-bold text-gray-500 uppercase tracking-wider"
+                >Secure Pay</span
+              >
             </div>
-            <span class="text-[9px] font-bold text-gray-600 uppercase tracking-wider"
-              >Secure Payment</span
-            >
-          </div>
-          <div class="flex flex-col items-center justify-center text-center gap-2">
             <div
-              class="w-10 h-10 bg-purple-50 text-purple-600 rounded-full flex items-center justify-center"
+              class="flex flex-col items-center justify-center text-center gap-1.5 px-2"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="w-5 h-5"
+                class="w-5 h-5 text-gray-700"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -3137,77 +3027,111 @@ onUnmounted(() => {
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
+                  stroke-width="1.5"
+                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
                 />
               </svg>
+              <span class="text-[9px] font-bold text-gray-500 uppercase tracking-wider"
+                >Guaranteed</span
+              >
             </div>
-            <span class="text-[9px] font-bold text-gray-600 uppercase tracking-wider"
-              >Fast Delivery</span
-            >
           </div>
-        </div>
 
-        <!-- Accordion Info -->
-        <div class="pt-6 divide-y divide-gray-100">
-          <div
-            v-for="section in ['description', 'design', 'shipping_and_returns']"
-            :key="section"
-            class="py-5"
-          >
-            <button
-              @click="activeSection = activeSection === section ? null : section"
-              class="flex items-center justify-between w-full text-xs font-bold tracking-widest text-left text-gray-900 uppercase group"
+          <!-- Accordion Detail -->
+          <div class="border-t border-gray-200 divide-y divide-gray-100">
+            <div
+              v-for="section in ['description', 'design', 'shipping_and_returns']"
+              :key="section"
+              class="py-5"
             >
-              <span class="transition group-hover:text-black">{{
-                $t(`product_detail.${section}`)
-              }}</span>
-              <span
-                class="text-lg transition-transform duration-300"
-                :class="activeSection === section ? 'rotate-45' : ''"
-                >+</span
+              <button
+                @click="activeSection = activeSection === section ? null : section"
+                class="flex items-center justify-between w-full text-[11px] font-bold tracking-widest text-left uppercase group"
               >
-            </button>
-            <transition name="fade">
-              <div
-                v-show="activeSection === section"
-                class="mt-4 text-sm leading-relaxed text-gray-600 whitespace-pre-wrap pl-1 border-l-2 border-black/10"
+                <span class="text-gray-900 transition-colors group-hover:text-gray-500">{{
+                  $t(`product_detail.${section}`)
+                }}</span>
+                <span
+                  class="text-lg font-light text-gray-400 transition-transform duration-300"
+                  :class="activeSection === section ? 'rotate-45' : ''"
+                  >+</span
+                >
+              </button>
+              <transition
+                enter-active-class="overflow-hidden transition-all duration-300 ease-out"
+                enter-from-class="opacity-0 max-h-0"
+                enter-to-class="opacity-100 max-h-96"
+                leave-active-class="overflow-hidden transition-all duration-200 ease-in"
+                leave-from-class="opacity-100 max-h-96"
+                leave-to-class="opacity-0 max-h-0"
               >
-                <template v-if="section === 'description'">
-                  {{
-                    $i18n.locale === "en" && product.description_en
-                      ? product.description_en
-                      : product.description || $t("product_detail.no_information")
-                  }}
-                </template>
-                <template v-else-if="section === 'design'">
-                  {{
-                    $i18n.locale === "en" && product.design_en
-                      ? product.design_en
-                      : product.design || $t("product_detail.no_information")
-                  }}
-                </template>
-                <template v-else-if="section === 'shipping_and_returns'">
-                  {{ $t("product_detail.shipping_desc") }}
-                </template>
-              </div>
-            </transition>
+                <div
+                  v-show="activeSection === section"
+                  class="mt-4 text-sm leading-relaxed text-gray-600 whitespace-pre-wrap"
+                >
+                  <template v-if="section === 'description'">
+                    {{
+                      $i18n.locale === "en" && product.description_en
+                        ? product.description_en
+                        : product.description || $t("product_detail.no_information")
+                    }}
+
+                    <!-- Spesifikasi Otomatis Masuk ke Deskripsi -->
+                    <div
+                      class="grid grid-cols-2 pt-4 mt-4 text-xs border-t border-gray-100 gap-y-2"
+                    >
+                      <div v-if="product.material">
+                        <span class="text-gray-400">Material:</span>
+                        <span class="font-medium text-gray-800">{{
+                          product.material
+                        }}</span>
+                      </div>
+                      <div v-if="product.weight">
+                        <span class="text-gray-400">Weight:</span>
+                        <span class="font-medium text-gray-800"
+                          >{{ product.weight }}g</span
+                        >
+                      </div>
+                      <div v-if="product.length">
+                        <span class="text-gray-400">Dimensions:</span>
+                        <span class="font-medium text-gray-800"
+                          >{{ product.length }}x{{ product.width }}x{{
+                            product.height
+                          }}cm</span
+                        >
+                      </div>
+                    </div>
+                  </template>
+                  <template v-else-if="section === 'design'">
+                    {{
+                      $i18n.locale === "en" && product.design_en
+                        ? product.design_en
+                        : product.design || $t("product_detail.no_information")
+                    }}
+                  </template>
+                  <template v-else-if="section === 'shipping_and_returns'">
+                    {{ $t("product_detail.shipping_desc") }}
+                  </template>
+                </div>
+              </transition>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- RECOMMENDED PRODUCTS -->
+    <!-- REKOMENDASI PRODUK -->
     <div
       v-if="recommendedProducts.length > 0"
       class="pt-16 mt-20 border-t border-gray-200"
     >
       <h2
-        class="mb-10 font-serif text-2xl tracking-widest text-center text-black uppercase md:text-3xl"
+        class="mb-10 font-serif text-2xl tracking-tight text-center text-gray-900 md:text-3xl"
       >
         {{ $t("product_detail.you_may_also_like") }}
       </h2>
-      <div class="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-8">
+
+      <div class="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4 md:gap-x-6">
         <div
           v-for="rec in recommendedProducts"
           :key="rec.id"
@@ -3215,22 +3139,22 @@ onUnmounted(() => {
           class="flex flex-col cursor-pointer group"
         >
           <div
-            class="relative w-full aspect-[4/5] bg-gray-100 overflow-hidden mb-4 rounded-xl border border-gray-100"
+            class="relative w-full aspect-[4/5] bg-gray-50 overflow-hidden mb-4 border border-gray-100"
           >
             <img
               :src="rec.image || defaultBagIcon"
               :alt="rec.name"
-              class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
+              class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
             />
             <div
               v-if="getDiscountToDisplay(rec) && getDiscountStatus(rec).active"
-              class="absolute top-2 left-2 bg-red-600 text-white px-2 py-0.5 font-bold text-[8px] uppercase tracking-widest rounded-sm z-10 shadow-sm"
+              class="absolute top-2 left-2 bg-red-600 text-white px-2 py-0.5 font-bold text-[9px] uppercase tracking-widest z-10"
             >
               SALE
             </div>
           </div>
           <h3
-            class="mb-1 text-xs font-bold tracking-widest text-gray-900 uppercase truncate group-hover:text-red-700 transition-colors"
+            class="mb-1.5 text-xs font-bold tracking-wider text-gray-900 uppercase truncate group-hover:text-gray-500 transition-colors"
           >
             {{ rec.name }}
           </h3>
@@ -3244,82 +3168,13 @@ onUnmounted(() => {
               </p>
             </template>
             <template v-else>
-              <p class="text-sm font-bold text-gray-900">
+              <p class="text-sm font-medium text-gray-800">
                 {{ formatCurrencyDisplay(getPriceToDisplay(rec)) }}
               </p>
             </template>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-
-  <!-- 👇 CRO: Sticky Bottom Checkout Bar (Hanya Muncul di Mobile/Tablet) 👇 -->
-  <div
-    v-if="product && !isLoading"
-    class="fixed bottom-0 left-0 right-0 z-50 p-4 bg-white/95 backdrop-blur-md border-t border-gray-200 shadow-[0_-10px_20px_rgba(0,0,0,0.05)] md:hidden"
-  >
-    <div class="flex gap-3 max-w-7xl mx-auto">
-      <div
-        v-if="product.stock > 0"
-        class="flex items-center border border-gray-200 bg-white rounded-xl shadow-sm"
-      >
-        <button
-          @click="decreaseQuantity"
-          class="px-3 py-3 text-lg font-bold text-gray-600 hover:bg-gray-50 rounded-l-xl"
-        >
-          −
-        </button>
-        <span class="w-6 text-sm font-bold text-center text-black">{{
-          selectedQuantity
-        }}</span>
-        <button
-          @click="increaseQuantity"
-          class="px-3 py-3 text-lg font-bold text-gray-600 hover:bg-gray-50 rounded-r-xl"
-        >
-          +
-        </button>
-      </div>
-
-      <button
-        @click="handleAction('cart')"
-        :disabled="product.stock === 0"
-        class="flex-1 py-3.5 text-[10px] font-bold tracking-widest uppercase transition-all rounded-xl border-2 flex items-center justify-center"
-        :class="
-          product.stock === 0
-            ? 'bg-gray-100 text-gray-400 border-gray-100'
-            : 'bg-white text-black border-black active:bg-gray-100'
-        "
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="w-4 h-4 mr-1.5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-          />
-        </svg>
-        + Cart
-      </button>
-
-      <button
-        @click="handleAction('buy')"
-        :disabled="product.stock === 0"
-        class="flex-1 py-3.5 text-[10px] font-bold tracking-widest uppercase transition-all rounded-xl shadow-lg border-2 border-transparent"
-        :class="
-          product.stock === 0
-            ? 'bg-gray-300 text-gray-500 shadow-none'
-            : 'bg-black text-white active:scale-95'
-        "
-      >
-        Buy Now
-      </button>
     </div>
   </div>
 </template>
@@ -3332,7 +3187,6 @@ import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
 import defaultBagIcon from "../../assets/products/bag_icon.jpg";
 import { useCart } from "../../composables/useCart";
-import { formatPrice } from "../../utils/currency";
 import { useI18n } from "vue-i18n";
 
 const { t, locale } = useI18n();
@@ -3349,6 +3203,9 @@ const activeSlide = ref(0);
 const selectedQuantity = ref(1);
 const recommendedProducts = ref([]);
 const siblingColors = ref([]);
+
+// Visual Enhancements State
+const viewCount = ref(Math.floor(Math.random() * (45 - 12 + 1) + 12));
 
 const currentCurrency = ref(localStorage.getItem("currency") || "IDR");
 const updateCurrencyState = () => {
@@ -3379,32 +3236,19 @@ const handleShare = () => {
     url.searchParams.set("ref", currentUser.value.referral_code);
     linkToShare = url.toString();
   }
-  navigator.clipboard
-    .writeText(linkToShare)
-    .then(() => {
-      Swal.fire({
-        icon: "success",
-        title: "Tautan Tersalin!",
-        text: currentUser.value?.is_affiliate
-          ? "Tautan afiliasi siap disebar."
-          : "Bagikan produk ini ke teman Anda.",
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-      });
-    })
-    .catch((err) => {
-      Swal.fire({
-        icon: "error",
-        title: "Gagal menyalin",
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 2000,
-      });
+  navigator.clipboard.writeText(linkToShare).then(() => {
+    Swal.fire({
+      icon: "success",
+      title: "Tautan Tersalin!",
+      text: currentUser.value?.is_affiliate
+        ? "Tautan afiliasi siap disebar."
+        : "Bagikan produk ini ke teman Anda.",
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 3000,
     });
+  });
 };
 
 const convertToWIB = (dateString) => {
@@ -3422,17 +3266,14 @@ const getDiscountStatus = (p) => {
   let active = true,
     upcoming = false,
     expired = false;
-
   if (p.discount_start_date) {
-    const startDate = convertToWIB(p.discount_start_date);
-    if (now < startDate) {
+    if (now < convertToWIB(p.discount_start_date)) {
       active = false;
       upcoming = true;
     }
   }
   if (p.discount_end_date) {
-    const endDate = convertToWIB(p.discount_end_date);
-    if (now > endDate) {
+    if (now > convertToWIB(p.discount_end_date)) {
       active = false;
       expired = true;
     }
@@ -3488,10 +3329,9 @@ const getBundlePromo = (product) => {
   if (!product || !product.category) return null;
   const curr = currentCurrency.value || "IDR";
   let promoData = null;
-
-  if (product.category.bundle_promo && product.category.bundle_promo.is_active) {
+  if (product.category.bundle_promo && product.category.bundle_promo.is_active)
     promoData = product.category.bundle_promo;
-  } else if (product.category.bundle_qty && product.category.bundle_price) {
+  else if (product.category.bundle_qty && product.category.bundle_price) {
     const now = new Date();
     const start = product.category.bundle_start_date
       ? convertToWIB(product.category.bundle_start_date)
@@ -3499,16 +3339,13 @@ const getBundlePromo = (product) => {
     const end = product.category.bundle_end_date
       ? convertToWIB(product.category.bundle_end_date)
       : null;
-    if ((!start || now >= start) && (!end || now <= end)) {
+    if ((!start || now >= start) && (!end || now <= end))
       promoData = {
         qty: product.category.bundle_qty,
         price: product.category.bundle_price,
       };
-    }
   }
-
   if (!promoData) return null;
-
   let finalPrice = 0,
     finalCurr = "IDR";
   if (typeof promoData.price === "object") {
@@ -3518,9 +3355,7 @@ const getBundlePromo = (product) => {
     } else {
       finalPrice = promoData.price["IDR"];
     }
-  } else {
-    finalPrice = promoData.price;
-  }
+  } else finalPrice = promoData.price;
   return { qty: promoData.qty, price: finalPrice, curr: finalCurr };
 };
 
@@ -3540,31 +3375,6 @@ const updateRecentlyViewedAndTrack = (prod) => {
   list.unshift(prod);
   list = list.slice(0, 6);
   localStorage.setItem("recently_viewed", JSON.stringify(list));
-
-  const activePrice =
-    prod.discount_price && getDiscountStatus(prod).active
-      ? parseFloat(prod.discount_price)
-      : parseFloat(prod.price);
-  trackGtmEvent("view_item", {
-    ecommerce: {
-      currency: "IDR",
-      value: activePrice,
-      items: [
-        {
-          item_id: prod.id,
-          item_name: prod.name,
-          price: activePrice,
-          item_category: prod.category?.name || "Accessories",
-          quantity: 1,
-        },
-      ],
-    },
-  });
-};
-
-const trackGtmEvent = (eventName, data) => {
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({ event: eventName, ...data });
 };
 
 const decreaseQuantity = () => {
@@ -3625,7 +3435,6 @@ const toggleWishlist = async (productId) => {
   if (isFavorited.value)
     userWishlists.value = userWishlists.value.filter((id) => id !== productId);
   else userWishlists.value.push(productId);
-
   try {
     await axios.post(
       `${BASE_URL}/wishlists/toggle`,
@@ -3664,10 +3473,12 @@ const colorMapHex = {
 const extractColorName = (fullName) => {
   if (!fullName) return "Main";
   const words = fullName.trim().split(" ");
-  return (
-    words[words.length - 1].charAt(0).toUpperCase() +
-    words[words.length - 1].slice(1).toLowerCase()
-  );
+  const lastWord = words[words.length - 1];
+  return lastWord.charAt(0).toUpperCase() + lastWord.slice(1).toLowerCase();
+};
+
+const extractColorHex = (fullName) => {
+  return colorMapHex[extractColorName(fullName)] || "#cccccc";
 };
 
 const fetchSiblingColors = async (productName) => {
@@ -3692,6 +3503,7 @@ const goToColorVariant = async (sibling) => {
   const identifier = sibling.slug || sibling.id;
   if (product.value.id === sibling.id || product.value.slug === sibling.slug) return;
   try {
+    isLoading.value = true;
     const res = await axios.get(`${BASE_URL}/products/${identifier}`);
     product.value = res.data;
     fetchRecommendations(product.value.category_id, product.value.id);
@@ -3699,7 +3511,11 @@ const goToColorVariant = async (sibling) => {
     activeSlide.value = 0;
     selectedQuantity.value = 1;
     window.history.pushState({}, "", `/product/${identifier}`);
-  } catch (error) {}
+  } catch (error) {
+  } finally {
+    isLoading.value = false;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 };
 
 const fetchRecommendations = async (categoryId, currentProductId) => {
@@ -3790,22 +3606,40 @@ const handleAction = async (type) => {
         },
       })
     );
-    trackGtmEvent("add_to_cart", {
-      ecommerce: {
-        currency: "IDR",
-        value: currentActivePrice.value * selectedQuantity.value,
-        items: [
-          {
-            item_id: product.value.id,
-            item_name: product.value.name,
-            price: currentActivePrice.value,
-            item_category: product.value.category?.name || "Accessories",
-            item_variant: extractColorName(product.value.name),
-            quantity: selectedQuantity.value,
-          },
-        ],
-      },
-    });
+    const productImages = document.querySelectorAll(".main-product-image");
+    const productImage = productImages[activeSlide.value];
+    const cartIcon = document.querySelector(".cart-icon-header");
+    if (productImage && cartIcon) {
+      const imgRect = productImage.getBoundingClientRect();
+      const cartRect = cartIcon.getBoundingClientRect();
+      const flyer = productImage.cloneNode(true);
+      flyer.classList.add("fly-item");
+      Object.assign(flyer.style, {
+        position: "fixed",
+        top: `${imgRect.top}px`,
+        left: `${imgRect.left}px`,
+        width: `${imgRect.width}px`,
+        height: `${imgRect.height}px`,
+        zIndex: "9999",
+        transition: "all 0.7s cubic-bezier(0.25, 1, 0.5, 1)",
+        pointerEvents: "none",
+        borderRadius: "10%",
+      });
+      document.body.appendChild(flyer);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          Object.assign(flyer.style, {
+            top: `${cartRect.top + 10}px`,
+            left: `${cartRect.left + 10}px`,
+            width: "15px",
+            height: "15px",
+            opacity: "0.2",
+            transform: "scale(0.5) rotate(360deg)",
+          });
+        });
+      });
+      flyer.addEventListener("transitionend", () => flyer.remove(), { once: true });
+    }
     return;
   }
   try {
@@ -3865,7 +3699,7 @@ onUnmounted(() => {
 
 <style scoped>
 .animate-fade-in {
-  animation: fadeIn 0.6s ease-out;
+  animation: fadeIn 0.5s ease-out;
 }
 @keyframes fadeIn {
   from {
@@ -3877,16 +3711,8 @@ onUnmounted(() => {
     transform: translateY(0);
   }
 }
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
 .custom-scrollbar::-webkit-scrollbar {
-  height: 6px;
+  height: 4px;
 }
 .custom-scrollbar::-webkit-scrollbar-track {
   background: transparent;
