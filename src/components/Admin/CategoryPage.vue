@@ -1734,13 +1734,30 @@ onMounted(() => {
         <h1 class="text-2xl font-bold text-gray-800">Category Management</h1>
         <p class="text-sm text-gray-500">Manage your product categories here.</p>
       </div>
-      <button
+      <!-- <button
         v-if="canCreate || isSuperAdmin"
         @click="openModal()"
         class="px-6 py-2 font-semibold text-white transition bg-blue-600 shadow-sm hover:bg-blue-700 rounded-xl shadow-blue-500/30"
       >
         + Add Category
-      </button>
+      </button> -->
+      <div class="flex items-center gap-3">
+        <!-- Tombol Baru Menuju Bag Categories -->
+        <button
+          @click="$router.push('/admin/bag-categories')"
+          class="px-5 py-2 text-sm font-bold text-gray-700 transition bg-white border border-gray-200 rounded-xl hover:bg-gray-50 shadow-sm"
+        >
+          🧳 Manage Bag Types
+        </button>
+
+        <button
+          v-if="canCreate || isSuperAdmin"
+          @click="openModal()"
+          class="px-6 py-2 font-semibold text-white transition bg-blue-600 shadow-sm hover:bg-blue-700 rounded-xl shadow-blue-500/30"
+        >
+          + Add Collection
+        </button>
+      </div>
     </div>
 
     <div class="flex flex-col items-center justify-between gap-4 mb-6 md:flex-row">
