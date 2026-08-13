@@ -1609,6 +1609,19 @@ const handleSubmit = async () => {
               </option>
             </select>
           </div>
+
+          <div>
+            <label class="block mb-1 text-sm font-bold">Bag Type (Optional)</label>
+            <select
+              v-model="form.bag_category_id"
+              class="w-full p-3 bg-gray-100 rounded-xl"
+            >
+              <option value="">No Specific Type</option>
+              <option v-for="type in bagCategories" :key="type.id" :value="type.id">
+                {{ type.name }}
+              </option>
+            </select>
+          </div>
         </div>
 
         <div class="p-4 space-y-6 border border-gray-200 rounded-2xl bg-gray-50/50">
@@ -2034,6 +2047,7 @@ const route = useRoute();
 const productId = route.params.id;
 
 const categories = ref([]);
+const bagCategories = ref([]); // <-- TAMBAHKAN INI
 
 const currentImage = ref("");
 const currentVariantImages = ref([]);
@@ -2053,6 +2067,7 @@ const form = ref({
   discount_end_date: "",
   stock: "",
   category_id: "",
+  bag_category_id: "", // <-- TAMBAHKAN INI
   description: "",
   description_en: "",
   design: "",
@@ -2213,6 +2228,7 @@ const fillFormWithData = (p) => {
     : "";
   form.value.stock = p.stock;
   form.value.category_id = p.category_id;
+  form.value.bag_category_id = p.bag_category_id || "";
   form.value.description = p.description;
   form.value.description_en = p.description_en || "";
   form.value.design = p.design;
@@ -2234,23 +2250,46 @@ const fillFormWithData = (p) => {
   currentVideo.value = p.variant_video;
 };
 
-onMounted(async () => {
-  const stateData = window.history.state?.productData;
+// onMounted(async () => {
+//   const stateData = window.history.state?.productData;
 
-  if (stateData) {
-    fillFormWithData(stateData);
-  }
+//   if (stateData) {
+//     fillFormWithData(stateData);
+//   }
+
+//   try {
+//     const catRes = await axios.get(`${BASE_URL}/categories`, axiosConfig);
+//     categories.value = catRes.data.data;
+
+//     const prodRes = await axios.get(`${BASE_URL}/products/${productId}`, axiosConfig);
+//     fillFormWithData(prodRes.data);
+//   } catch (error) {
+//     if (!stateData) {
+//       Swal.fire("Error", "Gagal mengambil data produk.", "error");
+//     }
+//   }
+// });
+
+onMounted(async () => {
+  SUPPORTED_CURRENCIES.forEach((curr) => {
+    form.value.prices[curr] = "";
+    form.value.discount_prices[curr] = "";
+  });
+
+  const axiosConfig = {
+    headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
+  }; // Pastikan axiosConfig terdefinisi
 
   try {
-    const catRes = await axios.get(`${BASE_URL}/categories`, axiosConfig);
-    categories.value = catRes.data.data;
+    const [catRes, bagCatRes] = await Promise.all([
+      axios.get(`${BASE_URL}/categories`, axiosConfig),
+      axios.get(`${BASE_URL}/admin/bag-categories`, axiosConfig), // <-- TARIK DATA
+    ]);
 
-    const prodRes = await axios.get(`${BASE_URL}/products/${productId}`, axiosConfig);
-    fillFormWithData(prodRes.data);
+    categories.value = catRes.data.data;
+    bagCategories.value = bagCatRes.data.data;
   } catch (error) {
-    if (!stateData) {
-      Swal.fire("Error", "Gagal mengambil data produk.", "error");
-    }
+    console.error("Gagal menarik kategori", error);
   }
 });
 
@@ -2269,6 +2308,7 @@ const handleSubmit = async () => {
     formData.append("code", form.value.code);
     formData.append("price", form.value.price);
     formData.append("category_id", form.value.category_id);
+    formData.append("bag_category_id", form.value.bag_category_id || "");
     formData.append("description", form.value.description || "");
     formData.append("description_en", form.value.description_en || "");
     formData.append("design", form.value.design || "");

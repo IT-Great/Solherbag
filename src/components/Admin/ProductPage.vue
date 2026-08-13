@@ -1166,12 +1166,29 @@ onMounted(fetchData);
             </td>
             <td class="py-4 font-mono text-sm">{{ p.code }}</td>
             <td class="py-4 font-bold text-gray-800">{{ p.name }}</td>
-            <td class="py-4">
+            <!-- <td class="py-4">
               <span
                 class="bg-blue-50 px-3 py-1 rounded-full font-medium text-blue-600 text-xs"
               >
                 {{ p.category?.name }}
               </span>
+            </td> -->
+            <td class="py-4">
+              <div class="flex flex-col items-start gap-1">
+                <span
+                  class="bg-blue-50 px-2 py-0.5 rounded text-blue-600 text-[10px] font-bold uppercase tracking-widest"
+                >
+                  {{ p.category?.name || "No Collection" }}
+                </span>
+
+                <!-- 👇 TAMPILKAN TIPE TAS 👇 -->
+                <span
+                  v-if="p.bag_category"
+                  class="text-[9px] text-gray-400 font-bold uppercase tracking-widest border border-gray-200 px-1.5 py-0.5 rounded"
+                >
+                  {{ p.bag_category.name }}
+                </span>
+              </div>
             </td>
             <td class="py-4 font-bold">
               <div v-if="p.discount_price">
@@ -1202,7 +1219,7 @@ onMounted(fetchData);
               >
                 View
               </router-link>
-              
+
               <!-- [PERBAIKAN] Tampilkan tombol EDIT hanya jika punya akses Update atau SuperAdmin -->
               <button
                 v-if="canUpdate || isSuperAdmin"
@@ -1332,7 +1349,7 @@ const fetchUserPermissions = async () => {
   try {
     const res = await axios.get(`${BASE_URL}/admin/access-policies`, axiosConfig);
     const policies = res.data.permissions;
-    
+
     // Mengekstrak array ['create', 'update', dll] milik role yang sedang login untuk modul 'products'
     const productPerms = policies[userRole.value]?.products || [];
 
@@ -1399,7 +1416,9 @@ const formatPrice = (v) =>
   new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(v);
 
 // ... (computed filter & pagination tetap utuh dari sebelumnya) ...
-const healthyStockCount = computed(() => products.value.filter((p) => p.stock >= 5).length);
+const healthyStockCount = computed(
+  () => products.value.filter((p) => p.stock >= 5).length
+);
 const lowStockCount = computed(() => products.value.filter((p) => p.stock < 5).length);
 const discountedProductsCount = computed(() => {
   return products.value.filter(
@@ -1409,18 +1428,22 @@ const discountedProductsCount = computed(() => {
 
 const filteredProducts = computed(() => {
   return products.value.filter((p) => {
-    const matchesCategory = selectedCategory.value === "" || p.category?.name === selectedCategory.value;
+    const matchesCategory =
+      selectedCategory.value === "" || p.category?.name === selectedCategory.value;
     const matchesSearch = p.name.toLowerCase().includes(searchQuery.value.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 });
-const totalPages = computed(() => Math.ceil(filteredProducts.value.length / itemsPerPage.value));
+const totalPages = computed(() =>
+  Math.ceil(filteredProducts.value.length / itemsPerPage.value)
+);
 const visiblePages = computed(() => {
   const current = currentPage.value;
   const total = totalPages.value;
   if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
   if (current <= 4) return [1, 2, 3, 4, 5, "...", total];
-  if (current >= total - 3) return [1, "...", total - 4, total - 3, total - 2, total - 1, total];
+  if (current >= total - 3)
+    return [1, "...", total - 4, total - 3, total - 2, total - 1, total];
   return [1, "...", current - 1, current, current + 1, "...", total];
 });
 const paginatedProducts = computed(() => {

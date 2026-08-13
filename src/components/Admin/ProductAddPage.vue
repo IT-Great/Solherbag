@@ -1333,6 +1333,21 @@ onMounted(async () => {
           </select>
         </div>
 
+        <!-- 👇 TAMBAHKAN INI (Dropdown Bag Category) 👇 -->
+        <div>
+          <label class="block mb-1 text-sm font-bold">Bag Type (Optional)</label>
+          <select
+            v-model="form.bag_category_id"
+            class="w-full p-3 bg-gray-100 rounded-xl"
+          >
+            <option value="">No Specific Type</option>
+            <option v-for="type in bagCategories" :key="type.id" :value="type.id">
+              {{ type.name }}
+            </option>
+          </select>
+        </div>
+        <!-- 👆 =================================== 👆 -->
+
         <div>
           <label class="block mb-1 text-sm font-bold">Main Image (Optional)</label>
           <input
@@ -1709,6 +1724,7 @@ import Breadcrumb from "./Layout/Breadcrumb.vue";
 
 const router = useRouter();
 const categories = ref([]);
+const bagCategories = ref([]);
 
 // Tambahkan konstanta daftar mata uang di bagian atas script setup
 const SUPPORTED_CURRENCIES = ["USD", "SGD", "EUR", "AUD", "MYR"];
@@ -1729,6 +1745,7 @@ const form = ref({
   discount_end_date: "",
   stock: "",
   category_id: "",
+  bag_category_id: "", // <-- TAMBAHKAN INI
   weight: 1000,
   length: "",
   width: "",
@@ -1870,6 +1887,7 @@ const handleSubmit = async () => {
     formData.append("price", form.value.price);
     formData.append("stock", form.value.stock);
     formData.append("category_id", form.value.category_id);
+    formData.append("bag_category_id", form.value.bag_category_id || "");
     formData.append("weight", form.value.weight);
 
     if (form.value.length) formData.append("length", form.value.length);
@@ -1949,15 +1967,38 @@ const handleSubmit = async () => {
   }
 };
 
+// onMounted(async () => {
+//   SUPPORTED_CURRENCIES.forEach((curr) => {
+//     form.value.prices[curr] = "";
+//     form.value.discount_prices[curr] = "";
+//   });
+
+//   const res = await axios.get(`${BASE_URL}/categories`, {
+//     headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
+//   });
+//   categories.value = res.data.data;
+// });
+
 onMounted(async () => {
   SUPPORTED_CURRENCIES.forEach((curr) => {
     form.value.prices[curr] = "";
     form.value.discount_prices[curr] = "";
   });
 
-  const res = await axios.get(`${BASE_URL}/categories`, {
+  const axiosConfig = {
     headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
-  });
-  categories.value = res.data.data;
+  }; // Pastikan axiosConfig terdefinisi
+
+  try {
+    const [catRes, bagCatRes] = await Promise.all([
+      axios.get(`${BASE_URL}/categories`, axiosConfig),
+      axios.get(`${BASE_URL}/admin/bag-categories`, axiosConfig), // <-- TARIK DATA
+    ]);
+
+    categories.value = catRes.data.data;
+    bagCategories.value = bagCatRes.data.data;
+  } catch (error) {
+    console.error("Gagal menarik kategori", error);
+  }
 });
 </script>

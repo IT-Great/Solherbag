@@ -195,9 +195,24 @@
 
       <div class="space-y-8">
         <div>
-          <p class="mb-2 text-xs font-bold tracking-widest text-blue-600 uppercase">
+          <!-- <p class="mb-2 text-xs font-bold tracking-widest text-blue-600 uppercase">
             {{ product.category?.name || "Uncategorized" }}
-          </p>
+          </p> -->
+          <div class="flex items-center gap-2 mb-2">
+            <!-- Label Koleksi -->
+            <span
+              class="px-2 py-1 text-[10px] font-bold tracking-widest text-blue-700 bg-blue-100 rounded-md uppercase"
+            >
+              {{ product.category?.name || "Uncategorized" }}
+            </span>
+            <!-- 👇 LABEL TIPE TAS (BARU) 👇 -->
+            <span
+              v-if="product.bag_category"
+              class="px-2 py-1 text-[10px] font-bold tracking-widest text-gray-700 bg-gray-200 rounded-md uppercase"
+            >
+              {{ product.bag_category.name }}
+            </span>
+          </div>
           <h2 class="text-3xl font-black tracking-tight text-gray-900 uppercase">
             {{ product.name }}
           </h2>
