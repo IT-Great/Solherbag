@@ -2611,7 +2611,7 @@ onUnmounted(() => {
               v-if="selectedItemIds.length > 0"
               class="text-[10px] font-bold tracking-widest text-red-500 uppercase hover:text-red-700 transition-colors"
             >
-              {{ $d("cart.hapus_terpilih") }}
+              {{ $t("cart.hapus_terpilih") }}
             </button>
           </div>
 
