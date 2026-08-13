@@ -4196,7 +4196,7 @@ onUnmounted(() => {
           <!-- Value 1 -->
           <div class="flex flex-col items-center text-center group">
             <div
-              class="flex items-center justify-center w-20 h-20 mb-6 transition-transform duration-500 bg-gray-50 rounded-full group-hover:scale-110 group-hover:bg-black group-hover:text-white text-gray-900"
+              class="flex items-center justify-center w-20 h-20 mb-6 text-gray-900 transition-transform duration-500 rounded-full bg-gray-50 group-hover:scale-110 group-hover:bg-black group-hover:text-white"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -4225,7 +4225,7 @@ onUnmounted(() => {
           <!-- Value 2 -->
           <div class="flex flex-col items-center text-center group">
             <div
-              class="flex items-center justify-center w-20 h-20 mb-6 transition-transform duration-500 bg-gray-50 rounded-full group-hover:scale-110 group-hover:bg-black group-hover:text-white text-gray-900"
+              class="flex items-center justify-center w-20 h-20 mb-6 text-gray-900 transition-transform duration-500 rounded-full bg-gray-50 group-hover:scale-110 group-hover:bg-black group-hover:text-white"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -4254,7 +4254,7 @@ onUnmounted(() => {
           <!-- Value 3 -->
           <div class="flex flex-col items-center text-center group">
             <div
-              class="flex items-center justify-center w-20 h-20 mb-6 transition-transform duration-500 bg-gray-50 rounded-full group-hover:scale-110 group-hover:bg-black group-hover:text-white text-gray-900"
+              class="flex items-center justify-center w-20 h-20 mb-6 text-gray-900 transition-transform duration-500 rounded-full bg-gray-50 group-hover:scale-110 group-hover:bg-black group-hover:text-white"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -4283,7 +4283,7 @@ onUnmounted(() => {
           <!-- Value 4 -->
           <div class="flex flex-col items-center text-center group">
             <div
-              class="flex items-center justify-center w-20 h-20 mb-6 transition-transform duration-500 bg-gray-50 rounded-full group-hover:scale-110 group-hover:bg-black group-hover:text-white text-gray-900"
+              class="flex items-center justify-center w-20 h-20 mb-6 text-gray-900 transition-transform duration-500 rounded-full bg-gray-50 group-hover:scale-110 group-hover:bg-black group-hover:text-white"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -4314,7 +4314,7 @@ onUnmounted(() => {
     <!-- 👆 ========================================== 👆 -->
 
     <!-- CUSTOMER REVIEWS SECTION -->
-    <div
+    <!-- <div
       v-if="publicReviews.length > 0"
       class="w-full px-6 py-24 bg-[#FAFAFA] border-t border-gray-100"
     >
@@ -4341,14 +4341,12 @@ onUnmounted(() => {
           v-reveal
           class="flex gap-6 pb-8 overflow-x-auto snap-x snap-mandatory scrollbar-hide"
         >
-          <!-- Review Card -->
           <div
             v-for="review in publicReviews"
             :key="'rev-' + review.id"
             class="flex-shrink-0 w-[300px] md:w-[380px] p-8 bg-white border border-gray-100 shadow-sm snap-center rounded-xl flex flex-col justify-between"
           >
             <div>
-              <!-- Bintang -->
               <div class="flex items-center gap-1 mb-4 text-yellow-400">
                 <svg
                   v-for="i in 5"
@@ -4365,14 +4363,12 @@ onUnmounted(() => {
                 </svg>
               </div>
 
-              <!-- Komentar -->
               <p
                 class="mb-6 text-sm italic font-light leading-relaxed text-gray-700 line-clamp-4"
               >
                 "{{ review.comment }}"
               </p>
 
-              <!-- Bukti Foto (Opsional) -->
               <div
                 v-if="review.images && review.images.length > 0"
                 class="flex gap-2 mb-6"
@@ -4387,7 +4383,6 @@ onUnmounted(() => {
               </div>
             </div>
 
-            <!-- Identitas User & Produk -->
             <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
               <div
                 class="flex items-center justify-center w-10 h-10 font-serif text-lg font-bold text-gray-800 bg-gray-100 rounded-full"
@@ -4412,6 +4407,140 @@ onUnmounted(() => {
                 </p>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <!-- 👆 ========================================== 👆 -->
+
+    <!-- 👇 [BARU] WHY CHOOSE US / VALUE PROPOSITION SECTION 👇 -->
+    <div class="w-full py-24 bg-white border-t border-gray-100">
+      <div class="px-6 mx-auto max-w-[1600px]">
+        <div v-reveal class="mb-16 text-center">
+          <h3
+            class="mb-4 font-serif text-3xl italic font-light text-gray-900 md:text-4xl"
+          >
+            {{ $t("home.difference_title") }}
+          </h3>
+          <p class="text-xs font-bold tracking-widest text-gray-500 uppercase">
+            {{ $t("home.difference_subtitle") }}
+          </p>
+        </div>
+
+        <div
+          v-reveal
+          class="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4 md:gap-8"
+        >
+          <!-- Value 1 -->
+          <div class="flex flex-col items-center text-center group">
+            <div
+              class="flex items-center justify-center w-20 h-20 mb-6 transition-transform duration-500 bg-gray-50 rounded-full group-hover:scale-110 group-hover:bg-black group-hover:text-white text-gray-900"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-8 h-8"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M14.121 14.121L19 19m-7-7l7-7m-7 7l-2.879 2.879M12 12L9.121 9.121m0 5.758a3 3 0 10-4.243 4.243 3 3 0 004.243-4.243zm0-5.758a3 3 0 10-4.243-4.243 3 3 0 004.243 4.243z"
+                />
+              </svg>
+            </div>
+            <h4 class="mb-3 text-sm font-bold tracking-widest text-gray-900 uppercase">
+              {{ $t("home.value_1_title") }}
+            </h4>
+            <p class="text-sm font-light leading-relaxed text-gray-600">
+              {{ $t("home.value_1_desc") }}
+            </p>
+          </div>
+
+          <!-- Value 2 -->
+          <div class="flex flex-col items-center text-center group">
+            <div
+              class="flex items-center justify-center w-20 h-20 mb-6 transition-transform duration-500 bg-gray-50 rounded-full group-hover:scale-110 group-hover:bg-black group-hover:text-white text-gray-900"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-8 h-8"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
+                />
+              </svg>
+            </div>
+            <h4 class="mb-3 text-sm font-bold tracking-widest text-gray-900 uppercase">
+              {{ $t("home.value_2_title") }}
+            </h4>
+            <p class="text-sm font-light leading-relaxed text-gray-600">
+              {{ $t("home.value_2_desc") }}
+            </p>
+          </div>
+
+          <!-- Value 3 -->
+          <div class="flex flex-col items-center text-center group">
+            <div
+              class="flex items-center justify-center w-20 h-20 mb-6 transition-transform duration-500 bg-gray-50 rounded-full group-hover:scale-110 group-hover:bg-black group-hover:text-white text-gray-900"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-8 h-8"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <h4 class="mb-3 text-sm font-bold tracking-widest text-gray-900 uppercase">
+              {{ $t("home.value_3_title") }}
+            </h4>
+            <p class="text-sm font-light leading-relaxed text-gray-600">
+              {{ $t("home.value_3_desc") }}
+            </p>
+          </div>
+
+          <!-- Value 4 -->
+          <div class="flex flex-col items-center text-center group">
+            <div
+              class="flex items-center justify-center w-20 h-20 mb-6 transition-transform duration-500 bg-gray-50 rounded-full group-hover:scale-110 group-hover:bg-black group-hover:text-white text-gray-900"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-8 h-8"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
+                />
+              </svg>
+            </div>
+            <h4 class="mb-3 text-sm font-bold tracking-widest text-gray-900 uppercase">
+              {{ $t("home.value_4_title") }}
+            </h4>
+            <p class="text-sm font-light leading-relaxed text-gray-600">
+              {{ $t("home.value_4_desc") }}
+            </p>
           </div>
         </div>
       </div>
