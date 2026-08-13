@@ -2865,38 +2865,54 @@ onUnmounted(() => {
             {{ $t("cart.order_summary") }}
           </h2>
 
-          <!-- 👇 [CRO 3] GOAL GRADIENT EFFECT (Simulasi Free Shipping) 👇 -->
+          <!-- 👇 [CRO 3] LOYALTY REWARDS ESTIMATION (Solher Club) 👇 -->
           <div
-            class="p-4 mb-6 bg-blue-50 border border-blue-100 rounded-2xl relative overflow-hidden"
+            v-if="checkoutTotalAmount > 0"
+            class="p-5 mb-8 bg-gradient-to-br from-gray-900 to-black border border-gray-800 rounded-2xl relative overflow-hidden text-white shadow-xl group"
           >
+            <!-- Animasi Shimmer -->
             <div
-              class="absolute right-0 top-0 w-24 h-24 bg-blue-200 rounded-full blur-3xl opacity-50 mix-blend-multiply"
+              class="absolute inset-0 w-[200%] h-full bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-[shimmer_3s_infinite]"
             ></div>
-            <div class="relative z-10">
+
+            <!-- Ornamen Blur Emas -->
+            <div
+              class="absolute -right-4 -top-4 w-24 h-24 bg-yellow-500 rounded-full blur-3xl opacity-20 group-hover:opacity-30 transition-opacity duration-500"
+            ></div>
+
+            <div class="relative z-10 flex items-center gap-4">
+              <!-- Ikon Bintang Solher Club -->
               <div
-                class="flex justify-between mb-2 text-[10px] font-black tracking-widest text-blue-900 uppercase"
+                class="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-yellow-300 to-yellow-600 rounded-full shadow-inner shrink-0 text-black border border-yellow-200"
               >
-                <span>{{
-                  freeShippingPercentage >= 100
-                    ? "🎉 Free Shipping Unlocked!"
-                    : `Add ${formatCurrencyDisplay({
-                        value: freeShippingRemaining,
-                        curr: currentCurrency,
-                      })} to get Free Shipping`
-                }}</span>
-              </div>
-              <div class="w-full h-2 bg-blue-200/50 rounded-full overflow-hidden">
-                <div
-                  class="h-full bg-blue-600 rounded-full transition-all duration-1000 ease-out relative"
-                  :style="{ width: Math.min(freeShippingPercentage, 100) + '%' }"
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-6 h-6"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
                 >
-                  <div
-                    class="absolute inset-0 bg-white/30 w-full animate-[shimmer_2s_infinite]"
-                  ></div>
-                </div>
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  />
+                </svg>
+              </div>
+
+              <div>
+                <h3
+                  class="text-[10px] font-black tracking-widest uppercase text-yellow-500 mb-0.5"
+                >
+                  Solher Club Reward
+                </h3>
+                <p class="text-xs font-medium text-gray-300 leading-snug">
+                  Selesaikan pesanan ini untuk mendapatkan estimasi
+                  <strong class="text-white text-sm tracking-wide"
+                    >+{{ estimatedPoints }} Poin</strong
+                  >!
+                </p>
               </div>
             </div>
           </div>
+          <!-- 👆 AKHIR CRO 3 👆 -->
 
           <div class="mb-8 space-y-4">
             <div class="flex justify-between text-sm text-gray-600 font-medium">
@@ -3001,6 +3017,11 @@ onUnmounted(() => {
                 class="absolute inset-0 w-[200%] h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_2s_infinite]"
               ></div>
             </button>
+            <p
+              class="text-center text-[9px] font-medium text-gray-400 mt-3 hidden lg:block"
+            >
+              Harga dan ketersediaan stok dapat berubah sewaktu-waktu.
+            </p>
           </div>
 
           <!-- Trust Badges -->
@@ -3168,20 +3189,20 @@ const totalSavings = computed(() => {
       }
     }
   });
-  // Total hemat = diskon per produk + diskon bundle
   return discountSavings + bundleDiscountAmount.value;
 });
 
-// 👇 [CRO LOGIC 2] GOAL GRADIENT (Target Bebas Ongkir Simulasi) 👇
-const freeShippingThreshold = computed(() =>
-  currentCurrency.value === "IDR" ? 1000000 : 100
-);
-const freeShippingRemaining = computed(() =>
-  Math.max(freeShippingThreshold.value - checkoutTotalAmount.value, 0)
-);
-const freeShippingPercentage = computed(() => {
+// 👇 [CRO LOGIC 2] ESTIMASI POIN LOYALTY (GAMIFIKASI) 👇
+const estimatedPoints = computed(() => {
   if (checkoutTotalAmount.value === 0) return 0;
-  return Math.min((checkoutTotalAmount.value / freeShippingThreshold.value) * 100, 100);
+
+  // Jika IDR, misal setiap kelipatan Rp 10.000 dapat 1 Poin (Atur sesuai kebijakan Anda)
+  if (currentCurrency.value === "IDR") {
+    return Math.floor(checkoutTotalAmount.value / 10000);
+  }
+
+  // Jika USD/EUR, misal setiap $1 dapat 1 Poin
+  return Math.floor(checkoutTotalAmount.value);
 });
 
 // 👇 [CRO LOGIC 3] URGENCY SCARCITY 👇
