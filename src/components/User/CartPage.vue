@@ -2784,7 +2784,7 @@ onUnmounted(() => {
         <div class="pt-12 mt-12 border-t border-gray-200">
           <div class="flex items-center justify-between mb-8">
             <h3 class="text-sm font-black tracking-widest text-gray-900 uppercase">
-              {{ $d("cart.complete_your_style") }}
+              {{ $t("cart.complete_your_style") }}
             </h3>
           </div>
 
