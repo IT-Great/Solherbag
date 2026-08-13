@@ -2269,27 +2269,42 @@ const fillFormWithData = (p) => {
 //     }
 //   }
 // });
-
 onMounted(async () => {
+  // 1. Inisialisasi kerangka harga multi-currency
   SUPPORTED_CURRENCIES.forEach((curr) => {
     form.value.prices[curr] = "";
     form.value.discount_prices[curr] = "";
   });
 
+  // 2. Pemuatan instan (Optimistic Load) jika data dikirim dari halaman sebelumnya
+  const stateData = window.history.state?.productData;
+  if (stateData) {
+    fillFormWithData(stateData);
+  }
+
   const axiosConfig = {
     headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
-  }; // Pastikan axiosConfig terdefinisi
+  };
 
   try {
-    const [catRes, bagCatRes] = await Promise.all([
+    // 3. Tarik SEMUA data secara bersamaan (Kategori Koleksi, Tipe Tas, dan Detail Produk)
+    const [catRes, bagCatRes, prodRes] = await Promise.all([
       axios.get(`${BASE_URL}/categories`, axiosConfig),
-      axios.get(`${BASE_URL}/admin/bag-categories`, axiosConfig), // <-- TARIK DATA
+      axios.get(`${BASE_URL}/admin/bag-categories`, axiosConfig),
+      axios.get(`${BASE_URL}/products/${productId}`, axiosConfig),
     ]);
 
+    // 4. Simpan daftar kategori untuk dropdown
     categories.value = catRes.data.data;
     bagCategories.value = bagCatRes.data.data;
+
+    // 5. Isi form dengan data produk paling segar dari Database
+    fillFormWithData(prodRes.data);
   } catch (error) {
-    console.error("Gagal menarik kategori", error);
+    console.error("Gagal menarik data:", error);
+    if (!stateData) {
+      Swal.fire("Error", "Gagal mengambil data produk atau kategori.", "error");
+    }
   }
 });
 
