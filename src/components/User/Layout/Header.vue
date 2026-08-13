@@ -2973,11 +2973,11 @@ const isMegaMenuLoading = ref(false);
 
 // Filter Kategorisasi
 const normalCategories = computed(() => {
-  return categories.value.filter((c) => c.category_code !== "C005");
+  return categories.value.filter((c) => c.code !== "C005");
 });
 
 const accessoriesCategory = computed(() => {
-  return categories.value.find((c) => c.category_code === "C005");
+  return categories.value.find((c) => c.code === "C005");
 });
 
 // Pilih satu produk acak untuk gambar kanan
