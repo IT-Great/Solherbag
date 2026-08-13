@@ -287,7 +287,11 @@
     "estimated_total": "Estimated Total",
     "tax_and_shipping": "Tax and shipping calculated at checkout.",
     "checkout": "Checkout",
-    "processing": "Processing..."
+    "processing": "Processing...",
+    "finish_your_order" : "Complete this order to get",
+    "point" : "Point estimations",
+    "hapus_terpilih" : "Remove the selected items",
+    "complete_your_style" : "Complete Your Style"
   },
   "chat": {
     "chat_page_title": "Customer Support",

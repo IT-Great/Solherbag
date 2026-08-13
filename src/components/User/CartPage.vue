@@ -2611,7 +2611,7 @@ onUnmounted(() => {
               v-if="selectedItemIds.length > 0"
               class="text-[10px] font-bold tracking-widest text-red-500 uppercase hover:text-red-700 transition-colors"
             >
-              Hapus Terpilih
+              {{ $d("cart.hapus_terpilih") }}
             </button>
           </div>
 
@@ -2784,7 +2784,7 @@ onUnmounted(() => {
         <div class="pt-12 mt-12 border-t border-gray-200">
           <div class="flex items-center justify-between mb-8">
             <h3 class="text-sm font-black tracking-widest text-gray-900 uppercase">
-              Lengkapi Gaya Anda
+              {{ $d("cart.complete_your_style") }}
             </h3>
           </div>
 
@@ -2904,9 +2904,9 @@ onUnmounted(() => {
                   Solher Club Reward
                 </h3>
                 <p class="text-xs font-medium text-gray-300 leading-snug">
-                  Selesaikan pesanan ini untuk mendapatkan estimasi
+                  {{ $t("cart.finish_your_order") }}
                   <strong class="text-white text-sm tracking-wide"
-                    >+{{ estimatedPoints }} Poin</strong
+                    >+{{ estimatedPoints }} {{ $t("cart.point") }}</strong
                   >!
                 </p>
               </div>
@@ -3287,11 +3287,11 @@ const extractColorHex = (colorName) => {
 
 const deleteSelectedItems = () => {
   Swal.fire({
-    title: "Hapus item terpilih?",
+    title: "Delete the selected items?",
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#000",
-    confirmButtonText: "Ya, Hapus",
+    confirmButtonText: "Yes, Delete",
   }).then((result) => {
     if (result.isConfirmed) {
       selectedItemIds.value.forEach((id) => handleOptimisticDelete(id));

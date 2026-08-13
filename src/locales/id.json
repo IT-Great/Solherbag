@@ -286,7 +286,11 @@
     "estimated_total": "Estimasi Total",
     "tax_and_shipping": "Pajak dan ongkos kirim dihitung saat checkout.",
     "checkout": "Checkout",
-    "processing": "Memproses..."
+    "processing": "Memproses...",
+    "finish_your_order" : "Selesaikan pesanan ini untuk mendapatkan estimasi",
+    "point" : "Point",
+    "hapus_terpilih" : "Hapus Terpilih",
+    "complete_your_style" : "Lengkapi Gaya Anda"
   },
   "chat": {
     "chat_page_title": "Customer Support",
