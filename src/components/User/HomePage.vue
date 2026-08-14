@@ -4176,7 +4176,7 @@ onUnmounted(() => {
     </div>
 
     <!-- 👇 [BARU] WHY CHOOSE US / VALUE PROPOSITION SECTION 👇 -->
-    <div class="w-full py-24 bg-white border-t border-gray-100">
+    <!-- <div class="w-full py-24 bg-white border-t border-gray-100">
       <div class="px-6 mx-auto max-w-[1600px]">
         <div v-reveal class="mb-16 text-center">
           <h3
@@ -4193,7 +4193,6 @@ onUnmounted(() => {
           v-reveal
           class="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4 md:gap-8"
         >
-          <!-- Value 1 -->
           <div class="flex flex-col items-center text-center group">
             <div
               class="flex items-center justify-center w-20 h-20 mb-6 text-gray-900 transition-transform duration-500 rounded-full bg-gray-50 group-hover:scale-110 group-hover:bg-black group-hover:text-white"
@@ -4221,8 +4220,6 @@ onUnmounted(() => {
               memastikan detail yang sempurna pada setiap lekukan.
             </p>
           </div>
-
-          <!-- Value 2 -->
           <div class="flex flex-col items-center text-center group">
             <div
               class="flex items-center justify-center w-20 h-20 mb-6 text-gray-900 transition-transform duration-500 rounded-full bg-gray-50 group-hover:scale-110 group-hover:bg-black group-hover:text-white"
@@ -4251,7 +4248,6 @@ onUnmounted(() => {
             </p>
           </div>
 
-          <!-- Value 3 -->
           <div class="flex flex-col items-center text-center group">
             <div
               class="flex items-center justify-center w-20 h-20 mb-6 text-gray-900 transition-transform duration-500 rounded-full bg-gray-50 group-hover:scale-110 group-hover:bg-black group-hover:text-white"
@@ -4280,7 +4276,6 @@ onUnmounted(() => {
             </p>
           </div>
 
-          <!-- Value 4 -->
           <div class="flex flex-col items-center text-center group">
             <div
               class="flex items-center justify-center w-20 h-20 mb-6 text-gray-900 transition-transform duration-500 rounded-full bg-gray-50 group-hover:scale-110 group-hover:bg-black group-hover:text-white"
@@ -4310,7 +4305,7 @@ onUnmounted(() => {
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- 👆 ========================================== 👆 -->
 
     <!-- CUSTOMER REVIEWS SECTION -->
@@ -4434,7 +4429,7 @@ onUnmounted(() => {
           <!-- Value 1 -->
           <div class="flex flex-col items-center text-center group">
             <div
-              class="flex items-center justify-center w-20 h-20 mb-6 transition-transform duration-500 bg-gray-50 rounded-full group-hover:scale-110 group-hover:bg-black group-hover:text-white text-gray-900"
+              class="flex items-center justify-center w-20 h-20 mb-6 text-gray-900 transition-transform duration-500 rounded-full bg-gray-50 group-hover:scale-110 group-hover:bg-black group-hover:text-white"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -4462,7 +4457,7 @@ onUnmounted(() => {
           <!-- Value 2 -->
           <div class="flex flex-col items-center text-center group">
             <div
-              class="flex items-center justify-center w-20 h-20 mb-6 transition-transform duration-500 bg-gray-50 rounded-full group-hover:scale-110 group-hover:bg-black group-hover:text-white text-gray-900"
+              class="flex items-center justify-center w-20 h-20 mb-6 text-gray-900 transition-transform duration-500 rounded-full bg-gray-50 group-hover:scale-110 group-hover:bg-black group-hover:text-white"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -4490,7 +4485,7 @@ onUnmounted(() => {
           <!-- Value 3 -->
           <div class="flex flex-col items-center text-center group">
             <div
-              class="flex items-center justify-center w-20 h-20 mb-6 transition-transform duration-500 bg-gray-50 rounded-full group-hover:scale-110 group-hover:bg-black group-hover:text-white text-gray-900"
+              class="flex items-center justify-center w-20 h-20 mb-6 text-gray-900 transition-transform duration-500 rounded-full bg-gray-50 group-hover:scale-110 group-hover:bg-black group-hover:text-white"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -4518,7 +4513,7 @@ onUnmounted(() => {
           <!-- Value 4 -->
           <div class="flex flex-col items-center text-center group">
             <div
-              class="flex items-center justify-center w-20 h-20 mb-6 transition-transform duration-500 bg-gray-50 rounded-full group-hover:scale-110 group-hover:bg-black group-hover:text-white text-gray-900"
+              class="flex items-center justify-center w-20 h-20 mb-6 text-gray-900 transition-transform duration-500 rounded-full bg-gray-50 group-hover:scale-110 group-hover:bg-black group-hover:text-white"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
