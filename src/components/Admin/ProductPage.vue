@@ -1468,32 +1468,32 @@ onMounted(() => {
 }
 </style> -->
 
-<template>
+<!-- <template>
   <div
     class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[500px] animate-fade-in"
   >
     <Breadcrumb />
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-10">
-      <div class="p-6 bg-gray-50 rounded-2xl border border-gray-100">
-        <p class="text-xs text-gray-500 font-bold uppercase tracking-widest mb-1">
+    <div class="grid grid-cols-1 gap-6 mb-10 sm:grid-cols-2 md:grid-cols-4">
+      <div class="p-6 border border-gray-100 bg-gray-50 rounded-2xl">
+        <p class="mb-1 text-xs font-bold tracking-widest text-gray-500 uppercase">
           Total Products
         </p>
         <p class="text-4xl font-black text-black">{{ products.length }}</p>
       </div>
-      <div class="p-6 bg-blue-50/50 rounded-2xl border border-blue-100">
-        <p class="text-xs text-blue-500 font-bold uppercase tracking-widest mb-1">
+      <div class="p-6 border border-blue-100 bg-blue-50/50 rounded-2xl">
+        <p class="mb-1 text-xs font-bold tracking-widest text-blue-500 uppercase">
           Healthy Stock
         </p>
         <p class="text-4xl font-black text-blue-600">{{ healthyStockCount }}</p>
       </div>
-      <div class="p-6 bg-red-50/50 rounded-2xl border border-red-100">
-        <p class="text-xs text-red-600 font-bold uppercase tracking-widest mb-1">
+      <div class="p-6 border border-red-100 bg-red-50/50 rounded-2xl">
+        <p class="mb-1 text-xs font-bold tracking-widest text-red-600 uppercase">
           Low Stock (under 5)
         </p>
         <p class="text-4xl font-black text-red-700">{{ lowStockCount }}</p>
       </div>
-      <div class="p-6 bg-purple-50/50 rounded-2xl border border-purple-100">
-        <p class="text-xs text-purple-600 font-bold uppercase tracking-widest mb-1">
+      <div class="p-6 border border-purple-100 bg-purple-50/50 rounded-2xl">
+        <p class="mb-1 text-xs font-bold tracking-widest text-purple-600 uppercase">
           On Discount
         </p>
         <p class="text-4xl font-black text-purple-700">{{ discountedProductsCount }}</p>
@@ -1501,13 +1501,13 @@ onMounted(() => {
     </div>
 
     <div
-      class="flex md:flex-row flex-col justify-between items-start md:items-center gap-4 mb-8"
+      class="flex flex-col items-start justify-between gap-4 mb-8 md:flex-row md:items-center"
     >
-      <h1 class="font-bold text-gray-800 text-2xl">Products</h1>
+      <h1 class="text-2xl font-bold text-gray-800">Products</h1>
 
-      <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+      <div class="flex flex-wrap items-center w-full gap-3 md:w-auto">
         <div class="relative flex-grow md:flex-grow-0">
-          <span class="left-0 absolute inset-y-0 flex items-center pl-3 text-gray-400">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="w-5 h-5"
@@ -1527,17 +1527,17 @@ onMounted(() => {
             v-model="searchQuery"
             type="text"
             placeholder="Search product name..."
-            class="bg-gray-50 py-2 pr-4 pl-10 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-black w-full md:w-64 text-sm transition"
+            class="w-full py-2 pl-10 pr-4 text-sm transition border border-gray-200 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-black md:w-64"
           />
         </div>
 
         <div
           class="flex items-center bg-gray-50 px-3 border border-gray-200 rounded-xl h-[42px]"
         >
-          <span class="mr-2 text-gray-400 text-xs">Show:</span>
+          <span class="mr-2 text-xs text-gray-400">Show:</span>
           <select
             v-model="itemsPerPage"
-            class="bg-transparent outline-none font-bold text-gray-700 text-sm cursor-pointer"
+            class="text-sm font-bold text-gray-700 bg-transparent outline-none cursor-pointer"
           >
             <option :value="1">1</option>
             <option :value="5">5</option>
@@ -1562,8 +1562,6 @@ onMounted(() => {
         >
           Inactive Archive
         </router-link>
-
-        <!-- [PERBAIKAN] Tampilkan tombol ADD hanya jika punya akses Create atau dia adalah SuperAdmin -->
         <router-link
           v-if="canCreate || isSuperAdmin"
           to="/admin/products/add"
@@ -1576,7 +1574,7 @@ onMounted(() => {
     <div class="overflow-x-auto">
       <table class="w-full text-left">
         <thead>
-          <tr class="border-b text-gray-400 text-xs uppercase tracking-widest">
+          <tr class="text-xs tracking-widest text-gray-400 uppercase border-b">
             <th class="pb-4">Image</th>
             <th class="pb-4">Code</th>
             <th class="pb-4">Name</th>
@@ -1591,15 +1589,15 @@ onMounted(() => {
           <tr
             v-for="i in 5"
             :key="`skeleton-${i}`"
-            class="animate-pulse border-b border-gray-50"
+            class="border-b animate-pulse border-gray-50"
           >
-            <td class="py-4"><div class="h-16 w-16 bg-gray-200 rounded-lg"></div></td>
-            <td class="py-4"><div class="h-4 bg-gray-200 rounded w-12"></div></td>
-            <td class="py-4"><div class="h-4 bg-gray-200 rounded w-32"></div></td>
-            <td class="py-4"><div class="h-5 bg-gray-200 rounded-full w-20"></div></td>
-            <td class="py-4"><div class="h-4 bg-gray-200 rounded w-24"></div></td>
-            <td class="py-4"><div class="h-4 bg-gray-200 rounded w-10"></div></td>
-            <td class="py-4"><div class="h-4 bg-gray-200 rounded w-32 mx-auto"></div></td>
+            <td class="py-4"><div class="w-16 h-16 bg-gray-200 rounded-lg"></div></td>
+            <td class="py-4"><div class="w-12 h-4 bg-gray-200 rounded"></div></td>
+            <td class="py-4"><div class="w-32 h-4 bg-gray-200 rounded"></div></td>
+            <td class="py-4"><div class="w-20 h-5 bg-gray-200 rounded-full"></div></td>
+            <td class="py-4"><div class="w-24 h-4 bg-gray-200 rounded"></div></td>
+            <td class="py-4"><div class="w-10 h-4 bg-gray-200 rounded"></div></td>
+            <td class="py-4"><div class="w-32 h-4 mx-auto bg-gray-200 rounded"></div></td>
           </tr>
         </tbody>
 
@@ -1607,24 +1605,17 @@ onMounted(() => {
           <tr
             v-for="p in paginatedProducts"
             :key="p.id"
-            class="hover:bg-gray-50 border-gray-50 border-b transition"
+            class="transition border-b hover:bg-gray-50 border-gray-50"
           >
             <td class="py-4">
               <img
                 :src="p.image || defaultBagIcon"
-                class="shadow-sm rounded-lg w-16 h-16 object-cover"
+                class="object-cover w-16 h-16 rounded-lg shadow-sm"
                 alt="Product Image"
               />
             </td>
             <td class="py-4 font-mono text-sm">{{ p.code }}</td>
             <td class="py-4 font-bold text-gray-800">{{ p.name }}</td>
-            <!-- <td class="py-4">
-              <span
-                class="bg-blue-50 px-3 py-1 rounded-full font-medium text-blue-600 text-xs"
-              >
-                {{ p.category?.name }}
-              </span>
-            </td> -->
             <td class="py-4">
               <div class="flex flex-col items-start gap-1">
                 <span
@@ -1633,7 +1624,6 @@ onMounted(() => {
                   {{ p.category?.name || "No Collection" }}
                 </span>
 
-                <!-- 👇 TAMPILKAN TIPE TAS 👇 -->
                 <span
                   v-if="p.bag_category"
                   class="text-[9px] text-gray-400 font-bold uppercase tracking-widest border border-gray-200 px-1.5 py-0.5 rounded"
@@ -1645,7 +1635,7 @@ onMounted(() => {
             <td class="py-4 font-bold">
               <div v-if="p.discount_price">
                 <span class="text-red-500">{{ formatPrice(p.discount_price) }}</span>
-                <span class="block text-gray-400 text-xs line-through">{{
+                <span class="block text-xs text-gray-400 line-through">{{
                   formatPrice(p.price)
                 }}</span>
               </div>
@@ -1671,8 +1661,6 @@ onMounted(() => {
               >
                 View
               </router-link>
-
-              <!-- [PERBAIKAN] Tampilkan tombol EDIT hanya jika punya akses Update atau SuperAdmin -->
               <button
                 v-if="canUpdate || isSuperAdmin"
                 @click="goToEdit(p)"
@@ -1680,8 +1668,6 @@ onMounted(() => {
               >
                 Edit
               </button>
-
-              <!-- [PERBAIKAN] Tampilkan tombol DELETE hanya jika punya akses Delete atau SuperAdmin -->
               <button
                 v-if="canDelete || isSuperAdmin"
                 @click="confirmDelete(p.id)"
@@ -1693,7 +1679,7 @@ onMounted(() => {
           </tr>
 
           <tr v-if="filteredProducts.length === 0">
-            <td colspan="7" class="py-12 text-center text-gray-400 italic">
+            <td colspan="7" class="py-12 italic text-center text-gray-400">
               No products found matching your criteria.
             </td>
           </tr>
@@ -1703,9 +1689,9 @@ onMounted(() => {
 
     <div
       v-if="!isLoading && filteredProducts.length > 0"
-      class="flex justify-between items-center mt-8 pt-6 border-gray-50 border-t"
+      class="flex items-center justify-between pt-6 mt-8 border-t border-gray-50"
     >
-      <p class="text-gray-400 text-sm">
+      <p class="text-sm text-gray-400">
         Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to
         {{ Math.min(currentPage * itemsPerPage, filteredProducts.length) }}
         of {{ filteredProducts.length }} products
@@ -1715,7 +1701,7 @@ onMounted(() => {
         <button
           @click="currentPage--"
           :disabled="currentPage === 1"
-          class="hover:bg-gray-50 disabled:opacity-30 px-4 py-2 border rounded-xl transition disabled:cursor-not-allowed text-sm font-medium"
+          class="px-4 py-2 text-sm font-medium transition border hover:bg-gray-50 disabled:opacity-30 rounded-xl disabled:cursor-not-allowed"
         >
           Previous
         </button>
@@ -1731,7 +1717,7 @@ onMounted(() => {
               ? 'cursor-default border-transparent hover:bg-transparent'
               : 'border',
           ]"
-          class="rounded-xl w-10 h-10 font-medium transition"
+          class="w-10 h-10 font-medium transition rounded-xl"
         >
           {{ page }}
         </button>
@@ -1739,7 +1725,7 @@ onMounted(() => {
         <button
           @click="currentPage++"
           :disabled="currentPage === totalPages"
-          class="hover:bg-gray-50 disabled:opacity-30 px-4 py-2 border rounded-xl transition disabled:cursor-not-allowed text-sm font-medium"
+          class="px-4 py-2 text-sm font-medium transition border hover:bg-gray-50 disabled:opacity-30 rounded-xl disabled:cursor-not-allowed"
         >
           Next
         </button>
@@ -1909,6 +1895,473 @@ watch([selectedCategory, searchQuery, itemsPerPage], () => {
 
 onMounted(() => {
   // Panggil fetchUserPermissions dulu agar UI tombol bisa segera bersiap
+  fetchUserPermissions().then(() => {
+    fetchData();
+  });
+});
+</script>
+
+<style scoped>
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style> -->
+
+<template>
+  <div
+    class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[500px] animate-fade-in"
+  >
+    <Breadcrumb />
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-10">
+      <div class="p-6 bg-gray-50 rounded-2xl border border-gray-100">
+        <p class="text-xs text-gray-500 font-bold uppercase tracking-widest mb-1">
+          Total Products
+        </p>
+        <p class="text-4xl font-black text-black">{{ products.length }}</p>
+      </div>
+      <div class="p-6 bg-blue-50/50 rounded-2xl border border-blue-100">
+        <p class="text-xs text-blue-500 font-bold uppercase tracking-widest mb-1">
+          Healthy Stock
+        </p>
+        <p class="text-4xl font-black text-blue-600">{{ healthyStockCount }}</p>
+      </div>
+      <div class="p-6 bg-red-50/50 rounded-2xl border border-red-100">
+        <p class="text-xs text-red-600 font-bold uppercase tracking-widest mb-1">
+          Low Stock (under 5)
+        </p>
+        <p class="text-4xl font-black text-red-700">{{ lowStockCount }}</p>
+      </div>
+      <!-- 👇 [PERBAIKAN] Tampilkan juga statistik Final Sale 👇 -->
+      <div class="p-6 bg-purple-50/50 rounded-2xl border border-purple-100">
+        <p class="text-xs text-purple-600 font-bold uppercase tracking-widest mb-1">
+          Sale / Final Sale
+        </p>
+        <p class="text-4xl font-black text-purple-700">
+          {{ discountedProductsCount }}
+          <span class="text-sm font-bold text-purple-400">/ {{ finalSaleCount }}</span>
+        </p>
+      </div>
+    </div>
+
+    <div
+      class="flex md:flex-row flex-col justify-between items-start md:items-center gap-4 mb-8"
+    >
+      <h1 class="font-bold text-gray-800 text-2xl">Products</h1>
+
+      <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+        <div class="relative flex-grow md:flex-grow-0">
+          <span class="left-0 absolute inset-y-0 flex items-center pl-3 text-gray-400">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </span>
+          <input
+            v-model="searchQuery"
+            type="text"
+            placeholder="Search product name..."
+            class="bg-gray-50 py-2 pr-4 pl-10 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-black w-full md:w-64 text-sm transition"
+          />
+        </div>
+
+        <div
+          class="flex items-center bg-gray-50 px-3 border border-gray-200 rounded-xl h-[42px]"
+        >
+          <span class="mr-2 text-gray-400 text-xs">Show:</span>
+          <select
+            v-model="itemsPerPage"
+            class="bg-transparent outline-none font-bold text-gray-700 text-sm cursor-pointer"
+          >
+            <option :value="1">1</option>
+            <option :value="5">5</option>
+            <option :value="10">10</option>
+            <option :value="20">20</option>
+          </select>
+        </div>
+
+        <select
+          v-model="selectedCategory"
+          class="bg-gray-50 px-4 py-2 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-black h-[42px] text-gray-700 text-sm transition cursor-pointer"
+        >
+          <option value="">All Categories</option>
+          <option v-for="cat in categories" :key="cat.id" :value="cat.category_name">
+            {{ cat.category_name }}
+          </option>
+        </select>
+
+        <router-link
+          to="/admin/products/inactive"
+          class="flex items-center hover:bg-gray-50 px-6 py-2 border border-black rounded-xl h-[42px] font-bold text-black transition"
+        >
+          Inactive Archive
+        </router-link>
+
+        <router-link
+          v-if="canCreate || isSuperAdmin"
+          to="/admin/products/add"
+          class="flex items-center bg-black hover:bg-gray-800 px-6 py-2 rounded-xl h-[42px] font-bold text-white whitespace-nowrap transition"
+          >+ New Product</router-link
+        >
+      </div>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left">
+        <thead>
+          <tr class="border-b text-gray-400 text-xs uppercase tracking-widest">
+            <th class="pb-4">Image</th>
+            <th class="pb-4">Code</th>
+            <th class="pb-4">Name</th>
+            <th class="pb-4">Category</th>
+            <th class="pb-4">Price</th>
+            <th class="pb-4">Stock</th>
+            <th class="pb-4 text-center">Actions</th>
+          </tr>
+        </thead>
+
+        <tbody v-if="isLoading" class="text-gray-600">
+          <tr
+            v-for="i in 5"
+            :key="`skeleton-${i}`"
+            class="animate-pulse border-b border-gray-50"
+          >
+            <td class="py-4"><div class="h-16 w-16 bg-gray-200 rounded-lg"></div></td>
+            <td class="py-4"><div class="h-4 bg-gray-200 rounded w-12"></div></td>
+            <td class="py-4"><div class="h-4 bg-gray-200 rounded w-32"></div></td>
+            <td class="py-4"><div class="h-5 bg-gray-200 rounded-full w-20"></div></td>
+            <td class="py-4"><div class="h-4 bg-gray-200 rounded w-24"></div></td>
+            <td class="py-4"><div class="h-4 bg-gray-200 rounded w-10"></div></td>
+            <td class="py-4"><div class="h-4 bg-gray-200 rounded w-32 mx-auto"></div></td>
+          </tr>
+        </tbody>
+
+        <tbody v-else class="text-gray-600">
+          <tr
+            v-for="p in paginatedProducts"
+            :key="p.id"
+            class="hover:bg-gray-50 border-gray-50 border-b transition"
+          >
+            <td class="py-4">
+              <img
+                :src="p.image || defaultBagIcon"
+                class="shadow-sm rounded-lg w-16 h-16 object-cover"
+                alt="Product Image"
+              />
+            </td>
+            <td class="py-4 font-mono text-sm">{{ p.code }}</td>
+            <td class="py-4 font-bold text-gray-800">
+              <div class="flex items-center gap-2">
+                {{ p.name }}
+                <!-- 👇 [PERBAIKAN] Lencana Final Sale 👇 -->
+                <span
+                  v-if="p.is_final_sale"
+                  class="bg-red-700 text-white px-1.5 py-0.5 rounded text-[8px] font-black tracking-widest uppercase shadow-sm whitespace-nowrap"
+                  title="This product is non-refundable"
+                >
+                  Final Sale
+                </span>
+                <!-- 👆 ======================= 👆 -->
+              </div>
+            </td>
+            <td class="py-4">
+              <div class="flex flex-col items-start gap-1">
+                <span
+                  class="bg-blue-50 px-2 py-0.5 rounded text-blue-600 text-[10px] font-bold uppercase tracking-widest"
+                >
+                  {{ p.category?.name || "No Collection" }}
+                </span>
+
+                <span
+                  v-if="p.bag_category"
+                  class="text-[9px] text-gray-400 font-bold uppercase tracking-widest border border-gray-200 px-1.5 py-0.5 rounded"
+                >
+                  {{ p.bag_category.name }}
+                </span>
+              </div>
+            </td>
+            <td class="py-4 font-bold">
+              <div v-if="p.discount_price">
+                <span class="text-red-500">{{ formatPrice(p.discount_price) }}</span>
+                <span class="block text-gray-400 text-xs line-through">{{
+                  formatPrice(p.price)
+                }}</span>
+              </div>
+              <div v-else>
+                {{ formatPrice(p.price) }}
+              </div>
+            </td>
+            <td class="py-4">
+              <span
+                :class="
+                  p.stock < 5
+                    ? 'text-red-500 font-bold bg-red-50 px-2 py-0.5 rounded'
+                    : ''
+                "
+              >
+                {{ p.stock }} pcs
+              </span>
+            </td>
+            <td class="py-4 text-center">
+              <router-link
+                :to="`/admin/products/view/${p.id}`"
+                class="mr-4 font-medium text-blue-500 hover:text-blue-600"
+              >
+                View
+              </router-link>
+
+              <button
+                v-if="canUpdate || isSuperAdmin"
+                @click="goToEdit(p)"
+                class="mr-4 font-medium text-amber-500 hover:text-amber-600"
+              >
+                Edit
+              </button>
+
+              <button
+                v-if="canDelete || isSuperAdmin"
+                @click="confirmDelete(p.id)"
+                class="font-medium text-red-500 hover:text-red-600"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+
+          <tr v-if="filteredProducts.length === 0">
+            <td colspan="7" class="py-12 text-center text-gray-400 italic">
+              No products found matching your criteria.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div
+      v-if="!isLoading && filteredProducts.length > 0"
+      class="flex justify-between items-center mt-8 pt-6 border-gray-50 border-t"
+    >
+      <p class="text-gray-400 text-sm">
+        Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to
+        {{ Math.min(currentPage * itemsPerPage, filteredProducts.length) }}
+        of {{ filteredProducts.length }} products
+      </p>
+
+      <div class="flex gap-2">
+        <button
+          @click="currentPage--"
+          :disabled="currentPage === 1"
+          class="hover:bg-gray-50 disabled:opacity-30 px-4 py-2 border rounded-xl transition disabled:cursor-not-allowed text-sm font-medium"
+        >
+          Previous
+        </button>
+
+        <button
+          v-for="(page, index) in visiblePages"
+          :key="index"
+          @click="typeof page === 'number' ? (currentPage = page) : null"
+          :disabled="page === '...'"
+          :class="[
+            page === currentPage ? 'bg-black text-white' : 'hover:bg-gray-50',
+            page === '...'
+              ? 'cursor-default border-transparent hover:bg-transparent'
+              : 'border',
+          ]"
+          class="rounded-xl w-10 h-10 font-medium transition"
+        >
+          {{ page }}
+        </button>
+
+        <button
+          @click="currentPage++"
+          :disabled="currentPage === totalPages"
+          class="hover:bg-gray-50 disabled:opacity-30 px-4 py-2 border rounded-xl transition disabled:cursor-not-allowed text-sm font-medium"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, computed, watch } from "vue";
+import { useRouter } from "vue-router";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { BASE_URL } from "../../config/api.js";
+import defaultBagIcon from "../../assets/products/bag_icon.jpg";
+import Breadcrumb from "./Layout/Breadcrumb.vue";
+
+const products = ref([]);
+const categories = ref([]);
+const selectedCategory = ref("");
+const searchQuery = ref("");
+const isLoading = ref(true);
+
+const currentPage = ref(1);
+const itemsPerPage = ref(5);
+const router = useRouter();
+
+// --- STATE PERMISSIONS ---
+const userRole = ref("");
+const isSuperAdmin = computed(() => userRole.value === "superadmin");
+
+const myPermissions = ref({
+  create: false,
+  read: false,
+  update: false,
+  delete: false,
+});
+
+const canCreate = computed(() => myPermissions.value.create);
+const canUpdate = computed(() => myPermissions.value.update);
+const canDelete = computed(() => myPermissions.value.delete);
+
+const axiosConfig = {
+  headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
+};
+
+const fetchUserPermissions = async () => {
+  const adminStr = localStorage.getItem("admin");
+  if (adminStr) {
+    const admin = JSON.parse(adminStr);
+    userRole.value = admin.usertype;
+  }
+
+  if (isSuperAdmin.value) return;
+
+  try {
+    const res = await axios.get(`${BASE_URL}/admin/access-policies`, axiosConfig);
+    const policies = res.data.permissions;
+
+    const productPerms = policies[userRole.value]?.products || [];
+
+    myPermissions.value = {
+      create: productPerms.includes("create"),
+      read: productPerms.includes("read"),
+      update: productPerms.includes("update"),
+      delete: productPerms.includes("delete"),
+    };
+  } catch (error) {
+    console.error("Gagal mengambil kebijakan akses untuk tombol", error);
+  }
+};
+
+const fetchData = async () => {
+  isLoading.value = true;
+  try {
+    const [resProd, resCat] = await Promise.all([
+      axios.get(`${BASE_URL}/products`, axiosConfig),
+      axios.get(`${BASE_URL}/categories`, axiosConfig),
+    ]);
+    products.value = resProd.data;
+    categories.value = resCat.data.data;
+  } catch (error) {
+    console.error("Fetch error:", error);
+  } finally {
+    setTimeout(() => {
+      isLoading.value = false;
+    }, 500);
+  }
+};
+
+const confirmDelete = (id) => {
+  Swal.fire({
+    title: "Are you sure?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#000",
+    confirmButtonText: "Yes, delete it!",
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      isLoading.value = true;
+      try {
+        await axios.delete(`${BASE_URL}/products/${id}`, axiosConfig);
+        await fetchData();
+        Swal.fire("Deleted!", "Success", "success");
+      } catch (err) {
+        isLoading.value = false;
+        Swal.fire("Error", "Failed to delete product.", "error");
+      }
+    }
+  });
+};
+
+const goToEdit = (product) => {
+  router.push({
+    name: "ProductEdit",
+    params: { id: product.id },
+    state: { productData: JSON.parse(JSON.stringify(product)) },
+  });
+};
+
+const formatPrice = (v) =>
+  new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR" }).format(v);
+
+const healthyStockCount = computed(
+  () => products.value.filter((p) => p.stock >= 5).length
+);
+const lowStockCount = computed(() => products.value.filter((p) => p.stock < 5).length);
+const discountedProductsCount = computed(() => {
+  return products.value.filter(
+    (p) => p.discount_price && parseFloat(p.discount_price) < parseFloat(p.price)
+  ).length;
+});
+// 👇 [PERBAIKAN] Menghitung total produk Final Sale 👇
+const finalSaleCount = computed(() => {
+  return products.value.filter((p) => p.is_final_sale).length;
+});
+
+const filteredProducts = computed(() => {
+  return products.value.filter((p) => {
+    const matchesCategory =
+      selectedCategory.value === "" || p.category?.name === selectedCategory.value;
+    const matchesSearch = p.name.toLowerCase().includes(searchQuery.value.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+});
+const totalPages = computed(() =>
+  Math.ceil(filteredProducts.value.length / itemsPerPage.value)
+);
+const visiblePages = computed(() => {
+  const current = currentPage.value;
+  const total = totalPages.value;
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+  if (current <= 4) return [1, 2, 3, 4, 5, "...", total];
+  if (current >= total - 3)
+    return [1, "...", total - 4, total - 3, total - 2, total - 1, total];
+  return [1, "...", current - 1, current, current + 1, "...", total];
+});
+const paginatedProducts = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value;
+  return filteredProducts.value.slice(start, start + itemsPerPage.value);
+});
+
+watch([selectedCategory, searchQuery, itemsPerPage], () => {
+  currentPage.value = 1;
+});
+
+onMounted(() => {
   fetchUserPermissions().then(() => {
     fetchData();
   });
