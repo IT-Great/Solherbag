@@ -3786,12 +3786,20 @@ onUnmounted(() => {
           src="../../assets/DSCF7586.jpg"
           class="w-full h-[400px] md:h-full object-cover group-hover:scale-105 transition-transform duration-700"
         />
-        <div
+        <!-- <div
           class="absolute inset-0 flex items-center justify-center transition-opacity opacity-0 bg-black/20 group-hover:opacity-100"
         >
           <span
             class="px-6 py-3 text-xs font-bold tracking-widest text-black uppercase bg-white rounded-full shadow-lg"
             >{{ $t("home.coming_soon") }}</span
+          >
+        </div> -->
+        <div
+          class="absolute inset-0 flex items-center justify-center transition-opacity opacity-0 bg-black/20 group-hover:opacity-100"
+        >
+          <span
+            class="px-6 py-3 text-xs font-bold tracking-widest text-black uppercase bg-white rounded-full shadow-lg"
+            >{{ $t("home.discover_product_two") }}</span
           >
         </div>
       </div>
