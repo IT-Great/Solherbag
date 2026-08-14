@@ -4308,106 +4308,6 @@ onUnmounted(() => {
     </div> -->
     <!-- 👆 ========================================== 👆 -->
 
-    <!-- CUSTOMER REVIEWS SECTION -->
-    <!-- <div
-      v-if="publicReviews.length > 0"
-      class="w-full px-6 py-24 bg-[#FAFAFA] border-t border-gray-100"
-    >
-      <div class="mx-auto max-w-[1600px]">
-        <div v-reveal class="flex flex-col items-center justify-center mb-12 text-center">
-          <h3
-            class="mb-4 font-serif text-3xl italic font-light text-gray-800 md:text-4xl"
-          >
-            Loved By Our Clients
-          </h3>
-          <p class="text-xs font-bold tracking-widest text-gray-500 uppercase">
-            Discover what they say about our premium pieces
-          </p>
-        </div>
-
-        <div v-if="isLoadingReviews" class="flex justify-center w-full">
-          <div
-            class="w-8 h-8 border-4 border-gray-300 rounded-full border-t-black animate-spin"
-          ></div>
-        </div>
-
-        <div
-          v-else
-          v-reveal
-          class="flex gap-6 pb-8 overflow-x-auto snap-x snap-mandatory scrollbar-hide"
-        >
-          <div
-            v-for="review in publicReviews"
-            :key="'rev-' + review.id"
-            class="flex-shrink-0 w-[300px] md:w-[380px] p-8 bg-white border border-gray-100 shadow-sm snap-center rounded-xl flex flex-col justify-between"
-          >
-            <div>
-              <div class="flex items-center gap-1 mb-4 text-yellow-400">
-                <svg
-                  v-for="i in 5"
-                  :key="i"
-                  :class="
-                    i <= review.rating ? 'fill-current' : 'text-gray-200 fill-current'
-                  "
-                  class="w-4 h-4"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                  />
-                </svg>
-              </div>
-
-              <p
-                class="mb-6 text-sm italic font-light leading-relaxed text-gray-700 line-clamp-4"
-              >
-                "{{ review.comment }}"
-              </p>
-
-              <div
-                v-if="review.images && review.images.length > 0"
-                class="flex gap-2 mb-6"
-              >
-                <img
-                  v-for="(img, index) in review.images.slice(0, 3)"
-                  :key="index"
-                  :src="img"
-                  class="object-cover w-12 h-12 border border-gray-200 rounded-md cursor-pointer hover:opacity-80"
-                  alt="Review picture"
-                />
-              </div>
-            </div>
-
-            <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
-              <div
-                class="flex items-center justify-center w-10 h-10 font-serif text-lg font-bold text-gray-800 bg-gray-100 rounded-full"
-              >
-                {{
-                  review.user?.first_name
-                    ? review.user.first_name.charAt(0).toUpperCase()
-                    : "S"
-                }}
-              </div>
-              <div class="flex-1 overflow-hidden">
-                <p class="text-xs font-bold text-gray-900 uppercase truncate">
-                  {{ review.user?.first_name || "Verified Buyer" }}
-                </p>
-                <p class="text-[10px] text-gray-500 truncate mt-0.5">
-                  Purchased:
-                  <span
-                    class="font-medium text-gray-700 cursor-pointer hover:underline"
-                    @click="$router.push(`/products/${review.product?.slug}`)"
-                    >{{ review.product?.name }}</span
-                  >
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
-    <!-- 👆 ========================================== 👆 -->
-
     <!-- 👇 [BARU] WHY CHOOSE US / VALUE PROPOSITION SECTION 👇 -->
     <div class="w-full py-24 bg-white border-t border-gray-100">
       <div class="px-6 mx-auto max-w-[1600px]">
@@ -4536,6 +4436,106 @@ onUnmounted(() => {
             <p class="text-sm font-light leading-relaxed text-gray-600">
               {{ $t("home.value_4_desc") }}
             </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 👆 ========================================== 👆 -->
+
+    <!-- CUSTOMER REVIEWS SECTION -->
+    <div
+      v-if="publicReviews.length > 0"
+      class="w-full px-6 py-24 bg-[#FAFAFA] border-t border-gray-100"
+    >
+      <div class="mx-auto max-w-[1600px]">
+        <div v-reveal class="flex flex-col items-center justify-center mb-12 text-center">
+          <h3
+            class="mb-4 font-serif text-3xl italic font-light text-gray-800 md:text-4xl"
+          >
+            Loved By Our Clients
+          </h3>
+          <p class="text-xs font-bold tracking-widest text-gray-500 uppercase">
+            Discover what they say about our premium pieces
+          </p>
+        </div>
+
+        <div v-if="isLoadingReviews" class="flex justify-center w-full">
+          <div
+            class="w-8 h-8 border-4 border-gray-300 rounded-full border-t-black animate-spin"
+          ></div>
+        </div>
+
+        <div
+          v-else
+          v-reveal
+          class="flex gap-6 pb-8 overflow-x-auto snap-x snap-mandatory scrollbar-hide"
+        >
+          <div
+            v-for="review in publicReviews"
+            :key="'rev-' + review.id"
+            class="flex-shrink-0 w-[300px] md:w-[380px] p-8 bg-white border border-gray-100 shadow-sm snap-center rounded-xl flex flex-col justify-between"
+          >
+            <div>
+              <div class="flex items-center gap-1 mb-4 text-yellow-400">
+                <svg
+                  v-for="i in 5"
+                  :key="i"
+                  :class="
+                    i <= review.rating ? 'fill-current' : 'text-gray-200 fill-current'
+                  "
+                  class="w-4 h-4"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  />
+                </svg>
+              </div>
+
+              <p
+                class="mb-6 text-sm italic font-light leading-relaxed text-gray-700 line-clamp-4"
+              >
+                "{{ review.comment }}"
+              </p>
+
+              <div
+                v-if="review.images && review.images.length > 0"
+                class="flex gap-2 mb-6"
+              >
+                <img
+                  v-for="(img, index) in review.images.slice(0, 3)"
+                  :key="index"
+                  :src="img"
+                  class="object-cover w-12 h-12 border border-gray-200 rounded-md cursor-pointer hover:opacity-80"
+                  alt="Review picture"
+                />
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
+              <div
+                class="flex items-center justify-center w-10 h-10 font-serif text-lg font-bold text-gray-800 bg-gray-100 rounded-full"
+              >
+                {{
+                  review.user?.first_name
+                    ? review.user.first_name.charAt(0).toUpperCase()
+                    : "S"
+                }}
+              </div>
+              <div class="flex-1 overflow-hidden">
+                <p class="text-xs font-bold text-gray-900 uppercase truncate">
+                  {{ review.user?.first_name || "Verified Buyer" }}
+                </p>
+                <p class="text-[10px] text-gray-500 truncate mt-0.5">
+                  Purchased:
+                  <span
+                    class="font-medium text-gray-700 cursor-pointer hover:underline"
+                    @click="$router.push(`/products/${review.product?.slug}`)"
+                    >{{ review.product?.name }}</span
+                  >
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
