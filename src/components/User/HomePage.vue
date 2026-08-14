@@ -3781,7 +3781,10 @@ onUnmounted(() => {
         </div>
       </div>
 
-      <div class="relative overflow-hidden group">
+      <div
+        class="relative overflow-hidden cursor-pointer group"
+        @click="navigateToSpecificProduct('AUREVE CLUTCH ESPRESSO BROWN')"
+      >
         <img
           src="../../assets/DSCF7586.jpg"
           class="w-full h-[400px] md:h-full object-cover group-hover:scale-105 transition-transform duration-700"
