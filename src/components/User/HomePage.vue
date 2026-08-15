@@ -5546,7 +5546,7 @@ onUnmounted(() => {
         <!-- 👇 POPUP 17 AGUSTUS (MERDEKA) 👇 -->
         <div
           v-if="ACTIVE_POPUP === 'merdeka'"
-          class="relative flex flex-col w-full max-w-[950px] max-h-[90vh] overflow-hidden bg-white shadow-2xl md:flex-row rounded-xl md:rounded-none"
+          class="relative flex flex-col w-full max-w-[850px] max-h-[100vh] overflow-hidden bg-white shadow-2xl md:flex-row rounded-xl md:rounded-none"
         >
           <button
             @click="closePopup"
@@ -5585,13 +5585,13 @@ onUnmounted(() => {
               class="text-3xl md:text-[38px] font-serif text-[#111] mb-5 tracking-tight leading-[1.15] font-black"
             >
               <div class="flex items-center justify-center gap-3 mb-1">
-                <!-- SVG BENDERA INDONESIA -->
+                <!-- SVG BENDERA INDONESIA (Sedikit melengkung ala emoji) -->
                 <svg
                   viewBox="0 0 36 24"
-                  class="w-8 h-auto border border-gray-100 rounded-sm shadow-sm"
+                  class="w-8 h-auto border border-gray-100 rounded-sm shadow-sm opacity-90"
                 >
-                  <rect width="36" height="12" fill="#ed2939" />
-                  <rect y="12" width="36" height="12" fill="#ffffff" />
+                  <path d="M0,0 Q18,4 36,0 L36,12 Q18,16 0,12 Z" fill="#ed2939" />
+                  <path d="M0,12 Q18,16 36,12 L36,24 Q18,28 0,24 Z" fill="#ffffff" />
                 </svg>
                 <span>Celebrate</span>
               </div>
@@ -5604,25 +5604,26 @@ onUnmounted(() => {
             >
               Up to <strong class="font-black text-black">Rp500,000</strong> off, with
               minimum<br />
-              purchase of<br />
-              Rp699,000
+              purchase of Rp699,000
             </p>
 
             <!-- Exact Alignment untuk Pesan Kemerdekaan -->
-            <p class="text-[13px] text-gray-600 leading-[1.6] mb-8 w-full max-w-[340px]">
-              This Independence Day, we're celebrating the<br />
-              women<br />
-              who carry their own kind of freedom — quietly,<br />
-              gracefully,<br />
-              every day. Enjoy 17% off sitewide, today only.
+            <p
+              class="text-[13px] text-gray-800 leading-[1.6] mb-8 w-full max-w-[340px] mx-auto"
+            >
+              This Independence Day, we're celebrating<br />
+              the women who carry their own kind of<br />
+              freedom — quietly, gracefully, every day.<br />
+              Enjoy 17% off sitewide, today only.
             </p>
 
-            <div class="w-full max-w-[320px]">
+            <div class="w-full max-w-[320px] mx-auto">
+              <!-- Border hitam pekat & Teks rata kiri sesuai gambar referensi -->
               <input
                 type="email"
                 v-model="promoEmail"
                 placeholder="Enter your email to unlock your offer..."
-                class="w-full border-2 border-gray-200 bg-white px-4 py-3.5 mb-4 text-[13px] font-sans focus:outline-none focus:ring-1 focus:ring-black focus:border-black placeholder-gray-400 transition-all text-center"
+                class="w-full border border-black bg-white px-4 py-3.5 mb-4 text-[13px] font-sans focus:outline-none focus:ring-1 focus:ring-black placeholder-gray-400 transition-all text-left"
               />
               <button
                 @click="claimPromo"
