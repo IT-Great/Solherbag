@@ -5546,7 +5546,7 @@ onUnmounted(() => {
         <!-- 👇 POPUP 17 AGUSTUS (MERDEKA) 👇 -->
         <div
           v-if="ACTIVE_POPUP === 'merdeka'"
-          class="relative flex flex-col w-full max-w-[760px] max-h-[90vh] overflow-hidden bg-white shadow-2xl md:flex-row rounded-xl md:rounded-none"
+          class="relative flex flex-col w-full max-w-[760px] max-h-[100vh] overflow-hidden bg-white shadow-2xl md:flex-row rounded-xl md:rounded-none"
         >
           <button
             @click="closePopup"
