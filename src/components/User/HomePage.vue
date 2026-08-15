@@ -5753,7 +5753,7 @@ import { useI18n } from "vue-i18n";
 
 import banner1 from "../../assets/first_banner.png";
 import banner2 from "../../assets/second_banner.png";
-import banner3 from "../../assets/third_banner.jpeg";
+import banner3 from "../../assets/third_banner.jpg";
 
 // 👇 KONFIGURASI TIPE POPUP (Ganti 'merdeka' ke 'default' untuk mengembalikan ke popup awal) 👇
 const ACTIVE_POPUP = ref("merdeka");
