@@ -12800,7 +12800,7 @@ const useAllPoints = () => {
 }
 </style> -->
 
-<template>
+<!-- <template>
   <div
     v-if="isPageLoading"
     class="z-[100] fixed inset-0 flex flex-col justify-center items-center bg-white"
@@ -13479,7 +13479,6 @@ const useAllPoints = () => {
                 }}</span>
               </div>
 
-              <!-- TAMPILAN POTONGAN HARGA BUNDLE -->
               <div
                 v-if="bundleDiscountAmount > 0"
                 class="flex justify-between px-3 py-2 my-2 text-sm font-bold border text-emerald-600 bg-emerald-50 rounded-xl border-emerald-100"
@@ -13541,7 +13540,6 @@ const useAllPoints = () => {
       </div>
     </div>
 
-    <!-- 👇 [PERBAIKAN]: MODAL ADDRESS YANG SAMA PERSIS DENGAN PROFILE PAGE 👇 -->
     <Teleport to="body">
       <div
         v-if="isModalOpen"
@@ -13622,7 +13620,7 @@ const useAllPoints = () => {
                   >
                   <input
                     v-model="form.first_name_address"
-                    class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+                    class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                     required
                   />
                 </div>
@@ -13633,7 +13631,7 @@ const useAllPoints = () => {
                   >
                   <input
                     v-model="form.last_name_address"
-                    class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+                    class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                     required
                   />
                 </div>
@@ -13648,7 +13646,7 @@ const useAllPoints = () => {
                   <select
                     v-if="filteredProvinces.length > 0"
                     v-model="form.province"
-                    class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+                    class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                     required
                   >
                     <option value="" disabled>{{ $t("profile.select_province") }}</option>
@@ -13671,7 +13669,7 @@ const useAllPoints = () => {
                   >
                   <input
                     v-model="form.city"
-                    class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+                    class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                     required
                   />
                 </div>
@@ -13679,7 +13677,7 @@ const useAllPoints = () => {
 
               <div class="relative overflow-hidden border border-gray-200 rounded-2xl">
                 <div
-                  class="flex items-start gap-2 px-4 py-3 bg-amber-50 border-b border-amber-100"
+                  class="flex items-start gap-2 px-4 py-3 border-b bg-amber-50 border-amber-100"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -13702,7 +13700,7 @@ const useAllPoints = () => {
                 </div>
 
                 <div
-                  class="flex flex-col sm:flex-row items-center justify-between gap-2 p-3 border-b border-gray-200 bg-gray-50"
+                  class="flex flex-col items-center justify-between gap-2 p-3 border-b border-gray-200 sm:flex-row bg-gray-50"
                 >
                   <div class="relative w-full sm:flex-1">
                     <input
@@ -13734,7 +13732,7 @@ const useAllPoints = () => {
                   >
                     <span
                       v-if="isGettingLocation"
-                      class="w-3 h-3 border-2 rounded-full border-blue-700 border-t-transparent animate-spin"
+                      class="w-3 h-3 border-2 border-blue-700 rounded-full border-t-transparent animate-spin"
                     ></span>
                     {{ $t("profile.use_current_loc") }}
                   </button>
@@ -13777,7 +13775,7 @@ const useAllPoints = () => {
                   v-model="form.address_location"
                   rows="3"
                   placeholder="Street name, building, house number..."
-                  class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 resize-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none custom-scrollbar"
+                  class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none resize-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 custom-scrollbar"
                   required
                 ></textarea>
               </div>
@@ -13791,7 +13789,7 @@ const useAllPoints = () => {
                   <input
                     v-model="form.location_type"
                     placeholder="Apartment, suite, block"
-                    class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+                    class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   />
                 </div>
                 <div>
@@ -13802,7 +13800,7 @@ const useAllPoints = () => {
                   <input
                     v-model="form.postal_code"
                     placeholder="Postal code"
-                    class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+                    class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                     required
                   />
                 </div>
@@ -14598,6 +14596,1908 @@ const applyPromo = async () => {
     if (appliedPromoCode.value === "SOLHOST34") {
       pointsToUse.value = 0;
     }
+    if (pointsToUse.value > maxPointsAllowed.value)
+      pointsToUse.value = maxPointsAllowed.value;
+  } catch (error) {
+    promoSuccess.value = false;
+    promoMessage.value =
+      "❌ " + (error.response?.data?.message || error.message || "Invalid promo code.");
+    appliedPromoCode.value = null;
+    promoDiscountAmount.value = 0;
+
+    appliedPromoType.value = null;
+
+    useMemberVoucher.value = false;
+  } finally {
+    isVerifyingPromo.value = false;
+  }
+};
+
+const removePromo = () => {
+  promoInput.value = "";
+  appliedPromoCode.value = null;
+  appliedPromoType.value = null;
+  promoDiscountAmount.value = 0;
+  promoMessage.value = "";
+  promoSuccess.value = false;
+  useMemberVoucher.value = false;
+};
+
+const useAllPoints = () => {
+  pointsToUse.value = maxPointsAllowed.value;
+};
+</script>
+
+<style scoped>
+.animate-bounce-1 {
+  animation: bounceDots 1.4s infinite ease-in-out both;
+  animation-delay: -0.32s;
+}
+.animate-bounce-2 {
+  animation: bounceDots 1.4s infinite ease-in-out both;
+  animation-delay: -0.16s;
+}
+.animate-bounce-3 {
+  animation: bounceDots 1.4s infinite ease-in-out both;
+}
+@keyframes bounceDots {
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+:deep(.leaflet-container) {
+  z-index: 1 !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #e5e7eb;
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #d1d5db;
+}
+</style> -->
+
+<template>
+  <div
+    v-if="isPageLoading"
+    class="z-[100] fixed inset-0 flex flex-col justify-center items-center bg-white"
+  >
+    <div class="flex gap-2 mb-4">
+      <div class="w-3 h-3 bg-black rounded-full animate-bounce-1"></div>
+      <div class="w-3 h-3 bg-black rounded-full animate-bounce-2"></div>
+      <div class="w-3 h-3 bg-black rounded-full animate-bounce-3"></div>
+    </div>
+    <p class="font-serif text-sm italic tracking-widest text-gray-500 animate-pulse">
+      {{ $t("payment.prepare_checkout") }}
+    </p>
+  </div>
+
+  <div
+    v-else
+    class="relative z-10 max-w-6xl min-h-screen px-6 py-12 mx-auto md:py-24 animate-fade-in"
+  >
+    <div v-if="checkoutItems.length === 0" class="py-20 text-center">
+      <h2 class="mb-4 font-serif text-3xl">{{ $t("payment.bag_empty") }}</h2>
+      <button
+        @click="$router.push('/collections')"
+        class="px-8 py-3 text-xs font-bold tracking-widest text-white uppercase bg-black rounded-full"
+      >
+        {{ $t("payment.return_shop") }}
+      </button>
+    </div>
+
+    <div v-else>
+      <h1 class="mb-12 font-serif text-3xl tracking-tighter uppercase md:text-4xl">
+        {{ $t("payment.checkout") }}
+      </h1>
+
+      <div class="flex flex-col gap-12 lg:flex-row">
+        <div class="flex-grow space-y-12">
+          <section>
+            <div class="flex items-center gap-4 mb-4">
+              <span
+                class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white"
+                >1</span
+              >
+              <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">
+                {{ $t("payment.shipping_address") }}
+              </h2>
+            </div>
+
+            <div
+              v-if="addresses.length === 0"
+              class="py-10 text-center border border-gray-300 border-dashed bg-gray-50 rounded-2xl"
+            >
+              <p class="mb-2 text-sm italic text-gray-500">
+                {{ $t("payment.no_address_found") }}
+              </p>
+              <button
+                @click="openModal()"
+                class="text-xs font-bold text-blue-600 underline"
+              >
+                {{ $t("payment.add_new_address") }}
+              </button>
+            </div>
+            <div v-else class="space-y-4">
+              <label
+                v-for="addr in addresses"
+                :key="addr.id"
+                :class="[
+                  selectedAddressId === addr.id
+                    ? 'border-black ring-1 ring-black bg-white shadow-md'
+                    : 'border-gray-100 bg-gray-50/50',
+                ]"
+                class="relative flex items-start p-6 transition-all border cursor-pointer rounded-2xl hover:bg-white"
+              >
+                <input
+                  type="radio"
+                  name="address"
+                  :value="addr.id"
+                  v-model="selectedAddressId"
+                  class="w-4 h-4 mt-1 text-black border-gray-300 focus:ring-black"
+                />
+                <div class="flex-grow ml-4">
+                  <div class="flex justify-between">
+                    <p class="text-sm font-bold text-gray-900 uppercase">
+                      {{ addr.receiver?.full_name || "N/A" }}
+                    </p>
+                    <span
+                      v-if="addr.is_default"
+                      class="text-[9px] bg-gray-200 px-2 py-0.5 rounded font-bold uppercase"
+                      >{{ $t("payment.default") }}</span
+                    >
+                  </div>
+                  <p class="mt-2 text-sm leading-relaxed text-gray-600">
+                    {{ addr.details?.location || "" }},
+                    {{ addr.details?.type || "" }}
+                    <br />
+                    {{ addr.details?.city || "" }},
+                    {{ addr.details?.province || "" }}
+                    <br />
+                    {{ addr.details?.region || addr.region || "Indonesia" }} -
+                    {{ addr.details?.postal_code || "" }}
+                  </p>
+                </div>
+              </label>
+              <button
+                @click="openModal()"
+                class="mt-4 text-xs font-bold text-gray-500 underline hover:text-black"
+              >
+                {{ $t("payment.add_another_address") }}
+              </button>
+            </div>
+          </section>
+
+          <section v-if="!selectedAddressId">
+            <div class="flex items-center gap-4 mb-4">
+              <span
+                class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white"
+                >2</span
+              >
+              <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">
+                {{ $t("payment.shipping_method") }}
+              </h2>
+            </div>
+            <div>
+              <h4 class="text-sm tracking-widest text-gray-900 uppercase">
+                {{ $t("payment.choose_shipping_address") }}
+              </h4>
+            </div>
+          </section>
+
+          <section v-if="selectedAddressId">
+            <div class="flex items-center gap-4 mb-4">
+              <span
+                class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white"
+                >2</span
+              >
+              <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">
+                {{ $t("payment.shipping_method") }}
+              </h2>
+            </div>
+
+            <div class="space-y-4">
+              <label
+                v-if="destinationInfo?.country === 'Indonesia'"
+                :class="[
+                  shippingMethod === 'free'
+                    ? 'border-black ring-1 ring-black bg-white shadow-md'
+                    : 'border-gray-100 bg-gray-50/50',
+                ]"
+                class="relative flex items-center p-6 transition-all border cursor-pointer rounded-2xl"
+              >
+                <input
+                  type="radio"
+                  value="free"
+                  v-model="shippingMethod"
+                  class="w-4 h-4 text-black border-gray-300 focus:ring-black"
+                />
+                <div class="flex items-center justify-between flex-grow ml-4">
+                  <div>
+                    <p class="text-sm font-bold tracking-wide text-gray-900 uppercase">
+                      {{ $t("payment.free_shipping") }}
+                    </p>
+                    <p class="mt-1 text-xs font-bold text-green-600">
+                      {{ $t("payment.in_store") }}
+                    </p>
+                  </div>
+                  <p class="font-black text-black">{{ $t("payment.price") }}</p>
+                </div>
+              </label>
+
+              <label
+                :class="[
+                  shippingMethod === 'biteship'
+                    ? 'border-black ring-1 ring-black bg-white shadow-md'
+                    : 'border-gray-100 bg-gray-50/50',
+                ]"
+                class="relative flex items-center p-6 transition-all border cursor-pointer rounded-2xl"
+              >
+                <input
+                  type="radio"
+                  value="biteship"
+                  v-model="shippingMethod"
+                  class="w-4 h-4 text-black border-gray-300 focus:ring-black"
+                />
+                <div class="flex items-center justify-between flex-grow ml-4">
+                  <div>
+                    <p class="text-sm font-bold tracking-wide text-gray-900 uppercase">
+                      {{ $t("payment.standard") }}
+                    </p>
+                    <p class="mt-1 text-xs text-gray-500">
+                      {{
+                        destinationInfo?.country === "Indonesia"
+                          ? $t("payment.powered_by_biteship")
+                          : "International Express Delivery"
+                      }}
+                    </p>
+                  </div>
+                </div>
+              </label>
+
+              <div
+                v-if="shippingMethod === 'biteship'"
+                class="p-6 mt-4 space-y-8 bg-white border border-gray-200 rounded-3xl animate-fade-in"
+              >
+                <div
+                  class="grid grid-cols-1 gap-6 p-4 md:grid-cols-2 bg-gray-50 rounded-2xl"
+                >
+                  <div>
+                    <h3
+                      class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-3"
+                    >
+                      {{ $t("payment.destination") }}
+                    </h3>
+                    <p class="text-xs font-bold text-gray-900 uppercase">
+                      {{ destinationInfo?.name }}
+                    </p>
+                    <p class="mt-1 text-xs text-gray-500">
+                      {{ destinationInfo?.phone }}
+                    </p>
+                    <p class="mt-1 text-xs text-gray-500 line-clamp-2">
+                      {{ destinationInfo?.address }} -
+                      {{ destinationInfo?.postal_code }}
+                    </p>
+                    <p class="mt-1 text-xs font-bold text-blue-600 uppercase">
+                      {{ destinationInfo?.country }}
+                    </p>
+                  </div>
+                </div>
+
+                <div v-if="destinationInfo?.country === 'Indonesia'">
+                  <h3 class="mb-4 text-sm font-bold tracking-widest uppercase">
+                    {{ $t("payment.pickup_schedule") }}
+                  </h3>
+
+                  <div class="flex flex-col gap-4 mb-4 md:flex-row">
+                    <label
+                      :class="
+                        deliveryType === 'now'
+                          ? 'border-black bg-gray-50'
+                          : 'border-gray-200'
+                      "
+                      class="flex-1 p-4 transition border cursor-pointer rounded-xl"
+                    >
+                      <input
+                        type="radio"
+                        value="now"
+                        v-model="deliveryType"
+                        class="hidden"
+                      />
+                      <p class="text-xs font-bold uppercase">
+                        {{ $t("payment.standard_pickup") }}
+                      </p>
+                      <p class="text-[10px] text-gray-500 mt-1">
+                        {{ $t("payment.scheduled_pickup") }}
+                      </p>
+                    </label>
+                    <label
+                      :class="
+                        deliveryType === 'scheduled'
+                          ? 'border-black bg-gray-50'
+                          : 'border-gray-200'
+                      "
+                      class="flex-1 p-4 transition border cursor-pointer rounded-xl"
+                    >
+                      <input
+                        type="radio"
+                        value="scheduled"
+                        v-model="deliveryType"
+                        class="hidden"
+                      />
+                      <p class="text-xs font-bold uppercase">
+                        {{ $t("payment.scheduled_pickup") }}
+                      </p>
+                      <p class="text-[10px] text-gray-500 mt-1">
+                        {{ $t("payment.choose_specific_date_time") }}
+                      </p>
+                    </label>
+                  </div>
+
+                  <div
+                    v-if="deliveryType === 'scheduled'"
+                    class="flex gap-4 p-4 border border-blue-100 bg-blue-50/30 rounded-xl animate-fade-in"
+                  >
+                    <div class="flex-1">
+                      <label
+                        class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2"
+                      >
+                        {{ $t("payment.pickup_date") }}
+                      </label>
+                      <input
+                        type="date"
+                        v-model="deliveryDate"
+                        :min="todayDate"
+                        class="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg outline-none focus:ring-black focus:border-black"
+                        required
+                      />
+                    </div>
+                    <div class="flex-1">
+                      <label
+                        class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2"
+                      >
+                        {{ $t("payment.pickup_time") }}
+                      </label>
+                      <input
+                        type="time"
+                        v-model="deliveryTime"
+                        class="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg outline-none focus:ring-black focus:border-black"
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h3
+                    class="pt-6 mb-4 text-sm font-bold tracking-widest uppercase border-t"
+                  >
+                    {{ $t("payment.select_courier") }}
+                  </h3>
+                  <div
+                    v-if="isLoadingRates"
+                    class="py-4 text-sm text-center text-gray-500 animate-pulse"
+                  >
+                    {{ $t("payment.calculating_couriers") }}
+                  </div>
+                  <div
+                    v-else-if="processedShippingRates.length === 0"
+                    class="py-4 text-xs italic text-center text-red-500"
+                  >
+                    {{ $t("payment.no_courier_available") }}
+                  </div>
+                  <div v-else class="space-y-3">
+                    <label
+                      v-for="(rate, idx) in processedShippingRates"
+                      :key="idx"
+                      :class="[
+                        rate.is_disabled
+                          ? 'opacity-40 bg-gray-100 border-gray-200 pointer-events-none select-none'
+                          : selectedRate?.company === rate.company &&
+                            selectedRate?.type === rate.type
+                          ? 'border-black bg-gray-50 shadow-sm'
+                          : 'border-gray-200 hover:bg-gray-50 cursor-pointer transition-all',
+                      ]"
+                      class="relative flex flex-col p-4 border rounded-xl"
+                    >
+                      <div class="flex items-center w-full">
+                        <input
+                          type="radio"
+                          :value="rate"
+                          v-model="selectedRate"
+                          :disabled="rate.is_disabled"
+                          class="w-4 h-4 text-black border-gray-300 focus:ring-black disabled:opacity-50"
+                        />
+                        <div class="flex items-center flex-grow gap-4 ml-4">
+                          <div
+                            class="flex items-center justify-center w-12 h-12 overflow-hidden bg-white border border-gray-100 rounded-lg shrink-0"
+                          >
+                            <img
+                              v-show="!imageErrors[rate.company]"
+                              v-if="getCourierLogo(rate.company)"
+                              :src="getCourierLogo(rate.company)"
+                              :alt="rate.company"
+                              class="object-contain w-full h-full p-1"
+                              @error="handleImageError(rate.company)"
+                            />
+                            <span
+                              v-show="
+                                imageErrors[rate.company] || !getCourierLogo(rate.company)
+                              "
+                              class="text-xs font-black text-gray-300"
+                            >
+                              {{ rate.company.toUpperCase() }}
+                            </span>
+                          </div>
+                          <div>
+                            <p
+                              class="text-sm font-bold tracking-wide text-gray-800 uppercase"
+                            >
+                              {{ rate.company }} -
+                              {{ rate.type.replace("_", " ") }}
+                            </p>
+                            <p class="text-gray-500 text-[10px] mt-0.5">
+                              {{ rate.courier_name }} ({{ rate.duration }})
+                            </p>
+                          </div>
+                        </div>
+                        <p class="text-sm font-black text-black">
+                          {{
+                            formatCurrencyDisplay(convertIDRtoActiveCurrency(rate.price))
+                          }}
+                        </p>
+                      </div>
+
+                      <div
+                        v-if="rate.is_disabled"
+                        class="mt-3 ml-8 text-[10px] text-red-600 bg-red-50 px-3 py-1.5 rounded-lg border border-red-100 font-bold uppercase tracking-widest"
+                      >
+                        ⚠️ {{ $t("payment.unavailable") }}
+                        {{ rate.disable_reason }}
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="lg:w-[400px] space-y-6">
+          <div
+            class="sticky p-8 bg-white border border-gray-100 shadow-xl rounded-3xl top-28"
+          >
+            <h2
+              class="pb-4 mb-6 text-sm font-bold tracking-widest text-gray-900 uppercase border-b border-gray-200"
+            >
+              {{ $t("payment.order_summary") }}
+            </h2>
+
+            <div
+              class="space-y-4 mb-8 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar"
+            >
+              <div v-for="item in checkoutItems" :key="item.id" class="flex gap-4">
+                <img
+                  :src="item.product?.image_url || item.product?.image"
+                  class="object-cover w-16 h-16 bg-gray-100 rounded-xl shrink-0"
+                />
+                <div class="flex-grow">
+                  <div class="flex items-center gap-2">
+                    <p
+                      class="w-40 text-[11px] font-bold text-gray-900 uppercase truncate"
+                      :title="item.product?.name"
+                    >
+                      {{ item.product?.name }}
+                    </p>
+                    <span
+                      v-if="
+                        userType === 'reseller' &&
+                        Number(item.product?.wholesale_price) > 0 &&
+                        checkoutCount >= 24
+                      "
+                      class="px-1.5 py-0.5 text-[8px] font-bold text-white bg-blue-600 rounded"
+                      >GROSIR</span
+                    >
+                  </div>
+                  <div class="flex items-center gap-2 mt-0.5">
+                    <p class="text-[10px] text-gray-400">Qty: {{ item.quantity }}</p>
+                    <template v-if="item.color">
+                      <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
+                      <div class="flex items-center gap-1.5">
+                        <div
+                          class="w-3 h-3 border border-gray-300 rounded-full shadow-sm shrink-0"
+                          :style="{
+                            backgroundColor: parseColorHex(item.color),
+                          }"
+                        ></div>
+                        <span class="text-[10px] font-bold text-gray-500 uppercase">
+                          {{ parseColorName(item.color) }}
+                        </span>
+                      </div>
+                    </template>
+                  </div>
+
+                  <p class="mt-1 text-xs font-medium text-gray-900">
+                    {{
+                      formatCurrencyDisplay({
+                        value: getActivePriceObj(item.product).value * item.quantity,
+                        curr: getActivePriceObj(item.product).curr,
+                      })
+                    }}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-4 space-y-3 text-sm border-t border-gray-50">
+              <div class="flex justify-between text-gray-500">
+                <span>{{ $t("payment.total_items") }}</span>
+                <span class="font-bold text-gray-900"
+                  >{{ checkoutCount }} {{ $t("payment.item") }}</span
+                >
+              </div>
+              <div class="flex justify-between text-gray-500">
+                <span>{{ $t("payment.subtotal") }}</span>
+                <span
+                  :class="
+                    appliedPromoType === 'voucher' ? 'text-amber-600 font-bold' : ''
+                  "
+                >
+                  {{ formatCurrencyDisplay(cartSubtotalObj) }}
+                </span>
+              </div>
+
+              <div
+                v-if="userData?.is_membership"
+                class="pt-4 mt-2 border-t border-gray-200 border-dashed"
+              >
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p
+                      class="text-[10px] font-bold text-gray-900 uppercase tracking-widest flex items-center gap-1"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        class="w-4 h-4 text-yellow-500"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                      {{ $t("payment.vip_perks") }}
+                    </p>
+                    <p class="text-[10px] text-gray-500 mt-0.5">
+                      Voucher Khusus (Min Belanja 500k)
+                    </p>
+                    <p
+                      v-if="checkoutTotalIDR < MEMBER_MIN_SPEND"
+                      class="text-[8px] text-red-500 italic mt-0.5"
+                    >
+                      {{ $t("payment.min_spend") }}
+                    </p>
+                  </div>
+
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <!-- 👇 Kunci member voucher jika promo MERDEKA17 aktif 👇 -->
+                    <input
+                      type="checkbox"
+                      v-model="useMemberVoucher"
+                      @change="handleMemberToggle"
+                      class="sr-only peer"
+                      :disabled="
+                        isVerifyingPromo ||
+                        (checkoutTotalIDR < MEMBER_MIN_SPEND && !useMemberVoucher) ||
+                        ['SOLHOST34', 'MERDEKA17'].includes(appliedPromoCode)
+                      "
+                    />
+                    <div
+                      class="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-black disabled:opacity-50"
+                    ></div>
+                  </label>
+                </div>
+              </div>
+
+              <div class="pt-4 mt-2 border-t border-gray-200 border-dashed">
+                <label
+                  class="text-[10px] font-bold text-gray-900 uppercase tracking-widest mb-2 block"
+                >
+                  {{ $t("payment.promo_code") }}
+                </label>
+                <form @submit.prevent="applyPromo" class="flex gap-2">
+                  <input
+                    type="text"
+                    v-model="promoInput"
+                    :disabled="
+                      appliedPromoCode !== null || isVerifyingPromo || useMemberVoucher
+                    "
+                    :placeholder="$t('payment.enter_promo_code')"
+                    class="flex-1 bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-sm uppercase focus:ring-black outline-none disabled:bg-gray-100 disabled:text-gray-400 transition-colors"
+                  />
+                  <button
+                    v-if="!appliedPromoCode"
+                    type="submit"
+                    :disabled="!promoInput || isVerifyingPromo || useMemberVoucher"
+                    class="bg-black text-white text-[10px] font-bold uppercase px-4 rounded-lg hover:bg-gray-800 transition disabled:bg-gray-300 w-20 flex justify-center items-center"
+                  >
+                    <span v-if="!isVerifyingPromo">{{ $t("payment.apply") }}</span>
+                    <div
+                      v-else
+                      class="w-3 h-3 border-2 rounded-full border-white/40 border-t-white animate-spin"
+                    ></div>
+                  </button>
+                  <button
+                    v-else
+                    type="button"
+                    @click="removePromo"
+                    class="bg-red-50 text-red-600 border border-red-200 text-[10px] font-bold uppercase px-4 rounded-lg hover:bg-red-100 transition w-20"
+                  >
+                    {{ $t("payment.remove") }}
+                  </button>
+                </form>
+                <p
+                  v-if="promoMessage"
+                  :class="promoSuccess ? 'text-green-600' : 'text-red-500'"
+                  class="text-[10px] mt-2 font-medium"
+                >
+                  {{ promoMessage }}
+                </p>
+                <div
+                  v-if="appliedPromoCode"
+                  class="flex justify-between text-[10px] md:text-xs font-medium text-emerald-600 mt-2"
+                >
+                  <span class="pr-2 truncate">
+                    Promo (<span class="font-mono uppercase">{{ appliedPromoCode }}</span
+                    >)
+                  </span>
+                  <span>- {{ formatCurrencyDisplay(actualPromoDiscountObj) }}</span>
+                </div>
+              </div>
+
+              <div
+                v-if="userData?.is_membership && availablePoints > 0"
+                class="pt-4 mt-2 border-t border-gray-200 border-dashed"
+              >
+                <div class="flex items-center justify-between mb-2">
+                  <span
+                    class="text-[10px] font-bold text-yellow-800 uppercase tracking-widest flex items-center gap-1"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-3 h-3 text-yellow-500"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                      />
+                    </svg>
+                    {{ $t("payment.redeem_points") }}
+                  </span>
+                  <span class="text-xs text-gray-500"
+                    >{{ $t("payment.bal") }} {{ availablePoints }} Pts</span
+                  >
+                </div>
+                <div class="flex gap-2">
+                  <!-- 👇 PERBAIKAN: Disable input poin jika kode promo spesial aktif 👇 -->
+                  <input
+                    type="number"
+                    v-model.number="pointsToUse"
+                    :max="maxUsablePoints"
+                    min="0"
+                    :disabled="['SOLHOST34', 'MERDEKA17'].includes(appliedPromoCode)"
+                    class="flex-1 bg-white border border-yellow-300 rounded-lg px-3 py-1.5 text-sm focus:ring-yellow-500 outline-none disabled:bg-gray-100 disabled:text-gray-400"
+                    placeholder="0"
+                  />
+                  <button
+                    type="button"
+                    @click="useAllPoints"
+                    :disabled="['SOLHOST34', 'MERDEKA17'].includes(appliedPromoCode)"
+                    class="bg-yellow-100 text-yellow-800 text-[10px] font-bold uppercase px-3 rounded-lg hover:bg-yellow-200 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {{ $t("payment.use_all") }}
+                  </button>
+                </div>
+
+                <p
+                  v-if="['SOLHOST34', 'MERDEKA17'].includes(appliedPromoCode)"
+                  class="text-[9px] text-red-500 mt-1 italic font-medium text-right"
+                >
+                  *Poin tidak dapat digabung dengan Voucher/Promo Spesial
+                </p>
+                <p
+                  v-else-if="pointsToUse > 0"
+                  class="text-[10px] text-green-600 mt-1 font-medium text-right"
+                >
+                  - {{ formatCurrencyDisplay(appliedPointDiscountObj) }}
+                </p>
+              </div>
+
+              <div class="flex items-start justify-between text-gray-500">
+                <span>{{ $t("payment.shipping") }}</span>
+                <span v-if="shippingMethod === 'free'" class="font-bold text-green-600">{{
+                  $t("payment.free")
+                }}</span>
+                <div
+                  v-else-if="shippingMethod === 'biteship' && selectedRate"
+                  class="text-right"
+                >
+                  <span class="block font-medium text-gray-900">
+                    {{
+                      formatCurrencyDisplay({
+                        value: shippingCostObj.value,
+                        curr: shippingCostObj.curr,
+                      })
+                    }}
+                  </span>
+                </div>
+                <span v-else class="italic text-[10px]">{{
+                  $t("payment.select_method")
+                }}</span>
+              </div>
+
+              <!-- TAMPILAN POTONGAN HARGA BUNDLE -->
+              <div
+                v-if="bundleDiscountAmount > 0"
+                class="flex justify-between px-3 py-2 my-2 text-sm font-bold border text-emerald-600 bg-emerald-50 rounded-xl border-emerald-100"
+              >
+                <span class="uppercase tracking-widest text-[10px] mt-0.5"
+                  >Bundle Saved</span
+                >
+                <span>
+                  -
+                  {{
+                    formatCurrencyDisplay({
+                      value: bundleDiscountAmount,
+                      curr: currentCurrency,
+                    })
+                  }}
+                </span>
+              </div>
+
+              <div
+                class="flex justify-between pt-4 font-bold text-gray-900 border-t border-gray-200"
+              >
+                <span class="mt-1 text-xs tracking-widest uppercase">{{
+                  $t("payment.grand_total")
+                }}</span>
+                <span class="text-xl text-gycora">{{
+                  formatCurrencyDisplay(grandTotalObj)
+                }}</span>
+              </div>
+
+              <button
+                @click="handlePayment"
+                :disabled="isButtonDisabled"
+                class="mt-8 w-full bg-black hover:bg-gray-800 disabled:bg-gray-300 py-5 rounded-2xl font-bold text-white text-xs uppercase tracking-[0.3em] transition-all duration-500 shadow-xl shadow-black/10 flex justify-center items-center"
+              >
+                <span v-if="!isProcessing">{{ $t("payment.pay_now") }}</span>
+                <span v-else class="flex items-center justify-center gap-2">
+                  <div
+                    class="w-3 h-3 border-2 rounded-full border-white/30 border-t-white animate-spin"
+                  ></div>
+                  {{ $t("payment.processing") }}
+                </span>
+              </button>
+
+              <p
+                v-if="!selectedAddressId"
+                class="mt-4 text-[10px] tracking-tighter text-center text-red-500 uppercase"
+              >
+                {{ $t("payment.select_shipping_address") }}
+              </p>
+              <p
+                v-else-if="shippingMethod === 'biteship' && !selectedRate"
+                class="mt-4 text-[10px] tracking-tighter text-center text-red-500 uppercase"
+              >
+                {{ $t("payment.select_courier_service") }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL ADDRESS YANG SAMA PERSIS DENGAN PROFILE PAGE -->
+    <Teleport to="body">
+      <div
+        v-if="isModalOpen"
+        class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm sm:p-6"
+      >
+        <div
+          class="relative w-full max-w-2xl bg-white shadow-2xl rounded-3xl animate-fade-in flex flex-col max-h-[90vh] md:max-h-[85vh]"
+        >
+          <div
+            class="flex items-center justify-between p-6 border-b border-gray-100 shrink-0 md:p-8 md:pb-6"
+          >
+            <h3 class="text-xl font-bold text-gray-900">
+              {{ $t("profile.add_new_address") }}
+            </h3>
+            <button
+              @click="isModalOpen = false"
+              class="p-2 text-gray-400 transition-colors rounded-full hover:bg-gray-100 hover:text-gray-900 focus:outline-none"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <div class="p-6 overflow-y-auto custom-scrollbar md:p-8 grow">
+            <form @submit.prevent="saveAddress" class="space-y-5">
+              <div
+                class="flex items-center gap-3 p-3.5 border border-blue-100 bg-blue-50 rounded-xl"
+              >
+                <input
+                  type="checkbox"
+                  v-model="form.is_default"
+                  id="def"
+                  class="w-4 h-4 text-blue-600 border-gray-300 rounded cursor-pointer focus:ring-blue-500"
+                />
+                <label
+                  for="def"
+                  class="text-sm font-medium text-blue-900 cursor-pointer select-none"
+                >
+                  {{ $t("profile.set_as_default") }}
+                </label>
+              </div>
+
+              <div class="mb-4">
+                <label
+                  class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
+                >
+                  Country / Region
+                </label>
+                <select
+                  v-model="form.region"
+                  @change="fetchProvinces"
+                  class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  required
+                >
+                  <option v-for="c in countries" :key="c.isoCode" :value="c.name">
+                    {{ c.name }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                  <label
+                    class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
+                    >{{ $t("profile.first_name") }}</label
+                  >
+                  <input
+                    v-model="form.first_name_address"
+                    class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+                    required
+                  />
+                </div>
+                <div>
+                  <label
+                    class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
+                    >{{ $t("profile.last_name") }}</label
+                  >
+                  <input
+                    v-model="form.last_name_address"
+                    class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                  <label
+                    class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
+                    >{{ $t("profile.province") }}</label
+                  >
+                  <select
+                    v-if="filteredProvinces.length > 0"
+                    v-model="form.province"
+                    class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+                    required
+                  >
+                    <option value="" disabled>{{ $t("profile.select_province") }}</option>
+                    <option v-for="p in filteredProvinces" :key="p" :value="p">
+                      {{ p }}
+                    </option>
+                  </select>
+                  <input
+                    v-else
+                    v-model="form.province"
+                    placeholder="State/Province"
+                    class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    required
+                  />
+                </div>
+                <div>
+                  <label
+                    class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
+                    >{{ $t("profile.city") }}</label
+                  >
+                  <input
+                    v-model="form.city"
+                    class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="relative overflow-hidden border border-gray-200 rounded-2xl">
+                <div
+                  class="flex items-start gap-2 px-4 py-3 bg-amber-50 border-b border-amber-100"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="shrink-0 w-4 h-4 mt-0.5 text-amber-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                    />
+                  </svg>
+                  <p class="text-[11px] text-amber-800 leading-relaxed">
+                    <span class="font-bold">{{ $t("profile.pin_location") }}</span> Ensure
+                    the pin matches your exact delivery point.
+                  </p>
+                </div>
+
+                <div
+                  class="flex flex-col sm:flex-row items-center justify-between gap-2 p-3 border-b border-gray-200 bg-gray-50"
+                >
+                  <div class="relative w-full sm:flex-1">
+                    <input
+                      type="text"
+                      v-model="searchQuery"
+                      @input="handleSearchInput"
+                      placeholder="Search area (e.g. Tunjungan Plaza)"
+                      class="w-full px-3 py-2.5 text-xs transition-colors border border-gray-300 outline-none rounded-xl focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                    <div
+                      v-if="searchResults.length > 0"
+                      class="absolute z-[999] mt-1 w-full bg-white border border-gray-200 rounded-xl shadow-lg max-h-40 overflow-y-auto custom-scrollbar"
+                    >
+                      <div
+                        v-for="(result, idx) in searchResults"
+                        :key="idx"
+                        @click="selectSearchResult(result)"
+                        class="px-3 py-2.5 text-xs text-gray-700 border-b cursor-pointer hover:bg-blue-50 last:border-0"
+                      >
+                        {{ result.display_name }}
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    @click="getCurrentLocation"
+                    :disabled="isGettingLocation"
+                    class="w-full sm:w-auto px-4 py-2.5 text-[10px] font-bold tracking-wider text-blue-700 uppercase transition-colors bg-blue-100 rounded-xl hover:bg-blue-200 flex items-center justify-center gap-2"
+                  >
+                    <span
+                      v-if="isGettingLocation"
+                      class="w-3 h-3 border-2 rounded-full border-blue-700 border-t-transparent animate-spin"
+                    ></span>
+                    {{ $t("profile.use_current_loc") }}
+                  </button>
+                </div>
+
+                <div class="relative z-0 w-full h-40 sm:h-56">
+                  <l-map
+                    ref="map"
+                    v-model:zoom="zoom"
+                    :center="center"
+                    :use-global-leaflet="false"
+                    @click="onMapClick"
+                  >
+                    <l-tile-layer
+                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                      layer-type="base"
+                      name="OpenStreetMap"
+                    ></l-tile-layer>
+                    <l-marker
+                      :lat-lng="markerLatLng"
+                      draggable
+                      @update:latLng="onMarkerDrag"
+                    ></l-marker>
+                  </l-map>
+                  <div
+                    class="absolute z-[400] px-2 py-1 font-mono text-[9px] text-gray-600 bg-white/90 rounded shadow bottom-2 right-2 backdrop-blur pointer-events-none border border-gray-200"
+                  >
+                    {{ form.latitude ? parseFloat(form.latitude).toFixed(5) : "-" }},
+                    {{ form.longitude ? parseFloat(form.longitude).toFixed(5) : "-" }}
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label
+                  class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
+                  >{{ $t("profile.complete_address") }}</label
+                >
+                <textarea
+                  v-model="form.address_location"
+                  rows="3"
+                  placeholder="Street name, building, house number..."
+                  class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 resize-none bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none custom-scrollbar"
+                  required
+                ></textarea>
+              </div>
+
+              <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                  <label
+                    class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
+                    >{{ $t("profile.details_opt") }}</label
+                  >
+                  <input
+                    v-model="form.location_type"
+                    placeholder="Apartment, suite, block"
+                    class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
+                    >{{ $t("profile.postal_code") }}</label
+                  >
+                  <input
+                    v-model="form.postal_code"
+                    placeholder="Postal code"
+                    class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="h-2"></div>
+            </form>
+          </div>
+
+          <div
+            class="flex items-center justify-end gap-3 p-6 border-t border-gray-100 shrink-0 md:p-8 md:pt-5 bg-gray-50/50"
+          >
+            <button
+              type="button"
+              @click="isModalOpen = false"
+              class="px-5 py-2.5 text-sm font-bold text-gray-600 transition-colors bg-white border border-gray-300 rounded-xl hover:bg-gray-50 hidden sm:block"
+            >
+              {{ $t("profile.cancel") }}
+            </button>
+            <button
+              type="button"
+              @click="saveAddress"
+              class="px-6 py-2.5 text-sm font-bold text-white transition-colors bg-blue-600 rounded-xl hover:bg-blue-700 shadow-md shadow-blue-500/20"
+            >
+              {{ $t("profile.save_address") }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </Teleport>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, onUnmounted, watch, computed } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { BASE_URL } from "../../config/api.js";
+import { useCart } from "../../composables/useCart.js";
+import { Country, State } from "country-state-city";
+import "leaflet/dist/leaflet.css";
+import { LMap, LTileLayer, LMarker } from "@vue-leaflet/vue-leaflet";
+import L from "leaflet";
+
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: new URL("leaflet/dist/images/marker-icon-2x.png", import.meta.url).href,
+  iconUrl: new URL("leaflet/dist/images/marker-icon.png", import.meta.url).href,
+  shadowUrl: new URL("leaflet/dist/images/marker-shadow.png", import.meta.url).href,
+});
+
+const router = useRouter();
+const route = useRoute();
+const getAxiosConfig = () => ({
+  headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+});
+
+const {
+  cartItems,
+  checkoutCount,
+  checkoutTotalAmount,
+  bundleDiscountAmount,
+  selectedItemIds,
+  clearSelectedCart,
+} = useCart();
+
+const userData = ref(null);
+const addresses = ref([]);
+const selectedAddressId = ref(null);
+const isProcessing = ref(false);
+const shippingMethod = ref("free");
+const selectedRate = ref(null);
+const isLoadingRates = ref(false);
+const deliveryType = ref("now");
+const deliveryDate = ref("");
+const deliveryTime = ref("");
+const promoInput = ref("");
+const appliedPromoCode = ref(null);
+const promoDiscountAmount = ref(0);
+const appliedPromoType = ref(null);
+const promoMessage = ref("");
+const promoSuccess = ref(false);
+const isVerifyingPromo = ref(false);
+const rawShippingRates = ref([]);
+const isPageLoading = ref(true);
+
+const pointsToUse = ref(0);
+const availablePoints = ref(0);
+
+const userType = ref("guest");
+const useMemberVoucher = ref(false);
+const MEMBER_VOUCHER_CODE = "SOLHERMEMBER";
+const MEMBER_MIN_SPEND = 500000;
+const currentCurrency = ref(localStorage.getItem("currency") || "IDR");
+const exchangeRates = ref({});
+
+const updateCurrencyState = () => {
+  currentCurrency.value = localStorage.getItem("currency") || "IDR";
+};
+
+const catalogProducts = ref([]);
+const getFreshProduct = (cartProduct) => {
+  if (catalogProducts.value.length > 0 && cartProduct) {
+    const fresh = catalogProducts.value.find((p) => p.id === cartProduct.id);
+    if (fresh) return fresh;
+  }
+  return cartProduct;
+};
+
+const convertToWIB = (dateString) => {
+  if (!dateString) return null;
+  const date = new Date(dateString);
+  date.setHours(date.getHours() - 7);
+  return date;
+};
+
+const getDiscountStatus = (p) => {
+  if (!p) return { active: false };
+  if (!p.discount_start_date && !p.discount_end_date) {
+    return { active: true };
+  }
+  const now = new Date();
+  let active = true;
+  if (p.discount_start_date) {
+    const startDate = convertToWIB(p.discount_start_date);
+    if (now < startDate) active = false;
+  }
+  if (p.discount_end_date) {
+    const endDate = convertToWIB(p.discount_end_date);
+    if (now > endDate) active = false;
+  }
+  return { active };
+};
+
+const getPriceToDisplay = (product) => {
+  if (!product) return { value: 0, curr: "IDR" };
+  const curr = currentCurrency.value;
+  if (curr === "IDR") return { value: Number(product.price), curr: "IDR" };
+  try {
+    const pricesObj =
+      typeof product.prices === "string"
+        ? JSON.parse(product.prices)
+        : product.prices || {};
+    const dbPrice =
+      pricesObj[curr] ||
+      pricesObj[curr.toLowerCase()] ||
+      pricesObj[currentCurrency.value.toUpperCase()];
+    if (dbPrice) return { value: parseFloat(dbPrice), curr: curr };
+  } catch (e) {}
+  return { value: Number(product.price), curr: "IDR" };
+};
+
+const getDiscountToDisplay = (product) => {
+  if (!product) return null;
+  const curr = currentCurrency.value;
+  if (curr === "IDR")
+    return product.discount_price
+      ? { value: Number(product.discount_price), curr: "IDR" }
+      : null;
+  try {
+    const discObj =
+      typeof product.discount_prices === "string"
+        ? JSON.parse(product.discount_prices)
+        : product.discount_prices || {};
+    const dbDisc =
+      discObj[curr] ||
+      discObj[curr.toLowerCase()] ||
+      discObj[currentCurrency.value.toUpperCase()];
+    if (dbDisc) return { value: parseFloat(dbDisc), curr: curr };
+  } catch (e) {}
+  return product.discount_price
+    ? { value: Number(product.discount_price), curr: "IDR" }
+    : null;
+};
+
+const formatCurrencyDisplay = (priceObj) => {
+  if (!priceObj) return "";
+  const { value, curr } = priceObj;
+  const symbols = { USD: "$", SGD: "S$", EUR: "€", AUD: "A$", MYR: "RM", IDR: "Rp " };
+  const formatter = new Intl.NumberFormat(curr === "IDR" ? "id-ID" : "en-US", {
+    minimumFractionDigits: curr === "IDR" ? 0 : 2,
+    maximumFractionDigits: curr === "IDR" ? 0 : 2,
+  });
+  return `${symbols[curr] || curr + " "}${formatter.format(value)}`;
+};
+
+const getActivePriceObj = (product) => {
+  const isReseller = userType.value === "reseller";
+  const wholesale = Number(product.wholesale_price) || 0;
+  const voucher = Number(product.voucher_discount_price) || 0;
+  if (appliedPromoType.value === "voucher" && voucher > 0) {
+    return { value: voucher, curr: "IDR" };
+  }
+  const dynamicPriceObj = getPriceToDisplay(product);
+  let dynamicDiscountObj = null;
+  if (getDiscountStatus(product).active) {
+    dynamicDiscountObj = getDiscountToDisplay(product);
+  }
+  if (isReseller && wholesale > 0 && checkoutCount.value >= 24) {
+    return { value: wholesale, curr: "IDR" };
+  } else if (
+    dynamicDiscountObj &&
+    dynamicDiscountObj.value > 0 &&
+    dynamicDiscountObj.value < dynamicPriceObj.value
+  ) {
+    return dynamicDiscountObj;
+  }
+  return dynamicPriceObj;
+};
+
+const convertIDRtoActiveCurrency = (idrAmount) => {
+  const curr = currentCurrency.value;
+  if (curr === "IDR" || !exchangeRates.value[curr])
+    return { value: idrAmount, curr: "IDR" };
+  return { value: idrAmount * exchangeRates.value[curr], curr: curr };
+};
+
+const checkoutItems = computed(() => {
+  const ids = selectedItemIds?.value || selectedItemIds || [];
+  let baseItems = (cartItems.value || []).filter((item) => ids.includes(item.id));
+  if (catalogProducts.value.length > 0) {
+    baseItems = baseItems.map((item) => {
+      const fresh = catalogProducts.value.find((p) => p.id === item.product_id);
+      return fresh ? { ...item, product: fresh } : item;
+    });
+  }
+  return baseItems;
+});
+
+const checkoutTotalIDR = computed(() => {
+  return checkoutItems.value.reduce((sum, item) => {
+    const freshProd = getFreshProduct(item.product);
+    const isReseller = userType.value === "reseller";
+    const wholesale = Number(freshProd.wholesale_price) || 0;
+    const discount = getDiscountStatus(freshProd).active
+      ? Number(freshProd.discount_price) || 0
+      : 0;
+    let priceToUse = Number(freshProd.price) || 0;
+    if (isReseller && wholesale > 0 && checkoutCount.value >= 24) {
+      priceToUse = wholesale;
+    } else if (discount > 0 && discount < priceToUse) {
+      priceToUse = discount;
+    }
+    if (
+      appliedPromoType.value === "voucher" &&
+      Number(freshProd.voucher_discount_price) > 0
+    ) {
+      priceToUse = Number(freshProd.voucher_discount_price);
+    }
+    return sum + priceToUse * item.quantity;
+  }, 0);
+});
+
+const cartSubtotalObj = computed(() => {
+  const curr = currentCurrency.value;
+  const totalValue = checkoutItems.value.reduce((sum, item) => {
+    const activeObj = getActivePriceObj(item.product);
+    let val = activeObj.value;
+    if (activeObj.curr === "IDR" && curr !== "IDR") {
+      val = val * (exchangeRates.value[curr] || 1);
+    }
+    return sum + val * item.quantity;
+  }, 0);
+  return { value: totalValue, curr };
+});
+
+const actualPromoDiscountIDR = computed(() => {
+  return promoDiscountAmount.value;
+});
+
+const actualPromoDiscountObj = computed(() =>
+  convertIDRtoActiveCurrency(actualPromoDiscountIDR.value)
+);
+
+const maxPointsAllowed = computed(() => {
+  const maxUsableAmount = Math.max(
+    0,
+    checkoutTotalIDR.value - actualPromoDiscountIDR.value
+  );
+  return Math.min(availablePoints.value, Math.floor(maxUsableAmount / 1000));
+});
+
+watch([pointsToUse, maxPointsAllowed], () => {
+  if (pointsToUse.value > maxPointsAllowed.value) {
+    pointsToUse.value = maxPointsAllowed.value;
+  }
+});
+
+const appliedPointDiscountIDR = computed(() => (pointsToUse.value || 0) * 1000);
+const appliedPointDiscountObj = computed(() =>
+  convertIDRtoActiveCurrency(appliedPointDiscountIDR.value)
+);
+
+const shippingCostIDR = computed(() =>
+  shippingMethod.value === "biteship" && selectedRate.value
+    ? parseFloat(selectedRate.value.price)
+    : 0
+);
+const shippingCostObj = computed(() => convertIDRtoActiveCurrency(shippingCostIDR.value));
+
+const grandTotalObj = computed(() => {
+  const calculatedTotal =
+    cartSubtotalObj.value.value -
+    bundleDiscountAmount.value +
+    shippingCostObj.value.value -
+    actualPromoDiscountObj.value.value -
+    appliedPointDiscountObj.value.value;
+
+  return {
+    value: Math.max(0, calculatedTotal),
+    curr: currentCurrency.value,
+  };
+});
+
+const parseColorName = (colorString) => {
+  if (!colorString) return "";
+  try {
+    const parsed = JSON.parse(colorString);
+    if (parsed.name) return parsed.name;
+  } catch {}
+  return colorString.includes("|") ? colorString.split("|")[0] : colorString;
+};
+
+const parseColorHex = (colorString) => {
+  if (!colorString) return "#cccccc";
+  try {
+    const parsed = JSON.parse(colorString);
+    if (parsed.hex) return parsed.hex;
+  } catch {}
+  return colorString.includes("|") ? colorString.split("|")[1] : colorString;
+};
+
+const imageErrors = ref({});
+const handleImageError = (company) => {
+  imageErrors.value[company] = true;
+};
+
+const destinationInfo = computed(() => {
+  if (!selectedAddressId.value || !addresses.value) return null;
+  const addr = addresses.value.find((a) => a.id === selectedAddressId.value);
+  if (!addr) return null;
+
+  return {
+    name: addr.receiver?.full_name || "Unknown",
+    phone: userData.value?.phone || "No Phone Provided",
+    address: `${addr.details?.location || ""}, ${addr.details?.city || ""}, ${
+      addr.details?.province || ""
+    }`,
+    postal_code: addr.postal_code || addr.details?.postal_code || "",
+    country: addr.region || addr.details?.region || "Indonesia",
+  };
+});
+
+const getCourierLogo = (company) => {
+  const baseUrl = "/courier_images/";
+  const map = {
+    jne: "jne.png",
+    sicepat: "sicepat.png",
+    jnt: "jnt.png",
+    anteraja: "anteraja.png",
+    gojek: "gojek.png",
+    grab: "grab.png",
+    paxel: "paxel.png",
+    ninja: "ninja.png",
+    dhl: "dhl.png",
+  };
+  return map[company.toLowerCase()] ? baseUrl + map[company.toLowerCase()] : null;
+};
+
+const isModalOpen = ref(false);
+const countries = ref(Country.getAllCountries());
+const filteredProvinces = ref([]);
+
+const form = ref({
+  id: null,
+  region: "Indonesia",
+  first_name_address: "",
+  last_name_address: "",
+  address_location: "",
+  location_type: "",
+  city: "",
+  province: "",
+  postal_code: "",
+  latitude: null,
+  longitude: null,
+  is_default: true,
+});
+
+const fetchProvinces = () => {
+  const selectedCountry = countries.value.find((c) => c.name === form.value.region);
+  if (selectedCountry) {
+    const states = State.getStatesOfCountry(selectedCountry.isoCode);
+    filteredProvinces.value = states.map((s) => s.name);
+  } else {
+    filteredProvinces.value = [];
+  }
+};
+
+const openModal = () => {
+  form.value = {
+    region: "Indonesia",
+    is_default: true,
+    first_name_address: userData.value?.first_name || "",
+    last_name_address: userData.value?.last_name || "",
+    address_location: "",
+    location_type: "",
+    city: "",
+    province: "",
+    postal_code: "",
+    latitude: null,
+    longitude: null,
+  };
+  center.value = [-7.250445, 112.768845];
+  markerLatLng.value = [-7.250445, 112.768845];
+  fetchProvinces();
+  isModalOpen.value = true;
+
+  setTimeout(() => {
+    if (map.value && map.value.leafletObject) {
+      map.value.leafletObject.invalidateSize();
+    }
+  }, 300);
+};
+
+const handleSearchInput = () => {
+  if (debounceTimeout) clearTimeout(debounceTimeout);
+  if (searchQuery.value.length < 3) {
+    searchResults.value = [];
+    return;
+  }
+  debounceTimeout = setTimeout(async () => {
+    try {
+      const res = await axios.get(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${searchQuery.value}&countrycodes=id&limit=5`
+      );
+      searchResults.value = res.data;
+    } catch (error) {}
+  }, 500);
+};
+
+const selectSearchResult = (result) => {
+  const lat = parseFloat(result.lat);
+  const lng = parseFloat(result.lon);
+
+  if (map.value && map.value.leafletObject) {
+    map.value.leafletObject.flyTo([lat, lng], 16);
+  } else {
+    center.value = [lat, lng];
+    zoom.value = 16;
+  }
+
+  markerLatLng.value = [lat, lng];
+  form.value.latitude = lat.toString();
+  form.value.longitude = lng.toString();
+  form.value.address_location = result.display_name;
+  searchResults.value = [];
+  searchQuery.value = "";
+};
+
+const onMapClick = (event) => {
+  const { lat, lng } = event.latlng;
+  updateLocation(lat, lng);
+};
+const onMarkerDrag = (event) => {
+  const { lat, lng } = event.target.getLatLng();
+  updateLocation(lat, lng);
+};
+const updateLocation = (lat, lng) => {
+  markerLatLng.value = [lat, lng];
+  form.value.latitude = lat.toString();
+  form.value.longitude = lng.toString();
+  reverseGeocode(lat, lng);
+};
+
+const reverseGeocode = async (lat, lng) => {
+  try {
+    const res = await axios.get(
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+    );
+    if (res.data && res.data.display_name) {
+      form.value.address_location = res.data.display_name;
+      if (res.data.address && res.data.address.postcode)
+        form.value.postal_code = res.data.address.postcode;
+    }
+  } catch (error) {}
+};
+
+const isGettingLocation = ref(false);
+
+const getCurrentLocation = () => {
+  isGettingLocation.value = true;
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+
+        if (map.value && map.value.leafletObject) {
+          map.value.leafletObject.flyTo([lat, lng], 16);
+        } else {
+          center.value = [lat, lng];
+          zoom.value = 16;
+        }
+
+        updateLocation(lat, lng);
+        isGettingLocation.value = false;
+      },
+      () => {
+        Swal.fire("Error", "Please allow location access.", "error");
+        isGettingLocation.value = false;
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  } else {
+    Swal.fire("Error", "Geolocation not supported", "error");
+    isGettingLocation.value = false;
+  }
+};
+
+const map = ref(null);
+const zoom = ref(13);
+const center = ref([-7.250445, 112.768845]);
+const markerLatLng = ref([-7.250445, 112.768845]);
+const searchQuery = ref("");
+const searchResults = ref([]);
+let debounceTimeout = null;
+
+const saveAddress = async () => {
+  try {
+    const res = await axios.post(`${BASE_URL}/addresses`, form.value, getAxiosConfig());
+    isModalOpen.value = false;
+    const resAddr = await axios.get(`${BASE_URL}/addresses`, getAxiosConfig());
+
+    const addrData = resAddr.data?.data !== undefined ? resAddr.data.data : resAddr.data;
+    addresses.value = Array.isArray(addrData) ? addrData : [];
+
+    selectedAddressId.value =
+      res.data.id || addresses.value[addresses.value.length - 1]?.id;
+    Swal.fire({
+      toast: true,
+      position: "top-end",
+      icon: "success",
+      title: "Address Saved!",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  } catch (e) {
+    Swal.fire("Error", "Failed to save address", "error");
+  }
+};
+
+const isButtonDisabled = computed(() => {
+  if (isProcessing.value || cartItems.value.length === 0 || !selectedAddressId.value)
+    return true;
+  if (shippingMethod.value === "biteship") {
+    if (!selectedRate.value) return true;
+    if (
+      deliveryType.value === "scheduled" &&
+      (!deliveryDate.value || !deliveryTime.value)
+    )
+      return true;
+  }
+  return false;
+});
+
+watch(selectedAddressId, async (newVal) => {
+  if (newVal) {
+    const ids = selectedItemIds?.value || selectedItemIds;
+    if (!ids || ids.length === 0) return;
+
+    selectedRate.value = null;
+    isLoadingRates.value = true;
+    rawShippingRates.value = [];
+    try {
+      const res = await axios.post(
+        `${BASE_URL}/shipping/rates`,
+        { address_id: newVal, cart_ids: ids },
+        getAxiosConfig()
+      );
+      if (res.data && res.data.data) {
+        rawShippingRates.value = res.data.data;
+      } else if (res.data && res.data.rates) {
+        rawShippingRates.value = res.data.rates;
+      } else if (res.data && res.data.pricing) {
+        rawShippingRates.value = res.data.pricing;
+      }
+    } catch (error) {
+      if (error.response?.status === 401) return router.push("/login");
+    } finally {
+      isLoadingRates.value = false;
+    }
+  }
+});
+
+const processedShippingRates = computed(() => {
+  if (!rawShippingRates.value || rawShippingRates.value.length === 0) return [];
+  return rawShippingRates.value.map((rate) => {
+    const isShippo = rate.provider !== undefined;
+    return {
+      ...rate,
+      company: isShippo ? rate.provider : rate.company,
+      type: isShippo ? rate.service_name : rate.type,
+      duration: isShippo ? rate.etd : rate.duration,
+      courier_name: isShippo ? "Global Express" : rate.courier_name,
+      price: rate.price,
+      is_disabled: false,
+      disable_reason: "",
+    };
+  });
+});
+
+const handlePayment = async () => {
+  isProcessing.value = true;
+  try {
+    const ids = selectedItemIds?.value || selectedItemIds;
+    const payload = {
+      address_id: selectedAddressId.value,
+      shipping_method: shippingMethod.value,
+      use_points: pointsToUse.value || 0,
+      cart_ids: ids,
+      courier_company:
+        shippingMethod.value === "biteship" ? selectedRate.value?.company : null,
+      courier_type: shippingMethod.value === "biteship" ? selectedRate.value?.type : null,
+      shipping_cost:
+        shippingMethod.value === "biteship" ? selectedRate.value?.price : null,
+      delivery_type: shippingMethod.value === "biteship" ? deliveryType.value : null,
+      delivery_date: shippingMethod.value === "biteship" ? deliveryDate.value : null,
+      delivery_time: shippingMethod.value === "biteship" ? deliveryTime.value : null,
+      promo_code: appliedPromoCode.value,
+      promo_type: appliedPromoType.value,
+      currency: currentCurrency.value,
+      referral_code: localStorage.getItem("affiliate_ref"),
+    };
+
+    const idempotencyKey = crypto.randomUUID();
+
+    const res = await axios.post(`${BASE_URL}/checkout`, payload, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "X-Idempotency-Key": idempotencyKey,
+      },
+    });
+
+    if (res.data.checkout_url) {
+      clearSelectedCart();
+      window.location.href = res.data.checkout_url;
+    }
+  } catch (error) {
+    Swal.fire(
+      "Payment Error",
+      error.response?.data?.message || "Failed to create invoice",
+      "error"
+    );
+  } finally {
+    isProcessing.value = false;
+  }
+};
+
+onMounted(async () => {
+  window.addEventListener("currency-changed", updateCurrencyState);
+  window.addEventListener("storage", (e) => {
+    if (e.key === "currency") updateCurrencyState();
+  });
+
+  try {
+    const [resExchange, resCatalog, resUser, resAddr] = await Promise.allSettled([
+      axios.get(`${BASE_URL}/exchange-rates`),
+      axios.get(`${BASE_URL}/products`),
+      axios.get(`${BASE_URL}/user`, getAxiosConfig()),
+      axios.get(`${BASE_URL}/addresses`, getAxiosConfig()),
+    ]);
+
+    if (resExchange.status === "fulfilled" && resExchange.value.data?.data?.rates) {
+      exchangeRates.value = resExchange.value.data.data.rates;
+    }
+
+    if (resCatalog.status === "fulfilled") {
+      const dataCat =
+        resCatalog.value.data?.data?.data ||
+        resCatalog.value.data?.data ||
+        resCatalog.value.data;
+      if (Array.isArray(dataCat)) {
+        catalogProducts.value = dataCat;
+      }
+    }
+
+    if (resUser.status === "fulfilled" && resUser.value.data) {
+      userData.value = resUser.value.data;
+      availablePoints.value = resUser.value.data.point || 0;
+      userType.value = resUser.value.data.usertype || "user";
+      localStorage.setItem("user", JSON.stringify(resUser.value.data));
+    } else {
+      const userStr = localStorage.getItem("user") || localStorage.getItem("user_data");
+      if (userStr) {
+        userData.value = JSON.parse(userStr);
+        availablePoints.value = userData.value.point || 0;
+        userType.value = userData.value.usertype || "user";
+      }
+    }
+
+    if (resAddr.status === "fulfilled") {
+      const addrData =
+        resAddr.value.data.data !== undefined
+          ? resAddr.value.data.data
+          : resAddr.value.data;
+      addresses.value = Array.isArray(addrData) ? addrData : [];
+      if (addresses.value.length > 0) {
+        const defaultAddr = addresses.value.find((a) => a.is_default);
+        selectedAddressId.value = defaultAddr ? defaultAddr.id : addresses.value[0].id;
+      }
+    }
+
+    const ids = selectedItemIds?.value || selectedItemIds || [];
+    if (ids.length === 0) {
+      router.push(`/cart`);
+    } else {
+      const now = new Date();
+      now.setHours(now.getHours() + 1);
+      deliveryDate.value = now.toISOString().split("T")[0];
+      deliveryTime.value = `${String(now.getHours()).padStart(2, "0")}:${String(
+        now.getMinutes()
+      ).padStart(2, "0")}`;
+    }
+  } catch (error) {
+    console.error("Initialization error", error);
+  } finally {
+    isPageLoading.value = false;
+  }
+});
+
+onUnmounted(() => {
+  window.removeEventListener("currency-changed", updateCurrencyState);
+});
+
+const calculateEarnedPoints = computed(() => Math.floor(checkoutTotalIDR.value / 100000));
+
+const handleMemberToggle = async () => {
+  if (useMemberVoucher.value) {
+    if (checkoutTotalIDR.value < MEMBER_MIN_SPEND) {
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "warning",
+        title: `Min. spend is Rp ${MEMBER_MIN_SPEND.toLocaleString("id-ID")}`,
+        showConfirmButton: false,
+        timer: 3000,
+      });
+      useMemberVoucher.value = false;
+      return;
+    }
+    promoInput.value = MEMBER_VOUCHER_CODE;
+    await applyPromo();
+    if (!promoSuccess.value) useMemberVoucher.value = false;
+  } else {
+    if (appliedPromoCode.value === MEMBER_VOUCHER_CODE) removePromo();
+  }
+};
+
+const applyPromo = async () => {
+  if (!promoInput.value) return;
+  isVerifyingPromo.value = true;
+  try {
+    const codeToBeApplied = promoInput.value.toUpperCase();
+
+    // 👇 [BARU] VALIDASI FRONTEND UNTUK MERDEKA17 👇
+    if (codeToBeApplied === "MERDEKA17" && checkoutTotalIDR.value < 699000) {
+      throw new Error(`Minimum pembelian untuk promo ini adalah Rp 699.000`);
+    }
+
+    const res = await axios.post(
+      `${BASE_URL}/promo/verify`,
+      {
+        promo_code: codeToBeApplied,
+        cart_items: checkoutItems.value.map((item) => ({
+          product_id: item.product_id,
+          quantity: item.quantity,
+        })),
+      },
+      getAxiosConfig()
+    );
+
+    if (
+      codeToBeApplied === MEMBER_VOUCHER_CODE &&
+      checkoutTotalIDR.value < MEMBER_MIN_SPEND
+    ) {
+      throw new Error(`Minimum spend is Rp ${MEMBER_MIN_SPEND.toLocaleString("id-ID")}`);
+    }
+
+    promoSuccess.value = true;
+    promoMessage.value = "✅ " + res.data.message;
+    appliedPromoCode.value = codeToBeApplied;
+    promoDiscountAmount.value = Math.min(res.data.discount_value, checkoutTotalIDR.value);
+
+    appliedPromoType.value = res.data.promo_type;
+
+    if (appliedPromoCode.value === MEMBER_VOUCHER_CODE) useMemberVoucher.value = true;
+
+    // 👇 [BARU] Kunci penggunaan poin jika promo spesial aktif 👇
+    if (
+      appliedPromoCode.value === "SOLHOST34" ||
+      appliedPromoCode.value === "MERDEKA17"
+    ) {
+      pointsToUse.value = 0;
+    }
+
     if (pointsToUse.value > maxPointsAllowed.value)
       pointsToUse.value = maxPointsAllowed.value;
   } catch (error) {
