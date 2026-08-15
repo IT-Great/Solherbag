@@ -5593,16 +5593,16 @@ onUnmounted(() => {
                   <path d="M0,0 Q18,4 36,0 L36,12 Q18,16 0,12 Z" fill="#ed2939" />
                   <path d="M0,12 Q18,16 36,12 L36,24 Q18,28 0,24 Z" fill="#ffffff" />
                 </svg> -->
-                <svg viewBox="0 0 36 24" class="w-8 h-auto drop-shadow-sm opacity-90">
-                  <!-- Bagian Merah: Gelombang atas (6 ke 2 ke 10 ke 6) dan bawah (18 ke 22 ke 14 ke 18) -->
+                <svg viewBox="0 0 36 30" class="w-8 h-auto drop-shadow-sm opacity-90">
+                  <!-- Bagian Merah -->
                   <path
-                    d="M0,6 C9,2 18,10 36,6 L36,18 C27,22 18,14 0,18 Z"
+                    d="M 0 3 C 12 0, 24 6, 36 3 L 36 15 C 24 18, 12 12, 0 15 Z"
                     fill="#ed2939"
                   />
 
-                  <!-- Bagian Putih: Mengikuti lengkungan merah di atas, dan melengkung di bagian bawah -->
+                  <!-- Bagian Putih (Salinan presisi gelombang merah yang digeser ke bawah) -->
                   <path
-                    d="M0,18 C9,14 18,22 36,18 L36,24 C27,28 18,20 0,24 Z"
+                    d="M 0 15 C 12 12, 24 18, 36 15 L 36 27 C 24 30, 12 24, 0 27 Z"
                     fill="#ffffff"
                   />
                 </svg>
