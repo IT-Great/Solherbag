@@ -5753,11 +5753,12 @@ import { useI18n } from "vue-i18n";
 
 import banner1 from "../../assets/first_banner.png";
 import banner2 from "../../assets/second_banner.png";
+import banner3 from "../../assets/third_banner.jpeg";
 
 // 👇 KONFIGURASI TIPE POPUP (Ganti 'merdeka' ke 'default' untuk mengembalikan ke popup awal) 👇
 const ACTIVE_POPUP = ref("merdeka");
 
-const banners = [banner1, banner2];
+const banners = [banner1, banner2, banner3];
 const currentBannerIndex = ref(0);
 const currentBanner = computed(() => banners[currentBannerIndex.value]);
 let slideInterval = null;
