@@ -5542,10 +5542,11 @@ onUnmounted(() => {
         class="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm px-4"
         @click.self="closePopup"
       >
+        <!-- Left Side (Image) -->
         <!-- 👇 POPUP 17 AGUSTUS (MERDEKA) 👇 -->
         <div
           v-if="ACTIVE_POPUP === 'merdeka'"
-          class="relative flex flex-col w-full max-w-[850px] overflow-hidden bg-white shadow-2xl md:flex-row rounded-xl md:rounded-none"
+          class="relative flex flex-col w-full max-w-[760px] max-h-[90vh] overflow-hidden bg-white shadow-2xl md:flex-row rounded-xl md:rounded-none"
         >
           <button
             @click="closePopup"
