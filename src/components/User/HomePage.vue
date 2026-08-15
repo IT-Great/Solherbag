@@ -5564,11 +5564,11 @@ onUnmounted(() => {
           <!-- Left Side (Image) -->
           <div class="relative hidden bg-gray-100 md:block md:w-1/2">
             <img
-              src="../../assets/DSCF2648.jpg"
+              src="../../assets/DSCF2474.jpg"
               alt="Merdeka Campaign"
               class="object-cover w-full h-full"
             />
-            <div
+            <!-- <div
               class="absolute inset-0 flex flex-col items-center px-6 pt-12 text-center"
             >
               <h3
@@ -5590,7 +5590,7 @@ onUnmounted(() => {
                   CLAIM YOUR FREEDOM DEAL
                 </span>
               </div>
-            </div>
+            </div> -->
           </div>
 
           <!-- Right Side (Form) -->
