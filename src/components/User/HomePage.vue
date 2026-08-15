@@ -5546,7 +5546,7 @@ onUnmounted(() => {
         <!-- 👇 POPUP 17 AGUSTUS (MERDEKA) 👇 -->
         <div
           v-if="ACTIVE_POPUP === 'merdeka'"
-          class="relative flex flex-col w-full max-w-[760px] max-h-[100vh] overflow-hidden bg-white shadow-2xl md:flex-row rounded-xl md:rounded-none"
+          class="relative flex flex-col w-full max-w-[950px] max-h-[90vh] overflow-hidden bg-white shadow-2xl md:flex-row rounded-xl md:rounded-none"
         >
           <button
             @click="closePopup"
@@ -5562,36 +5562,13 @@ onUnmounted(() => {
             </svg>
           </button>
 
-          <!-- Left Side (Image) -->
+          <!-- Left Side (Image Only) -->
           <div class="relative hidden bg-gray-100 md:block md:w-1/2">
             <img
               src="../../assets/DSCF2474.jpg"
               alt="Merdeka Campaign"
               class="object-cover w-full h-full"
             />
-            <!-- <div
-              class="absolute inset-0 flex flex-col items-center px-6 pt-12 text-center"
-            >
-              <h3
-                class="font-serif text-white text-[28px] tracking-wide leading-tight"
-                style="text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7)"
-              >
-                Independence Isn't<br />Just a Date
-              </h3>
-              <p
-                class="text-white font-bold text-[16px] tracking-widest mt-2"
-                style="text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8)"
-              >
-                17% OFF, Up To Rp500K
-              </p>
-              <div class="mt-4">
-                <span
-                  class="bg-[#8B1A2A] text-white text-[10px] px-6 py-2 rounded-full uppercase tracking-widest font-bold shadow-lg border border-white/20"
-                >
-                  CLAIM YOUR FREEDOM DEAL
-                </span>
-              </div>
-            </div> -->
           </div>
 
           <!-- Right Side (Form) -->
@@ -5621,16 +5598,22 @@ onUnmounted(() => {
               Independence<br />With 17% Off
             </h2>
 
+            <!-- Exact Alignment untuk Persyaratan Pembelian -->
             <p
               class="text-[14px] md:text-[15px] text-gray-900 font-medium mb-6 leading-snug"
             >
               Up to <strong class="font-black text-black">Rp500,000</strong> off, with
-              minimum purchase of<br />Rp699,000
+              minimum<br />
+              purchase of<br />
+              Rp699,000
             </p>
 
+            <!-- Exact Alignment untuk Pesan Kemerdekaan -->
             <p class="text-[13px] text-gray-600 leading-[1.6] mb-8 w-full max-w-[340px]">
-              This Independence Day, we're celebrating the women<br />
-              who carry their own kind of freedom — quietly, gracefully,<br />
+              This Independence Day, we're celebrating the<br />
+              women<br />
+              who carry their own kind of freedom — quietly,<br />
+              gracefully,<br />
               every day. Enjoy 17% off sitewide, today only.
             </p>
 
@@ -5639,7 +5622,7 @@ onUnmounted(() => {
                 type="email"
                 v-model="promoEmail"
                 placeholder="Enter your email to unlock your offer..."
-                class="w-full border border-gray-300 bg-white px-4 py-3.5 mb-4 text-[13px] font-sans focus:outline-none focus:ring-1 focus:ring-black focus:border-black placeholder-gray-400 transition-all text-center"
+                class="w-full border-2 border-gray-200 bg-white px-4 py-3.5 mb-4 text-[13px] font-sans focus:outline-none focus:ring-1 focus:ring-black focus:border-black placeholder-gray-400 transition-all text-center"
               />
               <button
                 @click="claimPromo"
