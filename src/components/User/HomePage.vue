@@ -5586,12 +5586,27 @@ onUnmounted(() => {
             >
               <div class="flex items-center justify-center gap-3 mb-1">
                 <!-- SVG BENDERA INDONESIA (Sedikit melengkung ala emoji) -->
-                <svg
+                <!-- <svg
                   viewBox="0 0 36 24"
                   class="w-8 h-auto border border-gray-100 rounded-sm shadow-sm opacity-90"
                 >
                   <path d="M0,0 Q18,4 36,0 L36,12 Q18,16 0,12 Z" fill="#ed2939" />
                   <path d="M0,12 Q18,16 36,12 L36,24 Q18,28 0,24 Z" fill="#ffffff" />
+                </svg> -->
+                <svg
+                  viewBox="0 0 36 24"
+                  class="w-8 h-auto border border-gray-100 rounded-sm shadow-sm opacity-90"
+                >
+                  <!-- Bagian Merah (Gelombang atas & bawah) -->
+                  <path
+                    d="M0,4 C9,0 18,8 36,4 L36,16 C27,20 18,12 0,16 Z"
+                    fill="#ed2939"
+                  />
+                  <!-- Bagian Putih (Mengikuti gelombang bagian bawah merah) -->
+                  <path
+                    d="M0,16 C9,12 18,20 36,16 L36,22 C27,24 18,20 0,22 Z"
+                    fill="#ffffff"
+                  />
                 </svg>
                 <span>Celebrate</span>
               </div>
@@ -5602,7 +5617,8 @@ onUnmounted(() => {
             <p
               class="text-[14px] md:text-[15px] text-gray-900 font-medium mb-6 leading-snug"
             >
-              Up to <strong class="font-black text-black">Rp500,000</strong> off, with
+              Up to
+              <strong class="font-black text-black">Rp500,000</strong> off, with
               minimum<br />
               purchase of Rp699,000
             </p>
@@ -5677,7 +5693,8 @@ onUnmounted(() => {
             <h2
               class="text-[28px] md:text-[34px] font-serif text-[#111] mb-4 tracking-tight leading-tight"
             >
-              <span class="font-bold">{{ $t("home.popup_first_cta") }}</span> <br />
+              <span class="font-bold">{{ $t("home.popup_first_cta") }}</span>
+              <br />
               <span class="font-extrabold whitespace-nowrap"
                 >{{ $t("home.popup_price_section_one") }}&nbsp;{{
                   $t("home.popup_price_section_two")
