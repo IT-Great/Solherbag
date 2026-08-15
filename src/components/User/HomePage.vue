@@ -5268,6 +5268,7 @@ onUnmounted(() => {
       </div>
     </div>
 
+    <!-- WHY CHOOSE US / VALUE PROPOSITION SECTION -->
     <div class="w-full py-24 bg-white border-t border-gray-100">
       <div class="px-6 mx-auto max-w-[1600px]">
         <div v-reveal class="mb-16 text-center">
@@ -5288,7 +5289,7 @@ onUnmounted(() => {
           <!-- Value 1 -->
           <div class="flex flex-col items-center text-center group">
             <div
-              class="flex items-center justify-center w-20 h-20 mb-6 transition-transform duration-500 bg-gray-50 rounded-full group-hover:scale-110 group-hover:bg-black group-hover:text-white text-gray-900"
+              class="flex items-center justify-center w-20 h-20 mb-6 text-gray-900 transition-transform duration-500 rounded-full bg-gray-50 group-hover:scale-110 group-hover:bg-black group-hover:text-white"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -5316,7 +5317,7 @@ onUnmounted(() => {
           <!-- Value 2 -->
           <div class="flex flex-col items-center text-center group">
             <div
-              class="flex items-center justify-center w-20 h-20 mb-6 transition-transform duration-500 bg-gray-50 rounded-full group-hover:scale-110 group-hover:bg-black group-hover:text-white text-gray-900"
+              class="flex items-center justify-center w-20 h-20 mb-6 text-gray-900 transition-transform duration-500 rounded-full bg-gray-50 group-hover:scale-110 group-hover:bg-black group-hover:text-white"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -5344,7 +5345,7 @@ onUnmounted(() => {
           <!-- Value 3 -->
           <div class="flex flex-col items-center text-center group">
             <div
-              class="flex items-center justify-center w-20 h-20 mb-6 transition-transform duration-500 bg-gray-50 rounded-full group-hover:scale-110 group-hover:bg-black group-hover:text-white text-gray-900"
+              class="flex items-center justify-center w-20 h-20 mb-6 text-gray-900 transition-transform duration-500 rounded-full bg-gray-50 group-hover:scale-110 group-hover:bg-black group-hover:text-white"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -5372,7 +5373,7 @@ onUnmounted(() => {
           <!-- Value 4 -->
           <div class="flex flex-col items-center text-center group">
             <div
-              class="flex items-center justify-center w-20 h-20 mb-6 transition-transform duration-500 bg-gray-50 rounded-full group-hover:scale-110 group-hover:bg-black group-hover:text-white text-gray-900"
+              class="flex items-center justify-center w-20 h-20 mb-6 text-gray-900 transition-transform duration-500 rounded-full bg-gray-50 group-hover:scale-110 group-hover:bg-black group-hover:text-white"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -5561,34 +5562,40 @@ onUnmounted(() => {
           </button>
 
           <!-- Left Side (Image) -->
-          <div class="relative hidden md:block md:w-1/2 bg-gray-900">
-            <!-- Ganti src dengan gambar model 17an Anda -->
+          <div class="relative hidden bg-gray-100 md:block md:w-1/2">
             <img
               src="../../assets/DSCF2648.jpg"
               alt="Merdeka Campaign"
-              class="object-cover w-full h-full opacity-90"
+              class="object-cover w-full h-full"
             />
             <div
-              class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/20 to-transparent flex flex-col items-center pt-12 px-6 text-center"
+              class="absolute inset-0 flex flex-col items-center px-6 pt-12 text-center"
             >
               <h3
-                class="font-serif text-white text-[26px] tracking-wide leading-tight drop-shadow-lg"
+                class="font-serif text-white text-[28px] tracking-wide leading-tight"
+                style="text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7)"
               >
                 Independence Isn't<br />Just a Date
               </h3>
-              <p class="text-white font-bold text-lg tracking-widest mt-2 drop-shadow-md">
+              <p
+                class="text-white font-bold text-[16px] tracking-widest mt-2"
+                style="text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8)"
+              >
                 17% OFF, Up To Rp500K
               </p>
-              <span
-                class="mt-4 bg-[#8B1A2A] text-white text-[10px] px-5 py-2 rounded-full uppercase tracking-widest font-bold shadow-xl border border-white/20"
-                >Claim Your Freedom Deal</span
-              >
+              <div class="mt-4">
+                <span
+                  class="bg-[#8B1A2A] text-white text-[10px] px-6 py-2 rounded-full uppercase tracking-widest font-bold shadow-lg border border-white/20"
+                >
+                  CLAIM YOUR FREEDOM DEAL
+                </span>
+              </div>
             </div>
           </div>
 
           <!-- Right Side (Form) -->
           <div
-            class="flex flex-col items-center justify-center w-full px-8 py-12 text-center md:px-12 md:py-16 md:w-1/2 bg-white"
+            class="flex flex-col items-center justify-center w-full px-8 py-12 text-center bg-white md:px-12 md:py-16 md:w-1/2"
           >
             <img
               src="../../assets/solherbrandbook.png"
@@ -5597,22 +5604,33 @@ onUnmounted(() => {
             />
 
             <h2
-              class="text-3xl md:text-[36px] font-serif text-[#111] mb-4 tracking-tight leading-[1.1] font-black"
+              class="text-3xl md:text-[38px] font-serif text-[#111] mb-5 tracking-tight leading-[1.15] font-black"
             >
-              🇮🇩 Celebrate<br />Independence<br />With 17% Off
+              <div class="flex items-center justify-center gap-3 mb-1">
+                <!-- SVG BENDERA INDONESIA -->
+                <svg
+                  viewBox="0 0 36 24"
+                  class="w-8 h-auto border border-gray-100 rounded-sm shadow-sm"
+                >
+                  <rect width="36" height="12" fill="#ed2939" />
+                  <rect y="12" width="36" height="12" fill="#ffffff" />
+                </svg>
+                <span>Celebrate</span>
+              </div>
+              Independence<br />With 17% Off
             </h2>
 
-            <p class="text-[13px] md:text-[14px] text-gray-900 font-medium mb-5">
+            <p
+              class="text-[14px] md:text-[15px] text-gray-900 font-medium mb-6 leading-snug"
+            >
               Up to <strong class="font-black text-black">Rp500,000</strong> off, with
-              minimum purchase of Rp699,000
+              minimum purchase of<br />Rp699,000
             </p>
 
-            <p
-              class="text-[12px] md:text-[13px] text-gray-600 leading-relaxed mb-8 max-w-sm"
-            >
-              This Independence Day, we're celebrating the women who carry their own kind
-              of freedom — quietly, gracefully, every day. Enjoy 17% off sitewide, today
-              only.
+            <p class="text-[13px] text-gray-600 leading-[1.6] mb-8 w-full max-w-[340px]">
+              This Independence Day, we're celebrating the women<br />
+              who carry their own kind of freedom — quietly, gracefully,<br />
+              every day. Enjoy 17% off sitewide, today only.
             </p>
 
             <div class="w-full max-w-[320px]">
@@ -5620,7 +5638,7 @@ onUnmounted(() => {
                 type="email"
                 v-model="promoEmail"
                 placeholder="Enter your email to unlock your offer..."
-                class="w-full border border-gray-300 bg-white px-4 py-3.5 mb-4 text-[13px] font-sans focus:outline-none focus:ring-1 focus:ring-black focus:border-black placeholder-gray-400 transition-all"
+                class="w-full border border-gray-300 bg-white px-4 py-3.5 mb-4 text-[13px] font-sans focus:outline-none focus:ring-1 focus:ring-black focus:border-black placeholder-gray-400 transition-all text-center"
               />
               <button
                 @click="claimPromo"
@@ -5637,7 +5655,7 @@ onUnmounted(() => {
 
         <!-- 👇 POPUP DEFAULT LAMA (WELCOME) 👇 -->
         <div
-          v-else-if="ACTIVE_POPUP === 'merdeka'"
+          v-else-if="ACTIVE_POPUP === 'default'"
           class="relative flex flex-col w-full max-w-3xl overflow-hidden bg-white shadow-2xl md:flex-row"
         >
           <button
