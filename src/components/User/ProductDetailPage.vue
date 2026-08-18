@@ -3624,7 +3624,7 @@ const goToColorVariant = async (sibling) => {
     fetchWishlists();
     activeSlide.value = 0;
     selectedQuantity.value = 1;
-    window.history.pushState({}, "", `/product/${identifier}`);
+    window.history.pushState({}, "", `/products/${identifier}`);
   } catch (error) {}
 };
 
