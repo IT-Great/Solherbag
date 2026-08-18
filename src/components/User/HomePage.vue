@@ -5751,14 +5751,13 @@ import { useProductStore } from "../../composables/useProductStore";
 import Swal from "sweetalert2";
 import { useI18n } from "vue-i18n";
 
-import banner2 from "../../assets/first_banner.png";
-import banner3 from "../../assets/second_banner.png";
-import banner1 from "../../assets/third_banner.jpg";
+import banner1 from "../../assets/first_banner.png";
+import banner2 from "../../assets/second_banner.png";
+// import banner3 from "../../assets/third_banner.jpg";
 
-// 👇 KONFIGURASI TIPE POPUP (Ganti 'merdeka' ke 'default' untuk mengembalikan ke popup awal) 👇
-const ACTIVE_POPUP = ref("merdeka");
-
-const banners = [banner1, banner2, banner3];
+// 👇 KONFIGURASI TIPE POPUP (Ganti 'merdeka' ke 'dfault' untuk mengembalikan ke popup awal) 👇
+const ACTIVE_POPUP = ref("default");
+const banners = [banner1, banner2];
 const currentBannerIndex = ref(0);
 const currentBanner = computed(() => banners[currentBannerIndex.value]);
 let slideInterval = null;
