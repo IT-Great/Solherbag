@@ -1649,17 +1649,17 @@ onMounted(fetchData);
 </style> -->
 
 <template>
-  <div class="space-y-8 animate-fade-in pb-10">
+  <div class="pb-10 space-y-8 animate-fade-in">
     <Breadcrumb />
 
-    <div class="gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
       <div
-        class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl relative overflow-hidden"
+        class="relative p-6 overflow-hidden bg-white border border-gray-100 shadow-sm rounded-2xl"
       >
-        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">
+        <p class="mb-1 text-xs font-bold tracking-wider text-gray-400 uppercase">
           Total Sales
         </p>
-        <p class="font-black text-gray-900 text-2xl">
+        <p class="text-2xl font-black text-gray-900">
           {{ formatPrice(stats.total_sales) }}
         </p>
         <div class="flex items-center gap-2 mt-2">
@@ -1706,12 +1706,12 @@ onMounted(fetchData);
       </div>
 
       <div
-        class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl relative overflow-hidden"
+        class="relative p-6 overflow-hidden bg-white border border-gray-100 shadow-sm rounded-2xl"
       >
-        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">
+        <p class="mb-1 text-xs font-bold tracking-wider text-gray-400 uppercase">
           Active Products
         </p>
-        <p class="font-black text-gray-900 text-2xl">{{ stats.total_products }}</p>
+        <p class="text-2xl font-black text-gray-900">{{ stats.total_products }}</p>
         <div class="flex items-center gap-2 mt-2">
           <span
             class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-bold text-[10px]"
@@ -1722,12 +1722,12 @@ onMounted(fetchData);
       </div>
 
       <div
-        class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl relative overflow-hidden"
+        class="relative p-6 overflow-hidden bg-white border border-gray-100 shadow-sm rounded-2xl"
       >
-        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">
+        <p class="mb-1 text-xs font-bold tracking-wider text-gray-400 uppercase">
           Total Orders
         </p>
-        <p class="font-black text-gray-900 text-2xl">{{ stats.total_transactions }}</p>
+        <p class="text-2xl font-black text-gray-900">{{ stats.total_transactions }}</p>
         <div class="flex items-center gap-2 mt-2">
           <span
             :class="
@@ -1772,12 +1772,12 @@ onMounted(fetchData);
       </div>
 
       <div
-        class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl relative overflow-hidden"
+        class="relative p-6 overflow-hidden bg-white border border-gray-100 shadow-sm rounded-2xl"
       >
-        <p class="mb-1 font-bold text-gray-400 text-xs uppercase tracking-wider">
+        <p class="mb-1 text-xs font-bold tracking-wider text-gray-400 uppercase">
           Registered Users
         </p>
-        <p class="font-black text-gray-900 text-2xl">{{ stats.total_users }}</p>
+        <p class="text-2xl font-black text-gray-900">{{ stats.total_users }}</p>
         <div class="flex items-center gap-2 mt-2">
           <span
             class="bg-purple-100 text-purple-700 px-2 py-0.5 rounded font-bold text-[10px]"
@@ -1788,8 +1788,8 @@ onMounted(fetchData);
       </div>
     </div>
 
-    <div class="gap-6 grid grid-cols-1 lg:grid-cols-2">
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
         <h3 class="mb-6 font-bold text-gray-800">Monthly Revenue Overview</h3>
         <div class="h-[300px]" v-if="!isLoading">
           <Line :data="revenueData" :options="chartOptions" />
@@ -1797,11 +1797,11 @@ onMounted(fetchData);
         <div v-else class="h-[300px] bg-gray-100 animate-pulse rounded-xl"></div>
       </div>
 
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
-        <div class="flex justify-between items-start mb-6">
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
+        <div class="flex items-start justify-between mb-6">
           <div>
             <h3 class="font-bold text-gray-800">Average Daily Revenue</h3>
-            <p class="text-xs text-gray-500 mt-1">
+            <p class="mt-1 text-xs text-gray-500">
               Historically, which day generates the most sales?
             </p>
           </div>
@@ -1813,11 +1813,11 @@ onMounted(fetchData);
       </div>
     </div>
 
-    <div class="gap-6 grid grid-cols-1 lg:grid-cols-4">
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-4">
       <div
-        class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl flex flex-col lg:col-span-1"
+        class="flex flex-col p-6 bg-white border border-gray-100 shadow-sm rounded-2xl lg:col-span-1"
       >
-        <div class="flex justify-between items-center mb-6">
+        <div class="flex items-center justify-between mb-6">
           <h3 class="font-bold text-gray-800">Recent Live Orders</h3>
           <router-link
             to="/admin/transactions"
@@ -1838,10 +1838,10 @@ onMounted(fetchData);
             <div
               v-for="act in recentActivities"
               :key="act.id"
-              class="flex justify-between items-center border-b border-gray-50 pb-3 last:border-0 last:pb-0"
+              class="flex items-center justify-between pb-3 border-b border-gray-50 last:border-0 last:pb-0"
             >
               <div>
-                <p class="font-bold text-xs text-gray-900">{{ act.customer }}</p>
+                <p class="text-xs font-bold text-gray-900">{{ act.customer }}</p>
                 <div class="flex items-center gap-2 mt-1">
                   <span class="text-[9px] text-gray-400 font-mono">{{
                     act.order_id
@@ -1851,7 +1851,7 @@ onMounted(fetchData);
                 </div>
               </div>
               <div class="text-right">
-                <p class="font-bold text-sm text-gray-900">
+                <p class="text-sm font-bold text-gray-900">
                   {{ formatPrice(act.amount) }}
                 </p>
                 <span
@@ -1872,7 +1872,7 @@ onMounted(fetchData);
           </div>
           <div
             v-else
-            class="h-full flex items-center justify-center text-gray-400 italic text-sm"
+            class="flex items-center justify-center h-full text-sm italic text-gray-400"
           >
             No recent activities.
           </div>
@@ -1880,11 +1880,11 @@ onMounted(fetchData);
       </div>
 
       <div
-        class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl flex flex-col lg:col-span-2"
+        class="flex flex-col p-6 bg-white border border-gray-100 shadow-sm rounded-2xl lg:col-span-2"
       >
-        <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
+        <div class="flex items-center justify-between pb-4 mb-6 border-b border-gray-100">
           <div>
-            <h3 class="font-bold text-gray-800 text-lg flex items-center gap-2">
+            <h3 class="flex items-center gap-2 text-lg font-bold text-gray-800">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="w-5 h-5 text-purple-600"
@@ -1901,7 +1901,7 @@ onMounted(fetchData);
               </svg>
               AI Sales Prediction (C4.5)
             </h3>
-            <p class="text-xs text-gray-500 mt-1">
+            <p class="mt-1 text-xs text-gray-500">
               Predicting future bestsellers based on categories & pricing.
             </p>
           </div>
@@ -1911,12 +1911,12 @@ onMounted(fetchData);
           <div
             v-for="i in 4"
             :key="`skel-${i}`"
-            class="flex items-center gap-4 bg-gray-50 p-4 rounded-xl border border-gray-100"
+            class="flex items-center gap-4 p-4 border border-gray-100 bg-gray-50 rounded-xl"
           >
             <div class="w-16 h-16 bg-gray-200 rounded-lg animate-pulse shrink-0"></div>
             <div class="flex-grow space-y-2">
-              <div class="h-4 w-1/3 bg-gray-200 rounded animate-pulse"></div>
-              <div class="h-3 w-1/2 bg-gray-200 rounded animate-pulse"></div>
+              <div class="w-1/3 h-4 bg-gray-200 rounded animate-pulse"></div>
+              <div class="w-1/2 h-3 bg-gray-200 rounded animate-pulse"></div>
             </div>
             <div class="w-24 h-4 bg-gray-200 rounded animate-pulse"></div>
           </div>
@@ -1929,10 +1929,10 @@ onMounted(fetchData);
           <div
             v-for="(item, index) in predictedProducts"
             :key="item.id"
-            class="flex flex-col md:flex-row items-start md:items-center gap-4 border border-gray-100 rounded-xl p-4 hover:bg-gray-50 transition bg-white"
+            class="flex flex-col items-start gap-4 p-4 transition bg-white border border-gray-100 md:flex-row md:items-center rounded-xl hover:bg-gray-50"
           >
             <div
-              class="hidden md:flex items-center justify-center w-8 h-8 bg-gray-100 text-gray-400 font-bold rounded-full shrink-0 text-sm"
+              class="items-center justify-center hidden w-8 h-8 text-sm font-bold text-gray-400 bg-gray-100 rounded-full md:flex shrink-0"
             >
               #{{ index + 1 }}
             </div>
@@ -1941,7 +1941,7 @@ onMounted(fetchData);
               v-if="item.image"
               :src="item.image"
               @error="item.image = null"
-              class="w-16 h-16 object-cover rounded-lg shadow-sm shrink-0 border border-gray-100"
+              class="object-cover w-16 h-16 border border-gray-100 rounded-lg shadow-sm shrink-0"
             />
             <div
               v-else
@@ -1965,7 +1965,7 @@ onMounted(fetchData);
 
             <div class="flex-grow min-w-0">
               <div class="flex items-center gap-3 mb-1">
-                <p class="font-bold text-gray-900 text-sm truncate">{{ item.name }}</p>
+                <p class="text-sm font-bold text-gray-900 truncate">{{ item.name }}</p>
                 <span
                   :class="item.color"
                   class="font-black text-[9px] uppercase tracking-widest bg-gray-100 px-2 py-0.5 rounded-full shrink-0"
@@ -1984,9 +1984,9 @@ onMounted(fetchData);
             </div>
 
             <div
-              class="w-full md:w-32 shrink-0 mt-3 md:mt-0 flex flex-col justify-center"
+              class="flex flex-col justify-center w-full mt-3 md:w-32 shrink-0 md:mt-0"
             >
-              <div class="flex justify-between items-center mb-1">
+              <div class="flex items-center justify-between mb-1">
                 <span class="text-[9px] font-bold text-gray-400 uppercase tracking-wider"
                   >Match</span
                 >
@@ -2003,7 +2003,7 @@ onMounted(fetchData);
 
           <div
             v-if="predictedProducts.length === 0"
-            class="py-10 text-center text-gray-400 italic text-sm"
+            class="py-10 text-sm italic text-center text-gray-400"
           >
             Not enough historical data.
           </div>
@@ -2011,12 +2011,12 @@ onMounted(fetchData);
       </div>
 
       <div
-        class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl flex flex-col lg:col-span-1"
+        class="flex flex-col p-6 bg-white border border-gray-100 shadow-sm rounded-2xl lg:col-span-1"
       >
-        <h3 class="mb-2 font-bold text-gray-800 text-center md:text-left">
+        <h3 class="mb-2 font-bold text-center text-gray-800 md:text-left">
           Historical Best Sellers
         </h3>
-        <p class="text-xs text-gray-500 mb-6 text-center md:text-left">Top 5 items</p>
+        <p class="mb-6 text-xs text-center text-gray-500 md:text-left">Top 5 items</p>
         <div
           class="flex justify-center h-[250px] flex-grow items-center"
           v-if="!isLoading"
@@ -2027,12 +2027,12 @@ onMounted(fetchData);
       </div>
     </div>
 
-    <div class="gap-6 grid grid-cols-1 lg:grid-cols-3">
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
       <div
-        class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl flex flex-col"
+        class="flex flex-col p-6 bg-white border border-gray-100 shadow-sm rounded-2xl"
       >
         <h3 class="mb-1 font-bold text-gray-800">Most Returned Products</h3>
-        <p class="text-xs text-gray-500 mb-6">Items with highest issue/refund rates.</p>
+        <p class="mb-6 text-xs text-gray-500">Items with highest issue/refund rates.</p>
 
         <div class="flex-grow overflow-y-auto pr-2 custom-scrollbar max-h-[300px]">
           <div v-if="isLoading" class="space-y-4">
@@ -2052,14 +2052,14 @@ onMounted(fetchData);
                 <img
                   v-if="prod.image"
                   :src="prod.image"
-                  class="w-10 h-10 object-cover rounded shadow-sm border border-gray-100"
+                  class="object-cover w-10 h-10 border border-gray-100 rounded shadow-sm"
                 />
                 <div
                   v-else
-                  class="w-10 h-10 bg-gray-100 rounded border border-gray-200"
+                  class="w-10 h-10 bg-gray-100 border border-gray-200 rounded"
                 ></div>
                 <p
-                  class="font-bold text-xs text-gray-800 truncate w-32"
+                  class="w-32 text-xs font-bold text-gray-800 truncate"
                   :title="prod.name"
                 >
                   {{ prod.name }}
@@ -2074,16 +2074,16 @@ onMounted(fetchData);
           </div>
           <div
             v-else
-            class="h-full flex items-center justify-center text-gray-400 italic text-sm"
+            class="flex items-center justify-center h-full text-sm italic text-gray-400"
           >
             No return data.
           </div>
         </div>
       </div>
 
-      <div class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl">
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
         <h3 class="mb-1 font-bold text-gray-800">Peak Order Hours</h3>
-        <p class="text-xs text-gray-500 mb-6">When do customers usually checkout?</p>
+        <p class="mb-6 text-xs text-gray-500">When do customers usually checkout?</p>
 
         <div class="h-[250px]" v-if="!isLoading">
           <Line :data="peakHoursData" :options="peakHoursOptions" />
@@ -2092,10 +2092,10 @@ onMounted(fetchData);
       </div>
 
       <div
-        class="bg-white shadow-sm p-6 border border-gray-100 rounded-2xl flex flex-col"
+        class="flex flex-col p-6 bg-white border border-gray-100 shadow-sm rounded-2xl"
       >
         <h3 class="mb-1 font-bold text-gray-800">Top Customers & Affiliates</h3>
-        <p class="text-xs text-gray-500 mb-6">Users generating the most revenue.</p>
+        <p class="mb-6 text-xs text-gray-500">Users generating the most revenue.</p>
 
         <div class="flex-grow overflow-y-auto pr-2 custom-scrollbar max-h-[300px]">
           <div v-if="isLoading" class="space-y-4">
@@ -2109,7 +2109,7 @@ onMounted(fetchData);
             <div
               v-for="(user, idx) in topAffiliators"
               :key="user.email"
-              class="flex justify-between items-center border-b border-gray-50 pb-3 last:border-0 last:pb-0"
+              class="flex items-center justify-between pb-3 border-b border-gray-50 last:border-0 last:pb-0"
             >
               <div class="flex items-center gap-3">
                 <div
@@ -2118,7 +2118,7 @@ onMounted(fetchData);
                   #{{ idx + 1 }}
                 </div>
                 <div>
-                  <p class="font-bold text-xs text-gray-900 truncate w-24">
+                  <p class="w-24 text-xs font-bold text-gray-900 truncate">
                     {{ user.name }}
                   </p>
                   <span class="text-[9px] text-gray-400 capitalize">{{
@@ -2127,7 +2127,7 @@ onMounted(fetchData);
                 </div>
               </div>
               <div class="text-right">
-                <p class="font-bold text-xs text-green-600">
+                <p class="text-xs font-bold text-green-600">
                   {{ formatPrice(user.total_generated) }}
                 </p>
                 <p class="text-[9px] font-mono text-gray-400 mt-0.5">
@@ -2138,7 +2138,7 @@ onMounted(fetchData);
           </div>
           <div
             v-else
-            class="h-full flex items-center justify-center text-gray-400 italic text-sm"
+            class="flex items-center justify-center h-full text-sm italic text-gray-400"
           >
             No user data.
           </div>
@@ -2149,7 +2149,184 @@ onMounted(fetchData);
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+// import { ref, onMounted } from "vue";
+// import axios from "axios";
+// import { BASE_URL } from "../../config/api.js";
+// import {
+//   Chart as ChartJS,
+//   CategoryScale,
+//   LinearScale,
+//   PointElement,
+//   LineElement,
+//   BarElement,
+//   Title,
+//   Tooltip,
+//   Legend,
+//   ArcElement,
+//   Filler, // [BARU] Import Filler untuk area bawah line chart
+// } from "chart.js";
+// import { Line, Pie, Bar } from "vue-chartjs";
+// import Breadcrumb from "./Layout/Breadcrumb.vue";
+
+// ChartJS.register(
+//   CategoryScale,
+//   LinearScale,
+//   PointElement,
+//   LineElement,
+//   BarElement,
+//   Title,
+//   Tooltip,
+//   Legend,
+//   ArcElement,
+//   Filler
+// );
+
+// // State Original
+// const stats = ref({
+//   total_sales: 0,
+//   sales_growth: 0,
+//   total_products: 0,
+//   new_products_growth: 0,
+//   total_transactions: 0,
+//   transaction_growth: 0,
+//   total_users: 0,
+//   new_users_growth: 0,
+// });
+// const revenueData = ref({ labels: [], datasets: [] });
+// const dailyAverageData = ref({ labels: [], datasets: [] });
+// const pieData = ref({ labels: [], datasets: [] });
+// const predictedProducts = ref([]);
+// const recentActivities = ref([]);
+
+// // [BARU] State Analitik
+// const returnedProducts = ref([]);
+// const topAffiliators = ref([]);
+// const peakHoursData = ref({ labels: [], datasets: [] });
+
+// const isLoading = ref(true);
+
+// const axiosConfig = {
+//   headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
+// };
+
+// const fetchData = async () => {
+//   isLoading.value = true;
+//   try {
+//     const res = await axios.get(`${BASE_URL}/admin/dashboard/master-data`, axiosConfig);
+//     const data = res.data;
+
+//     // 1-6. Mapping Original Data
+//     stats.value = data.stats;
+//     predictedProducts.value = data.predicted;
+//     recentActivities.value = data.activities;
+
+//     revenueData.value = {
+//       labels: data.revenue.map((item) => item.month),
+//       datasets: [
+//         {
+//           label: "Revenue (IDR)",
+//           backgroundColor: "#000",
+//           borderColor: "#000",
+//           data: data.revenue.map((item) => item.total),
+//           tension: 0.4,
+//           fill: false,
+//         },
+//       ],
+//     };
+
+//     dailyAverageData.value = {
+//       labels: data.daily.map((item) => item.day),
+//       datasets: [
+//         {
+//           label: "Avg Daily Sales (IDR)",
+//           backgroundColor: "#3b82f6",
+//           borderRadius: 6,
+//           data: data.daily.map((item) => item.average),
+//         },
+//       ],
+//     };
+
+//     pieData.value = {
+//       labels: data.popular.map((item) => item.name),
+//       datasets: [
+//         {
+//           backgroundColor: ["#1e1e1e", "#3b82f6", "#10b981", "#f59e0b", "#ef4444"],
+//           data: data.popular.map((item) => item.total_sold),
+//         },
+//       ],
+//     };
+
+//     // [BARU] 7. Mapping Data Analitik Tambahan
+//     returnedProducts.value = data.returned;
+//     topAffiliators.value = data.top_affiliators;
+
+//     // Mapping Peak Hours ke dalam Line Chart
+//     peakHoursData.value = {
+//       labels: data.peak_hours.map((item) => item.hour),
+//       datasets: [
+//         {
+//           label: "Total Orders",
+//           borderColor: "#8b5cf6", // Purple
+//           backgroundColor: "rgba(139, 92, 246, 0.2)",
+//           data: data.peak_hours.map((item) => item.orders),
+//           tension: 0.4, // Kurva smooth
+//           fill: true, // Mewarnai area bawah kurva
+//         },
+//       ],
+//     };
+//   } catch (err) {
+//     console.error("Dashboard data failed", err);
+//   } finally {
+//     isLoading.value = false;
+//   }
+// };
+
+// const formatPrice = (v) =>
+//   new Intl.NumberFormat("id-ID", {
+//     style: "currency",
+//     currency: "IDR",
+//     minimumFractionDigits: 0,
+//   }).format(v);
+
+// // Pengaturan Konfigurasi Chart
+// const chartOptions = { responsive: true, maintainAspectRatio: false };
+// const barOptions = {
+//   responsive: true,
+//   maintainAspectRatio: false,
+//   plugins: { legend: { display: false } },
+//   scales: {
+//     y: {
+//       beginAtZero: true,
+//       ticks: {
+//         callback: function (value) {
+//           if (value >= 1000000) return (value / 1000000).toFixed(1) + "M";
+//           if (value >= 1000) return (value / 1000).toFixed(0) + "K";
+//           return value;
+//         },
+//       },
+//     },
+//   },
+// };
+// const pieOptions = {
+//   responsive: true,
+//   maintainAspectRatio: false,
+//   plugins: { legend: { position: "bottom" } },
+// };
+
+// // [BARU] Options untuk Line Chart Jam Puncak
+// const peakHoursOptions = {
+//   responsive: true,
+//   maintainAspectRatio: false,
+//   plugins: { legend: { display: false } }, // Hilangkan legend agar lebih bersih
+//   scales: {
+//     y: { beginAtZero: true, suggestedMax: 5, ticks: { precision: 0 } },
+//     x: { grid: { display: false } }, // Hilangkan garis vertikal agar rapi
+//   },
+// };
+
+// onMounted(fetchData);
+
+import { ref, onMounted, onUnmounted } from "vue"; // [PERBAIKAN] Tambahkan onUnmounted
 import axios from "axios";
 import { BASE_URL } from "../../config/api.js";
 import {
@@ -2163,7 +2340,7 @@ import {
   Tooltip,
   Legend,
   ArcElement,
-  Filler, // [BARU] Import Filler untuk area bawah line chart
+  Filler,
 } from "chart.js";
 import { Line, Pie, Bar } from "vue-chartjs";
 import Breadcrumb from "./Layout/Breadcrumb.vue";
@@ -2198,7 +2375,7 @@ const pieData = ref({ labels: [], datasets: [] });
 const predictedProducts = ref([]);
 const recentActivities = ref([]);
 
-// [BARU] State Analitik
+// State Analitik
 const returnedProducts = ref([]);
 const topAffiliators = ref([]);
 const peakHoursData = ref({ labels: [], datasets: [] });
@@ -2209,13 +2386,14 @@ const axiosConfig = {
   headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
 };
 
-const fetchData = async () => {
-  isLoading.value = true;
+// 👇 [PERBAIKAN 1] Tambahkan parameter showLoading (default: true) 👇
+const fetchData = async (showLoading = true) => {
+  if (showLoading) isLoading.value = true;
+
   try {
     const res = await axios.get(`${BASE_URL}/admin/dashboard/master-data`, axiosConfig);
     const data = res.data;
 
-    // 1-6. Mapping Original Data
     stats.value = data.stats;
     predictedProducts.value = data.predicted;
     recentActivities.value = data.activities;
@@ -2256,28 +2434,27 @@ const fetchData = async () => {
       ],
     };
 
-    // [BARU] 7. Mapping Data Analitik Tambahan
     returnedProducts.value = data.returned;
     topAffiliators.value = data.top_affiliators;
 
-    // Mapping Peak Hours ke dalam Line Chart
     peakHoursData.value = {
       labels: data.peak_hours.map((item) => item.hour),
       datasets: [
         {
           label: "Total Orders",
-          borderColor: "#8b5cf6", // Purple
+          borderColor: "#8b5cf6",
           backgroundColor: "rgba(139, 92, 246, 0.2)",
           data: data.peak_hours.map((item) => item.orders),
-          tension: 0.4, // Kurva smooth
-          fill: true, // Mewarnai area bawah kurva
+          tension: 0.4,
+          fill: true,
         },
       ],
     };
   } catch (err) {
     console.error("Dashboard data failed", err);
   } finally {
-    isLoading.value = false;
+    // Hanya matikan loading state jika kita menyalakannya
+    if (showLoading) isLoading.value = false;
   }
 };
 
@@ -2312,19 +2489,36 @@ const pieOptions = {
   maintainAspectRatio: false,
   plugins: { legend: { position: "bottom" } },
 };
-
-// [BARU] Options untuk Line Chart Jam Puncak
 const peakHoursOptions = {
   responsive: true,
   maintainAspectRatio: false,
-  plugins: { legend: { display: false } }, // Hilangkan legend agar lebih bersih
+  plugins: { legend: { display: false } },
   scales: {
     y: { beginAtZero: true, suggestedMax: 5, ticks: { precision: 0 } },
-    x: { grid: { display: false } }, // Hilangkan garis vertikal agar rapi
+    x: { grid: { display: false } },
   },
 };
 
-onMounted(fetchData);
+// 👇 [PERBAIKAN 2] Hubungkan Vue ke Pusher Channel saat komponen dimuat 👇
+onMounted(() => {
+  fetchData(true); // Fetch awal dengan loading
+
+  // Memastikan Laravel Echo / Pusher tersedia
+  if (window.Echo) {
+    window.Echo.channel("admin-dashboard").listen("DashboardUpdated", (e) => {
+      console.log("Pusher Event Received: DashboardUpdated", e);
+      // Tarik data ulang secara diam-diam (silent refresh) tanpa skeleton loading
+      fetchData(false);
+    });
+  }
+});
+
+// 👇 [PERBAIKAN 3] Putuskan koneksi saat pindah halaman agar memori tidak bocor 👇
+onUnmounted(() => {
+  if (window.Echo) {
+    window.Echo.leaveChannel("admin-dashboard");
+  }
+});
 </script>
 
 <style scoped>
