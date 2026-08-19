@@ -7586,15 +7586,25 @@ const goToDetail = (product) => {
 </template>
 
 <script setup>
+// import { ref, onMounted, computed, watch, onUnmounted } from "vue";
+// import { useRoute, useRouter } from "vue-router";
+// import Swal from "sweetalert2";
+// import { useProductStore } from "../../composables/useProductStore.js";
+// import axios from "axios";
+// import { BASE_URL } from "../../config/api.js";
+// import Fuse from "fuse.js";
+// import { useI18n } from "vue-i18n";
+// import defaultBagIcon from "../../assets/products/bag_icon.jpg";
+
 import { ref, onMounted, computed, watch, onUnmounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import Swal from "sweetalert2";
 import { useProductStore } from "../../composables/useProductStore.js";
 import axios from "axios";
 import { BASE_URL } from "../../config/api.js";
-import Fuse from "fuse.js";
 import { useI18n } from "vue-i18n";
 import defaultBagIcon from "../../assets/products/bag_icon.jpg";
+// Fuse.js telah dihapus dari sini!
 
 const route = useRoute();
 const router = useRouter();
@@ -7612,6 +7622,9 @@ const selectedCategory = ref("");
 const selectedBagCategory = ref("");
 const showOnlySale = ref(false);
 const activeFilter = ref("");
+
+const meilisearchResults = ref(null); // Menyimpan hasil tembakan dari Backend
+let searchDebounceTimer = null; // Mencegah spam API saat user mengetik cepat
 
 const currentPage = ref(1);
 const itemsPerPage = 12;
@@ -7668,6 +7681,26 @@ const pushToRouter = (updates) => {
   router.push({ path: "/collections", query });
 };
 
+// 👇 [BARU] FUNGSI PENCARIAN SERVER-SIDE (MEILISEARCH) 👇
+const executeSearchEngine = async (keyword) => {
+  if (!keyword || keyword.trim() === "") {
+    meilisearchResults.value = null; // Kembalikan ke mode Cache Store bawaan
+    return;
+  }
+
+  isLoading.value = true;
+  try {
+    const res = await axios.get(
+      `${BASE_URL}/products/search?q=${encodeURIComponent(keyword)}`
+    );
+    meilisearchResults.value = res.data;
+  } catch (error) {
+    console.error("Meilisearch Error:", error);
+  } finally {
+    isLoading.value = false;
+  }
+};
+
 const toggleSaleFilter = () => {
   pushToRouter({
     sale: !showOnlySale.value ? "true" : undefined,
@@ -7697,14 +7730,48 @@ const resetAllFilters = () => {
   router.push({ path: "/collections" });
 };
 
+// const syncStateWithQuery = (query) => {
+//   if (query.search !== undefined) searchQuery.value = query.search;
+//   selectedCategory.value = query.category || "";
+//   selectedBagCategory.value = query.bag_category || "";
+//   activeFilter.value = query.filter || "";
+//   showOnlySale.value = query.sale === "true";
+//   currentPage.value = 1;
+// };
+
 const syncStateWithQuery = (query) => {
-  if (query.search !== undefined) searchQuery.value = query.search;
+  // Hanya panggil backend jika keyword berubah, untuk hindari redundansi
+  if (query.search !== undefined && query.search !== searchQuery.value) {
+    searchQuery.value = query.search;
+    executeSearchEngine(query.search);
+  } else if (query.search === undefined) {
+    searchQuery.value = "";
+    meilisearchResults.value = null;
+  }
+
   selectedCategory.value = query.category || "";
   selectedBagCategory.value = query.bag_category || "";
   activeFilter.value = query.filter || "";
   showOnlySale.value = query.sale === "true";
   currentPage.value = 1;
 };
+
+// Mengubah Watcher SearchQuery agar menunggu user selesai mengetik 400ms (Debounce)
+watch(searchQuery, (newVal) => {
+  clearTimeout(searchDebounceTimer);
+  searchDebounceTimer = setTimeout(() => {
+    // Sinkronisasi URL diam-diam
+    pushToRouter({ search: newVal || undefined });
+  }, 400);
+});
+
+// // Watcher untuk mendeteksi perubahan dari Router (URL)
+// watch(
+//   () => route.query,
+//   (newQuery) => {
+//     syncStateWithQuery(newQuery);
+//   }
+// );
 
 onMounted(() => {
   syncStateWithQuery(route.query);
@@ -7938,8 +8005,66 @@ const getDiscountStatus = (p) => {
 };
 
 // 👇 [PERBAIKAN] Modifikasi Logika Komputasi Filter Lanjutan 👇
+// const filteredProducts = computed(() => {
+//   let sourceProducts = state.collectionsProducts || [];
+
+//   // 1. Filter Koleksi Utama
+//   if (selectedCategory.value !== "") {
+//     sourceProducts = sourceProducts.filter(
+//       (p) => (p.category?.name || p.category_name) === selectedCategory.value
+//     );
+//   }
+
+//   // 2. Filter Bag Category
+//   if (selectedBagCategory.value !== "") {
+//     sourceProducts = sourceProducts.filter(
+//       (p) => p.bag_category?.name === selectedBagCategory.value
+//     );
+//   }
+
+//   // 3. Filter "Sale" Normal
+//   if (showOnlySale.value) {
+//     sourceProducts = sourceProducts.filter((p) => getDiscountStatus(p).active);
+//   }
+
+//   // 4. Search Filter (FUSE.js)
+//   if (searchQuery.value.trim() !== "") {
+//     const fuseOptions = {
+//       keys: [
+//         { name: "name", weight: 0.7 },
+//         { name: "code", weight: 0.2 },
+//         { name: "category.name", weight: 0.1 },
+//         { name: "bag_category.name", weight: 0.1 },
+//       ],
+//       threshold: 0.3,
+//       ignoreLocation: true,
+//     };
+//     const fuse = new Fuse(sourceProducts, fuseOptions);
+//     sourceProducts = fuse.search(searchQuery.value).map((result) => result.item);
+//   }
+
+//   // 5. Special Filter: NEW ARRIVALS & FINAL SALE
+//   if (activeFilter.value === "new-arrivals") {
+//     sourceProducts = [...sourceProducts]
+//       .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+//       .slice(0, 10);
+//   } else if (activeFilter.value === "final-sale") {
+//     // 👇 [PERBAIKAN] Memfilter HANYA produk yang memiliki flag is_final_sale aktif 👇
+//     sourceProducts = [...sourceProducts]
+//       .filter((p) => p.is_final_sale)
+//       .sort((a, b) => calculateDynamicDiscount(b) - calculateDynamicDiscount(a));
+//   }
+
+//   return sourceProducts;
+// });
+
+// 👇 [PERBAIKAN] Komputasi menggunakan data dari Meilisearch jika ada 👇
 const filteredProducts = computed(() => {
-  let sourceProducts = state.collectionsProducts || [];
+  // Gunakan hasil Meilisearch jika ada, jika tidak, gunakan Store bawaan
+  let sourceProducts =
+    meilisearchResults.value !== null
+      ? meilisearchResults.value
+      : state.collectionsProducts || [];
 
   // 1. Filter Koleksi Utama
   if (selectedCategory.value !== "") {
@@ -7960,21 +8085,7 @@ const filteredProducts = computed(() => {
     sourceProducts = sourceProducts.filter((p) => getDiscountStatus(p).active);
   }
 
-  // 4. Search Filter (FUSE.js)
-  if (searchQuery.value.trim() !== "") {
-    const fuseOptions = {
-      keys: [
-        { name: "name", weight: 0.7 },
-        { name: "code", weight: 0.2 },
-        { name: "category.name", weight: 0.1 },
-        { name: "bag_category.name", weight: 0.1 },
-      ],
-      threshold: 0.3,
-      ignoreLocation: true,
-    };
-    const fuse = new Fuse(sourceProducts, fuseOptions);
-    sourceProducts = fuse.search(searchQuery.value).map((result) => result.item);
-  }
+  // 4. Search Filter (FUSE.js) TELAH DIHAPUS. Teks search sudah ditangani Meilisearch Backend!
 
   // 5. Special Filter: NEW ARRIVALS & FINAL SALE
   if (activeFilter.value === "new-arrivals") {
@@ -7982,7 +8093,6 @@ const filteredProducts = computed(() => {
       .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
       .slice(0, 10);
   } else if (activeFilter.value === "final-sale") {
-    // 👇 [PERBAIKAN] Memfilter HANYA produk yang memiliki flag is_final_sale aktif 👇
     sourceProducts = [...sourceProducts]
       .filter((p) => p.is_final_sale)
       .sort((a, b) => calculateDynamicDiscount(b) - calculateDynamicDiscount(a));
