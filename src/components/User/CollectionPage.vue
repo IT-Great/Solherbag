@@ -7075,7 +7075,7 @@ const goToDetail = (product) => {
         </div>
 
         <!-- Baris Bawah: Dropdown Kategorisasi Ganda -->
-        <div class="flex flex-col md:flex-row gap-4">
+        <div class="flex flex-col gap-4 md:flex-row">
           <!-- Dropdown 1: Koleksi Utama -->
           <div class="relative flex-1">
             <select
@@ -7089,7 +7089,7 @@ const goToDetail = (product) => {
               </option>
             </select>
             <div
-              class="absolute inset-y-0 right-3 flex items-center pointer-events-none text-gray-400"
+              class="absolute inset-y-0 flex items-center text-gray-400 pointer-events-none right-3"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -7121,7 +7121,7 @@ const goToDetail = (product) => {
               </option>
             </select>
             <div
-              class="absolute inset-y-0 right-3 flex items-center pointer-events-none text-gray-400"
+              class="absolute inset-y-0 flex items-center text-gray-400 pointer-events-none right-3"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -7146,7 +7146,7 @@ const goToDetail = (product) => {
       <transition name="fade">
         <div
           v-if="activeFilter === 'final-sale'"
-          class="mb-8 p-5 bg-red-50 border-l-4 border-red-600 rounded-r-xl flex items-start gap-4"
+          class="flex items-start gap-4 p-5 mb-8 border-l-4 border-red-600 bg-red-50 rounded-r-xl"
         >
           <div class="p-2 bg-white rounded-full shadow-sm">
             <svg
@@ -7165,10 +7165,10 @@ const goToDetail = (product) => {
             </svg>
           </div>
           <div>
-            <h3 class="font-black text-red-800 text-sm uppercase tracking-widest mb-1">
+            <h3 class="mb-1 text-sm font-black tracking-widest text-red-800 uppercase">
               Final Sale Policy
             </h3>
-            <p class="text-xs text-red-700 leading-relaxed md:max-w-4xl">
+            <p class="text-xs leading-relaxed text-red-700 md:max-w-4xl">
               Koleksi di bawah ini dijual dengan diskon pembersihan gudang (Clearance).
               <strong class="font-black text-red-900"
                 >Semua pembelian bersifat permanen.</strong
@@ -7223,7 +7223,7 @@ const goToDetail = (product) => {
               <!-- Tombol Wishlist (Kanan Atas) -->
               <button
                 @click.stop="toggleWishlist(product.id)"
-                class="absolute top-2 right-2 z-20 p-2 bg-white/90 backdrop-blur-sm hover:bg-white rounded-full shadow-sm transition-transform hover:scale-110"
+                class="absolute z-20 p-2 transition-transform rounded-full shadow-sm top-2 right-2 bg-white/90 backdrop-blur-sm hover:bg-white hover:scale-110"
               >
                 <svg
                   v-if="isFavorited(product.id)"
@@ -7382,7 +7382,7 @@ const goToDetail = (product) => {
                 </span>
               </div>
               <h3
-                class="text-sm font-bold tracking-wider text-gray-900 uppercase truncate group-hover:text-red-700 transition-colors"
+                class="text-sm font-bold tracking-wider text-gray-900 uppercase truncate transition-colors group-hover:text-red-700"
               >
                 {{ product.name }}
               </h3>
@@ -7458,7 +7458,7 @@ const goToDetail = (product) => {
         </div>
 
         <!-- Pagination -->
-        <div class="flex items-center justify-center gap-4 mt-20">
+        <!-- <div class="flex items-center justify-center gap-4 mt-20">
           <button
             @click="currentPage--"
             :disabled="currentPage === 1"
@@ -7502,6 +7502,53 @@ const goToDetail = (product) => {
               />
             </svg>
           </button>
+        </div> -->
+
+        <!-- Pagination -->
+        <div class="flex items-center justify-center gap-4 mt-20">
+          <button
+            @click="currentPage--"
+            :disabled="currentPage === 1"
+            class="p-2 transition bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-50 hover:border-black disabled:opacity-30 disabled:cursor-not-allowed"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          </button>
+          <span class="text-xs font-bold tracking-widest text-gray-600 uppercase">
+            {{ $t("collection.page", { current: currentPage, total: totalPages || 1 }) }}
+          </span>
+          <button
+            @click="currentPage++"
+            :disabled="currentPage === totalPages || totalPages === 0"
+            class="p-2 transition bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-50 hover:border-black disabled:opacity-30 disabled:cursor-not-allowed"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </button>
         </div>
       </div>
 
@@ -7512,7 +7559,7 @@ const goToDetail = (product) => {
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="w-16 h-16 text-gray-300 mb-4"
+          class="w-16 h-16 mb-4 text-gray-300"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
