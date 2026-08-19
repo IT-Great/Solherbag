@@ -7740,12 +7740,12 @@ const resetAllFilters = () => {
 // };
 
 const syncStateWithQuery = (query) => {
-  // Hanya panggil backend jika keyword berubah, untuk hindari redundansi
+  // Hanya sesuaikan value input dengan URL (berguna saat user me-refresh halaman)
   if (query.search !== undefined && query.search !== searchQuery.value) {
     searchQuery.value = query.search;
-    executeSearchEngine(query.search);
   } else if (query.search === undefined) {
     searchQuery.value = "";
+    // Jika tidak ada pencarian, matikan hasil Meilisearch
     meilisearchResults.value = null;
   }
 
@@ -7760,7 +7760,10 @@ const syncStateWithQuery = (query) => {
 watch(searchQuery, (newVal) => {
   clearTimeout(searchDebounceTimer);
   searchDebounceTimer = setTimeout(() => {
-    // Sinkronisasi URL diam-diam
+    // 1. Tembak Meilisearch segera setelah user berhenti mengetik 400ms
+    executeSearchEngine(newVal);
+
+    // 2. Baru kemudian perbarui URL di atas browser secara diam-diam
     pushToRouter({ search: newVal || undefined });
   }, 400);
 });
