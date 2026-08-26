@@ -5490,7 +5490,7 @@ watch(
               <router-link
                 to="/solher-club"
                 @click="isMobileMenuOpen = false"
-                class="pb-4 text-sm font-black tracking-widest text-amber-600 uppercase transition-colors border-b border-gray-100 hover:text-amber-800 flex items-center justify-between"
+                class="pb-4 text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors border-b border-gray-100 hover:text-gray-500"
               >
                 <span>{{ $t("header.solher_club") || "Solher Club" }}</span>
                 <!-- <span class="text-lg">✨</span> -->
