@@ -184,7 +184,7 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import axios from "axios";
-import { BASE_URL } from "../../../config/api.js";
+import { BASE_URL } from "../../config/api.js";
 
 const isAuthenticated = ref(false);
 const userData = ref(null);
