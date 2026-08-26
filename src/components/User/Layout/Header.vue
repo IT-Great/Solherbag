@@ -5023,7 +5023,7 @@ watch(
             >
               <span>{{ $t("header.solher_club") || "Solher Club" }}</span>
               <!-- Opsional: Tambahkan icon bintang/diamond kecil untuk menarik perhatian -->
-              <svg
+              <!-- <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="currentColor"
@@ -5032,7 +5032,7 @@ watch(
                 <path
                   d="M12.001 4.529a.75.75 0 0 1 .555.247l4.086 4.603h4.608a.75.75 0 0 1 .53 1.28l-3.69 3.535 1.411 5.086a.75.75 0 0 1-1.15.836l-4.35-2.613-4.35 2.613a.75.75 0 0 1-1.15-.836l1.411-5.086-3.69-3.535a.75.75 0 0 1 .53-1.28h4.608l4.086-4.603a.75.75 0 0 1 .555-.247Z"
                 />
-              </svg>
+              </svg> -->
             </router-link>
             <!-- 👆 ============================= 👆 -->
 
