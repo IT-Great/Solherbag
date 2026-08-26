@@ -4,7 +4,7 @@
     <div class="relative w-full h-[400px] md:h-[500px] bg-black overflow-hidden flex items-center justify-center">
       <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-black/30 z-10"></div>
       <img
-        src="../../../assets/images/first_banner.png" 
+        src="../../assets/first_banner.png" 
         alt="Solher Club"
         class="absolute inset-0 object-cover w-full h-full opacity-60"
       />
