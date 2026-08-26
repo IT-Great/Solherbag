@@ -4905,7 +4905,12 @@ watch(
         @click="prevAnnouncement"
         class="absolute p-2 text-gray-400 transition left-2 md:left-4 hover:text-white focus:outline-none"
       >
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -4915,7 +4920,9 @@ watch(
         </svg>
       </button>
 
-      <div class="flex items-center justify-center w-full h-full px-10 md:px-12">
+      <div
+        class="flex items-center justify-center w-full h-full px-10 md:px-12"
+      >
         <transition name="fade-slide" mode="out-in">
           <p
             :key="currentAnnouncement"
@@ -4931,7 +4938,12 @@ watch(
         @click="nextAnnouncement"
         class="absolute p-2 text-gray-400 transition right-2 md:right-4 hover:text-white focus:outline-none"
       >
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -5003,6 +5015,26 @@ watch(
                 {{ $t("header.collections") }}
               </span>
             </div>
+
+            <!-- 👇 MENU BARU DITAMBAHKAN DI SINI 👇 -->
+            <router-link
+              to="/solher-club"
+              class="transition cursor-pointer hover:text-gray-500 flex items-center gap-1"
+            >
+              <span>{{ $t("header.solher_club") || "Solher Club" }}</span>
+              <!-- Opsional: Tambahkan icon bintang/diamond kecil untuk menarik perhatian -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="w-3 h-3 text-amber-500 mb-1"
+              >
+                <path
+                  d="M12.001 4.529a.75.75 0 0 1 .555.247l4.086 4.603h4.608a.75.75 0 0 1 .53 1.28l-3.69 3.535 1.411 5.086a.75.75 0 0 1-1.15.836l-4.35-2.613-4.35 2.613a.75.75 0 0 1-1.15-.836l1.411-5.086-3.69-3.535a.75.75 0 0 1 .53-1.28h4.608l4.086-4.603a.75.75 0 0 1 .555-.247Z"
+                />
+              </svg>
+            </router-link>
+            <!-- 👆 ============================= 👆 -->
 
             <router-link
               to="/events"
@@ -5161,7 +5193,9 @@ watch(
                 >
                   HI {{ userData?.first_name }}
                 </h3>
-                <p class="mb-4 text-xs text-gray-500 truncate">{{ userData?.email }}</p>
+                <p class="mb-4 text-xs text-gray-500 truncate">
+                  {{ userData?.email }}
+                </p>
               </div>
               <div v-else>
                 <router-link
@@ -5194,7 +5228,9 @@ watch(
 
           <!-- 👇 DIKEMBALIKAN: Tombol Chat dengan indikator pesan belum dibaca 👇 -->
           <button
-            @click="isAuthenticated ? $router.push('/chat-list') : toggleDropdown()"
+            @click="
+              isAuthenticated ? $router.push('/chat-list') : toggleDropdown()
+            "
             class="relative flex items-center justify-center transition-colors focus:outline-none hover:text-black"
           >
             <svg
@@ -5242,7 +5278,9 @@ watch(
             </svg>
             <span
               v-if="cartCount > 0"
-              :class="[isBadgePopping ? 'scale-150 bg-red-600' : 'scale-100 bg-black']"
+              :class="[
+                isBadgePopping ? 'scale-150 bg-red-600' : 'scale-100 bg-black',
+              ]"
               class="-top-2 -right-2 absolute flex justify-center items-center rounded-full w-4 h-4 text-[10px] text-white transition-all duration-300 pointer-events-none"
               >{{ cartCount }}</span
             >
@@ -5274,7 +5312,9 @@ watch(
             <div class="grid w-2/3 grid-cols-4 gap-12">
               <!-- Column 1: Featured -->
               <div class="flex flex-col space-y-4">
-                <h3 class="mb-2 font-serif text-base text-gray-900">Featured</h3>
+                <h3 class="mb-2 font-serif text-base text-gray-900">
+                  Featured
+                </h3>
                 <router-link
                   to="/best-sellers"
                   @click="closeMegaMenu"
@@ -5316,7 +5356,9 @@ watch(
 
               <!-- Column 3: Collections (Dari tabel categories, excl C005) -->
               <div class="flex flex-col space-y-4">
-                <h3 class="mb-2 font-serif text-base text-gray-900">Collections</h3>
+                <h3 class="mb-2 font-serif text-base text-gray-900">
+                  Collections
+                </h3>
                 <button
                   v-for="cat in normalCategories"
                   :key="cat.id"
@@ -5329,10 +5371,14 @@ watch(
 
               <!-- Column 4: Accessories (Hanya C005) -->
               <div class="flex flex-col space-y-4">
-                <h3 class="mb-2 font-serif text-base text-gray-900">Accessories</h3>
+                <h3 class="mb-2 font-serif text-base text-gray-900">
+                  Accessories
+                </h3>
                 <button
                   @click="
-                    goToCollection(accessoriesCategory?.category_name || 'Accessories')
+                    goToCollection(
+                      accessoriesCategory?.category_name || 'Accessories',
+                    )
                   "
                   class="text-[13px] text-left text-gray-500 hover:text-black transition-colors"
                 >
@@ -5440,6 +5486,16 @@ watch(
                 class="pb-4 text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors border-b border-gray-100 hover:text-gray-500"
                 >{{ $t("header.collections") }}</router-link
               >
+              <!-- 👇 MENU BARU DITAMBAHKAN DI SINI (MOBILE) 👇 -->
+              <router-link
+                to="/solher-club"
+                @click="isMobileMenuOpen = false"
+                class="pb-4 text-sm font-black tracking-widest text-amber-600 uppercase transition-colors border-b border-gray-100 hover:text-amber-800 flex items-center justify-between"
+              >
+                <span>{{ $t("header.solher_club") || "Solher Club" }}</span>
+                <span class="text-lg">✨</span>
+              </router-link>
+              <!-- 👆 ======================================= 👆 -->
               <router-link
                 to="/events"
                 @click="isMobileMenuOpen = false"
@@ -5530,17 +5586,27 @@ const fetchUnreadChats = async () => {
     });
     totalUnreadChats.value = res.data.reduce(
       (sum, admin) => sum + (admin.unread_count || 0),
-      0
+      0,
     );
   } catch (error) {}
 };
 
 const setupRealTimeListeners = () => {
-  if (isAuthenticated.value && userData.value && window.Echo && !isEchoConnected) {
-    window.Echo.private(`chat.${userData.value.id}`).listen(".message.sent", (e) => {
-      totalUnreadChats.value++;
-      window.dispatchEvent(new CustomEvent("new-chat-message", { detail: e.message }));
-    });
+  if (
+    isAuthenticated.value &&
+    userData.value &&
+    window.Echo &&
+    !isEchoConnected
+  ) {
+    window.Echo.private(`chat.${userData.value.id}`).listen(
+      ".message.sent",
+      (e) => {
+        totalUnreadChats.value++;
+        window.dispatchEvent(
+          new CustomEvent("new-chat-message", { detail: e.message }),
+        );
+      },
+    );
     isEchoConnected = true;
   }
 };
@@ -5550,10 +5616,13 @@ const currentAnnouncement = ref(0);
 let announcementTimer = null;
 
 const announcements = computed(() => [
-  t("header.announcement_1", "An Exclusive Welcome Gift: Rp 250K OFF your first order →"),
+  t(
+    "header.announcement_1",
+    "An Exclusive Welcome Gift: Rp 250K OFF your first order →",
+  ),
   t(
     "header.announcement_2",
-    "A Little Extra, On Us — Complimentary Shipping Across Indonesia (Min. Rp 1.000.000) →"
+    "A Little Extra, On Us — Complimentary Shipping Across Indonesia (Min. Rp 1.000.000) →",
   ),
 ]);
 
@@ -5611,7 +5680,8 @@ const generateRandomMegaProduct = () => {
     return;
   }
   const products = productState.collectionsProducts;
-  randomMegaProduct.value = products[Math.floor(Math.random() * products.length)];
+  randomMegaProduct.value =
+    products[Math.floor(Math.random() * products.length)];
 };
 
 const fetchCategoriesForMegaMenu = async () => {
@@ -5620,7 +5690,9 @@ const fetchCategoriesForMegaMenu = async () => {
   try {
     const [catRes, bagCatRes] = await Promise.all([
       axios.get(`${BASE_URL}/guest/categories`),
-      axios.get(`${BASE_URL}/bag-categories`).catch(() => ({ data: { data: [] } })),
+      axios
+        .get(`${BASE_URL}/bag-categories`)
+        .catch(() => ({ data: { data: [] } })),
     ]);
 
     categories.value = catRes.data.data || catRes.data;
@@ -5792,7 +5864,7 @@ watch(
     isDropdownOpen.value = false;
     isMobileMenuOpen.value = false;
     checkAuth();
-  }
+  },
 );
 </script>
 
@@ -5832,7 +5904,9 @@ watch(
 
 .fade-slide-enter-active,
 .fade-slide-leave-active {
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
 }
 .fade-slide-enter-from {
   opacity: 0;
@@ -5855,7 +5929,9 @@ watch(
 
 .mega-menu-fade-enter-active,
 .mega-menu-fade-leave-active {
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
   transform-origin: top;
 }
 .mega-menu-fade-enter-from,

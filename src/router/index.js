@@ -3757,12 +3757,14 @@ import BagCategoryDetailPage from "../components/Admin/BagCategoryDetailPage.vue
 
 // 👇 IMPORT HALAMAN TELESCOPE BARU 👇
 import TelescopeMonitoringPage from "../components/Admin/TelescopeMonitoringPage.vue";
+import SolherClubPage from "../components/User/SolherClubPage.vue";
 
 const routes = [
   { path: "/", name: "Home", component: HomePage },
   { path: "/best-sellers", name: "BestSellers", component: BestSellerPage },
   { path: "/collections", name: "Collections", component: CollectionsPage },
   { path: "/contact", name: "Contact", component: ContactPage },
+  { path: "/solher-club", name: "SolherClub", component: SolherClubPage },
   { path: "/login", name: "Login", component: LoginPage, meta: { hideHeaderFooter: true } },
   { path: "/forgot-password", name: "ForgotPassword", component: ForgotPasswordPage, meta: { hideHeaderFooter: true } },
   { path: "/verify-code", name: "VerifyCode", component: CodeVerificationPage, meta: { hideHeaderFooter: true } },
