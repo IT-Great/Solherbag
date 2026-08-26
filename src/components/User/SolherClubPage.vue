@@ -182,26 +182,77 @@
 </template>
 
 <script setup>
+// import { ref, onMounted, computed } from "vue";
+// import axios from "axios";
+// import { BASE_URL } from "../../config/api.js";
+
+// const isAuthenticated = ref(false);
+// const userData = ref(null);
+
+// const checkAuth = async () => {
+//   const token = localStorage.getItem("token");
+//   if (!token) return;
+
+//   try {
+//     // Tarik data profil terbaru untuk memastikan poin yang ditampilkan akurat
+//     const res = await axios.get(`${BASE_URL}/user`, {
+//       headers: { Authorization: `Bearer ${token}` },
+//     });
+//     userData.value = res.data.data || res.data;
+//     isAuthenticated.value = true;
+//   } catch (error) {
+//     isAuthenticated.value = false;
+//   }
+// };
+
+// const currentTier = computed(() => {
+//   const points = userData.value?.point || 0;
+//   if (points < 2500) {
+//     return { name: 'Silver', icon: '🥈', next: 2500, nextName: 'Gold' };
+//   } else if (points < 10000) {
+//     return { name: 'Gold', icon: '🥇', next: 10000, nextName: 'Platinum' };
+//   } else {
+//     return { name: 'Platinum', icon: '💎', next: null, nextName: null };
+//   }
+// });
+
+// onMounted(() => {
+//   checkAuth();
+// });
+
 import { ref, onMounted, computed } from "vue";
 import axios from "axios";
 import { BASE_URL } from "../../config/api.js";
 
-const isAuthenticated = ref(false);
-const userData = ref(null);
+// 👇 PERBAIKAN 1: Baca langsung dari LocalStorage saat halaman pertama kali dimuat
+const tokenLocal = localStorage.getItem("token");
+const userLocal = localStorage.getItem("user");
 
-const checkAuth = async () => {
-  const token = localStorage.getItem("token");
-  if (!token) return;
+// Mengatur status awal secara sinkron agar UI tidak berkedip (FOUC prevention)
+const isAuthenticated = ref(!!tokenLocal);
+const userData = ref(userLocal ? JSON.parse(userLocal) : null);
+
+// 👇 PERBAIKAN 2: Tetap panggil API di belakang layar untuk menyegarkan (refresh) poin
+const refreshUserData = async () => {
+  if (!tokenLocal) return;
 
   try {
-    // Tarik data profil terbaru untuk memastikan poin yang ditampilkan akurat
     const res = await axios.get(`${BASE_URL}/user`, {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${tokenLocal}` },
     });
+    
+    // Perbarui state dengan data terbaru dari server
     userData.value = res.data.data || res.data;
-    isAuthenticated.value = true;
+    
+    // Perbarui juga data di LocalStorage agar sinkron
+    localStorage.setItem("user", JSON.stringify(userData.value));
   } catch (error) {
-    isAuthenticated.value = false;
+    // Jika token ternyata sudah expired/tidak valid, paksa logout
+    if (error.response && error.response.status === 401) {
+      isAuthenticated.value = false;
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+    }
   }
 };
 
@@ -217,7 +268,10 @@ const currentTier = computed(() => {
 });
 
 onMounted(() => {
-  checkAuth();
+  // Hanya ambil data terbaru di latar belakang (background)
+  if (isAuthenticated.value) {
+    refreshUserData();
+  }
 });
 </script>
 

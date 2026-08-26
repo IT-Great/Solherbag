@@ -5493,7 +5493,7 @@ watch(
                 class="pb-4 text-sm font-black tracking-widest text-amber-600 uppercase transition-colors border-b border-gray-100 hover:text-amber-800 flex items-center justify-between"
               >
                 <span>{{ $t("header.solher_club") || "Solher Club" }}</span>
-                <span class="text-lg">✨</span>
+                <!-- <span class="text-lg">✨</span> -->
               </router-link>
               <!-- 👆 ======================================= 👆 -->
               <router-link
