@@ -3758,6 +3758,7 @@ import BagCategoryDetailPage from "../components/Admin/BagCategoryDetailPage.vue
 // 👇 IMPORT HALAMAN TELESCOPE BARU 👇
 import TelescopeMonitoringPage from "../components/Admin/TelescopeMonitoringPage.vue";
 import SolherClubPage from "../components/User/SolherClubPage.vue";
+import UserClaimPromo from "../components/Admin/UserClaimPromo.vue";
 
 const routes = [
   { path: "/", name: "Home", component: HomePage },
@@ -3812,7 +3813,7 @@ const routes = [
   { path: "/admin/transactions", name: "Transaction", component: TransactionPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
   { path: "/admin/transactions/:id", name: "TransactionDetail", component: TransactionDetailPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
   { path: "/admin/user_list", name: "UserList", component: UserListPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
-  { path: "/admin/promo_claims", name: "PromoClaims", component: PromoClaimPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  { path: "/admin/promo_claims", name: "PromoClaims", component: UserClaimPromo, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
   { path: "/admin/users/:id", name: "UserDetail", component: UserDetailPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
   { path: "/admin/reviews", name: "AdminReviews", component: AdminReviewPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
   { path: "/admin/subscribers", name: "Subscribers", component: SubscriberPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
