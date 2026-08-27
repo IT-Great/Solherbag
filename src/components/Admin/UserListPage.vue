@@ -1603,7 +1603,7 @@ tr {
       </div>
       <!-- 👇 TOMBOL BARU UNTUK MELIHAT DATA CLAIM PROMO 👇 -->
       <button
-        @click="$router.push('/admin/users/promo-claims')"
+        @click="$router.push('/admin/users/promo_claims')"
         class="flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-bold text-white transition-all bg-black shadow-md rounded-xl hover:bg-gray-800"
       >
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
