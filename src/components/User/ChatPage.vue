@@ -4214,6 +4214,7 @@ onUnmounted(() => {
             <h2 class="text-sm font-bold tracking-widest text-black uppercase">
               {{ receiverProfile.first_name }} {{ receiverProfile.last_name }}
             </h2>
+            <!-- 👇 PERBAIKAN: Pisahkan status indikator dengan jelas 👇 -->
             <p
               v-if="isAiThinking"
               class="text-[10px] text-purple-500 font-bold uppercase tracking-widest flex items-center gap-1.5 mt-0.5 animate-pulse"
@@ -4298,7 +4299,7 @@ onUnmounted(() => {
           </div>
         </div>
 
-        <!-- 👇 PERBAIKAN: Animasi 3 Titik Anti-Freeze untuk AI 👇 -->
+        <!-- 👇 PERBAIKAN: Gunakan Block v-if terpisah dari Opponent Typing 👇 -->
         <div v-if="isAiThinking" class="flex justify-start w-full mb-4 animate-fade-in">
           <div class="flex flex-col">
             <span
@@ -4315,9 +4316,8 @@ onUnmounted(() => {
           </div>
         </div>
 
-        <!-- 👇 PERBAIKAN: Animasi 3 Titik Anti-Freeze untuk Manusia 👇 -->
         <div
-          v-if="isOpponentTyping"
+          v-else-if="isOpponentTyping"
           class="flex justify-start w-full mb-4 animate-fade-in"
         >
           <div class="flex flex-col">
@@ -4495,6 +4495,9 @@ const markAsRead = async () => {
 };
 
 const handleTyping = () => {
+  // 👇 PERBAIKAN: Jangan kirim indikator mengetik ke Admin jika kita sedang dilayani AI
+  if (isAiThinking.value || !isHumanMode.value) return;
+
   const now = Date.now();
   if (now - lastTypingTime > 1500) {
     lastTypingTime = now;
@@ -4539,6 +4542,8 @@ const sendMessage = async () => {
   isSending.value = true;
 
   if (!isHumanMode.value) {
+    // 👇 PENGUNCIAN: Pastikan ini selalu dikunci ketika pesan dikirim dalam mode AI
+    isOpponentTyping.value = false; 
     isAiThinking.value = true;
   }
 
@@ -4560,7 +4565,6 @@ const sendMessage = async () => {
       { receiver_id: receiverId, message: sentMessage },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    // Ganti array splice agar DOM reactivity tetap halus tanpa menghapus titik loading
     const index = messages.value.findIndex((m) => m.id === tempId);
     if (index !== -1) {
       messages.value.splice(index, 1, res.data.user_message || res.data);
@@ -4602,9 +4606,9 @@ onMounted(() => {
         }
       })
       .listen(".user.typing", (e) => {
-        if (e.typer_id !== myId.value) {
+        // 👇 PERBAIKAN MUTLAK: ABAIKAN SEMUA EVENT MENGETIK ADMIN JIKA AI SEDANG BERPIKIR
+        if (e.typer_id !== myId.value && !isAiThinking.value && isHumanMode.value) {
           isOpponentTyping.value = true;
-          isAiThinking.value = false;
           scrollToBottom();
 
           clearTimeout(typingTimeout);
@@ -4642,7 +4646,6 @@ onUnmounted(() => {
   }
 }
 
-/* 👇 PERBAIKAN: CSS Keyframes Independen Untuk Animasi 3 Titik 👇 */
 .animate-bounce-1 {
   animation: bounceDots 1.4s infinite ease-in-out both;
   animation-delay: -0.32s;
@@ -4665,5 +4668,4 @@ onUnmounted(() => {
     opacity: 1;
   }
 }
-/* 👆 ======================================================= 👆 */
 </style>
