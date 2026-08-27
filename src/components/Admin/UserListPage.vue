@@ -1181,7 +1181,7 @@ tr {
 }
 </style> -->
 
-<template>
+<!-- <template>
   <div
     class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[600px]"
   >
@@ -1302,7 +1302,6 @@ tr {
             >
               <div class="flex items-center gap-2">
                 <span>{{ user.first_name }} {{ user.last_name }}</span>
-                <!-- 👇 PERBAIKAN: Menampilkan Badge Chat Masuk Langsung di Nama Pengguna 👇 -->
                 <span
                   v-if="user.unread_count > 0"
                   class="flex items-center justify-center px-1.5 py-0.5 text-[9px] font-bold text-white bg-red-600 rounded-full shadow-sm animate-pulse"
@@ -1570,6 +1569,423 @@ onMounted(() => {
     fetchUsers();
   });
   // Menyadap perintah dari Sidebar.vue jika ada pesan baru masuk / sudah dibaca
+  window.addEventListener("refresh-user-list-chat", fetchUsers);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("refresh-user-list-chat", fetchUsers);
+});
+</script>
+
+<style scoped>
+tr {
+  transition: all 0.2s ease-in-out;
+}
+.pop-enter-active,
+.pop-leave-active {
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.pop-enter-from,
+.pop-leave-to {
+  transform: scale(0);
+}
+</style> -->
+
+<template>
+  <div
+    class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[600px]"
+  >
+    <Breadcrumb />
+    <div class="flex flex-col justify-between gap-4 mb-8 md:flex-row md:items-end">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-800">Registered Users</h1>
+        <p class="text-sm text-gray-500">Manage all registered members of the platform.</p>
+      </div>
+      <!-- 👇 TOMBOL BARU UNTUK MELIHAT DATA CLAIM PROMO 👇 -->
+      <button
+        @click="$router.push('/admin/users/promo-claims')"
+        class="flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-bold text-white transition-all bg-black shadow-md rounded-xl hover:bg-gray-800"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+        </svg>
+        View Promo Claims
+      </button>
+    </div>
+
+    <div class="flex flex-col items-center justify-between gap-4 mb-6 md:flex-row">
+      <div class="relative w-full md:w-80">
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+        </span>
+        <input
+          v-model="searchQuery"
+          type="text"
+          placeholder="Search by name or email..."
+          class="w-full py-2 pl-10 pr-4 text-sm transition border border-gray-200 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <div class="flex items-center gap-3">
+        <span class="text-xs font-bold tracking-wide text-gray-400 uppercase">Show:</span>
+        <select
+          v-model="itemsPerPage"
+          class="px-3 py-2 text-sm font-bold border border-gray-200 outline-none cursor-pointer bg-gray-50 rounded-xl focus:ring-2 focus:ring-blue-500"
+        >
+          <option :value="5">5</option>
+          <option :value="10">10</option>
+          <option :value="20">20</option>
+          <option :value="50">50</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="text-xs tracking-widest text-gray-400 uppercase border-b">
+            <th class="pb-4 pl-2 font-medium">Profile</th>
+            <th class="pb-4 font-medium">Full Name</th>
+            <th class="pb-4 font-medium">Email</th>
+            <th class="pb-4 font-medium">Joined Date</th>
+            <th class="pb-4 pr-2 font-medium text-center">Action</th>
+          </tr>
+        </thead>
+
+        <tbody v-if="isLoading">
+          <tr
+            v-for="i in itemsPerPage > 10 ? 10 : itemsPerPage"
+            :key="`skel-${i}`"
+            class="border-b border-gray-50"
+          >
+            <td class="py-4 pl-2">
+              <div
+                class="w-10 h-10 bg-gray-200 rounded-full shadow-sm animate-pulse"
+              ></div>
+            </td>
+            <td class="py-4">
+              <div class="w-32 h-4 bg-gray-200 rounded animate-pulse"></div>
+            </td>
+            <td class="py-4">
+              <div class="w-48 h-4 bg-gray-200 rounded animate-pulse"></div>
+            </td>
+            <td class="py-4 pr-2 text-center">
+              <div
+                class="inline-block w-24 h-8 bg-gray-200 rounded-lg animate-pulse"
+              ></div>
+            </td>
+          </tr>
+        </tbody>
+
+        <tbody v-else class="text-gray-600">
+          <tr
+            v-for="user in paginatedUsers"
+            :key="user.id"
+            :class="[
+              'transition border-b border-gray-50 group',
+              user.unread_count > 0 ? 'bg-red-50/30' : '',
+              canViewDetails || isSuperAdmin ? 'cursor-pointer hover:bg-gray-50' : '',
+            ]"
+            @click="
+              canViewDetails || isSuperAdmin
+                ? $router.push(`/admin/users/${user.id}`)
+                : null
+            "
+          >
+            <td class="py-4 pl-2">
+              <img
+                :src="
+                  user.profile_image
+                    ? `${user.profile_image}`
+                    : `https://ui-avatars.com/api/?name=${user.first_name}+${user.last_name}&background=random`
+                "
+                class="object-cover w-10 h-10 rounded-full shadow-sm"
+                alt="User Profile"
+              />
+            </td>
+            <td
+              :class="[
+                'py-4 font-bold text-gray-800 transition-colors',
+                canViewDetails || isSuperAdmin ? 'group-hover:text-blue-600' : '',
+              ]"
+            >
+              <div class="flex items-center gap-2">
+                <span>{{ user.first_name }} {{ user.last_name }}</span>
+                <span
+                  v-if="user.unread_count > 0"
+                  class="flex items-center justify-center px-1.5 py-0.5 text-[9px] font-bold text-white bg-red-600 rounded-full shadow-sm animate-pulse"
+                >
+                  {{ user.unread_count }} New
+                </span>
+              </div>
+            </td>
+            <td class="py-4 text-sm">{{ user.email }}</td>
+            <td class="py-4 text-xs font-medium text-gray-500">
+              {{ formatDate(user.created_at) }}
+            </td>
+            <td class="py-4 pr-2 text-center">
+              <div class="flex items-center justify-center gap-2">
+                <button
+                  v-if="canViewDetails || isSuperAdmin"
+                  @click.stop="$router.push(`/admin/users/${user.id}`)"
+                  class="px-4 py-2 text-xs font-medium text-gray-600 transition-colors bg-gray-100 rounded-lg hover:bg-blue-50 hover:text-blue-600"
+                >
+                  View Details
+                </button>
+
+                <button
+                  v-if="canChat || isSuperAdmin"
+                  @click.stop="$router.push(`/admin/chat/${user.id}`)"
+                  :class="
+                    user.unread_count > 0
+                      ? 'bg-red-100 text-red-600 hover:bg-red-200'
+                      : 'bg-gray-100 text-gray-600 hover:bg-green-50 hover:text-green-600'
+                  "
+                  class="p-2 transition-colors rounded-lg shadow-sm"
+                  title="Chat with User"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-5 h-5"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z"
+                    />
+                  </svg>
+                </button>
+
+                <span
+                  v-if="!canViewDetails && !canChat && !isSuperAdmin"
+                  class="text-gray-300 select-none"
+                  >-</span
+                >
+              </div>
+            </td>
+          </tr>
+
+          <tr v-if="paginatedUsers.length === 0">
+            <td colspan="5" class="py-20 text-sm italic text-center text-gray-400">
+              {{
+                searchQuery
+                  ? "No users found matching your search."
+                  : "No registered users found."
+              }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div
+      v-if="!isLoading && sortedAndFilteredUsers.length > 0"
+      class="flex flex-col items-center justify-between gap-4 pt-6 mt-8 border-t md:flex-row border-gray-50"
+    >
+      <p class="text-sm text-gray-400">
+        Showing <span class="font-bold text-gray-800">{{ showingStart }}</span> to
+        <span class="font-bold text-gray-800">{{ showingEnd }}</span> of
+        <span class="font-bold text-gray-800">{{ sortedAndFilteredUsers.length }}</span>
+        users
+      </p>
+
+      <div class="flex gap-2">
+        <button
+          @click="currentPage--"
+          :disabled="currentPage === 1"
+          class="px-4 py-2 text-sm font-medium transition border border-gray-200 rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
+        >
+          Previous
+        </button>
+        <div class="flex gap-1">
+          <button
+            v-for="(page, index) in visiblePages"
+            :key="index"
+            @click="typeof page === 'number' ? (currentPage = page) : null"
+            :disabled="page === '...'"
+            :class="[
+              currentPage === page
+                ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+                : 'hover:bg-gray-50 border-gray-200',
+              page === '...'
+                ? 'cursor-default border-transparent hover:bg-transparent'
+                : 'border',
+            ]"
+            class="flex items-center justify-center w-10 h-10 text-sm font-bold transition rounded-xl"
+          >
+            {{ page }}
+          </button>
+        </div>
+        <button
+          @click="currentPage++"
+          :disabled="currentPage === totalPages"
+          class="px-4 py-2 text-sm font-medium transition border border-gray-200 rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import Breadcrumb from "../../components/Admin/Layout/Breadcrumb.vue";
+import { ref, onMounted, onUnmounted, computed, watch } from "vue";
+import axios from "axios";
+import { BASE_URL } from "../../config/api.js";
+
+const users = ref([]);
+const isLoading = ref(true);
+const searchQuery = ref("");
+const currentPage = ref(1);
+const itemsPerPage = ref(10);
+
+const userRole = ref("");
+const isSuperAdmin = computed(() => userRole.value === "superadmin");
+
+const myPermissions = ref({
+  viewDetails: false,
+  chat: false,
+});
+
+const canViewDetails = computed(() => myPermissions.value.viewDetails);
+const canChat = computed(() => myPermissions.value.chat);
+
+const formatDate = (dateString) => {
+  if (!dateString) return "-";
+  return new Date(dateString).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+};
+
+const axiosConfig = {
+  headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
+};
+
+const fetchUserPermissions = async () => {
+  const adminStr = localStorage.getItem("admin");
+  if (adminStr) {
+    const admin = JSON.parse(adminStr);
+    userRole.value = admin.usertype;
+  }
+  if (isSuperAdmin.value) return;
+  try {
+    let policies = null;
+    const cachedPerms = localStorage.getItem("admin_permissions");
+    if (cachedPerms) {
+      policies = JSON.parse(cachedPerms);
+    } else {
+      const res = await axios.get(`${BASE_URL}/admin/access-policies`, axiosConfig);
+      policies = res.data.permissions;
+      localStorage.setItem("admin_permissions", JSON.stringify(policies));
+    }
+    const myRolePolicies = policies[userRole.value] || {};
+    const userTerms = myRolePolicies.users || [];
+    const messageTerms = myRolePolicies.messages || [];
+
+    myPermissions.value = {
+      viewDetails: userTerms.includes("read"),
+      chat: messageTerms.includes("menu") || messageTerms.includes("read"),
+    };
+  } catch (error) {
+    console.error("Error permissions", error);
+  }
+};
+
+const sortedAndFilteredUsers = computed(() => {
+  const query = searchQuery.value.toLowerCase();
+  let result = users.value;
+
+  if (query) {
+    result = result.filter(
+      (user) =>
+        user.first_name.toLowerCase().includes(query) ||
+        user.last_name.toLowerCase().includes(query) ||
+        user.email.toLowerCase().includes(query)
+    );
+  }
+
+  return result.slice().sort((a, b) => {
+    const aUnread = a.unread_count || 0;
+    const bUnread = b.unread_count || 0;
+
+    if (aUnread !== bUnread) {
+      return bUnread - aUnread;
+    }
+    return new Date(b.created_at) - new Date(a.created_at);
+  });
+});
+
+const totalPages = computed(() =>
+  Math.ceil(sortedAndFilteredUsers.value.length / itemsPerPage.value)
+);
+
+const paginatedUsers = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value;
+  const end = start + itemsPerPage.value;
+  return sortedAndFilteredUsers.value.slice(start, end);
+});
+
+const showingStart = computed(() => {
+  if (sortedAndFilteredUsers.value.length === 0) return 0;
+  return (currentPage.value - 1) * itemsPerPage.value + 1;
+});
+
+const showingEnd = computed(() =>
+  Math.min(currentPage.value * itemsPerPage.value, sortedAndFilteredUsers.value.length)
+);
+
+const visiblePages = computed(() => {
+  const current = currentPage.value;
+  const total = totalPages.value;
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+  if (current <= 4) return [1, 2, 3, 4, 5, "...", total];
+  if (current >= total - 3)
+    return [1, "...", total - 4, total - 3, total - 2, total - 1, total];
+  return [1, "...", current - 1, current, current + 1, "...", total];
+});
+
+watch([searchQuery, itemsPerPage], () => {
+  currentPage.value = 1;
+});
+
+const fetchUsers = async () => {
+  isLoading.value = true;
+  try {
+    const res = await axios.get(`${BASE_URL}/admin/users`, axiosConfig);
+    users.value = res.data;
+  } catch (error) {
+    console.error("Gagal mengambil data user:", error);
+  } finally {
+    setTimeout(() => {
+      isLoading.value = false;
+    }, 400);
+  }
+};
+
+onMounted(() => {
+  fetchUserPermissions().then(() => {
+    fetchUsers();
+  });
   window.addEventListener("refresh-user-list-chat", fetchUsers);
 });
 
