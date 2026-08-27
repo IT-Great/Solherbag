@@ -213,7 +213,7 @@ watch([searchQuery, itemsPerPage], () => {
 const fetchClaims = async () => {
   isLoading.value = true;
   try {
-    const res = await axios.get(`${BASE_URL}/admin/promo-claims`, axiosConfig);
+    const res = await axios.get(`${BASE_URL}/admin/users/promo-claims`, axiosConfig);
     claims.value = res.data;
   } catch (error) {
     console.error("Gagal mengambil data promo claims:", error);
