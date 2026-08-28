@@ -93,6 +93,21 @@
             Register
           </button>
         </div>
+
+        <!-- 👇 AREA TOMBOL GOOGLE LOGIN BARU 👇 -->
+        <div class="flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 after:flex-1 after:border-t after:border-gray-300">
+          <p class="mx-4 mb-0 text-center font-bold text-gray-400 text-[10px] uppercase tracking-widest">Atau</p>
+        </div>
+
+        <button
+          type="button"
+          @click="loginWithGoogle"
+          class="flex items-center justify-center w-full bg-white border border-gray-300 text-gray-700 font-bold px-4 py-3 rounded-sm shadow-sm hover:bg-gray-50 transition-colors duration-300"
+        >
+          <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5 mr-3" />
+          Lanjutkan dengan Google
+        </button>
+        <!-- 👆 ============================== 👆 -->
       </form>
 
       <p class="mt-6 text-gray-600 text-xs text-center">
@@ -186,6 +201,10 @@ const handleRegister = async () => {
     }
     console.error(error);
   }
+};
+
+const loginWithGoogle = () => {
+  window.location.href = `${BASE_URL}/auth/google/redirect`;
 };
 
 // Logic untuk menangkap email dari query parameter
