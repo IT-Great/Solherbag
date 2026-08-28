@@ -153,6 +153,49 @@ const handleLogin = async () => {
         Login
       </h2>
 
+      <!-- <form @submit.prevent="handleLogin" class="space-y-6">
+        <div class="flex flex-col">
+          <label for="email" class="mb-2 font-bold text-black text-sm">Email</label>
+          <input
+            type="email"
+            id="email"
+            v-model="email"
+            class="bg-[#D9D9D9] p-3 border-none outline-none focus:ring-1 focus:ring-blue-500 w-full transition"
+            required
+          />
+        </div>
+
+        <div class="flex flex-col">
+          <label for="password" class="mb-2 font-bold text-black text-sm">Password</label>
+          <input
+            type="password"
+            id="password"
+            v-model="password"
+            class="bg-[#D9D9D9] p-3 border-none outline-none focus:ring-1 focus:ring-blue-500 w-full transition"
+            required
+          />
+        </div>
+
+        <div class="pt-4">
+          <button
+            type="submit"
+            :disabled="isLoading"
+            class="bg-[#0066FF] hover:bg-blue-700 disabled:bg-blue-400 shadow-md px-4 py-3 rounded-sm w-full font-bold text-white transition-colors duration-300"
+          >
+            {{ isLoading ? "Memproses..." : "Login" }}
+          </button>
+        </div>
+
+        <div class="text-center mt-4">
+          <router-link
+            to="/forgot-password"
+            class="text-xs text-gray-500 hover:text-black hover:underline transition"
+          >
+            Forgot your password?
+          </router-link>
+        </div>
+      </form> -->
+
       <form @submit.prevent="handleLogin" class="space-y-6">
         <div class="flex flex-col">
           <label for="email" class="mb-2 font-bold text-black text-sm">Email</label>
@@ -177,7 +220,6 @@ const handleLogin = async () => {
         </div>
 
         <div class="pt-4">
-          <!-- Tombol tidak lagi di-disable oleh status captcha -->
           <button
             type="submit"
             :disabled="isLoading"
@@ -186,6 +228,21 @@ const handleLogin = async () => {
             {{ isLoading ? "Memproses..." : "Login" }}
           </button>
         </div>
+
+        <!-- 👇 AREA TOMBOL GOOGLE LOGIN BARU 👇 -->
+        <div class="flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 after:flex-1 after:border-t after:border-gray-300">
+          <p class="mx-4 mb-0 text-center font-bold text-gray-400 text-[10px] uppercase tracking-widest">Atau</p>
+        </div>
+
+        <button
+          type="button"
+          @click="loginWithGoogle"
+          class="flex items-center justify-center w-full bg-white border border-gray-300 text-gray-700 font-bold px-4 py-3 rounded-sm shadow-sm hover:bg-gray-50 transition-colors duration-300"
+        >
+          <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5 mr-3" />
+          Lanjutkan dengan Google
+        </button>
+        <!-- 👆 ============================== 👆 -->
 
         <div class="text-center mt-4">
           <router-link
@@ -286,6 +343,10 @@ const handleLogin = async () => {
   } finally {
     isLoading.value = false;
   }
+};
+
+const loginWithGoogle = () => {
+  window.location.href = `${BASE_URL}/auth/google/redirect`;
 };
 
 // ==========================================

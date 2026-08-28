@@ -3759,6 +3759,7 @@ import BagCategoryDetailPage from "../components/Admin/BagCategoryDetailPage.vue
 import TelescopeMonitoringPage from "../components/Admin/TelescopeMonitoringPage.vue";
 import SolherClubPage from "../components/User/SolherClubPage.vue";
 import UserClaimPromo from "../components/Admin/UserClaimPromo.vue";
+import GoogleCallback from "../components/User/Layout/GoogleCallback.vue";
 
 const routes = [
   { path: "/", name: "Home", component: HomePage },
@@ -3832,6 +3833,11 @@ const routes = [
   { path: "/admin/access-policy", name: "AccessPolicyManagementa", component: AccessPolicyManagement, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
   { path: "/admin/newsletters", name: "AdminCampaignHistory", component: AdminCampaignHistory, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
   { path: "/admin/newsletters/create", name: "AdminNewsletterBuilder", component: AdminNewsletterBuilder, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  {
+    path: '/auth/callback',
+    name: 'GoogleCallback',
+    component: GoogleCallback
+  },
   
   // 👇 RUTE TELESCOPE BARU 👇
   { path: "/admin/telescope", name: "TelescopeMonitoring", component: TelescopeMonitoringPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
