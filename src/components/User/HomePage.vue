@@ -5411,10 +5411,10 @@ onUnmounted(() => {
           <h3
             class="mb-4 font-serif text-3xl italic font-light text-gray-800 md:text-4xl"
           >
-            Loved By Our Clients
+            {{ $t("home.loved_by_our_clients") }}
           </h3>
           <p class="text-xs font-bold tracking-widest text-gray-500 uppercase">
-            Discover what they say about our premium pieces
+            {{ $t("home.discover_what_they_say_about_our_premium_pieces") }}
           </p>
         </div>
 
