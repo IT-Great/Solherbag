@@ -5662,8 +5662,15 @@ const isMegaMenuLoading = ref(false);
 const randomMegaProduct = ref(null);
 
 // Filter Kategorisasi
+// const normalCategories = computed(() => {
+//   return categories.value.filter((c) => c.category_code !== "C005");
+// });
+
+// Filter Kategorisasi
 const normalCategories = computed(() => {
-  return categories.value.filter((c) => c.category_code !== "C005");
+  return categories.value
+    .filter((c) => c.category_code !== "C005")
+    .sort((a, b) => a.id - b.id); // Mengurutkan dari id terkecil ke terbesar
 });
 
 const accessoriesCategory = computed(() => {
@@ -5684,6 +5691,26 @@ const generateRandomMegaProduct = () => {
     products[Math.floor(Math.random() * products.length)];
 };
 
+// const fetchCategoriesForMegaMenu = async () => {
+//   if (categories.value.length > 0 && bagCategories.value.length > 0) return;
+//   isMegaMenuLoading.value = true;
+//   try {
+//     const [catRes, bagCatRes] = await Promise.all([
+//       axios.get(`${BASE_URL}/guest/categories`),
+//       axios
+//         .get(`${BASE_URL}/bag-categories`)
+//         .catch(() => ({ data: { data: [] } })),
+//     ]);
+
+//     categories.value = catRes.data.data || catRes.data;
+//     bagCategories.value = bagCatRes.data.data || bagCatRes.data;
+//   } catch (error) {
+//     console.error("Gagal menarik kategori menu:", error);
+//   } finally {
+//     isMegaMenuLoading.value = false;
+//   }
+// };
+
 const fetchCategoriesForMegaMenu = async () => {
   if (categories.value.length > 0 && bagCategories.value.length > 0) return;
   isMegaMenuLoading.value = true;
@@ -5695,8 +5722,12 @@ const fetchCategoriesForMegaMenu = async () => {
         .catch(() => ({ data: { data: [] } })),
     ]);
 
-    categories.value = catRes.data.data || catRes.data;
-    bagCategories.value = bagCatRes.data.data || bagCatRes.data;
+    let rawCategories = catRes.data.data || catRes.data;
+    let rawBagCategories = bagCatRes.data.data || bagCatRes.data;
+
+    // Simpan ke state sekaligus diurutkan berdasarkan id ASC
+    categories.value = rawCategories.sort((a, b) => a.id - b.id);
+    bagCategories.value = rawBagCategories.sort((a, b) => a.id - b.id);
   } catch (error) {
     console.error("Gagal menarik kategori menu:", error);
   } finally {
