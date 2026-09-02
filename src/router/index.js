@@ -3760,6 +3760,7 @@ import TelescopeMonitoringPage from "../components/Admin/TelescopeMonitoringPage
 import SolherClubPage from "../components/User/SolherClubPage.vue";
 import UserClaimPromo from "../components/Admin/UserClaimPromo.vue";
 import GoogleCallback from "../components/User/Layout/GoogleCallback.vue";
+import InactiveProductStockPage from "../components/Admin/InactiveProductStockPage.vue";
 
 const routes = [
   { path: "/", name: "Home", component: HomePage },
@@ -3810,6 +3811,7 @@ const routes = [
   { path: "/admin/products/view/:id", name: "ProductView", component: () => import("../components/Admin/ProductViewPage.vue"), meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
   { path: "/admin/products/inactive", name: "InactiveProduct", component: InactiveProductPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
   { path: "/admin/stocks", name: "ProductStock", component: ProductStockPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+  { path: '/admin/stocks/inactive', name: "InactiveProductStock", component: InactiveProductStockPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
   { path: "/admin/salesreports", name: "SalesReport", component: SalesReportPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
   { path: "/admin/transactions", name: "Transaction", component: TransactionPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
   { path: "/admin/transactions/:id", name: "TransactionDetail", component: TransactionDetailPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
