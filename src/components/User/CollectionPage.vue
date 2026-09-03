@@ -8327,7 +8327,7 @@ const goToDetail = (product) => {
             <div
               class="relative bg-gray-50 shadow-sm transition-all duration-500 mb-4 rounded-xl aspect-[4/5] overflow-hidden group/slider border border-gray-100/50 group-hover:-translate-y-1 group-hover:shadow-2xl"
             >
-              <!-- 👇 [CRO: LUXURY HOVER OVERLAY] 👇 -->
+              <!-- Luxury Hover Overlay -->
               <div 
                 class="absolute inset-0 z-30 flex items-center justify-center transition-all duration-500 opacity-0 bg-black/10 backdrop-blur-[2px] group-hover/slider:opacity-100"
               >
@@ -8337,7 +8337,6 @@ const goToDetail = (product) => {
                   </span>
                 </div>
               </div>
-              <!-- 👆 ============================= 👆 -->
 
               <!-- Badges Kiri Atas -->
               <div class="absolute z-20 flex flex-col gap-1 top-3 left-3">
@@ -8529,12 +8528,12 @@ const goToDetail = (product) => {
                 {{ product.name }}
               </h3>
 
-              <!-- 👇 [CRO: LIVE SOCIAL PROOF] 👇 -->
+              <!-- 👇 [CRO: LIVE SOCIAL PROOF - DYNAMIC RANDOMIZED] 👇 -->
               <div v-if="product.stock > 0" class="flex items-center gap-1.5 mt-1.5 mb-1 text-[10px] text-orange-600 font-bold tracking-wide">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 animate-pulse" viewBox="0 0 20 20" fill="currentColor">
                   <path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd" />
                 </svg>
-                Trending: {{ (product.id % 7) + 12 }} orang sedang melihat tas ini
+                {{ getViewerCount(product.id) }} orang sedang melihat tas ini
               </div>
               <!-- 👆 ============================== 👆 -->
 
@@ -8608,52 +8607,7 @@ const goToDetail = (product) => {
         </div>
 
         <!-- Pagination -->
-        <!-- <div class="flex items-center justify-center gap-4 mt-20">
-          <button
-            @click="currentPage--"
-            :disabled="currentPage === 1"
-            class="p-2 transition bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-50 hover:border-black disabled:opacity-30 disabled:cursor-not-allowed"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-5 h-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-          </button>
-          <span class="text-xs font-bold tracking-widest text-gray-600 uppercase">
-            {{ $t("collection.page", { current: currentPage, total: totalPages || 1 }) }}
-          </span>
-          <button
-            @click="currentPage++"
-            :disabled="currentPage === totalPages || totalPages === 0"
-            class="p-2 transition bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-50 hover:border-black disabled:opacity-30 disabled:cursor-not-allowed"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-5 h-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 5l7 7-7-7"
-              />
-            </svg>
-          </button>
-        </div> -->
-                <div class="flex items-center justify-center gap-4 mt-20">
+        <div class="flex items-center justify-center gap-4 mt-20">
           <button
             @click="currentPage--"
             :disabled="currentPage === 1"
@@ -8775,12 +8729,19 @@ const { t } = useI18n();
 
 const currentCurrency = ref(localStorage.getItem("currency") || "IDR");
 
-const convertToWIB = (dateString) => {
-  if (!dateString) return null;
-  const date = new Date(dateString);
-  date.setHours(date.getHours() - 7);
-  return date;
+// 👇 [BARU] STATE UNTUK ANGKA RANDOM DINAMIS 👇
+const currentMinuteTick = ref(new Date().getMinutes());
+let viewerInterval = null;
+
+// Fungsi pembuat angka acak semu (pseudo-random) yang stabil selama 1 menit penuh
+const getViewerCount = (productId) => {
+  // Gunakan ID Produk dan Menit saat ini sebagai "benih" angka
+  const seed = productId * (currentMinuteTick.value + 7); 
+  // Menghasilkan angka yang tampak acak tapi stabil antara 12 sampai 26 orang
+  return (seed % 15) + 12; 
 };
+// 👆 ========================================== 👆
+
 
 const updateCurrencyState = () => {
   currentCurrency.value = localStorage.getItem("currency") || "IDR";
@@ -8896,6 +8857,12 @@ onMounted(() => {
   initCollections();
   fetchWishlists();
 
+  // 👇 [BARU] Nnyalakan timer pendeteksi menit untuk mengubah angka trending 👇
+  viewerInterval = setInterval(() => {
+    currentMinuteTick.value = new Date().getMinutes();
+  }, 10000); // Mengecek perubahan waktu setiap 10 detik agar sangat presisi
+  // 👆 =================================================================== 👆
+
   window.addEventListener("currency-changed", updateCurrencyState);
   window.addEventListener("storage", (e) => {
     if (e.key === "currency") updateCurrencyState();
@@ -8920,6 +8887,7 @@ watch(
 );
 
 onUnmounted(() => {
+  if (viewerInterval) clearInterval(viewerInterval); // Pastikan interval dibersihkan
   window.removeEventListener("currency-changed", updateCurrencyState);
   window.removeEventListener("wishlist-updated", fetchWishlists);
 });
