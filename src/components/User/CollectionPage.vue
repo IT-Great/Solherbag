@@ -9575,7 +9575,7 @@ const goToDetail = (product) => {
               <button
                 v-if="getMediaArray(product).length > 1"
                 @click.stop="nextSlide(product.id, getMediaArray(product).length - 1)"
-                class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-1.5 rounded-full opacity-0 group-hover/slider:opacity-100 transition z-10 shadow-md text-black"
+                class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-1.5 rounded-full opacity-0 group-hover/slider:opacity-100 transition z-40 shadow-md text-black"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
