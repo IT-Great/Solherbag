@@ -251,7 +251,7 @@ const handleAdminLogin = async () => {
 }
 </style> -->
 
-<template>
+<!-- <template>
   <div class="flex justify-center items-center bg-[#1F2937] px-6 min-h-screen">
     <div
       class="bg-white shadow-sm p-10 border border-gray-300 rounded-[3rem] w-full max-w-md"
@@ -296,7 +296,6 @@ const handleAdminLogin = async () => {
         </div>
 
         <div class="pt-4">
-          <!-- Tombol tidak lagi di-disable oleh status captcha -->
           <button
             type="submit"
             :disabled="isLoading"
@@ -422,6 +421,185 @@ onMounted(() => {
 
 onUnmounted(() => {
   // Saat user pindah ke halaman lain (meninggalkan login), hapus class-nya
+  document.body.classList.remove("show-recaptcha");
+});
+</script>
+
+<style scoped>
+:deep(main) {
+  padding: 0 !important;
+}
+</style> -->
+
+<template>
+  <div class="flex justify-center items-center bg-[#1F2937] px-6 min-h-screen">
+    <div class="bg-white shadow-sm p-10 border border-gray-300 rounded-[3rem] w-full max-w-md">
+      <div class="flex justify-center mb-6">
+        <img src="../../assets/solherbrandbook.png" alt="SolHer Logo" class="w-auto h-16 object-contain" />
+      </div>
+
+      <h2 class="mb-10 font-black text-black text-xl text-center uppercase tracking-widest">
+        Portal Staff
+      </h2>
+
+      <form @submit.prevent="handleAdminLogin" class="space-y-6">
+        <div class="flex flex-col">
+          <label for="email" class="mb-2 font-bold text-black text-sm">Email Karyawan</label>
+          <input
+            type="email"
+            id="email"
+            v-model.trim="email"
+            :disabled="lockoutSeconds > 0"
+            class="bg-[#D9D9D9] p-3 border-none outline-none focus:ring-1 focus:ring-red-500 w-full transition rounded disabled:opacity-50"
+            required
+          />
+        </div>
+
+        <div class="flex flex-col">
+          <label for="password" class="mb-2 font-bold text-black text-sm">Password</label>
+          <input
+            type="password"
+            id="password"
+            v-model="password"
+            :disabled="lockoutSeconds > 0"
+            class="bg-[#D9D9D9] p-3 border-none outline-none focus:ring-1 focus:ring-red-500 w-full transition rounded disabled:opacity-50"
+            required
+          />
+        </div>
+
+        <div class="pt-4">
+          <button
+            type="submit"
+            :disabled="isLoading || lockoutSeconds > 0"
+            class="bg-[#CC0000] hover:bg-red-700 disabled:bg-gray-400 shadow-md px-4 py-3 rounded-sm w-full font-bold text-white transition-colors duration-300"
+          >
+            {{ lockoutSeconds > 0 ? `Terkunci (${lockoutSeconds}s)` : isLoading ? "Memproses..." : "Login" }}
+          </button>
+        </div>
+
+        <div class="text-center mt-4">
+          <router-link to="/admin/forgot-password" class="text-xs text-gray-500 hover:text-black hover:underline transition">
+            Lupa Password?
+          </router-link>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, onUnmounted } from "vue";
+import axios from "axios";
+import { useRouter } from "vue-router";
+import Swal from "sweetalert2";
+import { BASE_URL } from "../../config/api.js";
+
+const router = useRouter();
+const email = ref("");
+const password = ref("");
+const isLoading = ref(false);
+const lockoutSeconds = ref(0); // STATE BARU UNTUK UI LOCKOUT
+
+const siteKey = "6Ldc7NQsAAAAAKyL9iRCRWG41KoOl2-lWdOTJhk0";
+
+const executeRecaptcha = (siteKey, actionName) => {
+  return new Promise((resolve) => {
+    if (typeof window.grecaptcha !== "undefined") {
+      window.grecaptcha.ready(async () => {
+        try {
+          const token = await window.grecaptcha.execute(siteKey, { action: actionName });
+          resolve(token);
+        } catch (e) {
+          console.error("reCAPTCHA execution error:", e);
+          resolve(null);
+        }
+      });
+    } else {
+      resolve(null);
+    }
+  });
+};
+
+const triggerLockout = (seconds) => {
+  lockoutSeconds.value = seconds;
+  const interval = setInterval(() => {
+    lockoutSeconds.value--;
+    if (lockoutSeconds.value <= 0) {
+      clearInterval(interval);
+    }
+  }, 1000);
+};
+
+const handleAdminLogin = async () => {
+  if (lockoutSeconds.value > 0) return;
+  isLoading.value = true;
+
+  try {
+    const token = await executeRecaptcha(siteKey, "admin_login");
+
+    if (!token) {
+      throw new Error("Gagal menginisiasi keamanan sistem (reCAPTCHA). Silakan muat ulang halaman.");
+    }
+
+    const response = await axios.post(`${BASE_URL}/admin/login`, {
+      email: email.value,
+      password: password.value,
+      captcha_token: token,
+    });
+
+    const user = response.data.user;
+
+    localStorage.setItem("admin_token", response.data.access_token);
+    localStorage.setItem("admin", JSON.stringify(user));
+    localStorage.setItem("role", user.usertype);
+
+    Swal.fire({
+      icon: "success",
+      title: "Authorized!",
+      text: `Selamat Datang, ${user.first_name} (${user.usertype}).`,
+      timer: 1500,
+      showConfirmButton: false,
+    });
+
+    if (user.usertype === "accounting") {
+      router.push("/admin/coas");
+    } else if (user.usertype === "gudang") {
+      router.push("/admin/transactions");
+    } else {
+      router.push("/admin/dashboard");
+    }
+  } catch (error) {
+    // TANGKAP ERROR RATE LIMIT DARI BACKEND (STATUS 429)
+    if (error.response && error.response.status === 429) {
+      const errorMsg = error.response.data.message;
+      // Ekstrak angka detik/menit dari pesan error backend untuk menyamakan timer
+      const match = errorMsg.match(/(\d+)\s*(detik|menit)/);
+      let secondsToWait = 60; // Default 60 detik jika tidak terurai
+      if (match) {
+        secondsToWait = match[2] === 'menit' ? parseInt(match[1]) * 60 : parseInt(match[1]);
+      }
+      triggerLockout(secondsToWait);
+    }
+
+    let message = error.response?.data?.message || error.message || "Akses ditolak.";
+    Swal.fire({
+      icon: "error",
+      title: "Login Gagal",
+      text: message,
+      confirmButtonColor: "#CC0000",
+    });
+    
+    password.value = ""; // Kosongkan password demi keamanan
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+onMounted(() => {
+  document.body.classList.add("show-recaptcha");
+});
+
+onUnmounted(() => {
   document.body.classList.remove("show-recaptcha");
 });
 </script>
