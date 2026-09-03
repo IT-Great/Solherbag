@@ -8608,7 +8608,7 @@ const goToDetail = (product) => {
         </div>
 
         <!-- Pagination -->
-        <div class="flex items-center justify-center gap-4 mt-20">
+        <!-- <div class="flex items-center justify-center gap-4 mt-20">
           <button
             @click="currentPage--"
             :disabled="currentPage === 1"
@@ -8649,6 +8649,51 @@ const goToDetail = (product) => {
                 stroke-linejoin="round"
                 stroke-width="2"
                 d="M9 5l7 7-7-7"
+              />
+            </svg>
+          </button>
+        </div> -->
+                <div class="flex items-center justify-center gap-4 mt-20">
+          <button
+            @click="currentPage--"
+            :disabled="currentPage === 1"
+            class="p-2 transition bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-50 hover:border-black disabled:opacity-30 disabled:cursor-not-allowed"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          </button>
+          <span class="text-xs font-bold tracking-widest text-gray-600 uppercase">
+            {{ $t("collection.page", { current: currentPage, total: totalPages || 1 }) }}
+          </span>
+          <button
+            @click="currentPage++"
+            :disabled="currentPage === totalPages || totalPages === 0"
+            class="p-2 transition bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-50 hover:border-black disabled:opacity-30 disabled:cursor-not-allowed"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
               />
             </svg>
           </button>
