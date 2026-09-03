@@ -8742,6 +8742,12 @@ const getViewerCount = (productId) => {
 };
 // 👆 ========================================== 👆
 
+const convertToWIB = (dateString) => {
+  if (!dateString) return null;
+  const date = new Date(dateString);
+  date.setHours(date.getHours() - 7);
+  return date;
+};
 
 const updateCurrencyState = () => {
   currentCurrency.value = localStorage.getItem("currency") || "IDR";
