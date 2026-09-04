@@ -83,7 +83,9 @@
     "moments_captured": "Moments Captured",
     "scroll_shuffle": "Scroll to Shuffle",
     "no_events": "No events found for this selection.",
-    "clear_filters": "Clear Filters"
+    "clear_filters": "Clear Filters",
+    "shop_collection": "Shop The Look",
+    "link_copied": "Link copied to clipboard!"
   },
   "home": {
     "title_one": "A Legacy in Every Stitch.",
