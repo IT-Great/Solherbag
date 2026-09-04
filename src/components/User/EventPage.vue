@@ -1460,7 +1460,7 @@ onUnmounted(() => {
                   {{ getYear(event.event_date) }}
                 </span>
                 
-                <!-- 👇 [BARU] Tombol Share 👇 -->
+                <!-- Tombol Share -->
                 <button 
                   @click="shareEvent(event)"
                   class="p-2 text-gray-400 transition-colors rounded-full hover:text-black hover:bg-gray-100"
@@ -1482,7 +1482,7 @@ onUnmounted(() => {
                 {{ event.description || $t("event.no_desc") }}
               </p>
 
-              <!-- 👇 [BARU] Tombol Shop The Look (CALL TO ACTION) 👇 -->
+              <!-- Tombol Shop The Look (CALL TO ACTION) -->
               <div class="mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <button 
                   @click="$router.push('/collections')"
@@ -1494,7 +1494,6 @@ onUnmounted(() => {
                   {{ event.images.length }} {{ $t("event.moments_captured") }}
                 </p>
               </div>
-              <!-- 👆 =========================================== 👆 -->
             </div>
           </div>
 
@@ -1505,19 +1504,21 @@ onUnmounted(() => {
             @mouseenter="pauseAutoShuffle(event)"
             @mouseleave="resumeAutoShuffle(event)"
           >
-            <!-- Overlay Gelap Halus saat di-hover agar tombol/teks lebih terbaca -->
+            <!-- Overlay Gelap Halus saat di-hover -->
             <div class="absolute inset-0 z-10 transition-opacity duration-500 opacity-0 pointer-events-none bg-black/5 group-hover:opacity-100"></div>
 
             <transition-group name="crossfade">
+              <!-- 👇 [PERBAIKAN] Dikembalikan menjadi object-contain 👇 -->
               <img
                 v-for="(img, imgIdx) in event.images"
                 :key="img"
                 v-show="event.activeIndex === imgIdx"
                 :src="getImgUrl(img)"
-                class="absolute inset-0 object-cover w-full h-full transition-transform duration-[2000ms] group-hover:scale-105 cursor-pointer"
+                class="absolute inset-0 object-contain w-full h-full transition-transform duration-[2000ms] group-hover:scale-105 cursor-pointer"
                 loading="lazy"
                 @click="nextImageManual(event)"
               />
+              <!-- 👆 ========================================= 👆 -->
             </transition-group>
 
             <!-- Teks Panduan Scroll -->
@@ -1532,16 +1533,15 @@ onUnmounted(() => {
               </span>
             </div>
 
-            <!-- 👇 [BARU] Luxury Progress Bar (Pengganti Angka Kaku) 👇 -->
+            <!-- Luxury Progress Bar -->
             <div v-if="event.images.length > 1" class="absolute z-20 flex gap-1.5 bottom-6 left-1/2 -translate-x-1/2">
               <div 
                 v-for="(_, idx) in event.images" :key="'dot-'+idx"
                 class="h-1 transition-all duration-500 rounded-full cursor-pointer"
-                :class="event.activeIndex === idx ? 'w-6 bg-white shadow-sm' : 'w-1.5 bg-white/50 hover:bg-white/80'"
+                :class="event.activeIndex === idx ? 'w-6 bg-gray-800 shadow-sm' : 'w-1.5 bg-gray-400/50 hover:bg-gray-600/80'"
                 @click.stop="event.activeIndex = idx"
               ></div>
             </div>
-            <!-- 👆 ================================================= 👆 -->
           </div>
         </div>
       </div>
@@ -1586,7 +1586,7 @@ import { ref, onMounted, onUnmounted, computed, watch } from "vue";
 import axios from "axios";
 import { BASE_URL } from "../../config/api";
 import { useI18n } from "vue-i18n";
-import Swal from "sweetalert2"; // Pastikan ter-install
+import Swal from "sweetalert2";
 
 const { t, locale } = useI18n();
 
@@ -1636,7 +1636,7 @@ const startAutoShuffle = () => {
     if (event.images && event.images.length > 1) {
       eventTimers.value[event.id] = setInterval(() => {
         event.activeIndex = (event.activeIndex + 1) % event.images.length;
-      }, 4000); // Diperlambat sedikit jadi 4 detik agar lebih rileks
+      }, 4000); 
     }
   });
 };
@@ -1645,14 +1645,12 @@ const clearAllTimers = () => {
   Object.values(eventTimers.value).forEach((timer) => clearInterval(timer));
 };
 
-// [BARU] Pause saat di-hover
 const pauseAutoShuffle = (eventItem) => {
   if (eventTimers.value[eventItem.id]) {
     clearInterval(eventTimers.value[eventItem.id]);
   }
 };
 
-// [BARU] Resume saat kursor keluar
 const resumeAutoShuffle = (eventItem) => {
   if (eventItem.images && eventItem.images.length > 1) {
     eventTimers.value[eventItem.id] = setInterval(() => {
@@ -1661,23 +1659,17 @@ const resumeAutoShuffle = (eventItem) => {
   }
 };
 
-// [BARU] Manual klik gambar untuk next
 const nextImageManual = (eventItem) => {
   if (eventItem.images.length > 1) {
     eventItem.activeIndex = (eventItem.activeIndex + 1) % eventItem.images.length;
   }
 };
 
+// 👇 [PERBAIKAN] Logika Scroll Mouse yang dikembalikan persis seperti sebelumnya 👇
 const handleImageScroll = (e, eventItem) => {
   if (eventItem.images.length <= 1) return;
 
-  // HANYA cegah scroll bawaan jika user berniat ganti gambar 
-  // (Mencegah halaman nyangkut saat di-scroll ke bawah)
-  if (Math.abs(e.deltaY) > 20) {
-    e.preventDefault();
-  } else {
-    return;
-  }
+  e.preventDefault();
 
   const now = Date.now();
   if (wheelTimeouts.value[eventItem.id] && now - wheelTimeouts.value[eventItem.id] < 600) {
@@ -1691,10 +1683,10 @@ const handleImageScroll = (e, eventItem) => {
     eventItem.activeIndex = (eventItem.activeIndex - 1 + eventItem.images.length) % eventItem.images.length;
   }
 };
+// 👆 ========================================================================= 👆
 
-// [BARU] Fungsi Share Link
 const shareEvent = (eventItem) => {
-  const url = window.location.href; // Idealnya ini menggunakan anchor ke ID event: window.location.href + '#' + eventItem.id
+  const url = window.location.href; 
   navigator.clipboard.writeText(url).then(() => {
     Swal.fire({
       toast: true,
