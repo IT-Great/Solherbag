@@ -294,7 +294,13 @@
     "active_member": "Active Member",
     "locked": "Locked",
     "add_new_address": "Add New Address",
-    "edit_address": "Edit Address"
+    "edit_address": "Edit Address",
+    "member_since": "Member since:",
+    "complete_profile_title": "Complete Your Profile",
+    "complete_profile_desc": "Complete your profile for a 3x faster and secure checkout experience.",
+    "complete_now": "Complete Now",
+    "my_orders": "My Orders",
+    "support": "Customer Support"
   },
   "cart": {
     "your_bag": "Your Bag",

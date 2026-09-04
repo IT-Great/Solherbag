@@ -293,7 +293,13 @@
     "active_member": "Member Aktif",
     "locked": "Terkunci",
     "add_new_address": "Tambah Alamat Baru",
-    "edit_address": "Ubah Alamat"
+    "edit_address": "Ubah Alamat",
+    "member_since": "Bergabung sejak:",
+    "complete_profile_title": "Sempurnakan Profil Anda",
+    "complete_profile_desc": "Lengkapi profil Anda untuk pengalaman checkout yang 3x lebih cepat dan aman.",
+    "complete_now": "Lengkapi Sekarang",
+    "my_orders": "Pesanan Saya",
+    "support": "Bantuan CS"
   },
   "cart": {
     "your_bag": "Tas Belanja Anda",
