@@ -8758,9 +8758,8 @@ onMounted(() => {
 </style>
 -->
 
-<template>
+<!-- <template>
   <div class="max-w-6xl px-4 py-12 mx-auto sm:px-6 lg:py-16 animate-fade-in">
-    <!-- Header Section -->
     <div
       class="flex flex-col items-start justify-between mb-8 md:flex-row md:items-end gap-4"
     >
@@ -8773,7 +8772,6 @@ onMounted(() => {
         </p>
       </div>
 
-      <!-- Waktu Bergabung -->
       <div
         v-if="userData?.created_at"
         class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-full shadow-sm"
@@ -8785,7 +8783,6 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- WIDGET KELENGKAPAN PROFIL (ANTI-FOUC) -->
     <div
       v-if="userData && profileCompleteness < 100"
       class="p-6 mb-8 overflow-hidden relative bg-gradient-to-r from-blue-900 to-blue-800 rounded-3xl shadow-lg border border-blue-700/50"
@@ -8835,9 +8832,7 @@ onMounted(() => {
     </div>
 
     <div v-if="userData" class="grid grid-cols-1 gap-8 lg:grid-cols-12">
-      <!-- KIRI: INFORMASI PENGGUNA & KARTU LOYALTI -->
       <div class="space-y-6 lg:col-span-4">
-        <!-- KARTU PROFIL UTAMA -->
         <div
           class="overflow-hidden bg-white border border-gray-100 shadow-sm rounded-3xl relative"
         >
@@ -8893,7 +8888,6 @@ onMounted(() => {
               {{ userData.first_name }} {{ userData.last_name }}
             </h2>
 
-            <!-- List Informasi Ringkas -->
             <div class="mt-5 space-y-3 text-sm text-left">
               <div
                 class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100"
@@ -8961,7 +8955,6 @@ onMounted(() => {
               </div>
             </div>
 
-            <!-- Action Buttons -->
             <div class="flex justify-center gap-3 mt-6">
               <button
                 @click="openInfoModal"
@@ -9013,7 +9006,6 @@ onMounted(() => {
           </div>
         </div>
 
-        <!-- KARTU SOLHER CLUB -->
         <div
           class="relative overflow-hidden text-white shadow-xl rounded-3xl p-7"
           :class="userTier.bgColor"
@@ -9231,7 +9223,6 @@ onMounted(() => {
         </template>
       </div>
 
-      <!-- KANAN: DAFTAR ALAMAT -->
       <div class="lg:col-span-8">
         <div
           class="p-8 bg-white border border-gray-100 shadow-sm rounded-3xl min-h-[500px]"
@@ -9437,7 +9428,6 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- MODAL EDIT INFO -->
     <div
       v-if="showInfoModal"
       class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm"
@@ -9513,7 +9503,6 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- MODAL EDIT PASSWORD -->
     <div
       v-if="showPasswordModal"
       class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm"
@@ -9577,7 +9566,6 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- Modal Alamat Leaflet -->
     <div
       v-if="showModal"
       class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm sm:p-6"
@@ -9871,7 +9859,6 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- Modal Pendaftaran Afiliasi -->
     <div
       v-if="showAffiliateModal"
       class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm"
@@ -10465,6 +10452,1114 @@ onMounted(() => {
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background: #e5e7eb;
   border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #d1d5db;
+}
+</style> -->
+
+<template>
+  <div class="max-w-6xl px-4 py-12 mx-auto sm:px-6 lg:py-16 animate-fade-in">
+    <!-- Header Section -->
+    <div
+      class="flex flex-col items-start justify-between mb-8 md:flex-row md:items-end gap-4"
+    >
+      <div>
+        <h1 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+          {{ $t("profile.my_account") }}
+        </h1>
+        <p class="mt-2 text-sm text-gray-500">
+          {{ $t("profile.manage_description") || 'Kelola informasi pribadi, pesanan, dan hak istimewa Anda di sini.' }}
+        </p>
+      </div>
+
+      <!-- Waktu Bergabung -->
+      <div
+        v-if="userData?.created_at"
+        class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-full shadow-sm"
+      >
+        <span class="text-xs text-gray-500">{{ $t("profile.member_since") || 'Bergabung sejak:' }}</span>
+        <span class="text-xs font-bold text-gray-900">{{
+          formatDate(userData.created_at)
+        }}</span>
+      </div>
+    </div>
+
+    <!-- 👇 [UPGRADE 1] WIDGET KELENGKAPAN PROFIL INTERAKTIF 👇 -->
+    <div
+      v-if="userData && profileCompleteness < 100"
+      class="p-6 mb-8 overflow-hidden relative bg-gradient-to-r from-blue-900 to-blue-800 rounded-3xl shadow-lg border border-blue-700/50"
+    >
+      <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
+
+      <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div class="flex-1">
+          <div class="flex items-center gap-3 mb-2">
+            <h3 class="text-lg font-bold text-white">{{ $t("profile.complete_profile_title") || 'Sempurnakan Profil Anda' }}</h3>
+            <span class="px-2.5 py-0.5 text-xs font-black text-blue-900 bg-blue-100 rounded-full">{{ profileCompleteness }}%</span>
+          </div>
+          <p class="text-sm text-blue-200 leading-relaxed max-w-xl">
+            {{ $t("profile.complete_profile_desc") || 'Lengkapi profil Anda untuk pengalaman checkout yang 3x lebih cepat dan aman.' }} 
+            Anda belum melengkapi: <span class="font-bold text-yellow-400">{{ missingFields.join(", ") }}</span>.
+          </p>
+        </div>
+
+        <div class="flex flex-col items-end w-full md:w-1/3 gap-3">
+          <div class="w-full h-3 bg-blue-950 rounded-full overflow-hidden border border-blue-900/50">
+            <div class="h-full bg-gradient-to-r from-blue-400 to-cyan-300 rounded-full transition-all duration-1000 ease-out relative" :style="{ width: `${profileCompleteness}%` }">
+              <div class="absolute inset-0 bg-white/20 w-full animate-[shimmer_2s_infinite]"></div>
+            </div>
+          </div>
+          <!-- Tombol Aksi Langsung -->
+          <button 
+            @click="handleCompleteProfile"
+            class="px-5 py-2 text-xs font-bold tracking-widest text-blue-900 uppercase transition-all bg-white rounded-full hover:bg-blue-50 hover:shadow-lg"
+          >
+            {{ $t("profile.complete_now") || 'Lengkapi Sekarang' }}
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- 👆 ==================================================== 👆 -->
+
+    <div v-if="userData" class="grid grid-cols-1 gap-8 lg:grid-cols-12">
+      <!-- KIRI: INFORMASI PENGGUNA, KARTU LOYALTI & NAVIGASI -->
+      <div class="space-y-6 lg:col-span-4">
+        
+        <!-- KARTU PROFIL UTAMA -->
+        <div class="overflow-hidden bg-white border border-gray-100 shadow-sm rounded-3xl relative">
+          <div class="h-24 bg-gradient-to-r from-gray-100 to-gray-200"></div>
+
+          <div class="px-8 pb-8 -mt-12 text-center relative z-10">
+            <div class="relative inline-block group mb-4">
+              <img
+                :key="userData.profile_image || 'default'"
+                :src="userData.profile_image || defaultProfile"
+                class="relative object-cover w-28 h-28 border-4 border-white rounded-full shadow-md bg-white transition-transform duration-300 group-hover:scale-105"
+                alt="Profile Avatar"
+                @error="handleImageError"
+              />
+              <label class="absolute inset-0 flex items-center justify-center transition-all duration-300 rounded-full opacity-0 cursor-pointer bg-black/50 group-hover:opacity-100 backdrop-blur-sm">
+                <div class="flex flex-col items-center text-white">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span class="text-[10px] font-bold tracking-widest uppercase">Ubah</span>
+                </div>
+                <input type="file" class="hidden" @change="handleImageUpdate" accept="image/*" />
+              </label>
+            </div>
+
+            <h2 class="text-xl font-bold text-gray-900">
+              {{ userData.first_name }} {{ userData.last_name }}
+            </h2>
+
+            <!-- List Informasi Ringkas -->
+            <div class="mt-5 space-y-3 text-sm text-left">
+              <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100">
+                <div class="p-1.5 bg-white rounded-lg shadow-sm text-gray-400">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <div class="flex-1 truncate">
+                  <p class="text-[10px] font-bold tracking-widest text-gray-400 uppercase">Email</p>
+                  <p class="font-medium text-gray-900 truncate">{{ userData.email }}</p>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100">
+                <div class="p-1.5 bg-white rounded-lg shadow-sm text-gray-400">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                  </svg>
+                </div>
+                <div class="flex-1">
+                  <p class="text-[10px] font-bold tracking-widest text-gray-400 uppercase">Telepon</p>
+                  <p class="font-medium text-gray-900">
+                    {{ userData.phone || "-" }}
+                    <span v-if="!userData.phone" class="text-[10px] text-red-500 italic font-normal ml-1">(Dibutuhkan kurir)</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex justify-center gap-3 mt-6">
+              <button @click="openInfoModal" class="flex-1 flex items-center justify-center gap-2 h-10 text-xs font-bold text-gray-700 transition-colors bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:text-black">
+                Edit Profil
+              </button>
+              <button @click="showPasswordModal = true" class="flex items-center justify-center w-10 h-10 text-gray-500 transition-colors bg-white border border-gray-200 rounded-xl hover:bg-gray-50" title="Change Password">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+              </button>
+              <button @click="handleLogout" class="flex items-center justify-center w-10 h-10 text-red-500 transition-colors bg-red-50 border border-red-100 rounded-xl hover:bg-red-100" title="Logout">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 👇 [UPGRADE 2] KARTU SOLHER CLUB + KEUNTUNGAN 👇 -->
+        <div class="relative overflow-hidden text-white shadow-xl rounded-3xl p-7" :class="userTier.bgColor">
+          <svg class="absolute w-40 h-40 opacity-10 -right-8 -top-8 text-white mix-blend-overlay" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          </svg>
+          <div class="absolute inset-0 w-[200%] h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-[shimmer_3s_infinite]"></div>
+
+          <div class="relative z-10">
+            <div class="flex items-start justify-between">
+              <div>
+                <h3 class="text-sm font-black tracking-widest uppercase opacity-90">{{ $t("profile.solher_club") }}</h3>
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 mt-2 text-[10px] font-black tracking-widest uppercase rounded-full shadow-inner bg-white/20 backdrop-blur-sm border border-white/20">
+                  <span>{{ userTier.icon }}</span>
+                  <span>{{ userTier.name }} TIER</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-8">
+              <template v-if="userData.is_membership">
+                <p class="text-[10px] uppercase tracking-widest mb-1 opacity-80 font-medium">{{ $t("profile.available_points") }}</p>
+                <div class="flex items-baseline gap-1">
+                  <p class="text-5xl font-black">{{ userData.point || 0 }}</p>
+                  <span class="text-sm font-bold opacity-80">Pts</span>
+                </div>
+
+                <div v-if="userTier.nextTierTarget" class="mt-4 mb-6">
+                  <div class="flex justify-between text-[9px] font-bold tracking-widest uppercase opacity-80 mb-1">
+                    <span>{{ userTier.name }}</span>
+                    <span>{{ userTier.nextTierName }}</span>
+                  </div>
+                  <div class="h-1.5 w-full bg-black/20 rounded-full overflow-hidden">
+                    <div class="h-full bg-white rounded-full" :style="{ width: `${Math.min((userData.point / userTier.nextTierTarget) * 100, 100)}%` }"></div>
+                  </div>
+                </div>
+
+                <!-- Tampilan Keuntungan Tier (Benefit) -->
+                <div class="pt-4 mt-2 border-t border-white/20">
+                  <p class="text-[10px] uppercase tracking-widest mb-2 font-bold opacity-90">Keuntungan Anda Saat Ini:</p>
+                  <ul class="space-y-1.5">
+                    <li v-for="(benefit, idx) in userTier.benefits" :key="idx" class="flex items-center gap-2 text-xs opacity-90">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                      </svg>
+                      {{ benefit }}
+                    </li>
+                  </ul>
+                </div>
+              </template>
+
+              <template v-else>
+                <p class="text-xs leading-relaxed opacity-90 mt-2">
+                  Tingkatkan total belanja Anda hingga <strong>Rp 100.000</strong> untuk membuka fitur eksklusif, pengumpulan poin, dan promo khusus member VIP.
+                </p>
+              </template>
+            </div>
+          </div>
+        </div>
+        <!-- 👆 ========================================= 👆 -->
+
+        <!-- 👇 [UPGRADE 3] QUICK ACTION DASHBOARD (GRID) 👇 -->
+        <div class="grid grid-cols-2 gap-4">
+          <!-- Tombol Order History -->
+          <router-link to="/transactions" class="flex flex-col items-start p-4 transition-all bg-white border border-gray-200 shadow-sm group hover:border-black hover:shadow-md rounded-2xl">
+            <div class="p-2.5 text-gray-700 bg-gray-100 rounded-xl group-hover:bg-black group-hover:text-white transition-colors mb-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+              </svg>
+            </div>
+            <h3 class="text-xs font-bold text-gray-900 uppercase tracking-widest">{{ $t("profile.my_orders") || 'Pesanan Saya' }}</h3>
+            <p class="text-[10px] text-gray-500 mt-1">Lacak paket Anda</p>
+          </router-link>
+
+          <!-- Tombol Wishlist -->
+          <router-link to="/favorites" class="flex flex-col items-start p-4 transition-all bg-white border border-gray-200 shadow-sm group hover:border-red-200 hover:shadow-md rounded-2xl">
+            <div class="p-2.5 text-red-500 bg-red-50 rounded-xl group-hover:bg-red-500 group-hover:text-white transition-colors mb-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+            </div>
+            <h3 class="text-xs font-bold text-gray-900 uppercase tracking-widest">{{ $t("profile.my_wishlist") }}</h3>
+            <p class="text-[10px] text-gray-500 mt-1">Koleksi tersimpan</p>
+          </router-link>
+
+          <!-- Tombol Bantuan / Hubungi Kami -->
+          <router-link to="/contact" class="flex flex-col items-start p-4 transition-all bg-white border border-gray-200 shadow-sm group hover:border-blue-200 hover:shadow-md rounded-2xl">
+            <div class="p-2.5 text-blue-600 bg-blue-50 rounded-xl group-hover:bg-blue-600 group-hover:text-white transition-colors mb-3">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+              </svg>
+            </div>
+            <h3 class="text-xs font-bold text-gray-900 uppercase tracking-widest">{{ $t("profile.support") || 'Bantuan CS' }}</h3>
+            <p class="text-[10px] text-gray-500 mt-1">Chat & Komplain</p>
+          </router-link>
+
+          <!-- Tombol Afiliasi -->
+          <template v-if="userData.is_affiliate">
+            <router-link to="/affiliate-demo" class="flex flex-col items-start p-4 transition-all bg-white border border-gray-200 shadow-sm group hover:border-yellow-400 hover:shadow-md rounded-2xl">
+              <div class="p-2.5 text-yellow-600 bg-yellow-50 rounded-xl group-hover:bg-yellow-400 group-hover:text-white transition-colors mb-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h3 class="text-xs font-bold text-gray-900 uppercase tracking-widest">Afiliator</h3>
+              <p class="text-[10px] text-gray-500 mt-1">Cek Komisi</p>
+            </router-link>
+          </template>
+          <template v-else>
+            <button @click="showAffiliateModal = true" class="flex flex-col items-start p-4 transition-all bg-gradient-to-br from-gray-900 to-black border border-gray-800 shadow-sm group hover:border-yellow-400 hover:shadow-md rounded-2xl text-left">
+              <div class="p-2.5 text-black bg-yellow-400 rounded-xl shadow-[0_0_10px_rgba(250,204,21,0.3)] mb-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h3 class="text-xs font-bold text-white uppercase tracking-widest group-hover:text-yellow-400 transition-colors">Program Afiliasi</h3>
+              <p class="text-[10px] text-gray-400 mt-1">Dapatkan Uang Tunai</p>
+            </button>
+          </template>
+        </div>
+        <!-- 👆 ========================================= 👆 -->
+      </div>
+
+      <!-- KANAN: DAFTAR ALAMAT -->
+      <div class="lg:col-span-8">
+        <div class="p-8 bg-white border border-gray-100 shadow-sm rounded-3xl min-h-[500px]">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-6 mb-6 border-b border-gray-100 gap-4">
+            <div>
+              <h2 class="text-xl font-bold text-gray-900">
+                {{ $t("profile.shipping_addresses") }}
+              </h2>
+              <!-- 👇 [UPGRADE 4] Penjelasan mengapa butuh alamat 👇 -->
+              <p class="text-xs text-gray-500 mt-1">
+                {{ $t("profile.manage_order_cta") || 'Alamat berlabel Utama akan diisikan otomatis saat Anda checkout.' }}
+              </p>
+            </div>
+            <button
+              @click="openModal()"
+              class="flex items-center gap-2 px-5 py-2.5 text-sm font-bold text-blue-600 transition-all bg-blue-50 rounded-xl hover:bg-blue-100 hover:shadow-md w-full sm:w-auto justify-center"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>
+              {{ $t("profile.add_new_btn") }}
+            </button>
+          </div>
+
+          <div v-if="isLoadingAddresses" class="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div v-for="i in 4" :key="i" class="p-6 border border-gray-100 bg-gray-50/50 rounded-2xl animate-pulse">
+              <div class="w-20 h-3 mb-4 bg-gray-200 rounded-full"></div>
+              <div class="w-32 h-4 mb-3 bg-gray-300 rounded-full"></div>
+              <div class="w-full h-3 mb-2 bg-gray-200 rounded-full"></div>
+              <div class="w-2/3 h-3 bg-gray-200 rounded-full"></div>
+            </div>
+          </div>
+
+          <div v-else-if="addresses.length > 0" class="grid grid-cols-1 gap-5 md:grid-cols-2">
+            <div
+              v-for="addr in addresses"
+              :key="addr.id"
+              class="relative p-6 transition-all bg-white border rounded-2xl group hover:shadow-lg hover:-translate-y-1"
+              :class="addr.is_default ? 'border-blue-300 shadow-md ring-1 ring-blue-100' : 'border-gray-200'"
+            >
+              <div v-if="addr.is_default" class="absolute px-2.5 py-1 text-[9px] font-black tracking-widest text-blue-700 uppercase bg-blue-100 rounded-full top-5 right-5 shadow-sm">
+                {{ $t("profile.default") }}
+              </div>
+
+              <button
+                @click="openModal(addr)"
+                class="absolute p-2 text-gray-400 transition-all bg-gray-100 rounded-xl opacity-0 top-4 right-4 group-hover:opacity-100 hover:text-blue-600 hover:bg-blue-50 shadow-sm"
+                :class="{ 'right-20': addr.is_default }"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                </svg>
+              </button>
+
+              <div class="flex items-center gap-3 mb-4">
+                <div class="flex items-center justify-center w-10 h-10 text-blue-500 bg-blue-50 rounded-full">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="text-sm font-bold text-gray-900">
+                    {{ addr.receiver.first_name }} {{ addr.receiver.last_name }}
+                  </h3>
+                  <p v-if="addr.details.type" class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                    {{ addr.details.type }}
+                  </p>
+                </div>
+              </div>
+
+              <div class="space-y-1.5 text-xs text-gray-600 leading-relaxed">
+                <p class="font-medium text-gray-800 line-clamp-2">{{ addr.details.location }}</p>
+                <p>{{ addr.details.city }}, {{ addr.details.province }} {{ addr.details.postal_code }}</p>
+                <p class="font-bold text-blue-600">{{ addr.details.region || addr.region || "Indonesia" }}</p>
+
+                <div v-if="addr.details.latitude && addr.details.longitude" class="inline-flex items-center gap-1 px-2.5 py-1 mt-2 text-[9px] font-bold tracking-widest text-green-700 uppercase bg-green-50 rounded-md border border-green-100">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                  {{ $t("profile.map_pinned") }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div v-else class="flex flex-col items-center justify-center py-20 text-center border-2 border-gray-200 border-dashed rounded-3xl bg-gray-50/50">
+            <div class="flex items-center justify-center w-16 h-16 mb-4 text-gray-400 bg-white rounded-full shadow-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+              </svg>
+            </div>
+            <h3 class="text-base font-bold text-gray-900">{{ $t("profile.no_address_found") }}</h3>
+            <p class="mt-1 text-xs text-gray-500 max-w-xs">{{ $t("profile.add_address") || 'Tambahkan alamat pengiriman untuk mempercepat proses checkout Anda.' }}</p>
+            <button @click="openModal()" class="px-6 py-2.5 mt-6 text-xs font-bold text-white bg-black rounded-full hover:bg-gray-800 shadow-md transition-all hover:scale-105">
+              {{ $t("profile.add_first_address") }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEMUA MODAL TETAP UTUH DI SINI -->
+    <!-- MODAL EDIT INFO -->
+    <div v-if="showInfoModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
+      <div class="w-full max-w-md p-8 bg-white shadow-2xl rounded-3xl animate-fade-in">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-xl font-bold text-gray-900">{{ $t("profile.update_profile") }}</h3>
+          <button @click="showInfoModal = false" class="p-2 text-gray-400 rounded-full hover:bg-gray-100 hover:text-gray-600">✕</button>
+        </div>
+        <form @submit.prevent="submitInfoUpdate" class="space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block mb-1.5 text-[10px] uppercase tracking-widest font-bold text-gray-500">{{ $t("profile.first_name") }}</label>
+              <input v-model="infoForm.first_name" class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none" required />
+            </div>
+            <div>
+              <label class="block mb-1.5 text-[10px] uppercase tracking-widest font-bold text-gray-500">{{ $t("profile.last_name") }}</label>
+              <input v-model="infoForm.last_name" class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none" required />
+            </div>
+          </div>
+          <div>
+            <label class="block mb-1.5 text-[10px] uppercase tracking-widest font-bold text-gray-500">{{ $t("profile.email_address") }}</label>
+            <input v-model="infoForm.email" type="email" class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none" required />
+          </div>
+          <div>
+            <label class="block mb-1.5 text-[10px] uppercase tracking-widest font-bold text-gray-500">{{ $t("profile.phone_number") }}</label>
+            <input v-model="infoForm.phone" type="tel" class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none" placeholder="Contoh: 08123456789" />
+          </div>
+          <button type="submit" class="w-full py-3.5 mt-4 font-bold tracking-wider text-white uppercase transition-colors bg-black rounded-xl hover:bg-gray-800">
+            {{ $t("profile.save_changes") }}
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- MODAL EDIT PASSWORD -->
+    <div v-if="showPasswordModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
+      <div class="w-full max-w-md p-8 bg-white shadow-2xl rounded-3xl animate-fade-in">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-xl font-bold text-gray-900">{{ $t("profile.change_password") }}</h3>
+          <button @click="showPasswordModal = false" class="p-2 text-gray-400 rounded-full hover:bg-gray-100 hover:text-gray-600">✕</button>
+        </div>
+        <form @submit.prevent="submitPasswordUpdate" class="space-y-4">
+          <div>
+            <label class="block mb-1.5 text-[10px] uppercase tracking-widest font-bold text-gray-500">{{ $t("profile.current_password") }}</label>
+            <input v-model="passForm.old_password" type="password" class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none" required />
+          </div>
+          <div>
+            <label class="block mb-1.5 text-[10px] uppercase tracking-widest font-bold text-gray-500">{{ $t("profile.new_password") }}</label>
+            <input v-model="passForm.password" type="password" class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none" required />
+          </div>
+          <div>
+            <label class="block mb-1.5 text-[10px] uppercase tracking-widest font-bold text-gray-500">{{ $t("profile.confirm_new_password") }}</label>
+            <input v-model="passForm.password_confirmation" type="password" class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none" required />
+          </div>
+          <button type="submit" class="w-full py-3.5 mt-4 font-bold tracking-wider uppercase text-white transition-colors bg-blue-600 rounded-xl hover:bg-blue-700 shadow-md shadow-blue-500/20">
+            {{ $t("profile.update_password") }}
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal Alamat Leaflet -->
+    <div v-if="showModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm sm:p-6">
+      <div class="relative w-full max-w-2xl bg-white shadow-2xl rounded-3xl animate-fade-in flex flex-col max-h-[90vh] md:max-h-[85vh]">
+        <div class="flex items-center justify-between p-6 border-b border-gray-100 shrink-0 md:p-8 md:pb-6">
+          <h3 class="text-xl font-bold text-gray-900">
+            {{ isEdit ? $t("profile.edit_address") : $t("profile.add_new_address") }}
+          </h3>
+          <button @click="showModal = false" class="p-2 text-gray-400 transition-colors rounded-full hover:bg-gray-100 hover:text-gray-900 focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+          </button>
+        </div>
+
+        <div class="p-6 overflow-y-auto custom-scrollbar md:p-8 grow">
+          <form @submit.prevent="saveAddress" class="space-y-5">
+            <div class="flex items-center gap-3 p-3.5 border border-blue-100 bg-blue-50 rounded-xl">
+              <input type="checkbox" v-model="form.is_default" id="def" class="w-4 h-4 text-blue-600 border-gray-300 rounded cursor-pointer focus:ring-blue-500" />
+              <label for="def" class="text-sm font-medium text-blue-900 cursor-pointer select-none">{{ $t("profile.set_as_default") }}</label>
+            </div>
+
+            <div class="mb-4">
+              <label class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase">Country / Region</label>
+              <select v-model="form.region" @change="fetchProvinces" class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white" required>
+                <option v-for="c in countries" :key="c.isoCode" :value="c.name">{{ c.name }}</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div>
+                <label class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase">{{ $t("profile.first_name") }}</label>
+                <input v-model="form.first_name_address" class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none" required />
+              </div>
+              <div>
+                <label class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase">{{ $t("profile.last_name") }}</label>
+                <input v-model="form.last_name_address" class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none" required />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div>
+                <label class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase">{{ $t("profile.province") }}</label>
+                <select v-if="filteredProvinces.length > 0" v-model="form.province" class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none" required>
+                  <option value="" disabled>{{ $t("profile.select_province") }}</option>
+                  <option v-for="p in filteredProvinces" :key="p" :value="p">{{ p }}</option>
+                </select>
+                <input v-else v-model="form.province" placeholder="State/Province" class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white" required />
+              </div>
+              <div>
+                <label class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase">{{ $t("profile.city") }}</label>
+                <input v-model="form.city" class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none" required />
+              </div>
+            </div>
+
+            <div class="relative overflow-hidden border border-gray-200 rounded-2xl">
+              <div class="flex items-start gap-2 px-4 py-3 bg-amber-50 border-b border-amber-100">
+                <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 w-4 h-4 mt-0.5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                <p class="text-[11px] text-amber-800 leading-relaxed">
+                  <span class="font-bold">{{ $t("profile.pin_location") }}</span> {{ $t("profile.pin_location_description") }}
+                </p>
+              </div>
+
+              <div class="flex flex-col sm:flex-row items-center justify-between gap-2 p-3 border-b border-gray-200 bg-gray-50">
+                <div class="relative w-full sm:flex-1">
+                  <input type="text" v-model="searchQuery" @input="handleSearchInput" placeholder="Search area (e.g. Tunjungan Plaza)" class="w-full px-3 py-2.5 text-xs transition-colors border border-gray-300 outline-none rounded-xl focus:ring-1 focus:ring-blue-500 focus:border-blue-500" />
+                  <div v-if="searchResults.length > 0" class="absolute z-[999] mt-1 w-full bg-white border border-gray-200 rounded-xl shadow-lg max-h-40 overflow-y-auto custom-scrollbar">
+                    <div v-for="(result, idx) in searchResults" :key="idx" @click="selectSearchResult(result)" class="px-3 py-2.5 text-xs text-gray-700 border-b cursor-pointer hover:bg-blue-50 last:border-0">
+                      {{ result.display_name }}
+                    </div>
+                  </div>
+                </div>
+                <button type="button" @click="getCurrentLocation" class="w-full sm:w-auto px-4 py-2.5 text-[10px] font-bold tracking-wider text-blue-700 uppercase transition-colors bg-blue-100 rounded-xl hover:bg-blue-200">
+                  {{ $t("profile.use_current_loc") }}
+                </button>
+              </div>
+
+              <div class="relative z-0 w-full h-40 sm:h-56">
+                <l-map ref="map" v-model:zoom="zoom" :center="center" :use-global-leaflet="false" @click="onMapClick">
+                  <l-tile-layer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" layer-type="base" name="OpenStreetMap"></l-tile-layer>
+                  <l-marker :lat-lng="markerLatLng" draggable @update:latLng="onMarkerDrag"></l-marker>
+                </l-map>
+                <div class="absolute z-[400] px-2 py-1 font-mono text-[9px] text-gray-600 bg-white/90 rounded shadow bottom-2 right-2 backdrop-blur pointer-events-none border border-gray-200">
+                  {{ form.latitude ? parseFloat(form.latitude).toFixed(5) : "-" }}, {{ form.longitude ? parseFloat(form.longitude).toFixed(5) : "-" }}
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase">{{ $t("profile.complete_address") }}</label>
+              <textarea v-model="form.address_location" rows="3" placeholder="Street name, building, house number..." class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 resize-none bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none custom-scrollbar" required></textarea>
+            </div>
+
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div>
+                <label class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase">{{ $t("profile.details_opt") }}</label>
+                <input v-model="form.location_type" placeholder="Apartment, suite, block" class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none" />
+              </div>
+              <div>
+                <label class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase">{{ $t("profile.postal_code") }}</label>
+                <input v-model="form.postal_code" placeholder="Postal code" class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none" required />
+              </div>
+            </div>
+            <div class="h-2"></div>
+          </form>
+        </div>
+
+        <div class="flex items-center justify-between p-6 border-t border-gray-100 shrink-0 md:p-8 md:pt-5 bg-gray-50/50 rounded-b-3xl">
+          <button v-if="isEdit" type="button" @click="deleteAddress" class="text-xs font-bold tracking-widest text-red-500 uppercase transition-colors hover:text-red-700">
+            {{ $t("profile.delete") }}
+          </button>
+          <div v-else></div>
+          <div class="flex gap-3">
+            <button type="button" @click="showModal = false" class="px-5 py-2.5 text-sm font-bold text-gray-600 transition-colors bg-white border border-gray-300 rounded-xl hover:bg-gray-50 hidden sm:block">
+              {{ $t("profile.cancel") }}
+            </button>
+            <button type="button" @click="saveAddress" class="px-6 py-2.5 text-sm font-bold text-white transition-colors bg-blue-600 rounded-xl hover:bg-blue-700 shadow-md shadow-blue-500/20">
+              {{ $t("profile.save_address") }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Pendaftaran Afiliasi -->
+    <div v-if="showAffiliateModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
+      <div class="w-full max-w-md p-8 bg-white shadow-2xl rounded-3xl animate-fade-in">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-xl font-bold text-gray-900">Daftar Afiliator</h3>
+          <button @click="showAffiliateModal = false" class="p-2 text-gray-400 rounded-full hover:bg-gray-100 hover:text-gray-600">✕</button>
+        </div>
+        <p class="mb-6 text-xs leading-relaxed text-gray-500">
+          Bergabunglah dengan program afiliasi Solher dan dapatkan komisi dari setiap penjualan. Kami akan meninjau profil media sosial Anda sebelum memberikan persetujuan.
+        </p>
+        <form @submit.prevent="submitAffiliateApplication" class="space-y-4">
+          <div>
+            <label class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase">Link Media Sosial Utama</label>
+            <input v-model="affiliateForm.social_media_url" type="url" placeholder="https://instagram.com/username" class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none" required />
+          </div>
+          <div>
+            <label class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase">Alasan Bergabung</label>
+            <textarea v-model="affiliateForm.reason" rows="3" placeholder="Ceritakan sedikit tentang audiens Anda..." class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 resize-none bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none custom-scrollbar" required></textarea>
+          </div>
+          <button type="submit" :disabled="isSubmittingAffiliate" class="w-full py-3.5 mt-4 font-bold tracking-widest uppercase text-white transition-colors bg-gray-900 rounded-xl hover:bg-black disabled:bg-gray-400">
+            {{ isSubmittingAffiliate ? "Mengirim..." : "Kirim Pendaftaran" }}
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, computed } from "vue";
+import axios from "axios";
+import { useRouter } from "vue-router";
+import Swal from "sweetalert2";
+import { Country, State } from "country-state-city";
+import { BASE_URL } from "../../config/api.js";
+import { useI18n } from "vue-i18n";
+import defaultProfile from "../../../src/assets/profile.png";
+
+import "leaflet/dist/leaflet.css";
+import { LMap, LTileLayer, LMarker } from "@vue-leaflet/vue-leaflet";
+import L from "leaflet";
+
+delete L.Icon.Default.prototype._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: new URL("leaflet/dist/images/marker-icon-2x.png", import.meta.url).href,
+  iconUrl: new URL("leaflet/dist/images/marker-icon.png", import.meta.url).href,
+  shadowUrl: new URL("leaflet/dist/images/marker-shadow.png", import.meta.url).href,
+});
+
+const cachedUserStr = localStorage.getItem("user");
+const cachedAddressesStr = localStorage.getItem("cached_addresses");
+
+const userData = ref(cachedUserStr ? JSON.parse(cachedUserStr) : null);
+const addresses = ref(cachedAddressesStr ? JSON.parse(cachedAddressesStr) : []);
+const isLoadingAddresses = ref(addresses.value.length === 0);
+
+const showModal = ref(false);
+const isEdit = ref(false);
+const countries = ref(Country.getAllCountries());
+const filteredProvinces = ref([]);
+const router = useRouter();
+const showInfoModal = ref(false);
+const showPasswordModal = ref(false);
+
+const { t } = useI18n();
+
+const form = ref({
+  id: null,
+  region: "Indonesia",
+  first_name_address: "",
+  last_name_address: "",
+  address_location: "",
+  location_type: "",
+  city: "",
+  province: "",
+  postal_code: "",
+  latitude: null,
+  longitude: null,
+  is_default: false,
+});
+
+const map = ref(null);
+const zoom = ref(13);
+const center = ref([-7.250445, 112.768845]);
+const markerLatLng = ref([-7.250445, 112.768845]);
+const searchQuery = ref("");
+const searchResults = ref([]);
+let debounceTimeout = null;
+
+const showAffiliateModal = ref(false);
+const isSubmittingAffiliate = ref(false);
+const affiliateForm = ref({ social_media_url: "", reason: "" });
+
+const profileCompleteness = computed(() => {
+  if (!userData.value) return 100;
+  let score = 0;
+  let total = 6;
+
+  if (userData.value.first_name) score++;
+  if (userData.value.last_name) score++;
+  if (userData.value.email) score++;
+  if (userData.value.phone) score++;
+  if (userData.value.profile_image && !userData.value.profile_image.includes("default"))
+    score++;
+  if (addresses.value.length > 0) score++;
+
+  return Math.round((score / total) * 100);
+});
+
+const missingFields = computed(() => {
+  if (!userData.value) return [];
+  let missing = [];
+
+  if (!userData.value.first_name) missing.push("Nama Depan");
+  if (!userData.value.last_name) missing.push("Nama Belakang");
+  if (!userData.value.phone) missing.push("Nomor Telepon");
+  if (!userData.value.profile_image || userData.value.profile_image.includes("default"))
+    missing.push("Foto Profil");
+  if (addresses.value.length === 0) missing.push("Alamat Pengiriman");
+
+  return missing;
+});
+
+// 👇 [UPGRADE Lanjutan] Tambahkan Benefit pada Tier List 👇
+const userTier = computed(() => {
+  if (!userData.value || !userData.value.is_membership) {
+    return {
+      name: "Reguler",
+      bgColor: "bg-gradient-to-br from-gray-900 to-gray-800",
+      icon: "👤",
+      benefits: [] // Tidak ada benefit ekstra
+    };
+  }
+
+  const pts = userData.value.point || 0;
+  if (pts < 2500) {
+    return {
+      name: "Silver",
+      bgColor: "bg-gradient-to-br from-slate-400 to-gray-500",
+      icon: "🥈",
+      nextTierName: "Gold",
+      nextTierTarget: 2500,
+      benefits: ['Dapatkan poin setiap belanja', 'Bebas penukaran poin jadi potongan harga']
+    };
+  } else if (pts < 10000) {
+    return {
+      name: "Gold",
+      bgColor: "bg-gradient-to-br from-yellow-500 to-amber-600",
+      icon: "🥇",
+      nextTierName: "Platinum",
+      nextTierTarget: 10000,
+      benefits: ['Dapatkan poin setiap belanja', 'Bonus Ekstra Poin Tahunan', 'Akses Rilis Lebih Awal']
+    };
+  } else {
+    return {
+      name: "Platinum",
+      bgColor: "bg-gradient-to-br from-indigo-500 to-purple-700",
+      icon: "💎",
+      nextTierName: null,
+      nextTierTarget: null,
+      benefits: ['Semua keistimewaan Gold', 'Pengiriman Prioritas VIP', 'Layanan Bantuan Pribadi (Personal Shopper)']
+    };
+  }
+});
+
+// 👇 Fungsi Klik Lengkapi Profil dari Widget 👇
+const handleCompleteProfile = () => {
+    if (!userData.value.first_name || !userData.value.last_name || !userData.value.phone) {
+        openInfoModal();
+    } else if (addresses.value.length === 0) {
+        openModal();
+    } else if (!userData.value.profile_image || userData.value.profile_image.includes("default")) {
+        // Tampilkan pesan untuk klik avatar
+        Swal.fire({
+            toast: true, position: 'top', icon: 'info',
+            title: 'Klik foto avatar di bawah untuk mengubah foto profil Anda.',
+            showConfirmButton: false, timer: 3000
+        });
+    }
+};
+
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat("id-ID", { month: "long", year: "numeric" }).format(
+    date
+  );
+};
+
+const reverseGeocode = async (lat, lng) => {
+  try {
+    const res = await axios.get(
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+    );
+    if (res.data && res.data.display_name) {
+      form.value.address_location = res.data.display_name;
+      if (res.data.address && res.data.address.postcode)
+        form.value.postal_code = res.data.address.postcode;
+    }
+  } catch (error) {
+    console.error("Reverse Geocode Error", error);
+  }
+};
+
+const handleSearchInput = () => {
+  if (debounceTimeout) clearTimeout(debounceTimeout);
+  if (searchQuery.value.length < 3) {
+    searchResults.value = [];
+    return;
+  }
+  debounceTimeout = setTimeout(async () => {
+    try {
+      const res = await axios.get(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${searchQuery.value}&countrycodes=id&limit=5`
+      );
+      searchResults.value = res.data;
+    } catch (error) {
+      console.error("Search Error", error);
+    }
+  }, 500);
+};
+
+const selectSearchResult = (result) => {
+  const lat = parseFloat(result.lat);
+  const lng = parseFloat(result.lon);
+  if (map.value && map.value.leafletObject) {
+    map.value.leafletObject.flyTo([lat, lng], 16);
+  } else {
+    center.value = [lat, lng];
+    zoom.value = 16;
+  }
+  markerLatLng.value = [lat, lng];
+  form.value.latitude = lat.toString();
+  form.value.longitude = lng.toString();
+  form.value.address_location = result.display_name;
+  searchResults.value = [];
+  searchQuery.value = "";
+};
+
+const onMapClick = (event) => {
+  const { lat, lng } = event.latlng;
+  updateLocation(lat, lng);
+};
+const onMarkerDrag = (event) => {
+  const { lat, lng } = event.target.getLatLng();
+  updateLocation(lat, lng);
+};
+
+const updateLocation = (lat, lng) => {
+  markerLatLng.value = [lat, lng];
+  form.value.latitude = lat.toString();
+  form.value.longitude = lng.toString();
+  reverseGeocode(lat, lng);
+};
+
+const getCurrentLocation = () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        if (map.value && map.value.leafletObject) {
+          map.value.leafletObject.flyTo([lat, lng], 16);
+        } else {
+          center.value = [lat, lng];
+          zoom.value = 16;
+        }
+        updateLocation(lat, lng);
+      },
+      () => {
+        Swal.fire("Error", "Please allow location access.", "error");
+      }
+    );
+  }
+};
+
+const fetchProvinces = () => {
+  const selectedCountry = countries.value.find((c) => c.name === form.value.region);
+  if (selectedCountry) {
+    const states = State.getStatesOfCountry(selectedCountry.isoCode);
+    filteredProvinces.value = states.map((s) => s.name);
+  } else {
+    filteredProvinces.value = [];
+  }
+};
+
+const openModal = (data = null) => {
+  isEdit.value = !!data;
+  if (data) {
+    const savedRegion = data.details?.region || data.region || "Indonesia";
+    form.value = {
+      id: data.id,
+      region: savedRegion,
+      first_name_address: data.receiver.first_name,
+      last_name_address: data.receiver.last_name,
+      address_location: data.details.location,
+      location_type: data.details.type === "other" ? "" : data.details.type,
+      city: data.details.city,
+      province: data.details.province,
+      postal_code: data.details.postal_code,
+      latitude: data.details.latitude,
+      longitude: data.details.longitude,
+      is_default: data.is_default,
+    };
+    if (data.details.latitude && data.details.longitude) {
+      const lat = parseFloat(data.details.latitude);
+      const lng = parseFloat(data.details.longitude);
+      center.value = [lat, lng];
+      markerLatLng.value = [lat, lng];
+    }
+    fetchProvinces();
+  } else {
+    form.value = {
+      region: "Indonesia",
+      is_default: false,
+      first_name_address: "",
+      last_name_address: "",
+      address_location: "",
+      location_type: "",
+      city: "",
+      province: "",
+      postal_code: "",
+      latitude: null,
+      longitude: null,
+    };
+    center.value = [-7.250445, 112.768845];
+    markerLatLng.value = [-7.250445, 112.768845];
+    fetchProvinces();
+  }
+  showModal.value = true;
+};
+
+const fetchAddresses = async () => {
+  try {
+    const res = await axios.get(`${BASE_URL}/addresses`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    addresses.value = res.data.data;
+    localStorage.setItem("cached_addresses", JSON.stringify(res.data.data));
+  } catch (error) {
+    console.error("Failed to fetch addresses");
+  } finally {
+    isLoadingAddresses.value = false;
+  }
+};
+
+const saveAddress = async () => {
+  const url = isEdit.value
+    ? `${BASE_URL}/addresses/${form.value.id}`
+    : `${BASE_URL}/addresses`;
+  const method = isEdit.value ? "put" : "post";
+  try {
+    await axios[method](url, form.value, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    showModal.value = false;
+    fetchAddresses();
+    Swal.fire({
+      toast: true, position: "top-end", icon: "success",
+      title: "Address saved!", showConfirmButton: false, timer: 1500,
+    });
+  } catch (e) {
+    Swal.fire("Error", "Failed to save address", "error");
+  }
+};
+
+const deleteAddress = async () => {
+  if (!confirm("Delete this address?")) return;
+  try {
+    await axios.delete(`${BASE_URL}/addresses/${form.value.id}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    showModal.value = false;
+    fetchAddresses();
+    Swal.fire({
+      toast: true, position: "top-end", icon: "success",
+      title: "Address deleted", showConfirmButton: false, timer: 1500,
+    });
+  } catch (e) {
+    Swal.fire("Error", "Failed to delete", "error");
+  }
+};
+
+const handleLogout = () => {
+  Swal.fire({
+    title: "Are you sure?", icon: "warning",
+    showCancelButton: true, confirmButtonColor: "#000", confirmButtonText: "Yes, Logout",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      localStorage.removeItem("cached_addresses");
+      router.push("/");
+    }
+  });
+};
+
+const fetchUserProfile = async () => {
+  try {
+    const res = await axios.get(`${BASE_URL}/user`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    updateUserData(res.data);
+  } catch (err) {
+    if (err.response && err.response.status === 401) handleLogout();
+  }
+};
+
+const updateUserData = (user) => {
+  if (!user) return;
+  if (user.hasOwnProperty("is_membership")) user.is_membership = !!user.is_membership;
+  userData.value = Object.assign({}, userData.value, user);
+  localStorage.setItem("user", JSON.stringify(userData.value));
+};
+
+const openInfoModal = () => {
+  infoForm.value = {
+    first_name: userData.value.first_name,
+    last_name: userData.value.last_name,
+    email: userData.value.email,
+    phone: userData.value.phone || "",
+  };
+  showInfoModal.value = true;
+};
+
+const submitInfoUpdate = async () => {
+  try {
+    const res = await axios.post(`${BASE_URL}/user/update-info`, infoForm.value, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    updateUserData(res.data.user);
+    showInfoModal.value = false;
+    Swal.fire("Success", "Info updated!", "success");
+  } catch (err) {
+    Swal.fire("Error", "Failed update", "error");
+  }
+};
+
+const submitPasswordUpdate = async () => {
+  try {
+    await axios.post(`${BASE_URL}/user/update-password`, passForm.value, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    showPasswordModal.value = false;
+    passForm.value = { old_password: "", password: "", password_confirmation: "" };
+    Swal.fire("Success", "Password updated!", "success");
+  } catch (err) {
+    Swal.fire("Error", err.response.data.message, "error");
+  }
+};
+
+const infoForm = ref({ first_name: "", last_name: "", email: "", phone: "" });
+const passForm = ref({ old_password: "", password: "", password_confirmation: "" });
+
+const handleImageUpdate = async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const objectUrl = URL.createObjectURL(file);
+  const oldImage = userData.value.profile_image;
+  userData.value.profile_image = objectUrl;
+
+  const formData = new FormData();
+  formData.append("image", file);
+
+  try {
+    const res = await axios.post(`${BASE_URL}/user/update-image`, formData, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    if (res.data.user) {
+      const newUser = res.data.user;
+      if (newUser.profile_image) {
+        const separator = newUser.profile_image.includes("?") ? "&" : "?";
+        newUser.profile_image = `${
+          newUser.profile_image
+        }${separator}t=${new Date().getTime()}`;
+      }
+      updateUserData(newUser);
+      URL.revokeObjectURL(objectUrl);
+      Swal.fire({
+        toast: true, position: "top-end", icon: "success",
+        title: "Foto profil diperbarui!", showConfirmButton: false, timer: 3000,
+      });
+    }
+  } catch (err) {
+    userData.value.profile_image = oldImage;
+    URL.revokeObjectURL(objectUrl);
+    Swal.fire("Gagal", "Tidak dapat mengunggah foto. Silakan coba lagi.", "error");
+  }
+};
+
+const submitAffiliateApplication = async () => {
+  isSubmittingAffiliate.value = true;
+  try {
+    await axios.post(`${BASE_URL}/affiliate/apply`, affiliateForm.value, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    showAffiliateModal.value = false;
+    affiliateForm.value = { social_media_url: "", reason: "" };
+    Swal.fire({
+      icon: "success", title: "Pendaftaran Berhasil!",
+      text: "Data Anda telah dikirim.", confirmButtonColor: "#000",
+    });
+  } catch (err) {
+    Swal.fire("Gagal", err.response?.data?.message || "Terjadi kesalahan.", "error");
+  } finally {
+    isSubmittingAffiliate.value = false;
+  }
+};
+
+const handleImageError = (e) => {
+  if (e.target.src !== new URL(defaultProfile, import.meta.url).href) {
+    e.target.src = defaultProfile;
+  }
+};
+
+onMounted(() => {
+  fetchAddresses();
+  fetchUserProfile();
+});
+</script>
+
+<style scoped>
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}
+
+:deep(.leaflet-container) {
+  z-index: 1 !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  height: 6px; width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #e5e7eb; border-radius: 10px;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #d1d5db;
