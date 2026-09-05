@@ -5936,9 +5936,8 @@ watch(
 </style>
 -->
 
-<template>
+<!-- <template>
   <div class="fixed top-0 left-0 z-[60] w-full flex flex-col">
-    <!-- Announcement Bar -->
     <div
       class="relative w-full h-[48px] md:h-[40px] bg-[#111] text-white flex items-center justify-center overflow-hidden"
     >
@@ -5995,20 +5994,16 @@ watch(
       </button>
     </div>
 
-    <!-- Main Navigation Header -->
     <header
       class="relative z-50 w-full px-6 py-4 bg-white border-b border-gray-200 shadow-sm"
     >
       <div
         class="relative flex items-center justify-between h-8 mx-auto max-w-7xl md:h-12"
       >
-        <!-- Left: Nav Links -->
         <div class="flex items-center justify-start flex-1">
-          <!-- 👇 [PERBAIKAN] Tambahkan class "desktop-nav" 👇 -->
           <nav
             class="items-center hidden h-full space-x-6 text-[10px] font-bold tracking-widest uppercase md:flex desktop-nav"
           >
-            <!-- Home -->
             <div
               class="relative flex items-center h-full"
               @mouseenter="isHomeDropdownOpen = true"
@@ -6044,7 +6039,6 @@ watch(
               </transition>
             </div>
 
-            <!-- Collections (Mega Menu Trigger) -->
             <div
               class="relative flex items-center h-full"
               @mouseenter="openMegaMenu"
@@ -6080,7 +6074,6 @@ watch(
             </router-link>
           </nav>
 
-          <!-- 👇 [PERBAIKAN] Tambahkan class "mobile-toggle" 👇 -->
           <button
             @click="isMobileMenuOpen = true"
             class="flex items-center justify-center text-gray-700 md:hidden focus:outline-none hover:text-black mobile-toggle"
@@ -6102,7 +6095,6 @@ watch(
           </button>
         </div>
 
-        <!-- Center: Logo -->
         <div
           class="absolute flex justify-center flex-shrink-0 -translate-x-1/2 -translate-y-1/2 pointer-events-none left-1/2 top-1/2"
         >
@@ -6114,11 +6106,9 @@ watch(
           />
         </div>
 
-        <!-- Right: Actions (Language, Currency, Search, User, Cart, Chat) -->
         <div
           class="flex items-center justify-end flex-1 space-x-4 text-gray-700 md:space-x-5"
         >
-          <!-- 👇 [PERBAIKAN] Tambahkan class "desktop-actions" 👇 -->
           <div class="items-center hidden gap-3 md:flex desktop-actions">
             <button
               @click="toggleLanguage"
@@ -6212,7 +6202,6 @@ watch(
                 />
               </svg>
             </button>
-            <!-- User Dropdown -->
             <div
               v-if="isDropdownOpen"
               class="top-full right-0 z-[60] absolute bg-white shadow-xl mt-4 p-6 border border-gray-100 w-64 animate-fade-in"
@@ -6316,7 +6305,6 @@ watch(
         </div>
       </div>
 
-      <!-- EDITORIAL MEGA MENU -->
       <transition name="mega-menu-fade">
         <div
           v-if="isMegaMenuOpen"
@@ -6336,9 +6324,7 @@ watch(
               ></div>
             </div>
 
-            <!-- Links Grid (70% Width) -->
             <div class="grid w-2/3 grid-cols-4 gap-12">
-              <!-- Column 1: Featured -->
               <div class="flex flex-col space-y-4">
                 <h3 class="mb-2 font-serif text-base text-gray-900">
                   Featured
@@ -6363,7 +6349,6 @@ watch(
                 >
               </div>
 
-              <!-- Column 2: Bags (Dari tabel bag_categories) -->
               <div class="flex flex-col space-y-4">
                 <h3 class="mb-2 font-serif text-base text-gray-900">Bags</h3>
                 <button
@@ -6382,7 +6367,6 @@ watch(
                 </button>
               </div>
 
-              <!-- Column 3: Collections (Dari tabel categories, excl C005) -->
               <div class="flex flex-col space-y-4">
                 <h3 class="mb-2 font-serif text-base text-gray-900">
                   Collections
@@ -6397,7 +6381,6 @@ watch(
                 </button>
               </div>
 
-              <!-- Column 4: Accessories (Hanya C005) -->
               <div class="flex flex-col space-y-4">
                 <h3 class="mb-2 font-serif text-base text-gray-900">
                   Accessories
@@ -6423,7 +6406,6 @@ watch(
               </div>
             </div>
 
-            <!-- Highlight Image (30% Width) -->
             <div class="flex justify-end w-1/3 pl-10 border-l border-gray-100">
               <div
                 class="relative w-full max-w-[320px] h-[380px] bg-gray-100 cursor-pointer overflow-hidden group"
@@ -6433,7 +6415,6 @@ watch(
                     : goToCollection('all')
                 "
               >
-                <!-- Kunci reaktivitas gambar agar melakukan transisi ulang jika src berubah -->
                 <transition name="fade" mode="out-in">
                   <img
                     :key="randomMegaProduct?.id || 'default'"
@@ -6442,7 +6423,6 @@ watch(
                   />
                 </transition>
 
-                <!-- Gradient Overlay & Text -->
                 <div
                   class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"
                 ></div>
@@ -6456,9 +6436,7 @@ watch(
           </div>
         </div>
       </transition>
-      <!-- 👆 AKHIR MEGA MENU 👆 -->
 
-      <!-- Mobile Menu -->
       <transition name="slide-fade">
         <div v-if="isMobileMenuOpen" class="z-[200] fixed inset-0 flex">
           <div
@@ -6968,4 +6946,894 @@ watch(
   }
 }
 /* 👆 ======================================================== 👆 */
+</style> -->
+
+<template>
+  <div class="fixed top-0 left-0 z-[60] w-full flex flex-col">
+    <!-- Announcement Bar -->
+    <div
+      class="relative w-full h-[48px] md:h-[40px] bg-[#111] text-white flex items-center justify-center overflow-hidden"
+    >
+      <button
+        @click="prevAnnouncement"
+        class="absolute p-2 text-gray-400 transition left-2 md:left-4 hover:text-white focus:outline-none"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+
+      <div class="flex items-center justify-center w-full h-full px-10 md:px-12">
+        <transition name="fade-slide" mode="out-in">
+          <p
+            :key="currentAnnouncement"
+            @click="$router.push('/collections')"
+            class="text-[10px] md:text-sm leading-tight md:leading-normal font-serif tracking-widest text-center cursor-pointer hover:text-gray-300 transition-colors w-full max-w-3xl"
+          >
+            {{ announcements[currentAnnouncement] }}
+          </p>
+        </transition>
+      </div>
+
+      <button
+        @click="nextAnnouncement"
+        class="absolute p-2 text-gray-400 transition right-2 md:right-4 hover:text-white focus:outline-none"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7-7" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Main Navigation Header -->
+    <header class="relative z-50 w-full px-6 py-4 bg-white border-b border-gray-200 shadow-sm">
+      <div class="relative flex items-center justify-between h-8 mx-auto max-w-7xl md:h-12">
+        <!-- Left: Nav Links -->
+        <div class="flex items-center justify-start flex-1">
+          <nav class="items-center hidden h-full space-x-6 text-[10px] font-bold tracking-widest uppercase md:flex desktop-nav">
+            <div class="relative flex items-center h-full" @mouseenter="isHomeDropdownOpen = true" @mouseleave="isHomeDropdownOpen = false">
+              <router-link to="/" class="transition cursor-pointer hover:text-gray-500" :class="{ 'text-gray-500': isHomeDropdownOpen }">
+                {{ $t("header.home") }}
+              </router-link>
+              <transition name="fade-slide">
+                <div v-if="isHomeDropdownOpen" class="absolute left-0 w-48 p-4 mt-2 bg-white border border-gray-100 shadow-xl top-full">
+                  <div class="flex flex-col space-y-3">
+                    <router-link to="/" class="text-[10px] font-bold tracking-widest text-gray-700 uppercase transition hover:text-black">
+                      {{ $t("header.main_home") }}
+                    </router-link>
+                    <router-link to="/about-us" class="text-[10px] font-bold tracking-widest text-gray-700 uppercase transition hover:text-black">
+                      {{ $t("header.about_us") }}
+                    </router-link>
+                  </div>
+                </div>
+              </transition>
+            </div>
+
+            <div class="relative flex items-center h-full" @mouseenter="openMegaMenu" @mouseleave="closeMegaMenu">
+              <span class="transition cursor-pointer hover:text-gray-500" :class="{ 'text-gray-500': isMegaMenuOpen }">
+                {{ $t("header.collections") }}
+              </span>
+            </div>
+
+            <router-link to="/solher-club" class="transition cursor-pointer hover:text-gray-500 flex items-center gap-1">
+              <span>{{ $t("header.solher_club") || "Solher Club" }}</span>
+            </router-link>
+
+            <router-link to="/events" class="transition cursor-pointer hover:text-gray-500">
+              {{ $t("header.events") }}
+            </router-link>
+
+            <router-link to="/contact" class="transition cursor-pointer hover:text-gray-500">
+              {{ $t("header.contact") }}
+            </router-link>
+          </nav>
+
+          <button @click="isMobileMenuOpen = true" class="flex items-center justify-center text-gray-700 md:hidden focus:outline-none hover:text-black mobile-toggle">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Center: Logo -->
+        <div class="absolute flex justify-center flex-shrink-0 -translate-x-1/2 -translate-y-1/2 pointer-events-none left-1/2 top-1/2">
+          <img
+            src="../../../assets/solherbrandbook.png"
+            alt="Solher Logo"
+            class="object-contain w-auto h-8 cursor-pointer pointer-events-auto md:h-12"
+            @click="$router.push('/')"
+          />
+        </div>
+
+        <!-- Right: Actions -->
+        <div class="flex items-center justify-end flex-1 space-x-4 text-gray-700 md:space-x-5">
+          <div class="items-center hidden gap-3 md:flex desktop-actions">
+            <button @click="toggleLanguage" class="text-[10px] font-bold tracking-widest uppercase transition hover:text-black" title="Change Language">
+              {{ locale === "en" ? "EN" : "ID" }}
+            </button>
+            <span class="text-gray-300">|</span>
+            <div class="relative group" @mouseenter="isCurrencyDropdownOpen = true" @mouseleave="isCurrencyDropdownOpen = false">
+              <button class="flex items-center gap-1 text-[10px] font-bold tracking-widest uppercase transition hover:text-black">
+                {{ currentCurrency }}
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <transition name="fade-slide">
+                <div v-if="isCurrencyDropdownOpen" class="absolute right-0 w-24 py-2 mt-2 bg-white border border-gray-100 shadow-xl top-full">
+                  <button
+                    v-for="currency in availableCurrencies"
+                    :key="currency"
+                    @click="changeCurrency(currency)"
+                    :class="currentCurrency === currency ? 'bg-gray-50 text-black font-black' : 'text-gray-500 hover:text-black hover:bg-gray-50'"
+                    class="block w-full px-4 py-2 text-[10px] tracking-widest text-left uppercase transition-colors"
+                  >
+                    {{ currency }}
+                  </button>
+                </div>
+              </transition>
+            </div>
+          </div>
+
+          <button @click="openSearch" class="flex items-center justify-center transition-colors focus:outline-none hover:text-black">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+          </button>
+
+          <!-- 👇 [BARU] FITUR NOTIFIKASI LONCENG 👇 -->
+          <div class="relative flex items-center justify-center nav-dropdown-wrapper">
+            <button @click="toggleNotificationDropdown" class="relative flex items-center justify-center transition-colors focus:outline-none hover:text-black">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
+              </svg>
+              <transition name="pop">
+                <span v-if="unreadNotificationsCount > 0" class="-top-2 -right-2 absolute flex justify-center items-center rounded-full min-w-[16px] h-4 px-1 text-[10px] font-bold text-white bg-red-600 shadow-sm pointer-events-none">
+                  {{ unreadNotificationsCount > 99 ? "99+" : unreadNotificationsCount }}
+                </span>
+              </transition>
+            </button>
+
+            <!-- Dropdown Notifikasi -->
+            <transition name="fade-slide">
+              <div v-if="isNotificationDropdownOpen" class="absolute top-full right-0 z-[60] mt-4 w-[320px] bg-white border border-gray-100 shadow-2xl rounded-2xl p-4 animate-fade-in">
+                <div class="flex items-center justify-between mb-3 border-b border-gray-100 pb-3">
+                  <h3 class="font-black text-xs uppercase tracking-widest text-gray-900">Notifikasi</h3>
+                  <button v-if="unreadNotificationsCount > 0" @click="markAllAsRead" class="text-[10px] font-bold text-blue-600 hover:text-blue-800 transition">Tandai Semua Dibaca</button>
+                </div>
+                
+                <div v-if="!isAuthenticated" class="py-6 text-center text-xs text-gray-500 italic">
+                  Silakan login untuk melihat notifikasi.
+                </div>
+                <div v-else-if="notifications.length === 0" class="py-8 text-center">
+                  <span class="text-3xl">📭</span>
+                  <p class="mt-2 text-xs text-gray-500">Belum ada notifikasi baru.</p>
+                </div>
+                <div v-else class="space-y-2 max-h-[300px] overflow-y-auto custom-scrollbar">
+                  <div 
+                    v-for="notif in recentNotifications" 
+                    :key="notif.id" 
+                    @click="markAsRead(notif.id)"
+                    :class="notif.is_read ? 'bg-white opacity-70 border-gray-50' : 'bg-blue-50/50 border-blue-100 shadow-sm'"
+                    class="p-3 border rounded-xl cursor-pointer hover:bg-gray-50 transition-all duration-200"
+                  >
+                    <div class="flex justify-between items-start gap-2">
+                      <p class="text-[11px] font-bold text-gray-900" :class="!notif.is_read ? 'text-blue-900' : ''">{{ notif.title }}</p>
+                      <span v-if="!notif.is_read" class="w-2 h-2 rounded-full bg-blue-500 mt-1 shrink-0"></span>
+                    </div>
+                    <p class="text-[10px] text-gray-600 mt-1 leading-relaxed line-clamp-2">{{ notif.message }}</p>
+                    <p class="text-[9px] text-gray-400 mt-1.5 flex items-center gap-1 font-medium">
+                      <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                      {{ timeAgo(notif.created_at) }}
+                    </p>
+                  </div>
+                </div>
+
+                <button v-if="notifications.length > 5" @click="openNotificationModal" class="w-full mt-3 py-2.5 text-[10px] font-bold uppercase tracking-widest text-center text-gray-700 bg-gray-50 hover:bg-gray-100 hover:text-black rounded-xl transition">
+                  Lihat Semua ({{ notifications.length }})
+                </button>
+              </div>
+            </transition>
+          </div>
+          <!-- 👆 ========================================== 👆 -->
+
+          <div class="relative flex items-center justify-center nav-dropdown-wrapper">
+            <button @click="toggleDropdown">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+              </svg>
+            </button>
+            <!-- User Dropdown -->
+            <div v-if="isDropdownOpen" class="top-full right-0 z-[60] absolute bg-white shadow-xl mt-4 p-6 border border-gray-100 w-64 animate-fade-in rounded-2xl">
+              <div v-if="isAuthenticated" class="text-left">
+                <h3 class="text-sm font-bold tracking-tight text-black uppercase truncate">HI {{ userData?.first_name }}</h3>
+                <p class="mb-4 text-xs text-gray-500 truncate">{{ userData?.email }}</p>
+              </div>
+              <div v-else>
+                <router-link to="/login" @click="isDropdownOpen = false" class="block w-full py-3 mb-4 text-xs font-bold tracking-widest text-center text-white uppercase transition bg-black rounded-xl hover:bg-gray-800">Sign In</router-link>
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <router-link to="/orderpage" @click="isDropdownOpen = false" class="flex items-center justify-center py-3 transition bg-gray-50 rounded-xl hover:bg-gray-100"><span class="font-bold text-[10px] uppercase tracking-wider">Orders</span></router-link>
+                <router-link to="/profilepage" @click="isDropdownOpen = false" class="flex items-center justify-center py-3 transition bg-gray-50 rounded-xl hover:bg-gray-100"><span class="font-bold text-[10px] uppercase tracking-wider">Profile</span></router-link>
+              </div>
+            </div>
+          </div>
+
+          <button @click="isAuthenticated ? $router.push('/chat-list') : toggleDropdown()" class="relative flex items-center justify-center transition-colors focus:outline-none hover:text-black">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.76c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.076-4.076a1.526 1.526 0 0 1 1.037-.443 48.282 48.282 0 0 0 5.68-.494c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
+            </svg>
+            <transition name="pop">
+              <span v-if="totalUnreadChats > 0" class="-top-2 -right-2 absolute flex justify-center items-center rounded-full w-4 h-4 text-[10px] font-bold text-white bg-red-600 shadow-sm pointer-events-none">
+                {{ totalUnreadChats > 99 ? "99+" : totalUnreadChats }}
+              </span>
+            </transition>
+          </button>
+
+          <button @click="openCartPage" class="relative transition-colors hover:text-black cart-icon-header">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+            </svg>
+            <span v-if="cartCount > 0" :class="[isBadgePopping ? 'scale-150 bg-red-600' : 'scale-100 bg-black']" class="-top-2 -right-2 absolute flex justify-center items-center rounded-full w-4 h-4 text-[10px] text-white transition-all duration-300 pointer-events-none">{{ cartCount }}</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- EDITORIAL MEGA MENU -->
+      <transition name="mega-menu-fade">
+        <div v-if="isMegaMenuOpen" class="absolute left-0 hidden w-full bg-white border-t border-gray-100 shadow-2xl top-full md:block" @mouseenter="keepMegaMenuOpen" @mouseleave="closeMegaMenu">
+          <div class="mx-auto max-w-[1400px] flex px-8 py-12 justify-between min-h-[400px]">
+            <div v-if="isMegaMenuLoading" class="absolute inset-0 z-10 flex items-center justify-center bg-white/80">
+              <div class="w-8 h-8 border-2 border-gray-200 rounded-full border-t-black animate-spin"></div>
+            </div>
+
+            <!-- Links Grid -->
+            <div class="grid w-2/3 grid-cols-4 gap-12">
+              <div class="flex flex-col space-y-4">
+                <h3 class="mb-2 font-serif text-base text-gray-900">Featured</h3>
+                <router-link to="/best-sellers" @click="closeMegaMenu" class="text-[13px] text-gray-500 hover:text-black transition-colors">Best Sellers</router-link>
+                <router-link to="/collections?filter=new-arrivals" @click="closeMegaMenu" class="text-[13px] text-gray-500 hover:text-black transition-colors">New Arrivals</router-link>
+                <router-link to="/collections?filter=final-sale" @click="closeMegaMenu" class="text-[13px] text-gray-500 hover:text-black transition-colors">Final Sale</router-link>
+              </div>
+              <div class="flex flex-col space-y-4">
+                <h3 class="mb-2 font-serif text-base text-gray-900">Bags</h3>
+                <button @click="goToCollection('all')" class="text-[13px] text-left text-gray-500 hover:text-black transition-colors">All Bags</button>
+                <button v-for="bag in bagCategories" :key="bag.id" @click="goToBagCategory(bag.name)" class="text-[13px] text-left text-gray-500 hover:text-black transition-colors">{{ bag.name }}</button>
+              </div>
+              <div class="flex flex-col space-y-4">
+                <h3 class="mb-2 font-serif text-base text-gray-900">Collections</h3>
+                <button v-for="cat in normalCategories" :key="cat.id" @click="goToCollection(cat.category_name)" class="text-[13px] text-left text-gray-500 hover:text-black transition-colors">{{ cat.category_name }}</button>
+              </div>
+              <div class="flex flex-col space-y-4">
+                <h3 class="mb-2 font-serif text-base text-gray-900">Accessories</h3>
+                <button @click="goToCollection(accessoriesCategory?.category_name || 'Accessories')" class="text-[13px] text-left text-gray-500 hover:text-black transition-colors">All Accessories</button>
+                <button v-if="accessoriesCategory" @click="goToCollection(accessoriesCategory.category_name)" class="text-[13px] text-left text-gray-500 hover:text-black transition-colors">{{ accessoriesCategory.category_name }}</button>
+              </div>
+            </div>
+
+            <!-- Highlight Image -->
+            <div class="flex justify-end w-1/3 pl-10 border-l border-gray-100">
+              <div class="relative w-full max-w-[320px] h-[380px] bg-gray-100 cursor-pointer overflow-hidden group rounded-2xl" @click="randomMegaProduct ? navigateToProduct(randomMegaProduct) : goToCollection('all')">
+                <transition name="fade" mode="out-in">
+                  <img :key="randomMegaProduct?.id || 'default'" :src="randomMegaProduct?.image || defaultBagIcon" class="object-cover w-full h-full transition-transform duration-1000 group-hover:scale-105" />
+                </transition>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                <div class="absolute text-2xl tracking-wide text-white font-serif bottom-6 left-6 opacity-90 drop-shadow-md">{{ randomMegaProduct?.category?.name || "Latest Collection" }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </transition>
+
+      <!-- Mobile Menu -->
+      <transition name="slide-fade">
+        <div v-if="isMobileMenuOpen" class="z-[200] fixed inset-0 flex">
+          <div @click="isMobileMenuOpen = false" class="absolute inset-0 transition-opacity bg-black/50 backdrop-blur-sm"></div>
+          <div class="relative flex flex-col bg-white shadow-2xl p-8 w-[80%] max-w-sm h-full overflow-y-auto">
+            <div class="flex items-center justify-between mb-10">
+              <img src="../../../assets/solherbrandbook.png" alt="Solher Logo" class="object-contain w-auto h-6" />
+              <button @click="isMobileMenuOpen = false" class="text-gray-400 transition-colors hover:text-black focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+            </div>
+            <nav class="flex flex-col space-y-6">
+              <router-link to="/" @click="isMobileMenuOpen = false" class="pb-4 text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors border-b border-gray-100 hover:text-gray-500">{{ $t("header.home") }}</router-link>
+              <router-link to="/best-sellers" @click="isMobileMenuOpen = false" class="pb-4 text-sm font-black tracking-widest text-red-600 uppercase transition-colors border-b border-gray-100 hover:text-red-800">{{ $t("header.best_sellers") }}</router-link>
+              <router-link to="/collections" @click="isMobileMenuOpen = false" class="pb-4 text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors border-b border-gray-100 hover:text-gray-500">{{ $t("header.collections") }}</router-link>
+              <router-link to="/solher-club" @click="isMobileMenuOpen = false" class="pb-4 text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors border-b border-gray-100 hover:text-gray-500"><span>{{ $t("header.solher_club") || "Solher Club" }}</span></router-link>
+              <router-link to="/events" @click="isMobileMenuOpen = false" class="pb-4 text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors border-b border-gray-100 hover:text-gray-500">{{ $t("header.events") }}</router-link>
+              <router-link to="/contact" @click="isMobileMenuOpen = false" class="pb-4 text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors border-b border-gray-100 hover:text-gray-500">{{ $t("header.contact") }}</router-link>
+            </nav>
+          </div>
+        </div>
+      </transition>
+    </header>
+  </div>
+
+  <SearchModal v-if="isSearchOpen" @close="closeSearch" />
+
+  <!-- 👇 [BARU] POP-UP MODAL VIEW ALL NOTIFICATIONS 👇 -->
+  <div v-if="isNotificationModalOpen" class="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+    <div class="w-full max-w-lg bg-white rounded-3xl shadow-2xl flex flex-col max-h-[85vh] overflow-hidden">
+      <div class="flex items-center justify-between p-6 border-b border-gray-100 bg-gray-50/50">
+        <h2 class="text-xl font-bold font-serif text-gray-900">Semua Notifikasi</h2>
+        <div class="flex items-center gap-4">
+          <button v-if="unreadNotificationsCount > 0" @click="markAllAsRead" class="text-[10px] font-black uppercase tracking-widest text-blue-600 hover:text-blue-800 bg-blue-50 px-3 py-1.5 rounded-lg transition">Tandai Semua Dibaca</button>
+          <button @click="closeNotificationModal" class="p-2 text-gray-400 hover:text-black hover:bg-gray-200 rounded-full transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+          </button>
+        </div>
+      </div>
+      <div class="p-6 overflow-y-auto custom-scrollbar flex-grow bg-gray-50/20">
+         <div v-if="notifications.length === 0" class="text-center text-gray-500 py-16 flex flex-col items-center">
+            <span class="text-5xl mb-4">📭</span>
+            <p class="text-sm">Belum ada notifikasi baru untuk Anda.</p>
+         </div>
+         <div v-else class="space-y-4">
+            <div 
+              v-for="notif in notifications" 
+              :key="notif.id" 
+              class="flex items-start justify-between p-5 border rounded-2xl transition-all duration-300" 
+              :class="notif.is_read ? 'bg-white border-gray-100 opacity-70' : 'bg-blue-50 border-blue-200 shadow-md hover:-translate-y-0.5'"
+            >
+               <div class="flex-grow pr-4">
+                  <div class="flex items-center gap-2 mb-1.5">
+                    <h3 class="text-sm font-bold text-gray-900" :class="!notif.is_read ? 'text-blue-900' : ''">{{ notif.title }}</h3>
+                    <span v-if="!notif.is_read" class="w-2 h-2 rounded-full bg-blue-500 shrink-0"></span>
+                  </div>
+                  <p class="text-xs text-gray-600 leading-relaxed">{{ notif.message }}</p>
+                  <p class="text-[10px] text-gray-400 mt-3 flex items-center gap-1.5 font-medium">
+                    <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    {{ timeAgo(notif.created_at) }}
+                  </p>
+               </div>
+               <button 
+                 v-if="!notif.is_read" 
+                 @click="markAsRead(notif.id)" 
+                 class="shrink-0 px-4 py-2 bg-white border border-gray-200 shadow-sm text-[10px] font-black uppercase tracking-widest text-gray-700 rounded-xl hover:bg-black hover:text-white hover:border-black transition-colors" 
+                 title="Tandai telah dibaca"
+               >
+                  Read
+               </button>
+            </div>
+         </div>
+      </div>
+    </div>
+  </div>
+  <!-- 👆 ============================================== 👆 -->
+</template>
+
+<script setup>
+import { ref, onMounted, onUnmounted, computed } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import Swal from "sweetalert2";
+import axios from "axios";
+import SearchModal from "../../User/Layout/SearchModal.vue";
+import defaultBagIcon from "../../../assets/products/bag_icon.jpg";
+import { useCart } from "../../../composables/useCart";
+import { BASE_URL } from "../../../config/api";
+import { useProductStore } from "../../../composables/useProductStore";
+import { useI18n } from "vue-i18n";
+import { useCurrencyStore } from "../../../stores/currency";
+
+const { t, locale } = useI18n();
+const currencyStore = useCurrencyStore();
+
+const availableCurrencies = ["IDR", "USD", "SGD", "MYR", "EUR", "AUD"];
+const isCurrencyDropdownOpen = ref(false);
+
+const currentCurrency = ref(localStorage.getItem("currency") || "IDR");
+
+const updateCurrencyState = () => {
+  currentCurrency.value = localStorage.getItem("currency") || "IDR";
+  currencyStore.selectedCurrency = currentCurrency.value;
+};
+
+const changeCurrency = (currency) => {
+  currentCurrency.value = currency;
+  currencyStore.selectedCurrency = currency;
+  localStorage.setItem("currency", currency);
+  isCurrencyDropdownOpen.value = false;
+  window.dispatchEvent(new Event("currency-changed"));
+};
+
+const toggleLanguage = () => {
+  locale.value = locale.value === "en" ? "id" : "en";
+  localStorage.setItem("user_lang", locale.value);
+};
+
+const route = useRoute();
+const router = useRouter();
+
+const isSearchOpen = ref(false);
+const openSearch = () => (isSearchOpen.value = true);
+const closeSearch = () => (isSearchOpen.value = false);
+
+const isDropdownOpen = ref(false);
+const isHomeDropdownOpen = ref(false);
+const isAuthenticated = ref(false);
+const userData = ref(null);
+const isMobileMenuOpen = ref(false);
+
+// 👇 STATE & FUNGSI NOTIFIKASI BARU 👇
+const notifications = ref([]);
+const isNotificationDropdownOpen = ref(false);
+const isNotificationModalOpen = ref(false);
+
+const unreadNotificationsCount = computed(() => {
+  return notifications.value.filter(n => !n.is_read).length;
+});
+
+const recentNotifications = computed(() => {
+  return notifications.value.slice(0, 5);
+});
+
+const timeAgo = (dateString) => {
+  if (!dateString) return '';
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffInSeconds = Math.floor((now - date) / 1000);
+
+  if (diffInSeconds < 60) return "Baru saja";
+  if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} mnt lalu`;
+  if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} jam lalu`;
+  return `${Math.floor(diffInSeconds / 86400)} hari lalu`;
+};
+
+const fetchNotifications = async () => {
+  if (!isAuthenticated.value) return;
+  try {
+    const res = await axios.get(`${BASE_URL}/notifications`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    notifications.value = res.data.data;
+  } catch (e) {
+    console.error("Gagal menarik notifikasi", e);
+  }
+};
+
+const markAsRead = async (id) => {
+  try {
+    // Optimistic Update: Ubah di UI langsung tanpa nunggu server
+    const notif = notifications.value.find(n => n.id === id);
+    if (notif && !notif.is_read) {
+      notif.is_read = true;
+      await axios.post(`${BASE_URL}/notifications/${id}/read`, {}, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+    }
+  } catch (e) {
+    fetchNotifications(); // Revert jika server gagal
+  }
+};
+
+const markAllAsRead = async () => {
+  try {
+    // Optimistic Update Semua
+    notifications.value.forEach(n => n.is_read = true);
+    await axios.post(`${BASE_URL}/notifications/mark-all-read`, {}, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+  } catch (e) {
+    fetchNotifications();
+  }
+};
+
+const toggleNotificationDropdown = () => {
+  checkAuth();
+  isNotificationDropdownOpen.value = !isNotificationDropdownOpen.value;
+  isDropdownOpen.value = false; // Tutup menu profil jika terbuka
+  isMegaMenuOpen.value = false;
+};
+
+const openNotificationModal = () => {
+  isNotificationDropdownOpen.value = false;
+  isNotificationModalOpen.value = true;
+};
+
+const closeNotificationModal = () => {
+  isNotificationModalOpen.value = false;
+};
+// 👆 ================================= 👆
+
+const { cartCount, fetchCarts, handleOptimisticAdd } = useCart();
+const { state: productState, fetchCollectionsData } = useProductStore();
+const isBadgePopping = ref(false);
+
+const totalUnreadChats = ref(0);
+let isEchoConnected = false;
+
+const fetchUnreadChats = async () => {
+  if (!isAuthenticated.value) return;
+  try {
+    const res = await axios.get(`${BASE_URL}/chat/admins`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    totalUnreadChats.value = res.data.reduce(
+      (sum, admin) => sum + (admin.unread_count || 0),
+      0,
+    );
+  } catch (error) {}
+};
+
+const setupRealTimeListeners = () => {
+  if (
+    isAuthenticated.value &&
+    userData.value &&
+    window.Echo &&
+    !isEchoConnected
+  ) {
+    window.Echo.private(`chat.${userData.value.id}`).listen(
+      ".message.sent",
+      (e) => {
+        totalUnreadChats.value++;
+        window.dispatchEvent(
+          new CustomEvent("new-chat-message", { detail: e.message }),
+        );
+      },
+    );
+    isEchoConnected = true;
+  }
+};
+
+const currentAnnouncement = ref(0);
+let announcementTimer = null;
+
+const announcements = computed(() => [
+  t(
+    "header.announcement_1",
+    "An Exclusive Welcome Gift: Rp 250K OFF your first order →",
+  ),
+  t(
+    "header.announcement_2",
+    "A Little Extra, On Us — Complimentary Shipping Across Indonesia (Min. Rp 1.000.000) →",
+  ),
+]);
+
+const nextAnnouncement = () => {
+  currentAnnouncement.value =
+    (currentAnnouncement.value + 1) % announcements.value.length;
+  resetAnnouncementTimer();
+};
+
+const prevAnnouncement = () => {
+  currentAnnouncement.value =
+    (currentAnnouncement.value - 1 + announcements.value.length) %
+    announcements.value.length;
+  resetAnnouncementTimer();
+};
+
+const startAnnouncementTimer = () => {
+  announcementTimer = setInterval(() => {
+    currentAnnouncement.value =
+      (currentAnnouncement.value + 1) % announcements.value.length;
+  }, 3000);
+};
+
+const resetAnnouncementTimer = () => {
+  clearInterval(announcementTimer);
+  startAnnouncementTimer();
+};
+
+const isMegaMenuOpen = ref(false);
+const megaMenuTimer = ref(null);
+const categories = ref([]);
+const bagCategories = ref([]);
+const isMegaMenuLoading = ref(false);
+const randomMegaProduct = ref(null);
+
+const normalCategories = computed(() => {
+  return categories.value
+    .filter((c) => c.category_code !== "C005")
+    .sort((a, b) => a.id - b.id);
+});
+
+const accessoriesCategory = computed(() => {
+  return categories.value.find((c) => c.category_code === "C005");
+});
+
+const generateRandomMegaProduct = () => {
+  if (
+    !productState.collectionsProducts ||
+    productState.collectionsProducts.length === 0
+  ) {
+    randomMegaProduct.value = null;
+    return;
+  }
+  const products = productState.collectionsProducts;
+  randomMegaProduct.value =
+    products[Math.floor(Math.random() * products.length)];
+};
+
+const fetchCategoriesForMegaMenu = async () => {
+  if (categories.value.length > 0 && bagCategories.value.length > 0) return;
+  isMegaMenuLoading.value = true;
+  try {
+    const [catRes, bagCatRes] = await Promise.all([
+      axios.get(`${BASE_URL}/guest/categories`),
+      axios
+        .get(`${BASE_URL}/bag-categories`)
+        .catch(() => ({ data: { data: [] } })),
+    ]);
+
+    let rawCategories = catRes.data.data || catRes.data;
+    let rawBagCategories = bagCatRes.data.data || bagCatRes.data;
+
+    categories.value = rawCategories.sort((a, b) => a.id - b.id);
+    bagCategories.value = rawBagCategories.sort((a, b) => a.id - b.id);
+  } catch (error) {
+    console.error("Gagal menarik kategori menu:", error);
+  } finally {
+    isMegaMenuLoading.value = false;
+  }
+};
+
+const openMegaMenu = async () => {
+  clearTimeout(megaMenuTimer.value);
+  isMegaMenuOpen.value = true;
+  isDropdownOpen.value = false;
+  isNotificationDropdownOpen.value = false; // Tutup notif jika buka mega menu
+  fetchCategoriesForMegaMenu();
+
+  if (!productState.isCollectionsLoaded) {
+    try {
+      await fetchCollectionsData();
+      generateRandomMegaProduct();
+    } catch (e) {}
+  } else {
+    generateRandomMegaProduct();
+  }
+};
+
+const keepMegaMenuOpen = () => {
+  clearTimeout(megaMenuTimer.value);
+};
+
+const closeMegaMenu = () => {
+  megaMenuTimer.value = setTimeout(() => {
+    isMegaMenuOpen.value = false;
+  }, 150);
+};
+
+const goToCollection = (categoryName) => {
+  closeMegaMenu();
+  if (categoryName === "all") router.push("/collections");
+  else router.push({ path: "/collections", query: { category: categoryName } });
+};
+
+const goToBagCategory = (bagName) => {
+  closeMegaMenu();
+  router.push({ path: "/collections", query: { bag_category: bagName } });
+};
+
+const navigateToProduct = (product) => {
+  closeMegaMenu();
+  router.push(`/products/${product.slug || product.id}`);
+};
+
+const openCartPage = () => {
+  if (!isAuthenticated.value) {
+    Swal.fire({
+      icon: "info",
+      title: "Sign In Required",
+      text: "Please login to see your shopping bag.",
+      confirmButtonColor: "#000",
+    });
+    return;
+  }
+  router.push("/cart");
+};
+
+const checkAuth = () => {
+  const token = localStorage.getItem("token");
+  const user = localStorage.getItem("user");
+
+  if (token && user) {
+    const wasNotAuthenticated = !isAuthenticated.value;
+    isAuthenticated.value = true;
+    userData.value = JSON.parse(user);
+
+    if (wasNotAuthenticated) {
+      fetchUnreadChats();
+      fetchNotifications(); // 👇 Tarik notifikasi saat baru login
+      setupRealTimeListeners();
+    }
+  } else {
+    if (
+      typeof isEchoConnected !== "undefined" &&
+      isEchoConnected &&
+      userData.value &&
+      window.Echo
+    ) {
+      window.Echo.leave(`chat.${userData.value.id}`);
+      isEchoConnected = false;
+    }
+    isAuthenticated.value = false;
+    userData.value = null;
+    totalUnreadChats.value = 0;
+    notifications.value = []; // Bersihkan notif saat logout
+  }
+};
+
+const toggleDropdown = () => {
+  checkAuth();
+  isDropdownOpen.value = !isDropdownOpen.value;
+  isNotificationDropdownOpen.value = false; // Tutup notif jika buka profil
+  isMegaMenuOpen.value = false;
+};
+
+const onAddToCartEvent = (e) => {
+  handleOptimisticAdd(e.detail, () => {
+    isBadgePopping.value = true;
+    setTimeout(() => (isBadgePopping.value = false), 300);
+  });
+};
+
+onMounted(async () => {
+  checkAuth();
+  if (isAuthenticated.value) {
+    fetchCarts();
+    fetchNotifications(); // 👇 Tarik notifikasi saat halaman dimuat ulang
+  }
+  fetchCategoriesForMegaMenu();
+
+  try {
+    const res = await axios.get(`${BASE_URL}/exchange-rates`);
+    currencyStore.exchangeRates = res.data.data.rates;
+  } catch (error) {}
+
+  updateCurrencyState();
+
+  if (!window.isLocalStorageOverride) {
+    const originalSetItem = localStorage.setItem;
+    localStorage.setItem = function (key, value) {
+      originalSetItem.apply(this, arguments);
+      if (key === "currency") {
+        window.dispatchEvent(new Event("currency-changed"));
+      }
+    };
+    window.isLocalStorageOverride = true;
+  }
+
+  window.addEventListener("currency-changed", updateCurrencyState);
+  window.addEventListener("storage", (e) => {
+    if (e.key === "currency") updateCurrencyState();
+  });
+
+  window.addEventListener("optimistic-add-to-cart", onAddToCartEvent);
+  
+  // Menutup dropdown jika user klik di luar kotak
+  window.addEventListener("click", (e) => {
+    if (!e.target.closest(".nav-dropdown-wrapper")) {
+      isDropdownOpen.value = false;
+      isNotificationDropdownOpen.value = false;
+    }
+  });
+
+  window.addEventListener("refresh-cart", fetchCarts);
+  window.addEventListener("refresh-chat-badge", fetchUnreadChats);
+  // Optional: Event listener jika ingin me-refresh notif dari komponen lain
+  window.addEventListener("refresh-notifications", fetchNotifications);
+
+  startAnnouncementTimer();
+});
+
+onUnmounted(() => {
+  window.removeEventListener("currency-changed", updateCurrencyState);
+  window.removeEventListener("optimistic-add-to-cart", onAddToCartEvent);
+  window.removeEventListener("refresh-chat-badge", fetchUnreadChats);
+  window.removeEventListener("refresh-notifications", fetchNotifications);
+  clearInterval(announcementTimer);
+
+  if (userData.value && window.Echo) {
+    window.Echo.leave(`chat.${userData.value.id}`);
+  }
+});
+
+watch(
+  () => route.path,
+  () => {
+    isDropdownOpen.value = false;
+    isNotificationDropdownOpen.value = false;
+    isMobileMenuOpen.value = false;
+    checkAuth();
+  },
+);
+</script>
+
+<style scoped>
+/* Transisi gambar di kanan */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.pop-enter-active,
+.pop-leave-active {
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.pop-enter-from,
+.pop-leave-to {
+  transform: scale(0);
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+.fade-slide-enter-from {
+  opacity: 0;
+  transform: translateY(5px);
+}
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-5px);
+}
+
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: all 0.3s ease;
+}
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.mega-menu-fade-enter-active,
+.mega-menu-fade-leave-active {
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+  transform-origin: top;
+}
+.mega-menu-fade-enter-from,
+.mega-menu-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-5px) scaleY(0.98);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #e5e7eb;
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #d1d5db;
+}
+
+@media (max-aspect-ratio: 1/1) {
+  .desktop-nav,
+  .desktop-actions {
+    display: none !important;
+  }
+  .mobile-toggle {
+    display: flex !important;
+  }
+}
 </style>
