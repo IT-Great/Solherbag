@@ -2505,10 +2505,16 @@ onMounted(() => {
 
   // Memastikan Laravel Echo / Pusher tersedia
   if (window.Echo) {
+    let debounceTimer = null;
     window.Echo.channel("admin-dashboard").listen("DashboardUpdated", (e) => {
       console.log("Pusher Event Received: DashboardUpdated", e);
-      // Tarik data ulang secara diam-diam (silent refresh) tanpa skeleton loading
-      fetchData(false);
+      // Bersihkan timer sebelumnya jika ada request baru bertubi-tubi
+      if (debounceTimer) clearTimeout(debounceTimer);
+      
+      // Tunggu 3 detik setelah event terakhir, baru tembak server
+      debounceTimer = setTimeout(() => {
+          fetchData(false);
+      }, 3000);
     });
   }
 });
