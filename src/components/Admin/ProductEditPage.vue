@@ -2310,12 +2310,18 @@ const handleSubmit = async () => {
     <Breadcrumb />
     <div class="flex items-center justify-between mb-8">
       <h1 class="text-2xl font-bold text-gray-800">Edit Product</h1>
-      <button @click="$router.back()" class="text-gray-500 transition hover:text-black">
+      <button
+        @click="$router.back()"
+        class="text-gray-500 transition hover:text-black"
+      >
         Back
       </button>
     </div>
 
-    <form @submit.prevent="handleSubmit" class="grid grid-cols-1 gap-6 md:grid-cols-2">
+    <form
+      @submit.prevent="handleSubmit"
+      class="grid grid-cols-1 gap-6 md:grid-cols-2"
+    >
       <div class="space-y-6">
         <div>
           <label class="block mb-1 text-sm font-bold"
@@ -2340,7 +2346,9 @@ const handleSubmit = async () => {
           />
         </div>
 
-        <div class="col-span-1 p-6 mt-4 border border-gray-200 rounded-2xl bg-gray-50/50">
+        <div
+          class="col-span-1 p-6 mt-4 border border-gray-200 rounded-2xl bg-gray-50/50"
+        >
           <h3
             class="pb-2 mb-4 text-sm font-bold tracking-widest text-gray-800 uppercase border-b"
           >
@@ -2429,13 +2437,19 @@ const handleSubmit = async () => {
             <div class="pt-4 border-t border-gray-200">
               <label class="flex items-center cursor-pointer">
                 <div class="relative">
-                  <input type="checkbox" v-model="form.is_final_sale" class="sr-only" />
+                  <input
+                    type="checkbox"
+                    v-model="form.is_final_sale"
+                    class="sr-only"
+                  />
                   <div
                     :class="form.is_final_sale ? 'bg-red-700' : 'bg-gray-200'"
                     class="block w-10 h-6 rounded-full transition-colors"
                   ></div>
                   <div
-                    :class="form.is_final_sale ? 'translate-x-4' : 'translate-x-0'"
+                    :class="
+                      form.is_final_sale ? 'translate-x-4' : 'translate-x-0'
+                    "
                     class="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform"
                   ></div>
                 </div>
@@ -2465,7 +2479,9 @@ const handleSubmit = async () => {
               readonly
               title="Stock must be managed via Stock Management Menu"
             />
-            <p class="text-[9px] text-gray-500 mt-1 uppercase tracking-widest font-bold">
+            <p
+              class="text-[9px] text-gray-500 mt-1 uppercase tracking-widest font-bold"
+            >
               ⚠️ Manage stock via Stock Menu
             </p>
           </div>
@@ -2487,19 +2503,27 @@ const handleSubmit = async () => {
         </div>
 
         <div>
-          <label class="block mb-1 text-sm font-bold">Bag Type (Optional)</label>
+          <label class="block mb-1 text-sm font-bold"
+            >Bag Type (Optional)</label
+          >
           <select
             v-model="form.bag_category_id"
             class="w-full p-3 bg-gray-100 rounded-xl"
           >
             <option value="">No Specific Type</option>
-            <option v-for="type in bagCategories" :key="type.id" :value="type.id">
+            <option
+              v-for="type in bagCategories"
+              :key="type.id"
+              :value="type.id"
+            >
               {{ type.name }}
             </option>
           </select>
         </div>
 
-        <div class="p-4 space-y-6 border border-gray-200 rounded-2xl bg-gray-50/50">
+        <div
+          class="p-4 space-y-6 border border-gray-200 rounded-2xl bg-gray-50/50"
+        >
           <div>
             <label class="block mb-1 text-sm font-bold">Main Image</label>
             <p class="text-[10px] text-gray-500 mb-2">
@@ -2521,7 +2545,9 @@ const handleSubmit = async () => {
           </div>
 
           <div class="pt-4 border-t border-gray-200">
-            <label class="block mb-1 text-sm font-bold">Variant Images (Max 5)</label>
+            <label class="block mb-1 text-sm font-bold"
+              >Variant Images (Max 5)</label
+            >
             <p class="text-[10px] text-gray-500 mb-2">
               Upload new files to REPLACE all current variant images.
             </p>
@@ -2553,7 +2579,9 @@ const handleSubmit = async () => {
           </div>
 
           <div class="pt-4 border-t border-gray-200">
-            <label class="block mb-1 text-sm font-bold">Product Video (Max 5MB)</label>
+            <label class="block mb-1 text-sm font-bold"
+              >Product Video (Max 5MB)</label
+            >
             <p class="text-[10px] text-gray-500 mb-2">
               Upload new video to REPLACE the current one.
             </p>
@@ -2653,7 +2681,9 @@ const handleSubmit = async () => {
                   :key="idx"
                   class="flex items-center gap-2 px-3 py-1.5 border border-gray-200 shadow-sm bg-gray-50 rounded-lg"
                 >
-                  <span class="text-xs font-bold text-gray-800">{{ strap }}</span>
+                  <span class="text-xs font-bold text-gray-800">{{
+                    strap
+                  }}</span>
                   <button
                     type="button"
                     @click="removeStrapLength(idx)"
@@ -2676,7 +2706,9 @@ const handleSubmit = async () => {
               />
             </div>
             <div>
-              <label class="block mb-1 text-xs font-bold text-gray-600">Width (cm)</label>
+              <label class="block mb-1 text-xs font-bold text-gray-600"
+                >Width (cm)</label
+              >
               <input
                 v-model="form.width"
                 type="number"
@@ -2766,7 +2798,9 @@ const handleSubmit = async () => {
                     class="w-4 h-4 border border-gray-300 rounded-full"
                     :style="{ backgroundColor: c.hex }"
                   ></div>
-                  <span class="text-xs font-bold text-gray-800">{{ c.name }}</span>
+                  <span class="text-xs font-bold text-gray-800">{{
+                    c.name
+                  }}</span>
                   <button
                     type="button"
                     @click="removeColor(idx)"
@@ -2784,7 +2818,9 @@ const handleSubmit = async () => {
           class="flex items-center justify-between mt-8 mb-4 border-t border-gray-200 pt-6"
         >
           <div>
-            <h3 class="text-lg font-bold text-gray-900">Product Story & Design</h3>
+            <h3 class="text-lg font-bold text-gray-900">
+              Product Story & Design
+            </h3>
             <p class="text-xs text-gray-500">
               Isi manual atau gunakan AI untuk merevisi deskripsi otomatis.
             </p>
@@ -2819,14 +2855,18 @@ const handleSubmit = async () => {
 
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="block mb-1 text-sm font-bold">Design Details (ID)</label>
+            <label class="block mb-1 text-sm font-bold"
+              >Design Details (ID)</label
+            >
             <textarea
               v-model="form.design"
               class="w-full h-32 p-3 bg-gray-100 outline-none rounded-xl focus:ring-2 focus:ring-blue-500"
             ></textarea>
           </div>
           <div>
-            <label class="block mb-1 text-sm font-bold">Design Details (EN)</label>
+            <label class="block mb-1 text-sm font-bold"
+              >Design Details (EN)</label
+            >
             <textarea
               v-model="form.design_en"
               class="w-full h-32 p-3 bg-gray-100 outline-none rounded-xl focus:ring-2 focus:ring-blue-500"
@@ -2901,14 +2941,63 @@ const form = ref({
 const isGeneratingAI = ref(false);
 
 const generateWithAI = async () => {
-  /* (Logic AI Copywriter tetap utuh) */
+  if (!form.value.name) {
+    Swal.fire(
+      "Peringatan",
+      "Mohon isi Nama Produk terlebih dahulu agar AI bisa bekerja.",
+      "warning"
+    );
+    return;
+  }
+
+  isGeneratingAI.value = true;
+  const selectedCat = categories.value.find((c) => c.id === form.value.category_id);
+  const catName = selectedCat ? selectedCat.category_name : "";
+
+  try {
+    const res = await axios.post(
+      `${BASE_URL}/products/ai-copywriter`,
+      {
+        name: form.value.name,
+        material: form.value.material,
+        category_name: catName,
+      },
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
+      }
+    );
+
+    if (res.data.status === "success" && res.data.data) {
+      form.value.description = res.data.data.description_id;
+      form.value.description_en = res.data.data.description_en;
+      form.value.design = res.data.data.design_id;
+      form.value.design_en = res.data.data.design_en;
+
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "success",
+        title: "Re-Write AI Berhasil!",
+        showConfirmButton: false,
+        timer: 3000,
+      });
+    }
+  } catch (error) {
+    Swal.fire("Error", "Gagal memanggil AI. Silakan coba lagi.", "error");
+  } finally {
+    isGeneratingAI.value = false;
+  }
 };
 const newStrapLength = ref("");
 const addStrapLength = () => {
-  /* ... */
+  if (!newStrapLength.value.trim()) return;
+  if (!form.value.strap_length.includes(newStrapLength.value.trim())) {
+    form.value.strap_length.push(newStrapLength.value.trim());
+  }
+  newStrapLength.value = "";
 };
 const removeStrapLength = (index) => {
-  /* ... */
+  form.value.strap_length.splice(index, 1);
 };
 const newColorName = ref("");
 const newColorHex = ref("#000000");
@@ -2923,17 +3012,34 @@ const parsedColors = computed(() => {
   });
 });
 const addColor = () => {
-  /* ... */
+  if (!newColorName.value.trim()) return;
+  const colorString = `${newColorName.value.trim()}|${newColorHex.value}`;
+  if (!form.value.color.includes(colorString)) {
+    form.value.color.push(colorString);
+  }
+  newColorName.value = "";
+  newColorHex.value = "#000000";
 };
 const removeColor = (index) => {
-  /* ... */
+  form.value.color.splice(index, 1);
 };
 const handleFile = (e) => (form.value.image = e.target.files[0]);
 const handleVariantImages = (e) => {
-  /* ... */
+  const files = Array.from(e.target.files);
+  if (files.length > 5) {
+    Swal.fire("Warning", "Maximum 5 variant images allowed", "warning");
+    e.target.value = "";
+    return;
+  }
+  form.value.variant_images = files;
 };
 const handleVideo = (e) => {
   form.value.variant_video = e.target.files[0];
+  if (e.target.files[0].size > 5 * 1024 * 1024) {
+    Swal.fire("Error", "Ukuran video maksimal adalah 5MB!", "error");
+    e.target.value = ""; // Reset input
+    return;
+  }
 };
 
 const fillFormWithData = (p) => {
@@ -2977,8 +3083,8 @@ const fillFormWithData = (p) => {
   form.value.strap_length = Array.isArray(p.strap_length)
     ? p.strap_length
     : p.strap_length
-    ? [p.strap_length]
-    : [];
+      ? [p.strap_length]
+      : [];
   form.value.color = Array.isArray(p.color) ? p.color : [];
 
   currentImage.value = p.image;
@@ -3057,7 +3163,10 @@ const handleSubmit = async () => {
     }
 
     formData.append("discount_price", form.value.discount_price || "");
-    formData.append("discount_start_date", form.value.discount_start_date || "");
+    formData.append(
+      "discount_start_date",
+      form.value.discount_start_date || "",
+    );
     formData.append("discount_end_date", form.value.discount_end_date || "");
 
     if (form.value.prices) {
@@ -3094,7 +3203,9 @@ const handleSubmit = async () => {
     }
 
     await axios.post(`${BASE_URL}/products/${productId}`, formData, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
+      },
     });
 
     Swal.fire("Success", "Product Updated", "success");

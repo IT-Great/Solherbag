@@ -2425,14 +2425,65 @@ const form = ref({
 const isGeneratingAI = ref(false);
 
 const generateWithAI = async () => {
-  /* (Logic AI Copywriter tetap utuh) */
+  if (!form.value.name) {
+    Swal.fire(
+      "Peringatan",
+      "Mohon isi Nama Produk terlebih dahulu agar AI bisa bekerja.",
+      "warning"
+    );
+    return;
+  }
+
+  isGeneratingAI.value = true;
+
+  // Dapatkan nama kategori untuk konteks AI
+  const selectedCat = categories.value.find((c) => c.id === form.value.category_id);
+  const catName = selectedCat ? selectedCat.category_name : "";
+
+  try {
+    const res = await axios.post(
+      `${BASE_URL}/products/ai-copywriter`,
+      {
+        name: form.value.name,
+        material: form.value.material,
+        category_name: catName,
+      },
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
+      }
+    );
+
+    if (res.data.status === "success" && res.data.data) {
+      form.value.description = res.data.data.description_id;
+      form.value.description_en = res.data.data.description_en;
+      form.value.design = res.data.data.design_id;
+      form.value.design_en = res.data.data.design_en;
+
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "success",
+        title: "AI Copywriter Berhasil Diterapkan!",
+        showConfirmButton: false,
+        timer: 3000,
+      });
+    }
+  } catch (error) {
+    Swal.fire("Error", "Gagal memanggil AI. Silakan coba lagi.", "error");
+  } finally {
+    isGeneratingAI.value = false;
+  }
 };
 const newStrapLength = ref("");
 const addStrapLength = () => {
-  /* ... */
+  if (!newStrapLength.value.trim()) return;
+  if (!form.value.strap_length.includes(newStrapLength.value.trim())) {
+    form.value.strap_length.push(newStrapLength.value.trim());
+  }
+  newStrapLength.value = "";
 };
 const removeStrapLength = (index) => {
-  /* ... */
+  form.value.strap_length.splice(index, 1);
 };
 const newColorName = ref("");
 const newColorHex = ref("#000000");
@@ -2447,17 +2498,34 @@ const parsedColors = computed(() => {
   });
 });
 const addColor = () => {
-  /* ... */
+  if (!newColorName.value.trim()) return;
+  const colorString = `${newColorName.value.trim()}|${newColorHex.value}`;
+  if (!form.value.color.includes(colorString)) {
+    form.value.color.push(colorString);
+  }
+  newColorName.value = "";
+  newColorHex.value = "#000000";
 };
 const removeColor = (index) => {
-  /* ... */
+  form.value.color.splice(index, 1);
 };
 const handleFile = (e) => (form.value.image = e.target.files[0]);
 const handleVariantImages = (e) => {
-  /* ... */
+  const files = Array.from(e.target.files);
+  if (files.length > 5) {
+    Swal.fire("Warning", "Maximum 5 variant images allowed", "warning");
+    e.target.value = "";
+    return;
+  }
+  form.value.variant_images = files;
 };
 const handleVideo = (e) => {
-  /* ... */
+  form.value.variant_video = e.target.files[0];
+  if (e.target.files[0].size > 5 * 1024 * 1024) {
+    Swal.fire("Error", "Ukuran video maksimal adalah 5MB!", "error");
+    e.target.value = "";
+    return;
+  }
 };
 
 const handleSubmit = async () => {
