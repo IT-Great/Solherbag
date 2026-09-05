@@ -193,7 +193,7 @@
     "expired_cancelled": "EXPIRED / CANCELLED",
     "unpaid": "UNPAID",
     "paid": "PAID",
-    "Waiting_payment": "Waiting for payment selection...",
+    "waiting_payment": "Waiting for payment selection...",
     "shipping_info": "Shipping Info",
     "no_courier": "No Courier",
     "in_store_payment": "In-store Payment / Pickup",

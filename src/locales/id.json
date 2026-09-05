@@ -192,7 +192,7 @@
     "expired_cancelled": "KEDALUWARSA / DIBATALKAN",
     "unpaid": "BELUM DIBAYAR",
     "paid": "LUNAS",
-    "Waiting_payment": "Menunggu pemilihan pembayaran...",
+    "waiting_payment": "Menunggu pemilihan pembayaran...",
     "shipping_info": "Info Pengiriman",
     "no_courier": "Tidak Ada Kurir",
     "in_store_payment": "Pembayaran / Pengambilan di Toko",
