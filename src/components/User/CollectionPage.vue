@@ -10051,47 +10051,79 @@ const calculateDynamicDiscount = (product) => {
   return Math.round(((priceObj.value - discObj.value) / priceObj.value) * 100);
 };
 
+// const getBundlePromo = (product) => {
+//   if (!product || !product.category) return null;
+//   const curr = currentCurrency.value || "IDR";
+//   let promoData = null;
+
+//   if (product.category.bundle_promo && product.category.bundle_promo.is_active) {
+//     promoData = product.category.bundle_promo;
+//   } else if (product.category.bundle_qty && product.category.bundle_price) {
+//     const now = new Date();
+//     const start = product.category.bundle_start_date
+//       ? convertToWIB(product.category.bundle_start_date)
+//       : null;
+//     const end = product.category.bundle_end_date
+//       ? convertToWIB(product.category.bundle_end_date)
+//       : null;
+
+//     if ((!start || now >= start) && (!end || now <= end)) {
+//       promoData = {
+//         qty: product.category.bundle_qty,
+//         price: product.category.bundle_price,
+//       };
+//     }
+//   }
+
+//   if (!promoData) return null;
+
+//   let finalPrice = 0;
+//   let finalCurr = "IDR";
+
+//   if (typeof promoData.price === "object") {
+//     if (promoData.price[curr]) {
+//       finalPrice = promoData.price[curr];
+//       finalCurr = curr;
+//     } else {
+//       finalPrice = promoData.price["IDR"];
+//     }
+//   } else {
+//     finalPrice = promoData.price;
+//   }
+
+//   return { qty: promoData.qty, price: finalPrice, curr: finalCurr };
+// };
+
 const getBundlePromo = (product) => {
   if (!product || !product.category) return null;
+  const cat = product.category;
   const curr = currentCurrency.value || "IDR";
-  let promoData = null;
+  
+  if (!cat.bundle_qty || !cat.bundle_price) return null;
 
-  if (product.category.bundle_promo && product.category.bundle_promo.is_active) {
-    promoData = product.category.bundle_promo;
-  } else if (product.category.bundle_qty && product.category.bundle_price) {
-    const now = new Date();
-    const start = product.category.bundle_start_date
-      ? convertToWIB(product.category.bundle_start_date)
-      : null;
-    const end = product.category.bundle_end_date
-      ? convertToWIB(product.category.bundle_end_date)
-      : null;
+  const now = new Date();
+  const start = cat.bundle_start_date ? convertToWIB(cat.bundle_start_date) : null;
+  const end = cat.bundle_end_date ? convertToWIB(cat.bundle_end_date) : null;
 
-    if ((!start || now >= start) && (!end || now <= end)) {
-      promoData = {
-        qty: product.category.bundle_qty,
-        price: product.category.bundle_price,
-      };
-    }
+  if ((start && now < start) || (end && now > end)) return null;
+
+  let conf;
+  try {
+    conf = typeof cat.bundle_price === 'string' ? JSON.parse(cat.bundle_price) : cat.bundle_price;
+  } catch (e) { return null; }
+
+  // Fallback ke struktur lama
+  if (typeof conf === 'number') {
+    conf = { promo_type: 'bundle', price: { IDR: conf } };
   }
 
-  if (!promoData) return null;
+  // JANGAN MENAMPILKAN TEKS "Buy X For Y" untuk Promo Percent Auto-Sale
+  if (conf.promo_type === 'percent') return null;
 
-  let finalPrice = 0;
-  let finalCurr = "IDR";
+  const priceObj = conf.price || conf;
+  const finalPrice = priceObj[curr] || priceObj["IDR"] || 0;
 
-  if (typeof promoData.price === "object") {
-    if (promoData.price[curr]) {
-      finalPrice = promoData.price[curr];
-      finalCurr = curr;
-    } else {
-      finalPrice = promoData.price["IDR"];
-    }
-  } else {
-    finalPrice = promoData.price;
-  }
-
-  return { qty: promoData.qty, price: finalPrice, curr: finalCurr };
+  return { qty: cat.bundle_qty, price: finalPrice, curr: curr };
 };
 
 const getMediaArray = (prod) => {

@@ -2179,13 +2179,347 @@ onMounted(() => {
 </template>
 
 <script setup>
+// import { ref, onMounted, computed, watch } from "vue";
+// import axios from "axios";
+// import Swal from "sweetalert2";
+// import { BASE_URL } from "../../config/api.js";
+// import Breadcrumb from "./Layout/Breadcrumb.vue";
+
+// const SUPPORTED_CURRENCIES = ["USD", "SGD", "EUR", "AUD", "MYR"]; // Definisi Mata Uang
+
+// const categories = ref([]);
+// const showModal = ref(false);
+// const isEdit = ref(false);
+// const isLoading = ref(true);
+// const isSubmitting = ref(false);
+// const currentId = ref(null);
+
+// const userRole = ref("");
+// const isSuperAdmin = computed(() => userRole.value === "superadmin");
+// const myPermissions = ref({ create: false, read: false, update: false, delete: false });
+
+// const canCreate = computed(() => myPermissions.value.create);
+// const canUpdate = computed(() => myPermissions.value.update);
+// const canDelete = computed(() => myPermissions.value.delete);
+
+// const axiosConfig = {
+//   headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
+// };
+
+// const fetchUserPermissions = async () => {
+//   const adminStr = localStorage.getItem("admin");
+//   if (adminStr) {
+//     const admin = JSON.parse(adminStr);
+//     userRole.value = admin.usertype;
+//   }
+//   if (isSuperAdmin.value) return;
+
+//   try {
+//     const res = await axios.get(`${BASE_URL}/admin/access-policies`, axiosConfig);
+//     const policies = res.data.permissions;
+//     const categoryTerms = policies[userRole.value]?.categories || [];
+
+//     myPermissions.value = {
+//       create: categoryTerms.includes("create"),
+//       read: categoryTerms.includes("read"),
+//       update: categoryTerms.includes("update"),
+//       delete: categoryTerms.includes("delete"),
+//     };
+//   } catch (error) {
+//     console.error("Gagal mengambil kebijakan akses", error);
+//   }
+// };
+
+// const form = ref({
+//   category_code: "",
+//   category_name: "",
+//   meta: { description: "" },
+//   has_bundle: false,
+//   promo_type: "bundle",
+//   mix_group: "",
+//   bundle_qty: 2,
+//   bundle_price_idr: "",
+//   bundle_prices: {}, // Objek penampung multi-currency
+//   discount_percent: 0,
+//   min_purchase: 0,
+//   max_discount: 0,
+//   bundle_start_date: "",
+//   bundle_end_date: "",
+// });
+
+// const searchQuery = ref("");
+// const currentPage = ref(1);
+// const itemsPerPage = ref(5);
+
+// const filteredCategories = computed(() => {
+//   return categories.value.filter((cat) => {
+//     const term = searchQuery.value.toLowerCase();
+//     return (
+//       cat.category_name.toLowerCase().includes(term) ||
+//       cat.category_code.toLowerCase().includes(term)
+//     );
+//   });
+// });
+
+// const totalPages = computed(() =>
+//   Math.ceil(filteredCategories.value.length / itemsPerPage.value)
+// );
+
+// const visiblePages = computed(() => {
+//   const current = currentPage.value;
+//   const total = totalPages.value;
+//   if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+//   if (current <= 4) return [1, 2, 3, 4, 5, "...", total];
+//   if (current >= total - 3)
+//     return [1, "...", total - 4, total - 3, total - 2, total - 1, total];
+//   return [1, "...", current - 1, current, current + 1, "...", total];
+// });
+
+// const paginatedCategories = computed(() => {
+//   const start = (currentPage.value - 1) * itemsPerPage.value;
+//   return filteredCategories.value.slice(start, start + itemsPerPage.value);
+// });
+
+// const showingStart = computed(() => (currentPage.value - 1) * itemsPerPage.value + 1);
+// const showingEnd = computed(() =>
+//   Math.min(currentPage.value * itemsPerPage.value, filteredCategories.value.length)
+// );
+
+// watch([searchQuery, itemsPerPage], () => {
+//   currentPage.value = 1;
+// });
+
+// const fetchCategories = async () => {
+//   isLoading.value = true;
+//   try {
+//     const res = await axios.get(`${BASE_URL}/categories`, axiosConfig);
+//     categories.value = res.data.data.sort((a, b) => a.id - b.id);
+//   } catch (err) {
+//     console.error(err);
+//   } finally {
+//     setTimeout(() => {
+//       isLoading.value = false;
+//     }, 500);
+//   }
+// };
+
+// const openModal = (data = null) => {
+//   isEdit.value = !!data;
+//   currentId.value = data ? data.id : null;
+
+//   // Siapkan penampung kosong
+//   const tempPrices = {};
+//   SUPPORTED_CURRENCIES.forEach((curr) => {
+//     tempPrices[curr] = "";
+//   });
+
+//   if (data) {
+//     const hasPromo = !!data.bundle_promo?.qty || !!data.bundle_promo?.price; // Cek data mentah;
+//     let loadedIdr = "";
+//     let loadedPrices = { ...tempPrices };
+//     let pType = "bundle";
+//     let mGroup = "";
+//     let dPercent = 0;
+//     let mPurchase = 0;
+//     let mDiscount = 0;
+
+//     // Parsing JSON Price
+//     // if (hasPromo && data.bundle_promo.price) {
+//     //   if (typeof data.bundle_promo.price === "object") {
+//     //     // Jika dari backend sudah berupa objek JSON
+//     //     loadedIdr = data.bundle_promo.price.IDR || "";
+//     //     SUPPORTED_CURRENCIES.forEach((curr) => {
+//     //       loadedPrices[curr] = data.bundle_promo.price[curr] || "";
+//     //     });
+//     //   } else {
+//     //     // Fallback legacy (Jika masih format decimal lama)
+//     //     loadedIdr = data.bundle_promo.price;
+//     //   }
+//     // }
+
+//     if (hasPromo && data.bundle_price) { // Parse data JSON asli jika API Anda memberikannya, atau sesuaikan dari backend
+//       try {
+//         const conf = typeof data.bundle_price === 'string' ? JSON.parse(data.bundle_price) : data.bundle_price;
+//         pType = conf.promo_type || "bundle";
+//         mGroup = conf.mix_group || "";
+//         if (pType === "bundle") {
+//             loadedIdr = conf.price?.IDR || conf.IDR || "";
+//             SUPPORTED_CURRENCIES.forEach((curr) => { loadedPrices[curr] = conf.price?.[curr] || ""; });
+//         } else {
+//             dPercent = conf.percent || 0;
+//             mPurchase = conf.min_purchase || 0;
+//             mDiscount = conf.max_discount || 0;
+//         }
+//       } catch (e) {}
+//     }
+
+//     form.value = {
+//       // category_code: data.category_code,
+//       // category_name: data.category_name,
+//       // meta: { description: data.meta?.description || "" },
+//       // has_bundle: hasPromo,
+//       // bundle_qty: data.bundle_promo?.qty || 2,
+//       // bundle_price_idr: loadedIdr,
+//       // bundle_prices: loadedPrices,
+//       // bundle_start_date: data.bundle_promo?.start_date || "",
+//       // bundle_end_date: data.bundle_promo?.end_date || "",
+
+//       category_code: data.category_code,
+//       category_name: data.category_name,
+//       meta: { description: data.meta?.description || "" },
+//       has_bundle: hasPromo,
+//       promo_type: pType,
+//       mix_group: mGroup,
+//       bundle_qty: data.bundle_promo?.qty || 2, // Backend Anda mungkin kirim ini terpisah
+//       bundle_price_idr: loadedIdr,
+//       bundle_prices: loadedPrices,
+//       discount_percent: dPercent,
+//       min_purchase: mPurchase,
+//       max_discount: mDiscount,
+//       bundle_start_date: data.bundle_promo?.start_date || "",
+//       bundle_end_date: data.bundle_promo?.end_date || "",
+//     };
+//   } else {
+//     form.value = {
+//       category_code: "",
+//       category_name: "",
+//       meta: { description: "" },
+//       has_bundle: false,
+//       promo_type: pType,
+//       mix_group: mGroup,
+//       bundle_qty: data.bundle_promo?.qty || 2, // Backend Anda mungkin kirim ini terpisah
+//       bundle_price_idr: loadedIdr,
+//       bundle_prices: loadedPrices,
+//       discount_percent: dPercent,
+//       min_purchase: mPurchase,
+//       max_discount: mDiscount,
+//       bundle_start_date: "",
+//       bundle_end_date: "",
+//     };
+//   }
+//   showModal.value = true;
+// };
+
+// const handleSubmit = async () => {
+//   isSubmitting.value = true;
+
+//   // Bungkus IDR dan mata uang lainnya ke dalam satu objek JSON
+//   // const finalBundlePriceObj = {};
+//   // if (form.value.has_bundle) {
+//   //   finalBundlePriceObj["IDR"] = form.value.bundle_price_idr;
+//   //   SUPPORTED_CURRENCIES.forEach((curr) => {
+//   //     if (form.value.bundle_prices[curr]) {
+//   //       finalBundlePriceObj[curr] = form.value.bundle_prices[curr];
+//   //     }
+//   //   });
+//   // }
+
+//   const finalBundlePriceObj = {
+//     promo_type: form.value.promo_type,
+//     mix_group: form.value.mix_group,
+//   };
+
+//   if (form.value.promo_type === 'bundle') {
+//       finalBundlePriceObj.price = { IDR: form.value.bundle_price_idr };
+//       SUPPORTED_CURRENCIES.forEach((curr) => {
+//         if (form.value.bundle_prices[curr]) {
+//           finalBundlePriceObj.price[curr] = form.value.bundle_prices[curr];
+//         }
+//       });
+//   } else {
+//       finalBundlePriceObj.percent = form.value.discount_percent;
+//       finalBundlePriceObj.min_purchase = form.value.min_purchase;
+//       finalBundlePriceObj.max_discount = form.value.max_discount;
+//   }
+
+//   const payload = {
+//     code: form.value.category_code,
+//     name: form.value.category_name,
+//     description: form.value.meta.description,
+//     bundle_qty: form.value.has_bundle ? form.value.bundle_qty : null,
+//     bundle_price: form.value.has_bundle ? finalBundlePriceObj : null, // Kirim sebagai Objek
+//     bundle_start_date: form.value.has_bundle ? form.value.bundle_start_date : null,
+//     bundle_end_date: form.value.has_bundle ? form.value.bundle_end_date : null,
+//   };
+
+//   try {
+//     if (isEdit.value) {
+//       await axios.put(`${BASE_URL}/categories/${currentId.value}`, payload, axiosConfig);
+//     } else {
+//       await axios.post(`${BASE_URL}/categories`, payload, axiosConfig);
+//     }
+//     showModal.value = false;
+//     fetchCategories();
+//     Swal.fire({
+//       toast: true,
+//       position: "top-end",
+//       icon: "success",
+//       title: "Category saved!",
+//       showConfirmButton: false,
+//       timer: 1500,
+//     });
+//   } catch (err) {
+//     const errorMsg =
+//       err.response?.data?.message || "Check your data (Ensure Dates are correct)";
+//     Swal.fire("Validation Error", errorMsg, "error");
+//   } finally {
+//     isSubmitting.value = false;
+//   }
+// };
+
+// const confirmDelete = (id) => {
+//   Swal.fire({
+//     title: "Are you sure?",
+//     text: "Cannot be undone!",
+//     icon: "warning",
+//     showCancelButton: true,
+//     confirmButtonColor: "#d33",
+//     confirmButtonText: "Yes, delete it!",
+//   }).then(async (result) => {
+//     if (result.isConfirmed) {
+//       isLoading.value = true;
+//       try {
+//         await axios.delete(`${BASE_URL}/categories/${id}`, axiosConfig);
+//         fetchCategories();
+//         Swal.fire({
+//           toast: true,
+//           position: "top-end",
+//           icon: "success",
+//           title: "Category removed.",
+//           showConfirmButton: false,
+//           timer: 1500,
+//         });
+//       } catch (err) {
+//         isLoading.value = false;
+//         if (err.response && err.response.status === 409) {
+//           Swal.fire({
+//             icon: "warning",
+//             title: "Action Blocked",
+//             text:
+//               "This category contains products. Please remove or move the products first.",
+//             confirmButtonColor: "#000",
+//           });
+//         } else {
+//           Swal.fire("Error", "Delete failed. Server might be busy.", "error");
+//         }
+//       }
+//     }
+//   });
+// };
+
+// onMounted(() => {
+//   fetchUserPermissions().then(() => {
+//     fetchCategories();
+//   });
+// });
+
 import { ref, onMounted, computed, watch } from "vue";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
 import Breadcrumb from "./Layout/Breadcrumb.vue";
 
-const SUPPORTED_CURRENCIES = ["USD", "SGD", "EUR", "AUD", "MYR"]; // Definisi Mata Uang
+const SUPPORTED_CURRENCIES = ["USD", "SGD", "EUR", "AUD", "MYR"]; 
 
 const categories = ref([]);
 const showModal = ref(false);
@@ -2225,9 +2559,7 @@ const fetchUserPermissions = async () => {
       update: categoryTerms.includes("update"),
       delete: categoryTerms.includes("delete"),
     };
-  } catch (error) {
-    console.error("Gagal mengambil kebijakan akses", error);
-  }
+  } catch (error) {}
 };
 
 const form = ref({
@@ -2239,7 +2571,7 @@ const form = ref({
   mix_group: "",
   bundle_qty: 2,
   bundle_price_idr: "",
-  bundle_prices: {}, // Objek penampung multi-currency
+  bundle_prices: {}, 
   discount_percent: 0,
   min_purchase: 0,
   max_discount: 0,
@@ -2255,8 +2587,8 @@ const filteredCategories = computed(() => {
   return categories.value.filter((cat) => {
     const term = searchQuery.value.toLowerCase();
     return (
-      cat.category_name.toLowerCase().includes(term) ||
-      cat.category_code.toLowerCase().includes(term)
+      (cat.name || cat.category_name || "").toLowerCase().includes(term) ||
+      (cat.code || cat.category_code || "").toLowerCase().includes(term)
     );
   });
 });
@@ -2303,18 +2635,20 @@ const fetchCategories = async () => {
   }
 };
 
+const formatDateForInput = (dateStr) => {
+  if (!dateStr) return "";
+  return dateStr.replace(' ', 'T').slice(0, 16);
+};
+
 const openModal = (data = null) => {
   isEdit.value = !!data;
   currentId.value = data ? data.id : null;
 
-  // Siapkan penampung kosong
   const tempPrices = {};
-  SUPPORTED_CURRENCIES.forEach((curr) => {
-    tempPrices[curr] = "";
-  });
+  SUPPORTED_CURRENCIES.forEach((curr) => { tempPrices[curr] = ""; });
 
   if (data) {
-    const hasPromo = !!data.bundle_promo?.qty || !!data.bundle_promo?.price; // Cek data mentah;
+    const hasPromo = !!data.bundle_qty || !!data.bundle_price;
     let loadedIdr = "";
     let loadedPrices = { ...tempPrices };
     let pType = "bundle";
@@ -2323,61 +2657,39 @@ const openModal = (data = null) => {
     let mPurchase = 0;
     let mDiscount = 0;
 
-    // Parsing JSON Price
-    // if (hasPromo && data.bundle_promo.price) {
-    //   if (typeof data.bundle_promo.price === "object") {
-    //     // Jika dari backend sudah berupa objek JSON
-    //     loadedIdr = data.bundle_promo.price.IDR || "";
-    //     SUPPORTED_CURRENCIES.forEach((curr) => {
-    //       loadedPrices[curr] = data.bundle_promo.price[curr] || "";
-    //     });
-    //   } else {
-    //     // Fallback legacy (Jika masih format decimal lama)
-    //     loadedIdr = data.bundle_promo.price;
-    //   }
-    // }
-
-    if (hasPromo && data.bundle_price) { // Parse data JSON asli jika API Anda memberikannya, atau sesuaikan dari backend
+    if (hasPromo && data.bundle_price) { 
       try {
         const conf = typeof data.bundle_price === 'string' ? JSON.parse(data.bundle_price) : data.bundle_price;
         pType = conf.promo_type || "bundle";
         mGroup = conf.mix_group || "";
+        
         if (pType === "bundle") {
-            loadedIdr = conf.price?.IDR || conf.IDR || "";
-            SUPPORTED_CURRENCIES.forEach((curr) => { loadedPrices[curr] = conf.price?.[curr] || ""; });
+            const priceObj = conf.price || conf; // Toleransi format lama
+            loadedIdr = priceObj.IDR || (typeof priceObj === 'number' ? priceObj : "");
+            SUPPORTED_CURRENCIES.forEach((curr) => { loadedPrices[curr] = priceObj[curr] || ""; });
         } else {
             dPercent = conf.percent || 0;
             mPurchase = conf.min_purchase || 0;
             mDiscount = conf.max_discount || 0;
         }
-      } catch (e) {}
+      } catch (e) { console.error(e) }
     }
 
     form.value = {
-      // category_code: data.category_code,
-      // category_name: data.category_name,
-      // meta: { description: data.meta?.description || "" },
-      // has_bundle: hasPromo,
-      // bundle_qty: data.bundle_promo?.qty || 2,
-      // bundle_price_idr: loadedIdr,
-      // bundle_prices: loadedPrices,
-      // bundle_start_date: data.bundle_promo?.start_date || "",
-      // bundle_end_date: data.bundle_promo?.end_date || "",
-
-      category_code: data.category_code,
-      category_name: data.category_name,
-      meta: { description: data.meta?.description || "" },
+      category_code: data.code || data.category_code || "",
+      category_name: data.name || data.category_name || "",
+      meta: { description: data.description || "" },
       has_bundle: hasPromo,
       promo_type: pType,
       mix_group: mGroup,
-      bundle_qty: data.bundle_promo?.qty || 2, // Backend Anda mungkin kirim ini terpisah
+      bundle_qty: data.bundle_qty || 2, 
       bundle_price_idr: loadedIdr,
       bundle_prices: loadedPrices,
       discount_percent: dPercent,
       min_purchase: mPurchase,
       max_discount: mDiscount,
-      bundle_start_date: data.bundle_promo?.start_date || "",
-      bundle_end_date: data.bundle_promo?.end_date || "",
+      bundle_start_date: formatDateForInput(data.bundle_start_date),
+      bundle_end_date: formatDateForInput(data.bundle_end_date),
     };
   } else {
     form.value = {
@@ -2385,14 +2697,14 @@ const openModal = (data = null) => {
       category_name: "",
       meta: { description: "" },
       has_bundle: false,
-      promo_type: pType,
-      mix_group: mGroup,
-      bundle_qty: data.bundle_promo?.qty || 2, // Backend Anda mungkin kirim ini terpisah
-      bundle_price_idr: loadedIdr,
-      bundle_prices: loadedPrices,
-      discount_percent: dPercent,
-      min_purchase: mPurchase,
-      max_discount: mDiscount,
+      promo_type: "bundle",
+      mix_group: "",
+      bundle_qty: 2,
+      bundle_price_idr: "",
+      bundle_prices: tempPrices,
+      discount_percent: 0,
+      min_purchase: 0,
+      max_discount: 0,
       bundle_start_date: "",
       bundle_end_date: "",
     };
@@ -2402,17 +2714,6 @@ const openModal = (data = null) => {
 
 const handleSubmit = async () => {
   isSubmitting.value = true;
-
-  // Bungkus IDR dan mata uang lainnya ke dalam satu objek JSON
-  // const finalBundlePriceObj = {};
-  // if (form.value.has_bundle) {
-  //   finalBundlePriceObj["IDR"] = form.value.bundle_price_idr;
-  //   SUPPORTED_CURRENCIES.forEach((curr) => {
-  //     if (form.value.bundle_prices[curr]) {
-  //       finalBundlePriceObj[curr] = form.value.bundle_prices[curr];
-  //     }
-  //   });
-  // }
 
   const finalBundlePriceObj = {
     promo_type: form.value.promo_type,
@@ -2437,9 +2738,9 @@ const handleSubmit = async () => {
     name: form.value.category_name,
     description: form.value.meta.description,
     bundle_qty: form.value.has_bundle ? form.value.bundle_qty : null,
-    bundle_price: form.value.has_bundle ? finalBundlePriceObj : null, // Kirim sebagai Objek
-    bundle_start_date: form.value.has_bundle ? form.value.bundle_start_date : null,
-    bundle_end_date: form.value.has_bundle ? form.value.bundle_end_date : null,
+    bundle_price: form.value.has_bundle ? finalBundlePriceObj : null, 
+    bundle_start_date: form.value.has_bundle && form.value.bundle_start_date ? form.value.bundle_start_date : null,
+    bundle_end_date: form.value.has_bundle && form.value.bundle_end_date ? form.value.bundle_end_date : null,
   };
 
   try {
@@ -2450,18 +2751,9 @@ const handleSubmit = async () => {
     }
     showModal.value = false;
     fetchCategories();
-    Swal.fire({
-      toast: true,
-      position: "top-end",
-      icon: "success",
-      title: "Category saved!",
-      showConfirmButton: false,
-      timer: 1500,
-    });
+    Swal.fire({ toast: true, position: "top-end", icon: "success", title: "Category saved!", showConfirmButton: false, timer: 1500 });
   } catch (err) {
-    const errorMsg =
-      err.response?.data?.message || "Check your data (Ensure Dates are correct)";
-    Swal.fire("Validation Error", errorMsg, "error");
+    Swal.fire("Validation Error", "Check your data", "error");
   } finally {
     isSubmitting.value = false;
   }
@@ -2481,26 +2773,13 @@ const confirmDelete = (id) => {
       try {
         await axios.delete(`${BASE_URL}/categories/${id}`, axiosConfig);
         fetchCategories();
-        Swal.fire({
-          toast: true,
-          position: "top-end",
-          icon: "success",
-          title: "Category removed.",
-          showConfirmButton: false,
-          timer: 1500,
-        });
+        Swal.fire({ toast: true, position: "top-end", icon: "success", title: "Category removed.", showConfirmButton: false, timer: 1500 });
       } catch (err) {
         isLoading.value = false;
         if (err.response && err.response.status === 409) {
-          Swal.fire({
-            icon: "warning",
-            title: "Action Blocked",
-            text:
-              "This category contains products. Please remove or move the products first.",
-            confirmButtonColor: "#000",
-          });
+          Swal.fire({ icon: "warning", title: "Action Blocked", text: "Contains products.", confirmButtonColor: "#000" });
         } else {
-          Swal.fire("Error", "Delete failed. Server might be busy.", "error");
+          Swal.fire("Error", "Delete failed.", "error");
         }
       }
     }
@@ -2508,9 +2787,7 @@ const confirmDelete = (id) => {
 };
 
 onMounted(() => {
-  fetchUserPermissions().then(() => {
-    fetchCategories();
-  });
+  fetchUserPermissions().then(() => fetchCategories());
 });
 </script>
 
