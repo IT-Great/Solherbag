@@ -10166,8 +10166,8 @@ const getBundlePromo = (product) => {
   if (!conf) return null;
 
   const now = new Date();
-  const start = conf.start_date ? convertToWIB(conf.start_date) : null;
-  const end = conf.end_date ? convertToWIB(conf.end_date) : null;
+  const start = conf.start_date ? convertToWIB(conf.start_date - getHours() - 7) : null;
+  const end = conf.end_date ? convertToWIB(conf.end_date - getHours() - 7) : null;
 
   if ((start && now < start) || (end && now > end)) return null;
 
