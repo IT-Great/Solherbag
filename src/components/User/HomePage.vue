@@ -6897,10 +6897,11 @@ import { useI18n } from "vue-i18n";
 
 import banner1 from "../../assets/first_banner.png";
 import banner2 from "../../assets/second_banner.png";
-import banner3 from "../../assets/nine_nine_promo.jpeg";
+import banner3 from "../../assets/Banner-10.png";
+import banner4 from "../../assets/Banner-11.png";
 
 const ACTIVE_POPUP = ref("default");
-const banners = [banner3, banner1, banner2];
+const banners = [banner3, banner4, banner1, banner2];
 const currentBannerIndex = ref(0);
 const currentBanner = computed(() => banners[currentBannerIndex.value]);
 let slideInterval = null;
