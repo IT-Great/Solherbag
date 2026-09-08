@@ -9856,7 +9856,7 @@ const preloadImages = (products) => {
 const convertToWIB = (dateString) => {
   if (!dateString) return null;
   const date = new Date(dateString);
-  date.setHours(date.getHours() - 14);
+  date.setHours(date.getHours());
   return date;
 };
 
