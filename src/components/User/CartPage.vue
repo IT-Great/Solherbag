@@ -4001,7 +4001,8 @@ import { useRouter } from "vue-router";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
-import { useCart, getActivePrice, getDiscountStatus } from "../../composables/useCart";
+// import { useCart, getActivePrice, getDiscountStatus } from "../../composables/useCart";
+import { useCart, getActivePrice, getDiscountStatus, getBundlePromo } from "../../composables/useCart";
 
 import defaultBagIcon from "../../assets/products/bag_icon.jpg";
 

@@ -10126,36 +10126,58 @@ const calculateDynamicDiscount = (product) => {
 //   return { qty: cat.bundle_qty, price: finalPrice, curr: curr };
 // };
 
+// const getBundlePromo = (product) => {
+//   if (!product || !product.category) return null;
+//   const cat = product.category;
+//   const curr = currentCurrency.value || "IDR";
+  
+//   if (!cat.bundle_price) return null;
+
+//   const now = new Date();
+//   const start = cat.bundle_start_date ? convertToWIB(cat.bundle_start_date) : null;
+//   const end = cat.bundle_end_date ? convertToWIB(cat.bundle_end_date) : null;
+
+//   if ((start && now < start) || (end && now > end)) return null;
+
+//   let conf;
+//   try {
+//     conf = typeof cat.bundle_price === 'string' ? JSON.parse(cat.bundle_price) : cat.bundle_price;
+//   } catch (e) { return null; }
+
+//   // Fallback ke struktur lama
+//   if (typeof conf === 'number') {
+//     conf = { promo_type: 'bundle', price: { IDR: conf } };
+//   }
+
+//   // JANGAN MENAMPILKAN TEKS "Buy X For Y" untuk Promo Percent Auto-Sale
+//   if (conf.promo_type === 'percent') return null;
+
+//   const priceObj = conf.price || conf;
+//   const finalPrice = priceObj[curr] || priceObj["IDR"] || 0;
+
+//   return { qty: cat.bundle_qty || 2, price: finalPrice, curr: curr };
+// };
+
 const getBundlePromo = (product) => {
   if (!product || !product.category) return null;
-  const cat = product.category;
   const curr = currentCurrency.value || "IDR";
+  const conf = product.category.promo_config;
   
-  if (!cat.bundle_price) return null;
+  if (!conf) return null;
 
   const now = new Date();
-  const start = cat.bundle_start_date ? convertToWIB(cat.bundle_start_date) : null;
-  const end = cat.bundle_end_date ? convertToWIB(cat.bundle_end_date) : null;
+  const start = conf.start_date ? convertToWIB(conf.start_date) : null;
+  const end = conf.end_date ? convertToWIB(conf.end_date) : null;
 
   if ((start && now < start) || (end && now > end)) return null;
 
-  let conf;
-  try {
-    conf = typeof cat.bundle_price === 'string' ? JSON.parse(cat.bundle_price) : cat.bundle_price;
-  } catch (e) { return null; }
-
-  // Fallback ke struktur lama
-  if (typeof conf === 'number') {
-    conf = { promo_type: 'bundle', price: { IDR: conf } };
-  }
-
-  // JANGAN MENAMPILKAN TEKS "Buy X For Y" untuk Promo Percent Auto-Sale
+  // Sembunyikan label "Buy X For Y" khusus untuk promo Percent Sale
   if (conf.promo_type === 'percent') return null;
 
-  const priceObj = conf.price || conf;
-  const finalPrice = priceObj[curr] || priceObj["IDR"] || 0;
+  const priceObj = conf.price || {};
+  const finalPrice = priceObj[curr] !== undefined ? priceObj[curr] : (priceObj["IDR"] || 0);
 
-  return { qty: cat.bundle_qty || 2, price: finalPrice, curr: curr };
+  return { qty: conf.qty || 2, price: finalPrice, curr: curr };
 };
 
 const getMediaArray = (prod) => {
