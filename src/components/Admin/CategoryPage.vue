@@ -2890,7 +2890,7 @@ onMounted(() => {
                 </div>
               </template>
 
-              <div class="grid grid-cols-2 gap-4 pt-4 border-t border-blue-100">
+              <!-- <div class="grid grid-cols-2 gap-4 pt-4 border-t border-blue-100">
                 <div>
                   <label class="block mb-1 text-xs font-bold tracking-widest text-blue-700 uppercase">Start Date</label>
                   <input v-model="form.bundle_start_date" type="datetime-local" class="w-full p-3 text-sm border border-white outline-none bg-white rounded-xl focus:ring-2 focus:ring-blue-500" />
@@ -2898,6 +2898,19 @@ onMounted(() => {
                 <div>
                   <label class="block mb-1 text-xs font-bold tracking-widest text-blue-700 uppercase">End Date</label>
                   <input v-model="form.bundle_end_date" type="datetime-local" class="w-full p-3 text-sm border border-white outline-none bg-white rounded-xl focus:ring-2 focus:ring-blue-500" />
+                </div>
+              </div> -->
+
+              <div class="grid grid-cols-2 gap-4 pt-4 border-t border-blue-100">
+                <div>
+                  <label class="block mb-1 text-xs font-bold tracking-widest text-blue-700 uppercase">Start Date</label>
+                  <!-- 👇 UBAH V-MODEL MENJADI form.start_date 👇 -->
+                  <input v-model="form.start_date" type="datetime-local" class="w-full p-3 text-sm border border-white outline-none bg-white rounded-xl focus:ring-2 focus:ring-blue-500" />
+                </div>
+                <div>
+                  <label class="block mb-1 text-xs font-bold tracking-widest text-blue-700 uppercase">End Date</label>
+                  <!-- 👇 UBAH V-MODEL MENJADI form.end_date 👇 -->
+                  <input v-model="form.end_date" type="datetime-local" class="w-full p-3 text-sm border border-white outline-none bg-white rounded-xl focus:ring-2 focus:ring-blue-500" />
                 </div>
               </div>
             </div>
@@ -3024,22 +3037,46 @@ const formatDateForInput = (dateStr) => {
   return dateStr.replace(' ', 'T').slice(0, 16);
 };
 
+// const getPromoStatus = (cat) => {
+//   if (!cat.bundle_price) return { text: "NO PROMO", class: "bg-gray-100 text-gray-500" };
+
+//   const now = new Date();
+//   const start = cat.bundle_start_date ? new Date(cat.bundle_start_date.replace(' ', 'T')) : null;
+//   const end = cat.bundle_end_date ? new Date(cat.bundle_end_date.replace(' ', 'T')) : null;
+  
+//   let isActive = true;
+//   if (start && now < start) isActive = false;
+//   if (end && now > end) isActive = false;
+
+//   let type = "BUNDLE";
+//   try {
+//     const conf = typeof cat.bundle_price === "string" ? JSON.parse(cat.bundle_price) : cat.bundle_price;
+//     if (conf.promo_type === "percent") type = "PCT SALE";
+//   } catch (e) {}
+
+//   if (isActive) {
+//     return { text: `ACTIVE (${type})`, class: "bg-green-100 text-green-700" };
+//   }
+//   return { text: `INACTIVE (${type})`, class: "bg-amber-100 text-amber-700" };
+// };
+
 const getPromoStatus = (cat) => {
-  if (!cat.bundle_price) return { text: "NO PROMO", class: "bg-gray-100 text-gray-500" };
+  const conf = cat.promo_config;
+  
+  // Jika promo_config kosong atau null, berarti tidak ada promo
+  if (!conf || Object.keys(conf).length === 0) {
+    return { text: "NO PROMO", class: "bg-gray-100 text-gray-500" };
+  }
 
   const now = new Date();
-  const start = cat.bundle_start_date ? new Date(cat.bundle_start_date.replace(' ', 'T')) : null;
-  const end = cat.bundle_end_date ? new Date(cat.bundle_end_date.replace(' ', 'T')) : null;
+  const start = conf.start_date ? new Date(conf.start_date) : null;
+  const end = conf.end_date ? new Date(conf.end_date) : null;
   
   let isActive = true;
   if (start && now < start) isActive = false;
   if (end && now > end) isActive = false;
 
-  let type = "BUNDLE";
-  try {
-    const conf = typeof cat.bundle_price === "string" ? JSON.parse(cat.bundle_price) : cat.bundle_price;
-    if (conf.promo_type === "percent") type = "PCT SALE";
-  } catch (e) {}
+  const type = conf.promo_type === "percent" ? "PCT SALE" : "BUNDLE";
 
   if (isActive) {
     return { text: `ACTIVE (${type})`, class: "bg-green-100 text-green-700" };

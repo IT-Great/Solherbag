@@ -853,35 +853,55 @@ const activeProductsCount = computed(() => {
   return category.value.products.filter((p) => p.status === "active").length;
 });
 
+// const promoConfig = computed(() => {
+//   if (!category.value || !category.value.bundle_price) return null;
+//   let conf = category.value.bundle_price;
+//   if (typeof conf === 'string') {
+//     try { conf = JSON.parse(conf); } catch(e) { return null; }
+//   }
+//   if (typeof conf === 'number') {
+//     return { promo_type: 'bundle', price: { IDR: conf }, qty: category.value.bundle_qty, mix_group: '' };
+//   }
+//   return {
+//     promo_type: conf.promo_type || 'bundle',
+//     mix_group: conf.mix_group || '',
+//     qty: category.value.bundle_qty || 2,
+//     price: conf.price || {},
+//     percent: conf.percent || 0,
+//     min_purchase: conf.min_purchase || 0,
+//     max_discount: conf.max_discount || 0,
+//     start_date: category.value.bundle_start_date,
+//     end_date: category.value.bundle_end_date,
+//   };
+// });
+
+// const isPromoActive = computed(() => {
+//   if (!promoConfig.value) return false;
+//   const now = new Date();
+//   const start = promoConfig.value.start_date ? new Date(promoConfig.value.start_date.replace(' ', 'T')) : null;
+//   const end = promoConfig.value.end_date ? new Date(promoConfig.value.end_date.replace(' ', 'T')) : null;
+//   if (start && now < start) return false;
+//   if (end && now > end) return false;
+//   return true;
+// });
+
 const promoConfig = computed(() => {
-  if (!category.value || !category.value.bundle_price) return null;
-  let conf = category.value.bundle_price;
-  if (typeof conf === 'string') {
-    try { conf = JSON.parse(conf); } catch(e) { return null; }
-  }
-  if (typeof conf === 'number') {
-    return { promo_type: 'bundle', price: { IDR: conf }, qty: category.value.bundle_qty, mix_group: '' };
-  }
-  return {
-    promo_type: conf.promo_type || 'bundle',
-    mix_group: conf.mix_group || '',
-    qty: category.value.bundle_qty || 2,
-    price: conf.price || {},
-    percent: conf.percent || 0,
-    min_purchase: conf.min_purchase || 0,
-    max_discount: conf.max_discount || 0,
-    start_date: category.value.bundle_start_date,
-    end_date: category.value.bundle_end_date,
-  };
+  if (!category.value || !category.value.promo_config) return null;
+  
+  // Langsung kembalikan JSON yang sudah bersih dari Backend
+  return category.value.promo_config;
 });
 
 const isPromoActive = computed(() => {
   if (!promoConfig.value) return false;
+  
   const now = new Date();
-  const start = promoConfig.value.start_date ? new Date(promoConfig.value.start_date.replace(' ', 'T')) : null;
-  const end = promoConfig.value.end_date ? new Date(promoConfig.value.end_date.replace(' ', 'T')) : null;
+  const start = promoConfig.value.start_date ? new Date(promoConfig.value.start_date) : null;
+  const end = promoConfig.value.end_date ? new Date(promoConfig.value.end_date) : null;
+  
   if (start && now < start) return false;
   if (end && now > end) return false;
+  
   return true;
 });
 
