@@ -1652,6 +1652,31 @@ onMounted(fetchData);
   <div class="pb-10 space-y-8 animate-fade-in">
     <Breadcrumb />
 
+    <!-- 👇 [BARU] MAINTENANCE MODE TOGGLE 👇 -->
+    <div class="flex items-center justify-between p-5 mb-6 border border-red-200 bg-red-50 rounded-2xl">
+      <div>
+        <h3 class="font-bold text-red-800">Production Control (Secret Mode)</h3>
+        <p class="text-xs text-red-600 mt-1">Take down the website to test features. Only your IP will have access.</p>
+      </div>
+      <div>
+        <button 
+          v-if="!isMaintenance"
+          @click="toggleMaintenance(true)"
+          class="px-6 py-2.5 text-xs font-black tracking-widest text-white uppercase bg-red-600 rounded-full shadow-md hover:bg-red-700"
+        >
+          Takedown Website
+        </button>
+        <button 
+          v-else
+          @click="toggleMaintenance(false)"
+          class="px-6 py-2.5 text-xs font-black tracking-widest text-white uppercase bg-green-600 rounded-full shadow-md hover:bg-green-700 animate-pulse"
+        >
+          Bring Back Website
+        </button>
+      </div>
+    </div>
+    <!-- 👆 AKHIR TOGGLE 👆 -->
+
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
       <div
         class="relative p-6 overflow-hidden bg-white border border-gray-100 shadow-sm rounded-2xl"
@@ -2344,6 +2369,7 @@ import {
 } from "chart.js";
 import { Line, Pie, Bar } from "vue-chartjs";
 import Breadcrumb from "./Layout/Breadcrumb.vue";
+import Swal from "sweetalert2";
 
 ChartJS.register(
   CategoryScale,
@@ -2499,9 +2525,43 @@ const peakHoursOptions = {
   },
 };
 
+const isMaintenance = ref(false);
+
+const checkMaintenanceStatus = async () => {
+  try {
+    const res = await axios.get(`${BASE_URL}/admin/system/maintenance-status`, axiosConfig);
+    isMaintenance.value = res.data.is_maintenance;
+  } catch (error) {}
+};
+
+const toggleMaintenance = async (activate) => {
+  const actionText = activate ? "Takedown Website" : "Bring Back Website";
+  
+  Swal.fire({
+    title: "Are you sure?",
+    text: `You are about to ${actionText.toLowerCase()}.`,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: activate ? "#d33" : "#10b981",
+    confirmButtonText: `Yes, ${actionText}!`,
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      try {
+        const endpoint = activate ? 'takedown' : 'bringback';
+        await axios.post(`${BASE_URL}/admin/system/${endpoint}`, {}, axiosConfig);
+        isMaintenance.value = activate;
+        Swal.fire("Success", `System is now ${activate ? 'offline for users' : 'online'}.`, "success");
+      } catch (err) {
+        Swal.fire("Error", "Failed to change system state.", "error");
+      }
+    }
+  });
+};
+
 // 👇 [PERBAIKAN 2] Hubungkan Vue ke Pusher Channel saat komponen dimuat 👇
 onMounted(() => {
   fetchData(true); // Fetch awal dengan loading
+  checkMaintenanceStatus(); // Panggil pengecekan
 
   // Memastikan Laravel Echo / Pusher tersedia
   if (window.Echo) {
