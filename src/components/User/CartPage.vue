@@ -4016,6 +4016,7 @@ const {
   checkoutCount,
   checkoutTotalAmount,
   selectedItemIds,
+  clearSelectedCart,
   isAllSelected,
   triggerCurrencyUpdate,
   handleQtyChange,

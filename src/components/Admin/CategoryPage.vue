@@ -2008,7 +2008,7 @@ onMounted(() => {
               </div>
             </label>
 
-            <div
+            <!-- <div
               v-if="form.has_bundle"
               class="p-4 bg-blue-50 border border-blue-100 rounded-xl space-y-4 animate-fade-in max-h-80 overflow-y-auto custom-scrollbar"
             >
@@ -2085,6 +2085,72 @@ onMounted(() => {
                     class="w-full p-3 text-sm border border-white outline-none bg-white rounded-xl focus:ring-2 focus:ring-blue-500"
                     required
                   />
+                </div>
+              </div>
+            </div> -->
+
+            <div
+              v-if="form.has_bundle"
+              class="p-4 bg-blue-50 border border-blue-100 rounded-xl space-y-5 animate-fade-in max-h-80 overflow-y-auto custom-scrollbar"
+            >
+              <div class="space-y-3">
+                <label class="block text-xs font-bold tracking-widest text-blue-700 uppercase">Promo Engine Type</label>
+                <select v-model="form.promo_type" class="w-full p-3 text-sm border border-white outline-none bg-white rounded-xl focus:ring-2 focus:ring-blue-500">
+                  <option value="bundle">Bundle (Buy X Get Y Flat Price)</option>
+                  <option value="percent">Percent Auto-Sale (Min Purchase)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block mb-1 text-xs font-bold tracking-widest text-blue-700 uppercase">Mix Group Code (Optional)</label>
+                <input v-model="form.mix_group" type="text" class="w-full p-3 text-sm border border-white outline-none bg-white rounded-xl focus:ring-2 focus:ring-blue-500" placeholder="e.g. 99_SALE" />
+                <p class="text-[10px] text-gray-500 mt-1 italic">Kategori dengan kode grup yang sama dapat di-mix untuk mencapai syarat minimum promo.</p>
+              </div>
+
+              <!-- JIKA BUNDLE -->
+              <template v-if="form.promo_type === 'bundle'">
+                <div>
+                  <label class="block mb-1 text-xs font-bold tracking-widest text-blue-700 uppercase">Minimum Buy (Qty)</label>
+                  <input v-model.number="form.bundle_qty" type="number" min="2" class="w-full p-3 text-sm border border-white outline-none bg-white rounded-xl focus:ring-2 focus:ring-blue-500" placeholder="e.g. 2" />
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <label class="block mb-1 text-xs font-bold text-gray-600">IDR Price <span class="text-red-500">*</span></label>
+                    <input v-model.number="form.bundle_price_idr" type="number" class="w-full p-2.5 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500" placeholder="Rp 999.000" />
+                  </div>
+                  <div v-for="curr in SUPPORTED_CURRENCIES" :key="curr">
+                    <label class="block mb-1 text-xs font-bold text-gray-600">{{ curr }} Price</label>
+                    <input v-model.number="form.bundle_prices[curr]" type="number" step="0.01" class="w-full p-2.5 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500" :placeholder="curr + ' Price'" />
+                  </div>
+                </div>
+              </template>
+
+              <!-- JIKA PERCENT -->
+              <template v-if="form.promo_type === 'percent'">
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <label class="block mb-1 text-xs font-bold tracking-widest text-blue-700 uppercase">Discount (%)</label>
+                    <input v-model.number="form.discount_percent" type="number" min="1" max="100" class="w-full p-3 text-sm border border-white outline-none bg-white rounded-xl focus:ring-2 focus:ring-blue-500" placeholder="e.g. 9" />
+                  </div>
+                  <div>
+                    <label class="block mb-1 text-xs font-bold tracking-widest text-blue-700 uppercase">Min. Purchase (IDR)</label>
+                    <input v-model.number="form.min_purchase" type="number" class="w-full p-3 text-sm border border-white outline-none bg-white rounded-xl focus:ring-2 focus:ring-blue-500" placeholder="e.g. 2500000" />
+                  </div>
+                  <div class="col-span-2">
+                    <label class="block mb-1 text-xs font-bold tracking-widest text-blue-700 uppercase">Max Discount Cap (IDR)</label>
+                    <input v-model.number="form.max_discount" type="number" class="w-full p-3 text-sm border border-white outline-none bg-white rounded-xl focus:ring-2 focus:ring-blue-500" placeholder="e.g. 990000 (0 for unlimited)" />
+                  </div>
+                </div>
+              </template>
+
+              <div class="grid grid-cols-2 gap-4 pt-4 border-t border-blue-100">
+                <div>
+                  <label class="block mb-1 text-xs font-bold tracking-widest text-blue-700 uppercase">Start Date</label>
+                  <input v-model="form.bundle_start_date" type="datetime-local" class="w-full p-3 text-sm border border-white outline-none bg-white rounded-xl focus:ring-2 focus:ring-blue-500" required />
+                </div>
+                <div>
+                  <label class="block mb-1 text-xs font-bold tracking-widest text-blue-700 uppercase">End Date</label>
+                  <input v-model="form.bundle_end_date" type="datetime-local" class="w-full p-3 text-sm border border-white outline-none bg-white rounded-xl focus:ring-2 focus:ring-blue-500" required />
                 </div>
               </div>
             </div>
@@ -2169,9 +2235,14 @@ const form = ref({
   category_name: "",
   meta: { description: "" },
   has_bundle: false,
+  promo_type: "bundle",
+  mix_group: "",
   bundle_qty: 2,
   bundle_price_idr: "",
   bundle_prices: {}, // Objek penampung multi-currency
+  discount_percent: 0,
+  min_purchase: 0,
+  max_discount: 0,
   bundle_start_date: "",
   bundle_end_date: "",
 });
@@ -2243,32 +2314,68 @@ const openModal = (data = null) => {
   });
 
   if (data) {
-    const hasPromo = !!data.bundle_promo?.qty;
+    const hasPromo = !!data.bundle_promo?.qty || !!data.bundle_promo?.price; // Cek data mentah;
     let loadedIdr = "";
     let loadedPrices = { ...tempPrices };
+    let pType = "bundle";
+    let mGroup = "";
+    let dPercent = 0;
+    let mPurchase = 0;
+    let mDiscount = 0;
 
     // Parsing JSON Price
-    if (hasPromo && data.bundle_promo.price) {
-      if (typeof data.bundle_promo.price === "object") {
-        // Jika dari backend sudah berupa objek JSON
-        loadedIdr = data.bundle_promo.price.IDR || "";
-        SUPPORTED_CURRENCIES.forEach((curr) => {
-          loadedPrices[curr] = data.bundle_promo.price[curr] || "";
-        });
-      } else {
-        // Fallback legacy (Jika masih format decimal lama)
-        loadedIdr = data.bundle_promo.price;
-      }
+    // if (hasPromo && data.bundle_promo.price) {
+    //   if (typeof data.bundle_promo.price === "object") {
+    //     // Jika dari backend sudah berupa objek JSON
+    //     loadedIdr = data.bundle_promo.price.IDR || "";
+    //     SUPPORTED_CURRENCIES.forEach((curr) => {
+    //       loadedPrices[curr] = data.bundle_promo.price[curr] || "";
+    //     });
+    //   } else {
+    //     // Fallback legacy (Jika masih format decimal lama)
+    //     loadedIdr = data.bundle_promo.price;
+    //   }
+    // }
+
+    if (hasPromo && data.bundle_price) { // Parse data JSON asli jika API Anda memberikannya, atau sesuaikan dari backend
+      try {
+        const conf = typeof data.bundle_price === 'string' ? JSON.parse(data.bundle_price) : data.bundle_price;
+        pType = conf.promo_type || "bundle";
+        mGroup = conf.mix_group || "";
+        if (pType === "bundle") {
+            loadedIdr = conf.price?.IDR || conf.IDR || "";
+            SUPPORTED_CURRENCIES.forEach((curr) => { loadedPrices[curr] = conf.price?.[curr] || ""; });
+        } else {
+            dPercent = conf.percent || 0;
+            mPurchase = conf.min_purchase || 0;
+            mDiscount = conf.max_discount || 0;
+        }
+      } catch (e) {}
     }
 
     form.value = {
+      // category_code: data.category_code,
+      // category_name: data.category_name,
+      // meta: { description: data.meta?.description || "" },
+      // has_bundle: hasPromo,
+      // bundle_qty: data.bundle_promo?.qty || 2,
+      // bundle_price_idr: loadedIdr,
+      // bundle_prices: loadedPrices,
+      // bundle_start_date: data.bundle_promo?.start_date || "",
+      // bundle_end_date: data.bundle_promo?.end_date || "",
+
       category_code: data.category_code,
       category_name: data.category_name,
       meta: { description: data.meta?.description || "" },
       has_bundle: hasPromo,
-      bundle_qty: data.bundle_promo?.qty || 2,
+      promo_type: pType,
+      mix_group: mGroup,
+      bundle_qty: data.bundle_promo?.qty || 2, // Backend Anda mungkin kirim ini terpisah
       bundle_price_idr: loadedIdr,
       bundle_prices: loadedPrices,
+      discount_percent: dPercent,
+      min_purchase: mPurchase,
+      max_discount: mDiscount,
       bundle_start_date: data.bundle_promo?.start_date || "",
       bundle_end_date: data.bundle_promo?.end_date || "",
     };
@@ -2278,9 +2385,14 @@ const openModal = (data = null) => {
       category_name: "",
       meta: { description: "" },
       has_bundle: false,
-      bundle_qty: 2,
-      bundle_price_idr: "",
-      bundle_prices: tempPrices,
+      promo_type: pType,
+      mix_group: mGroup,
+      bundle_qty: data.bundle_promo?.qty || 2, // Backend Anda mungkin kirim ini terpisah
+      bundle_price_idr: loadedIdr,
+      bundle_prices: loadedPrices,
+      discount_percent: dPercent,
+      min_purchase: mPurchase,
+      max_discount: mDiscount,
       bundle_start_date: "",
       bundle_end_date: "",
     };
@@ -2292,14 +2404,32 @@ const handleSubmit = async () => {
   isSubmitting.value = true;
 
   // Bungkus IDR dan mata uang lainnya ke dalam satu objek JSON
-  const finalBundlePriceObj = {};
-  if (form.value.has_bundle) {
-    finalBundlePriceObj["IDR"] = form.value.bundle_price_idr;
-    SUPPORTED_CURRENCIES.forEach((curr) => {
-      if (form.value.bundle_prices[curr]) {
-        finalBundlePriceObj[curr] = form.value.bundle_prices[curr];
-      }
-    });
+  // const finalBundlePriceObj = {};
+  // if (form.value.has_bundle) {
+  //   finalBundlePriceObj["IDR"] = form.value.bundle_price_idr;
+  //   SUPPORTED_CURRENCIES.forEach((curr) => {
+  //     if (form.value.bundle_prices[curr]) {
+  //       finalBundlePriceObj[curr] = form.value.bundle_prices[curr];
+  //     }
+  //   });
+  // }
+
+  const finalBundlePriceObj = {
+    promo_type: form.value.promo_type,
+    mix_group: form.value.mix_group,
+  };
+
+  if (form.value.promo_type === 'bundle') {
+      finalBundlePriceObj.price = { IDR: form.value.bundle_price_idr };
+      SUPPORTED_CURRENCIES.forEach((curr) => {
+        if (form.value.bundle_prices[curr]) {
+          finalBundlePriceObj.price[curr] = form.value.bundle_prices[curr];
+        }
+      });
+  } else {
+      finalBundlePriceObj.percent = form.value.discount_percent;
+      finalBundlePriceObj.min_purchase = form.value.min_purchase;
+      finalBundlePriceObj.max_discount = form.value.max_discount;
   }
 
   const payload = {
