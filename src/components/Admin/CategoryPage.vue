@@ -1722,7 +1722,7 @@ onMounted(() => {
 }
 </style> -->
 
-<template>
+<!-- <template>
   <div
     class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[400px]"
   >
@@ -1734,15 +1734,7 @@ onMounted(() => {
         <h1 class="text-2xl font-bold text-gray-800">Category Management</h1>
         <p class="text-sm text-gray-500">Manage your product categories here.</p>
       </div>
-      <!-- <button
-        v-if="canCreate || isSuperAdmin"
-        @click="openModal()"
-        class="px-6 py-2 font-semibold text-white transition bg-blue-600 shadow-sm hover:bg-blue-700 rounded-xl shadow-blue-500/30"
-      >
-        + Add Category
-      </button> -->
       <div class="flex items-center gap-3">
-        <!-- Tombol Baru Menuju Bag Categories -->
         <button
           @click="$router.push('/admin/bag-categories')"
           class="px-5 py-2 text-sm font-bold text-gray-700 transition bg-white border border-gray-200 rounded-xl hover:bg-gray-50 shadow-sm"
@@ -2008,87 +2000,6 @@ onMounted(() => {
               </div>
             </label>
 
-            <!-- <div
-              v-if="form.has_bundle"
-              class="p-4 bg-blue-50 border border-blue-100 rounded-xl space-y-4 animate-fade-in max-h-80 overflow-y-auto custom-scrollbar"
-            >
-              <div class="sticky top-0 bg-blue-50 z-10 pb-2 border-b border-blue-100">
-                <label
-                  class="block mb-1 text-xs font-bold tracking-widest text-blue-700 uppercase"
-                  >Minimum Buy (Qty)</label
-                >
-                <input
-                  v-model="form.bundle_qty"
-                  type="number"
-                  min="2"
-                  class="w-full p-3 text-sm border border-white outline-none bg-white rounded-xl focus:ring-2 focus:ring-blue-500"
-                  placeholder="e.g. 2"
-                  required
-                />
-              </div>
-
-              <p
-                class="text-[10px] font-bold tracking-widest text-blue-800 uppercase mt-4"
-              >
-                Bundle Pricing (Multi-Currency)
-              </p>
-
-              <div class="grid grid-cols-2 gap-4">
-                <div>
-                  <label class="block mb-1 text-xs font-bold text-gray-600"
-                    >IDR Price <span class="text-red-500">*</span></label
-                  >
-                  <input
-                    v-model="form.bundle_price_idr"
-                    type="number"
-                    class="w-full p-2.5 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Rp 999.000"
-                    required
-                  />
-                </div>
-
-                <div v-for="curr in SUPPORTED_CURRENCIES" :key="curr">
-                  <label class="block mb-1 text-xs font-bold text-gray-600"
-                    >{{ curr }} Price</label
-                  >
-                  <input
-                    v-model="form.bundle_prices[curr]"
-                    type="number"
-                    step="0.01"
-                    class="w-full p-2.5 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
-                    :placeholder="curr + ' Price'"
-                  />
-                </div>
-              </div>
-
-              <div class="grid grid-cols-2 gap-4 pt-4 border-t border-blue-100">
-                <div>
-                  <label
-                    class="block mb-1 text-xs font-bold tracking-widest text-blue-700 uppercase"
-                    >Start Date</label
-                  >
-                  <input
-                    v-model="form.bundle_start_date"
-                    type="datetime-local"
-                    class="w-full p-3 text-sm border border-white outline-none bg-white rounded-xl focus:ring-2 focus:ring-blue-500"
-                    required
-                  />
-                </div>
-                <div>
-                  <label
-                    class="block mb-1 text-xs font-bold tracking-widest text-blue-700 uppercase"
-                    >End Date</label
-                  >
-                  <input
-                    v-model="form.bundle_end_date"
-                    type="datetime-local"
-                    class="w-full p-3 text-sm border border-white outline-none bg-white rounded-xl focus:ring-2 focus:ring-blue-500"
-                    required
-                  />
-                </div>
-              </div>
-            </div> -->
-
             <div
               v-if="form.has_bundle"
               class="p-4 bg-blue-50 border border-blue-100 rounded-xl space-y-5 animate-fade-in max-h-80 overflow-y-auto custom-scrollbar"
@@ -2107,7 +2018,6 @@ onMounted(() => {
                 <p class="text-[10px] text-gray-500 mt-1 italic">Kategori dengan kode grup yang sama dapat di-mix untuk mencapai syarat minimum promo.</p>
               </div>
 
-              <!-- JIKA BUNDLE -->
               <template v-if="form.promo_type === 'bundle'">
                 <div>
                   <label class="block mb-1 text-xs font-bold tracking-widest text-blue-700 uppercase">Minimum Buy (Qty)</label>
@@ -2125,7 +2035,6 @@ onMounted(() => {
                 </div>
               </template>
 
-              <!-- JIKA PERCENT -->
               <template v-if="form.promo_type === 'percent'">
                 <div class="grid grid-cols-2 gap-4">
                   <div>
@@ -2819,4 +2728,480 @@ onMounted(() => {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
+</style> -->
+
+<template>
+  <div class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[400px]">
+    <Breadcrumb />
+    <div class="flex flex-col items-start justify-between gap-4 mb-8 md:flex-row md:items-center">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-800">Category Management</h1>
+        <p class="text-sm text-gray-500">Manage your product categories here.</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <button @click="$router.push('/admin/bag-categories')" class="px-5 py-2 text-sm font-bold text-gray-700 transition bg-white border border-gray-200 rounded-xl hover:bg-gray-50 shadow-sm">
+          🧳 Manage Bag Types
+        </button>
+        <button v-if="canCreate || isSuperAdmin" @click="openModal()" class="px-6 py-2 font-semibold text-white transition bg-blue-600 shadow-sm hover:bg-blue-700 rounded-xl shadow-blue-500/30">
+          + Add Collection
+        </button>
+      </div>
+    </div>
+
+    <div class="flex flex-col items-center justify-between gap-4 mb-6 md:flex-row">
+      <div class="relative w-full md:w-64">
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </span>
+        <input v-model="searchQuery" type="text" placeholder="Search categories..." class="w-full py-2 pl-10 pr-4 text-sm transition border border-gray-200 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-blue-500" />
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="text-sm text-gray-500">Show:</span>
+        <select v-model="itemsPerPage" class="px-3 py-2 text-sm border border-gray-200 outline-none cursor-pointer bg-gray-50 rounded-xl focus:ring-2 focus:ring-blue-500">
+          <option :value="5">5</option>
+          <option :value="10">10</option>
+          <option :value="25">25</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="text-sm tracking-wider text-gray-400 uppercase border-b border-gray-100">
+            <th class="pb-4 pl-2 font-medium">Code</th>
+            <th class="pb-4 font-medium">Name</th>
+            <th class="pb-4 font-medium">Promo Status</th>
+            <th class="pb-4 pr-2 font-medium text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody v-if="isLoading" class="text-gray-600">
+          <tr v-for="i in itemsPerPage" :key="'skel-' + i" class="border-b border-gray-50">
+            <td class="py-5 pl-2"><div class="w-20 h-4 bg-gray-200 rounded animate-pulse"></div></td>
+            <td class="py-5"><div class="w-32 h-5 bg-gray-200 rounded animate-pulse"></div></td>
+            <td class="py-5"><div class="w-24 h-4 bg-gray-100 rounded animate-pulse"></div></td>
+            <td class="py-5"><div class="flex justify-center gap-3"><div class="w-8 h-8 bg-gray-200 rounded-lg animate-pulse"></div></div></td>
+          </tr>
+        </tbody>
+        <tbody v-else class="text-gray-600">
+          <tr v-for="cat in paginatedCategories" :key="cat.id" class="transition border-b hover:bg-gray-50 border-gray-50">
+            <td class="py-4 pl-2 font-mono text-sm font-bold text-blue-600">{{ cat.code || cat.category_code }}</td>
+            <td class="py-4 font-bold text-gray-800">{{ cat.name || cat.category_name }}</td>
+            <td class="py-4">
+              <span :class="getPromoStatus(cat).class" class="px-2 py-1 text-[10px] font-bold rounded-full uppercase tracking-widest shadow-sm">
+                {{ getPromoStatus(cat).text }}
+              </span>
+            </td>
+            <td class="py-4 pr-2">
+              <div class="flex justify-center gap-3">
+                <router-link :to="`/admin/categories/${cat.id}`" class="p-2 text-blue-500 transition rounded-lg bg-blue-50 hover:bg-blue-100" title="View Details">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                </router-link>
+                <button v-if="canUpdate || isSuperAdmin" @click="openModal(cat)" class="p-2 transition rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-500" title="Edit Category">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                </button>
+                <button v-if="canDelete || isSuperAdmin" @click="confirmDelete(cat.id)" class="p-2 text-red-500 transition rounded-lg bg-red-50 hover:bg-red-100" title="Delete Category">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div v-if="showModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm overflow-y-auto py-10">
+      <div class="w-full max-w-xl p-8 bg-white shadow-2xl rounded-3xl my-auto">
+        <h2 class="mb-6 text-xl font-bold">{{ isEdit ? "Update Category & Promo" : "Create New Category" }}</h2>
+        <form @submit.prevent="handleSubmit" class="space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block mb-1 text-xs font-bold tracking-widest text-gray-500 uppercase">Category Code</label>
+              <input v-model="form.category_code" type="text" class="w-full p-3 font-mono text-sm border border-gray-100 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-blue-500" required />
+            </div>
+            <div>
+              <label class="block mb-1 text-xs font-bold tracking-widest text-gray-500 uppercase">Category Name</label>
+              <input v-model="form.category_name" type="text" class="w-full p-3 text-sm border border-gray-100 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-blue-500" required />
+            </div>
+          </div>
+          <div>
+            <label class="block mb-1 text-xs font-bold tracking-widest text-gray-500 uppercase">Description</label>
+            <textarea v-model="form.meta.description" class="w-full p-3 text-sm border border-gray-100 outline-none resize-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-blue-500" rows="2"></textarea>
+          </div>
+
+          <div class="pt-4 mt-6 border-t border-gray-100">
+            <label class="flex items-center cursor-pointer mb-4">
+              <div class="relative">
+                <input type="checkbox" v-model="form.has_bundle" class="sr-only" />
+                <div :class="form.has_bundle ? 'bg-blue-600' : 'bg-gray-200'" class="block w-10 h-6 rounded-full transition-colors"></div>
+                <div :class="form.has_bundle ? 'translate-x-4' : 'translate-x-0'" class="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform"></div>
+              </div>
+              <div class="ml-3 font-bold text-sm text-gray-800">Enable Promo Engine</div>
+            </label>
+
+            <div v-if="form.has_bundle" class="p-4 bg-blue-50 border border-blue-100 rounded-xl space-y-5 animate-fade-in max-h-80 overflow-y-auto custom-scrollbar">
+              <div class="space-y-3">
+                <label class="block text-xs font-bold tracking-widest text-blue-700 uppercase">Promo Engine Type</label>
+                <select v-model="form.promo_type" class="w-full p-3 text-sm border border-white outline-none bg-white rounded-xl focus:ring-2 focus:ring-blue-500">
+                  <option value="bundle">Bundle (Buy X Get Y Flat Price)</option>
+                  <option value="percent">Percent Auto-Sale (Min Purchase)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block mb-1 text-xs font-bold tracking-widest text-blue-700 uppercase">Mix Group Code (Optional)</label>
+                <input v-model="form.mix_group" type="text" class="w-full p-3 text-sm font-mono border border-white outline-none bg-white rounded-xl focus:ring-2 focus:ring-blue-500" placeholder="e.g. 99_SALE" />
+                <p class="text-[9px] text-gray-500 mt-1 italic">Kategori dengan grup yang sama dapat di-mix untuk mencapai syarat minimum promo.</p>
+              </div>
+
+              <template v-if="form.promo_type === 'bundle'">
+                <div>
+                  <label class="block mb-1 text-xs font-bold tracking-widest text-blue-700 uppercase">Minimum Buy (Qty)</label>
+                  <input v-model.number="form.bundle_qty" type="number" min="2" class="w-full p-3 text-sm border border-white outline-none bg-white rounded-xl focus:ring-2 focus:ring-blue-500" placeholder="e.g. 2" />
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <label class="block mb-1 text-xs font-bold text-gray-600">IDR Price <span class="text-red-500">*</span></label>
+                    <input v-model.number="form.bundle_price_idr" type="number" class="w-full p-2.5 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500" placeholder="Rp 999.000" />
+                  </div>
+                  <div v-for="curr in SUPPORTED_CURRENCIES" :key="curr">
+                    <label class="block mb-1 text-xs font-bold text-gray-600">{{ curr }} Price</label>
+                    <input v-model.number="form.bundle_prices[curr]" type="number" step="0.01" class="w-full p-2.5 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500" :placeholder="curr + ' Price'" />
+                  </div>
+                </div>
+              </template>
+
+              <template v-if="form.promo_type === 'percent'">
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <label class="block mb-1 text-xs font-bold tracking-widest text-blue-700 uppercase">Discount (%)</label>
+                    <input v-model.number="form.discount_percent" type="number" min="1" max="100" class="w-full p-3 text-sm border border-white outline-none bg-white rounded-xl focus:ring-2 focus:ring-blue-500" placeholder="e.g. 9" />
+                  </div>
+                  <div>
+                    <label class="block mb-1 text-xs font-bold tracking-widest text-blue-700 uppercase">Min. Purchase (IDR)</label>
+                    <input v-model.number="form.min_purchase" type="number" class="w-full p-3 text-sm border border-white outline-none bg-white rounded-xl focus:ring-2 focus:ring-blue-500" placeholder="e.g. 2500000" />
+                  </div>
+                  <div class="col-span-2">
+                    <label class="block mb-1 text-xs font-bold tracking-widest text-blue-700 uppercase">Max Discount Cap (IDR)</label>
+                    <input v-model.number="form.max_discount" type="number" class="w-full p-3 text-sm border border-white outline-none bg-white rounded-xl focus:ring-2 focus:ring-blue-500" placeholder="e.g. 990000 (0 for unlimited)" />
+                  </div>
+                </div>
+              </template>
+
+              <div class="grid grid-cols-2 gap-4 pt-4 border-t border-blue-100">
+                <div>
+                  <label class="block mb-1 text-xs font-bold tracking-widest text-blue-700 uppercase">Start Date</label>
+                  <input v-model="form.bundle_start_date" type="datetime-local" class="w-full p-3 text-sm border border-white outline-none bg-white rounded-xl focus:ring-2 focus:ring-blue-500" />
+                </div>
+                <div>
+                  <label class="block mb-1 text-xs font-bold tracking-widest text-blue-700 uppercase">End Date</label>
+                  <input v-model="form.bundle_end_date" type="datetime-local" class="w-full p-3 text-sm border border-white outline-none bg-white rounded-xl focus:ring-2 focus:ring-blue-500" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex gap-3 pt-4">
+            <button type="button" @click="showModal = false" class="flex-1 py-3 font-bold text-gray-500 transition hover:bg-gray-50 rounded-xl">Cancel</button>
+            <button type="submit" :disabled="isSubmitting" class="flex-1 py-3 font-bold text-white transition bg-blue-600 shadow-sm hover:bg-blue-700 disabled:bg-blue-300 rounded-xl shadow-blue-500/30">
+              {{ isSubmitting ? "Saving..." : "Save Changes" }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, computed, watch } from "vue";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { BASE_URL } from "../../config/api.js";
+import Breadcrumb from "./Layout/Breadcrumb.vue";
+
+const SUPPORTED_CURRENCIES = ["USD", "SGD", "EUR", "AUD", "MYR"];
+
+const categories = ref([]);
+const showModal = ref(false);
+const isEdit = ref(false);
+const isLoading = ref(true);
+const isSubmitting = ref(false);
+const currentId = ref(null);
+
+const userRole = ref("");
+const isSuperAdmin = computed(() => userRole.value === "superadmin");
+const myPermissions = ref({ create: false, read: false, update: false, delete: false });
+
+const canCreate = computed(() => myPermissions.value.create);
+const canUpdate = computed(() => myPermissions.value.update);
+const canDelete = computed(() => myPermissions.value.delete);
+
+const axiosConfig = {
+  headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
+};
+
+const fetchUserPermissions = async () => {
+  const adminStr = localStorage.getItem("admin");
+  if (adminStr) {
+    const admin = JSON.parse(adminStr);
+    userRole.value = admin.usertype;
+  }
+  if (isSuperAdmin.value) return;
+
+  try {
+    const res = await axios.get(`${BASE_URL}/admin/access-policies`, axiosConfig);
+    const policies = res.data.permissions;
+    const categoryTerms = policies[userRole.value]?.categories || [];
+
+    myPermissions.value = {
+      create: categoryTerms.includes("create"),
+      read: categoryTerms.includes("read"),
+      update: categoryTerms.includes("update"),
+      delete: categoryTerms.includes("delete"),
+    };
+  } catch (error) {}
+};
+
+const form = ref({
+  category_code: "",
+  category_name: "",
+  meta: { description: "" },
+  has_bundle: false,
+  promo_type: "bundle",
+  mix_group: "",
+  bundle_qty: 2,
+  bundle_price_idr: "",
+  bundle_prices: {}, 
+  discount_percent: 0,
+  min_purchase: 0,
+  max_discount: 0,
+  bundle_start_date: "",
+  bundle_end_date: "",
+});
+
+const searchQuery = ref("");
+const currentPage = ref(1);
+const itemsPerPage = ref(5);
+
+const filteredCategories = computed(() => {
+  return categories.value.filter((cat) => {
+    const term = searchQuery.value.toLowerCase();
+    return (
+      (cat.name || cat.category_name || "").toLowerCase().includes(term) ||
+      (cat.code || cat.category_code || "").toLowerCase().includes(term)
+    );
+  });
+});
+
+const totalPages = computed(() => Math.ceil(filteredCategories.value.length / itemsPerPage.value));
+const paginatedCategories = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value;
+  return filteredCategories.value.slice(start, start + itemsPerPage.value);
+});
+
+watch([searchQuery, itemsPerPage], () => { currentPage.value = 1; });
+
+const fetchCategories = async () => {
+  isLoading.value = true;
+  try {
+    const res = await axios.get(`${BASE_URL}/categories`, axiosConfig);
+    categories.value = res.data.data.sort((a, b) => a.id - b.id);
+  } catch (err) {
+    console.error(err);
+  } finally {
+    setTimeout(() => { isLoading.value = false; }, 500);
+  }
+};
+
+const formatDateForInput = (dateStr) => {
+  if (!dateStr) return "";
+  return dateStr.replace(' ', 'T').slice(0, 16);
+};
+
+const getPromoStatus = (cat) => {
+  if (!cat.bundle_price) return { text: "NO PROMO", class: "bg-gray-100 text-gray-500" };
+
+  const now = new Date();
+  const start = cat.bundle_start_date ? new Date(cat.bundle_start_date.replace(' ', 'T')) : null;
+  const end = cat.bundle_end_date ? new Date(cat.bundle_end_date.replace(' ', 'T')) : null;
+  
+  let isActive = true;
+  if (start && now < start) isActive = false;
+  if (end && now > end) isActive = false;
+
+  let type = "BUNDLE";
+  try {
+    const conf = typeof cat.bundle_price === "string" ? JSON.parse(cat.bundle_price) : cat.bundle_price;
+    if (conf.promo_type === "percent") type = "PCT SALE";
+  } catch (e) {}
+
+  if (isActive) {
+    return { text: `ACTIVE (${type})`, class: "bg-green-100 text-green-700" };
+  }
+  return { text: `INACTIVE (${type})`, class: "bg-amber-100 text-amber-700" };
+};
+
+const openModal = (data = null) => {
+  isEdit.value = !!data;
+  currentId.value = data ? data.id : null;
+
+  const tempPrices = {};
+  SUPPORTED_CURRENCIES.forEach((curr) => { tempPrices[curr] = ""; });
+
+  if (data) {
+    const hasPromo = !!data.bundle_price;
+    let loadedIdr = "";
+    let loadedPrices = { ...tempPrices };
+    let pType = "bundle";
+    let mGroup = "";
+    let dPercent = 0;
+    let mPurchase = 0;
+    let mDiscount = 0;
+
+    if (hasPromo) { 
+      try {
+        const conf = typeof data.bundle_price === 'string' ? JSON.parse(data.bundle_price) : data.bundle_price;
+        pType = conf.promo_type || "bundle";
+        mGroup = conf.mix_group || "";
+        
+        if (pType === "bundle") {
+            const priceObj = conf.price || conf; // Toleransi format lama
+            loadedIdr = priceObj.IDR || (typeof priceObj === 'number' ? priceObj : "");
+            SUPPORTED_CURRENCIES.forEach((curr) => { loadedPrices[curr] = priceObj[curr] || ""; });
+        } else {
+            dPercent = conf.percent || 0;
+            mPurchase = conf.min_purchase || 0;
+            mDiscount = conf.max_discount || 0;
+        }
+      } catch (e) { console.error(e) }
+    }
+
+    form.value = {
+      category_code: data.code || data.category_code || "",
+      category_name: data.name || data.category_name || "",
+      meta: { description: data.description || "" },
+      has_bundle: hasPromo,
+      promo_type: pType,
+      mix_group: mGroup,
+      bundle_qty: data.bundle_qty || 2, 
+      bundle_price_idr: loadedIdr,
+      bundle_prices: loadedPrices,
+      discount_percent: dPercent,
+      min_purchase: mPurchase,
+      max_discount: mDiscount,
+      bundle_start_date: formatDateForInput(data.bundle_start_date),
+      bundle_end_date: formatDateForInput(data.bundle_end_date),
+    };
+  } else {
+    form.value = {
+      category_code: "",
+      category_name: "",
+      meta: { description: "" },
+      has_bundle: false,
+      promo_type: "bundle",
+      mix_group: "",
+      bundle_qty: 2,
+      bundle_price_idr: "",
+      bundle_prices: tempPrices,
+      discount_percent: 0,
+      min_purchase: 0,
+      max_discount: 0,
+      bundle_start_date: "",
+      bundle_end_date: "",
+    };
+  }
+  showModal.value = true;
+};
+
+const handleSubmit = async () => {
+  isSubmitting.value = true;
+
+  const finalBundlePriceObj = {
+    promo_type: form.value.promo_type,
+    mix_group: form.value.mix_group,
+  };
+
+  if (form.value.promo_type === 'bundle') {
+      finalBundlePriceObj.price = { IDR: form.value.bundle_price_idr };
+      SUPPORTED_CURRENCIES.forEach((curr) => {
+        if (form.value.bundle_prices[curr]) {
+          finalBundlePriceObj.price[curr] = form.value.bundle_prices[curr];
+        }
+      });
+  } else {
+      finalBundlePriceObj.percent = form.value.discount_percent;
+      finalBundlePriceObj.min_purchase = form.value.min_purchase;
+      finalBundlePriceObj.max_discount = form.value.max_discount;
+  }
+
+  // [PENTING] Validasi backend mungkin menolak tipe objek. 
+  // Agar 100% tersimpan ke database MySQL 'longtext' JSON, kita stringify() dari sini!
+  const payload = {
+    code: form.value.category_code,
+    name: form.value.category_name,
+    description: form.value.meta.description,
+    bundle_qty: form.value.has_bundle ? form.value.bundle_qty : null,
+    bundle_price: form.value.has_bundle ? JSON.stringify(finalBundlePriceObj) : null, 
+    bundle_start_date: form.value.has_bundle && form.value.bundle_start_date ? form.value.bundle_start_date : null,
+    bundle_end_date: form.value.has_bundle && form.value.bundle_end_date ? form.value.bundle_end_date : null,
+  };
+
+  try {
+    if (isEdit.value) {
+      await axios.put(`${BASE_URL}/categories/${currentId.value}`, payload, axiosConfig);
+    } else {
+      await axios.post(`${BASE_URL}/categories`, payload, axiosConfig);
+    }
+    showModal.value = false;
+    fetchCategories();
+    Swal.fire({ toast: true, position: "top-end", icon: "success", title: "Category saved!", showConfirmButton: false, timer: 1500 });
+  } catch (err) {
+    Swal.fire("Error", "Gagal menyimpan. Pastikan Controller Backend mengizinkan tipe data String pada bundle_price.", "error");
+  } finally {
+    isSubmitting.value = false;
+  }
+};
+
+const confirmDelete = (id) => {
+  Swal.fire({
+    title: "Are you sure?",
+    text: "Cannot be undone!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!",
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      isLoading.value = true;
+      try {
+        await axios.delete(`${BASE_URL}/categories/${id}`, axiosConfig);
+        fetchCategories();
+        Swal.fire({ toast: true, position: "top-end", icon: "success", title: "Category removed.", showConfirmButton: false, timer: 1500 });
+      } catch (err) {
+        isLoading.value = false;
+        if (err.response && err.response.status === 409) {
+          Swal.fire({ icon: "warning", title: "Action Blocked", text: "Contains products.", confirmButtonColor: "#000" });
+        } else {
+          Swal.fire("Error", "Delete failed.", "error");
+        }
+      }
+    }
+  });
+};
+
+onMounted(() => {
+  fetchUserPermissions().then(() => fetchCategories());
+});
+</script>
+
+<style scoped>
+.animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+.custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 </style>
