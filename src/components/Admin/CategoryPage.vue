@@ -2978,8 +2978,11 @@ const form = ref({
   discount_percent: 0,
   min_purchase: 0,
   max_discount: 0,
-  bundle_start_date: "",
-  bundle_end_date: "",
+  // bundle_start_date: "",
+  // bundle_end_date: "",
+
+  start_date: "",
+  end_date: "",
 });
 
 const searchQuery = ref("");
@@ -3051,49 +3054,120 @@ const openModal = (data = null) => {
   const tempPrices = {};
   SUPPORTED_CURRENCIES.forEach((curr) => { tempPrices[curr] = ""; });
 
-  if (data) {
-    const hasPromo = !!data.bundle_price;
-    let loadedIdr = "";
-    let loadedPrices = { ...tempPrices };
+//   if (data) {
+//     const hasPromo = !!data.bundle_price;
+//     let loadedIdr = "";
+//     let loadedPrices = { ...tempPrices };
+//     let pType = "bundle";
+//     let mGroup = "";
+//     let dPercent = 0;
+//     let mPurchase = 0;
+//     let mDiscount = 0;
+
+//     if (hasPromo) { 
+//       try {
+//         const conf = typeof data.bundle_price === 'string' ? JSON.parse(data.bundle_price) : data.bundle_price;
+//         pType = conf.promo_type || "bundle";
+//         mGroup = conf.mix_group || "";
+        
+//         if (pType === "bundle") {
+//             const priceObj = conf.price || conf; // Toleransi format lama
+//             loadedIdr = priceObj.IDR || (typeof priceObj === 'number' ? priceObj : "");
+//             SUPPORTED_CURRENCIES.forEach((curr) => { loadedPrices[curr] = priceObj[curr] || ""; });
+//         } else {
+//             dPercent = conf.percent || 0;
+//             mPurchase = conf.min_purchase || 0;
+//             mDiscount = conf.max_discount || 0;
+//         }
+//       } catch (e) { console.error(e) }
+//     }
+
+//     form.value = {
+//       category_code: data.code || data.category_code || "",
+//       category_name: data.name || data.category_name || "",
+//       meta: { description: data.description || "" },
+//       has_bundle: hasPromo,
+//       promo_type: pType,
+//       mix_group: mGroup,
+//       bundle_qty: data.bundle_qty || 2, 
+//       bundle_price_idr: loadedIdr,
+//       bundle_prices: loadedPrices,
+//       discount_percent: dPercent,
+//       min_purchase: mPurchase,
+//       max_discount: mDiscount,
+//       bundle_start_date: formatDateForInput(data.bundle_start_date),
+//       bundle_end_date: formatDateForInput(data.bundle_end_date),
+//     };
+//   } else {
+//     form.value = {
+//       category_code: "",
+//       category_name: "",
+//       meta: { description: "" },
+//       has_bundle: false,
+//       promo_type: "bundle",
+//       mix_group: "",
+//       bundle_qty: 2,
+//       bundle_price_idr: "",
+//       bundle_prices: tempPrices,
+//       discount_percent: 0,
+//       min_purchase: 0,
+//       max_discount: 0,
+//       bundle_start_date: "",
+//       bundle_end_date: "",
+//     };
+//   }
+//   showModal.value = true;
+// };
+
+if (data) {
+    // Membaca langsung dari 1 sumber JSON tunggal!
+    const conf = data.promo_config || null;
+    const hasPromo = !!conf;
+    
     let pType = "bundle";
     let mGroup = "";
+    let bQty = 2;
+    let loadedIdr = "";
+    let loadedPrices = { ...tempPrices };
     let dPercent = 0;
     let mPurchase = 0;
     let mDiscount = 0;
+    let sDate = "";
+    let eDate = "";
 
     if (hasPromo) { 
-      try {
-        const conf = typeof data.bundle_price === 'string' ? JSON.parse(data.bundle_price) : data.bundle_price;
-        pType = conf.promo_type || "bundle";
-        mGroup = conf.mix_group || "";
-        
-        if (pType === "bundle") {
-            const priceObj = conf.price || conf; // Toleransi format lama
-            loadedIdr = priceObj.IDR || (typeof priceObj === 'number' ? priceObj : "");
-            SUPPORTED_CURRENCIES.forEach((curr) => { loadedPrices[curr] = priceObj[curr] || ""; });
-        } else {
-            dPercent = conf.percent || 0;
-            mPurchase = conf.min_purchase || 0;
-            mDiscount = conf.max_discount || 0;
-        }
-      } catch (e) { console.error(e) }
+      pType = conf.promo_type || "bundle";
+      mGroup = conf.mix_group || "";
+      sDate = conf.start_date || "";
+      eDate = conf.end_date || "";
+      
+      if (pType === "bundle") {
+          bQty = conf.qty || 2;
+          const priceObj = conf.price || {}; 
+          loadedIdr = priceObj.IDR || "";
+          SUPPORTED_CURRENCIES.forEach((curr) => { loadedPrices[curr] = priceObj[curr] || ""; });
+      } else {
+          dPercent = conf.percent || 0;
+          mPurchase = conf.min_purchase || 0;
+          mDiscount = conf.max_discount || 0;
+      }
     }
 
     form.value = {
-      category_code: data.code || data.category_code || "",
-      category_name: data.name || data.category_name || "",
-      meta: { description: data.description || "" },
+      category_code: data.category_code,
+      category_name: data.category_name,
+      meta: { description: data.meta?.description || "" },
       has_bundle: hasPromo,
       promo_type: pType,
       mix_group: mGroup,
-      bundle_qty: data.bundle_qty || 2, 
+      bundle_qty: bQty, 
       bundle_price_idr: loadedIdr,
       bundle_prices: loadedPrices,
       discount_percent: dPercent,
       min_purchase: mPurchase,
       max_discount: mDiscount,
-      bundle_start_date: formatDateForInput(data.bundle_start_date),
-      bundle_end_date: formatDateForInput(data.bundle_end_date),
+      start_date: formatDateForInput(sDate),
+      end_date: formatDateForInput(eDate),
     };
   } else {
     form.value = {
@@ -3109,8 +3183,8 @@ const openModal = (data = null) => {
       discount_percent: 0,
       min_purchase: 0,
       max_discount: 0,
-      bundle_start_date: "",
-      bundle_end_date: "",
+      start_date: "",
+      end_date: "",
     };
   }
   showModal.value = true;
@@ -3119,34 +3193,67 @@ const openModal = (data = null) => {
 const handleSubmit = async () => {
   isSubmitting.value = true;
 
-  const finalBundlePriceObj = {
-    promo_type: form.value.promo_type,
-    mix_group: form.value.mix_group,
-  };
+  // Merakit Konfigurasi JSON untuk dikirim utuh ke kolom `promo_config`
+  let promoConfigPayload = null;
 
-  if (form.value.promo_type === 'bundle') {
-      finalBundlePriceObj.price = { IDR: form.value.bundle_price_idr };
-      SUPPORTED_CURRENCIES.forEach((curr) => {
-        if (form.value.bundle_prices[curr]) {
-          finalBundlePriceObj.price[curr] = form.value.bundle_prices[curr];
-        }
-      });
-  } else {
-      finalBundlePriceObj.percent = form.value.discount_percent;
-      finalBundlePriceObj.min_purchase = form.value.min_purchase;
-      finalBundlePriceObj.max_discount = form.value.max_discount;
+  // const finalBundlePriceObj = {
+  //   promo_type: form.value.promo_type,
+  //   mix_group: form.value.mix_group,
+  // };
+
+  // if (form.value.promo_type === 'bundle') {
+  //     finalBundlePriceObj.price = { IDR: form.value.bundle_price_idr };
+  //     SUPPORTED_CURRENCIES.forEach((curr) => {
+  //       if (form.value.bundle_prices[curr]) {
+  //         finalBundlePriceObj.price[curr] = form.value.bundle_prices[curr];
+  //       }
+  //     });
+  // } else {
+  //     finalBundlePriceObj.percent = form.value.discount_percent;
+  //     finalBundlePriceObj.min_purchase = form.value.min_purchase;
+  //     finalBundlePriceObj.max_discount = form.value.max_discount;
+  // }
+
+  if (form.value.has_bundle) {
+      promoConfigPayload = {
+          promo_type: form.value.promo_type,
+          mix_group: form.value.mix_group,
+          start_date: form.value.start_date ? form.value.start_date : null,
+          end_date: form.value.end_date ? form.value.end_date : null,
+      };
+
+      if (form.value.promo_type === 'bundle') {
+          promoConfigPayload.qty = form.value.bundle_qty;
+          promoConfigPayload.price = { IDR: form.value.bundle_price_idr };
+          SUPPORTED_CURRENCIES.forEach((curr) => {
+            if (form.value.bundle_prices[curr]) {
+              promoConfigPayload.price[curr] = form.value.bundle_prices[curr];
+            }
+          });
+      } else {
+          promoConfigPayload.percent = form.value.discount_percent;
+          promoConfigPayload.min_purchase = form.value.min_purchase;
+          promoConfigPayload.max_discount = form.value.max_discount;
+      }
   }
 
   // [PENTING] Validasi backend mungkin menolak tipe objek. 
   // Agar 100% tersimpan ke database MySQL 'longtext' JSON, kita stringify() dari sini!
+  // const payload = {
+  //   code: form.value.category_code,
+  //   name: form.value.category_name,
+  //   description: form.value.meta.description,
+  //   bundle_qty: form.value.has_bundle ? form.value.bundle_qty : null,
+  //   bundle_price: form.value.has_bundle ? JSON.stringify(finalBundlePriceObj) : null, 
+  //   bundle_start_date: form.value.has_bundle && form.value.bundle_start_date ? form.value.bundle_start_date : null,
+  //   bundle_end_date: form.value.has_bundle && form.value.bundle_end_date ? form.value.bundle_end_date : null,
+  // };
+
   const payload = {
     code: form.value.category_code,
     name: form.value.category_name,
     description: form.value.meta.description,
-    bundle_qty: form.value.has_bundle ? form.value.bundle_qty : null,
-    bundle_price: form.value.has_bundle ? JSON.stringify(finalBundlePriceObj) : null, 
-    bundle_start_date: form.value.has_bundle && form.value.bundle_start_date ? form.value.bundle_start_date : null,
-    bundle_end_date: form.value.has_bundle && form.value.bundle_end_date ? form.value.bundle_end_date : null,
+    promo_config: promoConfigPayload
   };
 
   try {
