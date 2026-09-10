@@ -2125,6 +2125,41 @@ onMounted(fetchData);
 
       <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
         <h3 class="mb-1 font-bold text-gray-800">Peak Order Hours</h3>
+        <!-- 👇 [BARU] RFM SEGMENTATION UI 👇 -->
+      <div class="flex flex-col p-6 bg-white border border-gray-100 shadow-sm rounded-2xl lg:col-span-3">
+        <div class="flex items-start justify-between mb-6">
+          <div>
+            <h3 class="mb-1 font-bold text-gray-800">Customer Segmentation (RFM Model)</h3>
+            <p class="text-xs text-gray-500">AI-driven analysis based on Recency, Frequency, and Monetary data.</p>
+          </div>
+          <button @click="fetchRfmData" class="text-xs text-blue-600 hover:underline">Refresh Data</button>
+        </div>
+
+        <div v-if="isRfmLoading" class="flex justify-center py-10">
+          <div class="w-8 h-8 border-4 border-gray-200 rounded-full border-t-blue-600 animate-spin"></div>
+        </div>
+
+        <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+          <div v-for="seg in rfmSegments" :key="seg.name" class="p-4 border border-gray-100 rounded-xl bg-gray-50 flex flex-col justify-between group hover:border-gray-300 transition-colors">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-2xl">{{ seg.icon }}</span>
+                <span :class="seg.color" class="px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-widest">{{ seg.count }} Users</span>
+              </div>
+              <h4 class="font-bold text-sm text-gray-900 mb-1">{{ seg.name }}</h4>
+              <p class="text-[10px] text-gray-500 leading-relaxed">{{ seg.description }}</p>
+            </div>
+            
+            <button 
+              @click="openBlastModal(seg.name, seg.count)"
+              :disabled="seg.count === 0"
+              class="mt-4 w-full py-2 bg-black text-white text-[10px] font-bold uppercase tracking-widest rounded-lg opacity-0 group-hover:opacity-100 disabled:opacity-30 disabled:bg-gray-300 transition-all"
+            >
+              Send Push Promo
+            </button>
+          </div>
+        </div>
+      </div>
         <p class="mb-6 text-xs text-gray-500">When do customers usually checkout?</p>
 
         <div class="h-[250px]" v-if="!isLoading">
@@ -2427,9 +2462,12 @@ const isLoading = ref(true);
 
 const isExporting = ref(false);
 
-const axiosConfig = {
+const axiosConfig = { 
   headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
 };
+
+const rfmSegments = ref([]);
+const isRfmLoading = ref(true);
 
 // 👇 [PERBAIKAN 1] Tambahkan parameter showLoading (default: true) 👇
 const fetchData = async (showLoading = true) => {
@@ -2606,10 +2644,57 @@ const toggleMaintenance = async (activate) => {
   });
 };
 
+const fetchRfmData = async () => {
+  isRfmLoading.value = true;
+  try {
+    const res = await axios.get(`${BASE_URL}/admin/dashboard/rfm-segments`, axiosConfig);
+    rfmSegments.value = res.data;
+  } catch (error) {
+    console.error("Gagal memuat data RFM", error);
+  } finally {
+    isRfmLoading.value = false;
+  }
+};
+
+const openBlastModal = (segmentName, count) => {
+  Swal.fire({
+    title: `Target: ${segmentName}`,
+    html: `
+      <p class="text-xs text-gray-500 mb-4">Mengirim push notification ke ${count} perangkat aktif.</p>
+      <input id="push-title" class="swal2-input text-sm" placeholder="Judul Promo (Max 50 char)" maxlength="50">
+      <textarea id="push-body" class="swal2-textarea text-sm" placeholder="Pesan Promo. Contoh: Hei VIP, diskon 30% khusus untukmu hari ini!" maxlength="150"></textarea>
+    `,
+    showCancelButton: true,
+    confirmButtonText: 'Blast Now 🚀',
+    confirmButtonColor: '#000',
+    preConfirm: () => {
+      const title = document.getElementById('push-title').value;
+      const body = document.getElementById('push-body').value;
+      if (!title || !body) Swal.showValidationMessage('Judul dan pesan wajib diisi!');
+      return { title, body };
+    }
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      Swal.fire({ title: 'Sending Blast...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+      try {
+        const res = await axios.post(`${BASE_URL}/admin/dashboard/rfm-blast`, {
+          segment: segmentName,
+          title: result.value.title,
+          body: result.value.body
+        }, axiosConfig);
+        Swal.fire('Success!', res.data.message, 'success');
+      } catch (error) {
+        Swal.fire('Failed', 'Gagal mengirim notifikasi.', 'error');
+      }
+    }
+  });
+};
+
 // 👇 [PERBAIKAN 2] Hubungkan Vue ke Pusher Channel saat komponen dimuat 👇
 onMounted(() => {
   fetchData(true); // Fetch awal dengan loading
   checkMaintenanceStatus(); // Panggil pengecekan
+  fetchRfmData(); // Panggil fetch data RFM
 
   // Memastikan Laravel Echo / Pusher tersedia
   if (window.Echo) {
