@@ -16490,6 +16490,7 @@ const applyPromo = async () => {
       `${BASE_URL}/promo/verify`,
       {
         promo_code: codeToBeApplied,
+        address_id: selectedAddressId.value,
         cart_items: checkoutItems.value.map((item) => ({
           product_id: item.product_id,
           quantity: item.quantity,
