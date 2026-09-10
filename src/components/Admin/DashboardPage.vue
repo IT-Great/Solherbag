@@ -1652,6 +1652,23 @@ onMounted(fetchData);
   <div class="pb-10 space-y-8 animate-fade-in">
     <Breadcrumb />
 
+    <!-- 👇 [BARU] HEADER & EXPORT BUTTON 👇 -->
+    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mt-2 mb-6">
+      <h1 class="text-2xl font-black text-gray-900 uppercase tracking-widest">Executive Dashboard</h1>
+      <button 
+        @click="downloadReport" 
+        :disabled="isExporting"
+        class="flex items-center gap-2 px-5 py-2.5 text-xs font-bold text-white uppercase transition-colors bg-green-600 rounded-full shadow-md hover:bg-green-700 disabled:opacity-50"
+      >
+        <svg v-if="!isExporting" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+        </svg>
+        <div v-else class="w-4 h-4 border-2 border-white rounded-full border-t-transparent animate-spin"></div>
+        {{ isExporting ? 'Generating...' : 'Export Sales (CSV)' }}
+      </button>
+    </div>
+    <!-- 👆 AKHIR HEADER 👆 -->
+
     <!-- 👇 [BARU] MAINTENANCE MODE TOGGLE 👇 -->
     <div class="flex items-center justify-between p-5 mb-6 border border-red-200 bg-red-50 rounded-2xl">
       <div>
@@ -2408,6 +2425,8 @@ const peakHoursData = ref({ labels: [], datasets: [] });
 
 const isLoading = ref(true);
 
+const isExporting = ref(false);
+
 const axiosConfig = {
   headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
 };
@@ -2481,6 +2500,35 @@ const fetchData = async (showLoading = true) => {
   } finally {
     // Hanya matikan loading state jika kita menyalakannya
     if (showLoading) isLoading.value = false;
+  }
+};
+
+// Tambahkan fungsi ini di mana saja di dalam <script setup>
+const downloadReport = async () => {
+  isExporting.value = true;
+  try {
+    const response = await axios.get(`${BASE_URL}/admin/dashboard/export-sales`, {
+      ...axiosConfig,
+      responseType: 'blob', // SANGAT PENTING: Memaksa axios membaca data sebagai file
+    });
+    
+    // Proses membuat file virtual dan mengunduhnya ke laptop pengguna
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    
+    const today = new Date().toISOString().slice(0, 10);
+    link.setAttribute('download', `Solher_Sales_Report_${today}.csv`);
+    
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    
+    Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Report downloaded!', showConfirmButton: false, timer: 2000 });
+  } catch (error) {
+    Swal.fire("Error", "Failed to download the sales report.", "error");
+  } finally {
+    isExporting.value = false;
   }
 };
 
