@@ -1649,10 +1649,9 @@ onMounted(fetchData);
 </style> -->
 
 <template>
-  <div class="pb-10 space-y-8 animate-fade-in">
+  <!-- <div class="pb-10 space-y-8 animate-fade-in">
     <Breadcrumb />
 
-    <!-- 👇 [BARU] HEADER & EXPORT BUTTON 👇 -->
     <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mt-2 mb-6">
       <h1 class="text-2xl font-black text-gray-900 uppercase tracking-widest">Executive Dashboard</h1>
       <button 
@@ -1667,9 +1666,7 @@ onMounted(fetchData);
         {{ isExporting ? 'Generating...' : 'Export Sales (CSV)' }}
       </button>
     </div>
-    <!-- 👆 AKHIR HEADER 👆 -->
 
-    <!-- 👇 [BARU] MAINTENANCE MODE TOGGLE 👇 -->
     <div class="flex items-center justify-between p-5 mb-6 border border-red-200 bg-red-50 rounded-2xl">
       <div>
         <h3 class="font-bold text-red-800">Production Control (Secret Mode)</h3>
@@ -1692,7 +1689,6 @@ onMounted(fetchData);
         </button>
       </div>
     </div>
-    <!-- 👆 AKHIR TOGGLE 👆 -->
 
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
       <div
@@ -2125,7 +2121,6 @@ onMounted(fetchData);
 
       <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
         <h3 class="mb-1 font-bold text-gray-800">Peak Order Hours</h3>
-        <!-- 👇 [BARU] RFM SEGMENTATION UI 👇 -->
       <div class="flex flex-col p-6 bg-white border border-gray-100 shadow-sm rounded-2xl lg:col-span-3">
         <div class="flex items-start justify-between mb-6">
           <div>
@@ -2222,6 +2217,319 @@ onMounted(fetchData);
         </div>
       </div>
     </div>
+  </div> -->
+  <div class="pb-10 space-y-8 animate-fade-in">
+    <Breadcrumb />
+
+    <!-- 👇 HEADER & EXPORT BUTTON 👇 -->
+    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mt-2 mb-6">
+      <h1 class="text-2xl font-black text-gray-900 uppercase tracking-widest">Executive Dashboard</h1>
+      <button 
+        @click="downloadReport" 
+        :disabled="isExporting"
+        class="flex items-center gap-2 px-5 py-2.5 text-xs font-bold text-white uppercase transition-colors bg-green-600 rounded-full shadow-md hover:bg-green-700 disabled:opacity-50"
+      >
+        <svg v-if="!isExporting" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+        </svg>
+        <div v-else class="w-4 h-4 border-2 border-white rounded-full border-t-transparent animate-spin"></div>
+        {{ isExporting ? 'Generating...' : 'Export Sales (CSV)' }}
+      </button>
+    </div>
+
+    <!-- 👇 MAINTENANCE MODE TOGGLE 👇 -->
+    <div class="flex items-center justify-between p-5 mb-6 border border-red-200 bg-red-50 rounded-2xl">
+      <div>
+        <h3 class="font-bold text-red-800">Production Control (Secret Mode)</h3>
+        <p class="text-xs text-red-600 mt-1">Take down the website to test features. Only your IP will have access.</p>
+      </div>
+      <div>
+        <button 
+          v-if="!isMaintenance"
+          @click="toggleMaintenance(true)"
+          class="px-6 py-2.5 text-xs font-black tracking-widest text-white uppercase bg-red-600 rounded-full shadow-md hover:bg-red-700"
+        >
+          Takedown Website
+        </button>
+        <button 
+          v-else
+          @click="toggleMaintenance(false)"
+          class="px-6 py-2.5 text-xs font-black tracking-widest text-white uppercase bg-green-600 rounded-full shadow-md hover:bg-green-700 animate-pulse"
+        >
+          Bring Back Website
+        </button>
+      </div>
+    </div>
+
+    <!-- STATS GRID -->
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="relative p-6 overflow-hidden bg-white border border-gray-100 shadow-sm rounded-2xl">
+        <p class="mb-1 text-xs font-bold tracking-wider text-gray-400 uppercase">Total Sales</p>
+        <p class="text-2xl font-black text-gray-900">{{ formatPrice(stats.total_sales) }}</p>
+        <div class="flex items-center gap-2 mt-2">
+          <span :class="stats.sales_growth >= 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'" class="px-2 py-0.5 rounded font-bold text-[10px] flex items-center gap-1">
+            <svg v-if="stats.sales_growth >= 0" class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+            <svg v-else class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path></svg>
+            {{ Math.abs(stats.sales_growth) }}%
+          </span>
+          <span class="text-[10px] text-gray-400">vs last month</span>
+        </div>
+      </div>
+
+      <div class="relative p-6 overflow-hidden bg-white border border-gray-100 shadow-sm rounded-2xl">
+        <p class="mb-1 text-xs font-bold tracking-wider text-gray-400 uppercase">Active Products</p>
+        <p class="text-2xl font-black text-gray-900">{{ stats.total_products }}</p>
+        <div class="flex items-center gap-2 mt-2">
+          <span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-bold text-[10px]">+{{ stats.new_products_growth }} new</span>
+          <span class="text-[10px] text-gray-400">added this month</span>
+        </div>
+      </div>
+
+      <div class="relative p-6 overflow-hidden bg-white border border-gray-100 shadow-sm rounded-2xl">
+        <p class="mb-1 text-xs font-bold tracking-wider text-gray-400 uppercase">Total Orders</p>
+        <p class="text-2xl font-black text-gray-900">{{ stats.total_transactions }}</p>
+        <div class="flex items-center gap-2 mt-2">
+          <span :class="stats.transaction_growth >= 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'" class="px-2 py-0.5 rounded font-bold text-[10px] flex items-center gap-1">
+            <svg v-if="stats.transaction_growth >= 0" class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+            <svg v-else class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path></svg>
+            {{ Math.abs(stats.transaction_growth) }}%
+          </span>
+          <span class="text-[10px] text-gray-400">vs last month</span>
+        </div>
+      </div>
+
+      <div class="relative p-6 overflow-hidden bg-white border border-gray-100 shadow-sm rounded-2xl">
+        <p class="mb-1 text-xs font-bold tracking-wider text-gray-400 uppercase">Registered Users</p>
+        <p class="text-2xl font-black text-gray-900">{{ stats.total_users }}</p>
+        <div class="flex items-center gap-2 mt-2">
+          <span class="bg-purple-100 text-purple-700 px-2 py-0.5 rounded font-bold text-[10px]">+{{ stats.new_users_growth }} joined</span>
+          <span class="text-[10px] text-gray-400">this month</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- REVENUE CHARTS -->
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
+        <h3 class="mb-6 font-bold text-gray-800">Monthly Revenue Overview</h3>
+        <div class="h-[300px]" v-if="!isLoading">
+          <Line :data="revenueData" :options="chartOptions" />
+        </div>
+        <div v-else class="h-[300px] bg-gray-100 animate-pulse rounded-xl"></div>
+      </div>
+
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
+        <div class="flex items-start justify-between mb-6">
+          <div>
+            <h3 class="font-bold text-gray-800">Average Daily Revenue</h3>
+            <p class="mt-1 text-xs text-gray-500">Historically, which day generates the most sales?</p>
+          </div>
+        </div>
+        <div class="h-[300px]" v-if="!isLoading">
+          <Bar :data="dailyAverageData" :options="barOptions" />
+        </div>
+        <div v-else class="h-[300px] bg-gray-100 animate-pulse rounded-xl"></div>
+      </div>
+    </div>
+
+    <!-- ACTIVITIES, AI, PIE CHART -->
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-4">
+      <div class="flex flex-col p-6 bg-white border border-gray-100 shadow-sm rounded-2xl lg:col-span-1">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="font-bold text-gray-800">Recent Live Orders</h3>
+          <router-link to="/admin/transactions" class="text-[10px] font-bold text-blue-600 hover:underline uppercase tracking-widest">View All</router-link>
+        </div>
+        <div class="flex-grow overflow-y-auto pr-2 custom-scrollbar max-h-[350px]">
+          <div v-if="isLoading" class="space-y-4">
+            <div v-for="i in 5" :key="i" class="h-12 bg-gray-50 rounded-xl animate-pulse"></div>
+          </div>
+          <div v-else-if="recentActivities.length > 0" class="space-y-4">
+            <div v-for="act in recentActivities" :key="act.id" class="flex items-center justify-between pb-3 border-b border-gray-50 last:border-0 last:pb-0">
+              <div>
+                <p class="text-xs font-bold text-gray-900">{{ act.customer }}</p>
+                <div class="flex items-center gap-2 mt-1">
+                  <span class="text-[9px] text-gray-400 font-mono">{{ act.order_id }}</span>
+                  <span class="text-[8px] text-gray-300">•</span>
+                  <span class="text-[9px] text-gray-400">{{ act.time_ago }}</span>
+                </div>
+              </div>
+              <div class="text-right">
+                <p class="text-sm font-bold text-gray-900">{{ formatPrice(act.amount) }}</p>
+                <span
+                  :class="{'text-amber-500 bg-amber-50': act.status === 'pending' || act.status === 'awaiting_payment', 'text-blue-500 bg-blue-50': act.status === 'processing', 'text-green-600 bg-green-50': act.status === 'completed', 'text-red-500 bg-red-50': act.status === 'cancelled' || act.status === 'refunded'}"
+                  class="px-2 py-0.5 rounded text-[8px] font-bold uppercase tracking-widest inline-block mt-1"
+                >
+                  {{ act.status.replace("_", " ") }}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div v-else class="flex items-center justify-center h-full text-sm italic text-gray-400">No recent activities.</div>
+        </div>
+      </div>
+
+      <div class="flex flex-col p-6 bg-white border border-gray-100 shadow-sm rounded-2xl lg:col-span-2">
+        <div class="flex items-center justify-between pb-4 mb-6 border-b border-gray-100">
+          <div>
+            <h3 class="flex items-center gap-2 text-lg font-bold text-gray-800">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+              AI Sales Prediction (C4.5)
+            </h3>
+            <p class="mt-1 text-xs text-gray-500">Predicting future bestsellers based on categories & pricing.</p>
+          </div>
+        </div>
+
+        <div v-if="isLoading" class="flex flex-col gap-4">
+          <div v-for="i in 4" :key="`skel-${i}`" class="flex items-center gap-4 p-4 border border-gray-100 bg-gray-50 rounded-xl">
+            <div class="w-16 h-16 bg-gray-200 rounded-lg animate-pulse shrink-0"></div>
+            <div class="flex-grow space-y-2">
+              <div class="w-1/3 h-4 bg-gray-200 rounded animate-pulse"></div>
+              <div class="w-1/2 h-3 bg-gray-200 rounded animate-pulse"></div>
+            </div>
+            <div class="w-24 h-4 bg-gray-200 rounded animate-pulse"></div>
+          </div>
+        </div>
+
+        <div v-else class="flex flex-col gap-4 overflow-y-auto max-h-[350px] pr-2 custom-scrollbar">
+          <div v-for="(item, index) in predictedProducts" :key="item.id" class="flex flex-col items-start gap-4 p-4 transition bg-white border border-gray-100 md:flex-row md:items-center rounded-xl hover:bg-gray-50">
+            <div class="items-center justify-center hidden w-8 h-8 text-sm font-bold text-gray-400 bg-gray-100 rounded-full md:flex shrink-0">#{{ index + 1 }}</div>
+            <img v-if="item.image" :src="item.image" @error="item.image = null" class="object-cover w-16 h-16 border border-gray-100 rounded-lg shadow-sm shrink-0" />
+            <div v-else class="flex items-center justify-center w-16 h-16 bg-gray-100 border border-gray-200 rounded-lg shadow-sm shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+            </div>
+            <div class="flex-grow min-w-0">
+              <div class="flex items-center gap-3 mb-1">
+                <p class="text-sm font-bold text-gray-900 truncate">{{ item.name }}</p>
+                <span :class="item.color" class="font-black text-[9px] uppercase tracking-widest bg-gray-100 px-2 py-0.5 rounded-full shrink-0">{{ item.label }}</span>
+              </div>
+              <div class="text-[10px] text-gray-600 mt-1 flex gap-2">
+                <span class="font-bold text-gray-400 uppercase tracking-widest shrink-0 mt-0.5">Factors:</span>
+                <span class="italic text-gray-500 break-words line-clamp-2">{{ item.reasons || "No specific factors" }}</span>
+              </div>
+            </div>
+            <div class="flex flex-col justify-center w-full mt-3 md:w-32 shrink-0 md:mt-0">
+              <div class="flex items-center justify-between mb-1">
+                <span class="text-[9px] font-bold text-gray-400 uppercase tracking-wider">Match</span>
+                <span class="text-xs font-black text-purple-700">{{ item.score }}%</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-1.5">
+                <div class="bg-gradient-to-r from-purple-400 to-purple-600 h-1.5 rounded-full transition-all duration-1000" :style="{ width: item.score + '%' }"></div>
+              </div>
+            </div>
+          </div>
+          <div v-if="predictedProducts.length === 0" class="py-10 text-sm italic text-center text-gray-400">Not enough historical data.</div>
+        </div>
+      </div>
+
+      <div class="flex flex-col p-6 bg-white border border-gray-100 shadow-sm rounded-2xl lg:col-span-1">
+        <h3 class="mb-2 font-bold text-center text-gray-800 md:text-left">Historical Best Sellers</h3>
+        <p class="mb-6 text-xs text-center text-gray-500 md:text-left">Top 5 items</p>
+        <div class="flex justify-center h-[250px] flex-grow items-center" v-if="!isLoading">
+          <Pie :data="pieData" :options="pieOptions" />
+        </div>
+        <div v-else class="h-[250px] bg-gray-100 animate-pulse rounded-xl mt-auto"></div>
+      </div>
+    </div>
+
+    <!-- ROW BAWAH: RETURNED, PEAK HOURS, TOP CUSTOMERS -->
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+      <div class="flex flex-col p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
+        <h3 class="mb-1 font-bold text-gray-800">Most Returned Products</h3>
+        <p class="mb-6 text-xs text-gray-500">Items with highest issue/refund rates.</p>
+
+        <div class="flex-grow overflow-y-auto pr-2 custom-scrollbar max-h-[300px]">
+          <div v-if="isLoading" class="space-y-4">
+            <div v-for="i in 5" :key="i" class="h-10 bg-gray-50 rounded-xl animate-pulse"></div>
+          </div>
+          <div v-else-if="returnedProducts.length > 0" class="space-y-4">
+            <div v-for="prod in returnedProducts" :key="prod.name" class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <img v-if="prod.image" :src="prod.image" class="object-cover w-10 h-10 border border-gray-100 rounded shadow-sm" />
+                <div v-else class="w-10 h-10 bg-gray-100 border border-gray-200 rounded"></div>
+                <p class="w-32 text-xs font-bold text-gray-800 truncate" :title="prod.name">{{ prod.name }}</p>
+              </div>
+              <span class="bg-red-50 text-red-600 font-bold px-2 py-1 rounded text-[10px]">{{ prod.total_returned }}x Returned</span>
+            </div>
+          </div>
+          <div v-else class="flex items-center justify-center h-full text-sm italic text-gray-400">No return data.</div>
+        </div>
+      </div>
+
+      <!-- PEAK HOURS KINI TELAH DIKOSONGKAN DARI KODE RFM -->
+      <div class="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
+        <h3 class="mb-1 font-bold text-gray-800">Peak Order Hours</h3>
+        <p class="mb-6 text-xs text-gray-500">When do customers usually checkout?</p>
+        <div class="h-[250px]" v-if="!isLoading">
+          <Line :data="peakHoursData" :options="peakHoursOptions" />
+        </div>
+        <div v-else class="h-[250px] bg-gray-100 animate-pulse rounded-xl"></div>
+      </div>
+
+      <div class="flex flex-col p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
+        <h3 class="mb-1 font-bold text-gray-800">Top Customers & Affiliates</h3>
+        <p class="mb-6 text-xs text-gray-500">Users generating the most revenue.</p>
+
+        <div class="flex-grow overflow-y-auto pr-2 custom-scrollbar max-h-[300px]">
+          <div v-if="isLoading" class="space-y-4">
+            <div v-for="i in 5" :key="i" class="h-12 bg-gray-50 rounded-xl animate-pulse"></div>
+          </div>
+          <div v-else-if="topAffiliators.length > 0" class="space-y-4">
+            <div v-for="(user, idx) in topAffiliators" :key="user.email" class="flex items-center justify-between pb-3 border-b border-gray-50 last:border-0 last:pb-0">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-black text-[10px] shrink-0">#{{ idx + 1 }}</div>
+                <div>
+                  <p class="w-24 text-xs font-bold text-gray-900 truncate">{{ user.name }}</p>
+                  <span class="text-[9px] text-gray-400 capitalize">{{ user.usertype }}</span>
+                </div>
+              </div>
+              <div class="text-right">
+                <p class="text-xs font-bold text-green-600">{{ formatPrice(user.total_generated) }}</p>
+                <p class="text-[9px] font-mono text-gray-400 mt-0.5">{{ user.total_orders }} Orders</p>
+              </div>
+            </div>
+          </div>
+          <div v-else class="flex items-center justify-center h-full text-sm italic text-gray-400">No user data.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 👇 RFM SEGMENTATION DITEMPATKAN FULL WIDTH DI BAWAH 👇 -->
+    <div class="flex flex-col p-6 bg-white border border-gray-100 shadow-sm rounded-2xl mt-6">
+      <div class="flex items-start justify-between mb-6">
+        <div>
+          <h3 class="mb-1 font-bold text-gray-800">Customer Segmentation (RFM Model)</h3>
+          <p class="text-xs text-gray-500">AI-driven analysis based on Recency, Frequency, and Monetary data.</p>
+        </div>
+        <button @click="fetchRfmData" class="text-xs text-blue-600 hover:underline">Refresh Data</button>
+      </div>
+
+      <div v-if="isRfmLoading" class="flex justify-center py-10">
+        <div class="w-8 h-8 border-4 border-gray-200 rounded-full border-t-blue-600 animate-spin"></div>
+      </div>
+
+      <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div v-for="seg in rfmSegments" :key="seg.name" class="p-4 border border-gray-100 rounded-xl bg-gray-50 flex flex-col justify-between group hover:border-gray-300 transition-colors">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-2xl">{{ seg.icon }}</span>
+              <span :class="seg.color" class="px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-widest">{{ seg.count }} Users</span>
+            </div>
+            <h4 class="font-bold text-sm text-gray-900 mb-1">{{ seg.name }}</h4>
+            <p class="text-[10px] text-gray-500 leading-relaxed">{{ seg.description }}</p>
+          </div>
+          
+          <button 
+            @click="openBlastModal(seg.name, seg.count)"
+            :disabled="seg.count === 0"
+            class="mt-4 w-full py-2 bg-black text-white text-[10px] font-bold uppercase tracking-widest rounded-lg opacity-0 group-hover:opacity-100 disabled:opacity-30 disabled:bg-gray-300 transition-all"
+          >
+            Send Push Promo
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- 👆 AKHIR RFM SEGMENTATION UI 👆 -->
+    
   </div>
 </template>
 
