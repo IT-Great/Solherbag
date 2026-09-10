@@ -16342,11 +16342,34 @@ const handlePayment = async () => {
       window.location.href = res.data.checkout_url;
     }
   } catch (error) {
-    Swal.fire(
-      "Payment Error",
-      error.response?.data?.message || "Failed to create invoice",
-      "error"
-    );
+    // Swal.fire(
+    //   "Payment Error",
+    //   error.response?.data?.message || "Failed to create invoice",
+    //   "error"
+    // );
+    // 👇 [BARU] INTERCEPTOR REDLOCK OVERSELLING 👇
+    if (error.response?.status === 429) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Antrean Padat! 🚦',
+        text: error.response.data.message,
+        confirmButtonColor: '#000',
+        confirmButtonText: 'Coba Lagi'
+      });
+    } else if (error.response?.status === 422) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Kehabisan Stok! 😭',
+        text: error.response.data.message || 'Barang baru saja dibeli oleh pelanggan lain.',
+        confirmButtonColor: '#000',
+      });
+    } else {
+      Swal.fire(
+        "Payment Error",
+        error.response?.data?.message || "Failed to create invoice",
+        "error"
+      );
+    }
   } finally {
     isProcessing.value = false;
   }
