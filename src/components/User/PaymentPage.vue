@@ -16697,7 +16697,7 @@ const useAllPoints = () => {
 
             <div class="space-y-4">
               <!-- Free Shipping Option (Indo Only) -->
-              <label v-if="destinationInfo?.country === 'Indonesia'" :class="[shippingMethod === 'free' ? 'border-black ring-1 ring-black bg-white shadow-md' : 'border-gray-100 bg-gray-50/50']" class="relative flex items-center p-6 transition-all border cursor-pointer rounded-2xl">
+              <label v-if="destinationInfo?.country?.toLowerCase() === 'indonesia'" :class="[shippingMethod === 'free' ? 'border-black ring-1 ring-black bg-white shadow-md' : 'border-gray-100 bg-gray-50/50']" class="relative flex items-center p-6 transition-all border cursor-pointer rounded-2xl">
                 <input type="radio" value="free" v-model="shippingMethod" class="w-4 h-4 text-black border-gray-300 focus:ring-black" />
                 <div class="flex items-center justify-between flex-grow ml-4">
                   <div>
@@ -16714,7 +16714,7 @@ const useAllPoints = () => {
                 <div class="flex items-center justify-between flex-grow ml-4">
                   <div>
                     <p class="text-sm font-bold tracking-wide text-gray-900 uppercase">{{ $t("payment.standard") }}</p>
-                    <p class="mt-1 text-xs text-gray-500">{{ destinationInfo?.country === "Indonesia" ? $t("payment.powered_by_biteship") : "International Express Delivery" }}</p>
+                    <p class="mt-1 text-xs text-gray-500">{{ destinationInfo?.country?.toLowerCase() === "indonesia" ? $t("payment.powered_by_biteship") : "International Express Delivery" }}</p>
                   </div>
                 </div>
               </label>
@@ -16733,7 +16733,7 @@ const useAllPoints = () => {
                 </div>
 
                 <!-- Pickup Schedule (Indo Only) -->
-                <div v-if="destinationInfo?.country === 'Indonesia'">
+                <div v-if="destinationInfo?.country?.toLowerCase() === 'indonesia'">
                   <h3 class="mb-4 text-sm font-bold tracking-widest uppercase">{{ $t("payment.pickup_schedule") }}</h3>
                   <div class="flex flex-col gap-4 mb-4 md:flex-row">
                     <label :class="deliveryType === 'now' ? 'border-black bg-gray-50' : 'border-gray-200'" class="flex-1 p-4 transition border cursor-pointer rounded-xl">
@@ -16889,7 +16889,7 @@ const useAllPoints = () => {
 
                 <form @submit.prevent="applyPromo" class="flex gap-2">
                   <input type="text" v-model="promoInput" :disabled="appliedPromoCode !== null || isVerifyingPromo || useMemberVoucher" :placeholder="$t('payment.enter_promo_code')" class="flex-1 bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-sm uppercase focus:ring-black outline-none disabled:bg-gray-100 disabled:text-gray-400 transition-colors" />
-                  <button v-if="!appliedPromoCode" type="submit" :disabled="!promoInput || isVerifyingPromo || useMemberVoucher" class="bg-black text-white text-[10px] font-bold uppercase px-4 rounded-lg hover:bg-gray-800 transition disabled:bg-gray-300 w-20 flex justify-center items-center">
+                  <button v-if="!appliedPromoCode" type="submit" :disabled="!promoInput || isVerifyingPromo || useMemberVoucher" class="bg-black text-white text-[10px] font-bold uppercase px-4 rounded-lg hover:bg-gray-800 disabled:bg-gray-300 w-20 flex justify-center items-center">
                     <span v-if="!isVerifyingPromo">{{ $t("payment.apply") }}</span>
                     <div v-else class="w-3 h-3 border-2 rounded-full border-white/40 border-t-white animate-spin"></div>
                   </button>
@@ -16926,12 +16926,9 @@ const useAllPoints = () => {
                 <span class="text-xl text-gycora">{{ formatCurrencyDisplay(grandTotalObj) }}</span>
               </div>
 
-              <button @click="handlePayment" :disabled="isButtonDisabled" class="mt-8 w-full bg-black hover:bg-gray-800 disabled:bg-gray-300 py-5 rounded-2xl font-bold text-white text-xs uppercase tracking-[0.3em] transition-all duration-500 shadow-xl shadow-black/10 flex justify-center items-center">
+              <button @click="handlePayment" :disabled="isButtonDisabled" class="mt-8 w-full bg-black hover:bg-gray-800 disabled:bg-gray-300 py-5 rounded-2xl font-bold text-white text-xs uppercase tracking-[0.3em] flex justify-center items-center transition-all">
                 <span v-if="!isProcessing">{{ $t("payment.pay_now") }}</span>
-                <span v-else class="flex items-center justify-center gap-2">
-                  <div class="w-3 h-3 border-2 rounded-full border-white/30 border-t-white animate-spin"></div>
-                  {{ $t("payment.processing") }}
-                </span>
+                <div v-else class="w-3 h-3 border-2 rounded-full border-white/30 border-t-white animate-spin"></div>
               </button>
 
               <p v-if="!selectedAddressId" class="mt-4 text-[10px] tracking-tighter text-center text-red-500 uppercase">{{ $t("payment.select_shipping_address") }}</p>
@@ -16958,7 +16955,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
 import { useCart, getDiscountStatus } from "../../composables/useCart";
-import AddressModal from "./Layout/AddressModal.vue";
+import AddressModal from "./AddressModal.vue";
 
 const router = useRouter();
 const getAxiosConfig = () => ({ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
@@ -17018,7 +17015,21 @@ const imageErrors = ref({});
 // ==========================================
 // 3. COMPUTED PROPERTIES (LOGIC & CALCULATION)
 // ==========================================
-const destinationInfo = computed(() => addresses.value.find((a) => a.id === selectedAddressId.value) || null);
+
+// 👇 [PERBAIKAN FATAL] MENGEMBALIKAN MAPPING ADDRESS 👇
+const destinationInfo = computed(() => {
+  const addr = addresses.value.find((a) => a.id === selectedAddressId.value);
+  if (!addr) return null;
+  return {
+    name: addr.receiver?.full_name || addr.first_name_address + ' ' + addr.last_name_address || "Unknown",
+    phone: userData.value?.phone || "No Phone Provided",
+    address: `${addr.details?.location || addr.address_location || ""}, ${addr.details?.city || addr.city || ""}, ${addr.details?.province || addr.province || ""}`,
+    postal_code: addr.postal_code || addr.details?.postal_code || "",
+    country: addr.region || addr.details?.region || "Indonesia",
+  };
+});
+// 👆 ================================================ 👆
+
 const todayDate = computed(() => new Date().toISOString().split("T")[0]);
 
 const checkoutItems = computed(() => {
@@ -17313,9 +17324,7 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
 .animate-bounce-3 { animation: bounceDots 1.4s infinite ease-in-out both; }
 @keyframes bounceDots { 0%, 80%, 100% { transform: scale(0); opacity: 0.5; } 40% { transform: scale(1); opacity: 1; } }
 .animate-fade-in { animation: fadeIn 0.8s ease-out; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-.custom-scrollbar::-webkit-scrollbar { height: 6px; width: 6px; }
-.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-.custom-scrollbar::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
-.custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #d1d5db; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+.custom-scrollbar::-webkit-scrollbar { height: 4px; width: 4px; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; }
 </style>
