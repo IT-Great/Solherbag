@@ -16834,9 +16834,9 @@ import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
 import { useCart, getActivePrice, getDiscountStatus } from "../../composables/useCart";
 
-// Impor komponen terpisah yang baru kita buat
-import AddressModal from "./AddressModal.vue"; 
+// Impor komponen terpisah yang baru kita buat 
 import defaultBagIcon from "../../assets/products/bag_icon.jpg";
+import AddressModal from "./Layout/AddressModal.vue";
 
 const router = useRouter();
 const isProcessing = ref(false);
