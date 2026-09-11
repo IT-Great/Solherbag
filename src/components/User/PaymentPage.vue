@@ -16958,7 +16958,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
 import { useCart, getDiscountStatus } from "../../composables/useCart";
-import AddressModal from "./AddressModal.vue";
+import AddressModal from "./Layout/AddressModal.vue";
 
 const router = useRouter();
 const getAxiosConfig = () => ({ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
