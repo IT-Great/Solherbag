@@ -2100,7 +2100,13 @@ const fetchStocks = async () => {
     const res = await axios.get(`${BASE_URL}/admin/product-stocks`, axiosConfig);
     
     // 👇 FUNGSI FILTER: HANYA MEMPROSES PRODUK AKTIF 👇
-    const activeProducts = res.data.filter(p => p.status === 'active');
+    // const activeProducts = res.data.filter(p => p.status === 'active');
+
+    // 👇 PERBAIKAN: Ambil array 'data' dari dalam objek pagination Laravel 👇
+    const sourceData = res.data.data !== undefined ? res.data.data : res.data;
+    
+    // FUNGSI FILTER: HANYA MEMPROSES PRODUK AKTIF
+    const activeProducts = sourceData.filter(p => p.status === 'active');
     
     const processedProducts = activeProducts.map((product) => {
       let batches = [];
