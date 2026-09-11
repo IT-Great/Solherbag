@@ -16810,7 +16810,7 @@ const useAllPoints = () => {
         </div>
 
         <!-- ================= RIGHT SECTION: ORDER SUMMARY ================= -->
-        <div class="lg:w-[400px] space-y-6">
+        <!-- <div class="lg:w-[400px] space-y-6">
           <div class="sticky p-8 bg-white border border-gray-100 shadow-xl rounded-3xl top-28">
             <h2 class="pb-4 mb-6 text-sm font-bold tracking-widest text-gray-900 uppercase border-b border-gray-200">
               {{ $t("payment.order_summary") }}
@@ -16851,7 +16851,6 @@ const useAllPoints = () => {
                 <span :class="appliedPromoType === 'voucher' ? 'text-amber-600 font-bold' : ''">{{ formatCurrencyDisplay(cartSubtotalObj) }}</span>
               </div>
 
-              <!-- MEMBERSHIP POINTS REDEMPTION -->
               <div v-if="userData?.is_membership && availablePoints > 0" class="pt-4 mt-2 border-t border-gray-200 border-dashed">
                 <div class="flex items-center justify-between mb-2">
                   <span class="text-[10px] font-bold text-yellow-800 uppercase tracking-widest flex items-center gap-1">
@@ -16872,12 +16871,10 @@ const useAllPoints = () => {
                 <p v-else-if="pointsToUse > 0" class="text-[10px] text-green-600 mt-1 font-medium text-right">- {{ formatCurrencyDisplay(appliedPointDiscountObj) }}</p>
               </div>
 
-              <!-- PROMO CODE -->
               <div class="pt-4 mt-2 border-t border-gray-200 border-dashed">
                 <div class="flex items-center justify-between mb-2">
                   <label class="text-[10px] font-bold text-gray-900 uppercase tracking-widest">{{ $t("payment.promo_code") }}</label>
                   
-                  <!-- Member Voucher VIP Toggle -->
                   <div v-if="userData?.is_membership" class="flex items-center gap-2">
                     <span class="text-[9px] font-bold text-yellow-600 uppercase flex items-center gap-0.5">VIP PERK</span>
                     <label class="relative inline-flex items-center cursor-pointer">
@@ -16904,7 +16901,6 @@ const useAllPoints = () => {
                 </div>
               </div>
 
-              <!-- SHIPPING CALCULATION -->
               <div class="flex items-start justify-between text-gray-500 pt-2">
                 <span>{{ $t("payment.shipping") }}</span>
                 <span v-if="shippingMethod === 'free'" class="font-bold text-green-600">{{ $t("payment.free") }}</span>
@@ -16914,13 +16910,11 @@ const useAllPoints = () => {
                 <span v-else class="italic text-[10px]">{{ $t("payment.select_method") }}</span>
               </div>
 
-              <!-- BUNDLE DISCOUNT -->
               <div v-if="bundleDiscountAmount > 0" class="flex justify-between px-3 py-2 my-2 text-sm font-bold border text-emerald-600 bg-emerald-50 rounded-xl border-emerald-100">
                 <span class="uppercase tracking-widest text-[10px] mt-0.5">Bundle Saved</span>
                 <span>- {{ formatCurrencyDisplay({ value: bundleDiscountAmount, curr: currentCurrency }) }}</span>
               </div>
 
-              <!-- GRAND TOTAL -->
               <div class="flex justify-between pt-4 font-bold text-gray-900 border-t border-gray-200">
                 <span class="mt-1 text-xs tracking-widest uppercase">{{ $t("payment.grand_total") }}</span>
                 <span class="text-xl text-gycora">{{ formatCurrencyDisplay(grandTotalObj) }}</span>
@@ -16933,6 +16927,338 @@ const useAllPoints = () => {
 
               <p v-if="!selectedAddressId" class="mt-4 text-[10px] tracking-tighter text-center text-red-500 uppercase">{{ $t("payment.select_shipping_address") }}</p>
               <p v-else-if="shippingMethod === 'biteship' && !selectedRate" class="mt-4 text-[10px] tracking-tighter text-center text-red-500 uppercase">{{ $t("payment.select_courier_service") }}</p>
+            </div>
+          </div>
+        </div> -->
+        <div class="lg:w-[400px] space-y-6">
+          <div
+            class="sticky p-8 bg-white border border-gray-100 shadow-xl rounded-3xl top-28"
+          >
+            <h2
+              class="pb-4 mb-6 text-sm font-bold tracking-widest text-gray-900 uppercase border-b border-gray-200"
+            >
+              {{ $t("payment.order_summary") }}
+            </h2>
+
+            <div
+              class="space-y-4 mb-8 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar"
+            >
+              <div v-for="item in checkoutItems" :key="item.id" class="flex gap-4">
+                <img
+                  :src="item.product?.image_url || item.product?.image"
+                  class="object-cover w-16 h-16 bg-gray-100 rounded-xl shrink-0"
+                />
+                <div class="flex-grow">
+                  <div class="flex items-center gap-2">
+                    <p
+                      class="w-40 text-[11px] font-bold text-gray-900 uppercase truncate"
+                      :title="item.product?.name"
+                    >
+                      {{ item.product?.name }}
+                    </p>
+                    <span
+                      v-if="
+                        userType === 'reseller' &&
+                        Number(item.product?.wholesale_price) > 0 &&
+                        checkoutCount >= 24
+                      "
+                      class="px-1.5 py-0.5 text-[8px] font-bold text-white bg-blue-600 rounded"
+                      >GROSIR</span
+                    >
+                  </div>
+                  <div class="flex items-center gap-2 mt-0.5">
+                    <p class="text-[10px] text-gray-400">Qty: {{ item.quantity }}</p>
+                    <template v-if="item.color">
+                      <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
+                      <div class="flex items-center gap-1.5">
+                        <div
+                          class="w-3 h-3 border border-gray-300 rounded-full shadow-sm shrink-0"
+                          :style="{
+                            backgroundColor: parseColorHex(item.color),
+                          }"
+                        ></div>
+                        <span class="text-[10px] font-bold text-gray-500 uppercase">
+                          {{ parseColorName(item.color) }}
+                        </span>
+                      </div>
+                    </template>
+                  </div>
+
+                  <p class="mt-1 text-xs font-medium text-gray-900">
+                    {{
+                      formatCurrencyDisplay({
+                        value: getActivePriceObj(item.product).value * item.quantity,
+                        curr: getActivePriceObj(item.product).curr,
+                      })
+                    }}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-4 space-y-3 text-sm border-t border-gray-50">
+              <div class="flex justify-between text-gray-500">
+                <span>{{ $t("payment.total_items") }}</span>
+                <span class="font-bold text-gray-900"
+                  >{{ checkoutCount }} {{ $t("payment.item") }}</span
+                >
+              </div>
+              <div class="flex justify-between text-gray-500">
+                <span>{{ $t("payment.subtotal") }}</span>
+                <span
+                  :class="
+                    appliedPromoType === 'voucher' ? 'text-amber-600 font-bold' : ''
+                  "
+                >
+                  {{ formatCurrencyDisplay(cartSubtotalObj) }}
+                </span>
+              </div>
+
+              <div
+                v-if="userData?.is_membership"
+                class="pt-4 mt-2 border-t border-gray-200 border-dashed"
+              >
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p
+                      class="text-[10px] font-bold text-gray-900 uppercase tracking-widest flex items-center gap-1"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        class="w-4 h-4 text-yellow-500"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                      {{ $t("payment.vip_perks") }}
+                    </p>
+                    <p class="text-[10px] text-gray-500 mt-0.5">
+                      Voucher Khusus (Min Belanja 500k)
+                    </p>
+                    <p
+                      v-if="checkoutTotalIDR < MEMBER_MIN_SPEND"
+                      class="text-[8px] text-red-500 italic mt-0.5"
+                    >
+                      {{ $t("payment.min_spend") }}
+                    </p>
+                  </div>
+
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      v-model="useMemberVoucher"
+                      @change="handleMemberToggle"
+                      class="sr-only peer"
+                      :disabled="
+                        isVerifyingPromo ||
+                        (checkoutTotalIDR < MEMBER_MIN_SPEND && !useMemberVoucher) ||
+                        ['SOLHOST34', 'MERDEKA17'].includes(appliedPromoCode)
+                      "
+                    />
+                    <div
+                      class="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-black disabled:opacity-50"
+                    ></div>
+                  </label>
+                </div>
+              </div>
+
+              <div class="pt-4 mt-2 border-t border-gray-200 border-dashed">
+                <label
+                  class="text-[10px] font-bold text-gray-900 uppercase tracking-widest mb-2 block"
+                >
+                  {{ $t("payment.promo_code") }}
+                </label>
+                <form @submit.prevent="applyPromo" class="flex gap-2">
+                  <input
+                    type="text"
+                    v-model="promoInput"
+                    :disabled="
+                      appliedPromoCode !== null || isVerifyingPromo || useMemberVoucher
+                    "
+                    :placeholder="$t('payment.enter_promo_code')"
+                    class="flex-1 bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-sm uppercase focus:ring-black outline-none disabled:bg-gray-100 disabled:text-gray-400 transition-colors"
+                  />
+                  <button
+                    v-if="!appliedPromoCode"
+                    type="submit"
+                    :disabled="!promoInput || isVerifyingPromo || useMemberVoucher"
+                    class="bg-black text-white text-[10px] font-bold uppercase px-4 rounded-lg hover:bg-gray-800 transition disabled:bg-gray-300 w-20 flex justify-center items-center"
+                  >
+                    <span v-if="!isVerifyingPromo">{{ $t("payment.apply") }}</span>
+                    <div
+                      v-else
+                      class="w-3 h-3 border-2 rounded-full border-white/40 border-t-white animate-spin"
+                    ></div>
+                  </button>
+                  <button
+                    v-else
+                    type="button"
+                    @click="removePromo"
+                    class="bg-red-50 text-red-600 border border-red-200 text-[10px] font-bold uppercase px-4 rounded-lg hover:bg-red-100 transition w-20"
+                  >
+                    {{ $t("payment.remove") }}
+                  </button>
+                </form>
+                <p
+                  v-if="promoMessage"
+                  :class="promoSuccess ? 'text-green-600' : 'text-red-500'"
+                  class="text-[10px] mt-2 font-medium"
+                >
+                  {{ promoMessage }}
+                </p>
+                <div
+                  v-if="appliedPromoCode"
+                  class="flex justify-between text-[10px] md:text-xs font-medium text-emerald-600 mt-2"
+                >
+                  <span class="pr-2 truncate">
+                    Promo (<span class="font-mono uppercase">{{ appliedPromoCode }}</span
+                    >)
+                  </span>
+                  <span>- {{ formatCurrencyDisplay(actualPromoDiscountObj) }}</span>
+                </div>
+              </div>
+
+              <div
+                v-if="userData?.is_membership && availablePoints > 0"
+                class="pt-4 mt-2 border-t border-gray-200 border-dashed"
+              >
+                <div class="flex items-center justify-between mb-2">
+                  <span
+                    class="text-[10px] font-bold text-yellow-800 uppercase tracking-widest flex items-center gap-1"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-3 h-3 text-yellow-500"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                      />
+                    </svg>
+                    {{ $t("payment.redeem_points") }}
+                  </span>
+                  <span class="text-xs text-gray-500"
+                    >{{ $t("payment.bal") }} {{ availablePoints }} Pts</span
+                  >
+                </div>
+                <div class="flex gap-2">
+                  <input
+                    type="number"
+                    v-model.number="pointsToUse"
+                    :max="maxUsablePoints"
+                    min="0"
+                    :disabled="['SOLHOST34', 'MERDEKA17'].includes(appliedPromoCode)"
+                    class="flex-1 bg-white border border-yellow-300 rounded-lg px-3 py-1.5 text-sm focus:ring-yellow-500 outline-none disabled:bg-gray-100 disabled:text-gray-400"
+                    placeholder="0"
+                  />
+                  <button
+                    type="button"
+                    @click="useAllPoints"
+                    :disabled="['SOLHOST34', 'MERDEKA17'].includes(appliedPromoCode)"
+                    class="bg-yellow-100 text-yellow-800 text-[10px] font-bold uppercase px-3 rounded-lg hover:bg-yellow-200 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {{ $t("payment.use_all") }}
+                  </button>
+                </div>
+
+                <p
+                  v-if="['SOLHOST34', 'MERDEKA17'].includes(appliedPromoCode)"
+                  class="text-[9px] text-red-500 mt-1 italic font-medium text-right"
+                >
+                  *Poin tidak dapat digabung dengan Voucher/Promo Spesial
+                </p>
+                <p
+                  v-else-if="pointsToUse > 0"
+                  class="text-[10px] text-green-600 mt-1 font-medium text-right"
+                >
+                  - {{ formatCurrencyDisplay(appliedPointDiscountObj) }}
+                </p>
+              </div>
+
+              <div class="flex items-start justify-between text-gray-500">
+                <span>{{ $t("payment.shipping") }}</span>
+                <span v-if="shippingMethod === 'free'" class="font-bold text-green-600">{{
+                  $t("payment.free")
+                }}</span>
+                <div
+                  v-else-if="shippingMethod === 'biteship' && selectedRate"
+                  class="text-right"
+                >
+                  <span class="block font-medium text-gray-900">
+                    {{
+                      formatCurrencyDisplay({
+                        value: shippingCostObj.value,
+                        curr: shippingCostObj.curr,
+                      })
+                    }}
+                  </span>
+                </div>
+                <span v-else class="italic text-[10px]">{{
+                  $t("payment.select_method")
+                }}</span>
+              </div>
+
+              <div
+                v-if="bundleDiscountAmount > 0"
+                class="flex justify-between px-3 py-2 my-2 text-sm font-bold border text-emerald-600 bg-emerald-50 rounded-xl border-emerald-100"
+              >
+                <span class="uppercase tracking-widest text-[10px] mt-0.5"
+                  >Bundle Saved</span
+                >
+                <span>
+                  -
+                  {{
+                    formatCurrencyDisplay({
+                      value: bundleDiscountAmount,
+                      curr: currentCurrency,
+                    })
+                  }}
+                </span>
+              </div>
+
+              <div
+                class="flex justify-between pt-4 font-bold text-gray-900 border-t border-gray-200"
+              >
+                <span class="mt-1 text-xs tracking-widest uppercase">{{
+                  $t("payment.grand_total")
+                }}</span>
+                <span class="text-xl text-gycora">{{
+                  formatCurrencyDisplay(grandTotalObj)
+                }}</span>
+              </div>
+
+              <button
+                @click="handlePayment"
+                :disabled="isButtonDisabled"
+                class="mt-8 w-full bg-black hover:bg-gray-800 disabled:bg-gray-300 py-5 rounded-2xl font-bold text-white text-xs uppercase tracking-[0.3em] transition-all duration-500 shadow-xl shadow-black/10 flex justify-center items-center"
+              >
+                <span v-if="!isProcessing">{{ $t("payment.pay_now") }}</span>
+                <span v-else class="flex items-center justify-center gap-2">
+                  <div
+                    class="w-3 h-3 border-2 rounded-full border-white/30 border-t-white animate-spin"
+                  ></div>
+                  {{ $t("payment.processing") }}
+                </span>
+              </button>
+
+              <p
+                v-if="!selectedAddressId"
+                class="mt-4 text-[10px] tracking-tighter text-center text-red-500 uppercase"
+              >
+                {{ $t("payment.select_shipping_address") }}
+              </p>
+              <p
+                v-else-if="shippingMethod === 'biteship' && !selectedRate"
+                class="mt-4 text-[10px] tracking-tighter text-center text-red-500 uppercase"
+              >
+                {{ $t("payment.select_courier_service") }}
+              </p>
             </div>
           </div>
         </div>
