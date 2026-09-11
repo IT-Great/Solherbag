@@ -17272,6 +17272,377 @@ const useAllPoints = () => {
 </template>
 
 <script setup>
+// // ==========================================
+// // 1. IMPORTS & COMPOSABLES
+// // ==========================================
+// import { ref, onMounted, onUnmounted, watch, computed } from "vue";
+// import { useRouter } from "vue-router";
+// import axios from "axios";
+// import Swal from "sweetalert2";
+// import { BASE_URL } from "../../config/api.js";
+// import { useCart, getDiscountStatus } from "../../composables/useCart";
+// import AddressModal from "./Layout/AddressModal.vue";
+
+// const router = useRouter();
+// const getAxiosConfig = () => ({ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
+
+// const {
+//   cartItems, checkoutCount, bundleDiscountAmount, 
+//   selectedItemIds, clearSelectedCart,
+// } = useCart();
+
+// // ==========================================
+// // 2. STATE MANAGEMENT
+// // ==========================================
+// // Global UI State
+// const isPageLoading = ref(true);
+// const isProcessing = ref(false);
+
+// // User State
+// const userData = ref(null);
+// const userType = ref("guest");
+
+// // Address State
+// const addresses = ref([]);
+// const selectedAddressId = ref(null);
+// const isModalOpen = ref(false);
+
+// // Shipping State
+// const shippingMethod = ref("free");
+// const selectedRate = ref(null);
+// const isLoadingRates = ref(false);
+// const rawShippingRates = ref([]);
+// const deliveryType = ref("now");
+// const deliveryDate = ref("");
+// const deliveryTime = ref("");
+
+// // Promo & Points State
+// const promoInput = ref("");
+// const appliedPromoCode = ref(null);
+// const promoDiscountAmount = ref(0);
+// const appliedPromoType = ref(null);
+// const promoMessage = ref("");
+// const promoSuccess = ref(false);
+// const isVerifyingPromo = ref(false);
+
+// const useMemberVoucher = ref(false);
+// const MEMBER_VOUCHER_CODE = "SOLHERMEMBER";
+// const MEMBER_MIN_SPEND = 500000;
+
+// const pointsToUse = ref(0);
+// const availablePoints = ref(0);
+
+// // Product & Currency State
+// const catalogProducts = ref([]);
+// const currentCurrency = ref(localStorage.getItem("currency") || "IDR");
+// const exchangeRates = ref({});
+// const imageErrors = ref({});
+
+// // ==========================================
+// // 3. COMPUTED PROPERTIES (LOGIC & CALCULATION)
+// // ==========================================
+
+// // 👇 [PERBAIKAN FATAL] MENGEMBALIKAN MAPPING ADDRESS 👇
+// const destinationInfo = computed(() => {
+//   const addr = addresses.value.find((a) => a.id === selectedAddressId.value);
+//   if (!addr) return null;
+//   return {
+//     name: addr.receiver?.full_name || addr.first_name_address + ' ' + addr.last_name_address || "Unknown",
+//     phone: userData.value?.phone || "No Phone Provided",
+//     address: `${addr.details?.location || addr.address_location || ""}, ${addr.details?.city || addr.city || ""}, ${addr.details?.province || addr.province || ""}`,
+//     postal_code: addr.postal_code || addr.details?.postal_code || "",
+//     country: addr.region || addr.details?.region || "Indonesia",
+//   };
+// });
+// // 👆 ================================================ 👆
+
+// const todayDate = computed(() => new Date().toISOString().split("T")[0]);
+
+// const checkoutItems = computed(() => {
+//   const ids = selectedItemIds?.value || selectedItemIds || [];
+//   return (cartItems.value || []).filter((item) => ids.includes(item.id)).map((item) => {
+//     const fresh = catalogProducts.value.find((p) => p.id === item.product_id);
+//     return fresh ? { ...item, product: fresh } : item;
+//   });
+// });
+
+// const checkoutTotalIDR = computed(() => {
+//   return checkoutItems.value.reduce((sum, item) => sum + (getActivePriceObj(item.product).value * item.quantity), 0);
+// });
+
+// const cartSubtotalObj = computed(() => {
+//   const totalValue = checkoutItems.value.reduce((sum, item) => sum + (getActivePriceObj(item.product).value * item.quantity), 0);
+//   return { value: totalValue, curr: currentCurrency.value };
+// });
+
+// const actualPromoDiscountIDR = computed(() => promoDiscountAmount.value);
+// const actualPromoDiscountObj = computed(() => convertIDRtoActiveCurrency(actualPromoDiscountIDR.value));
+
+// const maxPointsAllowed = computed(() => {
+//   const maxUsableAmount = Math.max(0, checkoutTotalIDR.value - actualPromoDiscountIDR.value);
+//   return Math.min(availablePoints.value, Math.floor(maxUsableAmount / 1000));
+// });
+
+// const appliedPointDiscountIDR = computed(() => (pointsToUse.value || 0) * 1000);
+// const appliedPointDiscountObj = computed(() => convertIDRtoActiveCurrency(appliedPointDiscountIDR.value));
+
+// const shippingCostIDR = computed(() => shippingMethod.value === "biteship" && selectedRate.value ? parseFloat(selectedRate.value.price) : 0);
+// const shippingCostObj = computed(() => convertIDRtoActiveCurrency(shippingCostIDR.value));
+
+// const grandTotalObj = computed(() => {
+//   const calculatedTotal = cartSubtotalObj.value.value - bundleDiscountAmount.value + shippingCostObj.value.value - actualPromoDiscountObj.value.value - appliedPointDiscountObj.value.value;
+//   return { value: Math.max(0, calculatedTotal), curr: currentCurrency.value };
+// });
+
+// const processedShippingRates = computed(() => {
+//   if (!rawShippingRates.value || rawShippingRates.value.length === 0) return [];
+//   return rawShippingRates.value.map((rate) => ({
+//     ...rate,
+//     company: rate.provider || rate.company,
+//     type: rate.service_name || rate.type,
+//     duration: rate.etd || rate.duration,
+//     courier_name: rate.provider ? "Global Express" : rate.courier_name,
+//     price: rate.price,
+//     is_disabled: false,
+//     disable_reason: "",
+//   }));
+// });
+
+// const isButtonDisabled = computed(() => {
+//   if (isProcessing.value || cartItems.value.length === 0 || !selectedAddressId.value) return true;
+//   if (shippingMethod.value === "biteship") {
+//     if (!selectedRate.value) return true;
+//     if (deliveryType.value === "scheduled" && (!deliveryDate.value || !deliveryTime.value)) return true;
+//   }
+//   return false;
+// });
+
+// // ==========================================
+// // 4. WATCHERS
+// // ==========================================
+// watch([pointsToUse, maxPointsAllowed], () => {
+//   if (pointsToUse.value > maxPointsAllowed.value) pointsToUse.value = maxPointsAllowed.value;
+// });
+
+// watch(selectedAddressId, async (newVal) => {
+//   if (newVal) {
+//     const ids = selectedItemIds?.value || selectedItemIds;
+//     if (!ids || ids.length === 0) return;
+
+//     selectedRate.value = null;
+//     isLoadingRates.value = true;
+//     rawShippingRates.value = [];
+//     try {
+//       const res = await axios.post(`${BASE_URL}/shipping/rates`, { address_id: newVal, cart_ids: ids }, getAxiosConfig());
+//       rawShippingRates.value = res.data?.data || res.data?.rates || res.data?.pricing || [];
+//     } catch (error) {
+//       if (error.response?.status === 401) return router.push("/login");
+//     } finally {
+//       isLoadingRates.value = false;
+//     }
+//   }
+// });
+
+// // ==========================================
+// // 5. HELPER FUNCTIONS
+// // ==========================================
+// const parseColorName = (str) => str ? str.split("|")[0] : "";
+// const parseColorHex = (str) => { try { const p = JSON.parse(str); return p.hex || "#ccc"; } catch { return str.includes("|") ? str.split("|")[1] : "#ccc"; } };
+// const handleImageError = (company) => { imageErrors.value[company] = true; };
+
+// const getCourierLogo = (company) => {
+//   const map = { jne: "jne.png", sicepat: "sicepat.png", jnt: "jnt.png", anteraja: "anteraja.png", gojek: "gojek.png", grab: "grab.png", paxel: "paxel.png", ninja: "ninja.png", dhl: "dhl.png" };
+//   return map[company.toLowerCase()] ? `/courier_images/${map[company.toLowerCase()]}` : null;
+// };
+
+// const formatCurrencyDisplay = (priceObj) => {
+//   if (!priceObj) return "";
+//   const { value, curr } = priceObj;
+//   const symbols = { USD: "$", SGD: "S$", EUR: "€", AUD: "A$", MYR: "RM", IDR: "Rp " };
+//   const formatter = new Intl.NumberFormat(curr === "IDR" ? "id-ID" : "en-US", { minimumFractionDigits: curr === "IDR" ? 0 : 2 });
+//   return `${symbols[curr] || curr + " "}${formatter.format(value)}`;
+// };
+
+// const getPriceToDisplay = (product) => {
+//   const curr = currentCurrency.value;
+//   if (curr === "IDR") return { value: Number(product.price), curr: "IDR" };
+//   try {
+//     const pricesObj = typeof product.prices === "string" ? JSON.parse(product.prices) : product.prices || {};
+//     const dbPrice = pricesObj[curr] || pricesObj[curr.toLowerCase()] || pricesObj[currentCurrency.value.toUpperCase()];
+//     if (dbPrice) return { value: parseFloat(dbPrice), curr: curr };
+//   } catch (e) {}
+//   return { value: Number(product.price), curr: "IDR" };
+// };
+
+// const getActivePriceObj = (product) => {
+//   const isReseller = userType.value === "reseller";
+//   const wholesale = Number(product.wholesale_price) || 0;
+//   if (isReseller && wholesale > 0 && checkoutCount.value >= 24) return { value: wholesale, curr: "IDR" };
+//   return getPriceToDisplay(product);
+// };
+
+// const convertIDRtoActiveCurrency = (idrAmount) => {
+//   const curr = currentCurrency.value;
+//   if (curr === "IDR" || !exchangeRates.value[curr]) return { value: idrAmount, curr: "IDR" };
+//   return { value: idrAmount * exchangeRates.value[curr], curr: curr };
+// };
+
+// const shouldShowColor = (item) => {
+//   if (!item.color) return false;
+//   const cName = parseColorName(item.color).toLowerCase().trim();
+//   if (['basic', 'default', '-', ''].includes(cName)) return false;
+//   if (item.product && item.product.name) {
+//     const productWords = item.product.name.toLowerCase().trim().split(/\s+/);
+//     if (cName === productWords[productWords.length - 1]) return false;
+//   }
+//   return true;
+// };
+
+// // ==========================================
+// // 6. ACTION FUNCTIONS
+// // ==========================================
+// const fetchAddresses = async () => {
+//   try {
+//     const res = await axios.get(`${BASE_URL}/addresses`, getAxiosConfig());
+//     const addrData = res.data?.data !== undefined ? res.data.data : res.data;
+//     addresses.value = Array.isArray(addrData) ? addrData : [];
+//   } catch (e) {}
+// };
+
+// const onAddressSaved = async (newId) => {
+//   await fetchAddresses();
+//   selectedAddressId.value = newId || (addresses.value.length > 0 ? addresses.value[addresses.value.length - 1].id : null);
+//   isModalOpen.value = false;
+// };
+
+// const handleMemberToggle = async () => {
+//   if (useMemberVoucher.value) {
+//     if (checkoutTotalIDR.value < MEMBER_MIN_SPEND) {
+//       Swal.fire({ toast: true, position: "top-end", icon: "warning", title: `Min. spend is Rp ${MEMBER_MIN_SPEND.toLocaleString("id-ID")}`, showConfirmButton: false, timer: 3000 });
+//       useMemberVoucher.value = false; return;
+//     }
+//     promoInput.value = MEMBER_VOUCHER_CODE;
+//     await applyPromo();
+//     if (!promoSuccess.value) useMemberVoucher.value = false;
+//   } else {
+//     if (appliedPromoCode.value === MEMBER_VOUCHER_CODE) removePromo();
+//   }
+// };
+
+// const applyPromo = async () => {
+//   if (!promoInput.value) return;
+//   isVerifyingPromo.value = true;
+//   try {
+//     const codeToBeApplied = promoInput.value.toUpperCase();
+//     if (codeToBeApplied === "MERDEKA17" && checkoutTotalIDR.value < 699000) throw new Error(`Minimum pembelian untuk promo ini adalah Rp 699.000`);
+
+//     const res = await axios.post(`${BASE_URL}/promo/verify`, {
+//       promo_code: codeToBeApplied,
+//       address_id: selectedAddressId.value,
+//       cart_items: checkoutItems.value.map((item) => ({ product_id: item.product_id, quantity: item.quantity })),
+//     }, getAxiosConfig());
+
+//     if (codeToBeApplied === MEMBER_VOUCHER_CODE && checkoutTotalIDR.value < MEMBER_MIN_SPEND) {
+//       throw new Error(`Minimum spend is Rp ${MEMBER_MIN_SPEND.toLocaleString("id-ID")}`);
+//     }
+
+//     promoSuccess.value = true;
+//     promoMessage.value = "✅ " + res.data.message;
+//     appliedPromoCode.value = codeToBeApplied;
+//     promoDiscountAmount.value = Math.min(res.data.discount_value, checkoutTotalIDR.value);
+//     appliedPromoType.value = res.data.promo_type;
+
+//     if (appliedPromoCode.value === MEMBER_VOUCHER_CODE) useMemberVoucher.value = true;
+//     if (['SOLHOST34', 'MERDEKA17'].includes(appliedPromoCode.value)) pointsToUse.value = 0;
+//   } catch (error) {
+//     promoSuccess.value = false;
+//     promoMessage.value = "❌ " + (error.response?.data?.message || error.message || "Invalid promo code.");
+//     appliedPromoCode.value = null; promoDiscountAmount.value = 0; appliedPromoType.value = null; useMemberVoucher.value = false;
+//   } finally {
+//     isVerifyingPromo.value = false;
+//   }
+// };
+
+// const removePromo = () => {
+//   promoInput.value = ""; appliedPromoCode.value = null; appliedPromoType.value = null;
+//   promoDiscountAmount.value = 0; promoMessage.value = ""; promoSuccess.value = false; useMemberVoucher.value = false;
+// };
+
+// const useAllPoints = () => { pointsToUse.value = maxPointsAllowed.value; };
+
+// const handlePayment = async () => {
+//   isProcessing.value = true;
+//   try {
+//     const payload = {
+//       address_id: selectedAddressId.value, shipping_method: shippingMethod.value, use_points: pointsToUse.value || 0,
+//       cart_ids: selectedItemIds.value, courier_company: shippingMethod.value === "biteship" ? selectedRate.value?.company : null,
+//       courier_type: shippingMethod.value === "biteship" ? selectedRate.value?.type : null, shipping_cost: shippingMethod.value === "biteship" ? selectedRate.value?.price : null,
+//       delivery_type: shippingMethod.value === "biteship" ? deliveryType.value : null, delivery_date: shippingMethod.value === "biteship" ? deliveryDate.value : null,
+//       delivery_time: shippingMethod.value === "biteship" ? deliveryTime.value : null, promo_code: appliedPromoCode.value,
+//       promo_type: appliedPromoType.value, currency: currentCurrency.value, referral_code: localStorage.getItem("affiliate_ref"),
+//     };
+
+//     const res = await axios.post(`${BASE_URL}/checkout`, payload, {
+//       headers: { Authorization: `Bearer ${localStorage.getItem("token")}`, "X-Idempotency-Key": crypto.randomUUID() },
+//     });
+
+//     if (res.data.checkout_url) { clearSelectedCart(); window.location.href = res.data.checkout_url; }
+//   } catch (error) {
+//     if (error.response?.status === 429) Swal.fire({ icon: 'warning', title: 'Antrean Padat! 🚦', text: error.response.data.message, confirmButtonColor: '#000', confirmButtonText: 'Coba Lagi' });
+//     else if (error.response?.status === 422) Swal.fire({ icon: 'error', title: 'Kehabisan Stok! 😭', text: error.response.data.message || 'Barang baru saja dibeli pelanggan lain.', confirmButtonColor: '#000' });
+//     else Swal.fire("Payment Error", error.response?.data?.message || "Failed to create invoice", "error");
+//   } finally {
+//     isProcessing.value = false;
+//   }
+// };
+
+// // ==========================================
+// // 7. LIFECYCLE HOOKS
+// // ==========================================
+// const updateCurrencyState = () => { currentCurrency.value = localStorage.getItem("currency") || "IDR"; };
+
+// onMounted(async () => {
+//   window.addEventListener("currency-changed", updateCurrencyState);
+//   window.addEventListener("storage", (e) => { if (e.key === "currency") updateCurrencyState(); });
+
+//   try {
+//     const [resExchange, resCatalog, resUser] = await Promise.allSettled([
+//       axios.get(`${BASE_URL}/exchange-rates`), axios.get(`${BASE_URL}/products`), axios.get(`${BASE_URL}/user`, getAxiosConfig())
+//     ]);
+
+//     if (resExchange.status === "fulfilled") exchangeRates.value = resExchange.value.data?.data?.rates || {};
+//     if (resCatalog.status === "fulfilled") catalogProducts.value = resCatalog.value.data?.data?.data || resCatalog.value.data?.data || [];
+    
+//     if (resUser.status === "fulfilled" && resUser.value.data) {
+//       userData.value = resUser.value.data; availablePoints.value = resUser.value.data.point || 0; userType.value = resUser.value.data.usertype || "user";
+//       localStorage.setItem("user", JSON.stringify(resUser.value.data));
+//     } else {
+//       const userStr = localStorage.getItem("user") || localStorage.getItem("user_data");
+//       if (userStr) {
+//         userData.value = JSON.parse(userStr); availablePoints.value = userData.value.point || 0; userType.value = userData.value.usertype || "user";
+//       }
+//     }
+
+//     await fetchAddresses();
+//     if (addresses.value.length > 0) {
+//       selectedAddressId.value = addresses.value.find((a) => a.is_default)?.id || addresses.value[0].id;
+//     }
+
+//     const ids = selectedItemIds?.value || selectedItemIds || [];
+//     if (ids.length === 0) router.push(`/cart`);
+//     else {
+//       const now = new Date(); now.setHours(now.getHours() + 1);
+//       deliveryDate.value = now.toISOString().split("T")[0];
+//       deliveryTime.value = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+//     }
+//   } catch (error) {
+//   } finally {
+//     isPageLoading.value = false;
+//   }
+// });
+
+// onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrencyState); });
+
 // ==========================================
 // 1. IMPORTS & COMPOSABLES
 // ==========================================
@@ -17294,20 +17665,16 @@ const {
 // ==========================================
 // 2. STATE MANAGEMENT
 // ==========================================
-// Global UI State
 const isPageLoading = ref(true);
 const isProcessing = ref(false);
 
-// User State
 const userData = ref(null);
 const userType = ref("guest");
 
-// Address State
 const addresses = ref([]);
 const selectedAddressId = ref(null);
 const isModalOpen = ref(false);
 
-// Shipping State
 const shippingMethod = ref("free");
 const selectedRate = ref(null);
 const isLoadingRates = ref(false);
@@ -17316,7 +17683,6 @@ const deliveryType = ref("now");
 const deliveryDate = ref("");
 const deliveryTime = ref("");
 
-// Promo & Points State
 const promoInput = ref("");
 const appliedPromoCode = ref(null);
 const promoDiscountAmount = ref(0);
@@ -17332,17 +17698,58 @@ const MEMBER_MIN_SPEND = 500000;
 const pointsToUse = ref(0);
 const availablePoints = ref(0);
 
-// Product & Currency State
 const catalogProducts = ref([]);
 const currentCurrency = ref(localStorage.getItem("currency") || "IDR");
 const exchangeRates = ref({});
 const imageErrors = ref({});
 
 // ==========================================
-// 3. COMPUTED PROPERTIES (LOGIC & CALCULATION)
+// 3. HELPER FUNCTIONS (DIPINDAHKAN KE ATAS!)
 // ==========================================
+const parseColorName = (str) => str ? str.split("|")[0] : "";
+const parseColorHex = (str) => { try { const p = JSON.parse(str); return p.hex || "#ccc"; } catch { return str.includes("|") ? str.split("|")[1] : "#ccc"; } };
+const handleImageError = (company) => { imageErrors.value[company] = true; };
 
-// 👇 [PERBAIKAN FATAL] MENGEMBALIKAN MAPPING ADDRESS 👇
+const getCourierLogo = (company) => {
+  const map = { jne: "jne.png", sicepat: "sicepat.png", jnt: "jnt.png", anteraja: "anteraja.png", gojek: "gojek.png", grab: "grab.png", paxel: "paxel.png", ninja: "ninja.png", dhl: "dhl.png" };
+  return map[company.toLowerCase()] ? `/courier_images/${map[company.toLowerCase()]}` : null;
+};
+
+const formatCurrencyDisplay = (priceObj) => {
+  if (!priceObj) return "";
+  const { value, curr } = priceObj;
+  const symbols = { USD: "$", SGD: "S$", EUR: "€", AUD: "A$", MYR: "RM", IDR: "Rp " };
+  const formatter = new Intl.NumberFormat(curr === "IDR" ? "id-ID" : "en-US", { minimumFractionDigits: curr === "IDR" ? 0 : 2 });
+  return `${symbols[curr] || curr + " "}${formatter.format(value)}`;
+};
+
+const getPriceToDisplay = (product) => {
+  const curr = currentCurrency.value;
+  if (curr === "IDR") return { value: Number(product.price), curr: "IDR" };
+  try {
+    const pricesObj = typeof product.prices === "string" ? JSON.parse(product.prices) : product.prices || {};
+    const dbPrice = pricesObj[curr] || pricesObj[curr.toLowerCase()] || pricesObj[currentCurrency.value.toUpperCase()];
+    if (dbPrice) return { value: parseFloat(dbPrice), curr: curr };
+  } catch (e) {}
+  return { value: Number(product.price), curr: "IDR" };
+};
+
+const getActivePriceObj = (product) => {
+  const isReseller = userType.value === "reseller";
+  const wholesale = Number(product.wholesale_price) || 0;
+  if (isReseller && wholesale > 0 && checkoutCount.value >= 24) return { value: wholesale, curr: "IDR" };
+  return getPriceToDisplay(product);
+};
+
+const convertIDRtoActiveCurrency = (idrAmount) => {
+  const curr = currentCurrency.value;
+  if (curr === "IDR" || !exchangeRates.value[curr]) return { value: idrAmount, curr: "IDR" };
+  return { value: idrAmount * exchangeRates.value[curr], curr: curr };
+};
+
+// ==========================================
+// 4. COMPUTED PROPERTIES
+// ==========================================
 const destinationInfo = computed(() => {
   const addr = addresses.value.find((a) => a.id === selectedAddressId.value);
   if (!addr) return null;
@@ -17354,7 +17761,6 @@ const destinationInfo = computed(() => {
     country: addr.region || addr.details?.region || "Indonesia",
   };
 });
-// 👆 ================================================ 👆
 
 const todayDate = computed(() => new Date().toISOString().split("T")[0]);
 
@@ -17418,7 +17824,7 @@ const isButtonDisabled = computed(() => {
 });
 
 // ==========================================
-// 4. WATCHERS
+// 5. WATCHERS
 // ==========================================
 watch([pointsToUse, maxPointsAllowed], () => {
   if (pointsToUse.value > maxPointsAllowed.value) pointsToUse.value = maxPointsAllowed.value;
@@ -17442,61 +17848,6 @@ watch(selectedAddressId, async (newVal) => {
     }
   }
 });
-
-// ==========================================
-// 5. HELPER FUNCTIONS
-// ==========================================
-const parseColorName = (str) => str ? str.split("|")[0] : "";
-const parseColorHex = (str) => { try { const p = JSON.parse(str); return p.hex || "#ccc"; } catch { return str.includes("|") ? str.split("|")[1] : "#ccc"; } };
-const handleImageError = (company) => { imageErrors.value[company] = true; };
-
-const getCourierLogo = (company) => {
-  const map = { jne: "jne.png", sicepat: "sicepat.png", jnt: "jnt.png", anteraja: "anteraja.png", gojek: "gojek.png", grab: "grab.png", paxel: "paxel.png", ninja: "ninja.png", dhl: "dhl.png" };
-  return map[company.toLowerCase()] ? `/courier_images/${map[company.toLowerCase()]}` : null;
-};
-
-const formatCurrencyDisplay = (priceObj) => {
-  if (!priceObj) return "";
-  const { value, curr } = priceObj;
-  const symbols = { USD: "$", SGD: "S$", EUR: "€", AUD: "A$", MYR: "RM", IDR: "Rp " };
-  const formatter = new Intl.NumberFormat(curr === "IDR" ? "id-ID" : "en-US", { minimumFractionDigits: curr === "IDR" ? 0 : 2 });
-  return `${symbols[curr] || curr + " "}${formatter.format(value)}`;
-};
-
-const getPriceToDisplay = (product) => {
-  const curr = currentCurrency.value;
-  if (curr === "IDR") return { value: Number(product.price), curr: "IDR" };
-  try {
-    const pricesObj = typeof product.prices === "string" ? JSON.parse(product.prices) : product.prices || {};
-    const dbPrice = pricesObj[curr] || pricesObj[curr.toLowerCase()] || pricesObj[currentCurrency.value.toUpperCase()];
-    if (dbPrice) return { value: parseFloat(dbPrice), curr: curr };
-  } catch (e) {}
-  return { value: Number(product.price), curr: "IDR" };
-};
-
-const getActivePriceObj = (product) => {
-  const isReseller = userType.value === "reseller";
-  const wholesale = Number(product.wholesale_price) || 0;
-  if (isReseller && wholesale > 0 && checkoutCount.value >= 24) return { value: wholesale, curr: "IDR" };
-  return getPriceToDisplay(product);
-};
-
-const convertIDRtoActiveCurrency = (idrAmount) => {
-  const curr = currentCurrency.value;
-  if (curr === "IDR" || !exchangeRates.value[curr]) return { value: idrAmount, curr: "IDR" };
-  return { value: idrAmount * exchangeRates.value[curr], curr: curr };
-};
-
-const shouldShowColor = (item) => {
-  if (!item.color) return false;
-  const cName = parseColorName(item.color).toLowerCase().trim();
-  if (['basic', 'default', '-', ''].includes(cName)) return false;
-  if (item.product && item.product.name) {
-    const productWords = item.product.name.toLowerCase().trim().split(/\s+/);
-    if (cName === productWords[productWords.length - 1]) return false;
-  }
-  return true;
-};
 
 // ==========================================
 // 6. ACTION FUNCTIONS
