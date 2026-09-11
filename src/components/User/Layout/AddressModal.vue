@@ -110,7 +110,7 @@
 import { ref, watch, onMounted } from 'vue';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import { BASE_URL } from '../../config/api.js';
+import { BASE_URL } from '../../../config/api.js';
 import { Country, State } from 'country-state-city';
 import 'leaflet/dist/leaflet.css';
 import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet';
