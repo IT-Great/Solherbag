@@ -3114,8 +3114,11 @@ onMounted(async () => {
       axios.get(`${BASE_URL}/products/${productId}`, axiosConfig),
     ]);
 
-    categories.value = catRes.data.data;
-    bagCategories.value = bagCatRes.data.data;
+    // categories.value = catRes.data.data;
+    // bagCategories.value = bagCatRes.data.data;
+
+    categories.value = catRes.data.data !== undefined ? catRes.data.data : catRes.data;
+    bagCategories.value = bagCatRes.data.data !== undefined ? bagCatRes.data.data : bagCatRes.data;
 
     fillFormWithData(prodRes.data);
   } catch (error) {

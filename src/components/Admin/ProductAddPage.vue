@@ -2627,8 +2627,11 @@ onMounted(async () => {
       axios.get(`${BASE_URL}/categories`, axiosConfig),
       axios.get(`${BASE_URL}/admin/bag-categories`, axiosConfig),
     ]);
-    categories.value = catRes.data.data;
-    bagCategories.value = bagCatRes.data.data;
+    // categories.value = catRes.data.data;
+    // bagCategories.value = bagCatRes.data.data;
+
+    categories.value = catRes.data.data !== undefined ? catRes.data.data : catRes.data;
+    bagCategories.value = bagCatRes.data.data !== undefined ? bagCatRes.data.data : bagCatRes.data;
   } catch (error) {
     console.error("Gagal menarik kategori", error);
   }
