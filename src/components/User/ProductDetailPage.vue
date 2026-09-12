@@ -3574,7 +3574,7 @@ const colorMapHex = {
   Pink: "#FFC0CB",
   Yellow: "#FFD700",
   Blue: "#4169E1",
-  Mocca: "#967969",
+  Mocha: "#967969",
   Cream: "#FDF4E3",
   Sage: "#9DC183",
   Gold: "#D4AF37",
