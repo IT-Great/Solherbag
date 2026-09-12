@@ -3020,11 +3020,27 @@ const paginatedCategories = computed(() => {
 
 watch([searchQuery, itemsPerPage], () => { currentPage.value = 1; });
 
+// const fetchCategories = async () => {
+//   isLoading.value = true;
+//   try {
+//     const res = await axios.get(`${BASE_URL}/categories`, axiosConfig);
+//     categories.value = res.data.data.sort((a, b) => a.id - b.id);
+//   } catch (err) {
+//     console.error(err);
+//   } finally {
+//     setTimeout(() => { isLoading.value = false; }, 500);
+//   }
+// };
+
 const fetchCategories = async () => {
   isLoading.value = true;
   try {
     const res = await axios.get(`${BASE_URL}/categories`, axiosConfig);
-    categories.value = res.data.data.sort((a, b) => a.id - b.id);
+    
+    // 👇 PERBAIKAN: Gunakan fallback agar Vue bisa membaca array langsung atau objek pagination
+    const sourceData = res.data.data !== undefined ? res.data.data : res.data;
+    
+    categories.value = sourceData.sort((a, b) => a.id - b.id);
   } catch (err) {
     console.error(err);
   } finally {
