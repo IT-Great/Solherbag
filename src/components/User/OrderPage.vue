@@ -10049,6 +10049,28 @@ const startTimers = () => {
   }, 1000);
 };
 
+// const fetchOrders = async () => {
+//   loading.value = true;
+//   try {
+//     const res = await axios.get(`${BASE_URL}/transactions`, {
+//       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+//     });
+
+//     const validTransactions = res.data.filter(
+//       (order) => order.status !== "awaiting_payment"
+//     );
+
+//     transactions.value = validTransactions.map((o) => ({ ...o, isCancelling: false }));
+//     startTimers();
+//   } catch (err) {
+//     console.error(err);
+//   } finally {
+//     setTimeout(() => {
+//       loading.value = false;
+//     }, 300);
+//   }
+// };
+
 const fetchOrders = async () => {
   loading.value = true;
   try {
@@ -10056,7 +10078,10 @@ const fetchOrders = async () => {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
 
-    const validTransactions = res.data.filter(
+    // 👇 Terapkan Fallback Paginasi 👇
+    const sourceData = res.data.data !== undefined ? res.data.data : res.data;
+
+    const validTransactions = sourceData.filter(
       (order) => order.status !== "awaiting_payment"
     );
 

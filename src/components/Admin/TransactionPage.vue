@@ -8010,12 +8010,34 @@ const startTimers = () => {
   }, 1000);
 };
 
+// const fetchTransactions = async () => {
+//   isLoading.value = true;
+//   try {
+//     const res = await axios.get(`${BASE_URL}/admin/transactions`, axiosConfig);
+//     // Filter dan abaikan status awaiting_payment
+//     const filteredData = res.data.filter((o) => o.status !== "awaiting_payment");
+//     transactions.value = filteredData.map((o) => ({
+//       ...o,
+//       isCancelling: false,
+//     }));
+//     startTimers();
+//   } catch (error) {
+//     Swal.fire("Error", "Failed to fetch transactions", "error");
+//   } finally {
+//     setTimeout(() => (isLoading.value = false), 500); // Pertahankan agar skeleton loading terlihat elegan
+//   }
+// };
+
 const fetchTransactions = async () => {
   isLoading.value = true;
   try {
     const res = await axios.get(`${BASE_URL}/admin/transactions`, axiosConfig);
+    
+    // 👇 Terapkan Fallback Paginasi 👇
+    const sourceData = res.data.data !== undefined ? res.data.data : res.data;
+
     // Filter dan abaikan status awaiting_payment
-    const filteredData = res.data.filter((o) => o.status !== "awaiting_payment");
+    const filteredData = sourceData.filter((o) => o.status !== "awaiting_payment");
     transactions.value = filteredData.map((o) => ({
       ...o,
       isCancelling: false,
