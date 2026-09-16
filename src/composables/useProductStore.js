@@ -158,6 +158,22 @@ export function useProductStore() {
         }
     };
 
+    // const fetchCollectionsData = async () => {
+    //     if (state.isCollectionsLoaded) return;
+
+    //     try {
+    //         const [prodRes, catRes] = await Promise.all([
+    //             axios.get(`${BASE_URL}/products`),
+    //             axios.get(`${BASE_URL}/guest/categories`)
+    //         ]);
+    //         state.collectionsProducts = prodRes.data;
+    //         state.categories = catRes.data.data;
+    //         state.isCollectionsLoaded = true;
+    //     } catch (error) {
+    //         console.error("Error loading collections:", error);
+    //     }
+    // };
+
     const fetchCollectionsData = async () => {
         if (state.isCollectionsLoaded) return;
 
@@ -166,8 +182,14 @@ export function useProductStore() {
                 axios.get(`${BASE_URL}/products`),
                 axios.get(`${BASE_URL}/guest/categories`)
             ]);
-            state.collectionsProducts = prodRes.data;
-            state.categories = catRes.data.data;
+
+            // 👇 PERBAIKAN: Gunakan fallback reaktif untuk Products dan Categories 👇
+            const sourceProducts = prodRes.data.data !== undefined ? prodRes.data.data : prodRes.data;
+            const sourceCategories = catRes.data.data !== undefined ? catRes.data.data : catRes.data;
+
+            state.collectionsProducts = sourceProducts;
+            state.categories = sourceCategories;
+
             state.isCollectionsLoaded = true;
         } catch (error) {
             console.error("Error loading collections:", error);
