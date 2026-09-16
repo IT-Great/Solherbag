@@ -2812,6 +2812,43 @@ onMounted(() => {
       </table>
     </div>
 
+    <!-- 👇 [PERBAIKAN] TAMBAHKAN KODE PAGINASI INI DI SINI 👇 -->
+    <div v-if="!isLoading && filteredCategories.length > 0" class="flex flex-col items-center justify-between gap-4 pt-4 mt-6 border-t border-gray-100 md:flex-row">
+      <p class="text-sm text-gray-500">
+        Showing <span class="font-bold text-gray-900">{{ (currentPage - 1) * itemsPerPage + 1 }}</span> to
+        <span class="font-bold text-gray-900">{{ Math.min(currentPage * itemsPerPage, filteredCategories.length) }}</span> of
+        <span class="font-bold text-gray-900">{{ filteredCategories.length }}</span> categories
+      </p>
+      <div class="flex items-center gap-2">
+        <button
+          @click="currentPage--"
+          :disabled="currentPage === 1"
+          class="px-4 py-2 text-xs font-bold tracking-widest text-gray-600 uppercase transition border border-gray-200 rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
+        >
+          Prev
+        </button>
+        <div class="hidden gap-1 sm:flex">
+          <button
+            v-for="page in totalPages"
+            :key="page"
+            @click="currentPage = page"
+            :class="currentPage === page ? 'bg-black text-white border-black shadow-sm' : 'hover:bg-gray-50 border-gray-200 text-gray-600'"
+            class="flex items-center justify-center w-8 h-8 text-xs font-bold transition border rounded-lg"
+          >
+            {{ page }}
+          </button>
+        </div>
+        <button
+          @click="currentPage++"
+          :disabled="currentPage === totalPages"
+          class="px-4 py-2 text-xs font-bold tracking-widest text-gray-600 uppercase transition border border-gray-200 rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+    <!-- 👆 ================================================ 👆 -->
+
     <div v-if="showModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm overflow-y-auto py-10">
       <div class="w-full max-w-xl p-8 bg-white shadow-2xl rounded-3xl my-auto">
         <h2 class="mb-6 text-xl font-bold">{{ isEdit ? "Update Category & Promo" : "Create New Category" }}</h2>
