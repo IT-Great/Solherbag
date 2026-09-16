@@ -2768,6 +2768,24 @@ const fetchUserPermissions = async () => {
   }
 };
 
+// const fetchData = async () => {
+//   isLoading.value = true;
+//   try {
+//     const [resProd, resCat] = await Promise.all([
+//       axios.get(`${BASE_URL}/products`, axiosConfig),
+//       axios.get(`${BASE_URL}/categories`, axiosConfig),
+//     ]);
+//     products.value = resProd.data;
+//     categories.value = resCat.data.data;
+//   } catch (error) {
+//     console.error("Fetch error:", error);
+//   } finally {
+//     setTimeout(() => {
+//       isLoading.value = false;
+//     }, 500);
+//   }
+// };
+
 const fetchData = async () => {
   isLoading.value = true;
   try {
@@ -2775,8 +2793,11 @@ const fetchData = async () => {
       axios.get(`${BASE_URL}/products`, axiosConfig),
       axios.get(`${BASE_URL}/categories`, axiosConfig),
     ]);
+    
     products.value = resProd.data;
-    categories.value = resCat.data.data;
+    // 👇 PERBAIKAN: Gunakan fallback agar Vue bisa membaca array langsung maupun objek
+    categories.value = resCat.data.data !== undefined ? resCat.data.data : resCat.data;
+    
   } catch (error) {
     console.error("Fetch error:", error);
   } finally {
