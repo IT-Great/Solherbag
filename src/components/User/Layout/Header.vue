@@ -7204,10 +7204,28 @@ watch(
                 <h3 class="mb-2 font-serif text-base text-gray-900">Collections</h3>
                 <button v-for="cat in normalCategories" :key="cat.id" @click="goToCollection(cat.category_name)" class="text-[13px] text-left text-gray-500 hover:text-black transition-colors">{{ cat.category_name }}</button>
               </div>
-              <div class="flex flex-col space-y-4">
+              <!-- <div class="flex flex-col space-y-4">
                 <h3 class="mb-2 font-serif text-base text-gray-900">Accessories</h3>
                 <button @click="goToCollection(accessoriesCategory?.category_name || 'Accessories')" class="text-[13px] text-left text-gray-500 hover:text-black transition-colors">All Accessories</button>
                 <button v-if="accessoriesCategory" @click="goToCollection(accessoriesCategory.category_name)" class="text-[13px] text-left text-gray-500 hover:text-black transition-colors">{{ accessoriesCategory.category_name }}</button>
+              </div> -->
+              <div class="flex flex-col space-y-4">
+                <h3 class="mb-2 font-serif text-base text-gray-900">Accessories</h3>
+                
+                <!-- Tombol All Accessories -->
+                <button @click="goToCollection('Accessories')" class="text-[13px] text-left text-gray-500 hover:text-black transition-colors">
+                  All Accessories
+                </button>
+                
+                <!-- 👇 PERBAIKAN: Looping menggunakan v-for untuk memunculkan C005 & C006 👇 -->
+                <button 
+                  v-for="acc in accessoriesCategories" 
+                  :key="acc.id" 
+                  @click="goToCollection(acc.category_name)" 
+                  class="text-[13px] text-left text-gray-500 hover:text-black transition-colors"
+                >
+                  {{ acc.category_name }}
+                </button>
               </div>
             </div>
 
@@ -7522,14 +7540,28 @@ const bagCategories = ref([]);
 const isMegaMenuLoading = ref(false);
 const randomMegaProduct = ref(null);
 
+// const normalCategories = computed(() => {
+//   return categories.value
+//     .filter((c) => c.category_code !== "C005")
+//     .sort((a, b) => a.id - b.id);
+// });
+
+// const accessoriesCategory = computed(() => {
+//   return categories.value.find((c) => c.category_code === "C005");
+// });
+
 const normalCategories = computed(() => {
   return categories.value
-    .filter((c) => c.category_code !== "C005")
+    // 👇 PERBAIKAN: Kecualikan C005 dan C006 dari kategori normal (Bags/Collections) 👇
+    .filter((c) => c.category_code !== "C005" && c.category_code !== "C006")
     .sort((a, b) => a.id - b.id);
 });
 
-const accessoriesCategory = computed(() => {
-  return categories.value.find((c) => c.category_code === "C005");
+// 👇 PERBAIKAN: Ubah menjadi Array (Filter) untuk menampung banyak kategori aksesoris 👇
+const accessoriesCategories = computed(() => {
+  return categories.value
+    .filter((c) => c.category_code === "C005" || c.category_code === "C006")
+    .sort((a, b) => a.id - b.id);
 });
 
 const generateRandomMegaProduct = () => {
