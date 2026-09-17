@@ -18628,6 +18628,9 @@ const handlePayment = async () => {
     } else {
       payload.guest_data = guestForm.value;
       payload.cart_items = checkoutItems.value.map(i => ({ product_id: i.product_id, quantity: i.quantity, color: i.color }));
+
+      // 👇 TAMBAHKAN BARIS INI 👇
+      localStorage.setItem("last_guest_email", guestForm.value.email);
     }
 
     const config = isAuthenticated.value ? getAxiosConfig() : {};
