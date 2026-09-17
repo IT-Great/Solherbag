@@ -94,6 +94,29 @@ const password = ref("");
 const passwordConfirm = ref("");
 const isClaiming = ref(false);
 
+// onMounted(() => {
+//   externalId.value = route.query.external_id || null;
+//   orderId.value = route.query.order_id || null;
+  
+//   // Cek apakah pengguna sudah memiliki Token Login
+//   const token = localStorage.getItem("token");
+//   if (token) {
+//     isAuthenticated.value = true;
+//   } else {
+//     isAuthenticated.value = false;
+//     // Jika tidak ada token (Guest), kita cari email guest dari LocalStorage
+//     // (Berasal dari form guest di halaman checkout sebelumnya)
+//     try {
+//       const guestCart = JSON.parse(localStorage.getItem("guest_cart") || "[]");
+//       // Atau idealnya, Anda menyimpan email guest sementara di localStorage saat checkout
+//       const guestData = JSON.parse(localStorage.getItem("last_guest_email") || '""');
+//       if (guestData) {
+//         guestEmail.value = guestData;
+//       }
+//     } catch(e) {}
+//   }
+// });
+
 onMounted(() => {
   externalId.value = route.query.external_id || null;
   orderId.value = route.query.order_id || null;
@@ -104,16 +127,12 @@ onMounted(() => {
     isAuthenticated.value = true;
   } else {
     isAuthenticated.value = false;
-    // Jika tidak ada token (Guest), kita cari email guest dari LocalStorage
-    // (Berasal dari form guest di halaman checkout sebelumnya)
-    try {
-      const guestCart = JSON.parse(localStorage.getItem("guest_cart") || "[]");
-      // Atau idealnya, Anda menyimpan email guest sementara di localStorage saat checkout
-      const guestData = JSON.parse(localStorage.getItem("last_guest_email") || '""');
-      if (guestData) {
-        guestEmail.value = guestData;
-      }
-    } catch(e) {}
+    
+    // 👇 PERBAIKAN: Ambil email sebagai teks biasa (tanpa JSON.parse) 👇
+    const guestData = localStorage.getItem("last_guest_email");
+    if (guestData) {
+      guestEmail.value = guestData;
+    }
   }
 });
 
