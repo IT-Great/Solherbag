@@ -88,6 +88,7 @@ const orderId = ref(null);
 // Status Guest / Auth
 const isAuthenticated = ref(false);
 const guestEmail = ref("");
+const isEmailMissing = ref(false); // 👇 TAMBAHKAN INI 👇
 
 // Form State untuk Claim Account
 const password = ref("");
@@ -117,6 +118,25 @@ const isClaiming = ref(false);
 //   }
 // });
 
+// onMounted(() => {
+//   externalId.value = route.query.external_id || null;
+//   orderId.value = route.query.order_id || null;
+  
+//   // Cek apakah pengguna sudah memiliki Token Login
+//   const token = localStorage.getItem("token");
+//   if (token) {
+//     isAuthenticated.value = true;
+//   } else {
+//     isAuthenticated.value = false;
+    
+//     // 👇 PERBAIKAN: Ambil email sebagai teks biasa (tanpa JSON.parse) 👇
+//     const guestData = localStorage.getItem("last_guest_email");
+//     if (guestData) {
+//       guestEmail.value = guestData;
+//     }
+//   }
+// });
+
 onMounted(() => {
   externalId.value = route.query.external_id || null;
   orderId.value = route.query.order_id || null;
@@ -128,10 +148,13 @@ onMounted(() => {
   } else {
     isAuthenticated.value = false;
     
-    // 👇 PERBAIKAN: Ambil email sebagai teks biasa (tanpa JSON.parse) 👇
+    // Ambil email sebagai teks biasa
     const guestData = localStorage.getItem("last_guest_email");
     if (guestData) {
       guestEmail.value = guestData;
+    } else {
+      // 👇 TAMBAHKAN INI JIKA EMAIL TIDAK ADA DI LOCALSTORAGE 👇
+      isEmailMissing.value = true; 
     }
   }
 });
@@ -254,7 +277,17 @@ const claimAccount = async () => {
           Atur kata sandi untuk email Anda (<span class="font-bold text-black">{{ guestEmail || 'email Anda' }}</span>) agar dapat melacak pesanan ini dan mendapatkan Poin Loyalitas!
         </p>
 
-        <div v-if="!guestEmail" class="mb-6">
+        <!-- <div v-if="!guestEmail" class="mb-6">
+          <input 
+            type="email" 
+            v-model="guestEmail" 
+            placeholder="Masukkan Email Pembelian Anda" 
+            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-black outline-none mb-3"
+          />
+        </div> -->
+
+        <!-- 👇 PERBAIKAN: Gunakan isEmailMissing, bukan !guestEmail 👇 -->
+        <div v-if="isEmailMissing" class="mb-6">
           <input 
             type="email" 
             v-model="guestEmail" 
