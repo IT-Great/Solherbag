@@ -7643,16 +7643,20 @@ const navigateToProduct = (product) => {
   router.push(`/products/${product.slug || product.id}`);
 };
 
+// const openCartPage = () => {
+//   if (!isAuthenticated.value) {
+//     Swal.fire({
+//       icon: "info",
+//       title: "Sign In Required",
+//       text: "Please login to see your shopping bag.",
+//       confirmButtonColor: "#000",
+//     });
+//     return;
+//   }
+//   router.push("/cart");
+// };
+
 const openCartPage = () => {
-  if (!isAuthenticated.value) {
-    Swal.fire({
-      icon: "info",
-      title: "Sign In Required",
-      text: "Please login to see your shopping bag.",
-      confirmButtonColor: "#000",
-    });
-    return;
-  }
   router.push("/cart");
 };
 

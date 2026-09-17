@@ -3682,16 +3682,123 @@ watch(
   }
 );
 
+// const handleAction = async (type) => {
+//   const token = localStorage.getItem("token");
+//   if (!token) {
+//     Swal.fire({
+//       icon: "info",
+//       title: "Login Required",
+//       confirmButtonColor: "#000",
+//     }).then(() => router.push("/login"));
+//     return;
+//   }
+//   if (type === "cart") {
+//     Swal.fire({
+//       title: "Added to Bag",
+//       icon: "success",
+//       toast: true,
+//       position: "top-center",
+//       showConfirmButton: false,
+//       timer: 2000,
+//     });
+//     window.dispatchEvent(
+//       new CustomEvent("optimistic-add-to-cart", {
+//         detail: {
+//           product: {
+//             ...product.value,
+//             discount_price: getDiscountStatus(product.value).active
+//               ? product.value.discount_price
+//               : null,
+//           },
+//           cartId: null,
+//           quantity: selectedQuantity.value,
+//           color: extractColorName(product.value.name),
+//         },
+//       })
+//     );
+//     const productImages = document.querySelectorAll(".main-product-image");
+//     const productImage = productImages[activeSlide.value];
+//     const cartIcon = document.querySelector(".cart-icon-header");
+//     if (productImage && cartIcon) {
+//       const imgRect = productImage.getBoundingClientRect();
+//       const cartRect = cartIcon.getBoundingClientRect();
+//       const flyer = productImage.cloneNode(true);
+//       flyer.classList.add("fly-item");
+//       Object.assign(flyer.style, {
+//         position: "fixed",
+//         top: `${imgRect.top}px`,
+//         left: `${imgRect.left}px`,
+//         width: `${imgRect.width}px`,
+//         height: `${imgRect.height}px`,
+//         zIndex: "9999",
+//         transition: "all 0.7s cubic-bezier(0.25, 1, 0.5, 1)",
+//         pointerEvents: "none",
+//         borderRadius: "10%",
+//       });
+//       document.body.appendChild(flyer);
+//       requestAnimationFrame(() => {
+//         requestAnimationFrame(() => {
+//           Object.assign(flyer.style, {
+//             top: `${cartRect.top + 10}px`,
+//             left: `${cartRect.left + 10}px`,
+//             width: "15px",
+//             height: "15px",
+//             opacity: "0.2",
+//             transform: "scale(0.5) rotate(360deg)",
+//           });
+//         });
+//       });
+//       flyer.addEventListener("transitionend", () => flyer.remove(), { once: true });
+//     }
+//     trackGtmEvent("add_to_cart", {
+//       ecommerce: {
+//         currency: "IDR",
+//         value: currentActivePrice.value * selectedQuantity.value,
+//         items: [
+//           {
+//             item_id: product.value.id,
+//             item_name: product.value.name,
+//             price: currentActivePrice.value,
+//             item_category: product.value.category?.name || "Accessories",
+//             item_variant: extractColorName(product.value.name),
+//             quantity: selectedQuantity.value,
+//           },
+//         ],
+//       },
+//     });
+//     return;
+//   }
+//   try {
+//     if (type === "buy") {
+//       Swal.fire({
+//         title: "Preparing Order...",
+//         allowOutsideClick: false,
+//         didOpen: () => Swal.showLoading(),
+//       });
+//       const resCart = await axios.post(
+//         `${BASE_URL}/carts`,
+//         {
+//           product_id: product.value.id,
+//           quantity: selectedQuantity.value,
+//           color: extractColorName(product.value.name),
+//         },
+//         { headers: { Authorization: `Bearer ${token}` } }
+//       );
+//       const newCartId = resCart.data.cart_id || resCart.data.id || resCart.data.data?.id;
+//       await fetchCarts();
+//       selectedItemIds.value = [newCartId];
+//       Swal.close();
+//       router.push(`/payment`);
+//     }
+//   } catch (error) {
+//     Swal.close();
+//     Swal.fire("Error", error.response?.data?.message || "Action failed", "error");
+//   }
+// };
+
 const handleAction = async (type) => {
-  const token = localStorage.getItem("token");
-  if (!token) {
-    Swal.fire({
-      icon: "info",
-      title: "Login Required",
-      confirmButtonColor: "#000",
-    }).then(() => router.push("/login"));
-    return;
-  }
+  // 👇 PERBAIKAN 1: Hapus pengecekan token (Guest sekarang bebas masuk) 👇
+  
   if (type === "cart") {
     Swal.fire({
       title: "Added to Bag",
@@ -3716,6 +3823,8 @@ const handleAction = async (type) => {
         },
       })
     );
+    
+    // Logic animasi terbang (flyer) ke ikon keranjang
     const productImages = document.querySelectorAll(".main-product-image");
     const productImage = productImages[activeSlide.value];
     const cartIcon = document.querySelector(".cart-icon-header");
@@ -3768,6 +3877,7 @@ const handleAction = async (type) => {
     });
     return;
   }
+  
   try {
     if (type === "buy") {
       Swal.fire({
@@ -3775,20 +3885,25 @@ const handleAction = async (type) => {
         allowOutsideClick: false,
         didOpen: () => Swal.showLoading(),
       });
-      const resCart = await axios.post(
-        `${BASE_URL}/carts`,
-        {
-          product_id: product.value.id,
-          quantity: selectedQuantity.value,
-          color: extractColorName(product.value.name),
+      
+      // 👇 PERBAIKAN 2: Gunakan handleOptimisticAdd agar bisa membaca LocalStorage (Guest) 👇
+      const payloadData = {
+        product: {
+          ...product.value,
+          discount_price: getDiscountStatus(product.value).active ? product.value.discount_price : null,
         },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      const newCartId = resCart.data.cart_id || resCart.data.id || resCart.data.data?.id;
-      await fetchCarts();
-      selectedItemIds.value = [newCartId];
-      Swal.close();
-      router.push(`/payment`);
+        cartId: null,
+        quantity: selectedQuantity.value,
+        color: extractColorName(product.value.name)
+      };
+
+      // Pastikan item ditambahkan ke state global terlebih dahulu, lalu pindah ke halaman payment
+      handleOptimisticAdd(payloadData, () => {
+        // Kosongkan keranjang yang sebelumnya diseleksi, pastikan hanya barang ini yang dicheckout
+        selectedItemIds.value = [];
+        Swal.close();
+        router.push(`/payment`); 
+      });
     }
   } catch (error) {
     Swal.close();
