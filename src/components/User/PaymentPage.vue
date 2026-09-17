@@ -16609,7 +16609,7 @@ const useAllPoints = () => {
 }
 </style> -->
 
-<template>
+<!-- <template>
   <div v-if="isPageLoading" class="z-[100] fixed inset-0 flex flex-col justify-center items-center bg-white">
     <div class="flex gap-2 mb-4">
       <div class="w-3 h-3 bg-black rounded-full animate-bounce-1"></div>
@@ -16635,10 +16635,8 @@ const useAllPoints = () => {
       </h1>
 
       <div class="flex flex-col gap-12 lg:flex-row">
-        <!-- ================= LEFT SECTION: ADDRESS & SHIPPING ================= -->
         <div class="flex-grow space-y-12">
           
-          <!-- ADDRESS SECTION -->
           <section>
             <div class="flex items-center gap-4 mb-4">
               <span class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white">1</span>
@@ -16677,7 +16675,6 @@ const useAllPoints = () => {
             </div>
           </section>
 
-          <!-- SHIPPING SECTION FALLBACK -->
           <section v-if="!selectedAddressId">
             <div class="flex items-center gap-4 mb-4">
               <span class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white">2</span>
@@ -16688,7 +16685,6 @@ const useAllPoints = () => {
             </div>
           </section>
 
-          <!-- SHIPPING SECTION ACTIVE -->
           <section v-if="selectedAddressId">
             <div class="flex items-center gap-4 mb-4">
               <span class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white">2</span>
@@ -16696,7 +16692,6 @@ const useAllPoints = () => {
             </div>
 
             <div class="space-y-4">
-              <!-- Free Shipping Option (Indo Only) -->
               <label v-if="destinationInfo?.country?.toLowerCase() === 'indonesia'" :class="[shippingMethod === 'free' ? 'border-black ring-1 ring-black bg-white shadow-md' : 'border-gray-100 bg-gray-50/50']" class="relative flex items-center p-6 transition-all border cursor-pointer rounded-2xl">
                 <input type="radio" value="free" v-model="shippingMethod" class="w-4 h-4 text-black border-gray-300 focus:ring-black" />
                 <div class="flex items-center justify-between flex-grow ml-4">
@@ -16708,7 +16703,6 @@ const useAllPoints = () => {
                 </div>
               </label>
 
-              <!-- Biteship Option -->
               <label :class="[shippingMethod === 'biteship' ? 'border-black ring-1 ring-black bg-white shadow-md' : 'border-gray-100 bg-gray-50/50']" class="relative flex items-center p-6 transition-all border cursor-pointer rounded-2xl">
                 <input type="radio" value="biteship" v-model="shippingMethod" class="w-4 h-4 text-black border-gray-300 focus:ring-black" />
                 <div class="flex items-center justify-between flex-grow ml-4">
@@ -16719,9 +16713,7 @@ const useAllPoints = () => {
                 </div>
               </label>
 
-              <!-- Extended Biteship Configuration -->
               <div v-if="shippingMethod === 'biteship'" class="p-6 mt-4 space-y-8 bg-white border border-gray-200 rounded-3xl animate-fade-in">
-                <!-- Delivery Info Card -->
                 <div class="grid grid-cols-1 gap-6 p-4 md:grid-cols-2 bg-gray-50 rounded-2xl">
                   <div>
                     <h3 class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-3">{{ $t("payment.destination") }}</h3>
@@ -16732,7 +16724,6 @@ const useAllPoints = () => {
                   </div>
                 </div>
 
-                <!-- Pickup Schedule (Indo Only) -->
                 <div v-if="destinationInfo?.country?.toLowerCase() === 'indonesia'">
                   <h3 class="mb-4 text-sm font-bold tracking-widest uppercase">{{ $t("payment.pickup_schedule") }}</h3>
                   <div class="flex flex-col gap-4 mb-4 md:flex-row">
@@ -16760,7 +16751,6 @@ const useAllPoints = () => {
                   </div>
                 </div>
 
-                <!-- Courier List -->
                 <div>
                   <h3 class="pt-6 mb-4 text-sm font-bold tracking-widest uppercase border-t">{{ $t("payment.select_courier") }}</h3>
                   
@@ -16808,128 +16798,7 @@ const useAllPoints = () => {
             </div>
           </section>
         </div>
-
-        <!-- ================= RIGHT SECTION: ORDER SUMMARY ================= -->
-        <!-- <div class="lg:w-[400px] space-y-6">
-          <div class="sticky p-8 bg-white border border-gray-100 shadow-xl rounded-3xl top-28">
-            <h2 class="pb-4 mb-6 text-sm font-bold tracking-widest text-gray-900 uppercase border-b border-gray-200">
-              {{ $t("payment.order_summary") }}
-            </h2>
-
-            <div class="space-y-4 mb-8 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
-              <div v-for="item in checkoutItems" :key="item.id" class="flex gap-4">
-                <img :src="item.product?.image_url || item.product?.image" class="object-cover w-16 h-16 bg-gray-100 rounded-xl shrink-0" />
-                <div class="flex-grow">
-                  <div class="flex items-center gap-2">
-                    <p class="w-40 text-[11px] font-bold text-gray-900 uppercase truncate" :title="item.product?.name">{{ item.product?.name }}</p>
-                    <span v-if="userType === 'reseller' && Number(item.product?.wholesale_price) > 0 && checkoutCount >= 24" class="px-1.5 py-0.5 text-[8px] font-bold text-white bg-blue-600 rounded">GROSIR</span>
-                  </div>
-                  <div class="flex items-center gap-2 mt-0.5">
-                    <p class="text-[10px] text-gray-400">Qty: {{ item.quantity }}</p>
-                    <template v-if="item.color">
-                      <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                      <div class="flex items-center gap-1.5">
-                        <div class="w-3 h-3 border border-gray-300 rounded-full shadow-sm shrink-0" :style="{ backgroundColor: parseColorHex(item.color) }"></div>
-                        <span class="text-[10px] font-bold text-gray-500 uppercase">{{ parseColorName(item.color) }}</span>
-                      </div>
-                    </template>
-                  </div>
-                  <p class="mt-1 text-xs font-medium text-gray-900">
-                    {{ formatCurrencyDisplay({ value: getActivePriceObj(item.product).value * item.quantity, curr: getActivePriceObj(item.product).curr }) }}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="pt-4 space-y-3 text-sm border-t border-gray-50">
-              <div class="flex justify-between text-gray-500">
-                <span>{{ $t("payment.total_items") }}</span>
-                <span class="font-bold text-gray-900">{{ checkoutCount }} {{ $t("payment.item") }}</span>
-              </div>
-              <div class="flex justify-between text-gray-500">
-                <span>{{ $t("payment.subtotal") }}</span>
-                <span :class="appliedPromoType === 'voucher' ? 'text-amber-600 font-bold' : ''">{{ formatCurrencyDisplay(cartSubtotalObj) }}</span>
-              </div>
-
-              <div v-if="userData?.is_membership && availablePoints > 0" class="pt-4 mt-2 border-t border-gray-200 border-dashed">
-                <div class="flex items-center justify-between mb-2">
-                  <span class="text-[10px] font-bold text-yellow-800 uppercase tracking-widest flex items-center gap-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                    {{ $t("payment.redeem_points") }}
-                  </span>
-                  <span class="text-xs text-gray-500">{{ $t("payment.bal") }} {{ availablePoints }} Pts</span>
-                </div>
-                <div class="flex gap-2">
-                  <input type="number" v-model.number="pointsToUse" :max="maxUsablePoints" min="0" :disabled="['SOLHOST34', 'MERDEKA17'].includes(appliedPromoCode)" class="flex-1 bg-white border border-yellow-300 rounded-lg px-3 py-1.5 text-sm focus:ring-yellow-500 outline-none disabled:bg-gray-100 disabled:text-gray-400" placeholder="0" />
-                  <button type="button" @click="useAllPoints" :disabled="['SOLHOST34', 'MERDEKA17'].includes(appliedPromoCode)" class="bg-yellow-100 text-yellow-800 text-[10px] font-bold uppercase px-3 rounded-lg hover:bg-yellow-200 transition disabled:opacity-50 disabled:cursor-not-allowed">
-                    {{ $t("payment.use_all") }}
-                  </button>
-                </div>
-                <p v-if="['SOLHOST34', 'MERDEKA17'].includes(appliedPromoCode)" class="text-[9px] text-red-500 mt-1 italic font-medium text-right">*Poin tidak dapat digabung dengan Promo Spesial</p>
-                <p v-else-if="pointsToUse > 0" class="text-[10px] text-green-600 mt-1 font-medium text-right">- {{ formatCurrencyDisplay(appliedPointDiscountObj) }}</p>
-              </div>
-
-              <div class="pt-4 mt-2 border-t border-gray-200 border-dashed">
-                <div class="flex items-center justify-between mb-2">
-                  <label class="text-[10px] font-bold text-gray-900 uppercase tracking-widest">{{ $t("payment.promo_code") }}</label>
-                  
-                  <div v-if="userData?.is_membership" class="flex items-center gap-2">
-                    <span class="text-[9px] font-bold text-yellow-600 uppercase flex items-center gap-0.5">VIP PERK</span>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                      <input type="checkbox" v-model="useMemberVoucher" @change="handleMemberToggle" class="sr-only peer" :disabled="isVerifyingPromo || (checkoutTotalIDR < MEMBER_MIN_SPEND && !useMemberVoucher) || ['SOLHOST34', 'MERDEKA17'].includes(appliedPromoCode)" />
-                      <div class="w-8 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-black disabled:opacity-50"></div>
-                    </label>
-                  </div>
-                </div>
-
-                <form @submit.prevent="applyPromo" class="flex gap-2">
-                  <input type="text" v-model="promoInput" :disabled="appliedPromoCode !== null || isVerifyingPromo || useMemberVoucher" :placeholder="$t('payment.enter_promo_code')" class="flex-1 bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-sm uppercase focus:ring-black outline-none disabled:bg-gray-100 disabled:text-gray-400 transition-colors" />
-                  <button v-if="!appliedPromoCode" type="submit" :disabled="!promoInput || isVerifyingPromo || useMemberVoucher" class="bg-black text-white text-[10px] font-bold uppercase px-4 rounded-lg hover:bg-gray-800 disabled:bg-gray-300 w-20 flex justify-center items-center">
-                    <span v-if="!isVerifyingPromo">{{ $t("payment.apply") }}</span>
-                    <div v-else class="w-3 h-3 border-2 rounded-full border-white/40 border-t-white animate-spin"></div>
-                  </button>
-                  <button v-else type="button" @click="removePromo" class="bg-red-50 text-red-600 border border-red-200 text-[10px] font-bold uppercase px-4 rounded-lg hover:bg-red-100 transition w-20">
-                    {{ $t("payment.remove") }}
-                  </button>
-                </form>
-                <p v-if="promoMessage" :class="promoSuccess ? 'text-green-600' : 'text-red-500'" class="text-[10px] mt-2 font-medium">{{ promoMessage }}</p>
-                <div v-if="appliedPromoCode" class="flex justify-between text-[10px] md:text-xs font-medium text-emerald-600 mt-2">
-                  <span class="pr-2 truncate">Promo (<span class="font-mono uppercase">{{ appliedPromoCode }}</span>)</span>
-                  <span>- {{ formatCurrencyDisplay(actualPromoDiscountObj) }}</span>
-                </div>
-              </div>
-
-              <div class="flex items-start justify-between text-gray-500 pt-2">
-                <span>{{ $t("payment.shipping") }}</span>
-                <span v-if="shippingMethod === 'free'" class="font-bold text-green-600">{{ $t("payment.free") }}</span>
-                <div v-else-if="shippingMethod === 'biteship' && selectedRate" class="text-right">
-                  <span class="block font-medium text-gray-900">{{ formatCurrencyDisplay({ value: shippingCostObj.value, curr: shippingCostObj.curr }) }}</span>
-                </div>
-                <span v-else class="italic text-[10px]">{{ $t("payment.select_method") }}</span>
-              </div>
-
-              <div v-if="bundleDiscountAmount > 0" class="flex justify-between px-3 py-2 my-2 text-sm font-bold border text-emerald-600 bg-emerald-50 rounded-xl border-emerald-100">
-                <span class="uppercase tracking-widest text-[10px] mt-0.5">Bundle Saved</span>
-                <span>- {{ formatCurrencyDisplay({ value: bundleDiscountAmount, curr: currentCurrency }) }}</span>
-              </div>
-
-              <div class="flex justify-between pt-4 font-bold text-gray-900 border-t border-gray-200">
-                <span class="mt-1 text-xs tracking-widest uppercase">{{ $t("payment.grand_total") }}</span>
-                <span class="text-xl text-gycora">{{ formatCurrencyDisplay(grandTotalObj) }}</span>
-              </div>
-
-              <button @click="handlePayment" :disabled="isButtonDisabled" class="mt-8 w-full bg-black hover:bg-gray-800 disabled:bg-gray-300 py-5 rounded-2xl font-bold text-white text-xs uppercase tracking-[0.3em] flex justify-center items-center transition-all">
-                <span v-if="!isProcessing">{{ $t("payment.pay_now") }}</span>
-                <div v-else class="w-3 h-3 border-2 rounded-full border-white/30 border-t-white animate-spin"></div>
-              </button>
-
-              <p v-if="!selectedAddressId" class="mt-4 text-[10px] tracking-tighter text-center text-red-500 uppercase">{{ $t("payment.select_shipping_address") }}</p>
-              <p v-else-if="shippingMethod === 'biteship' && !selectedRate" class="mt-4 text-[10px] tracking-tighter text-center text-red-500 uppercase">{{ $t("payment.select_courier_service") }}</p>
-            </div>
-          </div>
-        </div> -->
+        
         <div class="lg:w-[400px] space-y-6">
           <div
             class="sticky p-8 bg-white border border-gray-100 shadow-xl rounded-3xl top-28"
@@ -17266,7 +17135,6 @@ const useAllPoints = () => {
       </div>
     </div>
 
-    <!-- Panggil Komponen Modal Address Eksternal -->
     <AddressModal :is-open="isModalOpen" :user-data="userData" @close="isModalOpen = false" @saved="onAddressSaved" />
   </div>
 </template>
@@ -18004,4 +17872,836 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
 @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 .custom-scrollbar::-webkit-scrollbar { height: 4px; width: 4px; }
 .custom-scrollbar::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; }
-</style>
+</style> -->
+
+<template>
+  <div v-if="isPageLoading" class="z-[100] fixed inset-0 flex flex-col justify-center items-center bg-white">
+    <div class="flex gap-2 mb-4">
+      <div class="w-3 h-3 bg-black rounded-full animate-bounce-1"></div>
+      <div class="w-3 h-3 bg-black rounded-full animate-bounce-2"></div>
+      <div class="w-3 h-3 bg-black rounded-full animate-bounce-3"></div>
+    </div>
+    <p class="font-serif text-sm italic tracking-widest text-gray-500 animate-pulse">
+      {{ $t("payment.prepare_checkout") }}
+    </p>
+  </div>
+
+  <div v-else class="relative z-10 max-w-6xl min-h-screen px-6 py-12 mx-auto md:py-24 animate-fade-in">
+    <div v-if="checkoutItems.length === 0" class="py-20 text-center">
+      <h2 class="mb-4 font-serif text-3xl">{{ $t("payment.bag_empty") }}</h2>
+      <button @click="$router.push('/collections')" class="px-8 py-3 text-xs font-bold tracking-widest text-white uppercase bg-black rounded-full">
+        {{ $t("payment.return_shop") }}
+      </button>
+    </div>
+
+    <div v-else>
+      <h1 class="mb-12 font-serif text-3xl tracking-tighter uppercase md:text-4xl">
+        {{ $t("payment.checkout") }}
+      </h1>
+
+      <div class="flex flex-col gap-12 lg:flex-row">
+        <!-- ================= LEFT SECTION ================= -->
+        <div class="flex-grow space-y-12">
+
+          <!-- 1. ADDRESS / GUEST FORM SECTION -->
+          <section>
+            <div class="flex items-center gap-4 mb-4">
+              <span class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white">1</span>
+              <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">
+                {{ isAuthenticated ? $t("payment.shipping_address") : "Contact & Shipping" }}
+              </h2>
+            </div>
+
+            <!-- 👇 [PERBAIKAN: GUEST FORM] 👇 -->
+            <div v-if="!isAuthenticated" class="p-6 bg-gray-50/50 border border-gray-200 rounded-3xl space-y-5">
+              <div class="flex justify-between items-center mb-2">
+                <h3 class="text-xs font-bold text-gray-900 uppercase tracking-widest">Guest Checkout</h3>
+                <router-link to="/login" class="text-xs font-bold text-blue-600 underline">Login to account</router-link>
+              </div>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input type="text" v-model="guestForm.first_name" placeholder="First Name *" class="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:border-black" required/>
+                <input type="text" v-model="guestForm.last_name" placeholder="Last Name" class="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:border-black" />
+              </div>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input type="email" v-model="guestForm.email" placeholder="Email Address *" class="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:border-black" required/>
+                <input type="tel" v-model="guestForm.phone" placeholder="Phone Number *" class="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:border-black" required/>
+              </div>
+
+              <div class="pt-4 border-t border-gray-200">
+                <textarea v-model="guestForm.address_location" rows="3" placeholder="Full Address (Street, Building, etc) *" class="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:border-black resize-none" required></textarea>
+              </div>
+
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <input type="text" v-model="guestForm.city" placeholder="City *" class="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:border-black" required/>
+                <input type="text" v-model="guestForm.province" placeholder="State/Province *" class="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:border-black" required/>
+                <input type="text" v-model="guestForm.postal_code" placeholder="Zip Code *" class="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:border-black" required/>
+                <input type="text" v-model="guestForm.region" placeholder="Country" readonly class="w-full px-4 py-3 text-sm bg-gray-100 text-gray-500 border border-gray-200 rounded-xl outline-none" />
+              </div>
+
+              <button 
+                @click="calculateGuestShipping" 
+                :disabled="!isGuestFormValid || isLoadingRates"
+                class="w-full py-3 mt-4 text-xs font-bold tracking-widest text-white uppercase transition-colors bg-black rounded-xl hover:bg-gray-800 disabled:bg-gray-300 flex justify-center items-center"
+              >
+                <span v-if="!isLoadingRates">Continue to Shipping</span>
+                <div v-else class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              </button>
+            </div>
+            <!-- 👆 ======================= 👆 -->
+
+            <!-- REGISTERED USER ADDRESS LIST -->
+            <div v-else-if="addresses.length === 0" class="py-10 text-center border border-gray-300 border-dashed bg-gray-50 rounded-2xl">
+              <p class="mb-2 text-sm italic text-gray-500">{{ $t("payment.no_address_found") }}</p>
+              <button @click="isModalOpen = true" class="text-xs font-bold text-blue-600 underline">
+                {{ $t("payment.add_new_address") }}
+              </button>
+            </div>
+
+            <div v-else class="space-y-4">
+              <label
+                v-for="addr in addresses" :key="addr.id"
+                :class="[selectedAddressId === addr.id ? 'border-black ring-1 ring-black bg-white shadow-md' : 'border-gray-100 bg-gray-50/50']"
+                class="relative flex items-start p-6 transition-all border cursor-pointer rounded-2xl hover:bg-white"
+              >
+                <input type="radio" name="address" :value="addr.id" v-model="selectedAddressId" class="w-4 h-4 mt-1 text-black border-gray-300 focus:ring-black" />
+                <div class="flex-grow ml-4">
+                  <div class="flex justify-between">
+                    <p class="text-sm font-bold text-gray-900 uppercase">{{ addr.receiver?.full_name || "N/A" }}</p>
+                    <span v-if="addr.is_default" class="text-[9px] bg-gray-200 px-2 py-0.5 rounded font-bold uppercase">{{ $t("payment.default") }}</span>
+                  </div>
+                  <p class="mt-2 text-sm leading-relaxed text-gray-600">
+                    {{ addr.details?.location || "" }}, {{ addr.details?.type || "" }} <br />
+                    {{ addr.details?.city || "" }}, {{ addr.details?.province || "" }} <br />
+                    {{ addr.details?.region || addr.region || "Indonesia" }} - {{ addr.details?.postal_code || "" }}
+                  </p>
+                </div>
+              </label>
+              <button @click="isModalOpen = true" class="mt-4 text-xs font-bold text-gray-500 underline hover:text-black">
+                {{ $t("payment.add_another_address") }}
+              </button>
+            </div>
+          </section>
+
+          <!-- 2. SHIPPING SECTION -->
+          <!-- Sembunyikan shipping jika Guest belum isi form (isGuestAddressLocked) ATAU User belum pilih address -->
+          <section v-if="!isAuthenticated && !isGuestAddressLocked" class="opacity-50 pointer-events-none">
+             <!-- Placeholder Shipping -->
+             <div class="flex items-center gap-4 mb-4">
+              <span class="flex justify-center items-center bg-gray-300 rounded-full w-6 h-6 font-bold text-[10px] text-white">2</span>
+              <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">{{ $t("payment.shipping_method") }}</h2>
+            </div>
+          </section>
+          
+          <section v-else-if="isAuthenticated && !selectedAddressId" class="opacity-50 pointer-events-none">
+             <!-- Placeholder Shipping -->
+             <div class="flex items-center gap-4 mb-4">
+              <span class="flex justify-center items-center bg-gray-300 rounded-full w-6 h-6 font-bold text-[10px] text-white">2</span>
+              <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">{{ $t("payment.shipping_method") }}</h2>
+            </div>
+          </section>
+
+          <section v-else>
+            <div class="flex items-center gap-4 mb-4">
+              <span class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white">2</span>
+              <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">{{ $t("payment.shipping_method") }}</h2>
+            </div>
+
+            <div class="space-y-4">
+              <!-- Free Shipping Option (Indo Only) -->
+              <label v-if="destinationInfo?.country?.toLowerCase() === 'indonesia'" :class="[shippingMethod === 'free' ? 'border-black ring-1 ring-black bg-white shadow-md' : 'border-gray-100 bg-gray-50/50']" class="relative flex items-center p-6 transition-all border cursor-pointer rounded-2xl">
+                <input type="radio" value="free" v-model="shippingMethod" class="w-4 h-4 text-black border-gray-300 focus:ring-black" />
+                <div class="flex items-center justify-between flex-grow ml-4">
+                  <div>
+                    <p class="text-sm font-bold tracking-wide text-gray-900 uppercase">{{ $t("payment.free_shipping") }}</p>
+                    <p class="mt-1 text-xs font-bold text-green-600">{{ $t("payment.in_store") }}</p>
+                  </div>
+                  <p class="font-black text-black">{{ $t("payment.price") }}</p>
+                </div>
+              </label>
+
+              <!-- Biteship Option -->
+              <label :class="[shippingMethod === 'biteship' ? 'border-black ring-1 ring-black bg-white shadow-md' : 'border-gray-100 bg-gray-50/50']" class="relative flex items-center p-6 transition-all border cursor-pointer rounded-2xl">
+                <input type="radio" value="biteship" v-model="shippingMethod" class="w-4 h-4 text-black border-gray-300 focus:ring-black" />
+                <div class="flex items-center justify-between flex-grow ml-4">
+                  <div>
+                    <p class="text-sm font-bold tracking-wide text-gray-900 uppercase">{{ $t("payment.standard") }}</p>
+                    <p class="mt-1 text-xs text-gray-500">{{ destinationInfo?.country?.toLowerCase() === "indonesia" ? $t("payment.powered_by_biteship") : "International Express Delivery" }}</p>
+                  </div>
+                </div>
+              </label>
+
+              <!-- Extended Courier Configuration -->
+              <div v-if="shippingMethod === 'biteship'" class="p-6 mt-4 space-y-8 bg-white border border-gray-200 rounded-3xl animate-fade-in">
+                <!-- Delivery Info Card -->
+                <div class="grid grid-cols-1 gap-6 p-4 md:grid-cols-2 bg-gray-50 rounded-2xl">
+                  <div class="relative">
+                    <button v-if="!isAuthenticated" @click="isGuestAddressLocked = false" class="absolute top-0 right-0 text-[10px] font-bold text-blue-600 underline uppercase">Edit</button>
+                    <h3 class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-3">{{ $t("payment.destination") }}</h3>
+                    <p class="text-xs font-bold text-gray-900 uppercase">{{ destinationInfo?.name }}</p>
+                    <p class="mt-1 text-xs text-gray-500">{{ destinationInfo?.phone }}</p>
+                    <p class="mt-1 text-xs text-gray-500 line-clamp-2">{{ destinationInfo?.address }} - {{ destinationInfo?.postal_code }}</p>
+                    <p class="mt-1 text-xs font-bold text-blue-600 uppercase">{{ destinationInfo?.country }}</p>
+                  </div>
+                </div>
+
+                <!-- Pickup Schedule (Indo Only) -->
+                <div v-if="destinationInfo?.country?.toLowerCase() === 'indonesia'">
+                  <h3 class="mb-4 text-sm font-bold tracking-widest uppercase">{{ $t("payment.pickup_schedule") }}</h3>
+                  <div class="flex flex-col gap-4 mb-4 md:flex-row">
+                    <label :class="deliveryType === 'now' ? 'border-black bg-gray-50' : 'border-gray-200'" class="flex-1 p-4 transition border cursor-pointer rounded-xl">
+                      <input type="radio" value="now" v-model="deliveryType" class="hidden" />
+                      <p class="text-xs font-bold uppercase">{{ $t("payment.standard_pickup") }}</p>
+                      <p class="text-[10px] text-gray-500 mt-1">{{ $t("payment.scheduled_pickup") }}</p>
+                    </label>
+                    <label :class="deliveryType === 'scheduled' ? 'border-black bg-gray-50' : 'border-gray-200'" class="flex-1 p-4 transition border cursor-pointer rounded-xl">
+                      <input type="radio" value="scheduled" v-model="deliveryType" class="hidden" />
+                      <p class="text-xs font-bold uppercase">{{ $t("payment.scheduled_pickup") }}</p>
+                      <p class="text-[10px] text-gray-500 mt-1">{{ $t("payment.choose_specific_date_time") }}</p>
+                    </label>
+                  </div>
+
+                  <div v-if="deliveryType === 'scheduled'" class="flex gap-4 p-4 border border-blue-100 bg-blue-50/30 rounded-xl animate-fade-in">
+                    <div class="flex-1">
+                      <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">{{ $t("payment.pickup_date") }}</label>
+                      <input type="date" v-model="deliveryDate" :min="todayDate" class="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg outline-none focus:ring-black focus:border-black" required />
+                    </div>
+                    <div class="flex-1">
+                      <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">{{ $t("payment.pickup_time") }}</label>
+                      <input type="time" v-model="deliveryTime" class="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg outline-none focus:ring-black focus:border-black" required />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Courier List -->
+                <div>
+                  <h3 class="pt-6 mb-4 text-sm font-bold tracking-widest uppercase border-t">{{ $t("payment.select_courier") }}</h3>
+                  
+                  <div v-if="isLoadingRates" class="py-4 text-sm text-center text-gray-500 animate-pulse">
+                    {{ $t("payment.calculating_couriers") }}
+                  </div>
+                  <div v-else-if="processedShippingRates.length === 0" class="py-4 text-xs italic text-center text-red-500">
+                    {{ $t("payment.no_courier_available") }}
+                  </div>
+                  
+                  <div v-else class="space-y-3">
+                    <label
+                      v-for="(rate, idx) in processedShippingRates" :key="idx"
+                      :class="[
+                        rate.is_disabled ? 'opacity-40 bg-gray-100 border-gray-200 pointer-events-none select-none' : 
+                        (selectedRate?.company === rate.company && selectedRate?.type === rate.type) ? 'border-black bg-gray-50 shadow-sm' : 'border-gray-200 hover:bg-gray-50 cursor-pointer transition-all'
+                      ]"
+                      class="relative flex flex-col p-4 border rounded-xl"
+                    >
+                      <div class="flex items-center w-full">
+                        <input type="radio" :value="rate" v-model="selectedRate" :disabled="rate.is_disabled" class="w-4 h-4 text-black border-gray-300 focus:ring-black disabled:opacity-50" />
+                        <div class="flex items-center flex-grow gap-4 ml-4">
+                          <div class="flex items-center justify-center w-12 h-12 overflow-hidden bg-white border border-gray-100 rounded-lg shrink-0">
+                            <img v-show="!imageErrors[rate.company]" v-if="getCourierLogo(rate.company)" :src="getCourierLogo(rate.company)" :alt="rate.company" class="object-contain w-full h-full p-1" @error="handleImageError(rate.company)" />
+                            <span v-show="imageErrors[rate.company] || !getCourierLogo(rate.company)" class="text-xs font-black text-gray-300">{{ rate.company.toUpperCase() }}</span>
+                          </div>
+                          <div>
+                            <p class="text-sm font-bold tracking-wide text-gray-800 uppercase">{{ rate.company }} - {{ rate.type.replace("_", " ") }}</p>
+                            <p class="text-gray-500 text-[10px] mt-0.5">{{ rate.courier_name }} ({{ rate.duration }})</p>
+                          </div>
+                        </div>
+                        <p class="text-sm font-black text-black">
+                          {{ formatCurrencyDisplay(convertIDRtoActiveCurrency(rate.price)) }}
+                        </p>
+                      </div>
+
+                      <div v-if="rate.is_disabled" class="mt-3 ml-8 text-[10px] text-red-600 bg-red-50 px-3 py-1.5 rounded-lg border border-red-100 font-bold uppercase tracking-widest">
+                        ⚠️ {{ $t("payment.unavailable") }} {{ rate.disable_reason }}
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </section>
+        </div>
+
+        <!-- ================= RIGHT SECTION: ORDER SUMMARY ================= -->
+        <div class="lg:w-[400px] space-y-6">
+          <div class="sticky p-8 bg-white border border-gray-100 shadow-xl rounded-3xl top-28">
+            <h2 class="pb-4 mb-6 text-sm font-bold tracking-widest text-gray-900 uppercase border-b border-gray-200">
+              {{ $t("payment.order_summary") }}
+            </h2>
+
+            <div class="space-y-4 mb-8 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
+              <div v-for="item in checkoutItems" :key="item.id" class="flex gap-4">
+                <img :src="item.product?.image_url || item.product?.image" class="object-cover w-16 h-16 bg-gray-100 rounded-xl shrink-0" />
+                <div class="flex-grow">
+                  <div class="flex items-center gap-2">
+                    <p class="w-40 text-[11px] font-bold text-gray-900 uppercase truncate" :title="item.product?.name">{{ item.product?.name }}</p>
+                  </div>
+                  <div class="flex items-center gap-2 mt-0.5">
+                    <p class="text-[10px] text-gray-400">Qty: {{ item.quantity }}</p>
+                    <template v-if="item.color">
+                      <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
+                      <div class="flex items-center gap-1.5">
+                        <div class="w-3 h-3 border border-gray-300 rounded-full shadow-sm shrink-0" :style="{ backgroundColor: parseColorHex(item.color) }"></div>
+                        <span class="text-[10px] font-bold text-gray-500 uppercase">{{ parseColorName(item.color) }}</span>
+                      </div>
+                    </template>
+                  </div>
+                  <p class="mt-1 text-xs font-medium text-gray-900">
+                    {{ formatCurrencyDisplay({ value: getActivePriceObj(item.product).value * item.quantity, curr: getActivePriceObj(item.product).curr }) }}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-4 space-y-3 text-sm border-t border-gray-50">
+              <div class="flex justify-between text-gray-500">
+                <span>{{ $t("payment.total_items") }}</span>
+                <span class="font-bold text-gray-900">{{ checkoutCount }} {{ $t("payment.item") }}</span>
+              </div>
+              <div class="flex justify-between text-gray-500">
+                <span>{{ $t("payment.subtotal") }}</span>
+                <span :class="appliedPromoType === 'voucher' ? 'text-amber-600 font-bold' : ''">{{ formatCurrencyDisplay(cartSubtotalObj) }}</span>
+              </div>
+
+              <div v-if="userData?.is_membership && availablePoints > 0" class="pt-4 mt-2 border-t border-gray-200 border-dashed">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-[10px] font-bold text-yellow-800 uppercase tracking-widest flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                    {{ $t("payment.redeem_points") }}
+                  </span>
+                  <span class="text-xs text-gray-500">{{ $t("payment.bal") }} {{ availablePoints }} Pts</span>
+                </div>
+                <div class="flex gap-2">
+                  <input type="number" v-model.number="pointsToUse" :max="maxUsablePoints" min="0" :disabled="['SOLHOST34', 'MERDEKA17'].includes(appliedPromoCode)" class="flex-1 bg-white border border-yellow-300 rounded-lg px-3 py-1.5 text-sm focus:ring-yellow-500 outline-none disabled:bg-gray-100 disabled:text-gray-400" placeholder="0" />
+                  <button type="button" @click="useAllPoints" :disabled="['SOLHOST34', 'MERDEKA17'].includes(appliedPromoCode)" class="bg-yellow-100 text-yellow-800 text-[10px] font-bold uppercase px-3 rounded-lg hover:bg-yellow-200 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                    {{ $t("payment.use_all") }}
+                  </button>
+                </div>
+              </div>
+
+              <div class="pt-4 mt-2 border-t border-gray-200 border-dashed">
+                <div class="flex items-center justify-between mb-2">
+                  <label class="text-[10px] font-bold text-gray-900 uppercase tracking-widest">{{ $t("payment.promo_code") }}</label>
+                  
+                  <div v-if="userData?.is_membership" class="flex items-center gap-2">
+                    <span class="text-[9px] font-bold text-yellow-600 uppercase flex items-center gap-0.5">VIP PERK</span>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                      <input type="checkbox" v-model="useMemberVoucher" @change="handleMemberToggle" class="sr-only peer" :disabled="isVerifyingPromo || (checkoutTotalIDR < MEMBER_MIN_SPEND && !useMemberVoucher) || ['SOLHOST34', 'MERDEKA17'].includes(appliedPromoCode)" />
+                      <div class="w-8 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-black disabled:opacity-50"></div>
+                    </label>
+                  </div>
+                </div>
+
+                <form @submit.prevent="applyPromo" class="flex gap-2">
+                  <input type="text" v-model="promoInput" :disabled="appliedPromoCode !== null || isVerifyingPromo || useMemberVoucher" :placeholder="$t('payment.enter_promo_code')" class="flex-1 bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-sm uppercase focus:ring-black outline-none disabled:bg-gray-100 disabled:text-gray-400 transition-colors" />
+                  <button v-if="!appliedPromoCode" type="submit" :disabled="!promoInput || isVerifyingPromo || useMemberVoucher" class="bg-black text-white text-[10px] font-bold uppercase px-4 rounded-lg hover:bg-gray-800 disabled:bg-gray-300 w-20 flex justify-center items-center">
+                    <span v-if="!isVerifyingPromo">{{ $t("payment.apply") }}</span>
+                    <div v-else class="w-3 h-3 border-2 rounded-full border-white/40 border-t-white animate-spin"></div>
+                  </button>
+                  <button v-else type="button" @click="removePromo" class="bg-red-50 text-red-600 border border-red-200 text-[10px] font-bold uppercase px-4 rounded-lg hover:bg-red-100 transition w-20">
+                    {{ $t("payment.remove") }}
+                  </button>
+                </form>
+                <p v-if="promoMessage" :class="promoSuccess ? 'text-green-600' : 'text-red-500'" class="text-[10px] mt-2 font-medium">{{ promoMessage }}</p>
+                <div v-if="appliedPromoCode" class="flex justify-between text-[10px] md:text-xs font-medium text-emerald-600 mt-2">
+                  <span class="pr-2 truncate">Promo (<span class="font-mono uppercase">{{ appliedPromoCode }}</span>)</span>
+                  <span>- {{ formatCurrencyDisplay(actualPromoDiscountObj) }}</span>
+                </div>
+              </div>
+
+              <div class="flex items-start justify-between text-gray-500 pt-2">
+                <span>{{ $t("payment.shipping") }}</span>
+                <span v-if="shippingMethod === 'free'" class="font-bold text-green-600">{{ $t("payment.free") }}</span>
+                <div v-else-if="shippingMethod === 'biteship' && selectedRate" class="text-right">
+                  <span class="block font-medium text-gray-900">{{ formatCurrencyDisplay({ value: shippingCostObj.value, curr: shippingCostObj.curr }) }}</span>
+                </div>
+                <span v-else class="italic text-[10px]">{{ $t("payment.select_method") }}</span>
+              </div>
+
+              <div v-if="bundleDiscountAmount > 0" class="flex justify-between px-3 py-2 my-2 text-sm font-bold border text-emerald-600 bg-emerald-50 rounded-xl border-emerald-100">
+                <span class="uppercase tracking-widest text-[10px] mt-0.5">Bundle Saved</span>
+                <span>- {{ formatCurrencyDisplay({ value: bundleDiscountAmount, curr: currentCurrency }) }}</span>
+              </div>
+
+              <div class="flex justify-between pt-4 font-bold text-gray-900 border-t border-gray-200">
+                <span class="mt-1 text-xs tracking-widest uppercase">{{ $t("payment.grand_total") }}</span>
+                <span class="text-xl text-gycora">{{ formatCurrencyDisplay(grandTotalObj) }}</span>
+              </div>
+
+              <button @click="handlePayment" :disabled="isButtonDisabled" class="mt-8 w-full bg-black hover:bg-gray-800 disabled:bg-gray-300 py-5 rounded-2xl font-bold text-white text-xs uppercase tracking-[0.3em] flex justify-center items-center transition-all shadow-xl">
+                <span v-if="!isProcessing">{{ $t("payment.pay_now") }}</span>
+                <div v-else class="w-3 h-3 border-2 rounded-full border-white/30 border-t-white animate-spin"></div>
+              </button>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Panggil Komponen Modal Address Eksternal -->
+    <AddressModal :is-open="isModalOpen" :user-data="userData" @close="isModalOpen = false" @saved="onAddressSaved" />
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, onUnmounted, watch, computed } from "vue";
+import { useRouter } from "vue-router";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { BASE_URL } from "../../config/api.js";
+import { useCart, getDiscountStatus } from "../../composables/useCart";
+import AddressModal from "./Layout/AddressModal.vue";
+
+const router = useRouter();
+const getAxiosConfig = () => ({ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
+
+const {
+  cartItems, checkoutCount, bundleDiscountAmount, 
+  selectedItemIds, clearSelectedCart,
+} = useCart();
+
+// ==========================================
+// 2. STATE MANAGEMENT
+// ==========================================
+const isPageLoading = ref(true);
+const isProcessing = ref(false);
+
+const isAuthenticated = computed(() => !!localStorage.getItem("token"));
+const userData = ref(null);
+const userType = ref("guest");
+
+// 👇 [STATE BARU: FORM UNTUK GUEST] 👇
+const guestForm = ref({
+  first_name: "",
+  last_name: "",
+  email: "",
+  phone: "",
+  address_location: "",
+  city: "",
+  province: "",
+  postal_code: "",
+  region: "Indonesia",
+});
+const isGuestAddressLocked = ref(false);
+
+const addresses = ref([]);
+const selectedAddressId = ref(null);
+const isModalOpen = ref(false);
+
+const shippingMethod = ref("free");
+const selectedRate = ref(null);
+const isLoadingRates = ref(false);
+const rawShippingRates = ref([]);
+const deliveryType = ref("now");
+const deliveryDate = ref("");
+const deliveryTime = ref("");
+
+const promoInput = ref("");
+const appliedPromoCode = ref(null);
+const promoDiscountAmount = ref(0);
+const appliedPromoType = ref(null);
+const promoMessage = ref("");
+const promoSuccess = ref(false);
+const isVerifyingPromo = ref(false);
+
+const useMemberVoucher = ref(false);
+const MEMBER_VOUCHER_CODE = "SOLHERMEMBER";
+const MEMBER_MIN_SPEND = 500000;
+
+const pointsToUse = ref(0);
+const availablePoints = ref(0);
+
+const catalogProducts = ref([]);
+const currentCurrency = ref(localStorage.getItem("currency") || "IDR");
+const exchangeRates = ref({});
+const imageErrors = ref({});
+
+// ==========================================
+// 3. HELPER FUNCTIONS
+// ==========================================
+const parseColorName = (str) => str ? str.split("|")[0] : "";
+const parseColorHex = (str) => { try { const p = JSON.parse(str); return p.hex || "#ccc"; } catch { return str.includes("|") ? str.split("|")[1] : "#ccc"; } };
+const handleImageError = (company) => { imageErrors.value[company] = true; };
+
+const getCourierLogo = (company) => {
+  const map = { jne: "jne.png", sicepat: "sicepat.png", jnt: "jnt.png", anteraja: "anteraja.png", gojek: "gojek.png", grab: "grab.png", paxel: "paxel.png", ninja: "ninja.png", dhl: "dhl.png" };
+  return map[company.toLowerCase()] ? `/courier_images/${map[company.toLowerCase()]}` : null;
+};
+
+const formatCurrencyDisplay = (priceObj) => {
+  if (!priceObj) return "";
+  const { value, curr } = priceObj;
+  const symbols = { USD: "$", SGD: "S$", EUR: "€", AUD: "A$", MYR: "RM", IDR: "Rp " };
+  const formatter = new Intl.NumberFormat(curr === "IDR" ? "id-ID" : "en-US", { minimumFractionDigits: curr === "IDR" ? 0 : 2 });
+  return `${symbols[curr] || curr + " "}${formatter.format(value)}`;
+};
+
+const getPriceToDisplay = (product) => {
+  const curr = currentCurrency.value;
+  if (curr === "IDR") return { value: Number(product.price), curr: "IDR" };
+  try {
+    const pricesObj = typeof product.prices === "string" ? JSON.parse(product.prices) : product.prices || {};
+    const dbPrice = pricesObj[curr] || pricesObj[curr.toLowerCase()] || pricesObj[currentCurrency.value.toUpperCase()];
+    if (dbPrice) return { value: parseFloat(dbPrice), curr: curr };
+  } catch (e) {}
+  return { value: Number(product.price), curr: "IDR" };
+};
+
+const getActivePriceObj = (product) => {
+  const isReseller = userType.value === "reseller";
+  const wholesale = Number(product.wholesale_price) || 0;
+  if (isReseller && wholesale > 0 && checkoutCount.value >= 24) return { value: wholesale, curr: "IDR" };
+  return getPriceToDisplay(product);
+};
+
+const convertIDRtoActiveCurrency = (idrAmount) => {
+  const curr = currentCurrency.value;
+  if (curr === "IDR" || !exchangeRates.value[curr]) return { value: idrAmount, curr: "IDR" };
+  return { value: idrAmount * exchangeRates.value[curr], curr: curr };
+};
+
+// ==========================================
+// 4. COMPUTED PROPERTIES
+// ==========================================
+// 👇 [PERBAIKAN: DETEKSI DESTINATION DARI FORM GUEST ATAU ADDRESS ID] 👇
+const destinationInfo = computed(() => {
+  if (!isAuthenticated.value) {
+    return {
+      name: `${guestForm.value.first_name} ${guestForm.value.last_name}`,
+      phone: guestForm.value.phone,
+      address: `${guestForm.value.address_location}, ${guestForm.value.city}, ${guestForm.value.province}`,
+      postal_code: guestForm.value.postal_code,
+      country: guestForm.value.region || "Indonesia",
+    };
+  }
+
+  const addr = addresses.value.find((a) => a.id === selectedAddressId.value);
+  if (!addr) return null;
+  return {
+    name: addr.receiver?.full_name || addr.first_name_address + ' ' + addr.last_name_address || "Unknown",
+    phone: userData.value?.phone || "No Phone Provided",
+    address: `${addr.details?.location || addr.address_location || ""}, ${addr.details?.city || addr.city || ""}, ${addr.details?.province || addr.province || ""}`,
+    postal_code: addr.postal_code || addr.details?.postal_code || "",
+    country: addr.region || addr.details?.region || "Indonesia",
+  };
+});
+
+const isGuestFormValid = computed(() => {
+  const f = guestForm.value;
+  return f.first_name && f.email && f.phone && f.address_location && f.city && f.province && f.postal_code;
+});
+
+const isButtonDisabled = computed(() => {
+  if (isProcessing.value || cartItems.value.length === 0) return true;
+  if (isAuthenticated.value && !selectedAddressId.value) return true;
+  if (!isAuthenticated.value && !isGuestAddressLocked.value) return true;
+  
+  if (shippingMethod.value === "biteship") {
+    if (!selectedRate.value) return true;
+    if (deliveryType.value === "scheduled" && (!deliveryDate.value || !deliveryTime.value)) return true;
+  }
+  return false;
+});
+// 👆 ========================================= 👆
+
+const todayDate = computed(() => new Date().toISOString().split("T")[0]);
+
+const checkoutItems = computed(() => {
+  const ids = selectedItemIds?.value || selectedItemIds || [];
+  return (cartItems.value || []).filter((item) => ids.includes(item.id)).map((item) => {
+    const fresh = catalogProducts.value.find((p) => p.id === item.product_id);
+    return fresh ? { ...item, product: fresh } : item;
+  });
+});
+
+const checkoutTotalIDR = computed(() => {
+  return checkoutItems.value.reduce((sum, item) => sum + (getActivePriceObj(item.product).value * item.quantity), 0);
+});
+
+const cartSubtotalObj = computed(() => {
+  const totalValue = checkoutItems.value.reduce((sum, item) => sum + (getActivePriceObj(item.product).value * item.quantity), 0);
+  return { value: totalValue, curr: currentCurrency.value };
+});
+
+const actualPromoDiscountIDR = computed(() => promoDiscountAmount.value);
+const actualPromoDiscountObj = computed(() => convertIDRtoActiveCurrency(actualPromoDiscountIDR.value));
+
+const maxPointsAllowed = computed(() => {
+  const maxUsableAmount = Math.max(0, checkoutTotalIDR.value - actualPromoDiscountIDR.value);
+  return Math.min(availablePoints.value, Math.floor(maxUsableAmount / 1000));
+});
+
+const appliedPointDiscountIDR = computed(() => (pointsToUse.value || 0) * 1000);
+const appliedPointDiscountObj = computed(() => convertIDRtoActiveCurrency(appliedPointDiscountIDR.value));
+
+const shippingCostIDR = computed(() => shippingMethod.value === "biteship" && selectedRate.value ? parseFloat(selectedRate.value.price) : 0);
+const shippingCostObj = computed(() => convertIDRtoActiveCurrency(shippingCostIDR.value));
+
+const grandTotalObj = computed(() => {
+  const calculatedTotal = cartSubtotalObj.value.value - bundleDiscountAmount.value + shippingCostObj.value.value - actualPromoDiscountObj.value.value - appliedPointDiscountObj.value.value;
+  return { value: Math.max(0, calculatedTotal), curr: currentCurrency.value };
+});
+
+const processedShippingRates = computed(() => {
+  if (!rawShippingRates.value || rawShippingRates.value.length === 0) return [];
+  return rawShippingRates.value.map((rate) => ({
+    ...rate,
+    company: rate.provider || rate.company,
+    type: rate.service_name || rate.type,
+    duration: rate.etd || rate.duration,
+    courier_name: rate.provider ? "Global Express" : rate.courier_name,
+    price: rate.price,
+    is_disabled: false,
+    disable_reason: "",
+  }));
+});
+
+// ==========================================
+// 5. WATCHERS
+// ==========================================
+watch([pointsToUse, maxPointsAllowed], () => {
+  if (pointsToUse.value > maxPointsAllowed.value) pointsToUse.value = maxPointsAllowed.value;
+});
+
+// Hanya otomatis load jika User Login
+watch(selectedAddressId, async (newVal) => {
+  if (newVal && isAuthenticated.value) {
+    await fetchShippingRatesForAuth(newVal);
+  }
+});
+
+// ==========================================
+// 6. ACTION FUNCTIONS
+// ==========================================
+
+// 👇 [FUNGSI BARU UNTUK KALKULASI ONGKIR GUEST] 👇
+const calculateGuestShipping = async () => {
+  if (!isGuestFormValid.value) return;
+
+  const ids = selectedItemIds?.value || selectedItemIds;
+  if (!ids || ids.length === 0) return;
+
+  isGuestAddressLocked.value = true;
+  selectedRate.value = null;
+  isLoadingRates.value = true;
+  rawShippingRates.value = [];
+
+  try {
+    // Kita mengirim raw data karena tidak ada ID Address di DB
+    const payload = {
+      is_guest: true,
+      guest_address: guestForm.value,
+      cart_items: checkoutItems.value.map(i => ({ product_id: i.product_id, quantity: i.quantity })),
+    };
+    const res = await axios.post(`${BASE_URL}/shipping/rates`, payload);
+    rawShippingRates.value = res.data?.data || res.data?.rates || res.data?.pricing || [];
+  } catch (error) {
+    Swal.fire("Error", "Gagal menghitung ongkos kirim untuk lokasi ini.", "error");
+    isGuestAddressLocked.value = false;
+  } finally {
+    isLoadingRates.value = false;
+  }
+};
+// 👆 ========================================== 👆
+
+const fetchShippingRatesForAuth = async (addressId) => {
+    const ids = selectedItemIds?.value || selectedItemIds;
+    if (!ids || ids.length === 0) return;
+
+    selectedRate.value = null;
+    isLoadingRates.value = true;
+    rawShippingRates.value = [];
+    try {
+      const res = await axios.post(`${BASE_URL}/shipping/rates`, { address_id: addressId, cart_ids: ids }, getAxiosConfig());
+      rawShippingRates.value = res.data?.data || res.data?.rates || res.data?.pricing || [];
+    } catch (error) {
+      if (error.response?.status === 401) return router.push("/login");
+    } finally {
+      isLoadingRates.value = false;
+    }
+};
+
+const fetchAddresses = async () => {
+  try {
+    const res = await axios.get(`${BASE_URL}/addresses`, getAxiosConfig());
+    const addrData = res.data?.data !== undefined ? res.data.data : res.data;
+    addresses.value = Array.isArray(addrData) ? addrData : [];
+  } catch (e) {}
+};
+
+const onAddressSaved = async (newId) => {
+  await fetchAddresses();
+  selectedAddressId.value = newId || (addresses.value.length > 0 ? addresses.value[addresses.value.length - 1].id : null);
+  isModalOpen.value = false;
+};
+
+const handleMemberToggle = async () => {
+  if (useMemberVoucher.value) {
+    if (checkoutTotalIDR.value < MEMBER_MIN_SPEND) {
+      Swal.fire({ toast: true, position: "top-end", icon: "warning", title: `Min. spend is Rp ${MEMBER_MIN_SPEND.toLocaleString("id-ID")}`, showConfirmButton: false, timer: 3000 });
+      useMemberVoucher.value = false; return;
+    }
+    promoInput.value = MEMBER_VOUCHER_CODE;
+    await applyPromo();
+    if (!promoSuccess.value) useMemberVoucher.value = false;
+  } else {
+    if (appliedPromoCode.value === MEMBER_VOUCHER_CODE) removePromo();
+  }
+};
+
+const applyPromo = async () => {
+  if (!promoInput.value) return;
+  isVerifyingPromo.value = true;
+  try {
+    const codeToBeApplied = promoInput.value.toUpperCase();
+    if (codeToBeApplied === "MERDEKA17" && checkoutTotalIDR.value < 699000) throw new Error(`Minimum pembelian untuk promo ini adalah Rp 699.000`);
+
+    const payload = {
+      promo_code: codeToBeApplied,
+      cart_items: checkoutItems.value.map((item) => ({ product_id: item.product_id, quantity: item.quantity })),
+    };
+    if (isAuthenticated.value) payload.address_id = selectedAddressId.value;
+
+    const config = isAuthenticated.value ? getAxiosConfig() : {};
+    const res = await axios.post(`${BASE_URL}/promo/verify`, payload, config);
+
+    if (codeToBeApplied === MEMBER_VOUCHER_CODE && checkoutTotalIDR.value < MEMBER_MIN_SPEND) {
+      throw new Error(`Minimum spend is Rp ${MEMBER_MIN_SPEND.toLocaleString("id-ID")}`);
+    }
+
+    promoSuccess.value = true;
+    promoMessage.value = "✅ " + res.data.message;
+    appliedPromoCode.value = codeToBeApplied;
+    promoDiscountAmount.value = Math.min(res.data.discount_value, checkoutTotalIDR.value);
+    appliedPromoType.value = res.data.promo_type;
+
+    if (appliedPromoCode.value === MEMBER_VOUCHER_CODE) useMemberVoucher.value = true;
+    if (['SOLHOST34', 'MERDEKA17'].includes(appliedPromoCode.value)) pointsToUse.value = 0;
+  } catch (error) {
+    promoSuccess.value = false;
+    promoMessage.value = "❌ " + (error.response?.data?.message || error.message || "Invalid promo code.");
+    appliedPromoCode.value = null; promoDiscountAmount.value = 0; appliedPromoType.value = null; useMemberVoucher.value = false;
+  } finally {
+    isVerifyingPromo.value = false;
+  }
+};
+
+const removePromo = () => {
+  promoInput.value = ""; appliedPromoCode.value = null; appliedPromoType.value = null;
+  promoDiscountAmount.value = 0; promoMessage.value = ""; promoSuccess.value = false; useMemberVoucher.value = false;
+};
+
+const useAllPoints = () => { pointsToUse.value = maxPointsAllowed.value; };
+
+const handlePayment = async () => {
+  isProcessing.value = true;
+  try {
+    const payload = {
+      // Data Transaksi
+      cart_ids: selectedItemIds.value,
+      use_points: pointsToUse.value || 0,
+      promo_code: appliedPromoCode.value,
+      promo_type: appliedPromoType.value,
+      currency: currentCurrency.value,
+      referral_code: localStorage.getItem("affiliate_ref"),
+      
+      // Data Logistik
+      shipping_method: shippingMethod.value,
+      courier_company: shippingMethod.value === "biteship" ? selectedRate.value?.company : null,
+      courier_type: shippingMethod.value === "biteship" ? selectedRate.value?.type : null, 
+      shipping_cost: shippingMethod.value === "biteship" ? selectedRate.value?.price : null,
+      delivery_type: shippingMethod.value === "biteship" ? deliveryType.value : null, 
+      delivery_date: shippingMethod.value === "biteship" ? deliveryDate.value : null,
+      delivery_time: shippingMethod.value === "biteship" ? deliveryTime.value : null, 
+
+      // Data Auth/Guest
+      is_guest: !isAuthenticated.value,
+    };
+
+    if (isAuthenticated.value) {
+      payload.address_id = selectedAddressId.value;
+    } else {
+      payload.guest_data = guestForm.value;
+      payload.cart_items = checkoutItems.value.map(i => ({ product_id: i.product_id, quantity: i.quantity, color: i.color }));
+    }
+
+    const config = isAuthenticated.value ? getAxiosConfig() : {};
+    config.headers = { ...config.headers, "X-Idempotency-Key": crypto.randomUUID() };
+
+    const res = await axios.post(`${BASE_URL}/checkout`, payload, config);
+
+    if (res.data.checkout_url) { 
+      clearSelectedCart(); 
+      window.location.href = res.data.checkout_url; 
+    }
+  } catch (error) {
+    if (error.response?.status === 429) Swal.fire({ icon: 'warning', title: 'Antrean Padat! 🚦', text: error.response.data.message, confirmButtonColor: '#000', confirmButtonText: 'Coba Lagi' });
+    else if (error.response?.status === 422) Swal.fire({ icon: 'error', title: 'Validasi Gagal / Stok Habis', text: error.response.data.message, confirmButtonColor: '#000' });
+    else Swal.fire("Payment Error", error.response?.data?.message || "Failed to create invoice", "error");
+  } finally {
+    isProcessing.value = false;
+  }
+};
+
+// ==========================================
+// 7. LIFECYCLE HOOKS
+// ==========================================
+const updateCurrencyState = () => { currentCurrency.value = localStorage.getItem("currency") || "IDR"; };
+
+onMounted(async () => {
+  window.addEventListener("currency-changed", updateCurrencyState);
+  window.addEventListener("storage", (e) => { if (e.key === "currency") updateCurrencyState(); });
+
+  try {
+    const promises = [
+      axios.get(`${BASE_URL}/exchange-rates`), 
+      axios.get(`${BASE_URL}/products`)
+    ];
+
+    if (isAuthenticated.value) {
+      promises.push(axios.get(`${BASE_URL}/user`, getAxiosConfig()));
+    }
+
+    const results = await Promise.allSettled(promises);
+
+    if (results[0].status === "fulfilled") exchangeRates.value = results[0].value.data?.data?.rates || {};
+    if (results[1].status === "fulfilled") catalogProducts.value = results[1].value.data?.data?.data || results[1].value.data?.data || [];
+
+    if (isAuthenticated.value) {
+      const resUser = results[2];
+      if (resUser.status === "fulfilled" && resUser.value.data) {
+        userData.value = resUser.value.data; availablePoints.value = resUser.value.data.point || 0; userType.value = resUser.value.data.usertype || "user";
+        localStorage.setItem("user", JSON.stringify(resUser.value.data));
+      } else {
+        const userStr = localStorage.getItem("user") || localStorage.getItem("user_data");
+        if (userStr) {
+          userData.value = JSON.parse(userStr); availablePoints.value = userData.value.point || 0; userType.value = userData.value.usertype || "user";
+        }
+      }
+
+      await fetchAddresses();
+      if (addresses.value.length > 0) {
+        selectedAddressId.value = addresses.value.find((a) => a.is_default)?.id || addresses.value[0].id;
+      }
+    }
+
+    const ids = selectedItemIds?.value || selectedItemIds || [];
+    if (ids.length === 0) router.push(`/cart`);
+    else {
+      const now = new Date(); now.setHours(now.getHours() + 1);
+      deliveryDate.value = now.toISOString().split("T")[0];
+      deliveryTime.value = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+    }
+  } catch (error) {
+  } finally {
+    isPageLoading.value = false;
+  }
+});
+
+onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrencyState); });
+</script>
