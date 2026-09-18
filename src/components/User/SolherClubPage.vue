@@ -1102,6 +1102,7 @@ onMounted(() => {
 import { ref, onMounted, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import axios from "axios";
+import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
 
 const { t } = useI18n();
