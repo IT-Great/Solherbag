@@ -278,9 +278,8 @@ onMounted(() => {
 }
 </style> -->
 
-<template>
+<!-- <template>
   <div class="bg-[#FAFAFA] min-h-screen pb-24 font-sans">
-    <!-- Hero Banner -->
     <div class="relative w-full h-[500px] md:h-[600px] bg-black overflow-hidden flex items-center justify-center">
       <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80 z-10"></div>
       <img
@@ -307,7 +306,6 @@ onMounted(() => {
 
     <div class="px-6 mx-auto max-w-7xl md:px-12 -mt-16 relative z-30">
       
-      <!-- 👇 STATUS MEMBERSHIP USER (Jika Login) 👇 -->
       <div v-if="isAuthenticated && userData" class="bg-white p-8 md:p-12 shadow-2xl rounded-sm mb-24 border border-gray-100 flex flex-col md:flex-row items-center justify-between gap-8">
         <div class="flex flex-col gap-2">
           <p class="text-[10px] font-bold tracking-widest text-gray-400 uppercase">Your Circle Status</p>
@@ -343,7 +341,6 @@ onMounted(() => {
         </div>
       </div>
 
-      <!-- Introduction Section (Menggantikan How it Works) -->
       <div class="text-center mb-20 mt-16 max-w-3xl mx-auto">
         <p class="text-gray-600 leading-relaxed md:text-lg font-serif italic mb-6">
           "Every SOLHÉR piece is made to accompany a woman through the chapters of her life. The SOLHÉR Circle is our way of celebrating the women who choose to carry those stories with us."
@@ -353,11 +350,9 @@ onMounted(() => {
         </p>
       </div>
 
-      <!-- Tiers Section -->
       <div class="mt-24">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
-          <!-- Tier 1: MUSE -->
           <div class="bg-white border border-gray-200 rounded-sm p-10 flex flex-col hover:shadow-xl transition-all duration-500 relative group">
             <div class="mb-8 border-b border-gray-100 pb-6">
               <span class="text-gray-300 text-2xl mb-4 block">✧</span>
@@ -385,7 +380,6 @@ onMounted(() => {
             </div>
           </div>
 
-          <!-- Tier 2: ÉLAN -->
           <div class="bg-[#FDFBF7] border border-[#E8E2D2] rounded-sm p-10 flex flex-col hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 relative group shadow-lg">
             <div class="absolute top-0 left-0 w-full bg-[#E8E2D2] text-[#8B7355] text-[9px] font-black uppercase tracking-widest text-center py-1.5">
               The Next Chapter
@@ -416,7 +410,6 @@ onMounted(() => {
             </div>
           </div>
 
-          <!-- Tier 3: HÉRITAGE -->
           <div class="bg-[#111111] text-white border border-[#333333] rounded-sm p-10 flex flex-col hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 relative group">
             <div class="mb-8 border-b border-[#333333] pb-6">
               <span class="text-white/80 text-2xl mb-4 block">❈</span>
@@ -447,7 +440,6 @@ onMounted(() => {
         </div>
       </div>
 
-      <!-- Closing Footer Section -->
       <div class="mt-32 pt-16 border-t border-gray-200 text-center max-w-2xl mx-auto px-6">
         <h2 class="font-serif text-2xl md:text-3xl uppercase tracking-widest text-gray-900 mb-8 leading-relaxed">
           Your Story.<br/>Your Pieces.<br/>Your Circle.
@@ -558,5 +550,349 @@ onMounted(() => {
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
+}
+</style> -->
+
+<template>
+  <div class="bg-[#FAFAFA] min-h-screen pb-24 font-sans">
+    <!-- Hero Banner -->
+    <div class="relative w-full h-[500px] md:h-[600px] bg-black overflow-hidden flex items-center justify-center">
+      <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80 z-10"></div>
+      <img
+        src="../../assets/solher_club.jpg" 
+        alt="The Solhér Circle"
+        class="absolute inset-0 object-cover w-full h-full opacity-50"
+      />
+      <div class="relative z-20 flex flex-col items-center px-6 text-center text-white max-w-4xl animate-fade-in">
+        <h1 class="mb-4 font-serif text-4xl tracking-tighter md:text-6xl uppercase">
+          The Solhér Circle
+        </h1>
+        <p class="text-sm tracking-[0.2em] text-gray-300 uppercase md:text-base mb-8 font-medium">
+          More than membership. A place to belong.
+        </p>
+        <button
+          v-if="!isAuthenticated"
+          @click="$router.push('/login')"
+          class="px-10 py-4 text-xs font-black tracking-widest text-black uppercase transition-colors bg-white hover:bg-gray-200 rounded-sm shadow-xl"
+        >
+          Join The Circle
+        </button>
+      </div>
+    </div>
+
+    <div class="px-6 mx-auto max-w-7xl md:px-12 -mt-16 relative z-30">
+      
+      <!-- 👇 STATUS MEMBERSHIP USER (Jika Login) 👇 -->
+      <div v-if="isAuthenticated && userData" class="bg-white p-8 md:p-12 shadow-2xl rounded-sm mb-24 border border-gray-100 flex flex-col md:flex-row items-center justify-between gap-8">
+        <div class="flex flex-col gap-2">
+          <p class="text-[10px] font-bold tracking-widest text-gray-400 uppercase">Your Circle Status</p>
+          <div class="flex items-center gap-4">
+            <span class="text-3xl text-gray-300">{{ currentTier.icon }}</span>
+            <div>
+              <h2 class="font-serif text-3xl font-bold tracking-tight text-gray-900 uppercase">{{ currentTier.name }}</h2>
+              <p class="text-sm font-medium text-gray-500 mt-1">
+                You carry <span class="text-black font-black text-lg">{{ userData.point || 0 }}</span> stories (points)
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="w-full md:w-1/3 flex flex-col gap-2">
+          <div v-if="currentTier.next" class="flex justify-between text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+            <span>{{ currentTier.name }}</span>
+            <span>{{ currentTier.nextName }}</span>
+          </div>
+          <div v-else class="text-[10px] font-bold text-gray-900 uppercase tracking-widest text-right mb-1">
+            Highest Circle Reached
+          </div>
+          
+          <div class="w-full h-1 bg-gray-100 rounded-full overflow-hidden">
+            <div 
+              class="h-full bg-black transition-all duration-1000" 
+              :style="{ width: currentTier.next ? `${((userData.point || 0) / currentTier.next) * 100}%` : '100%' }"
+            ></div>
+          </div>
+          <p v-if="currentTier.next" class="text-right text-[10px] text-gray-400 mt-1 font-medium">
+            Accumulate {{ currentTier.next - (userData.point || 0) }} more to discover {{ currentTier.nextName }}.
+          </p>
+        </div>
+      </div>
+
+      <!-- Introduction Section -->
+      <div class="text-center mb-20 mt-16 max-w-3xl mx-auto">
+        <p class="text-gray-600 leading-relaxed md:text-lg font-serif italic mb-6">
+          "Every SOLHÉR piece is made to accompany a woman through the chapters of her life. The SOLHÉR Circle is our way of celebrating the women who choose to carry those stories with us."
+        </p>
+        <p class="text-sm text-gray-500 leading-loose">
+          From your first piece to the ones you keep for years to come, enjoy thoughtful privileges, early access, and invitations created exclusively for our community.
+        </p>
+      </div>
+
+      <!-- Tiers Section -->
+      <div class="mt-24">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          
+          <!-- Tier 1: MUSE -->
+          <div class="bg-white border border-gray-200 rounded-sm p-10 flex flex-col hover:shadow-xl transition-all duration-500 relative group">
+            <div class="mb-8 border-b border-gray-100 pb-6">
+              <span class="text-gray-300 text-2xl mb-4 block">✧</span>
+              <h3 class="font-serif text-3xl font-bold uppercase tracking-widest text-gray-900 mb-2">Muse</h3>
+              <p class="text-xs text-gray-500 font-serif italic mb-4">"Your beginning with SOLHÉR."</p>
+              <p class="text-[10px] text-gray-400 uppercase tracking-widest font-bold">0 - 2,499 Pts</p>
+            </div>
+            
+            <p class="text-xs text-gray-600 leading-relaxed mb-8 h-12">
+              A complimentary membership for every woman who chooses to become part of our story.
+            </p>
+            
+            <ul class="space-y-4 flex-grow mb-8">
+              <li v-for="(benefit, i) in musePrivileges" :key="i" class="flex items-start gap-3">
+                <span class="w-1.5 h-1.5 bg-gray-300 rounded-full shrink-0 mt-1.5"></span>
+                <span class="text-xs text-gray-600">{{ benefit }}</span>
+              </li>
+            </ul>
+
+            <button v-if="!isAuthenticated" @click="$router.push('/login')" class="w-full py-3 border border-black text-black text-[10px] font-black uppercase tracking-widest hover:bg-black hover:text-white transition-colors">
+              Become a Muse
+            </button>
+            <div v-else-if="currentTier.name === 'Muse'" class="w-full py-3 bg-gray-100 text-gray-500 text-[10px] font-black uppercase tracking-widest text-center cursor-default">
+              Your Current Status
+            </div>
+          </div>
+
+          <!-- Tier 2: ÉLAN -->
+          <div class="bg-[#FDFBF7] border border-[#E8E2D2] rounded-sm p-10 flex flex-col hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 relative group shadow-lg">
+            <div class="absolute top-0 left-0 w-full bg-[#E8E2D2] text-[#8B7355] text-[9px] font-black uppercase tracking-widest text-center py-1.5">
+              The Next Chapter
+            </div>
+            <div class="mb-8 border-b border-[#E8E2D2] pb-6 mt-4">
+              <span class="text-[#8B7355] text-2xl mb-4 block">✦</span>
+              <h3 class="font-serif text-3xl font-bold uppercase tracking-widest text-[#8B7355] mb-2">Élan</h3>
+              <p class="text-xs text-gray-500 font-serif italic mb-4">"For the woman in motion."</p>
+              <p class="text-[10px] text-[#8B7355]/70 uppercase tracking-widest font-bold">2,500 - 9,999 Pts</p>
+            </div>
+            
+            <p class="text-xs text-gray-600 leading-relaxed mb-8 h-12">
+              Created for our returning community — women who continue to evolve, grow, and create their own story.
+            </p>
+            
+            <ul class="space-y-4 flex-grow mb-8">
+              <li v-for="(benefit, i) in elanPrivileges" :key="i" class="flex items-start gap-3">
+                <span class="w-1.5 h-1.5 bg-[#8B7355]/50 rounded-full shrink-0 mt-1.5"></span>
+                <span class="text-xs text-gray-700 font-medium">{{ benefit }}</span>
+              </li>
+            </ul>
+
+            <button v-if="!isAuthenticated" @click="$router.push('/login')" class="w-full py-3 bg-[#8B7355] text-white text-[10px] font-black uppercase tracking-widest hover:bg-[#735F46] transition-colors">
+              Discover Élan
+            </button>
+            <div v-else-if="currentTier.name === 'Élan'" class="w-full py-3 bg-[#8B7355]/10 text-[#8B7355] text-[10px] font-black uppercase tracking-widest text-center cursor-default">
+              Your Current Status
+            </div>
+          </div>
+
+          <!-- Tier 3: HÉRITAGE -->
+          <div class="bg-[#111111] text-white border border-[#333333] rounded-sm p-10 flex flex-col hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 relative group">
+            <div class="mb-8 border-b border-[#333333] pb-6">
+              <span class="text-white/80 text-2xl mb-4 block">❈</span>
+              <h3 class="font-serif text-3xl font-bold uppercase tracking-widest text-white mb-2">Héritage</h3>
+              <p class="text-xs text-gray-400 font-serif italic mb-4">"For the stories that stay."</p>
+              <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">10,000+ Pts</p>
+            </div>
+            
+            <p class="text-xs text-gray-400 leading-relaxed mb-8 h-12">
+              Our most intimate circle, created for women who have made SOLHÉR part of their journey.
+            </p>
+            
+            <ul class="space-y-4 flex-grow mb-8">
+              <li v-for="(benefit, i) in heritagePrivileges" :key="i" class="flex items-start gap-3">
+                <span class="w-1.5 h-1.5 bg-white/50 rounded-full shrink-0 mt-1.5"></span>
+                <span class="text-xs text-gray-300 font-medium">{{ benefit }}</span>
+              </li>
+            </ul>
+
+            <button v-if="!isAuthenticated" @click="$router.push('/login')" class="w-full py-3 bg-white text-black text-[10px] font-black uppercase tracking-widest hover:bg-gray-200 transition-colors">
+              Discover Héritage
+            </button>
+            <div v-else-if="currentTier.name === 'Héritage'" class="w-full py-3 bg-white/10 text-white text-[10px] font-black uppercase tracking-widest text-center cursor-default">
+              Your Current Status
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 👇 [BARU] FAQ SECTION 👇 -->
+      <div class="max-w-4xl mx-auto mt-32 px-6">
+        <h2 class="font-serif text-2xl md:text-3xl tracking-tighter text-center text-gray-900 uppercase mb-12">
+          Frequently Asked Questions
+        </h2>
+        <div class="space-y-2 border-t border-gray-200 pt-4">
+          <div v-for="(faq, index) in faqs" :key="index" class="border-b border-gray-100 py-6">
+            <button @click="toggleFaq(index)" class="flex justify-between items-center w-full text-left focus:outline-none group">
+              <h4 class="font-bold text-xs uppercase tracking-widest text-gray-900 group-hover:text-gray-500 transition-colors pr-8 leading-relaxed">
+                {{ faq.question }}
+              </h4>
+              <span class="text-xl font-light text-gray-400 transition-transform duration-300" :class="{ 'rotate-45': activeFaq === index }">+</span>
+            </button>
+            <transition name="faq-fade">
+              <div v-show="activeFaq === index" class="mt-4 text-sm text-gray-600 leading-relaxed font-serif italic pr-8">
+                {{ faq.answer }}
+              </div>
+            </transition>
+          </div>
+        </div>
+      </div>
+      <!-- 👆 ======================= 👆 -->
+
+      <!-- Closing Footer Section -->
+      <div class="mt-32 pt-16 border-t border-gray-200 text-center max-w-2xl mx-auto px-6">
+        <h2 class="font-serif text-2xl md:text-3xl uppercase tracking-widest text-gray-900 mb-8 leading-relaxed">
+          Your Story.<br/>Your Pieces.<br/>Your Circle.
+        </h2>
+        <p class="text-gray-500 italic font-serif mb-2 text-sm md:text-base">
+          Because the most meaningful things we carry are not simply possessions.
+        </p>
+        <p class="text-gray-500 italic font-serif mb-12 text-sm md:text-base">
+          They become part of who we are.
+        </p>
+        <h3 class="text-xs font-black tracking-[0.3em] uppercase text-black pb-8 border-b border-black inline-block">
+          Welcome to the Solhér Circle.
+        </h3>
+      </div>
+
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, computed } from "vue";
+import axios from "axios";
+import { BASE_URL } from "../../config/api.js";
+
+const tokenLocal = localStorage.getItem("token");
+const userLocal = localStorage.getItem("user");
+
+const isAuthenticated = ref(!!tokenLocal);
+const userData = ref(userLocal ? JSON.parse(userLocal) : null);
+
+// 👇 STATE UNTUK FAQ 👇
+const activeFaq = ref(null);
+
+const toggleFaq = (index) => {
+  activeFaq.value = activeFaq.value === index ? null : index;
+};
+
+// Data Pertanyaan FAQ Sesuai Kebutuhan
+const faqs = [
+  {
+    question: "How are Solhér Points calculated?",
+    answer: "For every Rp 1.000 spent on our collections, you are rewarded with 1 Point as a Muse. As you ascend, your rewards gracefully multiply: Élan members receive 1.5 Points, and Héritage members receive 2 Points for every Rp 1.000 spent."
+  },
+  {
+    question: "How do I redeem my accumulated Points?",
+    answer: "Your points carry tangible value. You may apply them at checkout to reduce your final total. Every 1.000 Points grants you a direct deduction of Rp 1.000."
+  },
+  {
+    question: "Do my Status and Points expire?",
+    answer: "Your points and tier status remain valid for 12 months from the date of your last purchase. Continuing your journey with us within the year automatically extends their validity."
+  },
+  {
+    question: "How do I claim my Birthday Month Benefit?",
+    answer: "A specially curated birthday privilege will be sent exclusively to your registered email address at the beginning of your birthday month. Please ensure your profile details are complete."
+  }
+];
+
+const musePrivileges = [
+  "Welcome gift",
+  "Early access to selected launches",
+  "Member-only privileges",
+  "Birthday month benefit",
+  "Access to SOLHÉR events",
+  "First access to limited collections"
+];
+
+const elanPrivileges = [
+  "All Muse privileges",
+  "5% member privilege on selected purchases",
+  "Early access to new collections",
+  "Complimentary gift wrapping",
+  "Exclusive seasonal gifts",
+  "Priority access to limited pieces",
+  "Birthday month gift",
+  "Private event invitations",
+  "Priority customer service"
+];
+
+const heritagePrivileges = [
+  "All Élan privileges",
+  "10% member privilege on selected purchases",
+  "First access to new collections",
+  "Priority reservation of limited pieces",
+  "Exclusive Héritage gift",
+  "Personal styling & bag consultation",
+  "Complimentary care service",
+  "Private previews & intimate events",
+  "Exclusive Héritage experiences",
+  "Special anniversary & birthday gift"
+];
+
+const refreshUserData = async () => {
+  if (!tokenLocal) return;
+
+  try {
+    const res = await axios.get(`${BASE_URL}/user`, {
+      headers: { Authorization: `Bearer ${tokenLocal}` },
+    });
+    
+    userData.value = res.data.data || res.data;
+    localStorage.setItem("user", JSON.stringify(userData.value));
+  } catch (error) {
+    if (error.response && error.response.status === 401) {
+      isAuthenticated.value = false;
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+    }
+  }
+};
+
+const currentTier = computed(() => {
+  const points = userData.value?.point || 0;
+  if (points < 2500) {
+    return { name: 'Muse', icon: '✧', next: 2500, nextName: 'Élan' };
+  } else if (points < 10000) {
+    return { name: 'Élan', icon: '✦', next: 10000, nextName: 'Héritage' };
+  } else {
+    return { name: 'Héritage', icon: '❈', next: null, nextName: null };
+  }
+});
+
+onMounted(() => {
+  if (isAuthenticated.value) {
+    refreshUserData();
+  }
+});
+</script>
+
+<style scoped>
+.animate-fade-in {
+  animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Transisi Halus untuk FAQ */
+.faq-fade-enter-active,
+.faq-fade-leave-active {
+  transition: all 0.3s ease;
+  transform-origin: top;
+}
+.faq-fade-enter-from,
+.faq-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-5px);
 }
 </style>
