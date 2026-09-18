@@ -1203,6 +1203,20 @@ const currentTier = computed(() => {
   }
 });
 
+const handleJoinClick = () => {
+  Swal.fire({
+    title: 'Create Your Story',
+    text: 'Silakan buat akun atau login terlebih dahulu untuk bergabung dengan Solhér Circle.',
+    icon: 'info',
+    confirmButtonText: 'Lanjutkan',
+    confirmButtonColor: '#000000', // Warna hitam elegan
+  }).then((result) => {
+    if (result.isConfirmed) {
+      router.push('/login'); // atau '/register'
+    }
+  });
+};
+
 onMounted(() => {
   if (isAuthenticated.value) {
     refreshUserData();
