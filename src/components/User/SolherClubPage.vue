@@ -16,7 +16,7 @@
         </p>
         <button
           v-if="!isAuthenticated"
-          @click="$router.push('/login')"
+          @click="handleJoinClick"
           class="px-8 py-3 text-sm font-bold tracking-widest text-black uppercase transition-colors bg-white hover:bg-gray-200 rounded-none"
         >
           Join Now
@@ -296,7 +296,7 @@ onMounted(() => {
         </p>
         <button
           v-if="!isAuthenticated"
-          @click="$router.push('/login')"
+          @click="handleJoinClick"
           class="px-10 py-4 text-xs font-black tracking-widest text-black uppercase transition-colors bg-white hover:bg-gray-200 rounded-sm shadow-xl"
         >
           Join The Circle
@@ -372,7 +372,7 @@ onMounted(() => {
               </li>
             </ul>
 
-            <button v-if="!isAuthenticated" @click="$router.push('/login')" class="w-full py-3 border border-black text-black text-[10px] font-black uppercase tracking-widest hover:bg-black hover:text-white transition-colors">
+            <button v-if="!isAuthenticated" @click="handleJoinClick" class="w-full py-3 border border-black text-black text-[10px] font-black uppercase tracking-widest hover:bg-black hover:text-white transition-colors">
               Become a Muse
             </button>
             <div v-else-if="currentTier.name === 'Muse'" class="w-full py-3 bg-gray-100 text-gray-500 text-[10px] font-black uppercase tracking-widest text-center cursor-default">
@@ -402,7 +402,7 @@ onMounted(() => {
               </li>
             </ul>
 
-            <button v-if="!isAuthenticated" @click="$router.push('/login')" class="w-full py-3 bg-[#8B7355] text-white text-[10px] font-black uppercase tracking-widest hover:bg-[#735F46] transition-colors">
+            <button v-if="!isAuthenticated" @click="handleJoinClick" class="w-full py-3 bg-[#8B7355] text-white text-[10px] font-black uppercase tracking-widest hover:bg-[#735F46] transition-colors">
               Discover Élan
             </button>
             <div v-else-if="currentTier.name === 'Élan'" class="w-full py-3 bg-[#8B7355]/10 text-[#8B7355] text-[10px] font-black uppercase tracking-widest text-center cursor-default">
@@ -429,7 +429,7 @@ onMounted(() => {
               </li>
             </ul>
 
-            <button v-if="!isAuthenticated" @click="$router.push('/login')" class="w-full py-3 bg-white text-black text-[10px] font-black uppercase tracking-widest hover:bg-gray-200 transition-colors">
+            <button v-if="!isAuthenticated" @click="handleJoinClick" class="w-full py-3 bg-white text-black text-[10px] font-black uppercase tracking-widest hover:bg-gray-200 transition-colors">
               Discover Héritage
             </button>
             <div v-else-if="currentTier.name === 'Héritage'" class="w-full py-3 bg-white/10 text-white text-[10px] font-black uppercase tracking-widest text-center cursor-default">
@@ -571,7 +571,7 @@ onMounted(() => {
         </p>
         <button
           v-if="!isAuthenticated"
-          @click="$router.push('/login')"
+          @click="handleJoinClick"
           class="px-10 py-4 text-xs font-black tracking-widest text-black uppercase transition-colors bg-white hover:bg-gray-200 rounded-sm shadow-xl"
         >
           Join The Circle
@@ -647,7 +647,7 @@ onMounted(() => {
               </li>
             </ul>
 
-            <button v-if="!isAuthenticated" @click="$router.push('/login')" class="w-full py-3 border border-black text-black text-[10px] font-black uppercase tracking-widest hover:bg-black hover:text-white transition-colors">
+            <button v-if="!isAuthenticated" @click="handleJoinClick" class="w-full py-3 border border-black text-black text-[10px] font-black uppercase tracking-widest hover:bg-black hover:text-white transition-colors">
               Become a Muse
             </button>
             <div v-else-if="currentTier.name === 'Muse'" class="w-full py-3 bg-gray-100 text-gray-500 text-[10px] font-black uppercase tracking-widest text-center cursor-default">
@@ -677,7 +677,7 @@ onMounted(() => {
               </li>
             </ul>
 
-            <button v-if="!isAuthenticated" @click="$router.push('/login')" class="w-full py-3 bg-[#8B7355] text-white text-[10px] font-black uppercase tracking-widest hover:bg-[#735F46] transition-colors">
+            <button v-if="!isAuthenticated" @click="handleJoinClick" class="w-full py-3 bg-[#8B7355] text-white text-[10px] font-black uppercase tracking-widest hover:bg-[#735F46] transition-colors">
               Discover Élan
             </button>
             <div v-else-if="currentTier.name === 'Élan'" class="w-full py-3 bg-[#8B7355]/10 text-[#8B7355] text-[10px] font-black uppercase tracking-widest text-center cursor-default">
@@ -704,7 +704,7 @@ onMounted(() => {
               </li>
             </ul>
 
-            <button v-if="!isAuthenticated" @click="$router.push('/login')" class="w-full py-3 bg-white text-black text-[10px] font-black uppercase tracking-widest hover:bg-gray-200 transition-colors">
+            <button v-if="!isAuthenticated" @click="handleJoinClick" class="w-full py-3 bg-white text-black text-[10px] font-black uppercase tracking-widest hover:bg-gray-200 transition-colors">
               Discover Héritage
             </button>
             <div v-else-if="currentTier.name === 'Héritage'" class="w-full py-3 bg-white/10 text-white text-[10px] font-black uppercase tracking-widest text-center cursor-default">
@@ -906,7 +906,7 @@ onMounted(() => {
         </p>
         <button
           v-if="!isAuthenticated"
-          @click="$router.push('/login')"
+          @click="handleJoinClick"
           class="px-10 py-4 text-xs font-black tracking-widest text-black uppercase transition-colors bg-white hover:bg-gray-200 rounded-sm shadow-xl"
         >
           {{ $t("solher_club_page.join_btn") }}
@@ -986,7 +986,7 @@ onMounted(() => {
               </li>
             </ul>
 
-            <button v-if="!isAuthenticated" @click="$router.push('/login')" class="w-full py-3 border border-black text-black text-[10px] font-black uppercase tracking-widest hover:bg-black hover:text-white transition-colors">
+            <button v-if="!isAuthenticated" @click="handleJoinClick" class="w-full py-3 border border-black text-black text-[10px] font-black uppercase tracking-widest hover:bg-black hover:text-white transition-colors">
               {{ $t("solher_club_page.btn_become_muse") }}
             </button>
             <div v-else-if="currentTier.name === 'Muse'" class="w-full py-3 bg-gray-100 text-gray-500 text-[10px] font-black uppercase tracking-widest text-center cursor-default">
@@ -1017,7 +1017,7 @@ onMounted(() => {
               </li>
             </ul>
 
-            <button v-if="!isAuthenticated" @click="$router.push('/login')" class="w-full py-3 bg-[#8B7355] text-white text-[10px] font-black uppercase tracking-widest hover:bg-[#735F46] transition-colors">
+            <button v-if="!isAuthenticated" @click="handleJoinClick" class="w-full py-3 bg-[#8B7355] text-white text-[10px] font-black uppercase tracking-widest hover:bg-[#735F46] transition-colors">
               {{ $t("solher_club_page.btn_discover_elan") }}
             </button>
             <div v-else-if="currentTier.name === 'Élan'" class="w-full py-3 bg-[#8B7355]/10 text-[#8B7355] text-[10px] font-black uppercase tracking-widest text-center cursor-default">
@@ -1045,7 +1045,7 @@ onMounted(() => {
               </li>
             </ul>
 
-            <button v-if="!isAuthenticated" @click="$router.push('/login')" class="w-full py-3 bg-white text-black text-[10px] font-black uppercase tracking-widest hover:bg-gray-200 transition-colors">
+            <button v-if="!isAuthenticated" @click="handleJoinClick" class="w-full py-3 bg-white text-black text-[10px] font-black uppercase tracking-widest hover:bg-gray-200 transition-colors">
               {{ $t("solher_club_page.btn_discover_heritage") }}
             </button>
             <div v-else-if="currentTier.name === 'Héritage'" class="w-full py-3 bg-white/10 text-white text-[10px] font-black uppercase tracking-widest text-center cursor-default">
