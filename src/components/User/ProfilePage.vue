@@ -11544,48 +11544,95 @@ onMounted(() => {
 <template>
   <div class="max-w-7xl px-4 py-12 mx-auto sm:px-6 lg:py-16 animate-fade-in">
     <!-- Header Section -->
-    <div class="flex flex-col items-start justify-between mb-10 md:flex-row md:items-end gap-6">
+    <div
+      class="flex flex-col items-start justify-between mb-10 md:flex-row md:items-end gap-6"
+    >
       <div>
-        <h1 class="text-3xl font-black tracking-tight text-gray-900 sm:text-5xl">
+        <h1
+          class="text-3xl font-black tracking-tight text-gray-900 sm:text-5xl"
+        >
           {{ $t("profile.my_account") }}
         </h1>
         <p class="mt-3 text-sm text-gray-500 font-medium max-w-lg">
-          {{ $t("profile.manage_description") || 'Kelola informasi pribadi, pesanan, dan hak istimewa Anda di sini.' }}
+          {{
+            $t("profile.manage_description") ||
+            "Kelola informasi pribadi, pesanan, dan hak istimewa Anda di sini."
+          }}
         </p>
       </div>
 
       <!-- Waktu Bergabung -->
-      <div v-if="userData?.created_at" class="flex items-center gap-3 px-5 py-2.5 bg-white border border-gray-100 rounded-full shadow-sm">
+      <div
+        v-if="userData?.created_at"
+        class="flex items-center gap-3 px-5 py-2.5 bg-white border border-gray-100 rounded-full shadow-sm"
+      >
         <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-        <span class="text-xs text-gray-500 font-medium">{{ $t("profile.member_since") || 'Bergabung sejak' }}</span>
-        <span class="text-xs font-black text-gray-900 tracking-wider uppercase">{{ formatDate(userData.created_at) }}</span>
+        <span class="text-xs text-gray-500 font-medium">{{
+          $t("profile.member_since") || "Bergabung sejak"
+        }}</span>
+        <span
+          class="text-xs font-black text-gray-900 tracking-wider uppercase"
+          >{{ formatDate(userData.created_at) }}</span
+        >
       </div>
     </div>
 
     <!-- 👇 WIDGET KELENGKAPAN PROFIL (Premium Dark Mode) 👇 -->
-    <div v-if="userData && profileCompleteness < 100" class="p-6 mb-10 overflow-hidden relative bg-gradient-to-r from-gray-900 to-black rounded-[2rem] shadow-xl border border-gray-800">
-      <div class="absolute top-0 right-0 w-72 h-72 bg-yellow-500/10 rounded-full mix-blend-screen filter blur-[50px] animate-pulse"></div>
+    <div
+      v-if="userData && profileCompleteness < 100"
+      class="p-6 mb-10 overflow-hidden relative bg-gradient-to-r from-gray-900 to-black rounded-[2rem] shadow-xl border border-gray-800"
+    >
+      <div
+        class="absolute top-0 right-0 w-72 h-72 bg-yellow-500/10 rounded-full mix-blend-screen filter blur-[50px] animate-pulse"
+      ></div>
 
-      <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
+      <div
+        class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-8"
+      >
         <div class="flex-1">
           <div class="flex items-center gap-4 mb-3">
-            <h3 class="text-xl font-black text-white tracking-wide">{{ $t("profile.complete_profile_title") || 'Sempurnakan Profil Anda' }}</h3>
-            <span class="px-3 py-1 text-xs font-black text-black bg-yellow-400 rounded-full shadow-[0_0_15px_rgba(250,204,21,0.4)]">{{ profileCompleteness }}%</span>
+            <h3 class="text-xl font-black text-white tracking-wide">
+              {{
+                $t("profile.complete_profile_title") ||
+                "Sempurnakan Profil Anda"
+              }}
+            </h3>
+            <span
+              class="px-3 py-1 text-xs font-black text-black bg-yellow-400 rounded-full shadow-[0_0_15px_rgba(250,204,21,0.4)]"
+              >{{ profileCompleteness }}%</span
+            >
           </div>
           <p class="text-sm text-gray-300 leading-relaxed max-w-2xl">
-            {{ $t("profile.complete_profile_desc") || 'Lengkapi profil Anda untuk pengalaman checkout yang 3x lebih cepat dan aman.' }} 
-            Anda belum melengkapi: <span class="font-bold text-yellow-400">{{ missingFields.join(", ") }}</span>.
+            {{
+              $t("profile.complete_profile_desc") ||
+              "Lengkapi profil Anda untuk pengalaman checkout yang 3x lebih cepat dan aman."
+            }}
+            Anda belum melengkapi:
+            <span class="font-bold text-yellow-400">{{
+              missingFields.join(", ")
+            }}</span
+            >.
           </p>
         </div>
 
         <div class="flex flex-col items-end w-full md:w-1/3 gap-4">
-          <div class="w-full h-3 bg-gray-800 rounded-full overflow-hidden border border-gray-700">
-            <div class="h-full bg-gradient-to-r from-yellow-500 to-yellow-300 rounded-full transition-all duration-1000 ease-out relative" :style="{ width: `${profileCompleteness}%` }">
-              <div class="absolute inset-0 bg-white/30 w-full animate-[shimmer_2s_infinite]"></div>
+          <div
+            class="w-full h-3 bg-gray-800 rounded-full overflow-hidden border border-gray-700"
+          >
+            <div
+              class="h-full bg-gradient-to-r from-yellow-500 to-yellow-300 rounded-full transition-all duration-1000 ease-out relative"
+              :style="{ width: `${profileCompleteness}%` }"
+            >
+              <div
+                class="absolute inset-0 bg-white/30 w-full animate-[shimmer_2s_infinite]"
+              ></div>
             </div>
           </div>
-          <button @click="handleCompleteProfile" class="w-full sm:w-auto px-6 py-2.5 text-xs font-black tracking-widest text-black uppercase transition-all bg-yellow-400 rounded-full hover:bg-yellow-300 hover:shadow-[0_0_20px_rgba(250,204,21,0.4)] hover:scale-105 active:scale-95">
-            {{ $t("profile.complete_now") || 'Lengkapi Sekarang' }}
+          <button
+            @click="handleCompleteProfile"
+            class="w-full sm:w-auto px-6 py-2.5 text-xs font-black tracking-widest text-black uppercase transition-all bg-yellow-400 rounded-full hover:bg-yellow-300 hover:shadow-[0_0_20px_rgba(250,204,21,0.4)] hover:scale-105 active:scale-95"
+          >
+            {{ $t("profile.complete_now") || "Lengkapi Sekarang" }}
           </button>
         </div>
       </div>
@@ -11594,16 +11641,23 @@ onMounted(() => {
     <div v-if="userData" class="grid grid-cols-1 gap-8 lg:grid-cols-12">
       <!-- KIRI: INFORMASI PENGGUNA, KARTU LOYALTI & NAVIGASI -->
       <div class="space-y-8 lg:col-span-4">
-        
         <!-- KARTU PROFIL UTAMA -->
-        <div class="bg-white border border-gray-100 shadow-xl shadow-gray-200/40 rounded-[2rem] relative overflow-hidden">
-          <div class="h-32 bg-gradient-to-br from-gray-900 via-black to-gray-800 relative">
-             <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDUiPjwvcmVjdD4KPHBhdGggZD0iTTAgMEw4IDhaTTAgOEw4IDBaIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiPjwvcGF0aD4KPC9zdmc+')]"></div>
+        <div
+          class="bg-white border border-gray-100 shadow-xl shadow-gray-200/40 rounded-[2rem] relative overflow-hidden"
+        >
+          <div
+            class="h-32 bg-gradient-to-br from-gray-900 via-black to-gray-800 relative"
+          >
+            <div
+              class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDUiPjwvcmVjdD4KPHBhdGggZD0iTTAgMEw4IDhaTTAgOEw4IDBaIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiPjwvcGF0aD4KPC9zdmc+')]"
+            ></div>
           </div>
 
           <div class="px-6 pb-6 sm:px-8 sm:pb-8">
             <!-- Flex Avatar & Name -->
-            <div class="flex flex-col sm:flex-row items-center sm:items-end gap-5 -mt-16 relative z-10 mb-6">
+            <div
+              class="flex flex-col sm:flex-row items-center sm:items-end gap-5 -mt-16 relative z-10 mb-6"
+            >
               <div class="relative inline-block group shrink-0">
                 <img
                   :key="userData.profile_image || 'default'"
@@ -11612,50 +11666,132 @@ onMounted(() => {
                   alt="Profile Avatar"
                   @error="handleImageError"
                 />
-                <label class="absolute inset-0 flex items-center justify-center transition-all duration-300 rounded-full opacity-0 cursor-pointer bg-black/60 group-hover:opacity-100 backdrop-blur-sm border-4 border-transparent">
+                <label
+                  class="absolute inset-0 flex items-center justify-center transition-all duration-300 rounded-full opacity-0 cursor-pointer bg-black/60 group-hover:opacity-100 backdrop-blur-sm border-4 border-transparent"
+                >
                   <div class="flex flex-col items-center text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-6 h-6 mb-1"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                      />
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
                     </svg>
-                    <span class="text-[10px] font-black tracking-widest uppercase">Ubah</span>
+                    <span
+                      class="text-[10px] font-black tracking-widest uppercase"
+                      >Ubah</span
+                    >
                   </div>
-                  <input type="file" class="hidden" @change="handleImageUpdate" accept="image/*" />
+                  <input
+                    type="file"
+                    class="hidden"
+                    @change="handleImageUpdate"
+                    accept="image/*"
+                  />
                 </label>
               </div>
 
               <div class="text-center sm:text-left pt-2 sm:pt-16 flex-1 w-full">
-                <h2 class="text-2xl font-black text-gray-900 tracking-tight line-clamp-1">
+                <h2
+                  class="text-2xl font-black text-gray-900 tracking-tight line-clamp-1"
+                >
                   {{ userData.first_name }} {{ userData.last_name }}
                 </h2>
-                <div class="flex items-center justify-center sm:justify-start gap-2 mt-1">
+                <div
+                  class="flex items-center justify-center sm:justify-start gap-2 mt-1"
+                >
                   <span class="w-2 h-2 bg-green-500 rounded-full"></span>
-                  <p class="text-xs font-bold text-gray-500 uppercase tracking-widest">{{ userData.usertype || 'Customer' }}</p>
+                  <p
+                    class="text-xs font-bold text-gray-500 uppercase tracking-widest"
+                  >
+                    {{ userData.usertype || "Customer" }}
+                  </p>
                 </div>
               </div>
             </div>
 
             <!-- Info List -->
             <div class="space-y-3">
-              <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100 hover:border-gray-200 transition-colors">
-                <div class="p-2.5 bg-white rounded-xl shadow-sm text-gray-400 shrink-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+              <div
+                class="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100 hover:border-gray-200 transition-colors"
+              >
+                <div
+                  class="p-2.5 bg-white rounded-xl shadow-sm text-gray-400 shrink-0"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                    />
+                  </svg>
                 </div>
                 <div class="flex-1 min-w-0">
-                  <p class="text-[10px] font-black tracking-widest text-gray-400 uppercase mb-0.5">Email</p>
-                  <p class="font-bold text-gray-900 truncate text-sm">{{ userData.email }}</p>
+                  <p
+                    class="text-[10px] font-black tracking-widest text-gray-400 uppercase mb-0.5"
+                  >
+                    Email
+                  </p>
+                  <p class="font-bold text-gray-900 truncate text-sm">
+                    {{ userData.email }}
+                  </p>
                 </div>
               </div>
 
-              <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100 hover:border-gray-200 transition-colors">
-                <div class="p-2.5 bg-white rounded-xl shadow-sm text-gray-400 shrink-0">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+              <div
+                class="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100 hover:border-gray-200 transition-colors"
+              >
+                <div
+                  class="p-2.5 bg-white rounded-xl shadow-sm text-gray-400 shrink-0"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                    />
+                  </svg>
                 </div>
                 <div class="flex-1 min-w-0">
-                  <p class="text-[10px] font-black tracking-widest text-gray-400 uppercase mb-0.5">Telepon</p>
+                  <p
+                    class="text-[10px] font-black tracking-widest text-gray-400 uppercase mb-0.5"
+                  >
+                    Telepon
+                  </p>
                   <p class="font-bold text-gray-900 text-sm">
                     {{ userData.phone || "-" }}
-                    <span v-if="!userData.phone" class="text-[10px] text-red-500 italic font-medium ml-2 bg-red-50 px-2 py-0.5 rounded">*Wajib</span>
+                    <span
+                      v-if="!userData.phone"
+                      class="text-[10px] text-red-500 italic font-medium ml-2 bg-red-50 px-2 py-0.5 rounded"
+                      >*Wajib</span
+                    >
                   </p>
                 </div>
               </div>
@@ -11663,21 +11799,58 @@ onMounted(() => {
 
             <!-- Action Buttons -->
             <div class="flex gap-3 mt-6">
-              <button @click="openInfoModal" class="flex-1 flex items-center justify-center gap-2 h-12 text-xs font-black uppercase tracking-widest text-gray-900 transition-all bg-white border-2 border-gray-100 rounded-xl hover:bg-gray-50 hover:border-gray-200 active:scale-95">
+              <button
+                @click="openInfoModal"
+                class="flex-1 flex items-center justify-center gap-2 h-12 text-xs font-black uppercase tracking-widest text-gray-900 transition-all bg-white border-2 border-gray-100 rounded-xl hover:bg-gray-50 hover:border-gray-200 active:scale-95"
+              >
                 Edit Profil
               </button>
-              <button @click="showPasswordModal = true" class="flex items-center justify-center w-12 h-12 text-gray-600 transition-all bg-white border-2 border-gray-100 rounded-xl hover:bg-gray-50 hover:border-gray-200 active:scale-95" title="Ganti Password">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+              <button
+                @click="showPasswordModal = true"
+                class="flex items-center justify-center w-12 h-12 text-gray-600 transition-all bg-white border-2 border-gray-100 rounded-xl hover:bg-gray-50 hover:border-gray-200 active:scale-95"
+                title="Ganti Password"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                  />
+                </svg>
               </button>
-              <button @click="handleLogout" class="flex items-center justify-center w-12 h-12 text-red-500 transition-all bg-red-50 border-2 border-red-100 rounded-xl hover:bg-red-100 hover:border-red-200 active:scale-95" title="Logout">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+              <button
+                @click="handleLogout"
+                class="flex items-center justify-center w-12 h-12 text-red-500 transition-all bg-red-50 border-2 border-red-100 rounded-xl hover:bg-red-100 hover:border-red-200 active:scale-95"
+                title="Logout"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-5 h-5 ml-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                  />
+                </svg>
               </button>
             </div>
           </div>
         </div>
 
         <!-- KARTU SOLHER CLUB -->
-        <div class="relative overflow-hidden text-white shadow-xl shadow-black/10 rounded-[2rem] p-8 transition-all hover:-translate-y-1" :class="userTier.bgColor">
+        <!-- <div class="relative overflow-hidden text-white shadow-xl shadow-black/10 rounded-[2rem] p-8 transition-all hover:-translate-y-1" :class="userTier.bgColor">
           <div class="absolute inset-0 bg-white/5 backdrop-blur-sm"></div>
           <svg class="absolute w-48 h-48 opacity-[0.07] -right-10 -top-10 text-white mix-blend-overlay animate-spin-slow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
@@ -11713,7 +11886,6 @@ onMounted(() => {
                   </div>
                 </div>
 
-                <!-- Keuntungan Tier -->
                 <div class="pt-5 mt-4 border-t border-white/20">
                   <p class="text-[10px] uppercase tracking-widest mb-3 font-black opacity-100 drop-shadow-sm">Keuntungan Anda:</p>
                   <ul class="space-y-2">
@@ -11734,50 +11906,285 @@ onMounted(() => {
               </template>
             </div>
           </div>
+        </div> -->
+
+        <!-- KARTU THE SOLHÉR CIRCLE -->
+        <div
+          class="relative overflow-hidden text-white shadow-xl shadow-black/10 rounded-[2rem] p-8 transition-all hover:-translate-y-1"
+          :class="userTier.bgColor"
+        >
+          <div class="absolute inset-0 bg-white/5 backdrop-blur-sm"></div>
+          <svg
+            class="absolute w-48 h-48 opacity-[0.07] -right-10 -top-10 text-white mix-blend-overlay animate-spin-slow"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+            />
+          </svg>
+          <div
+            class="absolute inset-0 w-[200%] h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-[shimmer_3s_infinite]"
+          ></div>
+
+          <div class="relative z-10">
+            <div class="flex items-start justify-between">
+              <div class="flex flex-col">
+                <!-- 1. Menampilkan label The Solhér Circle (atau menggunakan translasi) di atas -->
+                <span
+                  class="text-[10px] font-bold tracking-[0.2em] uppercase opacity-75 mb-1 drop-shadow-sm"
+                  >The Solhér Circle</span
+                >
+
+                <!-- 2. Nama Tier kini menjadi fokus utama (lebih besar dan elegan) tanpa embel-embel "TIER" -->
+                <h3
+                  class="text-3xl font-black tracking-widest uppercase drop-shadow-md flex items-center gap-3"
+                >
+                  <span class="text-4xl drop-shadow-lg">{{
+                    userTier.icon
+                  }}</span>
+                  {{ userTier.name }}
+                </h3>
+              </div>
+            </div>
+
+            <div class="mt-8">
+              <template v-if="userData.is_membership">
+                <p
+                  class="text-[10px] uppercase tracking-widest mb-1 opacity-80 font-bold drop-shadow-sm"
+                >
+                  {{ $t("profile.available_points") }}
+                </p>
+                <div class="flex items-baseline gap-1 drop-shadow-lg">
+                  <p class="text-6xl font-black">{{ userData.point || 0 }}</p>
+                  <span class="text-base font-bold opacity-80">Pts</span>
+                </div>
+
+                <div v-if="userTier.nextTierTarget" class="mt-6 mb-6">
+                  <div
+                    class="flex justify-between text-[9px] font-black tracking-widest uppercase opacity-90 mb-2 drop-shadow-sm"
+                  >
+                    <span>{{ userTier.name }}</span>
+                    <span>{{ userTier.nextTierName }}</span>
+                  </div>
+                  <div
+                    class="h-2 w-full bg-black/30 rounded-full overflow-hidden shadow-inner border border-white/10"
+                  >
+                    <div
+                      class="h-full bg-white rounded-full shadow-[0_0_10px_rgba(255,255,255,0.5)] transition-all duration-700 ease-out"
+                      :style="{
+                        width: `${Math.min((userData.point / userTier.nextTierTarget) * 100, 100)}%`,
+                      }"
+                    ></div>
+                  </div>
+                </div>
+
+                <!-- 3. Personalisasi teks Keuntungan berdasarkan nama Tier -->
+                <div class="pt-5 mt-4 border-t border-white/20">
+                  <p
+                    class="text-[10px] uppercase tracking-widest mb-3 font-black opacity-100 drop-shadow-sm"
+                  >
+                    Keuntungan {{ userTier.name }}:
+                  </p>
+                  <ul class="space-y-2">
+                    <li
+                      v-for="(benefit, idx) in userTier.benefits"
+                      :key="idx"
+                      class="flex items-start gap-2 text-xs font-medium opacity-90"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="w-4 h-4 shrink-0 mt-0.5 text-white/80"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                      {{ benefit }}
+                    </li>
+                  </ul>
+                </div>
+              </template>
+
+              <template v-else>
+                <p
+                  class="text-sm font-medium leading-relaxed opacity-90 mt-4 drop-shadow-sm"
+                >
+                  Tingkatkan total belanja Anda hingga
+                  <strong class="text-yellow-300">Rp 100.000</strong> untuk
+                  membuka fitur eksklusif, pengumpulan poin, dan promo khusus
+                  VIP.
+                </p>
+              </template>
+            </div>
+          </div>
         </div>
 
         <!-- BENTO QUICK ACTIONS -->
         <div class="grid grid-cols-2 gap-4">
-          <router-link to="/orderpage" class="flex flex-col items-start p-5 transition-all bg-white border border-gray-100 shadow-sm group hover:border-black hover:shadow-lg rounded-[2rem] hover:-translate-y-1">
-            <div class="p-3 text-gray-700 bg-gray-100 rounded-2xl group-hover:bg-black group-hover:text-white transition-all duration-300 mb-4 group-hover:scale-110">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
+          <router-link
+            to="/orderpage"
+            class="flex flex-col items-start p-5 transition-all bg-white border border-gray-100 shadow-sm group hover:border-black hover:shadow-lg rounded-[2rem] hover:-translate-y-1"
+          >
+            <div
+              class="p-3 text-gray-700 bg-gray-100 rounded-2xl group-hover:bg-black group-hover:text-white transition-all duration-300 mb-4 group-hover:scale-110"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-6 h-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                />
+              </svg>
             </div>
-            <h3 class="text-xs font-black text-gray-900 uppercase tracking-widest">{{ $t("profile.my_orders") || 'Pesanan Saya' }}</h3>
-            <p class="text-[10px] font-medium text-gray-500 mt-1">Lacak Paket</p>
+            <h3
+              class="text-xs font-black text-gray-900 uppercase tracking-widest"
+            >
+              {{ $t("profile.my_orders") || "Pesanan Saya" }}
+            </h3>
+            <p class="text-[10px] font-medium text-gray-500 mt-1">
+              Lacak Paket
+            </p>
           </router-link>
 
-          <router-link to="/favorites" class="flex flex-col items-start p-5 transition-all bg-white border border-gray-100 shadow-sm group hover:border-red-200 hover:shadow-lg rounded-[2rem] hover:-translate-y-1">
-            <div class="p-3 text-red-500 bg-red-50 rounded-2xl group-hover:bg-red-500 group-hover:text-white transition-all duration-300 mb-4 group-hover:scale-110">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+          <router-link
+            to="/favorites"
+            class="flex flex-col items-start p-5 transition-all bg-white border border-gray-100 shadow-sm group hover:border-red-200 hover:shadow-lg rounded-[2rem] hover:-translate-y-1"
+          >
+            <div
+              class="p-3 text-red-500 bg-red-50 rounded-2xl group-hover:bg-red-500 group-hover:text-white transition-all duration-300 mb-4 group-hover:scale-110"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-6 h-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                />
+              </svg>
             </div>
-            <h3 class="text-xs font-black text-gray-900 uppercase tracking-widest">{{ $t("profile.my_wishlist") }}</h3>
+            <h3
+              class="text-xs font-black text-gray-900 uppercase tracking-widest"
+            >
+              {{ $t("profile.my_wishlist") }}
+            </h3>
             <p class="text-[10px] font-medium text-gray-500 mt-1">Tersimpan</p>
           </router-link>
 
-          <router-link to="/contact" class="flex flex-col items-start p-5 transition-all bg-white border border-gray-100 shadow-sm group hover:border-blue-200 hover:shadow-lg rounded-[2rem] hover:-translate-y-1">
-            <div class="p-3 text-blue-600 bg-blue-50 rounded-2xl group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 mb-4 group-hover:scale-110">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+          <router-link
+            to="/contact"
+            class="flex flex-col items-start p-5 transition-all bg-white border border-gray-100 shadow-sm group hover:border-blue-200 hover:shadow-lg rounded-[2rem] hover:-translate-y-1"
+          >
+            <div
+              class="p-3 text-blue-600 bg-blue-50 rounded-2xl group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 mb-4 group-hover:scale-110"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-6 h-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                />
+              </svg>
             </div>
-            <h3 class="text-xs font-black text-gray-900 uppercase tracking-widest">{{ $t("profile.support") || 'Bantuan CS' }}</h3>
-            <p class="text-[10px] font-medium text-gray-500 mt-1">Chat & Tiket</p>
+            <h3
+              class="text-xs font-black text-gray-900 uppercase tracking-widest"
+            >
+              {{ $t("profile.support") || "Bantuan CS" }}
+            </h3>
+            <p class="text-[10px] font-medium text-gray-500 mt-1">
+              Chat & Tiket
+            </p>
           </router-link>
 
           <template v-if="userData.is_affiliate">
-            <router-link to="/affiliate-demo" class="flex flex-col items-start p-5 transition-all bg-white border border-gray-100 shadow-sm group hover:border-yellow-400 hover:shadow-lg rounded-[2rem] hover:-translate-y-1">
-              <div class="p-3 text-yellow-600 bg-yellow-50 rounded-2xl group-hover:bg-yellow-400 group-hover:text-white transition-all duration-300 mb-4 group-hover:scale-110">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <router-link
+              to="/affiliate-demo"
+              class="flex flex-col items-start p-5 transition-all bg-white border border-gray-100 shadow-sm group hover:border-yellow-400 hover:shadow-lg rounded-[2rem] hover:-translate-y-1"
+            >
+              <div
+                class="p-3 text-yellow-600 bg-yellow-50 rounded-2xl group-hover:bg-yellow-400 group-hover:text-white transition-all duration-300 mb-4 group-hover:scale-110"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-6 h-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
               </div>
-              <h3 class="text-xs font-black text-gray-900 uppercase tracking-widest">Afiliator</h3>
-              <p class="text-[10px] font-medium text-gray-500 mt-1">Cek Komisi</p>
+              <h3
+                class="text-xs font-black text-gray-900 uppercase tracking-widest"
+              >
+                Afiliator
+              </h3>
+              <p class="text-[10px] font-medium text-gray-500 mt-1">
+                Cek Komisi
+              </p>
             </router-link>
           </template>
           <template v-else>
-            <button @click="showAffiliateModal = true" class="flex flex-col items-start p-5 transition-all bg-gradient-to-br from-gray-900 to-black border border-gray-800 shadow-sm group hover:border-yellow-400 hover:shadow-lg hover:shadow-yellow-400/20 rounded-[2rem] text-left hover:-translate-y-1">
-              <div class="p-3 text-black bg-yellow-400 rounded-2xl shadow-[0_0_15px_rgba(250,204,21,0.5)] mb-4 group-hover:scale-110 transition-transform duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <button
+              @click="showAffiliateModal = true"
+              class="flex flex-col items-start p-5 transition-all bg-gradient-to-br from-gray-900 to-black border border-gray-800 shadow-sm group hover:border-yellow-400 hover:shadow-lg hover:shadow-yellow-400/20 rounded-[2rem] text-left hover:-translate-y-1"
+            >
+              <div
+                class="p-3 text-black bg-yellow-400 rounded-2xl shadow-[0_0_15px_rgba(250,204,21,0.5)] mb-4 group-hover:scale-110 transition-transform duration-300"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-6 h-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
               </div>
-              <h3 class="text-xs font-black text-white uppercase tracking-widest group-hover:text-yellow-400 transition-colors">Daftar Afiliasi</h3>
-              <p class="text-[10px] font-medium text-gray-400 mt-1">Hasilkan Uang</p>
+              <h3
+                class="text-xs font-black text-white uppercase tracking-widest group-hover:text-yellow-400 transition-colors"
+              >
+                Daftar Afiliasi
+              </h3>
+              <p class="text-[10px] font-medium text-gray-400 mt-1">
+                Hasilkan Uang
+              </p>
             </button>
           </template>
         </div>
@@ -11785,25 +12192,55 @@ onMounted(() => {
 
       <!-- KANAN: DAFTAR ALAMAT PENGIRIMAN -->
       <div class="lg:col-span-8">
-        <div class="p-6 sm:p-10 bg-white border border-gray-100 shadow-xl shadow-gray-200/40 rounded-[2rem] min-h-[600px] flex flex-col">
-          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-6 mb-8 border-b border-gray-100 gap-5">
+        <div
+          class="p-6 sm:p-10 bg-white border border-gray-100 shadow-xl shadow-gray-200/40 rounded-[2rem] min-h-[600px] flex flex-col"
+        >
+          <div
+            class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-6 mb-8 border-b border-gray-100 gap-5"
+          >
             <div>
               <h2 class="text-2xl font-black text-gray-900 tracking-tight">
                 {{ $t("profile.shipping_addresses") }}
               </h2>
               <p class="text-sm font-medium text-gray-500 mt-1">
-                {{ $t("profile.manage_order_cta") || 'Alamat berlabel Utama akan diisikan otomatis saat Anda checkout.' }}
+                {{
+                  $t("profile.manage_order_cta") ||
+                  "Alamat berlabel Utama akan diisikan otomatis saat Anda checkout."
+                }}
               </p>
             </div>
             <!-- Header Add Button (Hidden on Mobile, shown in grid instead) -->
-            <button @click="openModal()" class="hidden sm:flex items-center gap-2 px-6 py-3 text-xs font-black tracking-widest text-white uppercase transition-all bg-black rounded-xl hover:bg-gray-800 hover:shadow-lg active:scale-95">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+            <button
+              @click="openModal()"
+              class="hidden sm:flex items-center gap-2 px-6 py-3 text-xs font-black tracking-widest text-white uppercase transition-all bg-black rounded-xl hover:bg-gray-800 hover:shadow-lg active:scale-95"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 4v16m8-8H4"
+                />
+              </svg>
               {{ $t("profile.add_new_btn") }}
             </button>
           </div>
 
-          <div v-if="isLoadingAddresses" class="grid grid-cols-1 gap-5 md:grid-cols-2">
-            <div v-for="i in 4" :key="i" class="p-8 border border-gray-100 bg-gray-50/50 rounded-[2rem] animate-pulse">
+          <div
+            v-if="isLoadingAddresses"
+            class="grid grid-cols-1 gap-5 md:grid-cols-2"
+          >
+            <div
+              v-for="i in 4"
+              :key="i"
+              class="p-8 border border-gray-100 bg-gray-50/50 rounded-[2rem] animate-pulse"
+            >
               <div class="w-24 h-3 mb-5 bg-gray-200 rounded-full"></div>
               <div class="w-3/4 h-5 mb-4 bg-gray-300 rounded-full"></div>
               <div class="w-full h-3 mb-3 bg-gray-200 rounded-full"></div>
@@ -11811,23 +12248,56 @@ onMounted(() => {
             </div>
           </div>
 
-          <div v-else class="grid grid-cols-1 gap-5 md:grid-cols-2 content-start flex-grow">
+          <div
+            v-else
+            class="grid grid-cols-1 gap-5 md:grid-cols-2 content-start flex-grow"
+          >
             <!-- Add New Card (Dasbed) -->
-            <button @click="openModal()" class="flex flex-col items-center justify-center p-8 border-2 border-dashed border-gray-200 rounded-[2rem] hover:border-black hover:bg-gray-50 transition-all group min-h-[220px] active:scale-95">
-              <div class="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 group-hover:bg-black group-hover:text-white transition-colors mb-4 group-hover:shadow-md">
-                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+            <button
+              @click="openModal()"
+              class="flex flex-col items-center justify-center p-8 border-2 border-dashed border-gray-200 rounded-[2rem] hover:border-black hover:bg-gray-50 transition-all group min-h-[220px] active:scale-95"
+            >
+              <div
+                class="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 group-hover:bg-black group-hover:text-white transition-colors mb-4 group-hover:shadow-md"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-6 h-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 4v16m8-8H4"
+                  />
+                </svg>
               </div>
-              <span class="text-sm font-black tracking-widest uppercase text-gray-600 group-hover:text-black transition-colors">Tambah Alamat</span>
-              <p class="text-[10px] font-medium text-gray-400 mt-2">Kirim ke lokasi baru</p>
+              <span
+                class="text-sm font-black tracking-widest uppercase text-gray-600 group-hover:text-black transition-colors"
+                >Tambah Alamat</span
+              >
+              <p class="text-[10px] font-medium text-gray-400 mt-2">
+                Kirim ke lokasi baru
+              </p>
             </button>
 
             <div
               v-for="addr in addresses"
               :key="addr.id"
               class="relative p-7 transition-all bg-white border rounded-[2rem] group hover:shadow-xl hover:shadow-gray-200/50 hover:-translate-y-1 flex flex-col justify-between min-h-[220px]"
-              :class="addr.is_default ? 'border-blue-400 shadow-md ring-1 ring-blue-100 bg-blue-50/10' : 'border-gray-200'"
+              :class="
+                addr.is_default
+                  ? 'border-blue-400 shadow-md ring-1 ring-blue-100 bg-blue-50/10'
+                  : 'border-gray-200'
+              "
             >
-              <div v-if="addr.is_default" class="absolute px-3 py-1.5 text-[9px] font-black tracking-widest text-blue-700 uppercase bg-blue-100 rounded-full top-5 right-5 shadow-sm border border-blue-200">
+              <div
+                v-if="addr.is_default"
+                class="absolute px-3 py-1.5 text-[9px] font-black tracking-widest text-blue-700 uppercase bg-blue-100 rounded-full top-5 right-5 shadow-sm border border-blue-200"
+              >
                 {{ $t("profile.default") }}
               </div>
 
@@ -11837,40 +12307,103 @@ onMounted(() => {
                 :class="{ 'right-24 sm:right-24': addr.is_default }"
                 title="Edit Alamat"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                  />
                 </svg>
               </button>
 
               <div>
                 <div class="flex items-center gap-4 mb-4">
-                  <div class="flex items-center justify-center w-12 h-12 text-gray-700 bg-gray-100 rounded-xl shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <div
+                    class="flex items-center justify-center w-12 h-12 text-gray-700 bg-gray-100 rounded-xl shrink-0"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-6 h-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                      />
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
                     </svg>
                   </div>
                   <div>
-                    <h3 class="text-base font-black text-gray-900 tracking-tight">
-                      {{ addr.receiver.first_name }} {{ addr.receiver.last_name }}
+                    <h3
+                      class="text-base font-black text-gray-900 tracking-tight"
+                    >
+                      {{ addr.receiver.first_name }}
+                      {{ addr.receiver.last_name }}
                     </h3>
-                    <p v-if="addr.details.type" class="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-0.5">
+                    <p
+                      v-if="addr.details.type"
+                      class="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-0.5"
+                    >
                       {{ addr.details.type }}
                     </p>
                   </div>
                 </div>
 
-                <div class="space-y-1.5 text-sm font-medium text-gray-600 leading-relaxed">
-                  <p class="text-gray-900 line-clamp-2">{{ addr.details.location }}</p>
-                  <p>{{ addr.details.city }}, {{ addr.details.province }} {{ addr.details.postal_code }}</p>
+                <div
+                  class="space-y-1.5 text-sm font-medium text-gray-600 leading-relaxed"
+                >
+                  <p class="text-gray-900 line-clamp-2">
+                    {{ addr.details.location }}
+                  </p>
+                  <p>
+                    {{ addr.details.city }}, {{ addr.details.province }}
+                    {{ addr.details.postal_code }}
+                  </p>
                 </div>
               </div>
 
-              <div class="flex items-center justify-between mt-5 pt-5 border-t border-gray-100">
-                 <p class="font-black text-sm tracking-wide" :class="addr.is_default ? 'text-blue-600' : 'text-gray-900'">{{ addr.details.region || addr.region || "Indonesia" }}</p>
-                 <div v-if="addr.details.latitude && addr.details.longitude" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-[9px] font-black tracking-widest text-emerald-700 uppercase bg-emerald-50 rounded-lg border border-emerald-100">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              <div
+                class="flex items-center justify-between mt-5 pt-5 border-t border-gray-100"
+              >
+                <p
+                  class="font-black text-sm tracking-wide"
+                  :class="addr.is_default ? 'text-blue-600' : 'text-gray-900'"
+                >
+                  {{ addr.details.region || addr.region || "Indonesia" }}
+                </p>
+                <div
+                  v-if="addr.details.latitude && addr.details.longitude"
+                  class="inline-flex items-center gap-1.5 px-3 py-1.5 text-[9px] font-black tracking-widest text-emerald-700 uppercase bg-emerald-50 rounded-lg border border-emerald-100"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-3.5 h-3.5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    />
                   </svg>
                   {{ $t("profile.map_pinned") }}
                 </div>
@@ -11883,32 +12416,77 @@ onMounted(() => {
 
     <!-- SEMUA MODAL TETAP UTUH DI SINI -->
     <!-- MODAL EDIT INFO -->
-    <div v-if="showInfoModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
-      <div class="w-full max-w-md p-8 bg-white shadow-2xl rounded-3xl animate-fade-in">
+    <div
+      v-if="showInfoModal"
+      class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm"
+    >
+      <div
+        class="w-full max-w-md p-8 bg-white shadow-2xl rounded-3xl animate-fade-in"
+      >
         <div class="flex items-center justify-between mb-6">
-          <h3 class="text-xl font-bold text-gray-900">{{ $t("profile.update_profile") }}</h3>
-          <button @click="showInfoModal = false" class="p-2 text-gray-400 rounded-full hover:bg-gray-100 hover:text-gray-600">✕</button>
+          <h3 class="text-xl font-bold text-gray-900">
+            {{ $t("profile.update_profile") }}
+          </h3>
+          <button
+            @click="showInfoModal = false"
+            class="p-2 text-gray-400 rounded-full hover:bg-gray-100 hover:text-gray-600"
+          >
+            ✕
+          </button>
         </div>
         <form @submit.prevent="submitInfoUpdate" class="space-y-4">
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block mb-1.5 text-[10px] uppercase tracking-widest font-bold text-gray-500">{{ $t("profile.first_name") }}</label>
-              <input v-model="infoForm.first_name" class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none" required />
+              <label
+                class="block mb-1.5 text-[10px] uppercase tracking-widest font-bold text-gray-500"
+                >{{ $t("profile.first_name") }}</label
+              >
+              <input
+                v-model="infoForm.first_name"
+                class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none"
+                required
+              />
             </div>
             <div>
-              <label class="block mb-1.5 text-[10px] uppercase tracking-widest font-bold text-gray-500">{{ $t("profile.last_name") }}</label>
-              <input v-model="infoForm.last_name" class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none" required />
+              <label
+                class="block mb-1.5 text-[10px] uppercase tracking-widest font-bold text-gray-500"
+                >{{ $t("profile.last_name") }}</label
+              >
+              <input
+                v-model="infoForm.last_name"
+                class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none"
+                required
+              />
             </div>
           </div>
           <div>
-            <label class="block mb-1.5 text-[10px] uppercase tracking-widest font-bold text-gray-500">{{ $t("profile.email_address") }}</label>
-            <input v-model="infoForm.email" type="email" class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none" required />
+            <label
+              class="block mb-1.5 text-[10px] uppercase tracking-widest font-bold text-gray-500"
+              >{{ $t("profile.email_address") }}</label
+            >
+            <input
+              v-model="infoForm.email"
+              type="email"
+              class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none"
+              required
+            />
           </div>
           <div>
-            <label class="block mb-1.5 text-[10px] uppercase tracking-widest font-bold text-gray-500">{{ $t("profile.phone_number") }}</label>
-            <input v-model="infoForm.phone" type="tel" class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none" placeholder="Contoh: 08123456789" />
+            <label
+              class="block mb-1.5 text-[10px] uppercase tracking-widest font-bold text-gray-500"
+              >{{ $t("profile.phone_number") }}</label
+            >
+            <input
+              v-model="infoForm.phone"
+              type="tel"
+              class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none"
+              placeholder="Contoh: 08123456789"
+            />
           </div>
-          <button type="submit" class="w-full py-3.5 mt-4 font-bold tracking-wider text-white uppercase transition-colors bg-black rounded-xl hover:bg-gray-800">
+          <button
+            type="submit"
+            class="w-full py-3.5 mt-4 font-bold tracking-wider text-white uppercase transition-colors bg-black rounded-xl hover:bg-gray-800"
+          >
             {{ $t("profile.save_changes") }}
           </button>
         </form>
@@ -11916,26 +12494,65 @@ onMounted(() => {
     </div>
 
     <!-- MODAL EDIT PASSWORD -->
-    <div v-if="showPasswordModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
-      <div class="w-full max-w-md p-8 bg-white shadow-2xl rounded-3xl animate-fade-in">
+    <div
+      v-if="showPasswordModal"
+      class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm"
+    >
+      <div
+        class="w-full max-w-md p-8 bg-white shadow-2xl rounded-3xl animate-fade-in"
+      >
         <div class="flex items-center justify-between mb-6">
-          <h3 class="text-xl font-bold text-gray-900">{{ $t("profile.change_password") }}</h3>
-          <button @click="showPasswordModal = false" class="p-2 text-gray-400 rounded-full hover:bg-gray-100 hover:text-gray-600">✕</button>
+          <h3 class="text-xl font-bold text-gray-900">
+            {{ $t("profile.change_password") }}
+          </h3>
+          <button
+            @click="showPasswordModal = false"
+            class="p-2 text-gray-400 rounded-full hover:bg-gray-100 hover:text-gray-600"
+          >
+            ✕
+          </button>
         </div>
         <form @submit.prevent="submitPasswordUpdate" class="space-y-4">
           <div>
-            <label class="block mb-1.5 text-[10px] uppercase tracking-widest font-bold text-gray-500">{{ $t("profile.current_password") }}</label>
-            <input v-model="passForm.old_password" type="password" class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none" required />
+            <label
+              class="block mb-1.5 text-[10px] uppercase tracking-widest font-bold text-gray-500"
+              >{{ $t("profile.current_password") }}</label
+            >
+            <input
+              v-model="passForm.old_password"
+              type="password"
+              class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none"
+              required
+            />
           </div>
           <div>
-            <label class="block mb-1.5 text-[10px] uppercase tracking-widest font-bold text-gray-500">{{ $t("profile.new_password") }}</label>
-            <input v-model="passForm.password" type="password" class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none" required />
+            <label
+              class="block mb-1.5 text-[10px] uppercase tracking-widest font-bold text-gray-500"
+              >{{ $t("profile.new_password") }}</label
+            >
+            <input
+              v-model="passForm.password"
+              type="password"
+              class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none"
+              required
+            />
           </div>
           <div>
-            <label class="block mb-1.5 text-[10px] uppercase tracking-widest font-bold text-gray-500">{{ $t("profile.confirm_new_password") }}</label>
-            <input v-model="passForm.password_confirmation" type="password" class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none" required />
+            <label
+              class="block mb-1.5 text-[10px] uppercase tracking-widest font-bold text-gray-500"
+              >{{ $t("profile.confirm_new_password") }}</label
+            >
+            <input
+              v-model="passForm.password_confirmation"
+              type="password"
+              class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none"
+              required
+            />
           </div>
-          <button type="submit" class="w-full py-3.5 mt-4 font-bold tracking-wider uppercase text-white transition-colors bg-blue-600 rounded-xl hover:bg-blue-700 shadow-md shadow-blue-500/20">
+          <button
+            type="submit"
+            class="w-full py-3.5 mt-4 font-bold tracking-wider uppercase text-white transition-colors bg-blue-600 rounded-xl hover:bg-blue-700 shadow-md shadow-blue-500/20"
+          >
             {{ $t("profile.update_password") }}
           </button>
         </form>
@@ -11943,119 +12560,308 @@ onMounted(() => {
     </div>
 
     <!-- Modal Alamat Leaflet -->
-    <div v-if="showModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm sm:p-6">
-      <div class="relative w-full max-w-2xl bg-white shadow-2xl rounded-3xl animate-fade-in flex flex-col max-h-[90vh] md:max-h-[85vh]">
-        <div class="flex items-center justify-between p-6 border-b border-gray-100 shrink-0 md:p-8 md:pb-6">
+    <div
+      v-if="showModal"
+      class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm sm:p-6"
+    >
+      <div
+        class="relative w-full max-w-2xl bg-white shadow-2xl rounded-3xl animate-fade-in flex flex-col max-h-[90vh] md:max-h-[85vh]"
+      >
+        <div
+          class="flex items-center justify-between p-6 border-b border-gray-100 shrink-0 md:p-8 md:pb-6"
+        >
           <h3 class="text-xl font-bold text-gray-900">
-            {{ isEdit ? $t("profile.edit_address") : $t("profile.add_new_address") }}
+            {{
+              isEdit
+                ? $t("profile.edit_address")
+                : $t("profile.add_new_address")
+            }}
           </h3>
-          <button @click="showModal = false" class="p-2 text-gray-400 transition-colors rounded-full hover:bg-gray-100 hover:text-gray-900 focus:outline-none">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+          <button
+            @click="showModal = false"
+            class="p-2 text-gray-400 transition-colors rounded-full hover:bg-gray-100 hover:text-gray-900 focus:outline-none"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
           </button>
         </div>
 
         <div class="p-6 overflow-y-auto custom-scrollbar md:p-8 grow">
           <form @submit.prevent="saveAddress" class="space-y-5">
-            <div class="flex items-center gap-3 p-3.5 border border-blue-100 bg-blue-50 rounded-xl">
-              <input type="checkbox" v-model="form.is_default" id="def" class="w-4 h-4 text-blue-600 border-gray-300 rounded cursor-pointer focus:ring-blue-500" />
-              <label for="def" class="text-sm font-bold text-blue-900 cursor-pointer select-none">{{ $t("profile.set_as_default") }}</label>
+            <div
+              class="flex items-center gap-3 p-3.5 border border-blue-100 bg-blue-50 rounded-xl"
+            >
+              <input
+                type="checkbox"
+                v-model="form.is_default"
+                id="def"
+                class="w-4 h-4 text-blue-600 border-gray-300 rounded cursor-pointer focus:ring-blue-500"
+              />
+              <label
+                for="def"
+                class="text-sm font-bold text-blue-900 cursor-pointer select-none"
+                >{{ $t("profile.set_as_default") }}</label
+              >
             </div>
 
             <div class="mb-4">
-              <label class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase">Country / Region</label>
-              <select v-model="form.region" @change="fetchProvinces" class="w-full px-4 py-3 text-sm font-medium transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white" required>
-                <option v-for="c in countries" :key="c.isoCode" :value="c.name">{{ c.name }}</option>
+              <label
+                class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
+                >Country / Region</label
+              >
+              <select
+                v-model="form.region"
+                @change="fetchProvinces"
+                class="w-full px-4 py-3 text-sm font-medium transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white"
+                required
+              >
+                <option v-for="c in countries" :key="c.isoCode" :value="c.name">
+                  {{ c.name }}
+                </option>
               </select>
             </div>
 
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
-                <label class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase">{{ $t("profile.first_name") }}</label>
-                <input v-model="form.first_name_address" class="w-full px-4 py-3 text-sm font-medium transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none" required />
+                <label
+                  class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
+                  >{{ $t("profile.first_name") }}</label
+                >
+                <input
+                  v-model="form.first_name_address"
+                  class="w-full px-4 py-3 text-sm font-medium transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none"
+                  required
+                />
               </div>
               <div>
-                <label class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase">{{ $t("profile.last_name") }}</label>
-                <input v-model="form.last_name_address" class="w-full px-4 py-3 text-sm font-medium transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none" required />
+                <label
+                  class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
+                  >{{ $t("profile.last_name") }}</label
+                >
+                <input
+                  v-model="form.last_name_address"
+                  class="w-full px-4 py-3 text-sm font-medium transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none"
+                  required
+                />
               </div>
             </div>
 
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
-                <label class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase">{{ $t("profile.province") }}</label>
-                <select v-if="filteredProvinces.length > 0" v-model="form.province" class="w-full px-4 py-3 text-sm font-medium transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none" required>
-                  <option value="" disabled>{{ $t("profile.select_province") }}</option>
-                  <option v-for="p in filteredProvinces" :key="p" :value="p">{{ p }}</option>
+                <label
+                  class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
+                  >{{ $t("profile.province") }}</label
+                >
+                <select
+                  v-if="filteredProvinces.length > 0"
+                  v-model="form.province"
+                  class="w-full px-4 py-3 text-sm font-medium transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none"
+                  required
+                >
+                  <option value="" disabled>
+                    {{ $t("profile.select_province") }}
+                  </option>
+                  <option v-for="p in filteredProvinces" :key="p" :value="p">
+                    {{ p }}
+                  </option>
                 </select>
-                <input v-else v-model="form.province" placeholder="State/Province" class="w-full px-4 py-3 text-sm font-medium transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white" required />
+                <input
+                  v-else
+                  v-model="form.province"
+                  placeholder="State/Province"
+                  class="w-full px-4 py-3 text-sm font-medium transition-colors border border-gray-200 outline-none bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white"
+                  required
+                />
               </div>
               <div>
-                <label class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase">{{ $t("profile.city") }}</label>
-                <input v-model="form.city" class="w-full px-4 py-3 text-sm font-medium transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none" required />
+                <label
+                  class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
+                  >{{ $t("profile.city") }}</label
+                >
+                <input
+                  v-model="form.city"
+                  class="w-full px-4 py-3 text-sm font-medium transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none"
+                  required
+                />
               </div>
             </div>
 
-            <div class="relative overflow-hidden border border-gray-200 rounded-2xl">
-              <div class="flex items-start gap-2 px-4 py-3 bg-amber-50 border-b border-amber-100">
-                <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 w-4 h-4 mt-0.5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-                <p class="text-[11px] text-amber-800 leading-relaxed font-medium">
-                  <span class="font-bold">{{ $t("profile.pin_location") }}</span> {{ $t("profile.pin_location_description") }}
+            <div
+              class="relative overflow-hidden border border-gray-200 rounded-2xl"
+            >
+              <div
+                class="flex items-start gap-2 px-4 py-3 bg-amber-50 border-b border-amber-100"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="shrink-0 w-4 h-4 mt-0.5 text-amber-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                  />
+                </svg>
+                <p
+                  class="text-[11px] text-amber-800 leading-relaxed font-medium"
+                >
+                  <span class="font-bold">{{
+                    $t("profile.pin_location")
+                  }}</span>
+                  {{ $t("profile.pin_location_description") }}
                 </p>
               </div>
 
-              <div class="flex flex-col sm:flex-row items-center justify-between gap-2 p-3 border-b border-gray-200 bg-gray-50">
+              <div
+                class="flex flex-col sm:flex-row items-center justify-between gap-2 p-3 border-b border-gray-200 bg-gray-50"
+              >
                 <div class="relative w-full sm:flex-1">
-                  <input type="text" v-model="searchQuery" @input="handleSearchInput" placeholder="Search area (e.g. Tunjungan Plaza)" class="w-full px-3 py-2.5 text-xs font-medium transition-colors border border-gray-300 outline-none rounded-xl focus:ring-1 focus:ring-blue-500 focus:border-blue-500" />
-                  <div v-if="searchResults.length > 0" class="absolute z-[999] mt-1 w-full bg-white border border-gray-200 rounded-xl shadow-lg max-h-40 overflow-y-auto custom-scrollbar">
-                    <div v-for="(result, idx) in searchResults" :key="idx" @click="selectSearchResult(result)" class="px-3 py-2.5 text-xs font-medium text-gray-700 border-b cursor-pointer hover:bg-blue-50 last:border-0">
+                  <input
+                    type="text"
+                    v-model="searchQuery"
+                    @input="handleSearchInput"
+                    placeholder="Search area (e.g. Tunjungan Plaza)"
+                    class="w-full px-3 py-2.5 text-xs font-medium transition-colors border border-gray-300 outline-none rounded-xl focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                  <div
+                    v-if="searchResults.length > 0"
+                    class="absolute z-[999] mt-1 w-full bg-white border border-gray-200 rounded-xl shadow-lg max-h-40 overflow-y-auto custom-scrollbar"
+                  >
+                    <div
+                      v-for="(result, idx) in searchResults"
+                      :key="idx"
+                      @click="selectSearchResult(result)"
+                      class="px-3 py-2.5 text-xs font-medium text-gray-700 border-b cursor-pointer hover:bg-blue-50 last:border-0"
+                    >
                       {{ result.display_name }}
                     </div>
                   </div>
                 </div>
-                <button type="button" @click="getCurrentLocation" class="w-full sm:w-auto px-4 py-2.5 text-[10px] font-bold tracking-wider text-blue-700 uppercase transition-colors bg-blue-100 rounded-xl hover:bg-blue-200">
+                <button
+                  type="button"
+                  @click="getCurrentLocation"
+                  class="w-full sm:w-auto px-4 py-2.5 text-[10px] font-bold tracking-wider text-blue-700 uppercase transition-colors bg-blue-100 rounded-xl hover:bg-blue-200"
+                >
                   {{ $t("profile.use_current_loc") }}
                 </button>
               </div>
 
               <div class="relative z-0 w-full h-40 sm:h-56">
-                <l-map ref="map" v-model:zoom="zoom" :center="center" :use-global-leaflet="false" @click="onMapClick">
-                  <l-tile-layer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" layer-type="base" name="OpenStreetMap"></l-tile-layer>
-                  <l-marker :lat-lng="markerLatLng" draggable @update:latLng="onMarkerDrag"></l-marker>
+                <l-map
+                  ref="map"
+                  v-model:zoom="zoom"
+                  :center="center"
+                  :use-global-leaflet="false"
+                  @click="onMapClick"
+                >
+                  <l-tile-layer
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    layer-type="base"
+                    name="OpenStreetMap"
+                  ></l-tile-layer>
+                  <l-marker
+                    :lat-lng="markerLatLng"
+                    draggable
+                    @update:latLng="onMarkerDrag"
+                  ></l-marker>
                 </l-map>
-                <div class="absolute z-[400] px-2 py-1 font-mono text-[9px] font-bold text-gray-700 bg-white/90 rounded shadow bottom-2 right-2 backdrop-blur pointer-events-none border border-gray-200">
-                  {{ form.latitude ? parseFloat(form.latitude).toFixed(5) : "-" }}, {{ form.longitude ? parseFloat(form.longitude).toFixed(5) : "-" }}
+                <div
+                  class="absolute z-[400] px-2 py-1 font-mono text-[9px] font-bold text-gray-700 bg-white/90 rounded shadow bottom-2 right-2 backdrop-blur pointer-events-none border border-gray-200"
+                >
+                  {{
+                    form.latitude ? parseFloat(form.latitude).toFixed(5) : "-"
+                  }},
+                  {{
+                    form.longitude ? parseFloat(form.longitude).toFixed(5) : "-"
+                  }}
                 </div>
               </div>
             </div>
 
             <div>
-              <label class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase">{{ $t("profile.complete_address") }}</label>
-              <textarea v-model="form.address_location" rows="3" placeholder="Street name, building, house number..." class="w-full px-4 py-3 text-sm font-medium transition-colors border border-gray-200 resize-none bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none custom-scrollbar" required></textarea>
+              <label
+                class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
+                >{{ $t("profile.complete_address") }}</label
+              >
+              <textarea
+                v-model="form.address_location"
+                rows="3"
+                placeholder="Street name, building, house number..."
+                class="w-full px-4 py-3 text-sm font-medium transition-colors border border-gray-200 resize-none bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none custom-scrollbar"
+                required
+              ></textarea>
             </div>
 
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
-                <label class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase">{{ $t("profile.details_opt") }}</label>
-                <input v-model="form.location_type" placeholder="Apartment, suite, block" class="w-full px-4 py-3 text-sm font-medium transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none" />
+                <label
+                  class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
+                  >{{ $t("profile.details_opt") }}</label
+                >
+                <input
+                  v-model="form.location_type"
+                  placeholder="Apartment, suite, block"
+                  class="w-full px-4 py-3 text-sm font-medium transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none"
+                />
               </div>
               <div>
-                <label class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase">{{ $t("profile.postal_code") }}</label>
-                <input v-model="form.postal_code" placeholder="Postal code" class="w-full px-4 py-3 text-sm font-medium transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none" required />
+                <label
+                  class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
+                  >{{ $t("profile.postal_code") }}</label
+                >
+                <input
+                  v-model="form.postal_code"
+                  placeholder="Postal code"
+                  class="w-full px-4 py-3 text-sm font-medium transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none"
+                  required
+                />
               </div>
             </div>
             <div class="h-2"></div>
           </form>
         </div>
 
-        <div class="flex items-center justify-between p-6 border-t border-gray-100 shrink-0 md:p-8 md:pt-5 bg-gray-50/50 rounded-b-3xl">
-          <button v-if="isEdit" type="button" @click="deleteAddress" class="text-xs font-bold tracking-widest text-red-500 uppercase transition-colors hover:text-red-700">
+        <div
+          class="flex items-center justify-between p-6 border-t border-gray-100 shrink-0 md:p-8 md:pt-5 bg-gray-50/50 rounded-b-3xl"
+        >
+          <button
+            v-if="isEdit"
+            type="button"
+            @click="deleteAddress"
+            class="text-xs font-bold tracking-widest text-red-500 uppercase transition-colors hover:text-red-700"
+          >
             {{ $t("profile.delete") }}
           </button>
           <div v-else></div>
           <div class="flex gap-3">
-            <button type="button" @click="showModal = false" class="px-5 py-2.5 text-sm font-bold text-gray-600 transition-colors bg-white border border-gray-300 rounded-xl hover:bg-gray-50 hidden sm:block">
+            <button
+              type="button"
+              @click="showModal = false"
+              class="px-5 py-2.5 text-sm font-bold text-gray-600 transition-colors bg-white border border-gray-300 rounded-xl hover:bg-gray-50 hidden sm:block"
+            >
               {{ $t("profile.cancel") }}
             </button>
-            <button type="button" @click="saveAddress" class="px-6 py-2.5 text-sm font-black tracking-widest uppercase text-white transition-colors bg-blue-600 rounded-xl hover:bg-blue-700 shadow-md shadow-blue-500/20 active:scale-95">
+            <button
+              type="button"
+              @click="saveAddress"
+              class="px-6 py-2.5 text-sm font-black tracking-widest uppercase text-white transition-colors bg-blue-600 rounded-xl hover:bg-blue-700 shadow-md shadow-blue-500/20 active:scale-95"
+            >
               {{ $t("profile.save_address") }}
             </button>
           </div>
@@ -12064,25 +12870,59 @@ onMounted(() => {
     </div>
 
     <!-- Modal Pendaftaran Afiliasi -->
-    <div v-if="showAffiliateModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
-      <div class="w-full max-w-md p-8 bg-white shadow-2xl rounded-3xl animate-fade-in">
+    <div
+      v-if="showAffiliateModal"
+      class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm"
+    >
+      <div
+        class="w-full max-w-md p-8 bg-white shadow-2xl rounded-3xl animate-fade-in"
+      >
         <div class="flex items-center justify-between mb-6">
           <h3 class="text-xl font-bold text-gray-900">Daftar Afiliator</h3>
-          <button @click="showAffiliateModal = false" class="p-2 text-gray-400 rounded-full hover:bg-gray-100 hover:text-gray-600">✕</button>
+          <button
+            @click="showAffiliateModal = false"
+            class="p-2 text-gray-400 rounded-full hover:bg-gray-100 hover:text-gray-600"
+          >
+            ✕
+          </button>
         </div>
         <p class="mb-6 text-xs font-medium leading-relaxed text-gray-500">
-          Bergabunglah dengan program afiliasi Solher dan dapatkan komisi dari setiap penjualan. Kami akan meninjau profil media sosial Anda sebelum memberikan persetujuan.
+          Bergabunglah dengan program afiliasi Solher dan dapatkan komisi dari
+          setiap penjualan. Kami akan meninjau profil media sosial Anda sebelum
+          memberikan persetujuan.
         </p>
         <form @submit.prevent="submitAffiliateApplication" class="space-y-4">
           <div>
-            <label class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase">Link Media Sosial Utama</label>
-            <input v-model="affiliateForm.social_media_url" type="url" placeholder="https://instagram.com/username" class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-yellow-500 focus:bg-white outline-none" required />
+            <label
+              class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
+              >Link Media Sosial Utama</label
+            >
+            <input
+              v-model="affiliateForm.social_media_url"
+              type="url"
+              placeholder="https://instagram.com/username"
+              class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-yellow-500 focus:bg-white outline-none"
+              required
+            />
           </div>
           <div>
-            <label class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase">Alasan Bergabung</label>
-            <textarea v-model="affiliateForm.reason" rows="3" placeholder="Ceritakan sedikit tentang audiens Anda..." class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 resize-none bg-gray-50 rounded-xl focus:border-yellow-500 focus:bg-white outline-none custom-scrollbar" required></textarea>
+            <label
+              class="block mb-1.5 text-[10px] font-bold tracking-widest text-gray-500 uppercase"
+              >Alasan Bergabung</label
+            >
+            <textarea
+              v-model="affiliateForm.reason"
+              rows="3"
+              placeholder="Ceritakan sedikit tentang audiens Anda..."
+              class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 resize-none bg-gray-50 rounded-xl focus:border-yellow-500 focus:bg-white outline-none custom-scrollbar"
+              required
+            ></textarea>
           </div>
-          <button type="submit" :disabled="isSubmittingAffiliate" class="w-full py-3.5 mt-4 font-black tracking-widest uppercase text-black transition-colors bg-yellow-400 rounded-xl hover:bg-yellow-300 disabled:bg-gray-200 disabled:text-gray-400 shadow-md shadow-yellow-400/20 active:scale-95">
+          <button
+            type="submit"
+            :disabled="isSubmittingAffiliate"
+            class="w-full py-3.5 mt-4 font-black tracking-widest uppercase text-black transition-colors bg-yellow-400 rounded-xl hover:bg-yellow-300 disabled:bg-gray-200 disabled:text-gray-400 shadow-md shadow-yellow-400/20 active:scale-95"
+          >
             {{ isSubmittingAffiliate ? "Mengirim..." : "Kirim Pendaftaran" }}
           </button>
         </form>
@@ -12108,9 +12948,13 @@ import L from "leaflet";
 delete L.Icon.Default.prototype._getIconUrl;
 
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: new URL("leaflet/dist/images/marker-icon-2x.png", import.meta.url).href,
+  iconRetinaUrl: new URL(
+    "leaflet/dist/images/marker-icon-2x.png",
+    import.meta.url,
+  ).href,
   iconUrl: new URL("leaflet/dist/images/marker-icon.png", import.meta.url).href,
-  shadowUrl: new URL("leaflet/dist/images/marker-shadow.png", import.meta.url).href,
+  shadowUrl: new URL("leaflet/dist/images/marker-shadow.png", import.meta.url)
+    .href,
 });
 
 const cachedUserStr = localStorage.getItem("user");
@@ -12166,7 +13010,10 @@ const profileCompleteness = computed(() => {
   if (userData.value.last_name) score++;
   if (userData.value.email) score++;
   if (userData.value.phone) score++;
-  if (userData.value.profile_image && !userData.value.profile_image.includes("default"))
+  if (
+    userData.value.profile_image &&
+    !userData.value.profile_image.includes("default")
+  )
     score++;
   if (addresses.value.length > 0) score++;
 
@@ -12180,7 +13027,10 @@ const missingFields = computed(() => {
   if (!userData.value.first_name) missing.push("Nama Depan");
   if (!userData.value.last_name) missing.push("Nama Belakang");
   if (!userData.value.phone) missing.push("Nomor Telepon");
-  if (!userData.value.profile_image || userData.value.profile_image.includes("default"))
+  if (
+    !userData.value.profile_image ||
+    userData.value.profile_image.includes("default")
+  )
     missing.push("Foto Profil");
   if (addresses.value.length === 0) missing.push("Alamat Pengiriman");
 
@@ -12193,7 +13043,7 @@ const userTier = computed(() => {
       name: "Reguler",
       bgColor: "bg-gradient-to-br from-gray-900 to-gray-800",
       icon: "👤",
-      benefits: []
+      benefits: [],
     };
   }
 
@@ -12205,7 +13055,10 @@ const userTier = computed(() => {
       icon: "🥈",
       nextTierName: "Gold",
       nextTierTarget: 2500,
-      benefits: ['Dapatkan poin setiap belanja', 'Bebas penukaran poin jadi potongan harga']
+      benefits: [
+        "Dapatkan poin setiap belanja",
+        "Bebas penukaran poin jadi potongan harga",
+      ],
     };
   } else if (pts < 10000) {
     return {
@@ -12214,7 +13067,11 @@ const userTier = computed(() => {
       icon: "🥇",
       nextTierName: "Platinum",
       nextTierTarget: 10000,
-      benefits: ['Dapatkan poin setiap belanja', 'Bonus Ekstra Poin Tahunan', 'Akses Rilis Lebih Awal']
+      benefits: [
+        "Dapatkan poin setiap belanja",
+        "Bonus Ekstra Poin Tahunan",
+        "Akses Rilis Lebih Awal",
+      ],
     };
   } else {
     return {
@@ -12223,36 +13080,51 @@ const userTier = computed(() => {
       icon: "💎",
       nextTierName: null,
       nextTierTarget: null,
-      benefits: ['Semua keistimewaan Gold', 'Pengiriman Prioritas VIP', 'Layanan Bantuan Pribadi (Personal Shopper)']
+      benefits: [
+        "Semua keistimewaan Gold",
+        "Pengiriman Prioritas VIP",
+        "Layanan Bantuan Pribadi (Personal Shopper)",
+      ],
     };
   }
 });
 
 const handleCompleteProfile = () => {
-    if (!userData.value.first_name || !userData.value.last_name || !userData.value.phone) {
-        openInfoModal();
-    } else if (addresses.value.length === 0) {
-        openModal();
-    } else if (!userData.value.profile_image || userData.value.profile_image.includes("default")) {
-        Swal.fire({
-            toast: true, position: 'top', icon: 'info',
-            title: 'Klik foto avatar di bawah untuk mengubah foto profil Anda.',
-            showConfirmButton: false, timer: 3000
-        });
-    }
+  if (
+    !userData.value.first_name ||
+    !userData.value.last_name ||
+    !userData.value.phone
+  ) {
+    openInfoModal();
+  } else if (addresses.value.length === 0) {
+    openModal();
+  } else if (
+    !userData.value.profile_image ||
+    userData.value.profile_image.includes("default")
+  ) {
+    Swal.fire({
+      toast: true,
+      position: "top",
+      icon: "info",
+      title: "Klik foto avatar di bawah untuk mengubah foto profil Anda.",
+      showConfirmButton: false,
+      timer: 3000,
+    });
+  }
 };
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
-  return new Intl.DateTimeFormat("id-ID", { month: "long", year: "numeric" }).format(
-    date
-  );
+  return new Intl.DateTimeFormat("id-ID", {
+    month: "long",
+    year: "numeric",
+  }).format(date);
 };
 
 const reverseGeocode = async (lat, lng) => {
   try {
     const res = await axios.get(
-      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`,
     );
     if (res.data && res.data.display_name) {
       form.value.address_location = res.data.display_name;
@@ -12273,7 +13145,7 @@ const handleSearchInput = () => {
   debounceTimeout = setTimeout(async () => {
     try {
       const res = await axios.get(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${searchQuery.value}&countrycodes=id&limit=5`
+        `https://nominatim.openstreetmap.org/search?format=json&q=${searchQuery.value}&countrycodes=id&limit=5`,
       );
       searchResults.value = res.data;
     } catch (error) {
@@ -12331,13 +13203,15 @@ const getCurrentLocation = () => {
       },
       () => {
         Swal.fire("Error", "Please allow location access.", "error");
-      }
+      },
     );
   }
 };
 
 const fetchProvinces = () => {
-  const selectedCountry = countries.value.find((c) => c.name === form.value.region);
+  const selectedCountry = countries.value.find(
+    (c) => c.name === form.value.region,
+  );
   if (selectedCountry) {
     const states = State.getStatesOfCountry(selectedCountry.isoCode);
     filteredProvinces.value = states.map((s) => s.name);
@@ -12418,8 +13292,12 @@ const saveAddress = async () => {
     showModal.value = false;
     fetchAddresses();
     Swal.fire({
-      toast: true, position: "top-end", icon: "success",
-      title: "Address saved!", showConfirmButton: false, timer: 1500,
+      toast: true,
+      position: "top-end",
+      icon: "success",
+      title: "Address saved!",
+      showConfirmButton: false,
+      timer: 1500,
     });
   } catch (e) {
     Swal.fire("Error", "Failed to save address", "error");
@@ -12435,8 +13313,12 @@ const deleteAddress = async () => {
     showModal.value = false;
     fetchAddresses();
     Swal.fire({
-      toast: true, position: "top-end", icon: "success",
-      title: "Address deleted", showConfirmButton: false, timer: 1500,
+      toast: true,
+      position: "top-end",
+      icon: "success",
+      title: "Address deleted",
+      showConfirmButton: false,
+      timer: 1500,
     });
   } catch (e) {
     Swal.fire("Error", "Failed to delete", "error");
@@ -12445,8 +13327,11 @@ const deleteAddress = async () => {
 
 const handleLogout = () => {
   Swal.fire({
-    title: "Are you sure?", icon: "warning",
-    showCancelButton: true, confirmButtonColor: "#000", confirmButtonText: "Yes, Logout",
+    title: "Are you sure?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#000",
+    confirmButtonText: "Yes, Logout",
   }).then((result) => {
     if (result.isConfirmed) {
       localStorage.removeItem("token");
@@ -12470,7 +13355,8 @@ const fetchUserProfile = async () => {
 
 const updateUserData = (user) => {
   if (!user) return;
-  if (user.hasOwnProperty("is_membership")) user.is_membership = !!user.is_membership;
+  if (user.hasOwnProperty("is_membership"))
+    user.is_membership = !!user.is_membership;
   userData.value = Object.assign({}, userData.value, user);
   localStorage.setItem("user", JSON.stringify(userData.value));
 };
@@ -12487,9 +13373,13 @@ const openInfoModal = () => {
 
 const submitInfoUpdate = async () => {
   try {
-    const res = await axios.post(`${BASE_URL}/user/update-info`, infoForm.value, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    });
+    const res = await axios.post(
+      `${BASE_URL}/user/update-info`,
+      infoForm.value,
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      },
+    );
     updateUserData(res.data.user);
     showInfoModal.value = false;
     Swal.fire("Success", "Info updated!", "success");
@@ -12504,7 +13394,11 @@ const submitPasswordUpdate = async () => {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
     showPasswordModal.value = false;
-    passForm.value = { old_password: "", password: "", password_confirmation: "" };
+    passForm.value = {
+      old_password: "",
+      password: "",
+      password_confirmation: "",
+    };
     Swal.fire("Success", "Password updated!", "success");
   } catch (err) {
     Swal.fire("Error", err.response.data.message, "error");
@@ -12512,7 +13406,11 @@ const submitPasswordUpdate = async () => {
 };
 
 const infoForm = ref({ first_name: "", last_name: "", email: "", phone: "" });
-const passForm = ref({ old_password: "", password: "", password_confirmation: "" });
+const passForm = ref({
+  old_password: "",
+  password: "",
+  password_confirmation: "",
+});
 
 const handleImageUpdate = async (e) => {
   const file = e.target.files[0];
@@ -12543,14 +13441,22 @@ const handleImageUpdate = async (e) => {
       updateUserData(newUser);
       URL.revokeObjectURL(objectUrl);
       Swal.fire({
-        toast: true, position: "top-end", icon: "success",
-        title: "Foto profil diperbarui!", showConfirmButton: false, timer: 3000,
+        toast: true,
+        position: "top-end",
+        icon: "success",
+        title: "Foto profil diperbarui!",
+        showConfirmButton: false,
+        timer: 3000,
       });
     }
   } catch (err) {
     userData.value.profile_image = oldImage;
     URL.revokeObjectURL(objectUrl);
-    Swal.fire("Gagal", "Tidak dapat mengunggah foto. Silakan coba lagi.", "error");
+    Swal.fire(
+      "Gagal",
+      "Tidak dapat mengunggah foto. Silakan coba lagi.",
+      "error",
+    );
   }
 };
 
@@ -12563,11 +13469,17 @@ const submitAffiliateApplication = async () => {
     showAffiliateModal.value = false;
     affiliateForm.value = { social_media_url: "", reason: "" };
     Swal.fire({
-      icon: "success", title: "Pendaftaran Berhasil!",
-      text: "Data Anda telah dikirim.", confirmButtonColor: "#000",
+      icon: "success",
+      title: "Pendaftaran Berhasil!",
+      text: "Data Anda telah dikirim.",
+      confirmButtonColor: "#000",
     });
   } catch (err) {
-    Swal.fire("Gagal", err.response?.data?.message || "Terjadi kesalahan.", "error");
+    Swal.fire(
+      "Gagal",
+      err.response?.data?.message || "Terjadi kesalahan.",
+      "error",
+    );
   } finally {
     isSubmittingAffiliate.value = false;
   }
@@ -12590,12 +13502,20 @@ onMounted(() => {
   animation: fadeIn 0.4s ease-out;
 }
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(15px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes shimmer {
-  100% { transform: translateX(100%); }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 .animate-spin-slow {
@@ -12607,13 +13527,15 @@ onMounted(() => {
 }
 
 .custom-scrollbar::-webkit-scrollbar {
-  height: 6px; width: 6px;
+  height: 6px;
+  width: 6px;
 }
 .custom-scrollbar::-webkit-scrollbar-track {
   background: transparent;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #e5e7eb; border-radius: 10px;
+  background: #e5e7eb;
+  border-radius: 10px;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #d1d5db;
