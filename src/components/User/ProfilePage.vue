@@ -11909,7 +11909,7 @@ onMounted(() => {
         </div> -->
 
         <!-- KARTU THE SOLHÉR CIRCLE -->
-        <div
+        <!-- <div
           class="relative overflow-hidden text-white shadow-xl shadow-black/10 rounded-[2rem] p-8 transition-all hover:-translate-y-1"
           :class="userTier.bgColor"
         >
@@ -11931,13 +11931,11 @@ onMounted(() => {
           <div class="relative z-10">
             <div class="flex items-start justify-between">
               <div class="flex flex-col">
-                <!-- 1. Menampilkan label The Solhér Circle (atau menggunakan translasi) di atas -->
                 <span
                   class="text-[10px] font-bold tracking-[0.2em] uppercase opacity-75 mb-1 drop-shadow-sm"
                   >The Solhér Circle</span
                 >
 
-                <!-- 2. Nama Tier kini menjadi fokus utama (lebih besar dan elegan) tanpa embel-embel "TIER" -->
                 <h3
                   class="text-3xl font-black tracking-widest uppercase drop-shadow-md flex items-center gap-3"
                 >
@@ -11980,7 +11978,6 @@ onMounted(() => {
                   </div>
                 </div>
 
-                <!-- 3. Personalisasi teks Keuntungan berdasarkan nama Tier -->
                 <div class="pt-5 mt-4 border-t border-white/20">
                   <p
                     class="text-[10px] uppercase tracking-widest mb-3 font-black opacity-100 drop-shadow-sm"
@@ -12019,6 +12016,132 @@ onMounted(() => {
                   <strong class="text-yellow-300">Rp 100.000</strong> untuk
                   membuka fitur eksklusif, pengumpulan poin, dan promo khusus
                   VIP.
+                </p>
+              </template>
+            </div>
+          </div>
+        </div> -->
+
+        <!-- KARTU THE SOLHÉR CIRCLE -->
+        <div
+          class="relative overflow-hidden shadow-xl shadow-black/10 rounded-[2rem] p-8 transition-all hover:-translate-y-1"
+          :class="[userTier.bgColor, userTier.textColor]"
+        >
+          <div class="absolute inset-0 bg-white/5 backdrop-blur-sm"></div>
+          <svg
+            class="absolute w-48 h-48 opacity-[0.07] -right-10 -top-10 mix-blend-overlay animate-spin-slow"
+            :class="userTier.textColor"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+            />
+          </svg>
+          <div
+            class="absolute inset-0 w-[200%] h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-[shimmer_3s_infinite]"
+          ></div>
+
+          <div class="relative z-10">
+            <div class="flex items-start justify-between">
+              <div class="flex flex-col">
+                <!-- Label The Solhér Circle -->
+                <span
+                  class="text-[10px] font-bold tracking-[0.2em] uppercase opacity-75 mb-1 drop-shadow-sm"
+                  >The Solhér Circle</span
+                >
+
+                <!-- Nama Tier sebagai Fokus Utama -->
+                <h3
+                  class="text-3xl font-black tracking-widest uppercase drop-shadow-md flex items-center gap-3"
+                >
+                  <span class="text-4xl drop-shadow-lg">{{
+                    userTier.icon
+                  }}</span>
+                  {{ userTier.name }}
+                </h3>
+              </div>
+            </div>
+
+            <div class="mt-8">
+              <template v-if="userData.is_membership">
+                <p
+                  class="text-[10px] uppercase tracking-widest mb-1 opacity-80 font-bold drop-shadow-sm"
+                >
+                  {{ $t("profile.available_points") }}
+                </p>
+                <div class="flex items-baseline gap-1 drop-shadow-lg">
+                  <p class="text-6xl font-black">{{ userData.point || 0 }}</p>
+                  <span class="text-base font-bold opacity-80">Pts</span>
+                </div>
+
+                <!-- Progress Bar -->
+                <div v-if="userTier.nextTierTarget" class="mt-6 mb-6">
+                  <div
+                    class="flex justify-between text-[9px] font-black tracking-widest uppercase opacity-90 mb-2 drop-shadow-sm"
+                  >
+                    <span>{{ userTier.name }}</span>
+                    <span>{{ userTier.nextTierName }}</span>
+                  </div>
+                  <div
+                    class="h-2 w-full rounded-full overflow-hidden shadow-inner border opacity-50"
+                    :class="userTier.borderColor"
+                  >
+                    <div
+                      class="h-full transition-all duration-700 ease-out"
+                      :class="userTier.progressColor"
+                      :style="{
+                        width: `${Math.min((userData.point / userTier.nextTierTarget) * 100, 100)}%`,
+                      }"
+                    ></div>
+                  </div>
+                </div>
+
+                <!-- Keuntungan Tier Dinamis -->
+                <div
+                  class="pt-5 mt-4 border-t opacity-90"
+                  :class="userTier.borderColor"
+                >
+                  <p
+                    class="text-[10px] uppercase tracking-widest mb-3 font-black opacity-100 drop-shadow-sm"
+                  >
+                    Keuntungan {{ userTier.name }}:
+                  </p>
+                  <ul class="space-y-2">
+                    <li
+                      v-for="(benefit, idx) in userTier.benefits"
+                      :key="idx"
+                      class="flex items-start gap-2 text-xs font-medium opacity-90"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="w-4 h-4 shrink-0 mt-0.5 opacity-80"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                      {{ benefit }}
+                    </li>
+                  </ul>
+                </div>
+              </template>
+
+              <template v-else>
+                <p
+                  class="text-sm font-medium leading-relaxed opacity-90 mt-4 drop-shadow-sm"
+                >
+                  Tingkatkan total belanja Anda hingga
+                  <strong class="font-bold underline"
+                    >Rp 100.000</strong
+                  >
+                  untuk membuka fitur eksklusif, pengumpulan poin, dan promo
+                  khusus VIP.
                 </p>
               </template>
             </div>
@@ -13037,53 +13160,119 @@ const missingFields = computed(() => {
   return missing;
 });
 
+// const userTier = computed(() => {
+//   if (!userData.value || !userData.value.is_membership) {
+//     return {
+//       name: "Reguler",
+//       bgColor: "bg-gradient-to-br from-gray-900 to-gray-800",
+//       icon: "👤",
+//       benefits: [],
+//     };
+//   }
+
+//   const pts = userData.value.point || 0;
+//   if (pts < 2500) {
+//     return {
+//       name: "Silver",
+//       bgColor: "bg-gradient-to-br from-slate-400 to-gray-500",
+//       icon: "🥈",
+//       nextTierName: "Gold",
+//       nextTierTarget: 2500,
+//       benefits: [
+//         "Dapatkan poin setiap belanja",
+//         "Bebas penukaran poin jadi potongan harga",
+//       ],
+//     };
+//   } else if (pts < 10000) {
+//     return {
+//       name: "Gold",
+//       bgColor: "bg-gradient-to-br from-yellow-500 to-amber-600",
+//       icon: "🥇",
+//       nextTierName: "Platinum",
+//       nextTierTarget: 10000,
+//       benefits: [
+//         "Dapatkan poin setiap belanja",
+//         "Bonus Ekstra Poin Tahunan",
+//         "Akses Rilis Lebih Awal",
+//       ],
+//     };
+//   } else {
+//     return {
+//       name: "Platinum",
+//       bgColor: "bg-gradient-to-br from-indigo-500 to-purple-700",
+//       icon: "💎",
+//       nextTierName: null,
+//       nextTierTarget: null,
+//       benefits: [
+//         "Semua keistimewaan Gold",
+//         "Pengiriman Prioritas VIP",
+//         "Layanan Bantuan Pribadi (Personal Shopper)",
+//       ],
+//     };
+//   }
+// });
+
 const userTier = computed(() => {
   if (!userData.value || !userData.value.is_membership) {
     return {
-      name: "Reguler",
+      name: "Guest",
       bgColor: "bg-gradient-to-br from-gray-900 to-gray-800",
+      textColor: "text-white",
+      borderColor: "border-white/20",
+      progressColor: "bg-white",
       icon: "👤",
       benefits: [],
     };
   }
 
   const pts = userData.value.point || 0;
+  
   if (pts < 2500) {
     return {
-      name: "Silver",
-      bgColor: "bg-gradient-to-br from-slate-400 to-gray-500",
-      icon: "🥈",
-      nextTierName: "Gold",
+      name: "Muse",
+      bgColor: "bg-white border border-gray-200",
+      textColor: "text-gray-900",
+      borderColor: "border-gray-200",
+      progressColor: "bg-gray-900",
+      icon: "✧",
+      nextTierName: "Élan",
       nextTierTarget: 2500,
       benefits: [
-        "Dapatkan poin setiap belanja",
-        "Bebas penukaran poin jadi potongan harga",
+        t("solher_club_page.privileges_muse_1"),
+        t("solher_club_page.privileges_muse_2"),
+        t("solher_club_page.privileges_muse_4")
       ],
     };
   } else if (pts < 10000) {
     return {
-      name: "Gold",
-      bgColor: "bg-gradient-to-br from-yellow-500 to-amber-600",
-      icon: "🥇",
-      nextTierName: "Platinum",
+      name: "Élan",
+      bgColor: "bg-[#FDFBF7] border border-[#E8E2D2]",
+      textColor: "text-[#8B7355]",
+      borderColor: "border-[#E8E2D2]",
+      progressColor: "bg-[#8B7355]",
+      icon: "✦",
+      nextTierName: "Héritage",
       nextTierTarget: 10000,
       benefits: [
-        "Dapatkan poin setiap belanja",
-        "Bonus Ekstra Poin Tahunan",
-        "Akses Rilis Lebih Awal",
+        t("solher_club_page.privileges_elan_2"),
+        t("solher_club_page.privileges_elan_3"),
+        t("solher_club_page.privileges_elan_5")
       ],
     };
   } else {
     return {
-      name: "Platinum",
-      bgColor: "bg-gradient-to-br from-indigo-500 to-purple-700",
-      icon: "💎",
+      name: "Héritage",
+      bgColor: "bg-[#111111] border border-[#333333]",
+      textColor: "text-white",
+      borderColor: "border-[#333333]",
+      progressColor: "bg-white",
+      icon: "❈",
       nextTierName: null,
       nextTierTarget: null,
       benefits: [
-        "Semua keistimewaan Gold",
-        "Pengiriman Prioritas VIP",
-        "Layanan Bantuan Pribadi (Personal Shopper)",
+        t("solher_club_page.privileges_heritage_2"),
+        t("solher_club_page.privileges_heritage_5"),
+        t("solher_club_page.privileges_heritage_6")
       ],
     };
   }
