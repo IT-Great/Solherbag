@@ -126,6 +126,7 @@ const state = reactive({
     volumeThree: [],
     volumeFour: [],
     leatherBelt: [],
+    kovari: [],
     collectionsProducts: [],
     categories: [],
     isHomeLoaded: false,
@@ -138,12 +139,13 @@ export function useProductStore() {
 
         try {
             // [PERBAIKAN] Panggil 4 API sekaligus secara paralel
-            const [resV1, resV2, resV3, resV4, lBelt] = await Promise.all([
+            const [resV1, resV2, resV3, resV4, lBelt, kvr] = await Promise.all([
                 axios.get(`${BASE_URL}/home/category/C001`),
                 axios.get(`${BASE_URL}/home/category/C002`),
                 axios.get(`${BASE_URL}/home/category/C003`),
                 axios.get(`${BASE_URL}/home/category/C004`), 
-                axios.get(`${BASE_URL}/home/category/C005`) 
+                axios.get(`${BASE_URL}/home/category/C005`) ,
+                axios.get(`${BASE_URL}/home/category/C006`) 
             ]);
             
             state.volumeOne = resV1.data;
@@ -151,6 +153,7 @@ export function useProductStore() {
             state.volumeThree = resV3.data;
             state.volumeFour = resV4.data;
             state.leatherBelt = lBelt.data;
+            state.kovari = kvr.data;
             
             state.isHomeLoaded = true;
         } catch (err) {
