@@ -4275,7 +4275,7 @@ onUnmounted(() => {
         </div>
 
         <!-- 👇 VARIAN WARNA PREMIUM (DENGAN IMPLEMENTASI BARU) 👇 -->
-        <div v-if="siblingColors.length > 0" class="mb-8">
+        <!-- <div v-if="siblingColors.length > 0" class="mb-8">
           <div class="flex items-center justify-between mb-3">
             <span class="text-[10px] font-bold tracking-widest uppercase text-gray-500">{{
               $t("product_detail.colors")
@@ -4297,17 +4297,55 @@ onUnmounted(() => {
               "
               :title="extractColorNameForDisplay(sibling)"
             >
-              <!-- Lingkaran Warna Berdasarkan Kode Hex/Nama -->
               <div
                 class="w-4 h-4 border border-gray-300 rounded-full shadow-inner shrink-0"
                 :style="{ backgroundColor: extractColorHex(sibling) }"
               ></div>
-              <!-- Teks Nama Warna -->
               <span
                 class="text-[10px] font-bold tracking-wider uppercase"
                 :class="product.id === sibling.id ? 'text-black' : 'text-gray-600'"
               >
                 {{ extractColorNameForDisplay(sibling) }}
+              </span>
+            </div>
+          </div>
+        </div> -->
+        <!-- 👆 AKHIR VARIAN WARNA 👆 -->
+
+        <!-- 👇 VARIAN WARNA PREMIUM (DENGAN IMPLEMENTASI BARU) 👇 -->
+        <div v-if="siblingColors.length > 0" class="mb-8">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-[10px] font-bold tracking-widest uppercase text-gray-500">{{
+              $t("product_detail.colors")
+            }}</span>
+            <span class="text-xs font-bold text-gray-900">{{
+              selectedInternalColor ? parseColorName(selectedInternalColor) : extractColorNameForDisplay(product)
+            }}</span>
+          </div>
+          <div class="flex flex-wrap gap-2.5">
+            <div
+              v-for="sibling in siblingColors"
+              :key="sibling.is_internal_variant ? sibling.original_color_string : sibling.id"
+              @click="goToColorVariant(sibling)"
+              class="flex items-center gap-2.5 px-3 py-1.5 transition-all duration-300 border cursor-pointer rounded-full"
+              :class="
+                (sibling.is_internal_variant && selectedInternalColor === sibling.original_color_string) || (!sibling.is_internal_variant && product.id === sibling.id)
+                  ? 'border-black ring-1 ring-black bg-gray-50 shadow-sm scale-[1.02]'
+                  : 'border-gray-200 hover:border-gray-400 hover:bg-gray-50'
+              "
+              :title="sibling.displayColorName"
+            >
+              <!-- Lingkaran Warna Berdasarkan Kode Hex/Nama -->
+              <div
+                class="w-4 h-4 border border-gray-300 rounded-full shadow-inner shrink-0"
+                :style="{ backgroundColor: sibling.hexColor }"
+              ></div>
+              <!-- Teks Nama Warna -->
+              <span
+                class="text-[10px] font-bold tracking-wider uppercase"
+                :class="(sibling.is_internal_variant && selectedInternalColor === sibling.original_color_string) || (!sibling.is_internal_variant && product.id === sibling.id) ? 'text-black' : 'text-gray-600'"
+              >
+                {{ sibling.displayColorName }}
               </span>
             </div>
           </div>
@@ -5009,18 +5047,104 @@ const colorMapHex = {
 // 👇 [PERBAIKAN] LOGIKA PINTAR PENGECEKAN WARNA (AUTO-HEALING COLORS) 👇
 // =========================================================================
 
-// Fungsi A: Mendapatkan nama warna asli untuk Ditampilkan
+// // Fungsi A: Mendapatkan nama warna asli untuk Ditampilkan
+// const extractColorNameForDisplay = (prodObj) => {
+//   if (!prodObj) return "Main";
+
+//   // 1. Jika di database/API kolom 'color' terisi array string, ambil nilai pertamanya.
+//   //    Contoh: color: ["Navy", "Blue"] -> Ambil "Navy"
+//   if (prodObj.color && Array.isArray(prodObj.color) && prodObj.color.length > 0) {
+//     return prodObj.color[0];
+//   }
+
+//   // 2. Jika tidak ada di array color, fallback ke pemotongan nama produk
+//   //    Contoh: "Aurelia Belt Red" -> Ambil "Red"
+//   const fullName = prodObj.name;
+//   if (!fullName) return "Main";
+  
+//   const words = fullName.trim().split(" ");
+//   const lastWord = words[words.length - 1];
+//   return lastWord.charAt(0).toUpperCase() + lastWord.slice(1).toLowerCase();
+// };
+
+// // Fungsi B: Mendapatkan kode Hex warna untuk Lingkaran
+// const extractColorHex = (prodObj) => {
+//   const colorName = extractColorNameForDisplay(prodObj);
+//   return colorMapHex[colorName] || "#e5e7eb";
+// };
+
+// // Fungsi C: Mencari produk saudara (Sibling) yang satu keluarga
+// const fetchSiblingColors = async (currentProduct) => {
+//   if (!currentProduct || !currentProduct.name) return;
+  
+//   try {
+//     const res = await axios.get(`${BASE_URL}/products`);
+//     const allProducts = res.data.data || res.data;
+
+//     let rootName = currentProduct.name;
+//     const words = rootName.trim().split(" ");
+    
+//     // Jika warna ditambahkan di nama produk (Aurelia Belt Black), 
+//     // potong kata terakhir ("Black") untuk mencari akar ("Aurelia Belt")
+//     // TETAPI, pastikan kita hanya memotong jika ada kolom color kosong 
+//     // atau untuk memastikan pencarian akar tetap akurat.
+//     if (words.length > 1) {
+//       // Kita coba asumsikan kata terakhir adalah warna, buang.
+//       const possibleRootName = words.slice(0, words.length - 1).join(" ");
+//       rootName = possibleRootName;
+//     }
+
+//     // Filter produk yang namanya mengandung "akar" dari produk ini (misal "Aurelia Belt")
+//     // DAN memiliki Category ID yang sama persis (mencegah salah ambil produk beda jenis)
+//     const siblings = allProducts.filter((p) =>
+//       p.name.toLowerCase().includes(rootName.toLowerCase()) && 
+//       p.category_id === currentProduct.category_id
+//     );
+
+//     // Jika sistem gagal mendeteksi karena nama produk sangat unik (misal "Mobius Necklace"),
+//     // fallback dengan memasukkan produk itu sendiri sebagai satu-satunya item warna.
+//     if (siblings.length === 0) {
+//       siblingColors.value = [currentProduct];
+//     } else {
+//       siblingColors.value = siblings;
+//     }
+//   } catch (error) {
+//     console.error("Gagal menarik varian warna:", error);
+//   }
+// };
+// 👆 ========================================================================= 👆
+
+// =========================================================================
+// 👇 [PERBAIKAN FINAL] LOGIKA PARSING WARNA DARI DATABASE & FALLBACK 👇
+// =========================================================================
+
+// Fungsi A: Mengekstrak Nama Warna saja (Contoh: "Black|#000000" -> "Black")
+const parseColorName = (rawColorString) => {
+  if (!rawColorString) return "Main";
+  return rawColorString.split("|")[0].trim();
+};
+
+// Fungsi B: Mengekstrak Kode Hex Warna (Contoh: "Black|#000000" -> "#000000")
+const parseColorHexCode = (rawColorString) => {
+  if (!rawColorString) return "#e5e7eb";
+  const parts = rawColorString.split("|");
+  if (parts.length > 1) {
+    return parts[1].trim(); // Ambil kode warna dari database jika ada
+  }
+  // Fallback ke pemetaan warna manual kita jika tak ada Hex di database
+  return colorMapHex[parseColorName(rawColorString)] || "#e5e7eb";
+};
+
+// Fungsi C: Mendapatkan Nama Warna untuk produk saat ini (Untuk Header dan GTM)
 const extractColorNameForDisplay = (prodObj) => {
   if (!prodObj) return "Main";
 
-  // 1. Jika di database/API kolom 'color' terisi array string, ambil nilai pertamanya.
-  //    Contoh: color: ["Navy", "Blue"] -> Ambil "Navy"
+  // Jika produk memiliki array warna di DB, ambil yang paling pertama
   if (prodObj.color && Array.isArray(prodObj.color) && prodObj.color.length > 0) {
-    return prodObj.color[0];
+    return parseColorName(prodObj.color[0]);
   }
 
-  // 2. Jika tidak ada di array color, fallback ke pemotongan nama produk
-  //    Contoh: "Aurelia Belt Red" -> Ambil "Red"
+  // Fallback: Ambil kata terakhir dari judul produk
   const fullName = prodObj.name;
   if (!fullName) return "Main";
   
@@ -5029,59 +5153,117 @@ const extractColorNameForDisplay = (prodObj) => {
   return lastWord.charAt(0).toUpperCase() + lastWord.slice(1).toLowerCase();
 };
 
-// Fungsi B: Mendapatkan kode Hex warna untuk Lingkaran
+// Fungsi D: Mendapatkan Hex untuk produk saat ini (Untuk Fallback)
 const extractColorHex = (prodObj) => {
+  if (prodObj.color && Array.isArray(prodObj.color) && prodObj.color.length > 0) {
+    return parseColorHexCode(prodObj.color[0]);
+  }
   const colorName = extractColorNameForDisplay(prodObj);
   return colorMapHex[colorName] || "#e5e7eb";
 };
 
-// Fungsi C: Mencari produk saudara (Sibling) yang satu keluarga
+// Fungsi E: Membangun Varian Warna (Menggabungkan Array DB + Sibling Produk)
 const fetchSiblingColors = async (currentProduct) => {
   if (!currentProduct || !currentProduct.name) return;
   
   try {
+    // 1. Cek Varian dari Kolom Color di Database (Produk ini sendiri)
+    let variantsFromDb = [];
+    if (currentProduct.color && Array.isArray(currentProduct.color) && currentProduct.color.length > 0) {
+      variantsFromDb = currentProduct.color.map((colorString) => ({
+        // Buat objek palsu yang merepresentasikan varian warna
+        id: currentProduct.id, 
+        slug: currentProduct.slug,
+        name: currentProduct.name,
+        displayColorName: parseColorName(colorString),
+        hexColor: parseColorHexCode(colorString),
+        is_internal_variant: true, // Tanda bahwa ini adalah varian warna dari 1 produk
+        original_color_string: colorString // Simpan format aslinya
+      }));
+    }
+
+    // 2. Cek Varian dari Produk Lain (Sibling) via API
     const res = await axios.get(`${BASE_URL}/products`);
     const allProducts = res.data.data || res.data;
 
     let rootName = currentProduct.name;
     const words = rootName.trim().split(" ");
     
-    // Jika warna ditambahkan di nama produk (Aurelia Belt Black), 
-    // potong kata terakhir ("Black") untuk mencari akar ("Aurelia Belt")
-    // TETAPI, pastikan kita hanya memotong jika ada kolom color kosong 
-    // atau untuk memastikan pencarian akar tetap akurat.
+    // Potong kata terakhir jika dicurigai sebagai warna
     if (words.length > 1) {
-      // Kita coba asumsikan kata terakhir adalah warna, buang.
-      const possibleRootName = words.slice(0, words.length - 1).join(" ");
-      rootName = possibleRootName;
+      rootName = words.slice(0, words.length - 1).join(" ");
     }
 
-    // Filter produk yang namanya mengandung "akar" dari produk ini (misal "Aurelia Belt")
-    // DAN memiliki Category ID yang sama persis (mencegah salah ambil produk beda jenis)
     const siblings = allProducts.filter((p) =>
       p.name.toLowerCase().includes(rootName.toLowerCase()) && 
       p.category_id === currentProduct.category_id
     );
 
-    // Jika sistem gagal mendeteksi karena nama produk sangat unik (misal "Mobius Necklace"),
-    // fallback dengan memasukkan produk itu sendiri sebagai satu-satunya item warna.
-    if (siblings.length === 0) {
-      siblingColors.value = [currentProduct];
-    } else {
-      siblingColors.value = siblings;
+    let finalVariants = [];
+
+    // Jika varian dalam database LEBIH BANYAK dari sibling yang ditemukan, 
+    // berarti warnanya tersimpan di 1 produk. Gunakan array dari database.
+    if (variantsFromDb.length > 1) {
+      finalVariants = variantsFromDb;
+    } 
+    // Jika tidak, gunakan sibling (produk terpisah)
+    else if (siblings.length > 0) {
+      finalVariants = siblings.map((p) => ({
+        ...p,
+        displayColorName: extractColorNameForDisplay(p),
+        hexColor: extractColorHex(p),
+        is_internal_variant: false
+      }));
+    } 
+    // Jika benar-benar sendirian
+    else {
+      finalVariants = [{
+        ...currentProduct,
+        displayColorName: extractColorNameForDisplay(currentProduct),
+        hexColor: extractColorHex(currentProduct),
+        is_internal_variant: false
+      }];
     }
+
+    siblingColors.value = finalVariants;
+
   } catch (error) {
     console.error("Gagal menarik varian warna:", error);
   }
 };
 // 👆 ========================================================================= 👆
 
+// const goToColorVariant = async (sibling) => {
+//   const identifier = sibling.slug || sibling.id;
+//   if (product.value.id === sibling.id || product.value.slug === sibling.slug) return;
+//   try {
+//     const res = await axios.get(`${BASE_URL}/products/${identifier}`);
+//     product.value = res.data;
+//     fetchRecommendations(product.value.category_id, product.value.id);
+//     fetchWishlists();
+//     activeSlide.value = 0;
+//     selectedQuantity.value = 1;
+//     window.history.pushState({}, "", `/products/${identifier}`);
+//   } catch (error) {}
+// };
+
+// Variabel untuk melacak warna mana yang saat ini sedang dipilih pengguna (Jika dari internal array)
+const selectedInternalColor = ref(null);
+
 const goToColorVariant = async (sibling) => {
+  // Jika varian warna ini berasal dari array di produk yang sama
+  if (sibling.is_internal_variant) {
+    selectedInternalColor.value = sibling.original_color_string;
+    return; // Berhenti di sini, tidak perlu lempar request API
+  }
+
+  // Jika varian warna ini berasal dari produk lain (Sibling API)
   const identifier = sibling.slug || sibling.id;
   if (product.value.id === sibling.id || product.value.slug === sibling.slug) return;
   try {
     const res = await axios.get(`${BASE_URL}/products/${identifier}`);
     product.value = res.data;
+    selectedInternalColor.value = null; // Reset warna internal
     fetchRecommendations(product.value.category_id, product.value.id);
     fetchWishlists();
     activeSlide.value = 0;
@@ -5171,7 +5353,8 @@ const handleAction = async (type) => {
           },
           cartId: null,
           quantity: selectedQuantity.value,
-          color: extractColorNameForDisplay(product.value), // 👈 Update pemanggilan
+          // color: extractColorNameForDisplay(product.value), // 👈 Update pemanggilan
+          color: selectedInternalColor.value || extractColorNameForDisplay(product.value),
         },
       })
     );
@@ -5221,7 +5404,8 @@ const handleAction = async (type) => {
             item_name: product.value.name,
             price: currentActivePrice.value,
             item_category: product.value.category?.name || "Accessories",
-            item_variant: extractColorNameForDisplay(product.value), // 👈 Update pemanggilan
+            // item_variant: extractColorNameForDisplay(product.value), // 👈 Update pemanggilan
+            item_variant: selectedInternalColor.value || extractColorNameForDisplay(product.value), // 👈 Update pemanggilan
             quantity: selectedQuantity.value,
           },
         ],
