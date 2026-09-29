@@ -695,8 +695,7 @@ onUnmounted(() => {
         {{ $t("best_seller.title") }}
       </h1>
       <p class="max-w-2xl mx-auto text-sm text-gray-500 md:text-base">
-        Jelajahi kurasi eksklusif karya terpopuler kami. Dihitung berdasarkan data
-        pembelian pelanggan secara real-time.
+        {{ $t("best_seller.subtitle") }}
       </p>
     </div>
 
@@ -720,13 +719,19 @@ onUnmounted(() => {
           class="block w-full p-3 text-xs font-bold tracking-widest text-gray-700 uppercase transition-colors bg-white border border-gray-200 outline-none cursor-pointer rounded-xl focus:ring-1 focus:ring-black focus:border-black md:w-48 hover:bg-gray-50"
         >
           <option value="sales_desc">{{ $t("best_seller.sort_sales") }}</option>
-          <option value="price_asc">{{ $t("best_seller.sort_price_low") }}</option>
-          <option value="price_desc">{{ $t("best_seller.sort_price_high") }}</option>
+          <option value="price_asc">
+            {{ $t("best_seller.sort_price_low") }}
+          </option>
+          <option value="price_desc">
+            {{ $t("best_seller.sort_price_high") }}
+          </option>
           <option value="stock_desc">{{ $t("best_seller.sort_stock") }}</option>
         </select>
       </div>
 
-      <div class="text-[11px] font-black tracking-widest text-gray-400 uppercase">
+      <div
+        class="text-[11px] font-black tracking-widest text-gray-400 uppercase"
+      >
         {{ $t("best_seller.showing", { count: processedProducts.length }) }}
       </div>
     </div>
@@ -736,7 +741,11 @@ onUnmounted(() => {
       v-if="isLoading"
       class="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 lg:grid-cols-4 md:gap-x-6 md:gap-y-12"
     >
-      <div v-for="i in 8" :key="`skel-${i}`" class="flex flex-col gap-2 animate-pulse">
+      <div
+        v-for="i in 8"
+        :key="`skel-${i}`"
+        class="flex flex-col gap-2 animate-pulse"
+      >
         <div class="bg-gray-200 aspect-[4/5] rounded-2xl"></div>
         <div class="w-3/4 h-3 mt-2 bg-gray-200 rounded-full"></div>
         <div class="w-1/2 h-3 bg-gray-200 rounded-full"></div>
@@ -768,7 +777,9 @@ onUnmounted(() => {
 
           <!-- Label Sale -->
           <div
-            v-if="getDiscountToDisplay(product) && getDiscountStatus(product).active"
+            v-if="
+              getDiscountToDisplay(product) && getDiscountStatus(product).active
+            "
             class="absolute top-3 right-3 bg-red-600 text-white px-2 py-1 text-[9px] font-black uppercase tracking-widest rounded-md z-10 shadow-sm"
           >
             SALE
@@ -782,10 +793,10 @@ onUnmounted(() => {
               index === 0
                 ? 'bg-gradient-to-br from-yellow-300 to-yellow-600 text-yellow-900 border border-yellow-200 ring-2 ring-yellow-400/30'
                 : index === 1
-                ? 'bg-gradient-to-br from-gray-200 to-gray-400 text-gray-800 border border-gray-100 ring-2 ring-gray-300/30'
-                : index === 2
-                ? 'bg-gradient-to-br from-orange-300 to-amber-700 text-orange-950 border border-orange-200 ring-2 ring-orange-500/30'
-                : 'bg-black/80 backdrop-blur-sm text-white border border-gray-700',
+                  ? 'bg-gradient-to-br from-gray-200 to-gray-400 text-gray-800 border border-gray-100 ring-2 ring-gray-300/30'
+                  : index === 2
+                    ? 'bg-gradient-to-br from-orange-300 to-amber-700 text-orange-950 border border-orange-200 ring-2 ring-orange-500/30'
+                    : 'bg-black/80 backdrop-blur-sm text-white border border-gray-700',
             ]"
           >
             <span v-if="index === 0" class="text-lg drop-shadow-md">🏆</span>
@@ -836,14 +847,18 @@ onUnmounted(() => {
             🔥 {{ parseInt(product.total_sold) }} Terjual
           </p>
           <span class="text-gray-300">•</span>
-          <p class="text-[9px] text-gray-400 uppercase tracking-widest truncate">
+          <p
+            class="text-[9px] text-gray-400 uppercase tracking-widest truncate"
+          >
             {{ product.category?.name || "Uncategorized" }}
           </p>
         </div>
 
         <div class="flex items-center gap-2 mt-auto">
           <template
-            v-if="getDiscountToDisplay(product) && getDiscountStatus(product).active"
+            v-if="
+              getDiscountToDisplay(product) && getDiscountStatus(product).active
+            "
           >
             <p class="text-sm font-extrabold text-red-600">
               {{ formatCurrencyDisplay(getDiscountToDisplay(product)) }}
@@ -884,7 +899,9 @@ onUnmounted(() => {
           />
         </svg>
       </div>
-      <h3 class="mb-2 font-serif text-2xl italic text-gray-400">Belum Ada Transaksi</h3>
+      <h3 class="mb-2 font-serif text-2xl italic text-gray-400">
+        Belum Ada Transaksi
+      </h3>
       <p class="text-sm text-gray-500">
         Coba sesuaikan filter Anda untuk melihat produk lainnya.
       </p>
@@ -972,7 +989,9 @@ const getDiscountToDisplay = (product) => {
   if (!product) return null;
   const curr = currentCurrency.value;
   if (curr === "IDR") {
-    return product.discount_price ? { value: product.discount_price, curr: "IDR" } : null;
+    return product.discount_price
+      ? { value: product.discount_price, curr: "IDR" }
+      : null;
   }
 
   const discountPrices =
@@ -982,13 +1001,22 @@ const getDiscountToDisplay = (product) => {
   if (discountPrices[curr]) {
     return { value: parseFloat(discountPrices[curr]), curr: curr };
   }
-  return product.discount_price ? { value: product.discount_price, curr: "IDR" } : null;
+  return product.discount_price
+    ? { value: product.discount_price, curr: "IDR" }
+    : null;
 };
 
 const formatCurrencyDisplay = (priceObj) => {
   if (!priceObj) return "";
   const { value, curr } = priceObj;
-  const symbols = { USD: "$", SGD: "S$", EUR: "€", AUD: "A$", MYR: "RM", IDR: "Rp " };
+  const symbols = {
+    USD: "$",
+    SGD: "S$",
+    EUR: "€",
+    AUD: "A$",
+    MYR: "RM",
+    IDR: "Rp ",
+  };
   const formatter = new Intl.NumberFormat(curr === "IDR" ? "id-ID" : "en-US", {
     minimumFractionDigits: curr === "IDR" ? 0 : 2,
     maximumFractionDigits: curr === "IDR" ? 0 : 2,

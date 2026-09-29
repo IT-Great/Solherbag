@@ -69,7 +69,8 @@
     "out_of_stock": "Out of Stock",
     "no_products": "No products found",
     "try_adjust": "Try adjusting your filters to see more results.",
-    "reset": "Reset Filters"
+    "reset": "Reset Filters",
+    "subtitle": "Explore an exclusive curation of our most-loved pieces. Dynamically updated based on real-time customer purchases."
   },
   "event": {
     "archive": "The Solher Archive",
