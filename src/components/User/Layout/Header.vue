@@ -7244,7 +7244,7 @@ watch(
       </transition>
 
       <!-- Mobile Menu -->
-      <transition name="slide-fade">
+      <!-- <transition name="slide-fade">
         <div v-if="isMobileMenuOpen" class="z-[200] fixed inset-0 flex">
           <div @click="isMobileMenuOpen = false" class="absolute inset-0 transition-opacity bg-black/50 backdrop-blur-sm"></div>
           <div class="relative flex flex-col bg-white shadow-2xl p-8 w-[80%] max-w-sm h-full overflow-y-auto">
@@ -7262,6 +7262,64 @@ watch(
               <router-link to="/events" @click="isMobileMenuOpen = false" class="pb-4 text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors border-b border-gray-100 hover:text-gray-500">{{ $t("header.events") }}</router-link>
               <router-link to="/contact" @click="isMobileMenuOpen = false" class="pb-4 text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors border-b border-gray-100 hover:text-gray-500">{{ $t("header.contact") }}</router-link>
             </nav>
+          </div>
+        </div>
+      </transition> -->
+
+      <!-- Mobile Menu -->
+      <transition name="slide-fade">
+        <div v-if="isMobileMenuOpen" class="z-[200] fixed inset-0 flex">
+          <div @click="isMobileMenuOpen = false" class="absolute inset-0 transition-opacity bg-black/50 backdrop-blur-sm"></div>
+          <div class="relative flex flex-col bg-white shadow-2xl p-8 w-[80%] max-w-sm h-full overflow-y-auto custom-scrollbar">
+            
+            <div class="flex items-center justify-between mb-10">
+              <img src="../../../assets/solherbrandbook.png" alt="Solher Logo" class="object-contain w-auto h-6" />
+              <button @click="isMobileMenuOpen = false" class="text-gray-400 transition-colors hover:text-black focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="flex flex-col flex-grow space-y-6">
+              <router-link to="/" @click="isMobileMenuOpen = false" class="pb-4 text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors border-b border-gray-100 hover:text-gray-500">{{ $t("header.home") }}</router-link>
+              <router-link to="/best-sellers" @click="isMobileMenuOpen = false" class="pb-4 text-sm font-black tracking-widest text-red-600 uppercase transition-colors border-b border-gray-100 hover:text-red-800">{{ $t("header.best_sellers") }}</router-link>
+              <router-link to="/collections" @click="isMobileMenuOpen = false" class="pb-4 text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors border-b border-gray-100 hover:text-gray-500">{{ $t("header.collections") }}</router-link>
+              <router-link to="/solher-club" @click="isMobileMenuOpen = false" class="pb-4 text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors border-b border-gray-100 hover:text-gray-500"><span>{{ $t("header.solher_club") || "Solher Club" }}</span></router-link>
+              <router-link to="/events" @click="isMobileMenuOpen = false" class="pb-4 text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors border-b border-gray-100 hover:text-gray-500">{{ $t("header.events") }}</router-link>
+              <router-link to="/contact" @click="isMobileMenuOpen = false" class="pb-4 text-sm font-bold tracking-widest text-gray-900 uppercase transition-colors border-b border-gray-100 hover:text-gray-500">{{ $t("header.contact") }}</router-link>
+            </nav>
+
+            <!-- 👇 [BARU] Mobile Settings (Bahasa & Mata Uang) 👇 -->
+            <div class="pt-8 mt-8 border-t border-gray-100">
+              <h4 class="mb-4 text-[10px] font-black tracking-widest text-gray-400 uppercase">Pengaturan</h4>
+              
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-bold tracking-widest text-gray-700 uppercase">Bahasa</span>
+                <button @click="toggleLanguage" class="flex items-center gap-2 px-3 py-1.5 text-xs font-bold tracking-widest text-black uppercase transition border border-gray-200 rounded-lg hover:bg-gray-50">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
+                  </svg>
+                  {{ locale === "en" ? "EN" : "ID" }}
+                </button>
+              </div>
+
+              <div>
+                <span class="text-xs font-bold tracking-widest text-gray-700 uppercase">Mata Uang</span>
+                <div class="grid grid-cols-3 gap-2 mt-3">
+                  <button
+                    v-for="currency in availableCurrencies"
+                    :key="currency"
+                    @click="changeCurrency(currency)"
+                    :class="currentCurrency === currency ? 'bg-black text-white border-black' : 'bg-white text-gray-500 border-gray-200 hover:border-gray-400'"
+                    class="py-2 text-[10px] font-bold tracking-widest uppercase transition-all border rounded-lg"
+                  >
+                    {{ currency }}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- 👆 ========================================= 👆 -->
+
           </div>
         </div>
       </transition>
