@@ -9391,12 +9391,191 @@ const goToDetail = (product) => {
             @click="goToDetail(product)"
           >
             <!-- Product Card Image Container -->
-            <div
+            <!-- <div
               class="relative bg-gray-50 shadow-sm transition-all duration-500 mb-4 rounded-xl aspect-[4/5] overflow-hidden group/slider border border-gray-100/50 group-hover:-translate-y-1 group-hover:shadow-2xl"
             >
-              <!-- Luxury Hover Overlay -->
               <div 
                 class="absolute inset-0 z-30 flex items-center justify-center transition-all duration-500 opacity-0 bg-black/10 backdrop-blur-[2px] group-hover/slider:opacity-100"
+              >
+                <div class="overflow-hidden">
+                  <span class="inline-block px-8 py-3 text-[10px] font-black tracking-[0.2em] text-black uppercase transition-transform duration-500 translate-y-full bg-white shadow-2xl group-hover/slider:translate-y-0 rounded-sm">
+                    Explore Details
+                  </span>
+                </div>
+              </div>
+
+              <div class="absolute z-20 flex flex-col gap-1 top-3 left-3">
+                <div
+                  v-if="
+                    getDiscountToDisplay(product) && getDiscountStatus(product).active
+                  "
+                  :class="product.is_final_sale ? 'bg-red-800' : 'bg-red-600'"
+                  class="px-2 py-1 rounded-[4px] font-extrabold text-[9px] text-white uppercase tracking-widest shadow-lg"
+                >
+                  {{ product.is_final_sale ? "FINAL SALE" : "SALE" }} -{{
+                    calculateDynamicDiscount(product)
+                  }}%
+                </div>
+
+                <div
+                  v-if="isNewArrival(product.created_at) && !product.is_final_sale"
+                  class="bg-black text-white px-2 py-1 rounded-[4px] font-extrabold text-[9px] uppercase tracking-widest shadow-lg"
+                >
+                  NEW
+                </div>
+              </div>
+
+              <button
+                @click.stop="toggleWishlist(product.id)"
+                class="absolute z-40 p-2.5 transition-transform rounded-full shadow-md top-3 right-3 bg-white/90 backdrop-blur-sm hover:bg-white hover:scale-110"
+              >
+                <svg
+                  v-if="isFavorited(product.id)"
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-4 h-4 text-red-500"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  stroke="none"
+                >
+                  <path
+                    d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z"
+                  />
+                </svg>
+                <svg
+                  v-else
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-4 h-4 text-gray-400 hover:text-red-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+                  />
+                </svg>
+              </button>
+
+              <div
+                v-if="product.stock <= 5 && product.stock > 0"
+                class="bottom-3 left-3 absolute bg-amber-500/90 backdrop-blur-sm px-2.5 py-1.5 rounded-md font-bold text-[9px] text-white uppercase tracking-widest z-40 shadow-sm animate-pulse"
+              >
+                Hurry, Only {{ product.stock }} left!
+              </div>
+
+              <div
+                v-else-if="product.stock <= 0"
+                class="absolute inset-0 bg-white/70 backdrop-blur-[2px] flex justify-center items-center z-40"
+              >
+                <span
+                  class="px-5 py-2 text-xs font-black tracking-[0.2em] text-white uppercase transform bg-black rounded-sm shadow-xl -rotate-12 border border-gray-800"
+                >
+                  Sold Out
+                </span>
+              </div>
+
+              <div
+                class="flex w-full h-full transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]"
+                :style="{
+                  transform: `translateX(-${(activeSlides[product.id] || 0) * 100}%)`,
+                }"
+              >
+                <template v-for="(media, index) in getMediaArray(product)" :key="index">
+                  <div
+                    class="relative flex-shrink-0 w-full h-full overflow-hidden bg-gray-100"
+                  >
+                    <img
+                      v-if="media.type === 'image'"
+                      :src="media.url || defaultBagIcon"
+                      :key="'img-' + media.url"
+                      class="absolute inset-0 object-cover w-full h-full transition-transform duration-1000 group-hover:scale-105"
+                      :loading="index === 0 ? 'eager' : 'lazy'" 
+                      alt="Product Media"
+                    />
+                    <video
+                      v-else-if="media.type === 'video'"
+                      :src="media.url"
+                      :key="'vid-' + media.url"
+                      class="absolute inset-0 object-cover w-full h-full bg-black"
+                      autoplay
+                      loop
+                      muted
+                      playsinline
+                    ></video>
+                  </div>
+                </template>
+              </div>
+
+              <button
+                v-if="getMediaArray(product).length > 1"
+                @click.stop="prevSlide(product.id, getMediaArray(product).length - 1)"
+                class="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-1.5 rounded-full opacity-0 group-hover/slider:opacity-100 transition z-40 shadow-md text-black"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </button>
+
+              <button
+                v-if="getMediaArray(product).length > 1"
+                @click.stop="nextSlide(product.id, getMediaArray(product).length - 1)"
+                class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-1.5 rounded-full opacity-0 group-hover/slider:opacity-100 transition z-40 shadow-md text-black"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </button>
+
+              <div
+                class="absolute left-0 right-0 z-40 flex justify-center gap-1 bottom-3"
+                v-if="getMediaArray(product).length > 1"
+              >
+                <div
+                  v-for="(m, idx) in getMediaArray(product)"
+                  :key="idx"
+                  :class="
+                    (activeSlides[product.id] || 0) === idx
+                      ? 'w-4 bg-black'
+                      : 'w-1.5 bg-gray-400/80'
+                  "
+                  class="h-1.5 transition-all duration-300 rounded-full shadow-sm"
+                ></div>
+              </div>
+            </div> -->
+
+            <!-- Product Card Image Container -->
+            <div
+              class="relative bg-gray-50 shadow-sm transition-all duration-500 mb-4 rounded-xl aspect-[4/5] overflow-hidden group/slider border border-gray-100/50 group-hover:-translate-y-1 group-hover:shadow-2xl"
+              @mouseenter="handleProductHover(product, true)"
+              @mouseleave="handleProductHover(product, false)"
+            >
+              <!-- Luxury Hover Overlay (Tombol 'Explore Details') -->
+              <div 
+                class="absolute inset-0 z-30 flex items-center justify-center transition-all duration-500 opacity-0 bg-black/10 backdrop-blur-[2px] group-hover/slider:opacity-100 pointer-events-none"
               >
                 <div class="overflow-hidden">
                   <span class="inline-block px-8 py-3 text-[10px] font-black tracking-[0.2em] text-black uppercase transition-transform duration-500 translate-y-full bg-white shadow-2xl group-hover/slider:translate-y-0 rounded-sm">
@@ -9480,135 +9659,29 @@ const goToDetail = (product) => {
                 </span>
               </div>
 
-              <!-- 👇 PERBAIKAN: Media Slider Eager Loading 👇 -->
-              <!-- <div
-                class="flex w-full h-full transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]"
-                :style="{
-                  transform: `translateX(-${(activeSlides[product.id] || 0) * 100}%)`,
-                }"
-              >
-                <template v-for="(media, index) in getMediaArray(product)" :key="index">
-                  <div
-                    class="relative flex-shrink-0 w-full h-full overflow-hidden bg-gray-100"
-                  >
-                    <img
-                      v-if="media.type === 'image'"
-                      :src="media.url || defaultBagIcon"
-                      :key="media.url"
-                      class="absolute inset-0 object-cover w-full h-full transition-transform duration-1000 group-hover:scale-105"
-                      :loading="index === 0 ? 'eager' : 'lazy'" 
-                      alt="Product Media"
-                    />
-                    <video
-                      v-else-if="media.type === 'video'"
-                      :src="media.url"
-                      :key="media.url"
-                      class="absolute inset-0 object-cover w-full h-full bg-black"
-                      autoplay
-                      loop
-                      muted
-                      playsinline
-                    ></video>
-                  </div>
-                </template>
-              </div> -->
-              <!-- 👆 ========================================= 👆 -->
+              <!-- 👇 PERBAIKAN: Hover Swap Image Rendering 👇 -->
+              <div class="relative w-full h-full">
+                <!-- GAMBAR UTAMA (Default) -->
+                <img
+                  :src="product.image || defaultBagIcon"
+                  class="absolute inset-0 object-cover w-full h-full transition-opacity duration-700 ease-in-out"
+                  :class="hoveredImageRandom[product.id] ? 'opacity-0' : 'opacity-100'"
+                  loading="lazy"
+                  :alt="product.name"
+                />
 
-              <!-- 👇 PERBAIKAN: Media Slider Eager Loading & Unique Keys 👇 -->
-              <div
-                class="flex w-full h-full transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]"
-                :style="{
-                  transform: `translateX(-${(activeSlides[product.id] || 0) * 100}%)`,
-                }"
-              >
-                <template v-for="(media, index) in getMediaArray(product)" :key="index">
-                  <div
-                    class="relative flex-shrink-0 w-full h-full overflow-hidden bg-gray-100"
-                  >
-                    <!-- Tambahkan prefix 'img-' pada key -->
-                    <img
-                      v-if="media.type === 'image'"
-                      :src="media.url || defaultBagIcon"
-                      :key="'img-' + media.url"
-                      class="absolute inset-0 object-cover w-full h-full transition-transform duration-1000 group-hover:scale-105"
-                      :loading="index === 0 ? 'eager' : 'lazy'" 
-                      alt="Product Media"
-                    />
-                    <!-- Tambahkan prefix 'vid-' pada key -->
-                    <video
-                      v-else-if="media.type === 'video'"
-                      :src="media.url"
-                      :key="'vid-' + media.url"
-                      class="absolute inset-0 object-cover w-full h-full bg-black"
-                      autoplay
-                      loop
-                      muted
-                      playsinline
-                    ></video>
-                  </div>
-                </template>
+                <!-- GAMBAR HOVER (Random Variant) -->
+                <!-- Akan dirender/ditumpuk di atas gambar utama dengan animasi Fade -->
+                <img
+                  v-if="hoveredImageRandom[product.id]"
+                  :src="hoveredImageRandom[product.id]"
+                  class="absolute inset-0 object-cover w-full h-full transition-opacity duration-700 ease-in-out"
+                  :class="hoveredImageRandom[product.id] ? 'opacity-100' : 'opacity-0'"
+                  loading="eager"
+                  :alt="product.name + ' Lifestyle'"
+                />
               </div>
               <!-- 👆 ========================================= 👆 -->
-
-              <!-- Slider Controls -->
-              <button
-                v-if="getMediaArray(product).length > 1"
-                @click.stop="prevSlide(product.id, getMediaArray(product).length - 1)"
-                class="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-1.5 rounded-full opacity-0 group-hover/slider:opacity-100 transition z-40 shadow-md text-black"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="w-4 h-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M15 19l-7-7 7-7"
-                  />
-                </svg>
-              </button>
-
-              <button
-                v-if="getMediaArray(product).length > 1"
-                @click.stop="nextSlide(product.id, getMediaArray(product).length - 1)"
-                class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-1.5 rounded-full opacity-0 group-hover/slider:opacity-100 transition z-40 shadow-md text-black"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="w-4 h-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </button>
-
-              <!-- Slider Dots -->
-              <div
-                class="absolute left-0 right-0 z-40 flex justify-center gap-1 bottom-3"
-                v-if="getMediaArray(product).length > 1"
-              >
-                <div
-                  v-for="(m, idx) in getMediaArray(product)"
-                  :key="idx"
-                  :class="
-                    (activeSlides[product.id] || 0) === idx
-                      ? 'w-4 bg-black'
-                      : 'w-1.5 bg-gray-400/80'
-                  "
-                  class="h-1.5 transition-all duration-300 rounded-full shadow-sm"
-                ></div>
-              </div>
             </div>
 
             <!-- Product Details -->
@@ -9828,6 +9901,27 @@ const isAuthenticated = !!localStorage.getItem("token");
 const isFavorited = (id) => userWishlists.value.includes(id);
 
 const activeSlides = ref({});
+
+// 👇 [BARU] STATE & FUNGSI HOVER IMAGE SWAP 👇
+const hoveredImageRandom = ref({});
+
+const handleProductHover = (product, isHovered) => {
+  if (isHovered) {
+    // Jika tidak punya varian, jangan lakukan apa-apa
+    if (!product.variant_images || product.variant_images.length === 0) {
+      hoveredImageRandom.value[product.id] = null;
+      return;
+    }
+    // Jika ada, pilih 1 secara acak untuk sesi hover ini
+    const randomIndex = Math.floor(Math.random() * product.variant_images.length);
+    hoveredImageRandom.value[product.id] = product.variant_images[randomIndex];
+  } else {
+    // Hapus gambar hover saat kursor keluar
+    hoveredImageRandom.value[product.id] = null;
+  }
+};
+// 👆 ========================================== 👆
+
 const { t } = useI18n();
 
 const currentCurrency = ref(localStorage.getItem("currency") || "IDR");
