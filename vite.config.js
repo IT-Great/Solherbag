@@ -11,6 +11,8 @@ export default defineConfig({
 
       // Strategi caching file statis (HTML, CSS, JS, Font, Gambar di Vue)
       workbox: {
+        // 👇 TAMBAHKAN BARIS INI (Batas dinaikkan jadi 50 MB = 50.000.000 byte) 👇
+        maximumFileSizeToCacheInBytes: 50000000,
         globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,jpg,jpeg}'],
         runtimeCaching: [
           {
