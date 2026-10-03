@@ -20,6 +20,9 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router' 
 
+// Untuk PWA
+import { registerSW } from 'virtual:pwa-register';
+
 import axios from 'axios';
 
 // [PERBAIKAN KRITIS] Panggil file bootstrap/echo Anda di sini!
@@ -27,6 +30,16 @@ import './echo';
 
 // [BARU] Import instance i18n yang sudah Anda buat
 import i18n from './i18n'; 
+
+// Register Service Worker
+const updateSW = registerSW({
+  onNeedRefresh() {
+    console.log('Versi baru tersedia, silakan refresh.');
+  },
+  onOfflineReady() {
+    console.log('Aplikasi Solher siap digunakan secara offline!');
+  },
+});
 
 const app = createApp(App)
 const pinia = createPinia() 

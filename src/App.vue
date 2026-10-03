@@ -155,6 +155,7 @@ body {
 
 <script setup>
 import { watch, computed } from "vue"; // 👇 [TAMBAHAN] Import computed
+import { ref, onMounted, onUnmounted } from 'vue';
 import { useRoute } from "vue-router";
 import Header from "./components/User/Layout/Header.vue";
 import Footer from "./components/User/Layout/Footer.vue";
@@ -162,6 +163,22 @@ import Sidebar from "./components/Admin/Layout/Sidebar.vue";
 import AdminHeader from "./components/Admin/Layout/AdminHeader.vue";
 
 const route = useRoute();
+
+const isOnline = ref(navigator.onLine);
+
+const updateOnlineStatus = () => {
+  isOnline.value = navigator.onLine;
+};
+
+onMounted(() => {
+  window.addEventListener('online', updateOnlineStatus);
+  window.addEventListener('offline', updateOnlineStatus);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('online', updateOnlineStatus);
+  window.removeEventListener('offline', updateOnlineStatus);
+});
 
 // Logika pelacak yang 100% responsif terhadap Vue Router
 watch(
@@ -194,6 +211,12 @@ const showWhatsApp = computed(() => {
 
 <template>
   <div class="flex flex-col bg-[#F3F4F6] min-h-screen relative">
+
+    <!-- Banner Peringatan Offline -->
+    <div v-if="!isOnline" class="fixed top-0 left-0 w-full bg-red-600 text-white text-xs font-bold text-center py-2 z-[9999]">
+      Koneksi internet terputus. Anda sedang berada dalam Mode Offline.
+    </div>
+
     <Header v-if="!route.meta.hideHeaderFooter" />
 
     <div v-if="route.meta.isAdmin" class="flex min-h-screen">
