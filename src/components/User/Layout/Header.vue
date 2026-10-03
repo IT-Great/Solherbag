@@ -7096,50 +7096,9 @@ watch(
 
             <!-- Dropdown Notifikasi -->
             <!-- <transition name="fade-slide">
-              <div v-if="isNotificationDropdownOpen" class="absolute top-full right-0 z-[60] mt-4 w-[320px] bg-white border border-gray-100 shadow-2xl rounded-2xl p-4 animate-fade-in">
-                <div class="flex items-center justify-between mb-3 border-b border-gray-100 pb-3">
-                  <h3 class="font-black text-xs uppercase tracking-widest text-gray-900">Notifikasi</h3>
-                  <button v-if="unreadNotificationsCount > 0" @click="markAllAsRead" class="text-[10px] font-bold text-blue-600 hover:text-blue-800 transition">Tandai Semua Dibaca</button>
-                </div>
-                
-                <div v-if="!isAuthenticated" class="py-6 text-center text-xs text-gray-500 italic">
-                  Silakan login untuk melihat notifikasi.
-                </div>
-                <div v-else-if="notifications.length === 0" class="py-8 text-center">
-                  <span class="text-3xl">📭</span>
-                  <p class="mt-2 text-xs text-gray-500">Belum ada notifikasi baru.</p>
-                </div>
-                <div v-else class="space-y-2 max-h-[300px] overflow-y-auto custom-scrollbar">
-                  <div 
-                    v-for="notif in recentNotifications" 
-                    :key="notif.id" 
-                    @click="markAsRead(notif.id)"
-                    :class="notif.is_read ? 'bg-white opacity-70 border-gray-50' : 'bg-blue-50/50 border-blue-100 shadow-sm'"
-                    class="p-3 border rounded-xl cursor-pointer hover:bg-gray-50 transition-all duration-200"
-                  >
-                    <div class="flex justify-between items-start gap-2">
-                      <p class="text-[11px] font-bold text-gray-900" :class="!notif.is_read ? 'text-blue-900' : ''">{{ notif.title }}</p>
-                      <span v-if="!notif.is_read" class="w-2 h-2 rounded-full bg-blue-500 mt-1 shrink-0"></span>
-                    </div>
-                    <p class="text-[10px] text-gray-600 mt-1 leading-relaxed line-clamp-2">{{ notif.message }}</p>
-                    <p class="text-[9px] text-gray-400 mt-1.5 flex items-center gap-1 font-medium">
-                      <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                      {{ timeAgo(notif.created_at) }}
-                    </p>
-                  </div>
-                </div>
-
-                <button v-if="notifications.length > 5" @click="openNotificationModal" class="w-full mt-3 py-2.5 text-[10px] font-bold uppercase tracking-widest text-center text-gray-700 bg-gray-50 hover:bg-gray-100 hover:text-black rounded-xl transition">
-                  Lihat Semua ({{ notifications.length }})
-                </button>
-              </div>
-            </transition> -->
-
-            <!-- Dropdown Notifikasi -->
-            <!-- <transition name="fade-slide">
               <div 
                 v-if="isNotificationDropdownOpen" 
-                class="absolute top-full -right-4 sm:right-0 z-[60] mt-4 w-[90vw] sm:w-[320px] bg-white border border-gray-100 shadow-2xl rounded-2xl p-4 animate-fade-in origin-top-right"
+                class="absolute top-full -right-12 sm:right-0 z-[60] mt-4 w-[calc(100vw-32px)] sm:w-[320px] bg-white border border-gray-100 shadow-2xl rounded-2xl p-4 animate-fade-in origin-top-right"
               >
                 <div class="flex items-center justify-between mb-3 border-b border-gray-100 pb-3">
                   <h3 class="font-black text-xs uppercase tracking-widest text-gray-900">Notifikasi</h3>
@@ -7183,7 +7142,11 @@ watch(
             <transition name="fade-slide">
               <div 
                 v-if="isNotificationDropdownOpen" 
-                class="absolute top-full -right-12 sm:right-0 z-[60] mt-4 w-[calc(100vw-32px)] sm:w-[320px] bg-white border border-gray-100 shadow-2xl rounded-2xl p-4 animate-fade-in origin-top-right"
+                class="absolute z-[60] mt-4 p-4 bg-white border border-gray-100 shadow-2xl rounded-2xl animate-fade-in
+                       /* Pengaturan Layar Mobile (Centered) */
+                       fixed top-12 left-1/2 -translate-x-1/2 w-[90vw] 
+                       /* Pengaturan Layar Desktop (Di bawah Ikon) */
+                       sm:absolute sm:top-full sm:left-auto sm:right-0 sm:-translate-x-0 sm:w-[320px] sm:origin-top-right"
               >
                 <div class="flex items-center justify-between mb-3 border-b border-gray-100 pb-3">
                   <h3 class="font-black text-xs uppercase tracking-widest text-gray-900">Notifikasi</h3>
