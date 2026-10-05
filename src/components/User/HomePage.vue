@@ -6663,7 +6663,7 @@ onUnmounted(() => {
           </p>
         </div>
         <router-link 
-          to="/profile/affiliate" 
+          to="/affiliate" 
           class="px-8 py-4 text-xs font-bold tracking-widest text-black uppercase transition bg-white hover:bg-gray-200 whitespace-nowrap shadow-lg"
         >
           {{ $t("home.affiliate_banner_btn") }}
