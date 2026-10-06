@@ -2015,7 +2015,7 @@ onMounted(fetchStocks);
     </div>
 
     <!-- Modal Input Batch -->
-    <div
+    <!-- <div
       v-if="showModal"
       class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
     >
@@ -2052,6 +2052,72 @@ onMounted(fetchStocks);
             class="w-full py-3 font-bold text-white transition bg-blue-600 shadow-md rounded-xl hover:bg-blue-700 disabled:bg-blue-300 shadow-blue-500/30"
           >
             {{ isSubmitting ? "Processing..." : "Confirm Stock Entry" }}
+          </button>
+        </form>
+      </div>
+    </div> -->
+
+    <div
+      v-if="showModal"
+      class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+    >
+      <div class="relative w-full max-w-sm p-8 bg-white shadow-2xl rounded-[2rem]">
+        <button
+          @click="showModal = false"
+          class="absolute text-gray-400 top-6 right-6 hover:text-black"
+        >
+          ✕
+        </button>
+        <h2 class="mb-2 text-xl font-bold text-gray-900">Manage Stock</h2>
+        <p class="mb-6 text-xs text-gray-500">
+          Adjust stock quantity for
+          <span class="font-bold text-black">{{ selectedProduct?.name }}</span>.
+          <br>
+          <span class="text-blue-600">Current Stock: {{ selectedProduct?.stock }}</span>
+        </p>
+        <form @submit.prevent="submitAddStock" class="space-y-6">
+          
+          <!-- Tipe Transaksi (In / Out) -->
+          <div class="flex p-1 bg-gray-100 rounded-xl">
+            <button 
+              type="button" 
+              @click="stockType = 'in'"
+              :class="stockType === 'in' ? 'bg-white shadow-sm text-green-700' : 'text-gray-500 hover:text-gray-700'"
+              class="flex-1 py-2 text-xs font-bold uppercase tracking-widest rounded-lg transition-all"
+            >
+              Stock In (+)
+            </button>
+            <button 
+              type="button" 
+              @click="stockType = 'out'"
+              :class="stockType === 'out' ? 'bg-white shadow-sm text-red-700' : 'text-gray-500 hover:text-gray-700'"
+              class="flex-1 py-2 text-xs font-bold uppercase tracking-widest rounded-lg transition-all"
+            >
+              Stock Out (-)
+            </button>
+          </div>
+
+          <div>
+            <label
+              class="block mb-2 text-xs font-bold tracking-widest text-gray-500 uppercase"
+            >
+              Quantity
+            </label>
+            <input
+              v-model="newQuantity"
+              type="number"
+              min="1"
+              class="w-full p-4 text-xl font-black text-center border border-gray-200 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            :disabled="isSubmitting"
+            :class="stockType === 'in' ? 'bg-black hover:bg-gray-800' : 'bg-red-600 hover:bg-red-700 shadow-red-500/30'"
+            class="w-full py-3 font-bold text-white transition shadow-md rounded-xl disabled:opacity-50"
+          >
+            {{ isSubmitting ? "Processing..." : (stockType === 'in' ? "Confirm Stock In" : "Confirm Stock Out") }}
           </button>
         </form>
       </div>
@@ -2242,18 +2308,27 @@ const exportToPDF = () => {
   doc.save(`Solher_ActiveStock_${new Date().toISOString().split("T")[0]}.pdf`);
 };
 
+// Tambahkan state ini di atas (dekat newQuantity)
+const stockType = ref('in');
+
+// Ubah fungsi openAddStockModal
 const openAddStockModal = (product) => {
   selectedProduct.value = product;
   newQuantity.value = 1;
+  stockType.value = 'in'; // Default ke masuk
   showModal.value = true;
 };
 
+// Ubah fungsi submitAddStock
 const submitAddStock = async () => {
+  // Jika tipe out, jadikan quantity negatif
+  const finalQuantity = stockType.value === 'out' ? -Math.abs(newQuantity.value) : Math.abs(newQuantity.value);
+
   isSubmitting.value = true;
   try {
     await axios.post(
       `${BASE_URL}/admin/product-stocks/${selectedProduct.value.id}`,
-      { quantity: newQuantity.value },
+      { quantity: finalQuantity },
       axiosConfig
     );
     showModal.value = false;
@@ -2261,17 +2336,48 @@ const submitAddStock = async () => {
       toast: true,
       position: "top-end",
       icon: "success",
-      title: "Stock batch added!",
+      title: stockType.value === 'in' ? "Stock batch added!" : "Stock deducted!",
       showConfirmButton: false,
       timer: 1500,
     });
     fetchStocks();
   } catch (err) {
-    Swal.fire("Error", "Failed to add stock", "error");
+    Swal.fire("Error", err.response?.data?.message || "Failed to modify stock", "error");
   } finally {
     isSubmitting.value = false;
   }
 };
+
+// const openAddStockModal = (product) => {
+//   selectedProduct.value = product;
+//   newQuantity.value = 1;
+//   showModal.value = true;
+// };
+
+// const submitAddStock = async () => {
+//   isSubmitting.value = true;
+//   try {
+//     await axios.post(
+//       `${BASE_URL}/admin/product-stocks/${selectedProduct.value.id}`,
+//       { quantity: newQuantity.value },
+//       axiosConfig
+//     );
+//     showModal.value = false;
+//     Swal.fire({
+//       toast: true,
+//       position: "top-end",
+//       icon: "success",
+//       title: "Stock batch added!",
+//       showConfirmButton: false,
+//       timer: 1500,
+//     });
+//     fetchStocks();
+//   } catch (err) {
+//     Swal.fire("Error", "Failed to add stock", "error");
+//   } finally {
+//     isSubmitting.value = false;
+//   }
+// };
 
 const getImgUrl = (path) => {
   if (!path) return defaultBagIcon;
