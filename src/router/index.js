@@ -3841,7 +3841,7 @@ const routes = [
   { path: "/admin/newsletters", name: "AdminCampaignHistory", component: AdminCampaignHistory, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
   { path: "/admin/newsletters/create", name: "AdminNewsletterBuilder", component: AdminNewsletterBuilder, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
   {
-    path: 'promos',
+    path: '/admin/promos',
     name: 'AdminPromos',
     component: PromoManager,
     meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true }
