@@ -7603,6 +7603,74 @@ const setupRealTimeListeners = () => {
   }
 };
 
+// const currentAnnouncement = ref(0);
+// let announcementTimer = null;
+
+// // 👇 [BARU] DAFTAR HARGA KONVERSI UNTUK ANNOUNCEMENT BAR 👇
+// const shippingThresholds = {
+//   IDR: { value: 1000000, symbol: "Rp " },
+//   USD: { value: 62.5, symbol: "$" },
+//   SGD: { value: 83.3, symbol: "S$" },
+//   EUR: { value: 57.1, symbol: "€" },
+//   AUD: { value: 95.2, symbol: "A$" },
+//   MYR: { value: 295, symbol: "RM " },
+// };
+
+// // Fungsi helper untuk memformat mata uang tanpa koma desimal berlebih jika bulat
+// const formatThreshold = (currencyCode) => {
+//   const threshold = shippingThresholds[currencyCode] || shippingThresholds["IDR"];
+  
+//   // Format angka: IDR pakai pemisah titik, mata uang lain dua desimal (kecuali jika genap)
+//   let formattedValue = '';
+//   if (currencyCode === 'IDR') {
+//     formattedValue = new Intl.NumberFormat('id-ID').format(threshold.value);
+//   } else {
+//     // Jika ada desimal, cetak. Jika tidak, jangan cetak .00
+//     formattedValue = Number.isInteger(threshold.value) 
+//         ? threshold.value 
+//         : threshold.value.toFixed(2);
+//   }
+
+//   return `${threshold.symbol}${formattedValue}`;
+// };
+
+// // const announcements = computed(() => [
+// //   t(
+// //     "header.announcement_1",
+// //     "An Exclusive Welcome Gift: Rp 250K OFF your first order →",
+// //   ),
+// //   t(
+// //     "header.announcement_2",
+// //     "A Little Extra, On Us — Complimentary Shipping Across Indonesia (Min. Rp 1.000.000) →",
+// //   ),
+// // ]);
+
+// // 👇 PERBAIKAN: Buat computed property yang bereaksi terhadap currentCurrency 👇
+// const announcements = computed(() => [
+//   t(
+//     "header.announcement_1",
+//     "An Exclusive Welcome Gift: Rp 250K OFF your first order →",
+//   ),
+//   // Menggunakan teks dinamis yang disuntik dengan hasil konversi mata uang
+//   t(
+//     "header.announcement_2",
+//     `A Little Extra, On Us — Complimentary Shipping Across Indonesia (Min. ${formatThreshold(currentCurrency.value)}) →`
+//   ),
+// ]);
+
+// const nextAnnouncement = () => {
+//   currentAnnouncement.value =
+//     (currentAnnouncement.value + 1) % announcements.value.length;
+//   resetAnnouncementTimer();
+// };
+
+// const prevAnnouncement = () => {
+//   currentAnnouncement.value =
+//     (currentAnnouncement.value - 1 + announcements.value.length) %
+//     announcements.value.length;
+//   resetAnnouncementTimer();
+// };
+
 const currentAnnouncement = ref(0);
 let announcementTimer = null;
 
@@ -7616,47 +7684,39 @@ const shippingThresholds = {
   MYR: { value: 295, symbol: "RM " },
 };
 
-// Fungsi helper untuk memformat mata uang tanpa koma desimal berlebih jika bulat
-const formatThreshold = (currencyCode) => {
-  const threshold = shippingThresholds[currencyCode] || shippingThresholds["IDR"];
+// 👇 PERBAIKAN: Computed Property yang Reaktif Penuh 👇
+const announcements = computed(() => {
+  // 1. Dapatkan mata uang yang aktif SAAT INI (reactive trigger)
+  const activeCurrency = currentCurrency.value;
   
-  // Format angka: IDR pakai pemisah titik, mata uang lain dua desimal (kecuali jika genap)
+  // 2. Ambil threshold dari daftar (Fallback ke IDR)
+  const threshold = shippingThresholds[activeCurrency] || shippingThresholds["IDR"];
+  
+  // 3. Format Angka Dinamis
   let formattedValue = '';
-  if (currencyCode === 'IDR') {
+  if (activeCurrency === 'IDR') {
     formattedValue = new Intl.NumberFormat('id-ID').format(threshold.value);
   } else {
-    // Jika ada desimal, cetak. Jika tidak, jangan cetak .00
+    // Hilangkan desimal jika angkanya bulat (contoh: 295, bukan 295.00)
     formattedValue = Number.isInteger(threshold.value) 
         ? threshold.value 
         : threshold.value.toFixed(2);
   }
 
-  return `${threshold.symbol}${formattedValue}`;
-};
+  const finalString = `${threshold.symbol}${formattedValue}`;
 
-// const announcements = computed(() => [
-//   t(
-//     "header.announcement_1",
-//     "An Exclusive Welcome Gift: Rp 250K OFF your first order →",
-//   ),
-//   t(
-//     "header.announcement_2",
-//     "A Little Extra, On Us — Complimentary Shipping Across Indonesia (Min. Rp 1.000.000) →",
-//   ),
-// ]);
-
-// 👇 PERBAIKAN: Buat computed property yang bereaksi terhadap currentCurrency 👇
-const announcements = computed(() => [
-  t(
-    "header.announcement_1",
-    "An Exclusive Welcome Gift: Rp 250K OFF your first order →",
-  ),
-  // Menggunakan teks dinamis yang disuntik dengan hasil konversi mata uang
-  t(
-    "header.announcement_2",
-    `A Little Extra, On Us — Complimentary Shipping Across Indonesia (Min. ${formatThreshold(currentCurrency.value)}) →`
-  ),
-]);
+  // 4. Kembalikan Array String
+  return [
+    t(
+      "header.announcement_1",
+      "An Exclusive Welcome Gift: Rp 250K OFF your first order →",
+    ),
+    t(
+      "header.announcement_2",
+      `A Little Extra, On Us — Complimentary Shipping Across Indonesia (Min. ${finalString}) →`
+    ),
+  ];
+});
 
 const nextAnnouncement = () => {
   currentAnnouncement.value =
