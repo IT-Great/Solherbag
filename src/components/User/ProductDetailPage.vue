@@ -5224,9 +5224,128 @@ const colorMapHex = {
 // 👇 [PERBAIKAN FINAL] LOGIKA PARSING WARNA DARI DATABASE & FALLBACK 👇
 // =========================================================================
 
+// // Fungsi A: Mengekstrak Nama Warna saja (Contoh: "Black|#000000" -> "Black")
+// const parseColorName = (rawColorString) => {
+//   if (!rawColorString) return "Main";
+//   return rawColorString.split("|")[0].trim();
+// };
+
+// // Fungsi B: Mengekstrak Kode Hex Warna (Contoh: "Black|#000000" -> "#000000")
+// const parseColorHexCode = (rawColorString) => {
+//   if (!rawColorString) return "#e5e7eb";
+//   const parts = rawColorString.split("|");
+//   if (parts.length > 1) {
+//     return parts[1].trim(); // Ambil kode warna dari database jika ada
+//   }
+//   // Fallback ke pemetaan warna manual kita jika tak ada Hex di database
+//   return colorMapHex[parseColorName(rawColorString)] || "#e5e7eb";
+// };
+
+// // Fungsi C: Mendapatkan Nama Warna untuk produk saat ini (Untuk Header dan GTM)
+// const extractColorNameForDisplay = (prodObj) => {
+//   if (!prodObj) return "Main";
+
+//   // Jika produk memiliki array warna di DB, ambil yang paling pertama
+//   if (prodObj.color && Array.isArray(prodObj.color) && prodObj.color.length > 0) {
+//     return parseColorName(prodObj.color[0]);
+//   }
+
+//   // Fallback: Ambil kata terakhir dari judul produk
+//   const fullName = prodObj.name;
+//   if (!fullName) return "Main";
+  
+//   const words = fullName.trim().split(" ");
+//   const lastWord = words[words.length - 1];
+//   return lastWord.charAt(0).toUpperCase() + lastWord.slice(1).toLowerCase();
+// };
+
+// // Fungsi D: Mendapatkan Hex untuk produk saat ini (Untuk Fallback)
+// const extractColorHex = (prodObj) => {
+//   if (prodObj.color && Array.isArray(prodObj.color) && prodObj.color.length > 0) {
+//     return parseColorHexCode(prodObj.color[0]);
+//   }
+//   const colorName = extractColorNameForDisplay(prodObj);
+//   return colorMapHex[colorName] || "#e5e7eb";
+// };
+
+// // Fungsi E: Membangun Varian Warna (Menggabungkan Array DB + Sibling Produk)
+// const fetchSiblingColors = async (currentProduct) => {
+//   if (!currentProduct || !currentProduct.name) return;
+  
+//   try {
+//     // 1. Cek Varian dari Kolom Color di Database (Produk ini sendiri)
+//     let variantsFromDb = [];
+//     if (currentProduct.color && Array.isArray(currentProduct.color) && currentProduct.color.length > 0) {
+//       variantsFromDb = currentProduct.color.map((colorString) => ({
+//         // Buat objek palsu yang merepresentasikan varian warna
+//         id: currentProduct.id, 
+//         slug: currentProduct.slug,
+//         name: currentProduct.name,
+//         displayColorName: parseColorName(colorString),
+//         hexColor: parseColorHexCode(colorString),
+//         is_internal_variant: true, // Tanda bahwa ini adalah varian warna dari 1 produk
+//         original_color_string: colorString // Simpan format aslinya
+//       }));
+//     }
+
+//     // 2. Cek Varian dari Produk Lain (Sibling) via API
+//     const res = await axios.get(`${BASE_URL}/products`);
+//     const allProducts = res.data.data || res.data;
+
+//     let rootName = currentProduct.name;
+//     const words = rootName.trim().split(" ");
+    
+//     // Potong kata terakhir jika dicurigai sebagai warna
+//     if (words.length > 1) {
+//       rootName = words.slice(0, words.length - 1).join(" ");
+//     }
+
+//     const siblings = allProducts.filter((p) =>
+//       p.name.toLowerCase().includes(rootName.toLowerCase()) && 
+//       p.category_id === currentProduct.category_id
+//     );
+
+//     let finalVariants = [];
+
+//     // Jika varian dalam database LEBIH BANYAK dari sibling yang ditemukan, 
+//     // berarti warnanya tersimpan di 1 produk. Gunakan array dari database.
+//     if (variantsFromDb.length > 1) {
+//       finalVariants = variantsFromDb;
+//     } 
+//     // Jika tidak, gunakan sibling (produk terpisah)
+//     else if (siblings.length > 0) {
+//       finalVariants = siblings.map((p) => ({
+//         ...p,
+//         displayColorName: extractColorNameForDisplay(p),
+//         hexColor: extractColorHex(p),
+//         is_internal_variant: false
+//       }));
+//     } 
+//     // Jika benar-benar sendirian
+//     else {
+//       finalVariants = [{
+//         ...currentProduct,
+//         displayColorName: extractColorNameForDisplay(currentProduct),
+//         hexColor: extractColorHex(currentProduct),
+//         is_internal_variant: false
+//       }];
+//     }
+
+//     siblingColors.value = finalVariants;
+
+//   } catch (error) {
+//     console.error("Gagal menarik varian warna:", error);
+//   }
+// };
+// // 👆 ========================================================================= 👆
+
+// =========================================================================
+// 👇 [PERBAIKAN FINAL] LOGIKA PARSING WARNA DARI DATABASE & FALLBACK 👇
+// =========================================================================
+
 // Fungsi A: Mengekstrak Nama Warna saja (Contoh: "Black|#000000" -> "Black")
 const parseColorName = (rawColorString) => {
-  if (!rawColorString) return "Main";
+  if (!rawColorString) return null;
   return rawColorString.split("|")[0].trim();
 };
 
@@ -5235,28 +5354,23 @@ const parseColorHexCode = (rawColorString) => {
   if (!rawColorString) return "#e5e7eb";
   const parts = rawColorString.split("|");
   if (parts.length > 1) {
-    return parts[1].trim(); // Ambil kode warna dari database jika ada
+    return parts[1].trim(); 
   }
-  // Fallback ke pemetaan warna manual kita jika tak ada Hex di database
   return colorMapHex[parseColorName(rawColorString)] || "#e5e7eb";
 };
 
 // Fungsi C: Mendapatkan Nama Warna untuk produk saat ini (Untuk Header dan GTM)
 const extractColorNameForDisplay = (prodObj) => {
-  if (!prodObj) return "Main";
+  if (!prodObj) return null; // 👈 Ubah dari "Main" menjadi null
 
-  // Jika produk memiliki array warna di DB, ambil yang paling pertama
+  // 1. Prioritas Utama: Baca dari database
   if (prodObj.color && Array.isArray(prodObj.color) && prodObj.color.length > 0) {
     return parseColorName(prodObj.color[0]);
   }
 
-  // Fallback: Ambil kata terakhir dari judul produk
-  const fullName = prodObj.name;
-  if (!fullName) return "Main";
-  
-  const words = fullName.trim().split(" ");
-  const lastWord = words[words.length - 1];
-  return lastWord.charAt(0).toUpperCase() + lastWord.slice(1).toLowerCase();
+  // 2. Tidak ada warna di DB? Kembalikan null. 
+  // (Jangan asal potong nama lagi agar UI bisa menyembunyikan blok warna)
+  return null;
 };
 
 // Fungsi D: Mendapatkan Hex untuk produk saat ini (Untuk Fallback)
@@ -5265,7 +5379,7 @@ const extractColorHex = (prodObj) => {
     return parseColorHexCode(prodObj.color[0]);
   }
   const colorName = extractColorNameForDisplay(prodObj);
-  return colorMapHex[colorName] || "#e5e7eb";
+  return colorName ? (colorMapHex[colorName] || "#e5e7eb") : "#e5e7eb";
 };
 
 // Fungsi E: Membangun Varian Warna (Menggabungkan Array DB + Sibling Produk)
@@ -5277,14 +5391,13 @@ const fetchSiblingColors = async (currentProduct) => {
     let variantsFromDb = [];
     if (currentProduct.color && Array.isArray(currentProduct.color) && currentProduct.color.length > 0) {
       variantsFromDb = currentProduct.color.map((colorString) => ({
-        // Buat objek palsu yang merepresentasikan varian warna
         id: currentProduct.id, 
         slug: currentProduct.slug,
         name: currentProduct.name,
         displayColorName: parseColorName(colorString),
         hexColor: parseColorHexCode(colorString),
-        is_internal_variant: true, // Tanda bahwa ini adalah varian warna dari 1 produk
-        original_color_string: colorString // Simpan format aslinya
+        is_internal_variant: true, 
+        original_color_string: colorString 
       }));
     }
 
@@ -5295,40 +5408,48 @@ const fetchSiblingColors = async (currentProduct) => {
     let rootName = currentProduct.name;
     const words = rootName.trim().split(" ");
     
-    // Potong kata terakhir jika dicurigai sebagai warna
+    // Potong kata terakhir HANYA JIKA kata terakhir itu adalah nama warna yang valid
+    // (Bukan asal potong kata terakhir seperti "Belt" atau "Bag")
     if (words.length > 1) {
-      rootName = words.slice(0, words.length - 1).join(" ");
+       const potentialColorWord = words[words.length - 1];
+       if (colorMapHex[potentialColorWord.charAt(0).toUpperCase() + potentialColorWord.slice(1).toLowerCase()]) {
+           rootName = words.slice(0, words.length - 1).join(" ");
+       }
     }
 
     const siblings = allProducts.filter((p) =>
       p.name.toLowerCase().includes(rootName.toLowerCase()) && 
-      p.category_id === currentProduct.category_id
+      p.category_id === currentProduct.category_id &&
+      p.id !== currentProduct.id // Jangan masukkan diri sendiri dulu
     );
 
     let finalVariants = [];
 
-    // Jika varian dalam database LEBIH BANYAK dari sibling yang ditemukan, 
-    // berarti warnanya tersimpan di 1 produk. Gunakan array dari database.
+    // SKENARIO A: Produk punya banyak warna di dalam array-nya sendiri (Internal)
     if (variantsFromDb.length > 1) {
       finalVariants = variantsFromDb;
     } 
-    // Jika tidak, gunakan sibling (produk terpisah)
+    // SKENARIO B: Produk punya kerabat (sibling) dengan akar nama yang sama (Eksternal)
     else if (siblings.length > 0) {
+      // Masukkan kerabat
       finalVariants = siblings.map((p) => ({
         ...p,
-        displayColorName: extractColorNameForDisplay(p),
+        displayColorName: extractColorNameForDisplay(p) || (p.name.split(" ").pop()), // Fallback khusus untuk Sibling Lama
         hexColor: extractColorHex(p),
         is_internal_variant: false
       }));
-    } 
-    // Jika benar-benar sendirian
-    else {
-      finalVariants = [{
+      // Masukkan dirinya sendiri di urutan pertama
+      finalVariants.unshift({
         ...currentProduct,
-        displayColorName: extractColorNameForDisplay(currentProduct),
+        displayColorName: extractColorNameForDisplay(currentProduct) || (currentProduct.name.split(" ").pop()),
         hexColor: extractColorHex(currentProduct),
         is_internal_variant: false
-      }];
+      });
+    } 
+    // SKENARIO C: Produk Sendirian dan DB Color Kosong / Cuma 1
+    else {
+      // KOSONGKAN array agar v-if="siblingColors.length > 0" menyembunyikan blok warna di UI!
+      finalVariants = []; 
     }
 
     siblingColors.value = finalVariants;
