@@ -6965,12 +6965,26 @@ watch(
 
       <div class="flex items-center justify-center w-full h-full px-10 md:px-12">
         <transition name="fade-slide" mode="out-in">
-          <p
+          <!-- <p
             :key="currentAnnouncement"
             @click="$router.push('/collections')"
             class="text-[10px] md:text-sm leading-tight md:leading-normal font-serif tracking-widest text-center cursor-pointer hover:text-gray-300 transition-colors w-full max-w-3xl"
           >
             {{ announcements[currentAnnouncement] }}
+          </p> -->
+          <p
+            :key="`${currentAnnouncement}-${currentCurrency}`"
+            @click="$router.push('/collections')"
+            class="text-[10px] md:text-sm leading-tight md:leading-normal font-serif tracking-widest text-center cursor-pointer hover:text-gray-300 transition-colors w-full max-w-3xl"
+          >
+            <!-- Tampilkan String 1 -->
+            <template v-if="currentAnnouncement === 0">
+              {{ $t("header.announcement_1", "An Exclusive Welcome Gift: Rp 250K OFF your first order →") }}
+            </template>
+            <!-- Tampilkan String 2 (Dengan Interpolasi Mata Uang Dinamis) -->
+            <template v-else-if="currentAnnouncement === 1">
+              A Little Extra, On Us — Complimentary Shipping Across Indonesia (Min. {{ formattedThreshold }}) →
+            </template>
           </p>
         </transition>
       </div>
@@ -7671,10 +7685,83 @@ const setupRealTimeListeners = () => {
 //   resetAnnouncementTimer();
 // };
 
+// const currentAnnouncement = ref(0);
+// let announcementTimer = null;
+
+// // 👇 [BARU] DAFTAR HARGA KONVERSI UNTUK ANNOUNCEMENT BAR 👇
+// const shippingThresholds = {
+//   IDR: { value: 1000000, symbol: "Rp " },
+//   USD: { value: 62.5, symbol: "$" },
+//   SGD: { value: 83.3, symbol: "S$" },
+//   EUR: { value: 57.1, symbol: "€" },
+//   AUD: { value: 95.2, symbol: "A$" },
+//   MYR: { value: 295, symbol: "RM " },
+// };
+
+// // 👇 PERBAIKAN: Computed Property yang Reaktif Penuh 👇
+// const announcements = computed(() => {
+//   // 1. Dapatkan mata uang yang aktif SAAT INI (reactive trigger)
+//   const activeCurrency = currentCurrency.value;
+  
+//   // 2. Ambil threshold dari daftar (Fallback ke IDR)
+//   const threshold = shippingThresholds[activeCurrency] || shippingThresholds["IDR"];
+  
+//   // 3. Format Angka Dinamis
+//   let formattedValue = '';
+//   if (activeCurrency === 'IDR') {
+//     formattedValue = new Intl.NumberFormat('id-ID').format(threshold.value);
+//   } else {
+//     // Hilangkan desimal jika angkanya bulat (contoh: 295, bukan 295.00)
+//     formattedValue = Number.isInteger(threshold.value) 
+//         ? threshold.value 
+//         : threshold.value.toFixed(2);
+//   }
+
+//   const finalString = `${threshold.symbol}${formattedValue}`;
+
+//   // 4. Kembalikan Array String
+//   return [
+//     t(
+//       "header.announcement_1",
+//       "An Exclusive Welcome Gift: Rp 250K OFF your first order →",
+//     ),
+//     t(
+//       "header.announcement_2",
+//       `A Little Extra, On Us — Complimentary Shipping Across Indonesia (Min. ${finalString}) →`
+//     ),
+//   ];
+// });
+
+// const nextAnnouncement = () => {
+//   currentAnnouncement.value =
+//     (currentAnnouncement.value + 1) % announcements.value.length;
+//   resetAnnouncementTimer();
+// };
+
+// const prevAnnouncement = () => {
+//   currentAnnouncement.value =
+//     (currentAnnouncement.value - 1 + announcements.value.length) %
+//     announcements.value.length;
+//   resetAnnouncementTimer();
+// };
+
+// const startAnnouncementTimer = () => {
+//   announcementTimer = setInterval(() => {
+//     currentAnnouncement.value =
+//       (currentAnnouncement.value + 1) % announcements.value.length;
+//   }, 3000);
+// };
+
+// const resetAnnouncementTimer = () => {
+//   clearInterval(announcementTimer);
+//   startAnnouncementTimer();
+// };
+
 const currentAnnouncement = ref(0);
 let announcementTimer = null;
+const totalAnnouncements = 2; // Kita punya 2 pengumuman
 
-// 👇 [BARU] DAFTAR HARGA KONVERSI UNTUK ANNOUNCEMENT BAR 👇
+// Daftar Threshold Gratis Ongkir
 const shippingThresholds = {
   IDR: { value: 1000000, symbol: "Rp " },
   USD: { value: 62.5, symbol: "$" },
@@ -7684,58 +7771,37 @@ const shippingThresholds = {
   MYR: { value: 295, symbol: "RM " },
 };
 
-// 👇 PERBAIKAN: Computed Property yang Reaktif Penuh 👇
-const announcements = computed(() => {
-  // 1. Dapatkan mata uang yang aktif SAAT INI (reactive trigger)
-  const activeCurrency = currentCurrency.value;
-  
-  // 2. Ambil threshold dari daftar (Fallback ke IDR)
+// 👇 [PERBAIKAN FINAL]: Computed yang sangat reaktif 👇
+const formattedThreshold = computed(() => {
+  const activeCurrency = currentCurrency.value || "IDR";
   const threshold = shippingThresholds[activeCurrency] || shippingThresholds["IDR"];
   
-  // 3. Format Angka Dinamis
   let formattedValue = '';
   if (activeCurrency === 'IDR') {
     formattedValue = new Intl.NumberFormat('id-ID').format(threshold.value);
   } else {
-    // Hilangkan desimal jika angkanya bulat (contoh: 295, bukan 295.00)
     formattedValue = Number.isInteger(threshold.value) 
         ? threshold.value 
         : threshold.value.toFixed(2);
   }
 
-  const finalString = `${threshold.symbol}${formattedValue}`;
-
-  // 4. Kembalikan Array String
-  return [
-    t(
-      "header.announcement_1",
-      "An Exclusive Welcome Gift: Rp 250K OFF your first order →",
-    ),
-    t(
-      "header.announcement_2",
-      `A Little Extra, On Us — Complimentary Shipping Across Indonesia (Min. ${finalString}) →`
-    ),
-  ];
+  return `${threshold.symbol}${formattedValue}`;
 });
 
 const nextAnnouncement = () => {
-  currentAnnouncement.value =
-    (currentAnnouncement.value + 1) % announcements.value.length;
+  currentAnnouncement.value = (currentAnnouncement.value + 1) % totalAnnouncements;
   resetAnnouncementTimer();
 };
 
 const prevAnnouncement = () => {
-  currentAnnouncement.value =
-    (currentAnnouncement.value - 1 + announcements.value.length) %
-    announcements.value.length;
+  currentAnnouncement.value = (currentAnnouncement.value - 1 + totalAnnouncements) % totalAnnouncements;
   resetAnnouncementTimer();
 };
 
 const startAnnouncementTimer = () => {
   announcementTimer = setInterval(() => {
-    currentAnnouncement.value =
-      (currentAnnouncement.value + 1) % announcements.value.length;
-  }, 3000);
+    currentAnnouncement.value = (currentAnnouncement.value + 1) % totalAnnouncements;
+  }, 4000); // Saya naikkan ke 4 detik agar lebih mudah dibaca pengunjung
 };
 
 const resetAnnouncementTimer = () => {
