@@ -3762,6 +3762,7 @@ import UserClaimPromo from "../components/Admin/UserClaimPromo.vue";
 import GoogleCallback from "../components/User/Layout/GoogleCallback.vue";
 import InactiveProductStockPage from "../components/Admin/InactiveProductStockPage.vue";
 import PromoManager from "../components/Admin/PromoManager.vue";
+import ConsultationPage from "../components/User/ConsultationPage.vue";
 
 const routes = [
   { path: "/", name: "Home", component: HomePage },
