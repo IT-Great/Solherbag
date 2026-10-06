@@ -11794,6 +11794,24 @@ onMounted(() => {
                     >
                   </p>
                 </div>
+                <div
+                class="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100 hover:border-gray-200 transition-colors mt-3"
+              >
+                <div class="p-2.5 bg-white rounded-xl shadow-sm text-gray-400 shrink-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-[10px] font-black tracking-widest text-gray-400 uppercase mb-0.5">
+                    Tanggal Lahir
+                  </p>
+                  <p class="font-bold text-gray-900 text-sm">
+                    {{ userData.birthday_date ? formatDate(userData.birthday_date) : "-" }}
+                    <span v-if="!userData.birthday_date" class="text-[10px] text-red-500 italic font-medium ml-2 bg-red-50 px-2 py-0.5 rounded">*Wajib</span>
+                  </p>
+                </div>
+              </div>
               </div>
             </div>
 
@@ -12594,7 +12612,7 @@ onMounted(() => {
               required
             />
           </div>
-          <div>
+          <!-- <div>
             <label
               class="block mb-1.5 text-[10px] uppercase tracking-widest font-bold text-gray-500"
               >{{ $t("profile.phone_number") }}</label
@@ -12605,6 +12623,25 @@ onMounted(() => {
               class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none"
               placeholder="Contoh: 08123456789"
             />
+          </div> -->
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block mb-1.5 text-[10px] uppercase tracking-widest font-bold text-gray-500">{{ $t("profile.phone_number") }}</label>
+              <input
+                v-model="infoForm.phone"
+                type="tel"
+                class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none"
+                placeholder="08123456789"
+              />
+            </div>
+            <div>
+              <label class="block mb-1.5 text-[10px] uppercase tracking-widest font-bold text-gray-500">Tanggal Lahir</label>
+              <input
+                v-model="infoForm.birthday_date"
+                type="date"
+                class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white outline-none"
+              />
+            </div>
           </div>
           <button
             type="submit"
@@ -13127,12 +13164,14 @@ const affiliateForm = ref({ social_media_url: "", reason: "" });
 const profileCompleteness = computed(() => {
   if (!userData.value) return 100;
   let score = 0;
-  let total = 6;
+  // let total = 6;
+  let total = 7; // 👈 UBAH DARI 6 KE 7
 
   if (userData.value.first_name) score++;
   if (userData.value.last_name) score++;
   if (userData.value.email) score++;
   if (userData.value.phone) score++;
+  if (userData.value.birthday_date) score++; // 👈 DETEKSI BIRTHDAY
   if (
     userData.value.profile_image &&
     !userData.value.profile_image.includes("default")
@@ -13150,6 +13189,7 @@ const missingFields = computed(() => {
   if (!userData.value.first_name) missing.push("Nama Depan");
   if (!userData.value.last_name) missing.push("Nama Belakang");
   if (!userData.value.phone) missing.push("Nomor Telepon");
+  if (!userData.value.birthday_date) missing.push("Tanggal Lahir"); // 👈 TAMBAHKAN
   if (
     !userData.value.profile_image ||
     userData.value.profile_image.includes("default")
@@ -13556,6 +13596,8 @@ const openInfoModal = () => {
     last_name: userData.value.last_name,
     email: userData.value.email,
     phone: userData.value.phone || "",
+    // 👇 Masukkan tanggal lahir jika sudah ada (potong T00:00:00Z jika formatnya datetime ISO)
+    birthday_date: userData.value.birthday_date ? userData.value.birthday_date.split('T')[0] : "",
   };
   showInfoModal.value = true;
 };
@@ -13594,7 +13636,7 @@ const submitPasswordUpdate = async () => {
   }
 };
 
-const infoForm = ref({ first_name: "", last_name: "", email: "", phone: "" });
+const infoForm = ref({ first_name: "", last_name: "", email: "", phone: "", birthday_date: "" });
 const passForm = ref({
   old_password: "",
   password: "",

@@ -60,6 +60,17 @@
         </div>
 
         <div class="flex flex-col">
+          <label for="birthday" class="mb-1 font-bold text-black text-sm">Birthday</label>
+          <input
+            type="date"
+            id="birthday"
+            v-model="form.birthday"
+            class="bg-[#D9D9D9] p-3 border-none outline-none focus:ring-1 focus:ring-blue-500 w-full transition text-gray-700"
+            required
+          />
+        </div>
+
+        <div class="flex flex-col">
           <label for="password" class="mb-1 font-bold text-black text-sm"
             >Password</label
           >
@@ -134,6 +145,7 @@ const form = reactive({
   email: "",
   firstName: "",
   lastName: "",
+  birthday: "", // 👈 TAMBAHKAN STATE INI
   password: "",
   confirmPassword: "",
 });
@@ -164,6 +176,7 @@ const handleRegister = async () => {
       first_name: form.firstName,
       last_name: form.lastName,
       email: form.email,
+      birthday_date: form.birthday, // 👈 KIRIM KE API
       password: form.password,
     });
 
