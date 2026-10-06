@@ -11724,7 +11724,7 @@ onMounted(() => {
             </div>
 
             <!-- Info List -->
-            <div class="space-y-3">
+            <!-- <div class="space-y-3">
               <div
                 class="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100 hover:border-gray-200 transition-colors"
               >
@@ -11813,6 +11813,105 @@ onMounted(() => {
                 </div>
               </div>
               </div>
+            </div> -->
+
+            <!-- Info List -->
+            <div class="space-y-3">
+              
+              <!-- CARD EMAIL -->
+              <div
+                class="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100 hover:border-gray-200 transition-colors"
+              >
+                <div
+                  class="p-2.5 bg-white rounded-xl shadow-sm text-gray-400 shrink-0"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2v10a2 2 0 002 2z"
+                    />
+                  </svg>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p
+                    class="text-[10px] font-black tracking-widest text-gray-400 uppercase mb-0.5"
+                  >
+                    Email
+                  </p>
+                  <p class="font-bold text-gray-900 truncate text-sm">
+                    {{ userData.email }}
+                  </p>
+                </div>
+              </div>
+
+              <!-- CARD TELEPON -->
+              <div
+                class="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100 hover:border-gray-200 transition-colors"
+              >
+                <div
+                  class="p-2.5 bg-white rounded-xl shadow-sm text-gray-400 shrink-0"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                    />
+                  </svg>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p
+                    class="text-[10px] font-black tracking-widest text-gray-400 uppercase mb-0.5"
+                  >
+                    Telepon
+                  </p>
+                  <p class="font-bold text-gray-900 text-sm">
+                    {{ userData.phone || "-" }}
+                    <span
+                      v-if="!userData.phone"
+                      class="text-[10px] text-red-500 italic font-medium ml-2 bg-red-50 px-2 py-0.5 rounded"
+                      >*Wajib</span
+                    >
+                  </p>
+                </div>
+              </div>
+
+              <!-- CARD TANGGAL LAHIR (DIPISAH DENGAN BENAR) -->
+              <div
+                class="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100 hover:border-gray-200 transition-colors"
+              >
+                <div class="p-2.5 bg-white rounded-xl shadow-sm text-gray-400 shrink-0">
+                  <!-- Icon Kalender -->
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-[10px] font-black tracking-widest text-gray-400 uppercase mb-0.5">
+                    Tanggal Lahir
+                  </p>
+                  <p class="font-bold text-gray-900 text-sm">
+                    {{ userData.birthday_date ? formatDate(userData.birthday_date) : "-" }}
+                    <span v-if="!userData.birthday_date" class="text-[10px] text-red-500 italic font-medium ml-2 bg-red-50 px-2 py-0.5 rounded">*Wajib</span>
+                  </p>
+                </div>
+              </div>
+
             </div>
 
             <!-- Action Buttons -->
@@ -13342,9 +13441,19 @@ const handleCompleteProfile = () => {
   }
 };
 
+// const formatDate = (dateString) => {
+//   const date = new Date(dateString);
+//   return new Intl.DateTimeFormat("id-ID", {
+//     month: "long",
+//     year: "numeric",
+//   }).format(date);
+// };
+
 const formatDate = (dateString) => {
+  if (!dateString) return "-";
   const date = new Date(dateString);
   return new Intl.DateTimeFormat("id-ID", {
+    day: "numeric", // 👈 TAMBAHKAN INI
     month: "long",
     year: "numeric",
   }).format(date);
