@@ -3763,8 +3763,6 @@ import GoogleCallback from "../components/User/Layout/GoogleCallback.vue";
 import InactiveProductStockPage from "../components/Admin/InactiveProductStockPage.vue";
 import PromoManager from "../components/Admin/PromoManager.vue";
 
-import ConsultationPage from "../components/User/ConsultationPage.vue"; // 👈 Tambahkan ini
-
 const routes = [
   { path: "/", name: "Home", component: HomePage },
   { path: "/best-sellers", name: "BestSellers", component: BestSellerPage },
