@@ -3763,6 +3763,8 @@ import GoogleCallback from "../components/User/Layout/GoogleCallback.vue";
 import InactiveProductStockPage from "../components/Admin/InactiveProductStockPage.vue";
 import PromoManager from "../components/Admin/PromoManager.vue";
 
+import ConsultationPage from "../components/User/ConsultationPage.vue"; // 👈 Tambahkan ini
+
 const routes = [
   { path: "/", name: "Home", component: HomePage },
   { path: "/best-sellers", name: "BestSellers", component: BestSellerPage },
@@ -3800,6 +3802,16 @@ const routes = [
   { path: "/tracking/:id", name: "TrackingPage", component: TrackingPage, meta: { requiresAuth: true, hideHeaderFooter: true } },
   { path: "/chat-list", name: "ChatList", component: ChatListPage, meta: { requiresAuth: true } },
   { path: "/chat/:id", name: "UserChat", component: ChatPage, meta: { requiresAuth: true } },
+  // 👇 RUTE BARU 👇
+  {
+    path: "/consultation",
+    name: "Consultation",
+    component: ConsultationPage,
+    meta: {
+      requiresAuth: true,
+      requiresHeritage: true // 👈 Meta Flag Khusus
+    }
+  },
   { path: "/events", name: "EventPage", component: EventPage },
   { path: "/affiliate-demo", name: "AffiliateDemo", component: AffiliateDashboard, meta: { requiresAuth: true } },
 
@@ -4053,6 +4065,17 @@ router.beforeEach(async (to, from, next) => {
     }
 
     if (!isUserSessionValid) return next("/login");
+
+    // 👇 [BARU] PENGAMANAN RUTE KHUSUS HERITAGE TIER 👇
+    if (to.meta.requiresHeritage) {
+      const userPoints = user.point || 0;
+      // Jika bukan member, ATAU point kurang dari 10.000 (batas masuk tier Heritage)
+      if (!user.is_membership || userPoints < 10000) {
+        return next("/profilepage"); // Tendang ke halaman profil
+      }
+    }
+    // 👆 ========================================= 👆
+
     return next();
   }
 

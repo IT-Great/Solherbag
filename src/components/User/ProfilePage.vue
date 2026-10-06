@@ -12361,6 +12361,29 @@ onMounted(() => {
             </p>
           </router-link>
 
+          <!-- 👇 MENU BARU: KHUSUS TIER HERITAGE (Hanya tampil jika point >= 10.000) 👇 -->
+          <template v-if="userData.is_membership && (userData.point || 0) >= 10000">
+            <router-link
+              to="/consultation"
+              class="flex flex-col items-start p-5 transition-all bg-gradient-to-br from-gray-900 to-black border border-gray-800 shadow-sm group hover:border-yellow-500 hover:shadow-lg hover:shadow-yellow-500/20 rounded-[2rem] hover:-translate-y-1"
+            >
+              <div
+                class="p-3 text-black bg-gradient-to-br from-yellow-300 to-yellow-600 rounded-2xl group-hover:scale-110 transition-transform duration-300 mb-4 shadow-[0_0_15px_rgba(234,179,8,0.3)]"
+              >
+                <!-- Icon Sparkles / Diamond -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                </svg>
+              </div>
+              <h3 class="text-xs font-black text-white uppercase tracking-widest group-hover:text-yellow-400 transition-colors">
+                Concierge
+              </h3>
+              <p class="text-[10px] font-medium text-gray-400 mt-1">
+                Layanan Prioritas
+              </p>
+            </router-link>
+          </template>
+
           <template v-if="userData.is_affiliate">
             <router-link
               to="/affiliate-demo"
