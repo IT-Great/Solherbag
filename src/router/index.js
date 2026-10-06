@@ -2516,11 +2516,11 @@
 //         const { default: axios } = await import('axios');
 //         // PASTIKAN import BASE_URL di bagian atas file jika belum ada, atau hardcode base URL sementara
 //         // import { BASE_URL } from "../../config/api.js"; (Asumsi sudah di-import di atas)
-        
+
 //         // Catatan: Idealnya, data policies ini disimpan di Pinia/Vuex (state management) saat login 
 //         // agar tidak memanggil API terus-menerus setiap kali pindah rute.
 //         // Untuk contoh ini, kita panggil API (atau Anda bisa menyimpannya di localStorage saat login).
-        
+
 //         // Karena ini router global, kita buat pemetaan (mapping) antara URL path dengan moduleId
 //         const routeToModuleMap = {
 //           "/admin/dashboard": "dashboard",
@@ -2558,11 +2558,11 @@
 //            //   headers: { Authorization: `Bearer ${adminToken}` }
 //            // });
 //            // const policies = res.data.permissions;
-           
+
 //            // SIMULASI CEK LOKAL (Jika Anda menyimpan policies di localStorage saat login):
 //            // const policiesStr = localStorage.getItem('admin_policies');
 //            // const policies = policiesStr ? JSON.parse(policiesStr) : null;
-           
+
 //            // Jika Anda menggunakan API call di dalam router, ingat bahwa ini akan menambah delay setiap pindah halaman.
 //            // Solusi paling elegan: Simpan data matrix di localStorage saat admin sukses login.
 //         }
@@ -2692,7 +2692,7 @@
 //   { path: "/chat/:id", name: "UserChat", component: ChatPage, meta: { requiresAuth: true } },
 //   { path: "/events", name: "EventPage", component: EventPage },
 //   { path: "/affiliate-demo", name: "AffiliateDemo", component: AffiliateDashboard, meta: { requiresAuth: true } },
-  
+
 //   // ADMIN ROUTES
 //   { path: "/admin/dashboard", name: "Dashboard", component: DashboardPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
 //   { path: "/admin/profile", name: "Adminprofile", component: AdminProfilePage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
@@ -2874,7 +2874,7 @@
 
 //   if (isAdminSessionValid && ["/loginadmin", "/login", "/register"].includes(to.path)) {
 //     if (admin.usertype === "superadmin") return next("/admin/dashboard");
-    
+
 //     // Tarik cache untuk mengarahkan staf biasa ke menu pertamanya
 //     const cachedStr = localStorage.getItem("admin_permissions");
 //     if (cachedStr) {
@@ -2931,10 +2931,10 @@
 //         if (!modulePerms.includes("menu")) {
 //           // Cari jalan alternatif yang boleh dia masuki!
 //           const safeRoute = getFirstAllowedRoute(userPerms);
-          
+
 //           // Mencegah Infinite Loop (terjebak putar-putar)
 //           if (safeRoute === targetPath) return next("/admin/profile");
-          
+
 //           return next(safeRoute); 
 //         }
 //       }
@@ -3055,7 +3055,7 @@
 //   { path: "/chat/:id", name: "UserChat", component: ChatPage, meta: { requiresAuth: true } },
 //   { path: "/events", name: "EventPage", component: EventPage },
 //   { path: "/affiliate-demo", name: "AffiliateDemo", component: AffiliateDashboard, meta: { requiresAuth: true } },
-  
+
 //   // ADMIN ROUTES
 //   { path: "/admin/dashboard", name: "Dashboard", component: DashboardPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
 //   { path: "/admin/profile", name: "Adminprofile", component: AdminProfilePage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
@@ -3087,7 +3087,7 @@
 //   { path: "/admin/events/:id", name: "AdminEventDetailPage", component: AdminEventDetailPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
 //   { path: "/admin/affiliates", name: "AdminAffiliates", component: AdminAffiliateDashboard, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
 //   { path: "/admin/access-policy", name: "AccessPolicyManagementa", component: AccessPolicyManagement, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
-  
+
 //   // 👇 [UPDATE & TAMBAHAN RUTE BARU] Newsletter & Campaign 👇
 //   { path: "/admin/newsletters", name: "AdminCampaignHistory", component: AdminCampaignHistory, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
 //   { path: "/admin/newsletters/create", name: "AdminNewsletterBuilder", component: AdminNewsletterBuilder, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
@@ -3241,7 +3241,7 @@
 
 //   if (isAdminSessionValid && ["/loginadmin", "/login", "/register"].includes(to.path)) {
 //     if (admin.usertype === "superadmin") return next("/admin/dashboard");
-    
+
 //     // Tarik cache untuk mengarahkan staf biasa ke menu pertamanya
 //     const cachedStr = localStorage.getItem("admin_permissions");
 //     if (cachedStr) {
@@ -3298,10 +3298,10 @@
 //         if (!modulePerms.includes("menu")) {
 //           // Cari jalan alternatif yang boleh dia masuki!
 //           const safeRoute = getFirstAllowedRoute(userPerms);
-          
+
 //           // Mencegah Infinite Loop (terjebak putar-putar)
 //           if (safeRoute === targetPath) return next("/admin/profile");
-          
+
 //           return next(safeRoute); 
 //         }
 //       }
@@ -3425,17 +3425,17 @@
 //   { path: "/chat/:id", name: "UserChat", component: ChatPage, meta: { requiresAuth: true } },
 //   { path: "/events", name: "EventPage", component: EventPage },
 //   { path: "/affiliate-demo", name: "AffiliateDemo", component: AffiliateDashboard, meta: { requiresAuth: true } },
-  
+
 //   // ADMIN ROUTES
 //   { path: "/admin/dashboard", name: "Dashboard", component: DashboardPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
 //   { path: "/admin/profile", name: "Adminprofile", component: AdminProfilePage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
 //   { path: "/admin/categories", name: "Category", component: CategoryPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
 //   { path: "/admin/categories/:id", name: "CategoryDetail", component: () => import("../components/Admin/CategoryDetailPage.vue"), meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
-  
+
 //   // 👇 [BARU] Rute Bag Categories 👇
 //   { path: "/admin/bag-categories", name: "BagCategory", component: BagCategoryPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
 //   { path: "/admin/bag-categories/:id", name: "BagCategoryDetail", component: BagCategoryDetailPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
-  
+
 //   { path: "/admin/products", name: "Product", component: ProductPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
 //   { path: "/admin/products/add", name: "ProductAdd", component: ProductAddPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
 //   { path: "/admin/products/edit/:id", name: "ProductEdit", component: ProductEditPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
@@ -3462,7 +3462,7 @@
 //   { path: "/admin/events/:id", name: "AdminEventDetailPage", component: AdminEventDetailPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
 //   { path: "/admin/affiliates", name: "AdminAffiliates", component: AdminAffiliateDashboard, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
 //   { path: "/admin/access-policy", name: "AccessPolicyManagementa", component: AccessPolicyManagement, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
-  
+
 //   { path: "/admin/newsletters", name: "AdminCampaignHistory", component: AdminCampaignHistory, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
 //   { path: "/admin/newsletters/create", name: "AdminNewsletterBuilder", component: AdminNewsletterBuilder, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
 // ];
@@ -3616,7 +3616,7 @@
 
 //   if (isAdminSessionValid && ["/loginadmin", "/login", "/register"].includes(to.path)) {
 //     if (admin.usertype === "superadmin") return next("/admin/dashboard");
-    
+
 //     const cachedStr = localStorage.getItem("admin_permissions");
 //     if (cachedStr) {
 //         const perms = JSON.parse(cachedStr);
@@ -3751,7 +3751,7 @@ import AffiliateLandingPage from "../components/User/AffiliateLandingPage.vue";
 import AccessPolicyManagement from "../components/Admin/AccessPolicyManagement.vue";
 
 import AdminNewsletterBuilder from "../components/Admin/AdminNewsletterBuilder.vue";
-import AdminCampaignHistory from "../components/Admin/AdminCampaignHistory.vue"; 
+import AdminCampaignHistory from "../components/Admin/AdminCampaignHistory.vue";
 import BagCategoryPage from "../components/Admin/BagCategoryPage.vue";
 import BagCategoryDetailPage from "../components/Admin/BagCategoryDetailPage.vue";
 
@@ -3761,6 +3761,7 @@ import SolherClubPage from "../components/User/SolherClubPage.vue";
 import UserClaimPromo from "../components/Admin/UserClaimPromo.vue";
 import GoogleCallback from "../components/User/Layout/GoogleCallback.vue";
 import InactiveProductStockPage from "../components/Admin/InactiveProductStockPage.vue";
+import PromoManager from "../components/Admin/PromoManager.vue";
 
 const routes = [
   { path: "/", name: "Home", component: HomePage },
@@ -3801,7 +3802,7 @@ const routes = [
   { path: "/chat/:id", name: "UserChat", component: ChatPage, meta: { requiresAuth: true } },
   { path: "/events", name: "EventPage", component: EventPage },
   { path: "/affiliate-demo", name: "AffiliateDemo", component: AffiliateDashboard, meta: { requiresAuth: true } },
-  
+
   // ADMIN ROUTES
   { path: "/admin/dashboard", name: "Dashboard", component: DashboardPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
   { path: "/admin/profile", name: "Adminprofile", component: AdminProfilePage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
@@ -3840,11 +3841,17 @@ const routes = [
   { path: "/admin/newsletters", name: "AdminCampaignHistory", component: AdminCampaignHistory, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
   { path: "/admin/newsletters/create", name: "AdminNewsletterBuilder", component: AdminNewsletterBuilder, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
   {
+    path: 'promos',
+    name: 'AdminPromos',
+    component: PromoManager,
+    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true }
+  },
+  {
     path: '/auth/callback',
     name: 'GoogleCallback',
     component: GoogleCallback
   },
-  
+
   // 👇 RUTE TELESCOPE BARU 👇
   { path: "/admin/telescope", name: "TelescopeMonitoring", component: TelescopeMonitoringPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
 ];
@@ -3869,7 +3876,7 @@ const routeToModuleMap = {
   "/admin/salesreports": "sales_report",
   "/admin/user_list": "users",
   "/admin/subscribers": "subscribers",
-  "/admin/newsletters": "subscribers", 
+  "/admin/newsletters": "subscribers",
   "/admin/events": "events",
   "/admin/audit-logs": "audit_logs",
   "/admin/affiliates": "affiliates",
@@ -3884,17 +3891,17 @@ const routeToModuleMap = {
 const getFirstAllowedRoute = (userPerms) => {
   for (const [routePath, moduleId] of Object.entries(routeToModuleMap)) {
     if (userPerms[moduleId] && userPerms[moduleId].includes("menu")) {
-      return routePath; 
+      return routePath;
     }
   }
-  return "/admin/profile"; 
+  return "/admin/profile";
 };
 
 let adminIdleTimer = null;
 let userIdleTimer = null;
 
 const TIMEOUT_ADMIN = 5 * 60 * 1000;
-const TIMEOUT_USER = 2 * 60 * 60 * 1000; 
+const TIMEOUT_USER = 2 * 60 * 60 * 1000;
 
 const resetTimers = () => {
   const currentTime = new Date().getTime().toString();
@@ -3913,7 +3920,7 @@ const resetTimers = () => {
       localStorage.removeItem("admin_token");
       localStorage.removeItem("admin");
       localStorage.removeItem("admin_last_activity");
-      localStorage.removeItem("admin_permissions"); 
+      localStorage.removeItem("admin_permissions");
       window.location.href = "/loginadmin";
     }, TIMEOUT_ADMIN);
   }
@@ -3987,13 +3994,13 @@ router.beforeEach(async (to, from, next) => {
 
   if (isAdminSessionValid && ["/loginadmin", "/login", "/register"].includes(to.path)) {
     if (admin.usertype === "superadmin") return next("/admin/dashboard");
-    
+
     const cachedStr = localStorage.getItem("admin_permissions");
     if (cachedStr) {
-        const perms = JSON.parse(cachedStr);
-        return next(getFirstAllowedRoute(perms[admin.usertype] || {}));
+      const perms = JSON.parse(cachedStr);
+      return next(getFirstAllowedRoute(perms[admin.usertype] || {}));
     }
-    return next("/admin/profile"); 
+    return next("/admin/profile");
   }
 
   if (to.meta.requiresAuth) {
@@ -4018,7 +4025,7 @@ router.beforeEach(async (to, from, next) => {
           localStorage.setItem("admin_permissions", JSON.stringify(cachedPermissions));
         } catch (error) {
           console.error("Gagal menarik hak akses rute:", error);
-          return next("/admin/profile"); 
+          return next("/admin/profile");
         }
       }
 
@@ -4038,11 +4045,11 @@ router.beforeEach(async (to, from, next) => {
         if (!modulePerms.includes("menu")) {
           const safeRoute = getFirstAllowedRoute(userPerms);
           if (safeRoute === targetPath) return next("/admin/profile");
-          return next(safeRoute); 
+          return next(safeRoute);
         }
       }
 
-      return next(); 
+      return next();
     }
 
     if (!isUserSessionValid) return next("/login");
