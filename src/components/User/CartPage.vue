@@ -561,7 +561,7 @@
             <p
               class="text-center text-[9px] font-medium text-gray-400 mt-3 hidden lg:block"
             >
-              Harga dan ketersediaan stok dapat berubah sewaktu-waktu.
+              {{ $t("cart.announcement") }}
             </p>
           </div>
 

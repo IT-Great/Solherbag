@@ -322,9 +322,10 @@
     "checkout": "Checkout",
     "processing": "Memproses...",
     "finish_your_order": "Selesaikan pesanan ini untuk mendapatkan estimasi",
-    "point": "Point",
+    "point": "Poin",
     "hapus_terpilih": "Hapus Terpilih",
-    "complete_your_style": "Lengkapi Gaya Anda"
+    "complete_your_style": "Lengkapi Gaya Anda",
+    "announcement": "Harga dan ketersediaan stok dapat berubah sewaktu-waktu."
   },
   "chat": {
     "chat_page_title": "Customer Support",

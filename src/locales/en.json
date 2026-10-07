@@ -325,7 +325,8 @@
     "finish_your_order": "Complete this order to get",
     "point": "Point estimations",
     "hapus_terpilih": "Remove the selected items",
-    "complete_your_style": "Complete Your Style"
+    "complete_your_style": "Complete Your Style",
+    "announcement": "Prices and stock availability are subject to change at any time without prior notice."
   },
   "chat": {
     "chat_page_title": "Customer Support",
