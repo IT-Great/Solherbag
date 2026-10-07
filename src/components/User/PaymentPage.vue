@@ -18771,14 +18771,14 @@ const userTierInfo = computed(() => {
   return { name: 'Muse', discount: 0 };
 });
 
-const formattedTierPrivilegeText = computed(() => {
-  if (!userTierInfo.value || userTierInfo.value.discount === 0) return "";
-  const discountPercent = userTierInfo.value.discount * 100;
-  // Gunakan fallback manual jika terjemahan I18n telat dimuat
-  const text1 = t("payment.privilege") || "Gunakan keistimewaan tier eksklusif Anda untuk mendapatkan potongan";
-  const text2 = t("payment.privilege2") || "dari total pesanan produk ini.";
-  return `${text1} ${discountPercent}% ${text2}`;
-});
+// const formattedTierPrivilegeText = computed(() => {
+//   if (!userTierInfo.value || userTierInfo.value.discount === 0) return "";
+//   const discountPercent = userTierInfo.value.discount * 100;
+//   // Gunakan fallback manual jika terjemahan I18n telat dimuat
+//   const text1 = t("payment.privilege") || "Gunakan keistimewaan tier eksklusif Anda untuk mendapatkan potongan";
+//   const text2 = t("payment.privilege2") || "dari total pesanan produk ini.";
+//   return `${text1} ${discountPercent}% ${text2}`;
+// });
 
 const getCourierLogo = (company) => {
   const map = { jne: "jne.png", sicepat: "sicepat.png", jnt: "jnt.png", anteraja: "anteraja.png", gojek: "gojek.png", grab: "grab.png", paxel: "paxel.png", ninja: "ninja.png", dhl: "dhl.png" };
@@ -19448,8 +19448,11 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
                   </p>
                   <span class="bg-amber-100 text-amber-800 text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-widest">{{ userTierInfo.discount * 100 }}% OFF</span>
                 </div>
-                <p class="mt-2 text-xs leading-relaxed text-gray-600">
+                <!-- <p class="mt-2 text-xs leading-relaxed text-gray-600">
                   {{ formattedTierPrivilegeText }}
+                </p> -->
+                <p class="mt-2 text-xs leading-relaxed text-gray-600">
+                  {{ $t("payment.privilege") }} {{ userTierInfo.discount * 100 }}% {{ $t("payment.privilege2") }}
                 </p>
               </div>
             </label>
