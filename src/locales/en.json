@@ -67,7 +67,11 @@
     "all_categories": "All Categories",
     "page": "Page {current} of {total}",
     "no_items": "No items found matching your selection.",
-    "reset_filters": "Reset All Filters"
+    "reset_filters": "Reset All Filters",
+    "final_sale_policy_title": "Final Sale Policy",
+    "final_sale_desc_1": "The collections below are sold at a clearance discount.",
+    "final_sale_desc_bold": "All purchases are strictly permanent.",
+    "final_sale_desc_2": "We do not accept returns, exchanges, or refunds for any reason."
   },
   "best_seller": {
     "title": "Best Sellers",

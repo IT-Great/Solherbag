@@ -67,7 +67,11 @@
     "all_categories": "Semua Kategori",
     "page": "Halaman {current} dari {total}",
     "no_items": "Tidak ada item yang sesuai dengan pilihan Anda.",
-    "reset_filters": "Reset Semua Filter"
+    "reset_filters": "Reset Semua Filter",
+    "final_sale_policy_title": "Final Sale Policy",
+    "final_sale_desc_1": "Koleksi di bawah ini dijual dengan diskon pembersihan gudang (Clearance).",
+    "final_sale_desc_bold": "Semua pembelian bersifat permanen.",
+    "final_sale_desc_2": "Kami tidak menerima pengembalian (return), penukaran (exchange), maupun pengembalian dana (refund) dengan alasan apa pun."
   },
   "best_seller": {
     "title": "Produk Terlaris",

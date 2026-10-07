@@ -9363,7 +9363,7 @@ const goToDetail = (product) => {
               />
             </svg>
           </div>
-          <div>
+          <!-- <div>
             <h3 class="mb-1 text-sm font-black tracking-widest text-red-800 uppercase">
               Final Sale Policy
             </h3>
@@ -9374,6 +9374,18 @@ const goToDetail = (product) => {
               >
               Kami tidak menerima pengembalian (return), penukaran (exchange), maupun
               pengembalian dana (refund) dengan alasan apa pun.
+            </p>
+          </div> -->
+          <div>
+            <h3 class="mb-1 text-sm font-black tracking-widest text-red-800 uppercase">
+              {{ $t("collection.final_sale_policy_title") }}
+            </h3>
+            <p class="text-xs leading-relaxed text-red-700 md:max-w-4xl">
+              {{ $t("collection.final_sale_desc_1") }}
+              <strong class="font-black text-red-900"
+                >{{ $t("collection.final_sale_desc_bold") }}</strong
+              >
+              {{ $t("collection.final_sale_desc_2") }}
             </p>
           </div>
         </div>
