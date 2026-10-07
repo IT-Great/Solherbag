@@ -18947,8 +18947,11 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
                   </p>
                   <span class="bg-amber-100 text-amber-800 text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-widest">{{ userTierInfo.discount * 100 }}% OFF</span>
                 </div>
-                <p class="mt-2 text-xs leading-relaxed text-gray-600">
+                <!-- <p class="mt-2 text-xs leading-relaxed text-gray-600">
                   Gunakan keistimewaan tier eksklusif Anda untuk mendapatkan potongan {{ userTierInfo.discount * 100 }}% dari total pesanan produk ini.
+                </p> -->
+                <p class="mt-2 text-xs leading-relaxed text-gray-600">
+                  {{$t("payment.privilege")}}
                 </p>
               </div>
             </label>
@@ -19016,7 +19019,7 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
                   </button>
                 </div>
                 <!-- 👇 [BARU] INDIKATOR LIMIT MAKSIMAL POIN 👇 -->
-                <p class="text-[9px] text-gray-400 mt-1 italic">Maksimal penukaran: 5.000 Pts per pesanan.</p>
+                <p class="text-[9px] text-gray-400 mt-1 italic">{{ $t("payment.max_exchange") }}</p>
               </div>
 
               <!-- KODE PROMO -->

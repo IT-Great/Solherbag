@@ -616,7 +616,9 @@
     "postal_code": "Kode Pos",
     "delete": "Hapus",
     "cancel": "Batal",
-    "save_address": "Simpan Alamat"
+    "save_address": "Simpan Alamat",
+    "max_exchange" : "Maksimal penukaran: 5.000 Pts per pesanan.",
+    "privilege" : "Gunakan keistimewaan tier eksklusif Anda untuk mendapatkan potongan {{ userTierInfo.discount * 100 }}% dari total pesanan produk ini."
   },
   "product_detail": {
     "loading_solher": "Memuat produk Solher...",
