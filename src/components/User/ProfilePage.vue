@@ -13192,7 +13192,7 @@ onMounted(() => {
                 Concierge
               </h3>
               <p class="text-[10px] font-medium text-gray-400 mt-1">
-                Layanan Prioritas
+                {{ $t("profile.priority_service") }}
               </p>
             </router-link>
           </template>

@@ -350,6 +350,7 @@
     "join_reason": "Reason for Joining",
     "join_reason_placeholder": "Tell us a bit about your audience...",
     "sending": "Sending...",
+    "priority_service" : "Priority Service",
     "submit_application": "Submit Application"
   },
   "cart": {
