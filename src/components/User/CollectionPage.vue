@@ -9660,12 +9660,24 @@ const goToDetail = (product) => {
                 Hurry, Only {{ product.stock }} left!
               </div>
 
-              <div
+              <!-- <div
                 v-else-if="product.stock <= 0"
                 class="absolute inset-0 bg-white/70 backdrop-blur-[2px] flex justify-center items-center z-40"
               >
                 <span
                   class="px-5 py-2 text-xs font-black tracking-[0.2em] text-white uppercase transform bg-black rounded-sm shadow-xl -rotate-12 border border-gray-800"
+                >
+                  Sold Out
+                </span>
+              </div> -->
+
+              <div
+                v-else-if="product.stock <= 0"
+                class="absolute inset-0 bg-white/70 backdrop-blur-[2px] flex justify-center items-center z-40"
+              >
+                <!-- 👇 PERBAIKAN TAMPILAN SOLD OUT (LURUS & MERAH) 👇 -->
+                <span
+                  class="px-5 py-2 text-xs font-black tracking-[0.2em] text-white uppercase bg-red-600 rounded shadow-md border border-red-700"
                 >
                   Sold Out
                 </span>
