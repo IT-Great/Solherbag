@@ -765,9 +765,9 @@ const totalSavings = computed(() => {
 const estimatedPoints = computed(() => {
   if (checkoutTotalAmount.value === 0) return 0;
 
-  // Jika IDR, misal setiap kelipatan Rp 10.000 dapat 1 Poin (Atur sesuai kebijakan Anda)
+  // Jika IDR, misal setiap kelipatan Rp 1.000 dapat 1 Poin (Atur sesuai kebijakan Anda)
   if (currentCurrency.value === "IDR") {
-    return Math.floor(checkoutTotalAmount.value / 10000);
+    return Math.floor(checkoutTotalAmount.value / 1000);
   }
 
   // Jika USD/EUR, misal setiap $1 dapat 1 Poin
