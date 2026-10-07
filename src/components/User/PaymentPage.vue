@@ -19112,6 +19112,8 @@ import { useCart, getDiscountStatus } from "../../composables/useCart";
 import AddressModal from "./Layout/AddressModal.vue";
 import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
+
 const router = useRouter();
 const getAxiosConfig = () => ({ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 
