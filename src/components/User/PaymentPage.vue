@@ -18947,8 +18947,11 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
                   </p>
                   <span class="bg-amber-100 text-amber-800 text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-widest">{{ userTierInfo.discount * 100 }}% OFF</span>
                 </div>
-                <p class="mt-2 text-xs leading-relaxed text-gray-600">
+                <!-- <p class="mt-2 text-xs leading-relaxed text-gray-600">
                   {{ $t("payment.privilege") }} {{ userTierInfo.discount * 100 }} {{ $t("payment.privilege2") }}
+                </p> -->
+                <p class="mt-2 text-xs leading-relaxed text-gray-600">
+                  {{ formattedTierPrivilegeText }}
                 </p>
               </div>
             </label>
@@ -19169,6 +19172,15 @@ const imageErrors = ref({});
 const parseColorName = (str) => str ? str.split("|")[0] : "";
 const parseColorHex = (str) => { try { const p = JSON.parse(str); return p.hex || "#ccc"; } catch { return str.includes("|") ? str.split("|")[1] : "#ccc"; } };
 const handleImageError = (company) => { imageErrors.value[company] = true; };
+
+// 👇 [BARU] COMPUTED PROPERTY UNTUK TEKS PRIVILEGE (MENGHINDARI ERROR INIT) 👇
+const formattedTierPrivilegeText = computed(() => {
+  if (!userTierInfo.value || userTierInfo.value.discount === 0) return "";
+  
+  // Gabungkan hasil fungsi t() dengan perhitungan matematika secara aman
+  const discountPercent = userTierInfo.value.discount * 100;
+  return `${t("payment.privilege")} ${discountPercent} ${t("payment.privilege2")}`;
+});
 
 const getCourierLogo = (company) => {
   const map = { jne: "jne.png", sicepat: "sicepat.png", jnt: "jnt.png", anteraja: "anteraja.png", gojek: "gojek.png", grab: "grab.png", paxel: "paxel.png", ninja: "ninja.png", dhl: "dhl.png" };
