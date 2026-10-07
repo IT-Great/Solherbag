@@ -19111,6 +19111,7 @@ import { useCart, getDiscountStatus } from "../../composables/useCart";
 import AddressModal from "./Layout/AddressModal.vue";
 import { useI18n } from "vue-i18n";
 
+// 👇 Panggil useI18n di paling awal
 const { t } = useI18n();
 
 const router = useRouter();
@@ -19170,13 +19171,22 @@ const parseColorName = (str) => str ? str.split("|")[0] : "";
 const parseColorHex = (str) => { try { const p = JSON.parse(str); return p.hex || "#ccc"; } catch { return str.includes("|") ? str.split("|")[1] : "#ccc"; } };
 const handleImageError = (company) => { imageErrors.value[company] = true; };
 
-// 👇 [BARU] COMPUTED PROPERTY UNTUK TEKS PRIVILEGE (MENGHINDARI ERROR INIT) 👇
+// 👇 [PERBAIKAN] Pindahkan ini ke BAWAH inisialisasi userTierInfo agar tidak terjadi ReferenceError
+const userTierInfo = computed(() => {
+  if (!userData.value) return { name: 'Guest', discount: 0 };
+  const pts = userData.value.point || 0;
+  if (pts >= 10000) return { name: 'Héritage', discount: 0.10 };
+  if (pts >= 2500) return { name: 'Élan', discount: 0.05 };
+  return { name: 'Muse', discount: 0 };
+});
+
 const formattedTierPrivilegeText = computed(() => {
   if (!userTierInfo.value || userTierInfo.value.discount === 0) return "";
-  
-  // Gabungkan hasil fungsi t() dengan perhitungan matematika secara aman
   const discountPercent = userTierInfo.value.discount * 100;
-  return `${t("payment.privilege")} ${discountPercent} ${t("payment.privilege2")}`;
+  // Gunakan fallback manual jika terjemahan I18n telat dimuat
+  const text1 = t("payment.privilege") || "Gunakan keistimewaan tier eksklusif Anda untuk mendapatkan potongan";
+  const text2 = t("payment.privilege2") || "dari total pesanan produk ini.";
+  return `${text1} ${discountPercent}% ${text2}`;
 });
 
 const getCourierLogo = (company) => {
@@ -19215,14 +19225,6 @@ const convertIDRtoActiveCurrency = (idrAmount) => {
   if (curr === "IDR" || !exchangeRates.value[curr]) return { value: idrAmount, curr: "IDR" };
   return { value: idrAmount * exchangeRates.value[curr], curr: curr };
 };
-
-const userTierInfo = computed(() => {
-  if (!userData.value) return { name: 'Guest', discount: 0 };
-  const pts = userData.value.point || 0;
-  if (pts >= 10000) return { name: 'Héritage', discount: 0.10 };
-  if (pts >= 2500) return { name: 'Élan', discount: 0.05 };
-  return { name: 'Muse', discount: 0 };
-});
 
 const hasAnyFinalSaleItem = computed(() => {
   return checkoutItems.value.some(item => item.product?.is_final_sale);
