@@ -18692,7 +18692,7 @@ onMounted(async () => {
 onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrencyState); });
 </script> -->
 
-<!-- <template>
+<template>
   <div v-if="isPageLoading" class="z-[100] fixed inset-0 flex flex-col justify-center items-center bg-white">
     <div class="flex gap-2 mb-4">
       <div class="w-3 h-3 bg-black rounded-full animate-bounce-1"></div>
@@ -18718,8 +18718,10 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
       </h1>
 
       <div class="flex flex-col gap-12 lg:flex-row">
+        <!-- ================= LEFT SECTION ================= -->
         <div class="flex-grow space-y-12">
 
+          <!-- 1. ADDRESS / GUEST FORM SECTION -->
           <section>
             <div class="flex items-center gap-4 mb-4">
               <span class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white">1</span>
@@ -18728,6 +18730,7 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
               </h2>
             </div>
 
+            <!-- GUEST FORM -->
             <div v-if="!isAuthenticated" class="p-6 bg-gray-50/50 border border-gray-200 rounded-3xl space-y-5">
               <div class="flex justify-between items-center mb-2">
                 <h3 class="text-xs font-bold text-gray-900 uppercase tracking-widest">Guest Checkout</h3>
@@ -18765,6 +18768,7 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
               </button>
             </div>
 
+            <!-- REGISTERED USER ADDRESS LIST -->
             <div v-else-if="addresses.length === 0" class="py-10 text-center border border-gray-300 border-dashed bg-gray-50 rounded-2xl">
               <p class="mb-2 text-sm italic text-gray-500">{{ $t("payment.no_address_found") }}</p>
               <button @click="isModalOpen = true" class="text-xs font-bold text-blue-600 underline">
@@ -18797,6 +18801,7 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
             </div>
           </section>
 
+          <!-- 2. SHIPPING SECTION -->
           <section v-if="!isAuthenticated && !isGuestAddressLocked" class="opacity-50 pointer-events-none">
              <div class="flex items-center gap-4 mb-4">
               <span class="flex justify-center items-center bg-gray-300 rounded-full w-6 h-6 font-bold text-[10px] text-white">2</span>
@@ -18818,6 +18823,7 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
             </div>
 
             <div class="space-y-4">
+              <!-- Free Shipping Option (Indo Only) -->
               <label v-if="destinationInfo?.country?.toLowerCase() === 'indonesia'" :class="[shippingMethod === 'free' ? 'border-black ring-1 ring-black bg-white shadow-md' : 'border-gray-100 bg-gray-50/50']" class="relative flex items-center p-6 transition-all border cursor-pointer rounded-2xl">
                 <input type="radio" value="free" v-model="shippingMethod" class="w-4 h-4 text-black border-gray-300 focus:ring-black" />
                 <div class="flex items-center justify-between flex-grow ml-4">
@@ -18829,6 +18835,7 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
                 </div>
               </label>
 
+              <!-- Biteship Option -->
               <label :class="[shippingMethod === 'biteship' ? 'border-black ring-1 ring-black bg-white shadow-md' : 'border-gray-100 bg-gray-50/50']" class="relative flex items-center p-6 transition-all border cursor-pointer rounded-2xl">
                 <input type="radio" value="biteship" v-model="shippingMethod" class="w-4 h-4 text-black border-gray-300 focus:ring-black" />
                 <div class="flex items-center justify-between flex-grow ml-4">
@@ -18839,7 +18846,9 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
                 </div>
               </label>
 
+              <!-- Extended Courier Configuration -->
               <div v-if="shippingMethod === 'biteship'" class="p-6 mt-4 space-y-8 bg-white border border-gray-200 rounded-3xl animate-fade-in">
+                <!-- Delivery Info Card -->
                 <div class="grid grid-cols-1 gap-6 p-4 md:grid-cols-2 bg-gray-50 rounded-2xl">
                   <div class="relative">
                     <button v-if="!isAuthenticated" @click="isGuestAddressLocked = false" class="absolute top-0 right-0 text-[10px] font-bold text-blue-600 underline uppercase">Edit</button>
@@ -18851,6 +18860,7 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
                   </div>
                 </div>
 
+                <!-- Pickup Schedule (Indo Only) -->
                 <div v-if="destinationInfo?.country?.toLowerCase() === 'indonesia'">
                   <h3 class="mb-4 text-sm font-bold tracking-widest uppercase">{{ $t("payment.pickup_schedule") }}</h3>
                   <div class="flex flex-col gap-4 mb-4 md:flex-row">
@@ -18878,6 +18888,7 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
                   </div>
                 </div>
 
+                <!-- Courier List -->
                 <div>
                   <h3 class="pt-6 mb-4 text-sm font-bold tracking-widest uppercase border-t">{{ $t("payment.select_courier") }}</h3>
                   
@@ -18922,7 +18933,32 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
 
           <!-- 👇 [BARU] 3. CIRCLE PRIVILEGE SECTION (KHUSUS TIER ELAN & HERITAGE) 👇 -->
           <!-- <section v-if="isAuthenticated && userTierInfo.discount > 0" class="mt-12 animate-fade-in"> -->
-            <section v-if="isAuthenticated && userTierInfo.discount > 0 && !hasFinalSaleItem" class="mt-12 animate-fade-in">
+            <!-- <section v-if="isAuthenticated && userTierInfo.discount > 0 && !hasFinalSaleItem" class="mt-12 animate-fade-in">
+            <div class="flex items-center gap-4 mb-4">
+              <span class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white">3</span>
+              <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">Circle Privileges</h2>
+            </div>
+            
+            <label :class="[useTierPrivilege ? 'border-amber-600 bg-amber-50 shadow-md' : 'border-gray-200 bg-white hover:bg-gray-50']" class="relative flex items-start p-6 transition-all border cursor-pointer rounded-2xl">
+              <input type="checkbox" v-model="useTierPrivilege" class="w-5 h-5 mt-1 text-amber-600 border-gray-300 rounded focus:ring-amber-500" />
+              <div class="flex-grow ml-4">
+                <div class="flex justify-between items-center">
+                  <p class="text-sm font-bold text-gray-900 uppercase tracking-widest">
+                    {{ userTierInfo.name }} Privilege
+                  </p>
+                  <span class="bg-amber-100 text-amber-800 text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-widest">{{ userTierInfo.discount * 100 }}% OFF</span>
+                </div>
+                <p class="mt-2 text-xs leading-relaxed text-gray-600">
+                  {{$t("payment.privilege")}} {{ userTierInfo.discount * 100 }} {{$t("payment.privilege2")}}
+                </p>
+              </div>
+            </label>
+          </section> -->
+          <!-- 👆 ========================================== 👆 -->
+
+          <!-- 👇 3. CIRCLE PRIVILEGE SECTION (KHUSUS TIER ELAN & HERITAGE) 👇 -->
+          <!-- Muncul di bawah kurir HANYA JIKA TIDAK ADA BARANG FINAL SALE (Kondisi 2) -->
+          <section v-if="isAuthenticated && userTierInfo.discount > 0 && !hasAnyFinalSaleItem" class="mt-12 animate-fade-in">
             <div class="flex items-center gap-4 mb-4">
               <span class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white">3</span>
               <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">Circle Privileges</h2>
@@ -18946,9 +18982,11 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
               </div>
             </label>
           </section>
+          <!-- 👆 ========================================== 👆 -->
 
         </div>
 
+        <!-- ================= RIGHT SECTION: ORDER SUMMARY ================= -->
         <div class="lg:w-[400px] space-y-6">
           <div class="sticky p-8 bg-white border border-gray-100 shadow-xl rounded-3xl top-28">
             <h2 class="pb-4 mb-6 text-sm font-bold tracking-widest text-gray-900 uppercase border-b border-gray-200">
@@ -18975,6 +19013,16 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
                   <p class="mt-1 text-xs font-medium text-gray-900">
                     {{ formatCurrencyDisplay({ value: getActivePriceObj(item.product).value * item.quantity, curr: getActivePriceObj(item.product).curr }) }}
                   </p>
+                  <!-- 👇 PERBAIKAN: Jika Keranjang Mixed, Munculkan Opsi Ceklis Per-Item Non-Final Sale 👇 -->
+                  <div v-if="isMixedCart && !item.product?.is_final_sale && isAuthenticated && userTierInfo.discount > 0" class="mt-2">
+                    <label class="flex items-start gap-2 p-2 bg-amber-50/50 border border-amber-100 rounded-lg cursor-pointer hover:bg-amber-50 transition-colors">
+                      <input type="checkbox" v-model="mixedCartPrivilegeSelection" :value="item.id" class="w-3.5 h-3.5 mt-0.5 text-amber-600 border-gray-300 rounded focus:ring-amber-500" />
+                      <div class="flex-grow">
+                        <p class="text-[9px] font-bold text-amber-800 uppercase tracking-widest">{{ userTierInfo.name }} Privilege (-{{ userTierInfo.discount * 100 }}%)</p>
+                        <p class="text-[8px] text-gray-500 mt-0.5">Berlaku untuk item normal.</p>
+                      </div>
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -18989,6 +19037,7 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
                 <span :class="appliedPromoType === 'voucher' ? 'text-amber-600 font-bold' : ''">{{ formatCurrencyDisplay(cartSubtotalObj) }}</span>
               </div>
 
+              <!-- POTONGAN POIN -->
               <div v-if="userData?.is_membership && availablePoints > 0" class="pt-4 mt-2 border-t border-gray-200 border-dashed">
                 <div class="flex items-center justify-between mb-2">
                   <span class="text-[10px] font-bold text-yellow-800 uppercase tracking-widest flex items-center gap-1">
@@ -19005,9 +19054,11 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
                     {{ $t("payment.use_all") }}
                   </button>
                 </div>
+                <!-- 👇 [BARU] INDIKATOR LIMIT MAKSIMAL POIN 👇 -->
                 <p class="text-[9px] text-gray-400 mt-1 italic">{{ $t("payment.max_exchange") }}</p>
               </div>
 
+              <!-- KODE PROMO -->
               <div class="pt-4 mt-2 border-t border-gray-200 border-dashed">
                 <div class="flex items-center justify-between mb-2">
                   <label class="text-[10px] font-bold text-gray-900 uppercase tracking-widest">{{ $t("payment.promo_code") }}</label>
@@ -19037,10 +19088,12 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
                 </div>
               </div>
 
+              <!-- 👇 [BARU] RINGKASAN DISKON TIER 👇 -->
               <div v-if="useTierPrivilege" class="flex justify-between text-[10px] md:text-xs font-medium text-amber-600 mt-2 border-t border-gray-50 pt-2">
                 <span class="pr-2 truncate">Tier Privilege ({{ userTierInfo.name }})</span>
                 <span>- {{ formatCurrencyDisplay(tierDiscountAmountObj) }}</span>
               </div>
+              <!-- 👆 ========================================== 👆 -->
 
               <div class="flex items-start justify-between text-gray-500 pt-2">
                 <span>{{ $t("payment.shipping") }}</span>
@@ -19073,6 +19126,7 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
       </div>
     </div>
 
+    <!-- Panggil Komponen Modal Address Eksternal -->
     <AddressModal :is-open="isModalOpen" :user-data="userData" @close="isModalOpen = false" @saved="onAddressSaved" />
   </div>
 </template>
@@ -19275,82 +19329,29 @@ const appliedPointDiscountObj = computed(() => convertIDRtoActiveCurrency(applie
 // });
 
 const tierDiscountAmountIDR = computed(() => {
-  // Jika toggle dimatikan ATAU terdapat barang final sale, diskon dipaksa 0
-  if (!useTierPrivilege.value || hasFinalSaleItem.value) return 0;
-  const baseTotal = checkoutTotalIDR.value - bundleDiscountAmount.value;
-  return baseTotal * userTierInfo.value.discount;
+  if (isAllFinalSale.value) return 0; // Kondisi 1: Lenyap total
+
+  let discountableAmount = 0;
+
+  if (isMixedCart.value) {
+    // Kondisi 3: Keranjang Campur. Hitung HANYA item yang diceklis dan bukan Final Sale.
+    if (mixedCartPrivilegeSelection.value.length === 0) return 0;
+    
+    checkoutItems.value.forEach(item => {
+      if (mixedCartPrivilegeSelection.value.includes(item.id) && !item.product?.is_final_sale) {
+        discountableAmount += getActivePriceObj(item.product).value * item.quantity;
+      }
+    });
+  } else {
+    // Kondisi 2: Semua Normal, pakai checkbox utama (useTierPrivilege)
+    if (!useTierPrivilege.value) return 0;
+    // Base total (dikurangi bundle jika ada, agar tidak diskon ganda pada produk yang sama)
+    discountableAmount = checkoutTotalIDR.value - bundleDiscountAmount.value; 
+  }
+
+  return discountableAmount * userTierInfo.value.discount;
 });
 const tierDiscountAmountObj = computed(() => convertIDRtoActiveCurrency(tierDiscountAmountIDR.value));
-
-const destinationInfo = computed(() => {
-  if (!isAuthenticated.value) {
-    return {
-      name: `${guestForm.value.first_name} ${guestForm.value.last_name}`,
-      phone: guestForm.value.phone,
-      address: `${guestForm.value.address_location}, ${guestForm.value.city}, ${guestForm.value.province}`,
-      postal_code: guestForm.value.postal_code,
-      country: guestForm.value.region || "Indonesia",
-    };
-  }
-
-  const addr = addresses.value.find((a) => a.id === selectedAddressId.value);
-  if (!addr) return null;
-  return {
-    name: addr.receiver?.full_name || addr.first_name_address + ' ' + addr.last_name_address || "Unknown",
-    phone: userData.value?.phone || "No Phone Provided",
-    address: `${addr.details?.location || addr.address_location || ""}, ${addr.details?.city || addr.city || ""}, ${addr.details?.province || addr.province || ""}`,
-    postal_code: addr.postal_code || addr.details?.postal_code || "",
-    country: addr.region || addr.details?.region || "Indonesia",
-  };
-});
-
-const isGuestFormValid = computed(() => {
-  const f = guestForm.value;
-  return f.first_name && f.email && f.phone && f.address_location && f.city && f.province && f.postal_code;
-});
-
-const isButtonDisabled = computed(() => {
-  if (isProcessing.value || cartItems.value.length === 0) return true;
-  if (isAuthenticated.value && !selectedAddressId.value) return true;
-  if (!isAuthenticated.value && !isGuestAddressLocked.value) return true;
-  
-  if (shippingMethod.value === "biteship") {
-    if (!selectedRate.value) return true;
-    if (deliveryType.value === "scheduled" && (!deliveryDate.value || !deliveryTime.value)) return true;
-  }
-  return false;
-});
-
-const todayDate = computed(() => new Date().toISOString().split("T")[0]);
-
-const checkoutItems = computed(() => {
-  const ids = selectedItemIds?.value || selectedItemIds || [];
-  return (cartItems.value || []).filter((item) => ids.includes(item.id)).map((item) => {
-    const fresh = catalogProducts.value.find((p) => p.id === item.product_id);
-    return fresh ? { ...item, product: fresh } : item;
-  });
-});
-
-const checkoutTotalIDR = computed(() => {
-  return checkoutItems.value.reduce((sum, item) => sum + (getActivePriceObj(item.product).value * item.quantity), 0);
-});
-
-const cartSubtotalObj = computed(() => {
-  const totalValue = checkoutItems.value.reduce((sum, item) => sum + (getActivePriceObj(item.product).value * item.quantity), 0);
-  return { value: totalValue, curr: currentCurrency.value };
-});
-
-const actualPromoDiscountIDR = computed(() => promoDiscountAmount.value);
-const actualPromoDiscountObj = computed(() => convertIDRtoActiveCurrency(actualPromoDiscountIDR.value));
-
-const maxPointsAllowed = computed(() => {
-  const maxUsableAmount = Math.max(0, checkoutTotalIDR.value - actualPromoDiscountIDR.value);
-  const pointsLimit = Math.min(availablePoints.value, Math.floor(maxUsableAmount / 1000));
-  return Math.min(pointsLimit, 5000); 
-});
-
-const appliedPointDiscountIDR = computed(() => (pointsToUse.value || 0) * 1000);
-const appliedPointDiscountObj = computed(() => convertIDRtoActiveCurrency(appliedPointDiscountIDR.value));
 
 const shippingCostIDR = computed(() => shippingMethod.value === "biteship" && selectedRate.value ? parseFloat(selectedRate.value.price) : 0);
 const shippingCostObj = computed(() => convertIDRtoActiveCurrency(shippingCostIDR.value));
@@ -19361,7 +19362,7 @@ const grandTotalObj = computed(() => {
                         + shippingCostObj.value.value 
                         - actualPromoDiscountObj.value.value 
                         - appliedPointDiscountObj.value.value
-                        - tierDiscountAmountObj.value.value;
+                        - tierDiscountAmountObj.value.value; // Potong Diskon Tier
   return { value: Math.max(0, calculatedTotal), curr: currentCurrency.value };
 });
 
@@ -19383,6 +19384,7 @@ watch([pointsToUse, maxPointsAllowed], () => {
   if (pointsToUse.value > maxPointsAllowed.value) pointsToUse.value = maxPointsAllowed.value;
 });
 
+// 👇 [BARU] Reset Tier Privilege jika tiba-tiba keranjang mendeteksi final sale 👇
 watch(hasFinalSaleItem, (isFinalSale) => {
   if (isFinalSale) {
     useTierPrivilege.value = false;
@@ -19523,7 +19525,9 @@ const handlePayment = async () => {
       referral_code: localStorage.getItem("affiliate_ref"),
       
       // 👇 Payload baru untuk diskon Tier 👇
-      tier_discount_percentage: useTierPrivilege.value ? userTierInfo.value.discount : 0,
+      // tier_discount_percentage: useTierPrivilege.value ? userTierInfo.value.discount : 0,
+      tier_discount_percentage: (useTierPrivilege.value || mixedCartPrivilegeSelection.value.length > 0) ? userTierInfo.value.discount : 0,
+      tier_discount_item_ids: isMixedCart.value ? mixedCartPrivilegeSelection.value : null, // Kirim list ID jika Mixed
 
       shipping_method: shippingMethod.value,
       courier_company: shippingMethod.value === "biteship" ? selectedRate.value?.company : null,
