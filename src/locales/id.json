@@ -23,6 +23,18 @@
     "announcement_2": "Gratis Ongkir ke Seluruh Indonesia (Min. Belanja Rp 1.000.000) →",
     "solher_club": "Klub Solher"
   },
+  "notifications": {
+    "title": "Notifikasi",
+    "mark_all_read": "Tandai Semua Dibaca",
+    "login_required": "Silakan login untuk melihat notifikasi.",
+    "empty_state": "Belum ada notifikasi baru.",
+    "read_button": "Baca",
+    "view_all": "Lihat Semua",
+    "just_now": "Baru saja",
+    "mins_ago": "{time} mnt lalu",
+    "hours_ago": "{time} jam lalu",
+    "days_ago": "{time} hari lalu"
+  },
   "announcements": [
     "Hadiah Selamat Datang Eksklusif: Diskon Rp 250rb untuk pesanan pertama Anda →",
     "Gratis Ongkir ke Seluruh Indonesia (Min. Belanja Rp 1.000.000) →"

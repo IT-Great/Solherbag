@@ -7153,7 +7153,7 @@ watch(
             </transition> -->
 
             <!-- Dropdown Notifikasi -->
-            <transition name="fade-slide">
+            <!-- <transition name="fade-slide">
               <div 
                 v-if="isNotificationDropdownOpen" 
                 class="absolute z-[60] mt-4 p-4 bg-white border border-gray-100 shadow-2xl rounded-2xl animate-fade-in
@@ -7196,6 +7196,54 @@ watch(
 
                 <button v-if="notifications.length > 5" @click="openNotificationModal" class="w-full mt-3 py-2.5 text-[10px] font-bold uppercase tracking-widest text-center text-gray-700 bg-gray-50 hover:bg-gray-100 hover:text-black rounded-xl transition">
                   Lihat Semua ({{ notifications.length }})
+                </button>
+              </div>
+            </transition> -->
+
+            <!-- Dropdown Notifikasi -->
+            <transition name="fade-slide">
+              <div 
+                v-if="isNotificationDropdownOpen" 
+                class="absolute z-[60] mt-4 p-4 bg-white border border-gray-100 shadow-2xl rounded-2xl animate-fade-in
+                       /* Pengaturan Layar Mobile (Centered) */
+                       fixed top-12 left-1/2 -translate-x-1/2 w-[90vw] 
+                       /* Pengaturan Layar Desktop (Di bawah Ikon) */
+                       sm:absolute sm:top-full sm:left-auto sm:right-0 sm:-translate-x-0 sm:w-[320px] sm:origin-top-right"
+              >
+                <div class="flex items-center justify-between mb-3 border-b border-gray-100 pb-3">
+                  <h3 class="font-black text-xs uppercase tracking-widest text-gray-900">{{ $t("notifications.title") }}</h3>
+                  <button v-if="unreadNotificationsCount > 0" @click="markAllAsRead" class="text-[10px] font-bold text-blue-600 hover:text-blue-800 transition">{{ $t("notifications.mark_all_read") }}</button>
+                </div>
+                
+                <div v-if="!isAuthenticated" class="py-6 text-center text-xs text-gray-500 italic">
+                  {{ $t("notifications.login_required") }}
+                </div>
+                <div v-else-if="notifications.length === 0" class="py-8 text-center">
+                  <span class="text-3xl">📭</span>
+                  <p class="mt-2 text-xs text-gray-500">{{ $t("notifications.empty_state") }}</p>
+                </div>
+                <div v-else class="space-y-2 max-h-[300px] overflow-y-auto custom-scrollbar">
+                  <div 
+                    v-for="notif in recentNotifications" 
+                    :key="notif.id" 
+                    @click="markAsRead(notif.id)"
+                    :class="notif.is_read ? 'bg-white opacity-70 border-gray-50' : 'bg-blue-50/50 border-blue-100 shadow-sm'"
+                    class="p-3 border rounded-xl cursor-pointer hover:bg-gray-50 transition-all duration-200"
+                  >
+                    <div class="flex justify-between items-start gap-2">
+                      <p class="text-[11px] font-bold text-gray-900" :class="!notif.is_read ? 'text-blue-900' : ''">{{ notif.title }}</p>
+                      <span v-if="!notif.is_read" class="w-2 h-2 rounded-full bg-blue-500 mt-1 shrink-0"></span>
+                    </div>
+                    <p class="text-[10px] text-gray-600 mt-1 leading-relaxed line-clamp-2">{{ notif.message }}</p>
+                    <p class="text-[9px] text-gray-400 mt-1.5 flex items-center gap-1 font-medium">
+                      <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                      {{ timeAgo(notif.created_at) }}
+                    </p>
+                  </div>
+                </div>
+
+                <button v-if="notifications.length > 5" @click="openNotificationModal" class="w-full mt-3 py-2.5 text-[10px] font-bold uppercase tracking-widest text-center text-gray-700 bg-gray-50 hover:bg-gray-100 hover:text-black rounded-xl transition">
+                  {{ $t("notifications.view_all") }} ({{ notifications.length }})
                 </button>
               </div>
             </transition>
@@ -7394,7 +7442,7 @@ watch(
   <SearchModal v-if="isSearchOpen" @close="closeSearch" />
 
   <!-- 👇 [BARU] POP-UP MODAL VIEW ALL NOTIFICATIONS 👇 -->
-  <div v-if="isNotificationModalOpen" class="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+  <!-- <div v-if="isNotificationModalOpen" class="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
     <div class="w-full max-w-lg bg-white rounded-3xl shadow-2xl flex flex-col max-h-[85vh] overflow-hidden">
       <div class="flex items-center justify-between p-6 border-b border-gray-100 bg-gray-50/50">
         <h2 class="text-xl font-bold font-serif text-gray-900">Semua Notifikasi</h2>
@@ -7435,6 +7483,56 @@ watch(
                  title="Tandai telah dibaca"
                >
                   Read
+               </button>
+            </div>
+         </div>
+      </div>
+    </div>
+  </div> -->
+  <!-- 👆 ============================================== 👆 -->
+
+  <!-- 👇 [BARU] POP-UP MODAL VIEW ALL NOTIFICATIONS 👇 -->
+  <div v-if="isNotificationModalOpen" class="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+    <div class="w-full max-w-lg bg-white rounded-3xl shadow-2xl flex flex-col max-h-[85vh] overflow-hidden">
+      <div class="flex items-center justify-between p-6 border-b border-gray-100 bg-gray-50/50">
+        <h2 class="text-xl font-bold font-serif text-gray-900">{{ $t("notifications.title") }}</h2>
+        <div class="flex items-center gap-4">
+          <button v-if="unreadNotificationsCount > 0" @click="markAllAsRead" class="text-[10px] font-black uppercase tracking-widest text-blue-600 hover:text-blue-800 bg-blue-50 px-3 py-1.5 rounded-lg transition">{{ $t("notifications.mark_all_read") }}</button>
+          <button @click="closeNotificationModal" class="p-2 text-gray-400 hover:text-black hover:bg-gray-200 rounded-full transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+          </button>
+        </div>
+      </div>
+      <div class="p-6 overflow-y-auto custom-scrollbar flex-grow bg-gray-50/20">
+         <div v-if="notifications.length === 0" class="text-center text-gray-500 py-16 flex flex-col items-center">
+            <span class="text-5xl mb-4">📭</span>
+            <p class="text-sm">{{ $t("notifications.empty_state") }}</p>
+         </div>
+         <div v-else class="space-y-4">
+            <div 
+              v-for="notif in notifications" 
+              :key="notif.id" 
+              class="flex items-start justify-between p-5 border rounded-2xl transition-all duration-300" 
+              :class="notif.is_read ? 'bg-white border-gray-100 opacity-70' : 'bg-blue-50 border-blue-200 shadow-md hover:-translate-y-0.5'"
+            >
+               <div class="flex-grow pr-4">
+                  <div class="flex items-center gap-2 mb-1.5">
+                    <h3 class="text-sm font-bold text-gray-900" :class="!notif.is_read ? 'text-blue-900' : ''">{{ notif.title }}</h3>
+                    <span v-if="!notif.is_read" class="w-2 h-2 rounded-full bg-blue-500 shrink-0"></span>
+                  </div>
+                  <p class="text-xs text-gray-600 leading-relaxed">{{ notif.message }}</p>
+                  <p class="text-[10px] text-gray-400 mt-3 flex items-center gap-1.5 font-medium">
+                    <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    {{ timeAgo(notif.created_at) }}
+                  </p>
+               </div>
+               <button 
+                 v-if="!notif.is_read" 
+                 @click="markAsRead(notif.id)" 
+                 class="shrink-0 px-4 py-2 bg-white border border-gray-200 shadow-sm text-[10px] font-black uppercase tracking-widest text-gray-700 rounded-xl hover:bg-black hover:text-white hover:border-black transition-colors" 
+                 :title="$t('notifications.mark_all_read')"
+               >
+                 {{ $t("notifications.read_button") }}
                </button>
             </div>
          </div>
@@ -7509,16 +7607,28 @@ const recentNotifications = computed(() => {
   return notifications.value.slice(0, 5);
 });
 
+// const timeAgo = (dateString) => {
+//   if (!dateString) return '';
+//   const date = new Date(dateString);
+//   const now = new Date();
+//   const diffInSeconds = Math.floor((now - date) / 1000);
+
+//   if (diffInSeconds < 60) return "Baru saja";
+//   if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} mnt lalu`;
+//   if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} jam lalu`;
+//   return `${Math.floor(diffInSeconds / 86400)} hari lalu`;
+// };
+
 const timeAgo = (dateString) => {
   if (!dateString) return '';
   const date = new Date(dateString);
   const now = new Date();
   const diffInSeconds = Math.floor((now - date) / 1000);
 
-  if (diffInSeconds < 60) return "Baru saja";
-  if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} mnt lalu`;
-  if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} jam lalu`;
-  return `${Math.floor(diffInSeconds / 86400)} hari lalu`;
+  if (diffInSeconds < 60) return t("notifications.just_now");
+  if (diffInSeconds < 3600) return t("notifications.mins_ago", { time: Math.floor(diffInSeconds / 60) });
+  if (diffInSeconds < 86400) return t("notifications.hours_ago", { time: Math.floor(diffInSeconds / 3600) });
+  return t("notifications.days_ago", { time: Math.floor(diffInSeconds / 86400) });
 };
 
 const fetchNotifications = async () => {

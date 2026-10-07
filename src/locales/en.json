@@ -23,6 +23,18 @@
     "announcement_2": "A Little Extra, On Us — Complimentary Shipping Across Indonesia (Min. Rp 1.000.000) →",
     "solher_club": "SolHer Club"
   },
+  "notifications": {
+    "title": "Notifications",
+    "mark_all_read": "Mark All as Read",
+    "login_required": "Please log in to view your notifications.",
+    "empty_state": "No new notifications.",
+    "read_button": "Read",
+    "view_all": "View All",
+    "just_now": "Just now",
+    "mins_ago": "{time} mins ago",
+    "hours_ago": "{time} hours ago",
+    "days_ago": "{time} days ago"
+  },
   "announcements": [
     "An Exclusive Welcome Gift: Rp 250K OFF your first order →",
     "A Little Extra, On Us — Complimentary Shipping Across Indonesia (Min. Rp 1.000.000) →"
