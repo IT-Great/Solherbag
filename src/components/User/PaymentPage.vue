@@ -18933,7 +18933,7 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
 
           <!-- 👇 [BARU] 3. CIRCLE PRIVILEGE SECTION (KHUSUS TIER ELAN & HERITAGE) 👇 -->
           <!-- <section v-if="isAuthenticated && userTierInfo.discount > 0" class="mt-12 animate-fade-in"> -->
-            <section v-if="isAuthenticated && userTierInfo.discount > 0 && !hasFinalSaleItem" class="mt-12 animate-fade-in">
+            <!-- <section v-if="isAuthenticated && userTierInfo.discount > 0 && !hasFinalSaleItem" class="mt-12 animate-fade-in">
             <div class="flex items-center gap-4 mb-4">
               <span class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white">3</span>
               <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">Circle Privileges</h2>
@@ -18948,9 +18948,31 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
                   </p>
                   <span class="bg-amber-100 text-amber-800 text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-widest">{{ userTierInfo.discount * 100 }}% OFF</span>
                 </div>
-                <!-- <p class="mt-2 text-xs leading-relaxed text-gray-600">
-                  Gunakan keistimewaan tier eksklusif Anda untuk mendapatkan potongan {{ userTierInfo.discount * 100 }}% dari total pesanan produk ini.
-                </p> -->
+                <p class="mt-2 text-xs leading-relaxed text-gray-600">
+                  {{$t("payment.privilege")}} {{ userTierInfo.discount * 100 }} {{$t("payment.privilege2")}}
+                </p>
+              </div>
+            </label>
+          </section> -->
+          <!-- 👆 ========================================== 👆 -->
+
+          <!-- 👇 3. CIRCLE PRIVILEGE SECTION (KHUSUS TIER ELAN & HERITAGE) 👇 -->
+          <!-- Muncul di bawah kurir HANYA JIKA TIDAK ADA BARANG FINAL SALE (Kondisi 2) -->
+          <section v-if="isAuthenticated && userTierInfo.discount > 0 && !hasAnyFinalSaleItem" class="mt-12 animate-fade-in">
+            <div class="flex items-center gap-4 mb-4">
+              <span class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white">3</span>
+              <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">Circle Privileges</h2>
+            </div>
+            
+            <label :class="[useTierPrivilege ? 'border-amber-600 bg-amber-50 shadow-md' : 'border-gray-200 bg-white hover:bg-gray-50']" class="relative flex items-start p-6 transition-all border cursor-pointer rounded-2xl">
+              <input type="checkbox" v-model="useTierPrivilege" class="w-5 h-5 mt-1 text-amber-600 border-gray-300 rounded focus:ring-amber-500" />
+              <div class="flex-grow ml-4">
+                <div class="flex justify-between items-center">
+                  <p class="text-sm font-bold text-gray-900 uppercase tracking-widest">
+                    {{ userTierInfo.name }} Privilege
+                  </p>
+                  <span class="bg-amber-100 text-amber-800 text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-widest">{{ userTierInfo.discount * 100 }}% OFF</span>
+                </div>
                 <p class="mt-2 text-xs leading-relaxed text-gray-600">
                   {{$t("payment.privilege")}} {{ userTierInfo.discount * 100 }} {{$t("payment.privilege2")}}
                 </p>
@@ -18988,6 +19010,16 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
                   <p class="mt-1 text-xs font-medium text-gray-900">
                     {{ formatCurrencyDisplay({ value: getActivePriceObj(item.product).value * item.quantity, curr: getActivePriceObj(item.product).curr }) }}
                   </p>
+                  <!-- 👇 PERBAIKAN: Jika Keranjang Mixed, Munculkan Opsi Ceklis Per-Item Non-Final Sale 👇 -->
+                  <div v-if="isMixedCart && !item.product?.is_final_sale && isAuthenticated && userTierInfo.discount > 0" class="mt-2">
+                    <label class="flex items-start gap-2 p-2 bg-amber-50/50 border border-amber-100 rounded-lg cursor-pointer hover:bg-amber-50 transition-colors">
+                      <input type="checkbox" v-model="mixedCartPrivilegeSelection" :value="item.id" class="w-3.5 h-3.5 mt-0.5 text-amber-600 border-gray-300 rounded focus:ring-amber-500" />
+                      <div class="flex-grow">
+                        <p class="text-[9px] font-bold text-amber-800 uppercase tracking-widest">{{ userTierInfo.name }} Privilege (-{{ userTierInfo.discount * 100 }}%)</p>
+                        <p class="text-[8px] text-gray-500 mt-0.5">Berlaku untuk item normal.</p>
+                      </div>
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -19210,9 +19242,32 @@ const userTierInfo = computed(() => {
 });
 
 // 👇 [BARU] CEK BARANG FINAL SALE DI KERANJANG 👇
-const hasFinalSaleItem = computed(() => {
-  // Mengembalikan true jika minimal ada 1 barang berstatus is_final_sale di dalam keranjang checkout
-  return checkoutItems.value.some(item => item.product && item.product.is_final_sale);
+// const hasFinalSaleItem = computed(() => {
+//   // Mengembalikan true jika minimal ada 1 barang berstatus is_final_sale di dalam keranjang checkout
+//   return checkoutItems.value.some(item => item.product && item.product.is_final_sale);
+// });
+
+// 👇 [PERBAIKAN] LOGIKA KOMPLEKS FINAL SALE & PRIVILEGE 👇
+const hasAnyFinalSaleItem = computed(() => {
+  return checkoutItems.value.some(item => item.product?.is_final_sale);
+});
+
+const isAllFinalSale = computed(() => {
+  if (checkoutItems.value.length === 0) return false;
+  return checkoutItems.value.every(item => item.product?.is_final_sale);
+});
+
+const isMixedCart = computed(() => {
+  return hasAnyFinalSaleItem.value && !isAllFinalSale.value;
+});
+
+// Array penyimpan ID keranjang (item) mana saja yang dipilih untuk diskon tier (Jika keranjang Mixed)
+const mixedCartPrivilegeSelection = ref([]);
+
+// Watcher untuk mereset selection jika komposisi keranjang berubah
+watch(checkoutItems, () => {
+  useTierPrivilege.value = false;
+  mixedCartPrivilegeSelection.value = [];
 });
 
 const destinationInfo = computed(() => {
@@ -19293,11 +19348,37 @@ const appliedPointDiscountObj = computed(() => convertIDRtoActiveCurrency(applie
 //   return baseTotal * userTierInfo.value.discount;
 // });
 
+// const tierDiscountAmountIDR = computed(() => {
+//   // Jika toggle dimatikan ATAU terdapat barang final sale, diskon dipaksa 0
+//   if (!useTierPrivilege.value || hasFinalSaleItem.value) return 0;
+//   const baseTotal = checkoutTotalIDR.value - bundleDiscountAmount.value;
+//   return baseTotal * userTierInfo.value.discount;
+// });
+// const tierDiscountAmountObj = computed(() => convertIDRtoActiveCurrency(tierDiscountAmountIDR.value));
+
+// 👇 [PERBAIKAN] KALKULASI DISKON TIER DINAMIS 👇
 const tierDiscountAmountIDR = computed(() => {
-  // Jika toggle dimatikan ATAU terdapat barang final sale, diskon dipaksa 0
-  if (!useTierPrivilege.value || hasFinalSaleItem.value) return 0;
-  const baseTotal = checkoutTotalIDR.value - bundleDiscountAmount.value;
-  return baseTotal * userTierInfo.value.discount;
+  if (isAllFinalSale.value) return 0; // Kondisi 1: Lenyap total
+
+  let discountableAmount = 0;
+
+  if (isMixedCart.value) {
+    // Kondisi 3: Keranjang Campur. Hitung HANYA item yang diceklis dan bukan Final Sale.
+    if (mixedCartPrivilegeSelection.value.length === 0) return 0;
+    
+    checkoutItems.value.forEach(item => {
+      if (mixedCartPrivilegeSelection.value.includes(item.id) && !item.product?.is_final_sale) {
+        discountableAmount += getActivePriceObj(item.product).value * item.quantity;
+      }
+    });
+  } else {
+    // Kondisi 2: Semua Normal, pakai checkbox utama (useTierPrivilege)
+    if (!useTierPrivilege.value) return 0;
+    // Base total (dikurangi bundle jika ada, agar tidak diskon ganda pada produk yang sama)
+    discountableAmount = checkoutTotalIDR.value - bundleDiscountAmount.value; 
+  }
+
+  return discountableAmount * userTierInfo.value.discount;
 });
 const tierDiscountAmountObj = computed(() => convertIDRtoActiveCurrency(tierDiscountAmountIDR.value));
 
@@ -19473,7 +19554,9 @@ const handlePayment = async () => {
       referral_code: localStorage.getItem("affiliate_ref"),
       
       // 👇 Payload baru untuk diskon Tier 👇
-      tier_discount_percentage: useTierPrivilege.value ? userTierInfo.value.discount : 0,
+      // tier_discount_percentage: useTierPrivilege.value ? userTierInfo.value.discount : 0,
+      tier_discount_percentage: (useTierPrivilege.value || mixedCartPrivilegeSelection.value.length > 0) ? userTierInfo.value.discount : 0,
+      tier_discount_item_ids: isMixedCart.value ? mixedCartPrivilegeSelection.value : null, // Kirim list ID jika Mixed
 
       shipping_method: shippingMethod.value,
       courier_company: shippingMethod.value === "biteship" ? selectedRate.value?.company : null,
