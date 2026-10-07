@@ -18947,12 +18947,12 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
                   </p>
                   <span class="bg-amber-100 text-amber-800 text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-widest">{{ userTierInfo.discount * 100 }}% OFF</span>
                 </div>
-                <p class="mt-2 text-xs leading-relaxed text-gray-600">
-                  Gunakan keistimewaan tier eksklusif Anda untuk mendapatkan potongan {{ userTierInfo.discount * 100 }}% dari total pesanan produk ini.
-                </p>
                 <!-- <p class="mt-2 text-xs leading-relaxed text-gray-600">
-                  {{$t("payment.privilege")}}
+                  Gunakan keistimewaan tier eksklusif Anda untuk mendapatkan potongan {{ userTierInfo.discount * 100 }}% dari total pesanan produk ini.
                 </p> -->
+                <p class="mt-2 text-xs leading-relaxed text-gray-600">
+                  {{$t("payment.privilege")}} {{ userTierInfo.discount * 100 }} {{$t("payment.privilege2")}}
+                </p>
               </div>
             </label>
           </section>

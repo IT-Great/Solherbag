@@ -619,7 +619,8 @@
     "cancel": "Cancel",
     "save_address": "Save Address",
     "max_exchange" : "Maximum redemption: 5,000 points per order.",
-    "privilege" : "Enjoy your exclusive tier benefits and unlock a {{ userTierInfo.discount * 100 }}% discount on your total order."
+    "privilege" : "Enjoy your exclusive tier benefits and unlock a",
+    "privilege2" : "% discount on your total order."
   },
   "product_detail": {
     "loading_solher": "Loading Solher piece...",
