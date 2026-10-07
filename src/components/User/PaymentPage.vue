@@ -18932,7 +18932,8 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
           </section>
 
           <!-- 👇 [BARU] 3. CIRCLE PRIVILEGE SECTION (KHUSUS TIER ELAN & HERITAGE) 👇 -->
-          <section v-if="isAuthenticated && userTierInfo.discount > 0" class="mt-12 animate-fade-in">
+          <!-- <section v-if="isAuthenticated && userTierInfo.discount > 0" class="mt-12 animate-fade-in"> -->
+            <section v-if="isAuthenticated && userTierInfo.discount > 0 && !hasFinalSaleItem" class="mt-12 animate-fade-in">
             <div class="flex items-center gap-4 mb-4">
               <span class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white">3</span>
               <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">Circle Privileges</h2>
@@ -19208,6 +19209,12 @@ const userTierInfo = computed(() => {
   return { name: 'Muse', discount: 0 };
 });
 
+// 👇 [BARU] CEK BARANG FINAL SALE DI KERANJANG 👇
+const hasFinalSaleItem = computed(() => {
+  // Mengembalikan true jika minimal ada 1 barang berstatus is_final_sale di dalam keranjang checkout
+  return checkoutItems.value.some(item => item.product && item.product.is_final_sale);
+});
+
 const destinationInfo = computed(() => {
   if (!isAuthenticated.value) {
     return {
@@ -19280,8 +19287,15 @@ const appliedPointDiscountIDR = computed(() => (pointsToUse.value || 0) * 1000);
 const appliedPointDiscountObj = computed(() => convertIDRtoActiveCurrency(appliedPointDiscountIDR.value));
 
 // 👇 [BARU] KALKULASI DISKON TIER 👇
+// const tierDiscountAmountIDR = computed(() => {
+//   if (!useTierPrivilege.value) return 0;
+//   const baseTotal = checkoutTotalIDR.value - bundleDiscountAmount.value;
+//   return baseTotal * userTierInfo.value.discount;
+// });
+
 const tierDiscountAmountIDR = computed(() => {
-  if (!useTierPrivilege.value) return 0;
+  // Jika toggle dimatikan ATAU terdapat barang final sale, diskon dipaksa 0
+  if (!useTierPrivilege.value || hasFinalSaleItem.value) return 0;
   const baseTotal = checkoutTotalIDR.value - bundleDiscountAmount.value;
   return baseTotal * userTierInfo.value.discount;
 });
@@ -19316,6 +19330,13 @@ const processedShippingRates = computed(() => {
 
 watch([pointsToUse, maxPointsAllowed], () => {
   if (pointsToUse.value > maxPointsAllowed.value) pointsToUse.value = maxPointsAllowed.value;
+});
+
+// 👇 [BARU] Reset Tier Privilege jika tiba-tiba keranjang mendeteksi final sale 👇
+watch(hasFinalSaleItem, (isFinalSale) => {
+  if (isFinalSale) {
+    useTierPrivilege.value = false;
+  }
 });
 
 watch(selectedAddressId, async (newVal) => {
