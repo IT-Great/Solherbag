@@ -7259,15 +7259,15 @@ watch(
             <!-- User Dropdown -->
             <div v-if="isDropdownOpen" class="top-full right-0 z-[60] absolute bg-white shadow-xl mt-4 p-6 border border-gray-100 w-64 animate-fade-in rounded-2xl">
               <div v-if="isAuthenticated" class="text-left">
-                <h3 class="text-sm font-bold tracking-tight text-black uppercase truncate">HI {{ userData?.first_name }}</h3>
+                <h3 class="text-sm font-bold tracking-tight text-black uppercase truncate">{{ $t("header.hi") }} {{ userData?.first_name }}</h3>
                 <p class="mb-4 text-xs text-gray-500 truncate">{{ userData?.email }}</p>
               </div>
               <div v-else>
-                <router-link to="/login" @click="isDropdownOpen = false" class="block w-full py-3 mb-4 text-xs font-bold tracking-widest text-center text-white uppercase transition bg-black rounded-xl hover:bg-gray-800">Sign In</router-link>
+                <router-link to="/login" @click="isDropdownOpen = false" class="block w-full py-3 mb-4 text-xs font-bold tracking-widest text-center text-white uppercase transition bg-black rounded-xl hover:bg-gray-800">{{ $t("header.sign_in") }}</router-link>
               </div>
               <div class="grid grid-cols-2 gap-2">
-                <router-link to="/orderpage" @click="isDropdownOpen = false" class="flex items-center justify-center py-3 transition bg-gray-50 rounded-xl hover:bg-gray-100"><span class="font-bold text-[10px] uppercase tracking-wider">Orders</span></router-link>
-                <router-link to="/profilepage" @click="isDropdownOpen = false" class="flex items-center justify-center py-3 transition bg-gray-50 rounded-xl hover:bg-gray-100"><span class="font-bold text-[10px] uppercase tracking-wider">Profile</span></router-link>
+                <router-link to="/orderpage" @click="isDropdownOpen = false" class="flex items-center justify-center py-3 transition bg-gray-50 rounded-xl hover:bg-gray-100"><span class="font-bold text-[10px] uppercase tracking-wider">{{ $t("header.orders") }}</span></router-link>
+                <router-link to="/profilepage" @click="isDropdownOpen = false" class="flex items-center justify-center py-3 transition bg-gray-50 rounded-xl hover:bg-gray-100"><span class="font-bold text-[10px] uppercase tracking-wider">{{ $t("header.profile") }}</span></router-link>
               </div>
             </div>
           </div>
