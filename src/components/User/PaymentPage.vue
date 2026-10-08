@@ -18692,7 +18692,7 @@ onMounted(async () => {
 onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrencyState); });
 </script> -->
 
-<template>
+<!-- <template>
   <div
     v-if="isPageLoading"
     class="z-[100] fixed inset-0 flex flex-col justify-center items-center bg-white"
@@ -18735,10 +18735,8 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
       </h1>
 
       <div class="flex flex-col gap-12 lg:flex-row">
-        <!-- ================= LEFT SECTION ================= -->
 
         <div class="flex-grow space-y-12">
-          <!-- 1. ADDRESS / GUEST FORM SECTION -->
 
           <section>
             <div class="flex items-center gap-4 mb-4">
@@ -18758,7 +18756,6 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
               </h2>
             </div>
 
-            <!-- GUEST FORM -->
 
             <div
               v-if="!isAuthenticated"
@@ -18871,7 +18868,6 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
               </button>
             </div>
 
-            <!-- REGISTERED USER ADDRESS LIST -->
 
             <div
               v-else-if="addresses.length === 0"
@@ -18943,7 +18939,6 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
             </div>
           </section>
 
-          <!-- 2. SHIPPING SECTION -->
 
           <section
             v-if="!isAuthenticated && !isGuestAddressLocked"
@@ -18996,7 +18991,6 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
             </div>
 
             <div class="space-y-4">
-              <!-- Free Shipping Option (Indo Only) -->
 
               <label
                 v-if="destinationInfo?.country?.toLowerCase() === 'indonesia'"
@@ -19031,7 +19025,6 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
                 </div>
               </label>
 
-              <!-- Biteship Option -->
 
               <label
                 :class="[
@@ -19067,13 +19060,11 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
                 </div>
               </label>
 
-              <!-- Extended Courier Configuration -->
 
               <div
                 v-if="shippingMethod === 'biteship'"
                 class="p-6 mt-4 space-y-8 bg-white border border-gray-200 rounded-3xl animate-fade-in"
               >
-                <!-- Delivery Info Card -->
 
                 <div
                   class="grid grid-cols-1 gap-6 p-4 md:grid-cols-2 bg-gray-50 rounded-2xl"
@@ -19112,7 +19103,6 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
                   </div>
                 </div>
 
-                <!-- Pickup Schedule (Indo Only) -->
 
                 <div
                   v-if="destinationInfo?.country?.toLowerCase() === 'indonesia'"
@@ -19206,7 +19196,6 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
                   </div>
                 </div>
 
-                <!-- Courier List -->
 
                 <div>
                   <h3
@@ -19304,10 +19293,6 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
             </div>
           </section>
 
-          <!-- 👇 [BARU] 3. CIRCLE PRIVILEGE SECTION (KHUSUS TIER ELAN & HERITAGE) 👇 -->
-
-          <!-- <section v-if="isAuthenticated && userTierInfo.discount > 0" class="mt-12 animate-fade-in"> -->
-
           <section
             v-if="
               isAuthenticated && userTierInfo.discount > 0 && !hasFinalSaleItem
@@ -19355,12 +19340,6 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
                   >
                 </div>
 
-                <!-- <p class="mt-2 text-xs leading-relaxed text-gray-600">
-
-                  Gunakan keistimewaan tier eksklusif Anda untuk mendapatkan potongan {{ userTierInfo.discount * 100 }}% dari total pesanan produk ini.
-
-                </p> -->
-
                 <p class="mt-2 text-xs leading-relaxed text-gray-600">
                   {{ $t("payment.privilege") }}
                   {{ userTierInfo.discount * 100 }}
@@ -19370,10 +19349,8 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
             </label>
           </section>
 
-          <!-- 👆 ========================================== 👆 -->
         </div>
 
-        <!-- ================= RIGHT SECTION: ORDER SUMMARY ================= -->
 
         <div class="lg:w-[400px] space-y-6">
           <div
@@ -19467,8 +19444,6 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
                 >
               </div>
 
-              <!-- POTONGAN POIN -->
-
               <div
                 v-if="userData?.is_membership && availablePoints > 0"
                 class="pt-4 mt-2 border-t border-gray-200 border-dashed"
@@ -19521,14 +19496,10 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
                   </button>
                 </div>
 
-                <!-- 👇 [BARU] INDIKATOR LIMIT MAKSIMAL POIN 👇 -->
-
                 <p class="text-[9px] text-gray-400 mt-1 italic">
                   {{ $t("payment.max_exchange") }}
                 </p>
               </div>
-
-              <!-- KODE PROMO -->
 
               <div class="pt-4 mt-2 border-t border-gray-200 border-dashed">
                 <div class="flex items-center justify-between mb-2">
@@ -19635,8 +19606,6 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
                 </div>
               </div>
 
-              <!-- 👇 [BARU] RINGKASAN DISKON TIER 👇 -->
-
               <div
                 v-if="useTierPrivilege"
                 class="flex justify-between text-[10px] md:text-xs font-medium text-amber-600 mt-2 border-t border-gray-50 pt-2"
@@ -19649,8 +19618,6 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
                   >- {{ formatCurrencyDisplay(tierDiscountAmountObj) }}</span
                 >
               </div>
-
-              <!-- 👆 ========================================== 👆 -->
 
               <div class="flex items-start justify-between text-gray-500 pt-2">
                 <span>{{ $t("payment.shipping") }}</span>
@@ -19726,8 +19693,6 @@ onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrenc
         </div>
       </div>
     </div>
-
-    <!-- Panggil Komponen Modal Address Eksternal -->
 
     <AddressModal
       :is-open="isModalOpen"
@@ -20570,4 +20535,1381 @@ onMounted(async () => {
 onUnmounted(() => {
   window.removeEventListener("currency-changed", updateCurrencyState);
 });
+</script> -->
+
+<template>
+  <div v-if="isPageLoading" class="z-[100] fixed inset-0 flex flex-col justify-center items-center bg-white">
+    <div class="flex gap-2 mb-4">
+      <div class="w-3 h-3 bg-black rounded-full animate-bounce-1"></div>
+      <div class="w-3 h-3 bg-black rounded-full animate-bounce-2"></div>
+      <div class="w-3 h-3 bg-black rounded-full animate-bounce-3"></div>
+    </div>
+    <p class="font-serif text-sm italic tracking-widest text-gray-500 animate-pulse">
+      {{ $t("payment.prepare_checkout") }}
+    </p>
+  </div>
+
+  <div v-else class="relative z-10 max-w-6xl min-h-screen px-6 py-12 mx-auto md:py-24 animate-fade-in">
+    <div v-if="checkoutItems.length === 0" class="py-20 text-center">
+      <h2 class="mb-4 font-serif text-3xl">{{ $t("payment.bag_empty") }}</h2>
+      <button @click="$router.push('/collections')" class="px-8 py-3 text-xs font-bold tracking-widest text-white uppercase bg-black rounded-full">
+        {{ $t("payment.return_shop") }}
+      </button>
+    </div>
+
+    <div v-else>
+      <h1 class="mb-12 font-serif text-3xl tracking-tighter uppercase md:text-4xl">
+        {{ $t("payment.checkout") }}
+      </h1>
+
+      <div class="flex flex-col gap-12 lg:flex-row">
+        <!-- ================= LEFT SECTION ================= -->
+        <div class="flex-grow space-y-12">
+
+          <!-- 1. ADDRESS / GUEST FORM SECTION -->
+          <section>
+            <div class="flex items-center gap-4 mb-4">
+              <span class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white">1</span>
+              <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">
+                {{ isAuthenticated ? $t("payment.shipping_address") : "Contact & Shipping" }}
+              </h2>
+            </div>
+
+            <!-- GUEST FORM -->
+            <div v-if="!isAuthenticated" class="p-6 bg-gray-50/50 border border-gray-200 rounded-3xl space-y-5">
+              <div class="flex justify-between items-center mb-2">
+                <h3 class="text-xs font-bold text-gray-900 uppercase tracking-widest">Guest Checkout</h3>
+                <router-link to="/login" class="text-xs font-bold text-blue-600 underline">Login to account</router-link>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input type="text" v-model="guestForm.first_name" placeholder="First Name *" class="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:border-black" required/>
+                <input type="text" v-model="guestForm.last_name" placeholder="Last Name" class="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:border-black" />
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input type="email" v-model="guestForm.email" placeholder="Email Address *" class="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:border-black" required/>
+                <input type="tel" v-model="guestForm.phone" placeholder="Phone Number *" class="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:border-black" required/>
+              </div>
+              <div class="pt-4 border-t border-gray-200">
+                <textarea v-model="guestForm.address_location" rows="3" placeholder="Full Address (Street, Building, etc) *" class="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:border-black resize-none" required></textarea>
+              </div>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <input type="text" v-model="guestForm.city" placeholder="City *" class="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:border-black" required/>
+                <input type="text" v-model="guestForm.province" placeholder="State/Province *" class="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:border-black" required/>
+                <input type="text" v-model="guestForm.postal_code" placeholder="Zip Code *" class="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:border-black" required/>
+                <input type="text" v-model="guestForm.region" placeholder="Country" readonly class="w-full px-4 py-3 text-sm bg-gray-100 text-gray-500 border border-gray-200 rounded-xl outline-none" />
+              </div>
+              <button @click="calculateGuestShipping" :disabled="!isGuestFormValid || isLoadingRates" class="w-full py-3 mt-4 text-xs font-bold tracking-widest text-white uppercase transition-colors bg-black rounded-xl hover:bg-gray-800 disabled:bg-gray-300 flex justify-center items-center">
+                <span v-if="!isLoadingRates">Continue to Shipping</span>
+                <div v-else class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              </button>
+            </div>
+
+            <!-- REGISTERED USER ADDRESS LIST -->
+            <div v-else-if="addresses.length === 0" class="py-10 text-center border border-gray-300 border-dashed bg-gray-50 rounded-2xl">
+              <p class="mb-2 text-sm italic text-gray-500">{{ $t("payment.no_address_found") }}</p>
+              <button @click="isModalOpen = true" class="text-xs font-bold text-blue-600 underline">
+                {{ $t("payment.add_new_address") }}
+              </button>
+            </div>
+            <div v-else class="space-y-4">
+              <label v-for="addr in addresses" :key="addr.id" :class="[selectedAddressId === addr.id ? 'border-black ring-1 ring-black bg-white shadow-md' : 'border-gray-100 bg-gray-50/50']" class="relative flex items-start p-6 transition-all border cursor-pointer rounded-2xl hover:bg-white">
+                <input type="radio" name="address" :value="addr.id" v-model="selectedAddressId" class="w-4 h-4 mt-1 text-black border-gray-300 focus:ring-black" />
+                <div class="flex-grow ml-4">
+                  <div class="flex justify-between">
+                    <p class="text-sm font-bold text-gray-900 uppercase">{{ addr.receiver?.full_name || "N/A" }}</p>
+                    <span v-if="addr.is_default" class="text-[9px] bg-gray-200 px-2 py-0.5 rounded font-bold uppercase">{{ $t("payment.default") }}</span>
+                  </div>
+                  <p class="mt-2 text-sm leading-relaxed text-gray-600">
+                    {{ addr.details?.location || "" }}, {{ addr.details?.type || "" }} <br />
+                    {{ addr.details?.city || "" }}, {{ addr.details?.province || "" }} <br />
+                    {{ addr.details?.region || addr.region || "Indonesia" }} - {{ addr.details?.postal_code || "" }}
+                  </p>
+                </div>
+              </label>
+              <button @click="isModalOpen = true" class="mt-4 text-xs font-bold text-gray-500 underline hover:text-black">
+                {{ $t("payment.add_another_address") }}
+              </button>
+            </div>
+          </section>
+
+          <!-- 2. SHIPPING SECTION -->
+          <section v-if="!isAuthenticated && !isGuestAddressLocked" class="opacity-50 pointer-events-none">
+             <div class="flex items-center gap-4 mb-4">
+              <span class="flex justify-center items-center bg-gray-300 rounded-full w-6 h-6 font-bold text-[10px] text-white">2</span>
+              <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">{{ $t("payment.shipping_method") }}</h2>
+            </div>
+          </section>
+          
+          <section v-else-if="isAuthenticated && !selectedAddressId" class="opacity-50 pointer-events-none">
+             <div class="flex items-center gap-4 mb-4">
+              <span class="flex justify-center items-center bg-gray-300 rounded-full w-6 h-6 font-bold text-[10px] text-white">2</span>
+              <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">{{ $t("payment.shipping_method") }}</h2>
+            </div>
+          </section>
+
+          <section v-else>
+            <div class="flex items-center gap-4 mb-4">
+              <span class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white">2</span>
+              <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">{{ $t("payment.shipping_method") }}</h2>
+            </div>
+            <div class="space-y-4">
+              <label v-if="destinationInfo?.country?.toLowerCase() === 'indonesia'" :class="[shippingMethod === 'free' ? 'border-black ring-1 ring-black bg-white shadow-md' : 'border-gray-100 bg-gray-50/50']" class="relative flex items-center p-6 transition-all border cursor-pointer rounded-2xl">
+                <input type="radio" value="free" v-model="shippingMethod" class="w-4 h-4 text-black border-gray-300 focus:ring-black" />
+                <div class="flex items-center justify-between flex-grow ml-4">
+                  <div>
+                    <p class="text-sm font-bold tracking-wide text-gray-900 uppercase">{{ $t("payment.free_shipping") }}</p>
+                    <p class="mt-1 text-xs font-bold text-green-600">{{ $t("payment.in_store") }}</p>
+                  </div>
+                  <p class="font-black text-black">{{ $t("payment.price") }}</p>
+                </div>
+              </label>
+
+              <label :class="[shippingMethod === 'biteship' ? 'border-black ring-1 ring-black bg-white shadow-md' : 'border-gray-100 bg-gray-50/50']" class="relative flex items-center p-6 transition-all border cursor-pointer rounded-2xl">
+                <input type="radio" value="biteship" v-model="shippingMethod" class="w-4 h-4 text-black border-gray-300 focus:ring-black" />
+                <div class="flex items-center justify-between flex-grow ml-4">
+                  <div>
+                    <p class="text-sm font-bold tracking-wide text-gray-900 uppercase">{{ $t("payment.standard") }}</p>
+                    <p class="mt-1 text-xs text-gray-500">{{ destinationInfo?.country?.toLowerCase() === "indonesia" ? $t("payment.powered_by_biteship") : "International Express Delivery" }}</p>
+                  </div>
+                </div>
+              </label>
+
+              <div v-if="shippingMethod === 'biteship'" class="p-6 mt-4 space-y-8 bg-white border border-gray-200 rounded-3xl animate-fade-in">
+                <div class="grid grid-cols-1 gap-6 p-4 md:grid-cols-2 bg-gray-50 rounded-2xl">
+                  <div class="relative">
+                    <button v-if="!isAuthenticated" @click="isGuestAddressLocked = false" class="absolute top-0 right-0 text-[10px] font-bold text-blue-600 underline uppercase">Edit</button>
+                    <h3 class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-3">{{ $t("payment.destination") }}</h3>
+                    <p class="text-xs font-bold text-gray-900 uppercase">{{ destinationInfo?.name }}</p>
+                    <p class="mt-1 text-xs text-gray-500">{{ destinationInfo?.phone }}</p>
+                    <p class="mt-1 text-xs text-gray-500 line-clamp-2">{{ destinationInfo?.address }} - {{ destinationInfo?.postal_code }}</p>
+                    <p class="mt-1 text-xs font-bold text-blue-600 uppercase">{{ destinationInfo?.country }}</p>
+                  </div>
+                </div>
+
+                <div v-if="destinationInfo?.country?.toLowerCase() === 'indonesia'">
+                  <h3 class="mb-4 text-sm font-bold tracking-widest uppercase">{{ $t("payment.pickup_schedule") }}</h3>
+                  <div class="flex flex-col gap-4 mb-4 md:flex-row">
+                    <label :class="deliveryType === 'now' ? 'border-black bg-gray-50' : 'border-gray-200'" class="flex-1 p-4 transition border cursor-pointer rounded-xl">
+                      <input type="radio" value="now" v-model="deliveryType" class="hidden" />
+                      <p class="text-xs font-bold uppercase">{{ $t("payment.standard_pickup") }}</p>
+                      <p class="text-[10px] text-gray-500 mt-1">{{ $t("payment.scheduled_pickup") }}</p>
+                    </label>
+                    <label :class="deliveryType === 'scheduled' ? 'border-black bg-gray-50' : 'border-gray-200'" class="flex-1 p-4 transition border cursor-pointer rounded-xl">
+                      <input type="radio" value="scheduled" v-model="deliveryType" class="hidden" />
+                      <p class="text-xs font-bold uppercase">{{ $t("payment.scheduled_pickup") }}</p>
+                      <p class="text-[10px] text-gray-500 mt-1">{{ $t("payment.choose_specific_date_time") }}</p>
+                    </label>
+                  </div>
+                  <div v-if="deliveryType === 'scheduled'" class="flex gap-4 p-4 border border-blue-100 bg-blue-50/30 rounded-xl animate-fade-in">
+                    <div class="flex-1">
+                      <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">{{ $t("payment.pickup_date") }}</label>
+                      <input type="date" v-model="deliveryDate" :min="todayDate" class="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg outline-none focus:ring-black focus:border-black" required />
+                    </div>
+                    <div class="flex-1">
+                      <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">{{ $t("payment.pickup_time") }}</label>
+                      <input type="time" v-model="deliveryTime" class="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg outline-none focus:ring-black focus:border-black" required />
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 class="pt-6 mb-4 text-sm font-bold tracking-widest uppercase border-t">{{ $t("payment.select_courier") }}</h3>
+                  <div v-if="isLoadingRates" class="py-4 text-sm text-center text-gray-500 animate-pulse">
+                    {{ $t("payment.calculating_couriers") }}
+                  </div>
+                  <div v-else-if="processedShippingRates.length === 0" class="py-4 text-xs italic text-center text-red-500">
+                    {{ $t("payment.no_courier_available") }}
+                  </div>
+                  <div v-else class="space-y-3">
+                    <label
+                      v-for="(rate, idx) in processedShippingRates" :key="idx"
+                      :class="[
+                        rate.is_disabled ? 'opacity-40 bg-gray-100 border-gray-200 pointer-events-none select-none' : 
+                        (selectedRate?.company === rate.company && selectedRate?.type === rate.type) ? 'border-black bg-gray-50 shadow-sm' : 'border-gray-200 hover:bg-gray-50 cursor-pointer transition-all'
+                      ]"
+                      class="relative flex flex-col p-4 border rounded-xl"
+                    >
+                      <div class="flex items-center w-full">
+                        <input type="radio" :value="rate" v-model="selectedRate" :disabled="rate.is_disabled" class="w-4 h-4 text-black border-gray-300 focus:ring-black disabled:opacity-50" />
+                        <div class="flex items-center flex-grow gap-4 ml-4">
+                          <div class="flex items-center justify-center w-12 h-12 overflow-hidden bg-white border border-gray-100 rounded-lg shrink-0">
+                            <img v-show="!imageErrors[rate.company]" v-if="getCourierLogo(rate.company)" :src="getCourierLogo(rate.company)" :alt="rate.company" class="object-contain w-full h-full p-1" @error="handleImageError(rate.company)" />
+                            <span v-show="imageErrors[rate.company] || !getCourierLogo(rate.company)" class="text-xs font-black text-gray-300">{{ rate.company.toUpperCase() }}</span>
+                          </div>
+                          <div>
+                            <p class="text-sm font-bold tracking-wide text-gray-800 uppercase">{{ rate.company }} - {{ rate.type.replace("_", " ") }}</p>
+                            <p class="text-gray-500 text-[10px] mt-0.5">{{ rate.courier_name }} ({{ rate.duration }})</p>
+                          </div>
+                        </div>
+                        <p class="text-sm font-black text-black">
+                          {{ formatCurrencyDisplay(convertIDRtoActiveCurrency(rate.price)) }}
+                        </p>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 👇 3. KONDISI 2: TAMPIL JIKA SELURUH KERANJANG NORMAL (TIDAK ADA FINAL SALE) 👇 -->
+          <section v-if="isAuthenticated && userTierInfo.discount > 0 && !hasAnyFinalSaleItem" class="mt-12 animate-fade-in">
+            <div class="flex items-center gap-4 mb-4">
+              <span class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white">3</span>
+              <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">Circle Privileges</h2>
+            </div>
+            <label :class="[useTierPrivilege ? 'border-amber-600 bg-amber-50 shadow-md' : 'border-gray-200 bg-white hover:bg-gray-50']" class="relative flex items-start p-6 transition-all border cursor-pointer rounded-2xl">
+              <input type="checkbox" v-model="useTierPrivilege" class="w-5 h-5 mt-1 text-amber-600 border-gray-300 rounded focus:ring-amber-500" />
+              <div class="flex-grow ml-4">
+                <div class="flex justify-between items-center">
+                  <p class="text-sm font-bold text-gray-900 uppercase tracking-widest">
+                    {{ userTierInfo.name }} Privilege
+                  </p>
+                  <span class="bg-amber-100 text-amber-800 text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-widest">{{ userTierInfo.discount * 100 }}% OFF</span>
+                </div>
+                <!-- Menggunakan fungsi bawaan template secara langsung untuk menghindari referensi error -->
+                <p class="mt-2 text-xs leading-relaxed text-gray-600">
+                  {{ $t("payment.privilege") }} {{ userTierInfo.discount * 100 }}% {{ $t("payment.privilege2") }}
+                </p>
+              </div>
+            </label>
+          </section>
+          <!-- 👆 ========================================== 👆 -->
+
+        </div>
+
+        <!-- ================= RIGHT SECTION: ORDER SUMMARY ================= -->
+        <div class="lg:w-[400px] space-y-6">
+          <div class="sticky p-8 bg-white border border-gray-100 shadow-xl rounded-3xl top-28">
+            <h2 class="pb-4 mb-6 text-sm font-bold tracking-widest text-gray-900 uppercase border-b border-gray-200">
+              {{ $t("payment.order_summary") }}
+            </h2>
+
+            <div class="space-y-4 mb-8 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
+              <div v-for="item in checkoutItems" :key="item.id" class="flex gap-4">
+                <img :src="item.product?.image_url || item.product?.image" class="object-cover w-16 h-16 bg-gray-100 rounded-xl shrink-0" />
+                <div class="flex-grow">
+                  <div class="flex items-center gap-2">
+                    <p class="w-40 text-[11px] font-bold text-gray-900 uppercase truncate" :title="item.product?.name">{{ item.product?.name }}</p>
+                    <span v-if="item.product?.is_final_sale" class="text-[8px] font-black tracking-widest text-red-600 bg-red-50 px-1 py-0.5 rounded uppercase border border-red-100">Clearance</span>
+                  </div>
+                  <div class="flex items-center gap-2 mt-0.5">
+                    <p class="text-[10px] text-gray-400">Qty: {{ item.quantity }}</p>
+                    <template v-if="item.color">
+                      <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
+                      <div class="flex items-center gap-1.5">
+                        <div class="w-3 h-3 border border-gray-300 rounded-full shadow-sm shrink-0" :style="{ backgroundColor: parseColorHex(item.color) }"></div>
+                        <span class="text-[10px] font-bold text-gray-500 uppercase">{{ parseColorName(item.color) }}</span>
+                      </div>
+                    </template>
+                  </div>
+                  <p class="mt-1 text-xs font-medium text-gray-900">
+                    {{ formatCurrencyDisplay({ value: getActivePriceObj(item.product).value * item.quantity, curr: getActivePriceObj(item.product).curr }) }}
+                  </p>
+                  
+                  <!-- 👇 KONDISI 3: Jika Keranjang Campur, Muncul Opsi Ceklis Khusus Item Normal 👇 -->
+                  <div v-if="isMixedCart && !item.product?.is_final_sale && isAuthenticated && userTierInfo.discount > 0" class="mt-2">
+                    <label class="flex items-start gap-2 p-2 bg-amber-50/50 border border-amber-100 rounded-lg cursor-pointer hover:bg-amber-50 transition-colors">
+                      <input type="checkbox" v-model="mixedCartPrivilegeSelection" :value="item.id" class="w-3.5 h-3.5 mt-0.5 text-amber-600 border-gray-300 rounded focus:ring-amber-500" />
+                      <div class="flex-grow">
+                        <p class="text-[9px] font-bold text-amber-800 uppercase tracking-widest">{{ userTierInfo.name }} Privilege (-{{ userTierInfo.discount * 100 }}%)</p>
+                        <p class="text-[8px] text-gray-500 mt-0.5">Berlaku untuk item normal.</p>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-4 space-y-3 text-sm border-t border-gray-50">
+              <div class="flex justify-between text-gray-500">
+                <span>{{ $t("payment.total_items") }}</span>
+                <span class="font-bold text-gray-900">{{ checkoutCount }} {{ $t("payment.item") }}</span>
+              </div>
+              <div class="flex justify-between text-gray-500">
+                <span>{{ $t("payment.subtotal") }}</span>
+                <span :class="appliedPromoType === 'voucher' ? 'text-amber-600 font-bold' : ''">{{ formatCurrencyDisplay(cartSubtotalObj) }}</span>
+              </div>
+
+              <!-- POTONGAN POIN -->
+              <div v-if="userData?.is_membership && availablePoints > 0" class="pt-4 mt-2 border-t border-gray-200 border-dashed">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-[10px] font-bold text-yellow-800 uppercase tracking-widest flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                    {{ $t("payment.redeem_points") }}
+                  </span>
+                  <span class="text-xs text-gray-500">{{ $t("payment.bal") }} {{ availablePoints }} Pts</span>
+                </div>
+                <div class="flex gap-2">
+                  <input type="number" v-model.number="pointsToUse" :max="maxPointsAllowed" min="0" :disabled="['SOLHOST34', 'MERDEKA17'].includes(appliedPromoCode)" class="flex-1 bg-white border border-yellow-300 rounded-lg px-3 py-1.5 text-sm focus:ring-yellow-500 outline-none disabled:bg-gray-100 disabled:text-gray-400" placeholder="0" />
+                  <button type="button" @click="useAllPoints" :disabled="['SOLHOST34', 'MERDEKA17'].includes(appliedPromoCode)" class="bg-yellow-100 text-yellow-800 text-[10px] font-bold uppercase px-3 rounded-lg hover:bg-yellow-200 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                    {{ $t("payment.use_all") }}
+                  </button>
+                </div>
+                <p class="text-[9px] text-gray-400 mt-1 italic">{{ $t("payment.max_exchange") }}</p>
+              </div>
+
+              <!-- KODE PROMO -->
+              <div class="pt-4 mt-2 border-t border-gray-200 border-dashed">
+                <div class="flex items-center justify-between mb-2">
+                  <label class="text-[10px] font-bold text-gray-900 uppercase tracking-widest">{{ $t("payment.promo_code") }}</label>
+                  <div v-if="userData?.is_membership" class="flex items-center gap-2">
+                    <span class="text-[9px] font-bold text-yellow-600 uppercase flex items-center gap-0.5">VIP PERK</span>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                      <input type="checkbox" v-model="useMemberVoucher" @change="handleMemberToggle" class="sr-only peer" :disabled="isVerifyingPromo || (checkoutTotalIDR < MEMBER_MIN_SPEND && !useMemberVoucher) || ['SOLHOST34', 'MERDEKA17'].includes(appliedPromoCode)" />
+                      <div class="w-8 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-black disabled:opacity-50"></div>
+                    </label>
+                  </div>
+                </div>
+
+                <form @submit.prevent="applyPromo" class="flex gap-2">
+                  <input type="text" v-model="promoInput" :disabled="appliedPromoCode !== null || isVerifyingPromo || useMemberVoucher" :placeholder="$t('payment.enter_promo_code')" class="flex-1 bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-sm uppercase focus:ring-black outline-none disabled:bg-gray-100 disabled:text-gray-400 transition-colors" />
+                  <button v-if="!appliedPromoCode" type="submit" :disabled="!promoInput || isVerifyingPromo || useMemberVoucher" class="bg-black text-white text-[10px] font-bold uppercase px-4 rounded-lg hover:bg-gray-800 disabled:bg-gray-300 w-20 flex justify-center items-center">
+                    <span v-if="!isVerifyingPromo">{{ $t("payment.apply") }}</span>
+                    <div v-else class="w-3 h-3 border-2 rounded-full border-white/40 border-t-white animate-spin"></div>
+                  </button>
+                  <button v-else type="button" @click="removePromo" class="bg-red-50 text-red-600 border border-red-200 text-[10px] font-bold uppercase px-4 rounded-lg hover:bg-red-100 transition w-20">
+                    {{ $t("payment.remove") }}
+                  </button>
+                </form>
+                <p v-if="promoMessage" :class="promoSuccess ? 'text-green-600' : 'text-red-500'" class="text-[10px] mt-2 font-medium">{{ promoMessage }}</p>
+                <div v-if="appliedPromoCode" class="flex justify-between text-[10px] md:text-xs font-medium text-emerald-600 mt-2">
+                  <span class="pr-2 truncate">Promo (<span class="font-mono uppercase">{{ appliedPromoCode }}</span>)</span>
+                  <span>- {{ formatCurrencyDisplay(actualPromoDiscountObj) }}</span>
+                </div>
+              </div>
+
+              <!-- RINGKASAN DISKON TIER -->
+              <div v-if="useTierPrivilege || (isMixedCart && mixedCartPrivilegeSelection.length > 0)" class="flex justify-between text-[10px] md:text-xs font-medium text-amber-600 mt-2 border-t border-gray-50 pt-2">
+                <span class="pr-2 truncate">Tier Privilege ({{ userTierInfo.name }})</span>
+                <span>- {{ formatCurrencyDisplay(tierDiscountAmountObj) }}</span>
+              </div>
+
+              <div class="flex items-start justify-between text-gray-500 pt-2">
+                <span>{{ $t("payment.shipping") }}</span>
+                <span v-if="shippingMethod === 'free'" class="font-bold text-green-600">{{ $t("payment.free") }}</span>
+                <div v-else-if="shippingMethod === 'biteship' && selectedRate" class="text-right">
+                  <span class="block font-medium text-gray-900">{{ formatCurrencyDisplay({ value: shippingCostObj.value, curr: shippingCostObj.curr }) }}</span>
+                </div>
+                <span v-else class="italic text-[10px]">{{ $t("payment.select_method") }}</span>
+              </div>
+
+              <div v-if="bundleDiscountAmount > 0" class="flex justify-between px-3 py-2 my-2 text-sm font-bold border text-emerald-600 bg-emerald-50 rounded-xl border-emerald-100">
+                <span class="uppercase tracking-widest text-[10px] mt-0.5">Bundle Saved</span>
+                <span>- {{ formatCurrencyDisplay({ value: bundleDiscountAmount, curr: currentCurrency }) }}</span>
+              </div>
+
+              <div class="flex justify-between pt-4 font-bold text-gray-900 border-t border-gray-200">
+                <span class="mt-1 text-xs tracking-widest uppercase">{{ $t("payment.grand_total") }}</span>
+                <span class="text-xl text-gycora">{{ formatCurrencyDisplay(grandTotalObj) }}</span>
+              </div>
+
+              <button @click="handlePayment" :disabled="isButtonDisabled" class="mt-8 w-full bg-black hover:bg-gray-800 disabled:bg-gray-300 py-5 rounded-2xl font-bold text-white text-xs uppercase tracking-[0.3em] flex justify-center items-center transition-all shadow-xl">
+                <span v-if="!isProcessing">{{ $t("payment.pay_now") }}</span>
+                <div v-else class="w-3 h-3 border-2 rounded-full border-white/30 border-t-white animate-spin"></div>
+              </button>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <AddressModal :is-open="isModalOpen" :user-data="userData" @close="isModalOpen = false" @saved="onAddressSaved" />
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, onUnmounted, watch, computed } from "vue";
+import { useRouter } from "vue-router";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { BASE_URL } from "../../config/api.js";
+import { useCart, getDiscountStatus } from "../../composables/useCart";
+import AddressModal from "./Layout/AddressModal.vue";
+import { useI18n } from "vue-i18n";
+
+// 👇 PASTIKAN INI BERADA PALING ATAS SETELAH IMPORT
+const { t } = useI18n();
+
+const router = useRouter();
+const getAxiosConfig = () => ({ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
+
+const {
+  cartItems, checkoutCount, bundleDiscountAmount, 
+  selectedItemIds, clearSelectedCart,
+} = useCart();
+
+const isPageLoading = ref(true);
+const isProcessing = ref(false);
+
+const isAuthenticated = computed(() => !!localStorage.getItem("token"));
+const userData = ref(null);
+const userType = ref("guest");
+
+// 👇 URUTAN DEKLARASI DIPERBAIKI: userTierInfo diletakkan DI ATAS penggunaannya
+const userTierInfo = computed(() => {
+  if (!userData.value) return { name: 'Guest', discount: 0 };
+  const pts = userData.value.point || 0;
+  if (pts >= 10000) return { name: 'Héritage', discount: 0.10 };
+  if (pts >= 2500) return { name: 'Élan', discount: 0.05 };
+  return { name: 'Muse', discount: 0 };
+});
+
+const guestForm = ref({
+  first_name: "", last_name: "", email: "", phone: "", address_location: "", city: "", province: "", postal_code: "", region: "Indonesia",
+});
+const isGuestAddressLocked = ref(false);
+
+const addresses = ref([]);
+const selectedAddressId = ref(null);
+const isModalOpen = ref(false);
+
+const shippingMethod = ref("free");
+const selectedRate = ref(null);
+const isLoadingRates = ref(false);
+const rawShippingRates = ref([]);
+const deliveryType = ref("now");
+const deliveryDate = ref("");
+const deliveryTime = ref("");
+
+const promoInput = ref("");
+const appliedPromoCode = ref(null);
+const promoDiscountAmount = ref(0);
+const appliedPromoType = ref(null);
+const promoMessage = ref("");
+const promoSuccess = ref(false);
+const isVerifyingPromo = ref(false);
+
+const useMemberVoucher = ref(false);
+const MEMBER_VOUCHER_CODE = "SOLHERMEMBER";
+const MEMBER_MIN_SPEND = 500000;
+
+const useTierPrivilege = ref(false);
+const pointsToUse = ref(0);
+const availablePoints = ref(0);
+
+const catalogProducts = ref([]);
+const currentCurrency = ref(localStorage.getItem("currency") || "IDR");
+const exchangeRates = ref({});
+const imageErrors = ref({});
+
+const parseColorName = (str) => str ? str.split("|")[0] : "";
+const parseColorHex = (str) => { try { const p = JSON.parse(str); return p.hex || "#ccc"; } catch { return str.includes("|") ? str.split("|")[1] : "#ccc"; } };
+const handleImageError = (company) => { imageErrors.value[company] = true; };
+
+const getCourierLogo = (company) => {
+  const map = { jne: "jne.png", sicepat: "sicepat.png", jnt: "jnt.png", anteraja: "anteraja.png", gojek: "gojek.png", grab: "grab.png", paxel: "paxel.png", ninja: "ninja.png", dhl: "dhl.png" };
+  return map[company.toLowerCase()] ? `/courier_images/${map[company.toLowerCase()]}` : null;
+};
+
+const formatCurrencyDisplay = (priceObj) => {
+  if (!priceObj) return "";
+  const { value, curr } = priceObj;
+  const symbols = { USD: "$", SGD: "S$", EUR: "€", AUD: "A$", MYR: "RM", IDR: "Rp " };
+  const formatter = new Intl.NumberFormat(curr === "IDR" ? "id-ID" : "en-US", { minimumFractionDigits: curr === "IDR" ? 0 : 2 });
+  return `${symbols[curr] || curr + " "}${formatter.format(value)}`;
+};
+
+const getPriceToDisplay = (product) => {
+  const curr = currentCurrency.value;
+  if (curr === "IDR") return { value: Number(product.price), curr: "IDR" };
+  try {
+    const pricesObj = typeof product.prices === "string" ? JSON.parse(product.prices) : product.prices || {};
+    const dbPrice = pricesObj[curr] || pricesObj[curr.toLowerCase()] || pricesObj[currentCurrency.value.toUpperCase()];
+    if (dbPrice) return { value: parseFloat(dbPrice), curr: curr };
+  } catch (e) {}
+  return { value: Number(product.price), curr: "IDR" };
+};
+
+const getActivePriceObj = (product) => {
+  const isReseller = userType.value === "reseller";
+  const wholesale = Number(product.wholesale_price) || 0;
+  if (isReseller && wholesale > 0 && checkoutCount.value >= 24) return { value: wholesale, curr: "IDR" };
+  return getPriceToDisplay(product);
+};
+
+const convertIDRtoActiveCurrency = (idrAmount) => {
+  const curr = currentCurrency.value;
+  if (curr === "IDR" || !exchangeRates.value[curr]) return { value: idrAmount, curr: "IDR" };
+  return { value: idrAmount * exchangeRates.value[curr], curr: curr };
+};
+
+const hasAnyFinalSaleItem = computed(() => {
+  return checkoutItems.value.some(item => item.product?.is_final_sale);
+});
+
+const isAllFinalSale = computed(() => {
+  if (checkoutItems.value.length === 0) return false;
+  return checkoutItems.value.every(item => item.product?.is_final_sale);
+});
+
+const isMixedCart = computed(() => {
+  return hasAnyFinalSaleItem.value && !isAllFinalSale.value;
+});
+
+const mixedCartPrivilegeSelection = ref([]);
+
+watch(checkoutItems, () => {
+  useTierPrivilege.value = false;
+  mixedCartPrivilegeSelection.value = [];
+});
+
+const tierDiscountAmountIDR = computed(() => {
+  if (isAllFinalSale.value) return 0; 
+
+  let discountableAmount = 0;
+
+  if (isMixedCart.value) {
+    if (mixedCartPrivilegeSelection.value.length === 0) return 0;
+    
+    checkoutItems.value.forEach(item => {
+      if (mixedCartPrivilegeSelection.value.includes(item.id) && !item.product?.is_final_sale) {
+        discountableAmount += getActivePriceObj(item.product).value * item.quantity;
+      }
+    });
+  } else {
+    if (!useTierPrivilege.value) return 0;
+    discountableAmount = checkoutTotalIDR.value - bundleDiscountAmount.value; 
+  }
+
+  return discountableAmount * userTierInfo.value.discount;
+});
+
+const tierDiscountAmountObj = computed(() => convertIDRtoActiveCurrency(tierDiscountAmountIDR.value));
+
+const destinationInfo = computed(() => {
+  if (!isAuthenticated.value) {
+    return {
+      name: `${guestForm.value.first_name} ${guestForm.value.last_name}`,
+      phone: guestForm.value.phone,
+      address: `${guestForm.value.address_location}, ${guestForm.value.city}, ${guestForm.value.province}`,
+      postal_code: guestForm.value.postal_code,
+      country: guestForm.value.region || "Indonesia",
+    };
+  }
+
+  const addr = addresses.value.find((a) => a.id === selectedAddressId.value);
+  if (!addr) return null;
+  return {
+    name: addr.receiver?.full_name || addr.first_name_address + ' ' + addr.last_name_address || "Unknown",
+    phone: userData.value?.phone || "No Phone Provided",
+    address: `${addr.details?.location || addr.address_location || ""}, ${addr.details?.city || addr.city || ""}, ${addr.details?.province || addr.province || ""}`,
+    postal_code: addr.postal_code || addr.details?.postal_code || "",
+    country: addr.region || addr.details?.region || "Indonesia",
+  };
+});
+
+const isGuestFormValid = computed(() => {
+  const f = guestForm.value;
+  return f.first_name && f.email && f.phone && f.address_location && f.city && f.province && f.postal_code;
+});
+
+const isButtonDisabled = computed(() => {
+  if (isProcessing.value || cartItems.value.length === 0) return true;
+  if (isAuthenticated.value && !selectedAddressId.value) return true;
+  if (!isAuthenticated.value && !isGuestAddressLocked.value) return true;
+  
+  if (shippingMethod.value === "biteship") {
+    if (!selectedRate.value) return true;
+    if (deliveryType.value === "scheduled" && (!deliveryDate.value || !deliveryTime.value)) return true;
+  }
+  return false;
+});
+
+const todayDate = computed(() => new Date().toISOString().split("T")[0]);
+
+const checkoutItems = computed(() => {
+  const ids = selectedItemIds?.value || selectedItemIds || [];
+  return (cartItems.value || []).filter((item) => ids.includes(item.id)).map((item) => {
+    const fresh = catalogProducts.value.find((p) => p.id === item.product_id);
+    return fresh ? { ...item, product: fresh } : item;
+  });
+});
+
+const checkoutTotalIDR = computed(() => {
+  return checkoutItems.value.reduce((sum, item) => sum + (getActivePriceObj(item.product).value * item.quantity), 0);
+});
+
+const cartSubtotalObj = computed(() => {
+  const totalValue = checkoutItems.value.reduce((sum, item) => sum + (getActivePriceObj(item.product).value * item.quantity), 0);
+  return { value: totalValue, curr: currentCurrency.value };
+});
+
+const actualPromoDiscountIDR = computed(() => promoDiscountAmount.value);
+const actualPromoDiscountObj = computed(() => convertIDRtoActiveCurrency(actualPromoDiscountIDR.value));
+
+const maxPointsAllowed = computed(() => {
+  const maxUsableAmount = Math.max(0, checkoutTotalIDR.value - actualPromoDiscountIDR.value);
+  const pointsLimit = Math.min(availablePoints.value, Math.floor(maxUsableAmount / 1000));
+  return Math.min(pointsLimit, 5000); 
+});
+
+const appliedPointDiscountIDR = computed(() => (pointsToUse.value || 0) * 1000);
+const appliedPointDiscountObj = computed(() => convertIDRtoActiveCurrency(appliedPointDiscountIDR.value));
+
+const shippingCostIDR = computed(() => shippingMethod.value === "biteship" && selectedRate.value ? parseFloat(selectedRate.value.price) : 0);
+const shippingCostObj = computed(() => convertIDRtoActiveCurrency(shippingCostIDR.value));
+
+const grandTotalObj = computed(() => {
+  const calculatedTotal = cartSubtotalObj.value.value 
+                        - bundleDiscountAmount.value 
+                        + shippingCostObj.value.value 
+                        - actualPromoDiscountObj.value.value 
+                        - appliedPointDiscountObj.value.value
+                        - tierDiscountAmountObj.value.value;
+  return { value: Math.max(0, calculatedTotal), curr: currentCurrency.value };
+});
+
+const processedShippingRates = computed(() => {
+  if (!rawShippingRates.value || rawShippingRates.value.length === 0) return [];
+  return rawShippingRates.value.map((rate) => ({
+    ...rate,
+    company: rate.provider || rate.company,
+    type: rate.service_name || rate.type,
+    duration: rate.etd || rate.duration,
+    courier_name: rate.provider ? "Global Express" : rate.courier_name,
+    price: rate.price,
+    is_disabled: false,
+    disable_reason: "",
+  }));
+});
+
+watch([pointsToUse, maxPointsAllowed], () => {
+  if (pointsToUse.value > maxPointsAllowed.value) pointsToUse.value = maxPointsAllowed.value;
+});
+
+watch(hasFinalSaleItem, (isFinalSale) => {
+  if (isFinalSale) {
+    useTierPrivilege.value = false;
+  }
+});
+
+watch(selectedAddressId, async (newVal) => {
+  if (newVal && isAuthenticated.value) {
+    await fetchShippingRatesForAuth(newVal);
+  }
+});
+
+const calculateGuestShipping = async () => {
+  if (!isGuestFormValid.value) return;
+
+  const ids = selectedItemIds?.value || selectedItemIds;
+  if (!ids || ids.length === 0) return;
+
+  isGuestAddressLocked.value = true;
+  selectedRate.value = null;
+  isLoadingRates.value = true;
+  rawShippingRates.value = [];
+
+  try {
+    const payload = {
+      is_guest: true,
+      guest_address: guestForm.value,
+      cart_items: checkoutItems.value.map(i => ({ product_id: i.product_id, quantity: i.quantity })),
+    };
+    const res = await axios.post(`${BASE_URL}/shipping/rates`, payload);
+    rawShippingRates.value = res.data?.data || res.data?.rates || res.data?.pricing || [];
+  } catch (error) {
+    Swal.fire("Error", "Gagal menghitung ongkos kirim untuk lokasi ini.", "error");
+    isGuestAddressLocked.value = false;
+  } finally {
+    isLoadingRates.value = false;
+  }
+};
+
+const fetchShippingRatesForAuth = async (addressId) => {
+    const ids = selectedItemIds?.value || selectedItemIds;
+    if (!ids || ids.length === 0) return;
+
+    selectedRate.value = null;
+    isLoadingRates.value = true;
+    rawShippingRates.value = [];
+    try {
+      const res = await axios.post(`${BASE_URL}/shipping/rates`, { address_id: addressId, cart_ids: ids }, getAxiosConfig());
+      rawShippingRates.value = res.data?.data || res.data?.rates || res.data?.pricing || [];
+    } catch (error) {
+      if (error.response?.status === 401) return router.push("/login");
+    } finally {
+      isLoadingRates.value = false;
+    }
+};
+
+const fetchAddresses = async () => {
+  try {
+    const res = await axios.get(`${BASE_URL}/addresses`, getAxiosConfig());
+    const addrData = res.data?.data !== undefined ? res.data.data : res.data;
+    addresses.value = Array.isArray(addrData) ? addrData : [];
+  } catch (e) {}
+};
+
+const onAddressSaved = async (newId) => {
+  await fetchAddresses();
+  selectedAddressId.value = newId || (addresses.value.length > 0 ? addresses.value[addresses.value.length - 1].id : null);
+  isModalOpen.value = false;
+};
+
+const handleMemberToggle = async () => {
+  if (useMemberVoucher.value) {
+    if (checkoutTotalIDR.value < MEMBER_MIN_SPEND) {
+      Swal.fire({ toast: true, position: "top-end", icon: "warning", title: `Min. spend is Rp ${MEMBER_MIN_SPEND.toLocaleString("id-ID")}`, showConfirmButton: false, timer: 3000 });
+      useMemberVoucher.value = false; return;
+    }
+    promoInput.value = MEMBER_VOUCHER_CODE;
+    await applyPromo();
+    if (!promoSuccess.value) useMemberVoucher.value = false;
+  } else {
+    if (appliedPromoCode.value === MEMBER_VOUCHER_CODE) removePromo();
+  }
+};
+
+const applyPromo = async () => {
+  if (!promoInput.value) return;
+  isVerifyingPromo.value = true;
+  try {
+    const codeToBeApplied = promoInput.value.toUpperCase();
+    if (codeToBeApplied === "MERDEKA17" && checkoutTotalIDR.value < 699000) throw new Error(`Minimum pembelian untuk promo ini adalah Rp 699.000`);
+
+    const payload = {
+      promo_code: codeToBeApplied,
+      cart_items: checkoutItems.value.map((item) => ({ product_id: item.product_id, quantity: item.quantity })),
+    };
+    if (isAuthenticated.value) payload.address_id = selectedAddressId.value;
+
+    const config = isAuthenticated.value ? getAxiosConfig() : {};
+    const res = await axios.post(`${BASE_URL}/promo/verify`, payload, config);
+
+    if (codeToBeApplied === MEMBER_VOUCHER_CODE && checkoutTotalIDR.value < MEMBER_MIN_SPEND) {
+      throw new Error(`Minimum spend is Rp ${MEMBER_MIN_SPEND.toLocaleString("id-ID")}`);
+    }
+
+    promoSuccess.value = true;
+    promoMessage.value = "✅ " + res.data.message;
+    appliedPromoCode.value = codeToBeApplied;
+    promoDiscountAmount.value = Math.min(res.data.discount_value, checkoutTotalIDR.value);
+    appliedPromoType.value = res.data.promo_type;
+
+    if (appliedPromoCode.value === MEMBER_VOUCHER_CODE) useMemberVoucher.value = true;
+    if (['SOLHOST34', 'MERDEKA17'].includes(appliedPromoCode.value)) pointsToUse.value = 0;
+  } catch (error) {
+    promoSuccess.value = false;
+    promoMessage.value = "❌ " + (error.response?.data?.message || error.message || "Invalid promo code.");
+    appliedPromoCode.value = null; promoDiscountAmount.value = 0; appliedPromoType.value = null; useMemberVoucher.value = false;
+  } finally {
+    isVerifyingPromo.value = false;
+  }
+};
+
+const removePromo = () => {
+  promoInput.value = ""; appliedPromoCode.value = null; appliedPromoType.value = null;
+  promoDiscountAmount.value = 0; promoMessage.value = ""; promoSuccess.value = false; useMemberVoucher.value = false;
+};
+
+const useAllPoints = () => { pointsToUse.value = maxPointsAllowed.value; };
+
+const handlePayment = async () => {
+  isProcessing.value = true;
+  try {
+    const payload = {
+      cart_ids: selectedItemIds.value,
+      use_points: pointsToUse.value || 0,
+      promo_code: appliedPromoCode.value,
+      promo_type: appliedPromoType.value,
+      currency: currentCurrency.value,
+      referral_code: localStorage.getItem("affiliate_ref"),
+      
+      tier_discount_percentage: (useTierPrivilege.value || mixedCartPrivilegeSelection.value.length > 0) ? userTierInfo.value.discount : 0,
+      tier_discount_item_ids: isMixedCart.value ? mixedCartPrivilegeSelection.value : null, 
+
+      shipping_method: shippingMethod.value,
+      courier_company: shippingMethod.value === "biteship" ? selectedRate.value?.company : null,
+      courier_type: shippingMethod.value === "biteship" ? selectedRate.value?.type : null, 
+      shipping_cost: shippingMethod.value === "biteship" ? selectedRate.value?.price : null,
+      delivery_type: shippingMethod.value === "biteship" ? deliveryType.value : null, 
+      delivery_date: shippingMethod.value === "biteship" ? deliveryDate.value : null,
+      delivery_time: shippingMethod.value === "biteship" ? deliveryTime.value : null, 
+
+      is_guest: !isAuthenticated.value,
+    };
+
+    if (isAuthenticated.value) {
+      payload.address_id = selectedAddressId.value;
+    } else {
+      payload.guest_data = guestForm.value;
+      payload.cart_items = checkoutItems.value.map(i => ({ product_id: i.product_id, quantity: i.quantity, color: i.color }));
+      localStorage.setItem("last_guest_email", guestForm.value.email);
+    }
+
+    const config = isAuthenticated.value ? getAxiosConfig() : {};
+    config.headers = { ...config.headers, "X-Idempotency-Key": crypto.randomUUID() };
+
+    const res = await axios.post(`${BASE_URL}/checkout`, payload, config);
+
+    if (res.data.checkout_url) { 
+      clearSelectedCart(); 
+      window.location.href = res.data.checkout_url; 
+    }
+  } catch (error) {
+    if (error.response?.status === 429) Swal.fire({ icon: 'warning', title: 'Antrean Padat! 🚦', text: error.response.data.message, confirmButtonColor: '#000', confirmButtonText: 'Coba Lagi' });
+    else if (error.response?.status === 422) Swal.fire({ icon: 'error', title: 'Validasi Gagal / Stok Habis', text: error.response.data.message, confirmButtonColor: '#000' });
+    else Swal.fire("Payment Error", error.response?.data?.message || "Failed to create invoice", "error");
+  } finally {
+    isProcessing.value = false;
+  }
+};
+
+const updateCurrencyState = () => { currentCurrency.value = localStorage.getItem("currency") || "IDR"; };
+
+onMounted(async () => {
+  window.addEventListener("currency-changed", updateCurrencyState);
+  window.addEventListener("storage", (e) => { if (e.key === "currency") updateCurrencyState(); });
+
+  try {
+    const promises = [
+      axios.get(`${BASE_URL}/exchange-rates`), 
+      axios.get(`${BASE_URL}/products`)
+    ];
+
+    if (isAuthenticated.value) {
+      promises.push(axios.get(`${BASE_URL}/user`, getAxiosConfig()));
+    }
+
+    const results = await Promise.allSettled(promises);
+
+    if (results[0].status === "fulfilled") exchangeRates.value = results[0].value.data?.data?.rates || {};
+    if (results[1].status === "fulfilled") catalogProducts.value = results[1].value.data?.data?.data || results[1].value.data?.data || [];
+
+    if (isAuthenticated.value) {
+      const resUser = results[2];
+      if (resUser.status === "fulfilled" && resUser.value.data) {
+        userData.value = resUser.value.data; availablePoints.value = resUser.value.data.point || 0; userType.value = resUser.value.data.usertype || "user";
+        localStorage.setItem("user", JSON.stringify(resUser.value.data));
+      } else {
+        const userStr = localStorage.getItem("user") || localStorage.getItem("user_data");
+        if (userStr) {
+          userData.value = JSON.parse(userStr); availablePoints.value = userData.value.point || 0; userType.value = userData.value.usertype || "user";
+        }
+      }
+
+      await fetchAddresses();
+      if (addresses.value.length > 0) {
+        selectedAddressId.value = addresses.value.find((a) => a.is_default)?.id || addresses.value[0].id;
+      }
+    }
+
+    const ids = selectedItemIds?.value || selectedItemIds || [];
+    if (ids.length === 0) router.push(`/cart`);
+    else {
+      const now = new Date(); now.setHours(now.getHours() + 1);
+      deliveryDate.value = now.toISOString().split("T")[0];
+      deliveryTime.value = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+    }
+  } catch (error) {
+  } finally {
+    isPageLoading.value = false;
+  }
+});
+
+onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrencyState); });
 </script>
+
+* "OrderPage.vue" :
+
+<template>
+  <div class="max-w-7xl min-h-screen px-4 py-12 mx-auto sm:px-6 lg:py-16 animate-fade-in">
+    <!-- HEADER: User Profile & Title -->
+    <div class="flex flex-col items-start justify-between gap-6 mb-10 md:flex-row md:items-end">
+      <div>
+        <h1 class="text-3xl font-black tracking-tight text-gray-900 sm:text-5xl">
+          {{ $t("order.my_orders") }}
+        </h1>
+        <p class="mt-3 text-sm font-medium text-gray-500">
+          {{ $t("order.track_status") }}
+        </p>
+      </div>
+
+      <!-- Profile Info -->
+      <div v-if="userData" class="flex items-center gap-4 px-6 py-3 bg-white border border-gray-100 shadow-sm rounded-2xl">
+        <img :src="userData.profile_image || defaultProfile" @error="handleImageError" class="object-cover w-12 h-12 border-2 border-white rounded-full shadow-md" alt="Profile" />
+        <div>
+          <p class="text-sm font-black text-gray-900">{{ userData.first_name }} {{ userData.last_name }}</p>
+          <div class="flex items-center gap-1.5 mt-0.5">
+            <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+            <p class="text-[10px] font-bold tracking-widest text-gray-500 uppercase">{{ userData.usertype || 'Customer' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEARCH & FILTERS -->
+    <div class="p-4 mb-8 bg-white border border-gray-100 shadow-sm rounded-3xl md:p-6">
+      <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <!-- Search Bar -->
+        <div class="relative flex-grow max-w-md">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </span>
+          <input type="text" v-model="searchQuery" @input="debounceSearch" :placeholder="$t('order.search_placeholder')" class="w-full py-3 pl-12 pr-4 text-sm font-medium transition-colors bg-gray-50 border border-gray-200 outline-none rounded-2xl focus:bg-white focus:border-black focus:ring-1 focus:ring-black" />
+        </div>
+
+        <!-- Category Tabs -->
+        <div class="flex gap-2 pb-2 overflow-x-auto custom-scrollbar md:pb-0 hide-scrollbar flex-nowrap">
+          <button v-for="tab in tabs" :key="tab.value" @click="activeTab = tab.value" :class="[activeTab === tab.value ? 'bg-black text-white shadow-md' : 'bg-gray-50 text-gray-600 hover:bg-gray-100']" class="px-5 py-2.5 text-xs font-bold tracking-widest uppercase transition-all rounded-full whitespace-nowrap">
+            {{ $t(tab.labelKey) }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOADING SKELETON -->
+    <div v-if="isLoading" class="space-y-6">
+      <div v-for="i in 3" :key="i" class="p-6 border border-gray-100 bg-white/50 rounded-[2rem] animate-pulse">
+        <div class="flex justify-between mb-6">
+          <div class="w-32 h-4 bg-gray-200 rounded"></div>
+          <div class="w-24 h-6 bg-gray-200 rounded-full"></div>
+        </div>
+        <div class="flex gap-4">
+          <div class="w-24 h-24 bg-gray-200 rounded-2xl"></div>
+          <div class="flex-1 space-y-3">
+            <div class="w-3/4 h-4 bg-gray-200 rounded"></div>
+            <div class="w-1/2 h-3 bg-gray-200 rounded"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EMPTY STATE -->
+    <div v-else-if="transactions.length === 0" class="flex flex-col items-center justify-center py-20 border border-gray-200 border-dashed rounded-[3rem] bg-gray-50/50">
+      <div class="p-6 mb-6 bg-white rounded-full shadow-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+        </svg>
+      </div>
+      <h3 class="font-serif text-2xl text-gray-900">{{ $t("order.no_orders_yet") }}</h3>
+      <p class="mt-2 text-sm text-gray-500">{{ $t("order.start_shopping_msg") }}</p>
+      <button @click="$router.push('/collections')" class="px-8 py-3 mt-8 text-xs font-bold tracking-widest text-white uppercase transition-all bg-black rounded-full shadow-md hover:bg-gray-800 hover:-translate-y-0.5">
+        {{ $t("order.browse_collection") }}
+      </button>
+    </div>
+
+    <!-- ORDER LIST -->
+    <div v-else class="space-y-6">
+      <div v-for="order in transactions" :key="order.id" class="overflow-hidden transition-all bg-white border border-gray-100 shadow-sm rounded-[2rem] hover:shadow-xl hover:shadow-gray-200/50 hover:border-gray-200">
+        <!-- Order Header -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center p-6 sm:p-8 bg-gray-50/30 border-b border-gray-50 gap-4">
+          <div>
+            <div class="flex items-center gap-3 mb-1">
+              <span class="text-xs font-bold tracking-widest text-gray-400 uppercase">Order ID</span>
+              <span class="px-2 py-0.5 text-[10px] font-black tracking-widest text-gray-700 bg-white border border-gray-200 rounded shadow-sm">{{ order.order_id }}</span>
+            </div>
+            <p class="text-[11px] font-medium text-gray-500">{{ formatDate(order.created_at) }}</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <div :class="getStatusBadge(order.status).class" class="px-4 py-1.5 text-[10px] font-black tracking-widest uppercase rounded-full border shadow-sm flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full" :class="getStatusBadge(order.status).dot"></span>
+              {{ getStatusBadge(order.status).text }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Order Items -->
+        <div class="p-6 sm:p-8">
+          <div class="space-y-6">
+            <div v-for="item in order.details" :key="item.id" class="flex items-start gap-4 sm:gap-6 group">
+              <div class="relative shrink-0">
+                <img :src="item.product?.image_url || item.product?.image || defaultBagIcon" class="object-cover w-20 h-24 bg-gray-100 border border-gray-100 sm:w-24 sm:h-28 rounded-2xl group-hover:shadow-md transition-shadow" alt="Product" @error="handleImageError" />
+                <span class="absolute -top-2 -right-2 flex items-center justify-center w-6 h-6 text-[10px] font-black text-white bg-black border-2 border-white rounded-full shadow-sm">{{ item.quantity }}x</span>
+              </div>
+              <div class="flex-grow min-w-0 pt-1">
+                <p class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-0.5 truncate">{{ item.product?.category?.name || 'Category' }}</p>
+                <h3 class="text-sm font-black text-gray-900 truncate sm:text-base">{{ item.product?.name || 'Product Not Found' }}</h3>
+                <div v-if="item.color" class="flex items-center gap-2 mt-2">
+                  <div class="w-3 h-3 border border-gray-200 rounded-full shadow-inner" :style="{ backgroundColor: parseColorHex(item.color) }"></div>
+                  <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">{{ parseColorName(item.color) }}</span>
+                </div>
+              </div>
+              <div class="text-right shrink-0 pt-1">
+                <p class="text-sm font-bold text-gray-900">{{ formatCurrency(item.price, order.currency_code) }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Order Footer & Actions -->
+        <div class="flex flex-col justify-between gap-6 p-6 border-t border-gray-50 sm:flex-row sm:items-center sm:p-8 bg-gray-50/10">
+          <div>
+            <p class="text-[10px] font-bold tracking-widest text-gray-400 uppercase mb-1">{{ $t("order.total_amount") }}</p>
+            <p class="text-xl font-black text-gray-900">{{ formatCurrency(order.total_amount, order.currency_code) }}</p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-3">
+            <button v-if="order.status === 'pending' && order.payment?.checkout_url" @click="payNow(order.payment.checkout_url)" class="flex-1 sm:flex-none px-6 py-2.5 text-xs font-black tracking-widest text-white uppercase transition-colors bg-blue-600 border border-transparent rounded-xl hover:bg-blue-700 shadow-md shadow-blue-500/20 active:scale-95">
+              {{ $t("order.pay_now") }}
+            </button>
+            <button v-if="order.status === 'pending'" @click="cancelOrder(order.id)" class="flex-1 sm:flex-none px-6 py-2.5 text-xs font-bold tracking-widest text-red-600 uppercase transition-colors bg-red-50 border border-red-100 rounded-xl hover:bg-red-100 active:scale-95">
+              {{ $t("order.cancel") }}
+            </button>
+            <button v-if="canTrack(order)" @click="$router.push(`/tracking/${order.id}`)" class="flex-1 sm:flex-none px-6 py-2.5 text-xs font-bold tracking-widest text-gray-700 uppercase transition-colors bg-white border border-gray-200 rounded-xl shadow-sm hover:bg-gray-50 active:scale-95">
+              {{ $t("order.track") }}
+            </button>
+            <button v-if="canComplete(order)" @click="confirmComplete(order.id)" class="flex-1 sm:flex-none px-6 py-2.5 text-xs font-black tracking-widest text-white uppercase transition-colors bg-black border border-transparent rounded-xl hover:bg-gray-800 shadow-md active:scale-95">
+              {{ $t("order.order_received") }}
+            </button>
+            <button v-if="canRefund(order)" @click="openRefundModal(order)" class="flex-1 sm:flex-none px-6 py-2.5 text-xs font-bold tracking-widest text-amber-700 uppercase transition-colors bg-amber-50 border border-amber-200 rounded-xl hover:bg-amber-100 active:scale-95">
+              Refund
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div v-if="totalPages > 1 && !isLoading" class="flex items-center justify-center gap-2 mt-12">
+      <button @click="changePage(currentPage - 1)" :disabled="currentPage === 1" class="p-2 transition-colors bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+      </button>
+      <div class="flex items-center gap-1 px-4 font-medium text-gray-600">
+        <span class="text-sm font-bold text-black">{{ currentPage }}</span>
+        <span class="text-xs text-gray-400 mx-0.5">/</span>
+        <span class="text-sm">{{ totalPages }}</span>
+      </div>
+      <button @click="changePage(currentPage + 1)" :disabled="currentPage === totalPages" class="p-2 transition-colors bg-white border border-gray-200 rounded-full shadow-sm hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7-7" /></svg>
+      </button>
+    </div>
+
+    <!-- Modal Refund -->
+    <div v-if="isRefundModalOpen" class="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm sm:p-6">
+      <div class="w-full max-w-md p-8 bg-white shadow-2xl rounded-3xl animate-fade-in">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-xl font-bold text-gray-900">Request Refund</h3>
+          <button @click="closeRefundModal" class="p-2 text-gray-400 transition-colors rounded-full hover:bg-gray-100 hover:text-gray-900 focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+          </button>
+        </div>
+        <p class="mb-6 text-xs text-gray-500">Order ID: <span class="font-bold text-black">{{ selectedRefundOrder?.order_id }}</span></p>
+        <form @submit.prevent="submitRefund" class="space-y-5">
+          <div>
+            <label class="block mb-2 text-[10px] font-bold tracking-widest text-gray-500 uppercase">Alasan Refund</label>
+            <textarea v-model="refundReason" rows="3" class="w-full px-4 py-3 text-sm transition-colors border border-gray-200 outline-none resize-none bg-gray-50 rounded-xl focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-500" placeholder="Jelaskan secara detail alasan pengembalian dana..." required></textarea>
+          </div>
+          <div>
+            <label class="block mb-2 text-[10px] font-bold tracking-widest text-gray-500 uppercase">Bukti Video Unboxing</label>
+            <div class="relative flex items-center justify-center w-full px-4 py-6 border-2 border-gray-200 border-dashed rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer" @click="$refs.fileInput.click()">
+              <div class="text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 mx-auto mb-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+                <p class="text-xs font-medium text-gray-600">{{ refundProof ? refundProof.name : 'Klik untuk upload video' }}</p>
+                <p class="text-[10px] text-gray-400 mt-1">MP4, MOV (Max 10MB)</p>
+              </div>
+              <input type="file" ref="fileInput" @change="handleFileUpload" accept="video/mp4,video/quicktime" class="hidden" />
+            </div>
+          </div>
+          <button type="submit" :disabled="isSubmittingRefund" class="w-full py-3.5 mt-2 text-xs font-black tracking-widest text-white uppercase transition-colors bg-blue-600 rounded-xl hover:bg-blue-700 shadow-md shadow-blue-500/20 active:scale-95 flex justify-center items-center">
+            <span v-if="!isSubmittingRefund">Kirim Request</span>
+            <div v-else class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, computed, watch } from 'vue';
+import axios from 'axios';
+import { BASE_URL } from '../../config/api';
+import Swal from 'sweetalert2';
+import defaultBagIcon from "../../../src/assets/products/bag_icon.jpg";
+import defaultProfile from "../../../src/assets/profile.png";
+
+const transactions = ref([]);
+const isLoading = ref(true);
+const userData = ref(null);
+const searchQuery = ref('');
+const activeTab = ref('all');
+const currentPage = ref(1);
+const totalPages = ref(1);
+let searchTimeout = null;
+
+const tabs = [
+  { labelKey: "order.tabs.all", value: "all" },
+  { labelKey: "order.tabs.unpaid", value: "unpaid" },
+  { labelKey: "order.tabs.to_ship", value: "to_ship" },
+  { labelKey: "order.tabs.shipping", value: "shipping" },
+  { labelKey: "order.tabs.completed", value: "completed" },
+  { labelKey: "order.tabs.cancelled", value: "cancelled" },
+  { labelKey: "order.tabs.issues", value: "issues" } // Gabungan Return/Refund/Failed
+];
+
+const isRefundModalOpen = ref(false);
+const selectedRefundOrder = ref(null);
+const refundReason = ref('');
+const refundProof = ref(null);
+const isSubmittingRefund = ref(false);
+
+const parseColorName = (str) => {
+  if (!str) return '';
+  return str.split('|')[0];
+};
+
+const parseColorHex = (str) => {
+  if (!str) return '#ccc';
+  try {
+    const p = JSON.parse(str);
+    return p.hex || '#ccc';
+  } catch (e) {
+    if (str.includes('|')) return str.split('|')[1];
+    return '#ccc';
+  }
+};
+
+const formatCurrency = (value, currencyCode) => {
+  const curr = currencyCode || 'IDR';
+  const symbols = { USD: '$', SGD: 'S$', EUR: '€', AUD: 'A$', MYR: 'RM', IDR: 'Rp ' };
+  const formatter = new Intl.NumberFormat(curr === 'IDR' ? 'id-ID' : 'en-US', {
+    minimumFractionDigits: curr === 'IDR' ? 0 : 2
+  });
+  return `${symbols[curr] || curr + ' '}${formatter.format(value)}`;
+};
+
+const formatDate = (dateString) => {
+  const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute:'2-digit' };
+  return new Date(dateString).toLocaleDateString('id-ID', options);
+};
+
+const handleImageError = (e) => {
+  e.target.src = defaultBagIcon;
+};
+
+// ---------------- FETCH DATA ----------------
+
+const fetchUserData = () => {
+  const userStr = localStorage.getItem('user');
+  if (userStr) userData.value = JSON.parse(userStr);
+};
+
+const fetchTransactions = async () => {
+  isLoading.value = true;
+  try {
+    const res = await axios.get(`${BASE_URL}/transactions`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      params: {
+        page: currentPage.value,
+        search: searchQuery.value,
+        tab: activeTab.value
+      }
+    });
+    transactions.value = res.data.data;
+    totalPages.value = res.data.last_page;
+  } catch (error) {
+    console.error('Failed fetching orders', error);
+  } finally {
+    setTimeout(() => { isLoading.value = false; }, 300);
+  }
+};
+
+// ---------------- WATCHERS ----------------
+
+const debounceSearch = () => {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    currentPage.value = 1;
+    fetchTransactions();
+  }, 500);
+};
+
+watch(activeTab, () => {
+  currentPage.value = 1;
+  fetchTransactions();
+});
+
+const changePage = (page) => {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page;
+    fetchTransactions();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+};
+
+// ---------------- ACTIONS ----------------
+
+const payNow = (url) => {
+  if (url) window.location.href = url;
+};
+
+const cancelOrder = async (id) => {
+  const result = await Swal.fire({
+    title: 'Cancel Order?',
+    text: "Pesanan yang dibatalkan tidak dapat dikembalikan.",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#000',
+    confirmButtonText: 'Ya, Batalkan!'
+  });
+
+  if (result.isConfirmed) {
+    try {
+      await axios.post(`${BASE_URL}/transactions/${id}/cancel`, {}, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      });
+      Swal.fire({ toast: true, position: 'top-end', icon: 'success', title: 'Pesanan Dibatalkan', showConfirmButton: false, timer: 1500 });
+      fetchTransactions();
+    } catch (error) {
+      Swal.fire('Error', error.response?.data?.message || 'Gagal membatalkan pesanan', 'error');
+    }
+  }
+};
+
+const confirmComplete = async (id) => {
+  const result = await Swal.fire({
+    title: 'Pesanan Diterima?',
+    text: "Pastikan Anda telah menerima produk dengan kondisi baik sebelum menekan tombol ini. Setelah diselesaikan, Anda tidak dapat mengajukan pengembalian (Refund).",
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#000',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Selesaikan Pesanan'
+  });
+
+  if (result.isConfirmed) {
+    try {
+      const res = await axios.post(`${BASE_URL}/transactions/${id}/complete`, {}, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      });
+      
+      Swal.fire({
+        icon: 'success',
+        title: 'Terima Kasih!',
+        text: res.data.message || 'Pesanan telah diselesaikan.',
+        confirmButtonColor: '#000'
+      });
+      fetchTransactions();
+    } catch (error) {
+      Swal.fire('Error', error.response?.data?.message || 'Gagal menyelesaikan pesanan', 'error');
+    }
+  }
+};
+
+// ---------------- REFUND LOGIC ----------------
+
+const openRefundModal = (order) => {
+  selectedRefundOrder.value = order;
+  refundReason.value = '';
+  refundProof.value = null;
+  isRefundModalOpen.value = true;
+};
+
+const closeRefundModal = () => {
+  isRefundModalOpen.value = false;
+  setTimeout(() => { selectedRefundOrder.value = null; }, 300);
+};
+
+const handleFileUpload = (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 10 * 1024 * 1024) {
+    Swal.fire('Ukuran Terlalu Besar', 'Maksimal ukuran video adalah 10MB.', 'warning');
+    e.target.value = null;
+    return;
+  }
+  refundProof.value = file;
+};
+
+const submitRefund = async () => {
+  if (!refundProof.value || !refundReason.value) {
+    Swal.fire('Data Tidak Lengkap', 'Alasan dan bukti video wajib diisi.', 'warning');
+    return;
+  }
+
+  isSubmittingRefund.value = true;
+  const formData = new FormData();
+  formData.append('reason', refundReason.value);
+  formData.append('proof_file', refundProof.value);
+
+  try {
+    await axios.post(`${BASE_URL}/transactions/${selectedRefundOrder.value.id}/refund`, formData, {
+      headers: { 
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    closeRefundModal();
+    Swal.fire('Berhasil', 'Permintaan refund telah dikirim dan sedang ditinjau.', 'success');
+    fetchTransactions();
+  } catch (error) {
+    Swal.fire('Gagal', error.response?.data?.message || 'Gagal mengajukan refund.', 'error');
+  } finally {
+    isSubmittingRefund.value = false;
+  }
+};
+
+// ---------------- LOGIC HELPERS ----------------
+
+const canTrack = (order) => {
+  return order.shipping_method === 'biteship' && order.biteship_order_id && !['pending', 'cancelled'].includes(order.status);
+};
+
+const canComplete = (order) => {
+  return order.status === 'processing';
+};
+
+const canRefund = (order) => {
+  return ['completed', 'shipping_failed'].includes(order.status);
+};
+
+const getStatusBadge = (status) => {
+  const badges = {
+    pending: { text: "Unpaid", class: "bg-orange-50 text-orange-700 border-orange-200", dot: "bg-orange-500" },
+    processing: { text: "Processing", class: "bg-blue-50 text-blue-700 border-blue-200", dot: "bg-blue-500 animate-pulse" },
+    completed: { text: "Completed", class: "bg-emerald-50 text-emerald-700 border-emerald-200", dot: "bg-emerald-500" },
+    cancelled: { text: "Cancelled", class: "bg-red-50 text-red-700 border-red-200", dot: "bg-red-500" },
+    refund_requested: { text: "Refund Requested", class: "bg-amber-50 text-amber-700 border-amber-200", dot: "bg-amber-500" },
+    refund_approved: { text: "Refund Approved", class: "bg-teal-50 text-teal-700 border-teal-200", dot: "bg-teal-500" },
+    refund_rejected: { text: "Refund Rejected", class: "bg-gray-100 text-gray-700 border-gray-300", dot: "bg-gray-500" },
+    refund_manual_required: { text: "Manual Refund", class: "bg-purple-50 text-purple-700 border-purple-200", dot: "bg-purple-500 animate-pulse" },
+    refunded: { text: "Refunded", class: "bg-indigo-50 text-indigo-700 border-indigo-200", dot: "bg-indigo-500" },
+    returned: { text: "Returned", class: "bg-slate-100 text-slate-700 border-slate-300", dot: "bg-slate-500" },
+    shipping_failed: { text: "Delivery Failed", class: "bg-rose-50 text-rose-700 border-rose-200", dot: "bg-rose-500" }
+  };
+  return badges[status] || { text: status, class: "bg-gray-50 text-gray-700 border-gray-200", dot: "bg-gray-500" };
+};
+
+onMounted(() => {
+  fetchUserData();
+  fetchTransactions();
+  window.addEventListener("refresh-order-list", fetchTransactions);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("refresh-order-list", fetchTransactions);
+});
+</script>
+
+<style scoped>
+.animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.custom-scrollbar::-webkit-scrollbar { height: 4px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
+.custom-scrollbar:hover::-webkit-scrollbar-thumb { background: #d1d5db; }
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+
+.animate-bounce-1 { animation: bounceDots 1.4s infinite ease-in-out both; animation-delay: -0.32s; }
+.animate-bounce-2 { animation: bounceDots 1.4s infinite ease-in-out both; animation-delay: -0.16s; }
+.animate-bounce-3 { animation: bounceDots 1.4s infinite ease-in-out both; }
+@keyframes bounceDots {
+  0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
+  40% { transform: scale(1); opacity: 1; }
+}
+</style>
