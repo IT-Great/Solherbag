@@ -20814,7 +20814,7 @@ onUnmounted(() => {
                 <div class="flex-grow">
                   <div class="flex items-center gap-2">
                     <p class="w-40 text-[11px] font-bold text-gray-900 uppercase truncate" :title="item.product?.name">{{ item.product?.name }}</p>
-                    <span v-if="item.product?.is_final_sale" class="text-[8px] font-black tracking-widest text-red-600 bg-red-50 px-1 py-0.5 rounded uppercase border border-red-100">Clearance</span>
+                    <span v-if="item.product?.is_final_sale" class="text-[8px] font-black tracking-widest text-red-600 bg-red-50 px-1 py-0.5 rounded uppercase border border-red-100">Final Sale</span>
                   </div>
                   <div class="flex items-center gap-2 mt-0.5">
                     <p class="text-[10px] text-gray-400">Qty: {{ item.quantity }}</p>
