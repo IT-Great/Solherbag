@@ -20954,7 +20954,12 @@ import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
 import { useCart } from "../../composables/useCart";
 import AddressModal from "./Layout/AddressModal.vue";
+import { useI18n } from "vue-i18n";
 
+// ============================================
+// 1. INIT & DEKLARASI STATE (TIDAK BOLEH ADA COMPUTED DI SINI)
+// ============================================
+const { t } = useI18n();
 const router = useRouter();
 const getAxiosConfig = () => ({ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 
@@ -20963,12 +20968,8 @@ const {
   selectedItemIds, clearSelectedCart,
 } = useCart();
 
-// ============================================
-// DEKLARASI REFERENSI AWAL (WAJIB DI ATAS)
-// ============================================
 const isPageLoading = ref(true);
 const isProcessing = ref(false);
-
 const userData = ref(null);
 const userType = ref("guest");
 
@@ -21011,39 +21012,26 @@ const currentCurrency = ref(localStorage.getItem("currency") || "IDR");
 const exchangeRates = ref({});
 const imageErrors = ref({});
 
+
 // ============================================
-// COMPUTED LOGICS
+// 2. HELPER FUNCTIONS PURE JAVASCRIPT
 // ============================================
-const isAuthenticated = computed(() => !!localStorage.getItem("token"));
+const parseColorName = (str) => str ? str.split("|")[0] : "";
+const parseColorHex = (str) => { try { const p = JSON.parse(str); return p.hex || "#ccc"; } catch { return str.includes("|") ? str.split("|")[1] : "#ccc"; } };
+const handleImageError = (company) => { imageErrors.value[company] = true; };
 
-const checkoutItems = computed(() => {
-  const ids = selectedItemIds?.value || selectedItemIds || [];
-  return (cartItems.value || []).filter((item) => ids.includes(item.id)).map((item) => {
-    const fresh = catalogProducts.value.find((p) => p.id === item.product_id);
-    return fresh ? { ...item, product: fresh } : item;
-  });
-});
+const getCourierLogo = (company) => {
+  const map = { jne: "jne.png", sicepat: "sicepat.png", jnt: "jnt.png", anteraja: "anteraja.png", gojek: "gojek.png", grab: "grab.png", paxel: "paxel.png", ninja: "ninja.png", dhl: "dhl.png" };
+  return map[company.toLowerCase()] ? `/courier_images/${map[company.toLowerCase()]}` : null;
+};
 
-const userTierInfo = computed(() => {
-  if (!userData.value) return { name: 'Guest', discount: 0 };
-  const pts = userData.value.point || 0;
-  if (pts >= 10000) return { name: 'Héritage', discount: 0.10 };
-  if (pts >= 2500) return { name: 'Élan', discount: 0.05 };
-  return { name: 'Muse', discount: 0 };
-});
-
-const hasAnyFinalSaleItem = computed(() => {
-  return checkoutItems.value.some(item => item.product?.is_final_sale);
-});
-
-const isAllFinalSale = computed(() => {
-  if (checkoutItems.value.length === 0) return false;
-  return checkoutItems.value.every(item => item.product?.is_final_sale);
-});
-
-const isMixedCart = computed(() => {
-  return hasAnyFinalSaleItem.value && !isAllFinalSale.value;
-});
+const formatCurrencyDisplay = (priceObj) => {
+  if (!priceObj) return "";
+  const { value, curr } = priceObj;
+  const symbols = { USD: "$", SGD: "S$", EUR: "€", AUD: "A$", MYR: "RM", IDR: "Rp " };
+  const formatter = new Intl.NumberFormat(curr === "IDR" ? "id-ID" : "en-US", { minimumFractionDigits: curr === "IDR" ? 0 : 2 });
+  return `${symbols[curr] || curr + " "}${formatter.format(value)}`;
+};
 
 const getPriceToDisplay = (product) => {
   const curr = currentCurrency.value;
@@ -21063,20 +21051,77 @@ const getActivePriceObj = (product) => {
   return getPriceToDisplay(product);
 };
 
-const checkoutTotalIDR = computed(() => {
-  return checkoutItems.value.reduce((sum, item) => sum + (getActivePriceObj(item.product).value * item.quantity), 0);
-});
-
-const cartSubtotalObj = computed(() => {
-  return { value: checkoutTotalIDR.value, curr: currentCurrency.value };
-});
-
 const convertIDRtoActiveCurrency = (idrAmount) => {
   const curr = currentCurrency.value;
   if (curr === "IDR" || !exchangeRates.value[curr]) return { value: idrAmount, curr: "IDR" };
   return { value: idrAmount * exchangeRates.value[curr], curr: curr };
 };
 
+
+// ============================================
+// 3. COMPUTED PROPERTIES LEVEL 1 (TIDAK BERGANTUNG PADA COMPUTED LAIN)
+// ============================================
+const isAuthenticated = computed(() => !!localStorage.getItem("token"));
+const todayDate = computed(() => new Date().toISOString().split("T")[0]);
+
+const checkoutItems = computed(() => {
+  const ids = selectedItemIds?.value || selectedItemIds || [];
+  return (cartItems.value || []).filter((item) => ids.includes(item.id)).map((item) => {
+    const fresh = catalogProducts.value.find((p) => p.id === item.product_id);
+    return fresh ? { ...item, product: fresh } : item;
+  });
+});
+
+const userTierInfo = computed(() => {
+  if (!userData.value) return { name: 'Guest', discount: 0 };
+  const pts = userData.value.point || 0;
+  if (pts >= 10000) return { name: 'Héritage', discount: 0.10 };
+  if (pts >= 2500) return { name: 'Élan', discount: 0.05 };
+  return { name: 'Muse', discount: 0 };
+});
+
+const isGuestFormValid = computed(() => {
+  const f = guestForm.value;
+  return f.first_name && f.email && f.phone && f.address_location && f.city && f.province && f.postal_code;
+});
+
+const actualPromoDiscountIDR = computed(() => promoDiscountAmount.value);
+
+
+// ============================================
+// 4. COMPUTED PROPERTIES LEVEL 2 (BERGANTUNG PADA LEVEL 1)
+// ============================================
+
+// 👇 URUTAN INI SANGAT KRUSIAL 👇
+const hasAnyFinalSaleItem = computed(() => {
+  return checkoutItems.value.some(item => item.product?.is_final_sale);
+});
+
+const isAllFinalSale = computed(() => {
+  if (checkoutItems.value.length === 0) return false;
+  return checkoutItems.value.every(item => item.product?.is_final_sale);
+});
+
+const isMixedCart = computed(() => {
+  return hasAnyFinalSaleItem.value && !isAllFinalSale.value;
+});
+
+const checkoutTotalIDR = computed(() => {
+  return checkoutItems.value.reduce((sum, item) => sum + (getActivePriceObj(item.product).value * item.quantity), 0);
+});
+
+const actualPromoDiscountObj = computed(() => convertIDRtoActiveCurrency(actualPromoDiscountIDR.value));
+
+const maxPointsAllowed = computed(() => {
+  const maxUsableAmount = Math.max(0, checkoutTotalIDR.value - actualPromoDiscountIDR.value);
+  const pointsLimit = Math.min(availablePoints.value, Math.floor(maxUsableAmount / 1000));
+  return Math.min(pointsLimit, 5000); 
+});
+
+
+// ============================================
+// 5. COMPUTED PROPERTIES LEVEL 3 (BERGANTUNG PADA LEVEL 2)
+// ============================================
 const tierDiscountAmountIDR = computed(() => {
   if (isAllFinalSale.value) return 0; 
   let discountableAmount = 0;
@@ -21095,6 +21140,30 @@ const tierDiscountAmountIDR = computed(() => {
 });
 
 const tierDiscountAmountObj = computed(() => convertIDRtoActiveCurrency(tierDiscountAmountIDR.value));
+
+const cartSubtotalObj = computed(() => {
+  return { value: checkoutTotalIDR.value, curr: currentCurrency.value };
+});
+
+const appliedPointDiscountIDR = computed(() => (pointsToUse.value || 0) * 1000);
+const appliedPointDiscountObj = computed(() => convertIDRtoActiveCurrency(appliedPointDiscountIDR.value));
+
+
+// ============================================
+// 6. COMPUTED PROPERTIES LEVEL 4 (SHIPPING & GRAND TOTAL)
+// ============================================
+const shippingCostIDR = computed(() => shippingMethod.value === "biteship" && selectedRate.value ? parseFloat(selectedRate.value.price) : 0);
+const shippingCostObj = computed(() => convertIDRtoActiveCurrency(shippingCostIDR.value));
+
+const grandTotalObj = computed(() => {
+  const calculatedTotal = cartSubtotalObj.value.value 
+                        - bundleDiscountAmount.value 
+                        + shippingCostObj.value.value 
+                        - actualPromoDiscountObj.value.value 
+                        - appliedPointDiscountObj.value.value
+                        - tierDiscountAmountObj.value.value;
+  return { value: Math.max(0, calculatedTotal), curr: currentCurrency.value };
+});
 
 const destinationInfo = computed(() => {
   if (!isAuthenticated.value) {
@@ -21117,11 +21186,6 @@ const destinationInfo = computed(() => {
   };
 });
 
-const isGuestFormValid = computed(() => {
-  const f = guestForm.value;
-  return f.first_name && f.email && f.phone && f.address_location && f.city && f.province && f.postal_code;
-});
-
 const isButtonDisabled = computed(() => {
   if (isProcessing.value || cartItems.value.length === 0) return true;
   if (isAuthenticated.value && !selectedAddressId.value) return true;
@@ -21131,33 +21195,6 @@ const isButtonDisabled = computed(() => {
     if (deliveryType.value === "scheduled" && (!deliveryDate.value || !deliveryTime.value)) return true;
   }
   return false;
-});
-
-const todayDate = computed(() => new Date().toISOString().split("T")[0]);
-
-const actualPromoDiscountIDR = computed(() => promoDiscountAmount.value);
-const actualPromoDiscountObj = computed(() => convertIDRtoActiveCurrency(actualPromoDiscountIDR.value));
-
-const maxPointsAllowed = computed(() => {
-  const maxUsableAmount = Math.max(0, checkoutTotalIDR.value - actualPromoDiscountIDR.value);
-  const pointsLimit = Math.min(availablePoints.value, Math.floor(maxUsableAmount / 1000));
-  return Math.min(pointsLimit, 5000); 
-});
-
-const appliedPointDiscountIDR = computed(() => (pointsToUse.value || 0) * 1000);
-const appliedPointDiscountObj = computed(() => convertIDRtoActiveCurrency(appliedPointDiscountIDR.value));
-
-const shippingCostIDR = computed(() => shippingMethod.value === "biteship" && selectedRate.value ? parseFloat(selectedRate.value.price) : 0);
-const shippingCostObj = computed(() => convertIDRtoActiveCurrency(shippingCostIDR.value));
-
-const grandTotalObj = computed(() => {
-  const calculatedTotal = cartSubtotalObj.value.value 
-                        - bundleDiscountAmount.value 
-                        + shippingCostObj.value.value 
-                        - actualPromoDiscountObj.value.value 
-                        - appliedPointDiscountObj.value.value
-                        - tierDiscountAmountObj.value.value;
-  return { value: Math.max(0, calculatedTotal), curr: currentCurrency.value };
 });
 
 const processedShippingRates = computed(() => {
@@ -21174,31 +21211,10 @@ const processedShippingRates = computed(() => {
   }));
 });
 
-// ============================================
-// HELPER FUNCTIONS
-// ============================================
-
-const parseColorName = (str) => str ? str.split("|")[0] : "";
-const parseColorHex = (str) => { try { const p = JSON.parse(str); return p.hex || "#ccc"; } catch { return str.includes("|") ? str.split("|")[1] : "#ccc"; } };
-const handleImageError = (company) => { imageErrors.value[company] = true; };
-
-const getCourierLogo = (company) => {
-  const map = { jne: "jne.png", sicepat: "sicepat.png", jnt: "jnt.png", anteraja: "anteraja.png", gojek: "gojek.png", grab: "grab.png", paxel: "paxel.png", ninja: "ninja.png", dhl: "dhl.png" };
-  return map[company.toLowerCase()] ? `/courier_images/${map[company.toLowerCase()]}` : null;
-};
-
-const formatCurrencyDisplay = (priceObj) => {
-  if (!priceObj) return "";
-  const { value, curr } = priceObj;
-  const symbols = { USD: "$", SGD: "S$", EUR: "€", AUD: "A$", MYR: "RM", IDR: "Rp " };
-  const formatter = new Intl.NumberFormat(curr === "IDR" ? "id-ID" : "en-US", { minimumFractionDigits: curr === "IDR" ? 0 : 2 });
-  return `${symbols[curr] || curr + " "}${formatter.format(value)}`;
-};
 
 // ============================================
-// WATCHERS
+// 7. WATCHERS (MEMBUTUHKAN REF & COMPUTED)
 // ============================================
-
 watch(checkoutItems, () => {
   useTierPrivilege.value = false;
   mixedCartPrivilegeSelection.value = [];
@@ -21208,7 +21224,7 @@ watch([pointsToUse, maxPointsAllowed], () => {
   if (pointsToUse.value > maxPointsAllowed.value) pointsToUse.value = maxPointsAllowed.value;
 });
 
-watch(hasFinalSaleItem, (isFinalSale) => {
+watch(hasAnyFinalSaleItem, (isFinalSale) => {
   if (isFinalSale) {
     useTierPrivilege.value = false;
   }
@@ -21220,10 +21236,10 @@ watch(selectedAddressId, async (newVal) => {
   }
 });
 
-// ============================================
-// METHODS
-// ============================================
 
+// ============================================
+// 8. METHODS & API CALLS
+// ============================================
 const calculateGuestShipping = async () => {
   if (!isGuestFormValid.value) return;
   const ids = selectedItemIds?.value || selectedItemIds;
@@ -21387,6 +21403,10 @@ const handlePayment = async () => {
   }
 };
 
+
+// ============================================
+// 9. LIFECYCLE HOOKS
+// ============================================
 const updateCurrencyState = () => { currentCurrency.value = localStorage.getItem("currency") || "IDR"; };
 
 onMounted(async () => {
