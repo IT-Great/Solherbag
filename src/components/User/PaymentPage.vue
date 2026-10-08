@@ -21060,6 +21060,14 @@ const userTierInfo = computed(() => {
   return { name: 'Muse', discount: 0 };
 });
 
+const mixedCartPrivilegeSelection = ref([]);
+
+watch(checkoutItems, () => {
+  useTierPrivilege.value = false;
+  mixedCartPrivilegeSelection.value = [];
+});
+
+// 👇 [3] BARU COMPUTED PROPERTIES BISA MENGGUNAKAN REF DI ATAS 👇
 const hasAnyFinalSaleItem = computed(() => {
   return checkoutItems.value.some(item => item.product?.is_final_sale);
 });
@@ -21071,13 +21079,6 @@ const isAllFinalSale = computed(() => {
 
 const isMixedCart = computed(() => {
   return hasAnyFinalSaleItem.value && !isAllFinalSale.value;
-});
-
-const mixedCartPrivilegeSelection = ref([]);
-
-watch(checkoutItems, () => {
-  useTierPrivilege.value = false;
-  mixedCartPrivilegeSelection.value = [];
 });
 
 const tierDiscountAmountIDR = computed(() => {
