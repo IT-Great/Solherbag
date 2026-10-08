@@ -20777,7 +20777,6 @@ onUnmounted(() => {
           </section>
 
           <!-- 👇 3. CIRCLE PRIVILEGE SECTION (KHUSUS TIER ELAN & HERITAGE) 👇 -->
-          <!-- Muncul di bawah kurir HANYA JIKA TIDAK ADA BARANG FINAL SALE SAMA SEKALI (Kondisi 2) -->
           <section v-if="isAuthenticated && userTierInfo.discount > 0 && !hasAnyFinalSaleItem" class="mt-12 animate-fade-in">
             <div class="flex items-center gap-4 mb-4">
               <span class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white">3</span>
@@ -20793,14 +20792,12 @@ onUnmounted(() => {
                   </p>
                   <span class="bg-amber-100 text-amber-800 text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-widest">{{ userTierInfo.discount * 100 }}% OFF</span>
                 </div>
-                <!-- 👇 [PERBAIKAN ERROR EN] Menggunakan $t() langsung di template 👇 -->
                 <p class="mt-2 text-xs leading-relaxed text-gray-600">
                   {{ $t("payment.privilege") }} {{ userTierInfo.discount * 100 }}% {{ $t("payment.privilege2") }}
                 </p>
               </div>
             </label>
           </section>
-          <!-- 👆 ========================================== 👆 -->
 
         </div>
 
@@ -20833,7 +20830,6 @@ onUnmounted(() => {
                     {{ formatCurrencyDisplay({ value: getActivePriceObj(item.product).value * item.quantity, curr: getActivePriceObj(item.product).curr }) }}
                   </p>
                   
-                  <!-- 👇 Checkbox per-item JIKA Keranjang adalah CAMPURAN (Mixed) Kondisi 3 👇 -->
                   <div v-if="isMixedCart && !item.product?.is_final_sale && isAuthenticated && userTierInfo.discount > 0" class="mt-2">
                     <label class="flex items-start gap-2 p-2 bg-amber-50/50 border border-amber-100 rounded-lg cursor-pointer hover:bg-amber-50 transition-colors">
                       <input type="checkbox" v-model="mixedCartPrivilegeSelection" :value="item.id" class="w-3.5 h-3.5 mt-0.5 text-amber-600 border-gray-300 rounded focus:ring-amber-500" />
@@ -20861,9 +20857,9 @@ onUnmounted(() => {
               <div v-if="userData?.is_membership && availablePoints > 0" class="pt-4 mt-2 border-t border-gray-200 border-dashed">
                 <div class="flex items-center justify-between mb-2">
                   <span class="text-[10px] font-bold text-yellow-800 uppercase tracking-widest flex items-center gap-1">
+                    <!-- 👇 PENGGUNAAN SVG AMAN 👇 -->
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
-                      <!-- <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /> -->
-                       <span class="text-yellow-500">★</span>
+                      <path fill-rule="evenodd" d="M10 2a.75.75 0 01.673.418l2.25 4.562 5.034.731a.75.75 0 01.415 1.28l-3.642 3.55 .86 5.016a.75.75 0 01-1.088.791L10 15.981l-4.502 2.368a.75.75 0 01-1.088-.79l.86-5.016-3.643-3.55a.75.75 0 01.416-1.28l5.033-.73 2.25-4.563A.75.75 0 0110 2z" clip-rule="evenodd" />
                     </svg>
                     {{ $t("payment.redeem_points") }}
                   </span>
@@ -20956,12 +20952,8 @@ import { useRouter } from "vue-router";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { BASE_URL } from "../../config/api.js";
-import { useCart, getDiscountStatus } from "../../composables/useCart";
+import { useCart } from "../../composables/useCart";
 import AddressModal from "./Layout/AddressModal.vue";
-import { useI18n } from "vue-i18n";
-
-// Inisialisasi awal, tapi TUNGGU DULU SEBELUM MENGGUNAKANNYA DI LUAR TEMPLATE HTML
-const { t } = useI18n();
 
 const router = useRouter();
 const getAxiosConfig = () => ({ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
@@ -20971,10 +20963,12 @@ const {
   selectedItemIds, clearSelectedCart,
 } = useCart();
 
+// ============================================
+// DEKLARASI REFERENSI AWAL (WAJIB DI ATAS)
+// ============================================
 const isPageLoading = ref(true);
 const isProcessing = ref(false);
 
-const isAuthenticated = computed(() => !!localStorage.getItem("token"));
 const userData = ref(null);
 const userType = ref("guest");
 
@@ -21007,7 +21001,6 @@ const useMemberVoucher = ref(false);
 const MEMBER_VOUCHER_CODE = "SOLHERMEMBER";
 const MEMBER_MIN_SPEND = 500000;
 
-// SEMUA DEKLARASI REF HARUS DI ATAS
 const useTierPrivilege = ref(false);
 const pointsToUse = ref(0);
 const availablePoints = ref(0);
@@ -21018,50 +21011,10 @@ const currentCurrency = ref(localStorage.getItem("currency") || "IDR");
 const exchangeRates = ref({});
 const imageErrors = ref({});
 
-const parseColorName = (str) => str ? str.split("|")[0] : "";
-const parseColorHex = (str) => { try { const p = JSON.parse(str); return p.hex || "#ccc"; } catch { return str.includes("|") ? str.split("|")[1] : "#ccc"; } };
-const handleImageError = (company) => { imageErrors.value[company] = true; };
-
-const getCourierLogo = (company) => {
-  const map = { jne: "jne.png", sicepat: "sicepat.png", jnt: "jnt.png", anteraja: "anteraja.png", gojek: "gojek.png", grab: "grab.png", paxel: "paxel.png", ninja: "ninja.png", dhl: "dhl.png" };
-  return map[company.toLowerCase()] ? `/courier_images/${map[company.toLowerCase()]}` : null;
-};
-
-const formatCurrencyDisplay = (priceObj) => {
-  if (!priceObj) return "";
-  const { value, curr } = priceObj;
-  const symbols = { USD: "$", SGD: "S$", EUR: "€", AUD: "A$", MYR: "RM", IDR: "Rp " };
-  const formatter = new Intl.NumberFormat(curr === "IDR" ? "id-ID" : "en-US", { minimumFractionDigits: curr === "IDR" ? 0 : 2 });
-  return `${symbols[curr] || curr + " "}${formatter.format(value)}`;
-};
-
-const getPriceToDisplay = (product) => {
-  const curr = currentCurrency.value;
-  if (curr === "IDR") return { value: Number(product.price), curr: "IDR" };
-  try {
-    const pricesObj = typeof product.prices === "string" ? JSON.parse(product.prices) : product.prices || {};
-    const dbPrice = pricesObj[curr] || pricesObj[curr.toLowerCase()] || pricesObj[currentCurrency.value.toUpperCase()];
-    if (dbPrice) return { value: parseFloat(dbPrice), curr: curr };
-  } catch (e) {}
-  return { value: Number(product.price), curr: "IDR" };
-};
-
-const getActivePriceObj = (product) => {
-  const isReseller = userType.value === "reseller";
-  const wholesale = Number(product.wholesale_price) || 0;
-  if (isReseller && wholesale > 0 && checkoutCount.value >= 24) return { value: wholesale, curr: "IDR" };
-  return getPriceToDisplay(product);
-};
-
-const convertIDRtoActiveCurrency = (idrAmount) => {
-  const curr = currentCurrency.value;
-  if (curr === "IDR" || !exchangeRates.value[curr]) return { value: idrAmount, curr: "IDR" };
-  return { value: idrAmount * exchangeRates.value[curr], curr: curr };
-};
-
 // ============================================
-// COMPUTED LOGICS (Membaca Reaktifitas)
+// COMPUTED LOGICS
 // ============================================
+const isAuthenticated = computed(() => !!localStorage.getItem("token"));
 
 const checkoutItems = computed(() => {
   const ids = selectedItemIds?.value || selectedItemIds || [];
@@ -21092,14 +21045,37 @@ const isMixedCart = computed(() => {
   return hasAnyFinalSaleItem.value && !isAllFinalSale.value;
 });
 
+const getPriceToDisplay = (product) => {
+  const curr = currentCurrency.value;
+  if (curr === "IDR") return { value: Number(product.price), curr: "IDR" };
+  try {
+    const pricesObj = typeof product.prices === "string" ? JSON.parse(product.prices) : product.prices || {};
+    const dbPrice = pricesObj[curr] || pricesObj[curr.toLowerCase()] || pricesObj[currentCurrency.value.toUpperCase()];
+    if (dbPrice) return { value: parseFloat(dbPrice), curr: curr };
+  } catch (e) {}
+  return { value: Number(product.price), curr: "IDR" };
+};
+
+const getActivePriceObj = (product) => {
+  const isReseller = userType.value === "reseller";
+  const wholesale = Number(product.wholesale_price) || 0;
+  if (isReseller && wholesale > 0 && checkoutCount.value >= 24) return { value: wholesale, curr: "IDR" };
+  return getPriceToDisplay(product);
+};
+
 const checkoutTotalIDR = computed(() => {
   return checkoutItems.value.reduce((sum, item) => sum + (getActivePriceObj(item.product).value * item.quantity), 0);
 });
 
 const cartSubtotalObj = computed(() => {
-  const totalValue = checkoutItems.value.reduce((sum, item) => sum + (getActivePriceObj(item.product).value * item.quantity), 0);
-  return { value: totalValue, curr: currentCurrency.value };
+  return { value: checkoutTotalIDR.value, curr: currentCurrency.value };
 });
+
+const convertIDRtoActiveCurrency = (idrAmount) => {
+  const curr = currentCurrency.value;
+  if (curr === "IDR" || !exchangeRates.value[curr]) return { value: idrAmount, curr: "IDR" };
+  return { value: idrAmount * exchangeRates.value[curr], curr: curr };
+};
 
 const tierDiscountAmountIDR = computed(() => {
   if (isAllFinalSale.value) return 0; 
@@ -21199,6 +21175,27 @@ const processedShippingRates = computed(() => {
 });
 
 // ============================================
+// HELPER FUNCTIONS
+// ============================================
+
+const parseColorName = (str) => str ? str.split("|")[0] : "";
+const parseColorHex = (str) => { try { const p = JSON.parse(str); return p.hex || "#ccc"; } catch { return str.includes("|") ? str.split("|")[1] : "#ccc"; } };
+const handleImageError = (company) => { imageErrors.value[company] = true; };
+
+const getCourierLogo = (company) => {
+  const map = { jne: "jne.png", sicepat: "sicepat.png", jnt: "jnt.png", anteraja: "anteraja.png", gojek: "gojek.png", grab: "grab.png", paxel: "paxel.png", ninja: "ninja.png", dhl: "dhl.png" };
+  return map[company.toLowerCase()] ? `/courier_images/${map[company.toLowerCase()]}` : null;
+};
+
+const formatCurrencyDisplay = (priceObj) => {
+  if (!priceObj) return "";
+  const { value, curr } = priceObj;
+  const symbols = { USD: "$", SGD: "S$", EUR: "€", AUD: "A$", MYR: "RM", IDR: "Rp " };
+  const formatter = new Intl.NumberFormat(curr === "IDR" ? "id-ID" : "en-US", { minimumFractionDigits: curr === "IDR" ? 0 : 2 });
+  return `${symbols[curr] || curr + " "}${formatter.format(value)}`;
+};
+
+// ============================================
 // WATCHERS
 // ============================================
 
@@ -21224,7 +21221,7 @@ watch(selectedAddressId, async (newVal) => {
 });
 
 // ============================================
-// METHODS & FUNCTIONS
+// METHODS
 // ============================================
 
 const calculateGuestShipping = async () => {
