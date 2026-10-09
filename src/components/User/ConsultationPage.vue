@@ -542,14 +542,28 @@ const startConsultation = async () => {
       router.push('/chat-list'); 
     }, 2000);
 
+  // } catch (error) {
+  //   isConnecting.value = false;
+    
+  //   // Tampilkan error jika Server menolak (misal: bukan member)
+  //   Swal.fire({
+  //     icon: 'error',
+  //     title: 'Akses Ditolak',
+  //     text: error.response?.data?.message || 'Terjadi kesalahan pada sistem. Silakan coba lagi.',
+  //     confirmButtonColor: '#000',
+  //   });
+  // }
+
   } catch (error) {
     isConnecting.value = false;
     
-    // Tampilkan error jika Server menolak (misal: bukan member)
+    // Tampilkan pesan error yang sesungguhnya dari Backend
+    console.error("Backend Error Detail:", error.response?.data);
+
     Swal.fire({
       icon: 'error',
-      title: 'Akses Ditolak',
-      text: error.response?.data?.message || 'Terjadi kesalahan pada sistem. Silakan coba lagi.',
+      title: 'Pengiriman Gagal',
+      text: error.response?.data?.message || 'Terjadi kesalahan sistem (Cek terminal backend atau F12).',
       confirmButtonColor: '#000',
     });
   }
