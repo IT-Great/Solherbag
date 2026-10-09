@@ -10014,24 +10014,24 @@ const pushToRouter = (updates) => {
   router.push({ path: "/collections", query });
 };
 
-const executeSearchEngine = async (keyword) => {
-  if (!keyword || keyword.trim() === "") {
-    meilisearchResults.value = null; 
-    return;
-  }
+// const executeSearchEngine = async (keyword) => {
+//   if (!keyword || keyword.trim() === "") {
+//     meilisearchResults.value = null; 
+//     return;
+//   }
 
-  isLoading.value = true;
-  try {
-    const res = await axios.get(
-      `${BASE_URL}/products/search?q=${encodeURIComponent(keyword)}`
-    );
-    meilisearchResults.value = res.data;
-  } catch (error) {
-    console.error("Meilisearch Error:", error);
-  } finally {
-    isLoading.value = false;
-  }
-};
+//   isLoading.value = true;
+//   try {
+//     const res = await axios.get(
+//       `${BASE_URL}/products/search?q=${encodeURIComponent(keyword)}`
+//     );
+//     meilisearchResults.value = res.data;
+//   } catch (error) {
+//     console.error("Meilisearch Error:", error);
+//   } finally {
+//     isLoading.value = false;
+//   }
+// };
 
 const toggleSaleFilter = () => {
   pushToRouter({
@@ -10074,12 +10074,21 @@ const syncStateWithQuery = (query) => {
   currentPage.value = 1;
 };
 
+// watch(searchQuery, (newVal) => {
+//   clearTimeout(searchDebounceTimer);
+//   searchDebounceTimer = setTimeout(() => {
+//     executeSearchEngine(newVal);
+//     pushToRouter({ search: newVal || undefined });
+//   }, 400);
+// });
+
 watch(searchQuery, (newVal) => {
   clearTimeout(searchDebounceTimer);
   searchDebounceTimer = setTimeout(() => {
-    executeSearchEngine(newVal);
+    // executeSearchEngine(newVal); <-- Hapus ini
+    currentPage.value = 1; // Reset halaman ke 1 setiap kali mencari
     pushToRouter({ search: newVal || undefined });
-  }, 400);
+  }, 300); // Debounce bisa dikurangi jadi 300ms agar lebih responsif
 });
 
 onMounted(() => {
@@ -10397,28 +10406,90 @@ const getDiscountStatus = (p) => {
   return { active, upcoming, expired };
 };
 
-const filteredProducts = computed(() => {
-  let sourceProducts =
-    meilisearchResults.value !== null
-      ? meilisearchResults.value
-      : state.collectionsProducts || [];
+// const filteredProducts = computed(() => {
+//   let sourceProducts =
+//     meilisearchResults.value !== null
+//       ? meilisearchResults.value
+//       : state.collectionsProducts || [];
 
+//   if (selectedCategory.value !== "") {
+//     sourceProducts = sourceProducts.filter(
+//       (p) => (p.category?.name || p.category_name) === selectedCategory.value
+//     );
+//   }
+
+//   if (selectedBagCategory.value !== "") {
+//     sourceProducts = sourceProducts.filter(
+//       (p) => p.bag_category?.name === selectedBagCategory.value
+//     );
+//   }
+
+//   if (showOnlySale.value) {
+//     sourceProducts = sourceProducts.filter((p) => getDiscountStatus(p).active);
+//   }
+
+//   if (activeFilter.value === "new-arrivals") {
+//     sourceProducts = [...sourceProducts]
+//       .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+//       .slice(0, 10);
+//   } else if (activeFilter.value === "final-sale") {
+//     sourceProducts = [...sourceProducts]
+//       .filter((p) => p.is_final_sale)
+//       .sort((a, b) => calculateDynamicDiscount(b) - calculateDynamicDiscount(a));
+//   }
+
+//   return sourceProducts;
+// });
+
+const filteredProducts = computed(() => {
+  // 1. Ambil semua produk dari state (Hindari API call berulang)
+  let sourceProducts = state.collectionsProducts || [];
+
+  // 2. 👇 [PERBAIKAN] PENCARIAN CLIENT-SIDE YANG SANGAT KUAT 👇
+  if (searchQuery.value && searchQuery.value.trim() !== "") {
+    const keyword = searchQuery.value.toLowerCase().trim();
+    
+    sourceProducts = sourceProducts.filter((p) => {
+      // Cari di nama produk
+      const matchName = p.name ? p.name.toLowerCase().includes(keyword) : false;
+      // Cari di deskripsi produk
+      const matchDesc = p.description ? p.description.toLowerCase().includes(keyword) : false;
+      // Cari di kategori produk
+      const matchCat = p.category?.name ? p.category.name.toLowerCase().includes(keyword) : false;
+      
+      // Cari di dalam varian warna (jika ada)
+      let matchColor = false;
+      if (p.colors && Array.isArray(p.colors)) {
+         matchColor = p.colors.some(c => c.name && c.name.toLowerCase().includes(keyword));
+      } else if (typeof p.colors === 'string') {
+         matchColor = p.colors.toLowerCase().includes(keyword);
+      }
+
+      return matchName || matchDesc || matchCat || matchColor;
+    });
+  }
+  // 👆 ======================================================== 👆
+
+  // 3. Filter berdasarkan Kategori Utama
   if (selectedCategory.value !== "") {
     sourceProducts = sourceProducts.filter(
       (p) => (p.category?.name || p.category_name) === selectedCategory.value
     );
   }
 
+  // 4. Filter berdasarkan Kategori Tas Fisik (Tote, Sling, dll)
   if (selectedBagCategory.value !== "") {
     sourceProducts = sourceProducts.filter(
       (p) => p.bag_category?.name === selectedBagCategory.value
     );
   }
 
+  // 5. Filter berdasarkan Diskon Aktif (Sale)
   if (showOnlySale.value) {
     sourceProducts = sourceProducts.filter((p) => getDiscountStatus(p).active);
   }
 
+  // 6. Filter Spesial: New Arrivals / Final Sale
   if (activeFilter.value === "new-arrivals") {
     sourceProducts = [...sourceProducts]
       .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))

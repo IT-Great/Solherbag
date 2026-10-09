@@ -6935,7 +6935,7 @@ onUnmounted(() => {
               <button @click="claimPromo" class="w-full bg-black text-white font-bold uppercase tracking-widest text-[13px] md:text-[14px] py-4 hover:bg-gray-800 transition-colors shadow-md">
                 {{ $t("home.popup_claim_btn") }}
               </button> -->
-              
+
               <h2 class="text-[28px] md:text-[34px] font-serif text-[#111] mb-4 tracking-tight leading-tight">
               <span class="font-bold">{{ $t("home.popup_first_cta") }}</span><br />
               <span class="font-extrabold whitespace-nowrap">{{ formattedWelcomeDiscount }} {{ $t("home.popup_price_section_three") }}</span><br />
@@ -7236,8 +7236,19 @@ const claimPromo = async () => {
   }
 
   isClaimingPromo.value = true;
+  // try {
+  //   const payload = { email: promoEmail.value };
+
+  //   if (ACTIVE_POPUP.value === "merdeka") {
+  //     payload.campaign = "SOLHER17";
+  //   }
+
   try {
-    const payload = { email: promoEmail.value };
+    // 👇 Tambahkan currentCurrency.value ke dalam payload 👇
+    const payload = { 
+      email: promoEmail.value,
+      currency: currentCurrency.value // Kirim mata uang yang sedang aktif
+    };
 
     if (ACTIVE_POPUP.value === "merdeka") {
       payload.campaign = "SOLHER17";
