@@ -516,16 +516,26 @@ const prevStep = () => {
 // };
 
 const startConsultation = async () => {
+  // Simpan data pre-intake ke LocalStorage/State agar bisa dikirim sebagai pesan pertama di halaman Chat
+  localStorage.setItem('concierge_intake_data', JSON.stringify(form.value));
+
   isConnecting.value = true;
   
   try {
+    // 👇 PERBAIKAN: Petakan objek data agar presisi dengan validasi Laravel 👇
+    const payload = {
+      intent: form.value.intent,
+      complaintType: form.value.complaintType || null,
+      styles: form.value.styles || [],
+      bagTypes: form.value.bagTypes || [],
+      colors: form.value.colors || [],
+      specificNeeds: form.value.specificNeeds || ''
+    };
+
     // 1. Kirim data Intake ke Backend Laravel
-    await axios.post(`${BASE_URL}/consultation/intake`, form.value, {
+    const res = await axios.post(`${BASE_URL}/consultation/intake`, payload, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
     });
-
-    // 2. Simpan juga di LocalStorage (sebagai cadangan cepat untuk Chat UI jika diperlukan)
-    localStorage.setItem('concierge_intake_data', JSON.stringify(form.value));
 
     // 3. Tampilkan layar "Menghubungkan" selama 2 detik agar terasa eksklusif
     setTimeout(() => {
