@@ -6978,12 +6978,21 @@ watch(
             class="text-[10px] md:text-sm leading-tight md:leading-normal font-serif tracking-widest text-center cursor-pointer hover:text-gray-300 transition-colors w-full max-w-3xl"
           >
             <!-- Tampilkan String 1 -->
-            <template v-if="currentAnnouncement === 0">
+            <!-- <template v-if="currentAnnouncement === 0">
               {{ $t("header.announcement_1", "An Exclusive Welcome Gift: Rp 250K OFF your first order →") }}
+            </template> -->
+            <!-- Tampilkan String 2 (Dengan Interpolasi Mata Uang Dinamis) -->
+            <!-- <template v-else-if="currentAnnouncement === 1">
+              A Little Extra, On Us — Complimentary Shipping Across Indonesia (Min. {{ formattedThreshold }}) →
+            </template> -->
+
+            <!-- Tampilkan String 1 (Dengan Interpolasi Mata Uang Dinamis) -->
+            <template v-if="currentAnnouncement === 0">
+              {{ $t("header.announcement_1", { amount: formattedWelcomeGift }) }}
             </template>
             <!-- Tampilkan String 2 (Dengan Interpolasi Mata Uang Dinamis) -->
             <template v-else-if="currentAnnouncement === 1">
-              A Little Extra, On Us — Complimentary Shipping Across Indonesia (Min. {{ formattedThreshold }}) →
+              {{ $t("header.announcement_2", { threshold: formattedThreshold }) }}
             </template>
           </p>
         </transition>
@@ -7896,6 +7905,34 @@ const formattedThreshold = computed(() => {
   }
 
   return `${threshold.symbol}${formattedValue}`;
+});
+
+// 👇 [BARU] DAFTAR HARGA KONVERSI WELCOME GIFT (250K) 👇
+const welcomeGiftValues = {
+  IDR: { value: 250000, symbol: "Rp " },
+  USD: { value: 15.63, symbol: "$" },
+  SGD: { value: 20.83, symbol: "S$" },
+  EUR: { value: 14.28, symbol: "€" },
+  AUD: { value: 23.8, symbol: "A$" },
+  MYR: { value: 74, symbol: "RM " },
+};
+
+// 👇 [BARU] COMPUTED PROPERTY UNTUK WELCOME GIFT 👇
+const formattedWelcomeGift = computed(() => {
+  const activeCurrency = currentCurrency.value || "IDR";
+  const gift = welcomeGiftValues[activeCurrency] || welcomeGiftValues["IDR"];
+  
+  let formattedValue = '';
+  if (activeCurrency === 'IDR') {
+    // Khusus IDR, tampilkan format singkat "250rb" / "250K" agar sesuai desain aslinya
+    formattedValue = (gift.value / 1000) + (locale.value === 'id' ? 'rb' : 'K');
+  } else {
+    formattedValue = Number.isInteger(gift.value) 
+        ? gift.value 
+        : gift.value.toFixed(2);
+  }
+
+  return `${gift.symbol}${formattedValue}`;
 });
 
 const nextAnnouncement = () => {
