@@ -503,16 +503,46 @@ const prevStep = () => {
   if (currentStep.value > 0) currentStep.value--;
 };
 
-const startConsultation = () => {
-  // Simpan data pre-intake ke LocalStorage/State agar bisa dikirim sebagai pesan pertama di halaman Chat
-  localStorage.setItem('concierge_intake_data', JSON.stringify(form.value));
+// const startConsultation = () => {
+//   // Simpan data pre-intake ke LocalStorage/State agar bisa dikirim sebagai pesan pertama di halaman Chat
+//   localStorage.setItem('concierge_intake_data', JSON.stringify(form.value));
 
+//   isConnecting.value = true;
+  
+//   // Simulasi proses koneksi (Loading screen animasi kustom)
+//   setTimeout(() => {
+//     router.push('/chat-list'); 
+//   }, 2000);
+// };
+
+const startConsultation = async () => {
   isConnecting.value = true;
   
-  // Simulasi proses koneksi (Loading screen animasi kustom)
-  setTimeout(() => {
-    router.push('/chat-list'); 
-  }, 2000);
+  try {
+    // 1. Kirim data Intake ke Backend Laravel
+    await axios.post(`${BASE_URL}/consultation/intake`, form.value, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    });
+
+    // 2. Simpan juga di LocalStorage (sebagai cadangan cepat untuk Chat UI jika diperlukan)
+    localStorage.setItem('concierge_intake_data', JSON.stringify(form.value));
+
+    // 3. Tampilkan layar "Menghubungkan" selama 2 detik agar terasa eksklusif
+    setTimeout(() => {
+      router.push('/chat-list'); 
+    }, 2000);
+
+  } catch (error) {
+    isConnecting.value = false;
+    
+    // Tampilkan error jika Server menolak (misal: bukan member)
+    Swal.fire({
+      icon: 'error',
+      title: 'Akses Ditolak',
+      text: error.response?.data?.message || 'Terjadi kesalahan pada sistem. Silakan coba lagi.',
+      confirmButtonColor: '#000',
+    });
+  }
 };
 
 // SVG Component Definitions (Mocked as functional components or raw SVG paths for simplicity in Vue 3 SFC)
