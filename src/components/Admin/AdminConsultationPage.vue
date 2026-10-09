@@ -150,7 +150,7 @@ import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import { BASE_URL } from "../../../config/api";
+import { BASE_URL } from "../../config/api";
 
 const router = useRouter();
 const intakes = ref([]);
