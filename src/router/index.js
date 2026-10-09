@@ -3764,6 +3764,8 @@ import InactiveProductStockPage from "../components/Admin/InactiveProductStockPa
 import PromoManager from "../components/Admin/PromoManager.vue";
 import ConsultationPage from "../components/User/ConsultationPage.vue";
 
+import AdminConsultationPage from "../components/Admin/AdminConsultationPage.vue";
+
 const routes = [
   { path: "/", name: "Home", component: HomePage },
   { path: "/best-sellers", name: "BestSellers", component: BestSellerPage },
@@ -3865,6 +3867,13 @@ const routes = [
 
   // 👇 RUTE TELESCOPE BARU 👇
   { path: "/admin/telescope", name: "TelescopeMonitoring", component: TelescopeMonitoringPage, meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } },
+
+  { 
+    path: "/admin/consultations", 
+    name: "AdminConsultations", 
+    component: AdminConsultationPage, 
+    meta: { requiresAuth: true, hideHeaderFooter: true, isAdmin: true } 
+  },
 ];
 
 const router = createRouter({
@@ -3884,6 +3893,7 @@ const routeToModuleMap = {
   "/admin/stocks": "stocks",
   "/admin/transactions": "transactions",
   "/admin/messages": "messages",
+  "/admin/consultations": "messages", // 👇 Modul messages
   "/admin/salesreports": "sales_report",
   "/admin/user_list": "users",
   "/admin/subscribers": "subscribers",
