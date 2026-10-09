@@ -126,7 +126,7 @@
     "popup_minimum_price_second_section": "1.500.000",
     "popup_third_cta": "Bergabunglah dengan lingkaran dalam kami dan jadilah yang pertama mengakses rilis kurasi, penawaran privat, dan koleksi eksklusif yang dibuat khusus untuk Anda.",
     "popup_enter_email": "Masukkan email Anda untuk membuka penawaran…",
-    "popup_claim_btn": "Klaim Diskon Rp 250.000 Saya",
+    "popup_claim_btn": "Klaim Diskon {amount} Saya",
     "popup_fourth_cta": "Tidak ada spam. Hanya penawaran menarik.",
     "difference_title": "Keistimewaan SolHer",
     "difference_subtitle": "Dibuat untuk muse modern, dirancang untuk bertahan seumur hidup",

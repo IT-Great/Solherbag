@@ -6915,7 +6915,7 @@ onUnmounted(() => {
           <div class="flex flex-col items-center justify-center w-full px-6 py-8 overflow-y-auto text-center md:px-8 md:py-10 md:w-1/2 custom-scrollbar">
             <img src="../../assets/solherbrandbook.png" alt="Solher Logo" class="object-contain h-8 mb-8 md:h-10 opacity-90" />
 
-            <h2 class="text-[28px] md:text-[34px] font-serif text-[#111] mb-4 tracking-tight leading-tight">
+            <!-- <h2 class="text-[28px] md:text-[34px] font-serif text-[#111] mb-4 tracking-tight leading-tight">
               <span class="font-bold">{{ $t("home.popup_first_cta") }}</span><br />
               <span class="font-extrabold whitespace-nowrap">{{ $t("home.popup_price_section_one") }}&nbsp;{{ $t("home.popup_price_section_two") }}&nbsp;{{ $t("home.popup_price_section_three") }}</span><br />
               <span class="font-bold">{{ $t("home.popup_second_cta") }}</span>
@@ -6934,6 +6934,27 @@ onUnmounted(() => {
               <input type="email" v-model="promoEmail" :placeholder="$t('home.popup_enter_email')" class="w-full border border-black bg-white px-4 py-[14px] mb-3 text-[13px] font-sans focus:outline-none focus:ring-1 focus:ring-black placeholder-gray-400" />
               <button @click="claimPromo" class="w-full bg-black text-white font-bold uppercase tracking-widest text-[13px] md:text-[14px] py-4 hover:bg-gray-800 transition-colors shadow-md">
                 {{ $t("home.popup_claim_btn") }}
+              </button> -->
+              
+              <h2 class="text-[28px] md:text-[34px] font-serif text-[#111] mb-4 tracking-tight leading-tight">
+              <span class="font-bold">{{ $t("home.popup_first_cta") }}</span><br />
+              <span class="font-extrabold whitespace-nowrap">{{ formattedWelcomeDiscount }} {{ $t("home.popup_price_section_three") }}</span><br />
+              <span class="font-bold">{{ $t("home.popup_second_cta") }}</span>
+            </h2>
+
+            <p class="text-[15px] md:text-[16px] text-gray-800 mb-6 font-serif">
+              {{ $t("home.popup_second_cta_section_two") }}
+              <span class="font-bold whitespace-nowrap">{{ formattedMinPurchase }}</span>
+            </p>
+
+            <p class="text-[12px] md:text-[13px] font-sans text-[#444] leading-relaxed mb-6 max-w-[280px]">
+              {{ $t("home.popup_third_cta") }}
+            </p>
+
+            <div class="w-full max-w-[320px]">
+              <input type="email" v-model="promoEmail" :placeholder="$t('home.popup_enter_email')" class="w-full border border-black bg-white px-4 py-[14px] mb-3 text-[13px] font-sans focus:outline-none focus:ring-1 focus:ring-black placeholder-gray-400" />
+              <button @click="claimPromo" class="w-full bg-black text-white font-bold uppercase tracking-widest text-[13px] md:text-[14px] py-4 hover:bg-gray-800 transition-colors shadow-md">
+                {{ $t("home.popup_claim_btn", { amount: formattedWelcomeDiscount }) }}
               </button>
               <p class="text-[11px] font-sans text-gray-500 mt-3 opacity-70">
                 {{ $t("home.popup_fourth_cta") }}
@@ -6991,6 +7012,58 @@ const currentCurrency = ref(localStorage.getItem("currency") || "IDR");
 const updateCurrencyState = () => {
   currentCurrency.value = localStorage.getItem("currency") || "IDR";
 };
+
+// 👇 [BARU] DAFTAR HARGA KONVERSI UNTUK POPUP WELCOME 👇
+const welcomeGiftValues = {
+  IDR: { value: 250000, symbol: "Rp " },
+  USD: { value: 15.63, symbol: "$" },
+  SGD: { value: 20.83, symbol: "S$" },
+  EUR: { value: 14.28, symbol: "€" },
+  AUD: { value: 23.8, symbol: "A$" },
+  MYR: { value: 74, symbol: "RM " },
+};
+
+const minPurchaseValues = {
+  IDR: { value: 1500000, symbol: "Rp " },
+  USD: { value: 93.78, symbol: "$" },
+  SGD: { value: 124.98, symbol: "S$" },
+  EUR: { value: 85.68, symbol: "€" },
+  AUD: { value: 142.8, symbol: "A$" },
+  MYR: { value: 444, symbol: "RM " },
+};
+
+// Computed property untuk Diskon 250k
+const formattedWelcomeDiscount = computed(() => {
+  const activeCurrency = currentCurrency.value || "IDR";
+  const gift = welcomeGiftValues[activeCurrency] || welcomeGiftValues["IDR"];
+  
+  let formattedValue = '';
+  if (activeCurrency === 'IDR') {
+    formattedValue = new Intl.NumberFormat('id-ID').format(gift.value);
+  } else {
+    formattedValue = Number.isInteger(gift.value) 
+        ? gift.value 
+        : gift.value.toFixed(2);
+  }
+  return `${gift.symbol}${formattedValue}`;
+});
+
+// Computed property untuk Min Belanja 1.500k
+const formattedMinPurchase = computed(() => {
+  const activeCurrency = currentCurrency.value || "IDR";
+  const minPurch = minPurchaseValues[activeCurrency] || minPurchaseValues["IDR"];
+  
+  let formattedValue = '';
+  if (activeCurrency === 'IDR') {
+    formattedValue = new Intl.NumberFormat('id-ID').format(minPurch.value);
+  } else {
+    formattedValue = Number.isInteger(minPurch.value) 
+        ? minPurch.value 
+        : minPurch.value.toFixed(2);
+  }
+  return `${minPurch.symbol}${formattedValue}`;
+});
+// 👆 ================================================ 👆
 
 const getDiscountStatus = (p) => {
   const discObj = getDiscountToDisplay(p);
