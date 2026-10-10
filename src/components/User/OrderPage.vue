@@ -9499,7 +9499,7 @@ onUnmounted(() => {
               >
               <span>{{ formatLocalPrice(order.shipping_cost, order) }}</span>
             </div>
-            <div
+            <!-- <div
               v-if="order.promo_discount > 0"
               class="flex justify-between text-xs font-medium text-green-600"
             >
@@ -9509,6 +9509,20 @@ onUnmounted(() => {
                 }}</span
                 >)</span
               >
+              <span>- {{ formatLocalPrice(order.promo_discount, order) }}</span>
+            </div> -->
+
+            <div
+              v-if="order.promo_discount > 0"
+              class="flex justify-between text-xs font-medium text-green-600"
+            >
+              <!-- 👇 PERBAIKAN LOGIKA TAMPILAN PROMO VS TIER 👇 -->
+              <span v-if="order.promo_code">
+                {{ $t("order.promo_applied") }} (<span class="font-mono uppercase">{{ order.promo_code }}</span>)
+              </span>
+              <span v-else>Tier Privilege</span>
+              <!-- 👆 ========================================= 👆 -->
+              
               <span>- {{ formatLocalPrice(order.promo_discount, order) }}</span>
             </div>
 

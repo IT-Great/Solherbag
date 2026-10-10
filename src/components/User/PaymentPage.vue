@@ -21122,9 +21122,27 @@ const maxPointsAllowed = computed(() => {
 // ============================================
 // 5. COMPUTED PROPERTIES LEVEL 3 (BERGANTUNG PADA LEVEL 2)
 // ============================================
+// const tierDiscountAmountIDR = computed(() => {
+//   if (isAllFinalSale.value) return 0; 
+//   let discountableAmount = 0;
+//   if (isMixedCart.value) {
+//     if (mixedCartPrivilegeSelection.value.length === 0) return 0;
+//     checkoutItems.value.forEach(item => {
+//       if (mixedCartPrivilegeSelection.value.includes(item.id) && !item.product?.is_final_sale) {
+//         discountableAmount += getActivePriceObj(item.product).value * item.quantity;
+//       }
+//     });
+//   } else {
+//     if (!useTierPrivilege.value) return 0;
+//     discountableAmount = checkoutTotalIDR.value - bundleDiscountAmount.value; 
+//   }
+//   return discountableAmount * userTierInfo.value.discount;
+// });
+
 const tierDiscountAmountIDR = computed(() => {
   if (isAllFinalSale.value) return 0; 
   let discountableAmount = 0;
+  
   if (isMixedCart.value) {
     if (mixedCartPrivilegeSelection.value.length === 0) return 0;
     checkoutItems.value.forEach(item => {
@@ -21134,8 +21152,10 @@ const tierDiscountAmountIDR = computed(() => {
     });
   } else {
     if (!useTierPrivilege.value) return 0;
-    discountableAmount = checkoutTotalIDR.value - bundleDiscountAmount.value; 
+    // 👇 PERBAIKAN: Jangan kurangi dengan bundle! Hitung 10% langsung dari total harga barang normal
+    discountableAmount = checkoutTotalIDR.value; 
   }
+  
   return discountableAmount * userTierInfo.value.discount;
 });
 
