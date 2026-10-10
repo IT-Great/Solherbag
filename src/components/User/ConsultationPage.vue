@@ -614,9 +614,335 @@ const startConsultation = () => {
 </template>
 
 <script setup>
+// import { ref, computed, onMounted } from "vue";
+// import { useRouter } from "vue-router";
+// import Swal from "sweetalert2";
+
+// const router = useRouter();
+// const userData = ref(null);
+
+// // State Control
+// const currentStep = ref(0);
+// const isConnecting = ref(false);
+
+// const steps = [
+//   { title: "Tujuan Sesi" },
+//   { title: "Detail Kebutuhan" },
+//   { title: "Spesifikasi" },
+//   { title: "Mulai Chat" },
+// ];
+
+// // Form Data Model
+// const form = ref({
+//   intent: "", // 'style_advice', 'product_inquiry', 'complaint', 'feedback'
+//   styles: [], // Array of selected styles
+//   complaintType: "", // If intent is complaint
+//   bagTypes: [], // Array of bag preferences
+//   colors: [], // Array of color hex/names
+//   specificNeeds: "", // Textarea for details
+// });
+
+// // Options Data
+// const formOptions = {
+//   intents: [
+//     {
+//       id: "style_advice",
+//       title: "Kurasi & Styling",
+//       desc: "Rekomendasi tas yang cocok untuk gaya atau acara spesifik.",
+//       icon: "svg-sparkles",
+//     },
+//     {
+//       id: "product_inquiry",
+//       title: "Pertanyaan Produk",
+//       desc: "Detail material, ukuran, atau ketersediaan stok.",
+//       icon: "svg-bag",
+//     },
+//     {
+//       id: "feedback",
+//       title: "Ulasan & Masukan",
+//       desc: "Berbagi pengalaman kepuasan Anda setelah memakai Solhér.",
+//       icon: "svg-heart",
+//     },
+//     {
+//       id: "complaint",
+//       title: "Kendala / Keluhan",
+//       desc: "Laporkan masalah terkait produk, pengiriman, atau layanan.",
+//       icon: "svg-alert",
+//     },
+//   ],
+//   styles: [
+//     { id: "minimalist", title: "Minimalist", emoji: "🤍" },
+//     { id: "elegant", title: "Elegant", emoji: "✨" },
+//     { id: "casual", title: "Casual Daily", emoji: "☕" },
+//     { id: "bold", title: "Bold & Edgy", emoji: "🔥" },
+//   ],
+//   colors: [
+//     { name: "Noir (Black)", hex: "#000000" },
+//     { name: "Blanc (White)", hex: "#ffffff" },
+//     { name: "Taupe (Brown)", hex: "#8b7355" },
+//     { name: "Rouge (Red)", hex: "#7a101e" },
+//     { name: "Marine (Navy)", hex: "#1a2942" },
+//     { name: "Olive (Green)", hex: "#4a5d23" },
+//   ],
+// };
+
+// // Lifecycle
+// onMounted(() => {
+//   const storedUser = localStorage.getItem("user");
+//   if (storedUser) {
+//     userData.value = JSON.parse(storedUser);
+
+//     // Keamanan Ganda (Double-check di sisi klien jika rute bocor)
+//     const points = userData.value.point || 0;
+//     if (!userData.value.is_membership || points < 10000) {
+//       router.push("/profilepage");
+//     }
+//   } else {
+//     router.push("/login");
+//   }
+// });
+
+// // Logic & Validation
+// const isStepValid = computed(() => {
+//   if (currentStep.value === 0) return form.value.intent !== "";
+//   if (currentStep.value === 1) {
+//     if (form.value.intent === "complaint")
+//       return form.value.complaintType !== "";
+//     // Untuk intent lain, gaya bersifat opsional atau minimal 1. Kita buat opsional agar fleksibel.
+//     return true;
+//   }
+//   return true; // Step 3 opsional
+// });
+
+// const formatIntentDisplay = (intent) => {
+//   const found = formOptions.intents.find((i) => i.id === intent);
+//   return found ? found.title : "Konsultasi Umum";
+// };
+
+// const togglePreference = (type, value) => {
+//   const array = form.value[type];
+//   const index = array.indexOf(value);
+//   if (index === -1) {
+//     array.push(value);
+//   } else {
+//     array.splice(index, 1);
+//   }
+// };
+
+// const nextStep = () => {
+//   if (currentStep.value === 0 && form.value.intent === "complaint") {
+//     // Jika komplain, kita lompat langsung ke step 2 (isian form keluhan), lewati gaya.
+//     // Tapi karena UI Step 2 sudah kita kondisikan untuk berubah jadi form komplain,
+//     // kita tetap maju 1 step secara berurutan.
+//   }
+
+//   if (currentStep.value < steps.length - 1) currentStep.value++;
+// };
+
+// const prevStep = () => {
+//   if (currentStep.value > 0) currentStep.value--;
+// };
+
+// // const startConsultation = () => {
+// //   // Simpan data pre-intake ke LocalStorage/State agar bisa dikirim sebagai pesan pertama di halaman Chat
+// //   localStorage.setItem('concierge_intake_data', JSON.stringify(form.value));
+
+// //   isConnecting.value = true;
+
+// //   // Simulasi proses koneksi (Loading screen animasi kustom)
+// //   setTimeout(() => {
+// //     router.push('/chat-list');
+// //   }, 2000);
+// // };
+
+// // const startConsultation = async () => {
+// //   // Simpan data pre-intake ke LocalStorage/State agar bisa dikirim sebagai pesan pertama di halaman Chat
+// //   localStorage.setItem("concierge_intake_data", JSON.stringify(form.value));
+
+// //   isConnecting.value = true;
+
+// //   try {
+// //     // 👇 PERBAIKAN: Petakan objek data agar presisi dengan validasi Laravel 👇
+// //     const payload = {
+// //       intent: form.value.intent,
+// //       complaintType: form.value.complaintType || null,
+// //       styles: form.value.styles || [],
+// //       bagTypes: form.value.bagTypes || [],
+// //       colors: form.value.colors || [],
+// //       specificNeeds: form.value.specificNeeds || "",
+// //     };
+
+// //     // 1. Kirim data Intake ke Backend Laravel
+// //     const res = await axios.post(`${BASE_URL}/consultation/intake`, payload, {
+// //       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+// //     });
+
+// //     // 3. Tampilkan layar "Menghubungkan" selama 2 detik agar terasa eksklusif
+// //     setTimeout(() => {
+// //       router.push("/chat-list");
+// //     }, 2000);
+
+// //     // } catch (error) {
+// //     //   isConnecting.value = false;
+
+// //     //   // Tampilkan error jika Server menolak (misal: bukan member)
+// //     //   Swal.fire({
+// //     //     icon: 'error',
+// //     //     title: 'Akses Ditolak',
+// //     //     text: error.response?.data?.message || 'Terjadi kesalahan pada sistem. Silakan coba lagi.',
+// //     //     confirmButtonColor: '#000',
+// //     //   });
+// //     // }
+// //   } catch (error) {
+// //     isConnecting.value = false;
+
+// //     // Tampilkan pesan error yang sesungguhnya dari Backend
+// //     console.error("Backend Error Detail:", error.response?.data);
+
+// //     Swal.fire({
+// //       icon: "error",
+// //       title: "Pengiriman Gagal",
+// //       text:
+// //         error.response?.data?.message ||
+// //         "Terjadi kesalahan sistem (Cek terminal backend atau F12).",
+// //       confirmButtonColor: "#000",
+// //     });
+// //   }
+// // };
+
+// const startConsultation = async () => {
+//   // Simpan cadangan ke localStorage
+//   localStorage.setItem('concierge_intake_data', JSON.stringify(form.value));
+
+//   isConnecting.value = true;
+  
+//   try {
+//     const payload = {
+//       intent: form.value.intent,
+//       complaintType: form.value.complaintType || null,
+//       styles: form.value.styles || [],
+//       bagTypes: form.value.bagTypes || [],
+//       colors: form.value.colors || [],
+//       specificNeeds: form.value.specificNeeds || ''
+//     };
+
+//     // Mengirim data ke Database agar dapat dibaca oleh Admin
+//     await axios.post(`${BASE_URL}/consultation/intake`, payload, {
+//       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+//     });
+
+//     // Simulasi transisi dan arahkan ke daftar chat
+//     setTimeout(() => {
+//       router.push('/chat-list'); 
+//     }, 2000);
+
+//   } catch (error) {
+//     isConnecting.value = false;
+    
+//     Swal.fire({
+//       icon: 'error',
+//       title: 'Pengiriman Gagal',
+//       text: error.response?.data?.message || 'Terjadi kesalahan pada sistem.',
+//       confirmButtonColor: '#000',
+//     });
+//   }
+// };
+
+// // SVG Component Definitions (Mocked as functional components or raw SVG paths for simplicity in Vue 3 SFC)
+// </script>
+
+// <script>
+// // Ikon SVG Kustom di dalam form
+// import { h } from "vue";
+
+// const SvgSparkles = () =>
+//   h(
+//     "svg",
+//     {
+//       xmlns: "http://www.w3.org/2000/svg",
+//       fill: "none",
+//       viewBox: "0 0 24 24",
+//       stroke: "currentColor",
+//       "stroke-width": 1.5,
+//     },
+//     [
+//       h("path", {
+//         "stroke-linecap": "round",
+//         "stroke-linejoin": "round",
+//         d: "M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z",
+//       }),
+//     ],
+//   );
+// const SvgBag = () =>
+//   h(
+//     "svg",
+//     {
+//       xmlns: "http://www.w3.org/2000/svg",
+//       fill: "none",
+//       viewBox: "0 0 24 24",
+//       stroke: "currentColor",
+//       "stroke-width": 1.5,
+//     },
+//     [
+//       h("path", {
+//         "stroke-linecap": "round",
+//         "stroke-linejoin": "round",
+//         d: "M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z",
+//       }),
+//     ],
+//   );
+// const SvgHeart = () =>
+//   h(
+//     "svg",
+//     {
+//       xmlns: "http://www.w3.org/2000/svg",
+//       fill: "none",
+//       viewBox: "0 0 24 24",
+//       stroke: "currentColor",
+//       "stroke-width": 1.5,
+//     },
+//     [
+//       h("path", {
+//         "stroke-linecap": "round",
+//         "stroke-linejoin": "round",
+//         d: "M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z",
+//       }),
+//     ],
+//   );
+// const SvgAlert = () =>
+//   h(
+//     "svg",
+//     {
+//       xmlns: "http://www.w3.org/2000/svg",
+//       fill: "none",
+//       viewBox: "0 0 24 24",
+//       stroke: "currentColor",
+//       "stroke-width": 1.5,
+//     },
+//     [
+//       h("path", {
+//         "stroke-linecap": "round",
+//         "stroke-linejoin": "round",
+//         d: "M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z",
+//       }),
+//     ],
+//   );
+
+// export default {
+//   components: {
+//     "svg-sparkles": SvgSparkles,
+//     "svg-bag": SvgBag,
+//     "svg-heart": SvgHeart,
+//     "svg-alert": SvgAlert,
+//   },
+// };
+
 import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
+// 👇 PERBAIKAN 1: Tambahkan Import AXIOS dan BASE_URL yang hilang 👇
+import axios from "axios";
+import { BASE_URL } from "../../config/api"; // Sesuaikan path ini dengan struktur folder Anda
 
 const router = useRouter();
 const userData = ref(null);
@@ -629,46 +955,26 @@ const steps = [
   { title: "Tujuan Sesi" },
   { title: "Detail Kebutuhan" },
   { title: "Spesifikasi" },
-  { title: "Mulai Chat" },
+  { title: "Kirim Data" }, // Ubah judul step terakhir agar sesuai
 ];
 
 // Form Data Model
 const form = ref({
-  intent: "", // 'style_advice', 'product_inquiry', 'complaint', 'feedback'
-  styles: [], // Array of selected styles
-  complaintType: "", // If intent is complaint
-  bagTypes: [], // Array of bag preferences
-  colors: [], // Array of color hex/names
-  specificNeeds: "", // Textarea for details
+  intent: "", 
+  styles: [], 
+  complaintType: "", 
+  bagTypes: [], 
+  colors: [], 
+  specificNeeds: "", 
 });
 
 // Options Data
 const formOptions = {
   intents: [
-    {
-      id: "style_advice",
-      title: "Kurasi & Styling",
-      desc: "Rekomendasi tas yang cocok untuk gaya atau acara spesifik.",
-      icon: "svg-sparkles",
-    },
-    {
-      id: "product_inquiry",
-      title: "Pertanyaan Produk",
-      desc: "Detail material, ukuran, atau ketersediaan stok.",
-      icon: "svg-bag",
-    },
-    {
-      id: "feedback",
-      title: "Ulasan & Masukan",
-      desc: "Berbagi pengalaman kepuasan Anda setelah memakai Solhér.",
-      icon: "svg-heart",
-    },
-    {
-      id: "complaint",
-      title: "Kendala / Keluhan",
-      desc: "Laporkan masalah terkait produk, pengiriman, atau layanan.",
-      icon: "svg-alert",
-    },
+    { id: "style_advice", title: "Kurasi & Styling", desc: "Rekomendasi tas yang cocok untuk gaya atau acara spesifik.", icon: "svg-sparkles" },
+    { id: "product_inquiry", title: "Pertanyaan Produk", desc: "Detail material, ukuran, atau ketersediaan stok.", icon: "svg-bag" },
+    { id: "feedback", title: "Ulasan & Masukan", desc: "Berbagi pengalaman kepuasan Anda setelah memakai Solhér.", icon: "svg-heart" },
+    { id: "complaint", title: "Kendala / Keluhan", desc: "Laporkan masalah terkait produk, pengiriman, atau layanan.", icon: "svg-alert" },
   ],
   styles: [
     { id: "minimalist", title: "Minimalist", emoji: "🤍" },
@@ -692,7 +998,6 @@ onMounted(() => {
   if (storedUser) {
     userData.value = JSON.parse(storedUser);
 
-    // Keamanan Ganda (Double-check di sisi klien jika rute bocor)
     const points = userData.value.point || 0;
     if (!userData.value.is_membership || points < 10000) {
       router.push("/profilepage");
@@ -706,12 +1011,10 @@ onMounted(() => {
 const isStepValid = computed(() => {
   if (currentStep.value === 0) return form.value.intent !== "";
   if (currentStep.value === 1) {
-    if (form.value.intent === "complaint")
-      return form.value.complaintType !== "";
-    // Untuk intent lain, gaya bersifat opsional atau minimal 1. Kita buat opsional agar fleksibel.
+    if (form.value.intent === "complaint") return form.value.complaintType !== "";
     return true;
   }
-  return true; // Step 3 opsional
+  return true; 
 });
 
 const formatIntentDisplay = (intent) => {
@@ -731,11 +1034,8 @@ const togglePreference = (type, value) => {
 
 const nextStep = () => {
   if (currentStep.value === 0 && form.value.intent === "complaint") {
-    // Jika komplain, kita lompat langsung ke step 2 (isian form keluhan), lewati gaya.
-    // Tapi karena UI Step 2 sudah kita kondisikan untuk berubah jadi form komplain,
-    // kita tetap maju 1 step secara berurutan.
+    // Lewati gaya jika komplain
   }
-
   if (currentStep.value < steps.length - 1) currentStep.value++;
 };
 
@@ -743,78 +1043,9 @@ const prevStep = () => {
   if (currentStep.value > 0) currentStep.value--;
 };
 
-// const startConsultation = () => {
-//   // Simpan data pre-intake ke LocalStorage/State agar bisa dikirim sebagai pesan pertama di halaman Chat
-//   localStorage.setItem('concierge_intake_data', JSON.stringify(form.value));
-
-//   isConnecting.value = true;
-
-//   // Simulasi proses koneksi (Loading screen animasi kustom)
-//   setTimeout(() => {
-//     router.push('/chat-list');
-//   }, 2000);
-// };
-
-// const startConsultation = async () => {
-//   // Simpan data pre-intake ke LocalStorage/State agar bisa dikirim sebagai pesan pertama di halaman Chat
-//   localStorage.setItem("concierge_intake_data", JSON.stringify(form.value));
-
-//   isConnecting.value = true;
-
-//   try {
-//     // 👇 PERBAIKAN: Petakan objek data agar presisi dengan validasi Laravel 👇
-//     const payload = {
-//       intent: form.value.intent,
-//       complaintType: form.value.complaintType || null,
-//       styles: form.value.styles || [],
-//       bagTypes: form.value.bagTypes || [],
-//       colors: form.value.colors || [],
-//       specificNeeds: form.value.specificNeeds || "",
-//     };
-
-//     // 1. Kirim data Intake ke Backend Laravel
-//     const res = await axios.post(`${BASE_URL}/consultation/intake`, payload, {
-//       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-//     });
-
-//     // 3. Tampilkan layar "Menghubungkan" selama 2 detik agar terasa eksklusif
-//     setTimeout(() => {
-//       router.push("/chat-list");
-//     }, 2000);
-
-//     // } catch (error) {
-//     //   isConnecting.value = false;
-
-//     //   // Tampilkan error jika Server menolak (misal: bukan member)
-//     //   Swal.fire({
-//     //     icon: 'error',
-//     //     title: 'Akses Ditolak',
-//     //     text: error.response?.data?.message || 'Terjadi kesalahan pada sistem. Silakan coba lagi.',
-//     //     confirmButtonColor: '#000',
-//     //   });
-//     // }
-//   } catch (error) {
-//     isConnecting.value = false;
-
-//     // Tampilkan pesan error yang sesungguhnya dari Backend
-//     console.error("Backend Error Detail:", error.response?.data);
-
-//     Swal.fire({
-//       icon: "error",
-//       title: "Pengiriman Gagal",
-//       text:
-//         error.response?.data?.message ||
-//         "Terjadi kesalahan sistem (Cek terminal backend atau F12).",
-//       confirmButtonColor: "#000",
-//     });
-//   }
-// };
-
+// 👇 PERBAIKAN 2: Logika Pop-Up Sukses & Hilangkan Redirect 👇
 const startConsultation = async () => {
-  // Simpan cadangan ke localStorage
-  localStorage.setItem('concierge_intake_data', JSON.stringify(form.value));
-
-  isConnecting.value = true;
+  isConnecting.value = true; // Munculkan overlay "Menghubungkan..." sebentar agar ada interaksi
   
   try {
     const payload = {
@@ -826,115 +1057,38 @@ const startConsultation = async () => {
       specificNeeds: form.value.specificNeeds || ''
     };
 
-    // Mengirim data ke Database agar dapat dibaca oleh Admin
+    // Kirim data ke backend
     await axios.post(`${BASE_URL}/consultation/intake`, payload, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
     });
 
-    // Simulasi transisi dan arahkan ke daftar chat
-    setTimeout(() => {
-      router.push('/chat-list'); 
-    }, 2000);
+    // Hilangkan loading overlay
+    isConnecting.value = false;
+
+    // Tampilkan Pop-up Berhasil
+    Swal.fire({
+      icon: 'success',
+      title: 'Terkirim!',
+      text: 'Data preferensi Anda telah diterima oleh Admin/Concierge kami.',
+      confirmButtonColor: '#eab308', // Warna kuning (yellow-500)
+    }).then(() => {
+      // Opsional: Kembalikan pengguna ke step 1 jika Anda ingin mereka bisa input lagi,
+      // Atau biarkan mereka tetap di layar ini.
+      // currentStep.value = 0; 
+    });
 
   } catch (error) {
     isConnecting.value = false;
     
+    console.error("Backend Error Detail:", error);
+
     Swal.fire({
       icon: 'error',
       title: 'Pengiriman Gagal',
-      text: error.response?.data?.message || 'Terjadi kesalahan pada sistem.',
+      text: error.response?.data?.message || 'Terjadi kesalahan pada sistem. Periksa koneksi Anda.',
       confirmButtonColor: '#000',
     });
   }
-};
-
-// SVG Component Definitions (Mocked as functional components or raw SVG paths for simplicity in Vue 3 SFC)
-</script>
-
-<script>
-// Ikon SVG Kustom di dalam form
-import { h } from "vue";
-
-const SvgSparkles = () =>
-  h(
-    "svg",
-    {
-      xmlns: "http://www.w3.org/2000/svg",
-      fill: "none",
-      viewBox: "0 0 24 24",
-      stroke: "currentColor",
-      "stroke-width": 1.5,
-    },
-    [
-      h("path", {
-        "stroke-linecap": "round",
-        "stroke-linejoin": "round",
-        d: "M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z",
-      }),
-    ],
-  );
-const SvgBag = () =>
-  h(
-    "svg",
-    {
-      xmlns: "http://www.w3.org/2000/svg",
-      fill: "none",
-      viewBox: "0 0 24 24",
-      stroke: "currentColor",
-      "stroke-width": 1.5,
-    },
-    [
-      h("path", {
-        "stroke-linecap": "round",
-        "stroke-linejoin": "round",
-        d: "M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z",
-      }),
-    ],
-  );
-const SvgHeart = () =>
-  h(
-    "svg",
-    {
-      xmlns: "http://www.w3.org/2000/svg",
-      fill: "none",
-      viewBox: "0 0 24 24",
-      stroke: "currentColor",
-      "stroke-width": 1.5,
-    },
-    [
-      h("path", {
-        "stroke-linecap": "round",
-        "stroke-linejoin": "round",
-        d: "M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z",
-      }),
-    ],
-  );
-const SvgAlert = () =>
-  h(
-    "svg",
-    {
-      xmlns: "http://www.w3.org/2000/svg",
-      fill: "none",
-      viewBox: "0 0 24 24",
-      stroke: "currentColor",
-      "stroke-width": 1.5,
-    },
-    [
-      h("path", {
-        "stroke-linecap": "round",
-        "stroke-linejoin": "round",
-        d: "M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z",
-      }),
-    ],
-  );
-
-export default {
-  components: {
-    "svg-sparkles": SvgSparkles,
-    "svg-bag": SvgBag,
-    "svg-heart": SvgHeart,
-    "svg-alert": SvgAlert,
-  },
 };
 </script>
 
