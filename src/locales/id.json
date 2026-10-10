@@ -815,5 +815,89 @@
     "faq_a3": "Poin dan status tier Anda berlaku selama 12 bulan dari tanggal pembelian terakhir. Melanjutkan perjalanan Anda bersama kami dalam tahun tersebut secara otomatis memperpanjang masa berlakunya.",
     "faq_q4": "Bagaimana cara mengklaim Keuntungan Bulan Ulang Tahun saya?",
     "faq_a4": "Hak istimewa ulang tahun yang dirancang khusus akan dikirimkan secara eksklusif ke alamat email Anda yang terdaftar pada awal bulan ulang tahun Anda. Pastikan detail profil Anda telah lengkap."
+  },
+  "consultation": {
+    "title": "Héritage Concierge",
+    "exclusive_for": "Eksklusif untuk {name}",
+    "guest_fallback": "Member",
+    "preparation": {
+      "title": "Persiapan Konsultasi",
+      "subtitle": "Untuk memberikan layanan terbaik, bantu Personal Shopper kami memahami kebutuhan Anda hari ini."
+    },
+    "steps": {
+      "goal": "Tujuan Sesi",
+      "details": "Detail Kebutuhan",
+      "specs": "Spesifikasi",
+      "submit": "Kirim Data"
+    },
+    "priority_lane": {
+      "title": "Priority Lane",
+      "desc": "Member Héritage akan langsung terhubung dengan pakar gaya senior kami tanpa waktu tunggu."
+    },
+    "step1": {
+      "question": "Apa tujuan utama sesi Anda hari ini?",
+      "desc": "Pilih salah satu layanan spesifik yang Anda butuhkan.",
+      "options": {
+        "style_advice": {
+          "title": "Kurasi & Styling",
+          "desc": "Rekomendasi tas yang cocok untuk gaya atau acara spesifik."
+        },
+        "product_inquiry": {
+          "title": "Pertanyaan Produk",
+          "desc": "Detail material, ukuran, atau ketersediaan stok."
+        },
+        "feedback": {
+          "title": "Ulasan & Masukan",
+          "desc": "Berbagi pengalaman kepuasan Anda setelah memakai Solhér."
+        },
+        "complaint": {
+          "title": "Kendala / Keluhan",
+          "desc": "Laporkan masalah terkait produk, pengiriman, atau layanan."
+        }
+      }
+    },
+    "step2": {
+      "question_complaint": "Apa kendala yang Anda alami?",
+      "desc_complaint": "Kami di sini untuk mendengarkan dan memberikan solusi terbaik.",
+      "question_style": "Bagaimana Anda mendeskripsikan gaya Anda?",
+      "desc_style": "Pilih satu atau lebih gaya yang paling merepresentasikan kepribadian Anda.",
+      "complaint_placeholder": "Pilih Kategori Kendala",
+      "complaint_categories": {
+        "quality": "Kualitas & Material Produk",
+        "shipping": "Pengiriman & Logistik",
+        "service": "Pelayanan Tim Solhér",
+        "others": "Lainnya"
+      },
+      "complaint_detail_placeholder": "Ceritakan detail kendala Anda..."
+    },
+    "step3": {
+      "question": "Apakah ada hal spesifik yang Anda cari?",
+      "desc": "Informasi ini akan membantu Personal Shopper menyiapkan rekomendasi yang akurat.",
+      "bag_type_label": "Tipe Tas (Opsional)",
+      "color_label": "Warna Kesukaan (Opsional)",
+      "notes_label": "Catatan Khusus (Opsional)",
+      "notes_placeholder": "Misal: 'Saya butuh tas untuk acara pernikahan minggu depan...'"
+    },
+    "step4": {
+      "completed_title": "Profil Selesai.",
+      "completed_desc": "Terima kasih, {name}. Data Anda telah dienkripsi dan disiapkan. Concierge Anda sedang online dan siap memulai sesi.",
+      "session_topic": "Topik Sesi:",
+      "general_consultation": "Konsultasi Umum"
+    },
+    "buttons": {
+      "back": "Kembali",
+      "next": "Selanjutnya",
+      "submit": "Kirim"
+    },
+    "overlay": {
+      "connecting": "Menghubungkan...",
+      "secure_channel": "Membuka jalur aman ke Personal Shopper Anda."
+    },
+    "alerts": {
+      "success_title": "Terkirim!",
+      "success_text": "Data preferensi Anda telah diterima oleh Admin/Concierge kami.",
+      "error_title": "Pengiriman Gagal",
+      "error_text": "Terjadi kesalahan pada sistem. Periksa koneksi Anda."
+    }
   }
 }

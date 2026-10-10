@@ -816,5 +816,89 @@
     "faq_a3": "Your points and tier status remain valid for 12 months from the date of your last purchase. Continuing your journey with us within the year automatically extends their validity.",
     "faq_q4": "How do I claim my Birthday Month Benefit?",
     "faq_a4": "A specially curated birthday privilege will be sent exclusively to your registered email address at the beginning of your birthday month. Please ensure your profile details are complete."
+  },
+  "consultation": {
+    "title": "Héritage Concierge",
+    "exclusive_for": "Exclusive for {name}",
+    "guest_fallback": "Member",
+    "preparation": {
+      "title": "Consultation Preparation",
+      "subtitle": "To provide the best service, please help our Personal Shopper understand your needs today."
+    },
+    "steps": {
+      "goal": "Session Goal",
+      "details": "Needs Details",
+      "specs": "Specifications",
+      "submit": "Send Data"
+    },
+    "priority_lane": {
+      "title": "Priority Lane",
+      "desc": "Héritage members will be directly connected to our senior style experts without waiting time."
+    },
+    "step1": {
+      "question": "What is the main goal of your session today?",
+      "desc": "Choose one specific service you need.",
+      "options": {
+        "style_advice": {
+          "title": "Curation & Styling",
+          "desc": "Bag recommendations suitable for specific styles or events."
+        },
+        "product_inquiry": {
+          "title": "Product Inquiry",
+          "desc": "Material details, size, or stock availability."
+        },
+        "feedback": {
+          "title": "Feedback & Reviews",
+          "desc": "Share your satisfaction experience after using Solhér."
+        },
+        "complaint": {
+          "title": "Complaint / Issue",
+          "desc": "Report issues related to products, shipping, or services."
+        }
+      }
+    },
+    "step2": {
+      "question_complaint": "What issue are you experiencing?",
+      "desc_complaint": "We are here to listen and provide the best solution.",
+      "question_style": "How would you describe your style?",
+      "desc_style": "Choose one or more styles that best represent your personality.",
+      "complaint_placeholder": "Select Issue Category",
+      "complaint_categories": {
+        "quality": "Product Quality & Material",
+        "shipping": "Shipping & Logistics",
+        "service": "Solhér Team Service",
+        "others": "Others"
+      },
+      "complaint_detail_placeholder": "Tell us the details of your issue..."
+    },
+    "step3": {
+      "question": "Is there anything specific you are looking for?",
+      "desc": "This information will help the Personal Shopper prepare accurate recommendations.",
+      "bag_type_label": "Bag Type (Optional)",
+      "color_label": "Favorite Color (Optional)",
+      "notes_label": "Special Notes (Optional)",
+      "notes_placeholder": "e.g.: 'I need a bag for a wedding next week...'"
+    },
+    "step4": {
+      "completed_title": "Profile Completed.",
+      "completed_desc": "Thank you, {name}. Your data has been encrypted and prepared. Your Concierge is online and ready to start the session.",
+      "session_topic": "Session Topic:",
+      "general_consultation": "General Consultation"
+    },
+    "buttons": {
+      "back": "Back",
+      "next": "Next",
+      "submit": "Submit"
+    },
+    "overlay": {
+      "connecting": "Connecting...",
+      "secure_channel": "Opening a secure channel to your Personal Shopper."
+    },
+    "alerts": {
+      "success_title": "Sent!",
+      "success_text": "Your preference data has been received by our Admin/Concierge.",
+      "error_title": "Submission Failed",
+      "error_text": "A system error occurred. Please check your connection."
+    }
   }
 }
