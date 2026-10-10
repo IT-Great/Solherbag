@@ -2906,7 +2906,8 @@ onMounted(fetchData);
               v-if="transaction.promo_discount > 0"
               class="flex items-center justify-between text-sm font-medium text-green-600"
             >
-              <span>Promo Code ({{ transaction.promo_code }})</span>
+              <!-- <span>Promo Code ({{ transaction.promo_code }})</span> -->
+              <span>Discounts</span>
               <span>- {{ formatPrice(transaction.promo_discount) }}</span>
             </div>
             <div

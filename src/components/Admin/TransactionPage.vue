@@ -7102,8 +7102,11 @@ onUnmounted(() => {
                   v-if="trx.promo_discount > 0"
                   class="flex justify-between text-[9px] text-green-600 font-bold"
                 >
-                  <span v-if="trx.promo_code">
+                  <!-- <span v-if="trx.promo_code">
                     Promo (<span class="font-mono">{{ trx.promo_code }}</span>)
+                  </span> -->
+                  <span v-if="trx.promo_code">
+                    Discounts
                   </span>
                   <span v-else>Discounts</span>
                   

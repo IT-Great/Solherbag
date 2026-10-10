@@ -281,12 +281,13 @@
               v-if="orderData.promo_discount > 0"
               class="flex justify-between text-xs font-medium text-green-600"
             >
-              <span
+              <!-- <span
                 >{{ $t("tracking.promo_applied") }} (<span class="font-mono uppercase">{{
                   orderData.promo_code
                 }}</span
                 >)</span
-              >
+              > -->
+              <span>Discounts</span>
               <span>- {{ formatLocalPrice(orderData.promo_discount, orderData) }}</span>
             </div>
 
