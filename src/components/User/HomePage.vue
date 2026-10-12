@@ -6994,6 +6994,83 @@ onUnmounted(() => {
         </div> -->
 
         <!-- Popup Default (Mini Registration) -->
+        <!-- <div
+          v-else-if="ACTIVE_POPUP === 'default'"
+          class="relative flex flex-col w-full max-w-4xl overflow-hidden bg-white shadow-2xl md:flex-row"
+        >
+          <button @click="closePopup" class="absolute z-20 text-gray-500 transition top-4 right-4 hover:text-black">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+
+          <div class="relative hidden bg-gray-200 md:block md:w-[45%]">
+            <img src="../../assets/DSCF2551.jpg" alt="Solher Bags" class="object-cover w-full h-full" />
+          </div>
+
+          <div class="flex flex-col justify-center w-full px-8 py-10 md:px-12 md:py-12 md:w-[55%] overflow-y-auto custom-scrollbar">
+            
+            <template v-if="!isAuthenticated">
+              <p class="text-[10px] font-bold tracking-widest text-[#8c3b4a] uppercase mb-2">A Gift, With Love ❤️</p>
+              <h2 class="text-[32px] md:text-[42px] font-serif text-[#111] mb-2 tracking-tight leading-[1.1]">
+                <span class="font-extrabold text-[#8c3b4a]">{{ formattedWelcomeDiscount }}</span><br />
+                <span class="text-[26px] md:text-[32px] font-light">is waiting for you.</span>
+              </h2>
+              <p class="text-[13px] text-gray-600 mb-6 leading-relaxed">
+                Join Solhér today and enjoy your welcome gift instantly credited as <strong class="text-black">250 Points</strong>.
+              </p>
+
+              <form @submit.prevent="registerFromPopup" class="space-y-3 w-full">
+                <div class="grid grid-cols-2 gap-3">
+                  <input type="text" v-model="regForm.first_name" placeholder="First Name *" class="w-full border border-gray-300 bg-white px-4 py-3 text-[13px] focus:border-black outline-none" required />
+                  <input type="text" v-model="regForm.last_name" placeholder="Last Name *" class="w-full border border-gray-300 bg-white px-4 py-3 text-[13px] focus:border-black outline-none" required />
+                </div>
+                <input type="email" v-model="regForm.email" placeholder="Email Address *" class="w-full border border-gray-300 bg-white px-4 py-3 text-[13px] focus:border-black outline-none" required />
+                <input type="password" v-model="regForm.password" placeholder="Password (Min. 8 chars) *" minlength="8" class="w-full border border-gray-300 bg-white px-4 py-3 text-[13px] focus:border-black outline-none" required />
+                <input type="date" v-model="regForm.birthday_date" class="w-full border border-gray-300 bg-white px-4 py-3 text-[13px] text-gray-500 focus:border-black outline-none" required />
+                
+                <div class="flex items-start gap-2 mt-2 mb-2">
+                  <input type="checkbox" required class="mt-1 border-gray-300 text-[#8c3b4a] focus:ring-[#8c3b4a]" />
+                  <p class="text-[11px] text-gray-500 leading-tight">
+                    <strong class="text-[#8c3b4a]">Required.</strong> I'd love to claim my gift. Withdraw anytime by checking out minimum {{ formattedMinPurchase }}.
+                  </p>
+                </div>
+
+                <button type="submit" :disabled="isRegistering" class="w-full bg-[#8c3b4a] text-white font-bold uppercase tracking-widest text-[13px] py-4 hover:bg-[#6b2b37] transition-colors shadow-lg">
+                  <span v-if="!isRegistering">CLAIM MY {{ formattedWelcomeDiscount }}</span>
+                  <div v-else class="w-4 h-4 mx-auto border-2 rounded-full border-white/30 border-t-white animate-spin"></div>
+                </button>
+                
+                <p class="text-[11px] text-center text-gray-500 mt-4">
+                  Already have an account? <router-link to="/login" class="underline text-black font-bold">Log in here</router-link>
+                </p>
+              </form>
+            </template>
+
+            <template v-else>
+              <div class="text-center my-auto py-8">
+                <p class="text-[10px] font-bold tracking-widest text-[#8c3b4a] uppercase mb-4">Welcome Back ✨</p>
+                <h2 class="text-[32px] md:text-[40px] font-serif text-[#111] mb-4 tracking-tight leading-[1.1]">
+                  <span class="font-light">Hello,</span><br/>
+                  <span class="font-extrabold text-[#8c3b4a]">{{ userData?.first_name || 'Gorgeous' }}</span>
+                </h2>
+                <p class="text-[13px] text-gray-600 mb-8 leading-relaxed max-w-[280px] mx-auto">
+                  You're already part of the Solhér family. Don't forget to use your <strong class="text-black">Circle Privileges</strong> and collected points on your next checkout!
+                </p>
+
+                <button @click="router.push('/collections'); closePopup()" class="w-full bg-[#8c3b4a] text-white font-bold uppercase tracking-widest text-[13px] py-4 hover:bg-[#6b2b37] transition-colors shadow-lg mb-5">
+                  SHOP NEW ARRIVALS
+                </button>
+                
+                <p class="text-[11px] text-center text-gray-500">
+                  Share the love & earn rewards? <br/>
+                  <router-link to="/affiliate" @click="closePopup" class="underline text-black font-bold mt-1.5 inline-block">Invite a friend here</router-link>
+                </p>
+              </div>
+            </template>
+
+          </div>
+        </div> -->
+
+        <!-- Popup Default (Mini Registration) -->
         <div
           v-else-if="ACTIVE_POPUP === 'default'"
           class="relative flex flex-col w-full max-w-4xl overflow-hidden bg-white shadow-2xl md:flex-row"
@@ -7010,6 +7087,9 @@ onUnmounted(() => {
             
             <!-- 👇 JIKA USER BELUM LOGIN (Tampilkan Pendaftaran) 👇 -->
             <template v-if="!isAuthenticated">
+              <!-- 👇 TAMBAHAN LOGO DI SINI 👇 -->
+              <img src="../../assets/solherbrandbook.png" alt="Solher Logo" class="object-contain h-6 mb-6 md:h-8 opacity-90" />
+              
               <p class="text-[10px] font-bold tracking-widest text-[#8c3b4a] uppercase mb-2">A Gift, With Love ❤️</p>
               <h2 class="text-[32px] md:text-[42px] font-serif text-[#111] mb-2 tracking-tight leading-[1.1]">
                 <span class="font-extrabold text-[#8c3b4a]">{{ formattedWelcomeDiscount }}</span><br />
@@ -7050,6 +7130,9 @@ onUnmounted(() => {
             <!-- 👇 JIKA USER SUDAH LOGIN (Sapaan Eksklusif & Upsell) 👇 -->
             <template v-else>
               <div class="text-center my-auto py-8">
+                <!-- 👇 TAMBAHAN LOGO DI SINI (DENGAN mx-auto AGAR RATA TENGAH) 👇 -->
+                <img src="../../assets/solherbrandbook.png" alt="Solher Logo" class="object-contain h-6 mb-6 md:h-8 opacity-90 mx-auto" />
+
                 <p class="text-[10px] font-bold tracking-widest text-[#8c3b4a] uppercase mb-4">Welcome Back ✨</p>
                 <h2 class="text-[32px] md:text-[40px] font-serif text-[#111] mb-4 tracking-tight leading-[1.1]">
                   <span class="font-light">Hello,</span><br/>
