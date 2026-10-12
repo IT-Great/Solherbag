@@ -383,8 +383,26 @@
     "announcement": "Prices and stock availability are subject to change at any time without prior notice."
   },
   "chat": {
-    "chat_page_title": "Customer Support",
-    "select_admin": "Select an admin below to start a conversation."
+    "list": {
+      "title": "Help & Support",
+      "subtitle": "Contact our official customer service",
+      "official_account": "Official Business Account"
+    },
+    "page": {
+      "ai_thinking": "AI Thinking...",
+      "admin_typing": "Admin Typing...",
+      "online": "Online",
+      "ai_bot": "AI Bot",
+      "admin_name": "Solher Admin",
+      "type_message": "Type your message...",
+      "ai_disclaimer": "AI Assistant responds 24/7. Type <strong>\"Talk to admin\"</strong> for human assistance."
+    },
+    "quick_replies": {
+      "new_products": "Newest products?",
+      "shipping_time": "Shipping duration?",
+      "how_to_refund": "How to refund?",
+      "talk_to_admin": "Talk to Admin"
+    }
   },
   "about": {
     "title_one": "The Heart of SOLHER:",

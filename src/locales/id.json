@@ -382,8 +382,26 @@
     "announcement": "Harga dan ketersediaan stok dapat berubah sewaktu-waktu."
   },
   "chat": {
-    "chat_page_title": "Customer Support",
-    "select_admin": "Silahkan pilih admin dibawah ini untuk memulai percakapan."
+    "list": {
+      "title": "Bantuan & Dukungan",
+      "subtitle": "Hubungi layanan pelanggan resmi kami",
+      "official_account": "Akun Bisnis Resmi"
+    },
+    "page": {
+      "ai_thinking": "AI Sedang Berpikir...",
+      "admin_typing": "Admin Mengetik...",
+      "online": "Online",
+      "ai_bot": "AI Bot",
+      "admin_name": "Admin Solher",
+      "type_message": "Ketik pesan Anda...",
+      "ai_disclaimer": "Asisten AI merespons 24/7. Ketik <strong>\"Bicara dengan admin\"</strong> untuk bantuan manusia."
+    },
+    "quick_replies": {
+      "new_products": "Produk terbaru?",
+      "shipping_time": "Berapa hari pengiriman?",
+      "how_to_refund": "Cara refund?",
+      "talk_to_admin": "Bicara dengan Admin"
+    }
   },
   "about": {
     "title_one": "Hati dari SOLHER:",
