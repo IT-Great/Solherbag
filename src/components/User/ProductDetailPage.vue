@@ -5787,7 +5787,7 @@ const goToColorVariant = async (sibling) => {
   if (product.value.id === sibling.id || product.value.slug === sibling.slug) return;
   
   try {
-    isLoading.value = true; // 👈 Menambah indikator loading agar transisi terasa
+    // isLoading.value = true; // 👈 Menambah indikator loading agar transisi terasa
     const res = await axios.get(`${BASE_URL}/products/${identifier}`);
     product.value = res.data;
     selectedInternalColor.value = null; 
