@@ -116,7 +116,7 @@
           class="flex items-center justify-center w-full bg-white border border-gray-300 text-gray-700 font-bold px-4 py-3 rounded-sm shadow-sm hover:bg-gray-50 transition-colors duration-300"
         >
           <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5 mr-3" />
-          Lanjutkan dengan Google
+          Continue with Google
         </button>
         <!-- 👆 ============================== 👆 -->
       </form>
