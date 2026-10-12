@@ -6420,8 +6420,25 @@ onUnmounted(() => {
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
           </button>
 
-          <div class="relative hidden bg-gray-200 md:block md:w-[45%]">
+          <!-- <div class="relative hidden bg-gray-200 md:block md:w-[45%]">
             <img src="../../assets/DSCF2551.jpg" alt="Solher Bags" class="object-cover w-full h-full" />
+          </div> -->
+
+          <div class="relative hidden bg-gray-200 md:block md:w-[45%]">
+            <!-- 👇 PERBAIKAN: Menampilkan gambar berbeda berdasarkan status Login 👇 -->
+            <img 
+              v-if="!isAuthenticated" 
+              src="../../assets/DSCF2551.jpg" 
+              alt="Solher Bags" 
+              class="object-cover w-full h-full" 
+            />
+            <img 
+              v-else 
+              src="../../assets/DSCF5186.jpg" 
+              alt="Solher Bags Premium" 
+              class="object-cover w-full h-full" 
+            />
+            <!-- 👆 ======================================================== 👆 -->
           </div>
 
           <div class="flex flex-col justify-center w-full px-8 py-10 md:px-12 md:py-12 md:w-[55%] overflow-y-auto custom-scrollbar">
