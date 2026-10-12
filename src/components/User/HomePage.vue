@@ -6447,10 +6447,17 @@ onUnmounted(() => {
                 <input type="password" v-model="regForm.password" placeholder="Password (Min. 8 chars) *" minlength="8" class="w-full border border-gray-300 bg-[#FAF9F8] px-4 py-3 text-[13px] focus:border-black outline-none rounded-lg" required />
                 <input type="date" v-model="regForm.birthday_date" class="w-full border border-gray-300 bg-[#FAF9F8] px-4 py-3 text-[13px] text-gray-500 focus:border-black outline-none rounded-lg" required />
                 
-                <div class="flex items-start gap-2 mt-2 mb-2">
+                <!-- <div class="flex items-start gap-2 mt-2 mb-2">
                   <input type="checkbox" required class="mt-1 border-gray-300 text-[#8c3b4a] focus:ring-[#8c3b4a] rounded-sm" />
                   <p class="text-[11px] text-gray-500 leading-tight">
                     <strong class="text-[#8c3b4a]">Required.</strong> I'd love to claim my gift. Withdraw anytime by checking out minimum {{ formattedMinPurchase }}.
+                  </p>
+                </div> -->
+
+                <div class="flex items-start gap-2 mt-2 mb-3">
+                  <input type="checkbox" required class="mt-0.5 border-gray-300 text-[#8c3b4a] focus:ring-[#8c3b4a] rounded-sm cursor-pointer" />
+                  <p class="text-[11px] text-gray-500 leading-tight">
+                    <strong class="text-[#8c3b4a]">Required.</strong> Yes, unlock my <strong class="text-black">{{ formattedWelcomeDiscount }}</strong> gift instantly! Create my account and keep me updated with exclusive perks, styling tips, and new arrivals.
                   </p>
                 </div>
 
