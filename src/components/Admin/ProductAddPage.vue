@@ -2321,7 +2321,7 @@ onMounted(async () => {
               Isi manual atau gunakan AI untuk membuat deskripsi otomatis.
             </p>
           </div>
-          <button
+          <!-- <button
             type="button"
             @click="generateWithAI"
             :disabled="isGeneratingAI || !form.name"
@@ -2329,7 +2329,7 @@ onMounted(async () => {
           >
             <span v-if="!isGeneratingAI" class="text-base">✨</span>
             {{ isGeneratingAI ? "AI IS THINKING..." : "GENERATE AI COPY" }}
-          </button>
+          </button> -->
         </div>
 
         <div class="grid grid-cols-2 gap-4">

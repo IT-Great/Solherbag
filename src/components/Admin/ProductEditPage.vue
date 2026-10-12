@@ -2825,7 +2825,7 @@ const handleSubmit = async () => {
               Isi manual atau gunakan AI untuk merevisi deskripsi otomatis.
             </p>
           </div>
-          <button
+          <!-- <button
             type="button"
             @click="generateWithAI"
             :disabled="isGeneratingAI || !form.name"
@@ -2833,7 +2833,7 @@ const handleSubmit = async () => {
           >
             <span v-if="!isGeneratingAI" class="text-base">✨</span>
             {{ isGeneratingAI ? "AI IS THINKING..." : "RE-GENERATE AI COPY" }}
-          </button>
+          </button> -->
         </div>
 
         <div class="grid grid-cols-2 gap-4">
