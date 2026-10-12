@@ -20880,7 +20880,7 @@ onUnmounted(() => {
                 <div v-if="checkoutTotalIDR < 1500000" class="p-4 border bg-[#faf5f5] border-[#f0e6e6] rounded-xl animate-fade-in">
                   <div class="flex items-center gap-2 mb-2">
                     <span class="text-lg">🎁</span>
-                    <p class="text-[10px] font-bold text-[#8c3b4a] uppercase tracking-widest">Rp 250.000 Welcome Gift / Pts</p>
+                    <p class="text-[10px] font-bold text-[#8c3b4a] uppercase tracking-widest">Rp 250.000 Welcome Gift</p>
                   </div>
                   <p class="text-[11px] text-gray-600 mb-3 leading-relaxed">
                     Add <strong class="text-black">{{ formatCurrencyDisplay(convertIDRtoActiveCurrency(1500000 - checkoutTotalIDR)) }}</strong> more to unlock your gift (minimum Rp1.500.000).
