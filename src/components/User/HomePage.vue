@@ -6895,7 +6895,7 @@ onUnmounted(() => {
         </div>
 
         <!-- Popup Default -->
-        <div
+        <!-- <div
           v-else-if="ACTIVE_POPUP === 'default'"
           class="relative flex flex-col w-full max-w-3xl overflow-hidden bg-white shadow-2xl md:flex-row"
         >
@@ -6914,27 +6914,6 @@ onUnmounted(() => {
 
           <div class="flex flex-col items-center justify-center w-full px-6 py-8 overflow-y-auto text-center md:px-8 md:py-10 md:w-1/2 custom-scrollbar">
             <img src="../../assets/solherbrandbook.png" alt="Solher Logo" class="object-contain h-8 mb-8 md:h-10 opacity-90" />
-
-            <!-- <h2 class="text-[28px] md:text-[34px] font-serif text-[#111] mb-4 tracking-tight leading-tight">
-              <span class="font-bold">{{ $t("home.popup_first_cta") }}</span><br />
-              <span class="font-extrabold whitespace-nowrap">{{ $t("home.popup_price_section_one") }}&nbsp;{{ $t("home.popup_price_section_two") }}&nbsp;{{ $t("home.popup_price_section_three") }}</span><br />
-              <span class="font-bold">{{ $t("home.popup_second_cta") }}</span>
-            </h2>
-
-            <p class="text-[15px] md:text-[16px] text-gray-800 mb-6 font-serif">
-              {{ $t("home.popup_second_cta_section_two") }}
-              <span class="font-bold whitespace-nowrap">{{ $t("home.popup_minimum_price_first_section") }}&nbsp;{{ $t("home.popup_minimum_price_second_section") }}</span>
-            </p>
-
-            <p class="text-[12px] md:text-[13px] font-sans text-[#444] leading-relaxed mb-6 max-w-[280px]">
-              {{ $t("home.popup_third_cta") }}
-            </p>
-
-            <div class="w-full max-w-[320px]">
-              <input type="email" v-model="promoEmail" :placeholder="$t('home.popup_enter_email')" class="w-full border border-black bg-white px-4 py-[14px] mb-3 text-[13px] font-sans focus:outline-none focus:ring-1 focus:ring-black placeholder-gray-400" />
-              <button @click="claimPromo" class="w-full bg-black text-white font-bold uppercase tracking-widest text-[13px] md:text-[14px] py-4 hover:bg-gray-800 transition-colors shadow-md">
-                {{ $t("home.popup_claim_btn") }}
-              </button> -->
 
               <h2 class="text-[28px] md:text-[34px] font-serif text-[#111] mb-4 tracking-tight leading-tight">
               <span class="font-bold">{{ $t("home.popup_first_cta") }}</span><br />
@@ -6960,6 +6939,58 @@ onUnmounted(() => {
                 {{ $t("home.popup_fourth_cta") }}
               </p>
             </div>
+          </div>
+        </div> -->
+
+        <!-- Popup Default (Mini Registration) -->
+        <div
+          v-else-if="ACTIVE_POPUP === 'default'"
+          class="relative flex flex-col w-full max-w-4xl overflow-hidden bg-white shadow-2xl md:flex-row"
+        >
+          <button @click="closePopup" class="absolute z-20 text-gray-500 transition top-4 right-4 hover:text-black">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+
+          <div class="relative hidden bg-gray-200 md:block md:w-[45%]">
+            <img src="../../assets/DSCF2551.jpg" alt="Solher Bags" class="object-cover w-full h-full" />
+          </div>
+
+          <div class="flex flex-col justify-center w-full px-8 py-10 md:px-12 md:py-12 md:w-[55%] overflow-y-auto custom-scrollbar">
+            <p class="text-[10px] font-bold tracking-widest text-[#8c3b4a] uppercase mb-2">A Gift, With Love ❤️</p>
+            <h2 class="text-[32px] md:text-[42px] font-serif text-[#111] mb-2 tracking-tight leading-[1.1]">
+              <span class="font-extrabold text-[#8c3b4a]">{{ formattedWelcomeDiscount }}</span><br />
+              <span class="text-[26px] md:text-[32px] font-light">is waiting for you.</span>
+            </h2>
+            <p class="text-[13px] text-gray-600 mb-6 leading-relaxed">
+              Join Solhér today and enjoy your welcome gift instantly credited as <strong class="text-black">250 Points</strong>.
+            </p>
+
+            <!-- Registration Form Mini -->
+            <form @submit.prevent="registerFromPopup" class="space-y-3 w-full">
+              <div class="grid grid-cols-2 gap-3">
+                <input type="text" v-model="regForm.first_name" placeholder="First Name *" class="w-full border border-gray-300 bg-white px-4 py-3 text-[13px] focus:border-black outline-none" required />
+                <input type="text" v-model="regForm.last_name" placeholder="Last Name *" class="w-full border border-gray-300 bg-white px-4 py-3 text-[13px] focus:border-black outline-none" required />
+              </div>
+              <input type="email" v-model="regForm.email" placeholder="Email Address *" class="w-full border border-gray-300 bg-white px-4 py-3 text-[13px] focus:border-black outline-none" required />
+              <input type="password" v-model="regForm.password" placeholder="Password (Min. 8 chars) *" minlength="8" class="w-full border border-gray-300 bg-white px-4 py-3 text-[13px] focus:border-black outline-none" required />
+              <input type="date" v-model="regForm.birthday_date" class="w-full border border-gray-300 bg-white px-4 py-3 text-[13px] text-gray-500 focus:border-black outline-none" required />
+              
+              <div class="flex items-start gap-2 mt-2 mb-2">
+                <input type="checkbox" required class="mt-1 border-gray-300 text-[#8c3b4a] focus:ring-[#8c3b4a]" />
+                <p class="text-[11px] text-gray-500 leading-tight">
+                  <strong class="text-[#8c3b4a]">Required.</strong> I'd love to claim my gift. Withdraw anytime by checking out minimum {{ formattedMinPurchase }}.
+                </p>
+              </div>
+
+              <button type="submit" :disabled="isRegistering" class="w-full bg-[#8c3b4a] text-white font-bold uppercase tracking-widest text-[13px] py-4 hover:bg-[#6b2b37] transition-colors shadow-lg">
+                <span v-if="!isRegistering">CLAIM MY {{ formattedWelcomeDiscount }}</span>
+                <div v-else class="w-4 h-4 mx-auto border-2 rounded-full border-white/30 border-t-white animate-spin"></div>
+              </button>
+              
+              <p class="text-[11px] text-center text-gray-500 mt-4">
+                Already have an account? <router-link to="/login" class="underline text-black font-bold">Log in here</router-link>
+              </p>
+            </form>
           </div>
         </div>
       </div>
@@ -6998,6 +7029,37 @@ const isLoadingReviews = ref(false);
 
 const promoEmail = ref("");
 const isClaimingPromo = ref(false);
+
+const regForm = ref({
+  first_name: "", last_name: "", email: "", password: "", birthday_date: ""
+});
+const isRegistering = ref(false);
+
+const registerFromPopup = async () => {
+  isRegistering.value = true;
+  try {
+    const res = await axios.post(`${BASE_URL}/register`, regForm.value);
+    // Auto Login setelah mendaftar
+    if (res.data.access_token) {
+      localStorage.setItem("token", res.data.access_token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+      window.dispatchEvent(new Event("storage"));
+    }
+    
+    closePopup();
+    Swal.fire({
+      icon: "success",
+      title: "A Gift, With Love ❤️",
+      text: "Rp 250.000 (250 Points) has been credited to your account!",
+      confirmButtonColor: "#8c3b4a"
+    });
+    router.push("/collections");
+  } catch (error) {
+    Swal.fire({ toast: true, position: "top-end", icon: "error", title: error.response?.data?.message || "Registration failed", showConfirmButton: false, timer: 3000 });
+  } finally {
+    isRegistering.value = false;
+  }
+};
 
 const showPromoPopup = ref(false);
 const { t } = useI18n();

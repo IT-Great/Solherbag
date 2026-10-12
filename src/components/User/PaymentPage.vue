@@ -20854,10 +20854,9 @@ onUnmounted(() => {
               </div>
 
               <!-- POTONGAN POIN -->
-              <div v-if="userData?.is_membership && availablePoints > 0" class="pt-4 mt-2 border-t border-gray-200 border-dashed">
+              <!-- <div v-if="userData?.is_membership && availablePoints > 0" class="pt-4 mt-2 border-t border-gray-200 border-dashed">
                 <div class="flex items-center justify-between mb-2">
                   <span class="text-[10px] font-bold text-yellow-800 uppercase tracking-widest flex items-center gap-1">
-                    <!-- 👇 PENGGUNAAN SVG AMAN 👇 -->
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
                       <path fill-rule="evenodd" d="M10 2a.75.75 0 01.673.418l2.25 4.562 5.034.731a.75.75 0 01.415 1.28l-3.642 3.55 .86 5.016a.75.75 0 01-1.088.791L10 15.981l-4.502 2.368a.75.75 0 01-1.088-.79l.86-5.016-3.643-3.55a.75.75 0 01.416-1.28l5.033-.73 2.25-4.563A.75.75 0 0110 2z" clip-rule="evenodd" />
                     </svg>
@@ -20871,8 +20870,47 @@ onUnmounted(() => {
                     {{ $t("payment.use_all") }}
                   </button>
                 </div>
-                <!-- 👇 INDIKATOR LIMIT MAKSIMAL POIN 👇 -->
                 <p class="text-[9px] text-gray-400 mt-1 italic">{{ $t("payment.max_exchange") }}</p>
+              </div> -->
+
+              <!-- 👇 REDEEM POINTS / WELCOME GIFT TRACKER 👇 -->
+              <div v-if="isAuthenticated && availablePoints > 0" class="pt-4 mt-4 border-t border-gray-200 border-dashed">
+                
+                <!-- Jika Subtotal belum mencapai 1.5 Juta -->
+                <div v-if="checkoutTotalIDR < 1500000" class="p-4 border bg-[#faf5f5] border-[#f0e6e6] rounded-xl animate-fade-in">
+                  <div class="flex items-center gap-2 mb-2">
+                    <span class="text-lg">🎁</span>
+                    <p class="text-[10px] font-bold text-[#8c3b4a] uppercase tracking-widest">Rp 250.000 Welcome Gift / Pts</p>
+                  </div>
+                  <p class="text-[11px] text-gray-600 mb-3 leading-relaxed">
+                    Add <strong class="text-black">{{ formatCurrencyDisplay(convertIDRtoActiveCurrency(1500000 - checkoutTotalIDR)) }}</strong> more to unlock your gift (minimum Rp1.500.000).
+                  </p>
+                  <!-- Progress Bar -->
+                  <div class="w-full h-1.5 mb-2 overflow-hidden bg-gray-200 rounded-full">
+                    <div class="h-full transition-all duration-500 bg-[#8c3b4a]" :style="{ width: Math.min(100, (checkoutTotalIDR / 1500000) * 100) + '%' }"></div>
+                  </div>
+                  <p class="text-[9px] text-gray-400 font-medium">You're {{ formatCurrencyDisplay(convertIDRtoActiveCurrency(1500000 - checkoutTotalIDR)) }} away from using this credit.</p>
+                </div>
+
+                <!-- Jika Sudah Mencapai / Lewat 1.5 Juta (Terbuka) -->
+                <div v-else class="p-4 border bg-green-50/50 border-green-100 rounded-xl animate-fade-in">
+                  <div class="flex justify-between items-center mb-3">
+                    <span class="text-[10px] font-bold text-green-800 uppercase tracking-widest flex items-center gap-1.5">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-green-600" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 2a.75.75 0 01.673.418l2.25 4.562 5.034.731a.75.75 0 01.415 1.28l-3.642 3.55 .86 5.016a.75.75 0 01-1.088.791L10 15.981l-4.502 2.368a.75.75 0 01-1.088-.79l.86-5.016-3.643-3.55a.75.75 0 01.416-1.28l5.033-.73 2.25-4.563A.75.75 0 0110 2z" clip-rule="evenodd" />
+                      </svg>
+                      Redeem Points
+                    </span>
+                    <span class="text-xs font-bold text-green-700">Bal: {{ availablePoints }} Pts</span>
+                  </div>
+                  <div class="flex gap-2">
+                    <input type="number" v-model.number="pointsToUse" :max="maxPointsAllowed" min="0" :disabled="['SOLHOST34', 'MERDEKA17'].includes(appliedPromoCode)" class="flex-1 bg-white border border-green-300 rounded-lg px-3 py-2 text-sm focus:ring-green-600 outline-none disabled:bg-gray-100 disabled:text-gray-400" placeholder="0" />
+                    <button type="button" @click="useAllPoints" :disabled="['SOLHOST34', 'MERDEKA17'].includes(appliedPromoCode)" class="bg-green-600 text-white text-[10px] font-bold uppercase px-4 rounded-lg hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                      Use All
+                    </button>
+                  </div>
+                  <p class="text-[9px] text-gray-500 mt-2 italic">Maximum redemption: 5,000 points per order.</p>
+                </div>
               </div>
 
               <!-- KODE PROMO -->
