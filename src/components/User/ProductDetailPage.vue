@@ -5465,46 +5465,191 @@ const colorMapHex = {
 // =========================================================================
 
 // Fungsi Helper BARU: Mencari Hex dengan mengabaikan Huruf Besar/Kecil
+// const getHexFromMap = (colorName) => {
+//   if (!colorName) return null;
+//   // Ubah misal "NAVY" atau "navy" menjadi "Navy" agar cocok dengan colorMapHex
+//   const formattedName = colorName.charAt(0).toUpperCase() + colorName.slice(1).toLowerCase();
+//   return colorMapHex[formattedName] || null;
+// };
+
+// // Fungsi A: Mengekstrak Nama Warna saja (Contoh: "Black|#000000" -> "Black")
+// const parseColorName = (rawColorString) => {
+//   if (!rawColorString) return null;
+//   return rawColorString.split("|")[0].trim();
+// };
+
+// // Fungsi B: Mengekstrak Kode Hex Warna (Contoh: "Black|#000000" -> "#000000")
+// const parseColorHexCode = (rawColorString) => {
+//   if (!rawColorString) return "#e5e7eb";
+//   const parts = rawColorString.split("|");
+//   if (parts.length > 1) {
+//     return parts[1].trim(); 
+//   }
+//   // Gunakan helper kebal huruf besar-kecil di sini
+//   return getHexFromMap(parseColorName(rawColorString)) || "#e5e7eb";
+// };
+
+// // Fungsi C: Mendapatkan Nama Warna untuk produk saat ini
+// const extractColorNameForDisplay = (prodObj) => {
+//   if (!prodObj) return null; 
+
+//   if (prodObj.color && Array.isArray(prodObj.color) && prodObj.color.length > 0) {
+//     return parseColorName(prodObj.color[0]);
+//   }
+//   return null;
+// };
+
+// // Fungsi D: Mendapatkan Hex untuk produk saat ini (Kini Menerima Fallback)
+// const extractColorHex = (prodObj, fallbackName = null) => {
+//   if (prodObj.color && Array.isArray(prodObj.color) && prodObj.color.length > 0) {
+//     return parseColorHexCode(prodObj.color[0]);
+//   }
+//   // Jika database kosong, gunakan fallback name yang dikirim
+//   const colorName = extractColorNameForDisplay(prodObj) || fallbackName;
+//   return colorName ? (getHexFromMap(colorName) || "#e5e7eb") : "#e5e7eb";
+// };
+
+// // Fungsi E: Membangun Varian Warna
+// const fetchSiblingColors = async (currentProduct) => {
+//   if (!currentProduct || !currentProduct.name) return;
+  
+//   try {
+//     let variantsFromDb = [];
+//     if (currentProduct.color && Array.isArray(currentProduct.color) && currentProduct.color.length > 0) {
+//       variantsFromDb = currentProduct.color.map((colorString) => ({
+//         id: currentProduct.id, 
+//         slug: currentProduct.slug,
+//         name: currentProduct.name,
+//         displayColorName: parseColorName(colorString),
+//         hexColor: parseColorHexCode(colorString),
+//         is_internal_variant: true, 
+//         original_color_string: colorString 
+//       }));
+//     }
+
+//     const res = await axios.get(`${BASE_URL}/products`);
+//     const allProducts = res.data.data || res.data;
+
+//     let rootName = currentProduct.name;
+//     const words = rootName.trim().split(" ");
+    
+//     if (words.length > 1) {
+//        const potentialColorWord = words[words.length - 1];
+//        // Pengecekan pakai Helper agar "NAVY" tetap terdeteksi sebagai warna
+//        if (getHexFromMap(potentialColorWord)) {
+//            rootName = words.slice(0, words.length - 1).join(" ");
+//        }
+//     }
+
+//     const siblings = allProducts.filter((p) =>
+//       p.name.toLowerCase().includes(rootName.toLowerCase()) && 
+//       p.category_id === currentProduct.category_id &&
+//       p.id !== currentProduct.id 
+//     );
+
+//     let finalVariants = [];
+
+//     if (variantsFromDb.length > 1) {
+//       finalVariants = variantsFromDb;
+//     } 
+//     else if (siblings.length > 0) {
+//       finalVariants = siblings.map((p) => {
+//         const fallbackName = p.name.split(" ").pop();
+//         return {
+//           ...p,
+//           displayColorName: extractColorNameForDisplay(p) || fallbackName,
+//           // 👇 Berikan fallbackName ke extractColorHex agar hex tidak buta 👇
+//           hexColor: extractColorHex(p, fallbackName),
+//           is_internal_variant: false
+//         };
+//       });
+      
+//       const selfFallbackName = currentProduct.name.split(" ").pop();
+//       finalVariants.unshift({
+//         ...currentProduct,
+//         displayColorName: extractColorNameForDisplay(currentProduct) || selfFallbackName,
+//         // 👇 Berikan fallbackName ke extractColorHex agar hex tidak buta 👇
+//         hexColor: extractColorHex(currentProduct, selfFallbackName),
+//         is_internal_variant: false
+//       });
+//     } 
+//     else {
+//       finalVariants = []; 
+//     }
+
+//     siblingColors.value = finalVariants;
+
+//   } catch (error) {
+//     console.error("Gagal menarik varian warna:", error);
+//   }
+// };
+// 👆 ========================================================================= 👆
+
+// =========================================================================
+// 👇 [PERBAIKAN FINAL] LOGIKA PARSING WARNA DARI DATABASE & FALLBACK 👇
+// =========================================================================
+
+// Fungsi Helper BARU: Mencari Hex dengan mengabaikan Huruf Besar/Kecil
 const getHexFromMap = (colorName) => {
   if (!colorName) return null;
-  // Ubah misal "NAVY" atau "navy" menjadi "Navy" agar cocok dengan colorMapHex
   const formattedName = colorName.charAt(0).toUpperCase() + colorName.slice(1).toLowerCase();
   return colorMapHex[formattedName] || null;
 };
 
-// Fungsi A: Mengekstrak Nama Warna saja (Contoh: "Black|#000000" -> "Black")
+// Fungsi A: Mengekstrak Nama Warna saja
 const parseColorName = (rawColorString) => {
   if (!rawColorString) return null;
   return rawColorString.split("|")[0].trim();
 };
 
-// Fungsi B: Mengekstrak Kode Hex Warna (Contoh: "Black|#000000" -> "#000000")
+// Fungsi B: Mengekstrak Kode Hex Warna
 const parseColorHexCode = (rawColorString) => {
   if (!rawColorString) return "#e5e7eb";
   const parts = rawColorString.split("|");
   if (parts.length > 1) {
     return parts[1].trim(); 
   }
-  // Gunakan helper kebal huruf besar-kecil di sini
   return getHexFromMap(parseColorName(rawColorString)) || "#e5e7eb";
 };
 
-// Fungsi C: Mendapatkan Nama Warna untuk produk saat ini
+// Fungsi C: Mendapatkan Nama Warna (DENGAN AUTO-HEAL DARI NAMA PRODUK)
 const extractColorNameForDisplay = (prodObj) => {
   if (!prodObj) return null; 
 
+  // 1. AUTO-HEAL: Prioritaskan nama warna dari Judul Produk (Mencegah Admin Typo di DB)
+  if (prodObj.name) {
+      const words = prodObj.name.trim().split(" ");
+      if (words.length > 1) {
+          const lastWord = words[words.length - 1];
+          if (getHexFromMap(lastWord)) {
+              return lastWord.charAt(0).toUpperCase() + lastWord.slice(1).toLowerCase();
+          }
+      }
+  }
+
+  // 2. Fallback: Baca dari database kolom 'color'
   if (prodObj.color && Array.isArray(prodObj.color) && prodObj.color.length > 0) {
     return parseColorName(prodObj.color[0]);
   }
+
   return null;
 };
 
-// Fungsi D: Mendapatkan Hex untuk produk saat ini (Kini Menerima Fallback)
+// Fungsi D: Mendapatkan Hex untuk produk saat ini (Dengan Auto-Heal)
 const extractColorHex = (prodObj, fallbackName = null) => {
+  if (prodObj.name) {
+      const words = prodObj.name.trim().split(" ");
+      if (words.length > 1) {
+          const lastWord = words[words.length - 1];
+          const hex = getHexFromMap(lastWord);
+          if (hex) return hex;
+      }
+  }
+
   if (prodObj.color && Array.isArray(prodObj.color) && prodObj.color.length > 0) {
     return parseColorHexCode(prodObj.color[0]);
   }
-  // Jika database kosong, gunakan fallback name yang dikirim
+  
   const colorName = extractColorNameForDisplay(prodObj) || fallbackName;
   return colorName ? (getHexFromMap(colorName) || "#e5e7eb") : "#e5e7eb";
 };
@@ -5535,7 +5680,6 @@ const fetchSiblingColors = async (currentProduct) => {
     
     if (words.length > 1) {
        const potentialColorWord = words[words.length - 1];
-       // Pengecekan pakai Helper agar "NAVY" tetap terdeteksi sebagai warna
        if (getHexFromMap(potentialColorWord)) {
            rootName = words.slice(0, words.length - 1).join(" ");
        }
@@ -5549,16 +5693,13 @@ const fetchSiblingColors = async (currentProduct) => {
 
     let finalVariants = [];
 
-    if (variantsFromDb.length > 1) {
-      finalVariants = variantsFromDb;
-    } 
-    else if (siblings.length > 0) {
+    // 👇 PERBAIKAN: UTAMAKAN SIBLINGS (EKSTERNAL) AGAR HALAMAN SELALU BERUBAH SAAT DIKLIK 👇
+    if (siblings.length > 0) {
       finalVariants = siblings.map((p) => {
         const fallbackName = p.name.split(" ").pop();
         return {
           ...p,
           displayColorName: extractColorNameForDisplay(p) || fallbackName,
-          // 👇 Berikan fallbackName ke extractColorHex agar hex tidak buta 👇
           hexColor: extractColorHex(p, fallbackName),
           is_internal_variant: false
         };
@@ -5568,16 +5709,28 @@ const fetchSiblingColors = async (currentProduct) => {
       finalVariants.unshift({
         ...currentProduct,
         displayColorName: extractColorNameForDisplay(currentProduct) || selfFallbackName,
-        // 👇 Berikan fallbackName ke extractColorHex agar hex tidak buta 👇
         hexColor: extractColorHex(currentProduct, selfFallbackName),
         is_internal_variant: false
       });
+    } 
+    else if (variantsFromDb.length > 1) {
+      finalVariants = variantsFromDb;
     } 
     else {
       finalVariants = []; 
     }
 
-    siblingColors.value = finalVariants;
+    // 👇 PERBAIKAN: Filter ketat agar tidak ada nama warna yang ganda 👇
+    const uniqueVariants = [];
+    const seenColors = new Set();
+    for (const v of finalVariants) {
+        if (!seenColors.has(v.displayColorName)) {
+            seenColors.add(v.displayColorName);
+            uniqueVariants.push(v);
+        }
+    }
+
+    siblingColors.value = uniqueVariants;
 
   } catch (error) {
     console.error("Gagal menarik varian warna:", error);
@@ -5602,26 +5755,56 @@ const fetchSiblingColors = async (currentProduct) => {
 // Variabel untuk melacak warna mana yang saat ini sedang dipilih pengguna (Jika dari internal array)
 const selectedInternalColor = ref(null);
 
+// const goToColorVariant = async (sibling) => {
+//   // Jika varian warna ini berasal dari array di produk yang sama
+//   if (sibling.is_internal_variant) {
+//     selectedInternalColor.value = sibling.original_color_string;
+//     return; // Berhenti di sini, tidak perlu lempar request API
+//   }
+
+//   // Jika varian warna ini berasal dari produk lain (Sibling API)
+//   const identifier = sibling.slug || sibling.id;
+//   if (product.value.id === sibling.id || product.value.slug === sibling.slug) return;
+//   try {
+//     const res = await axios.get(`${BASE_URL}/products/${identifier}`);
+//     product.value = res.data;
+//     selectedInternalColor.value = null; // Reset warna internal
+//     fetchRecommendations(product.value.category_id, product.value.id);
+//     fetchWishlists();
+//     activeSlide.value = 0;
+//     selectedQuantity.value = 1;
+//     window.history.pushState({}, "", `/products/${identifier}`);
+//   } catch (error) {}
+// };
+
 const goToColorVariant = async (sibling) => {
-  // Jika varian warna ini berasal dari array di produk yang sama
   if (sibling.is_internal_variant) {
     selectedInternalColor.value = sibling.original_color_string;
-    return; // Berhenti di sini, tidak perlu lempar request API
+    return; 
   }
 
-  // Jika varian warna ini berasal dari produk lain (Sibling API)
   const identifier = sibling.slug || sibling.id;
   if (product.value.id === sibling.id || product.value.slug === sibling.slug) return;
+  
   try {
+    isLoading.value = true; // 👈 Menambah indikator loading agar transisi terasa
     const res = await axios.get(`${BASE_URL}/products/${identifier}`);
     product.value = res.data;
-    selectedInternalColor.value = null; // Reset warna internal
+    selectedInternalColor.value = null; 
     fetchRecommendations(product.value.category_id, product.value.id);
     fetchWishlists();
     activeSlide.value = 0;
     selectedQuantity.value = 1;
     window.history.pushState({}, "", `/products/${identifier}`);
-  } catch (error) {}
+    
+    // 👇 Memanggil ulang agar urutan badge diurutkan sesuai produk baru 👇
+    fetchSiblingColors(product.value);
+    
+  } catch (error) {
+    console.error(error);
+  } finally {
+    isLoading.value = false;
+  }
 };
 
 const fetchRecommendations = async (categoryId, currentProductId) => {
