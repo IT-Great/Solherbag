@@ -13231,7 +13231,57 @@ onMounted(() => {
       </div>
 
       <!-- KANAN: DAFTAR ALAMAT PENGIRIMAN -->
-      <div class="lg:col-span-8">
+      <div class="lg:col-span-8 space-y-8">
+        <!-- 👇 KOMPONEN BARU 1: MY EXCLUSIVE REWARDS 👇 -->
+        <div class="p-6 sm:p-8 bg-white border border-gray-100 shadow-xl shadow-gray-200/40 rounded-[2rem] relative overflow-hidden">
+          <!-- Dekorasi Latar -->
+          <div class="absolute top-0 right-0 w-64 h-64 bg-rose-50 rounded-full mix-blend-multiply filter blur-3xl opacity-70 -z-10 animate-pulse"></div>
+          
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <h2 class="text-xl font-black text-gray-900 tracking-tight">
+                {{ $t("profile.my_rewards") || 'My Exclusive Rewards' }}
+              </h2>
+              <p class="text-xs font-medium text-gray-500 mt-1">
+                Voucher dan keuntungan Anda yang siap digunakan
+              </p>
+            </div>
+            <div class="p-3 bg-rose-50 text-rose-500 rounded-2xl shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+              </svg>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Voucher 1: Welcome Gift / Points -->
+            <div class="flex flex-col justify-between p-5 border-2 border-dashed border-emerald-200 bg-emerald-50/50 rounded-2xl hover:border-emerald-300 transition-colors group cursor-pointer">
+              <div class="mb-4">
+                <span class="inline-block px-2.5 py-1 mb-2 text-[9px] font-black tracking-widest text-emerald-700 uppercase bg-emerald-100 rounded-md">New Member</span>
+                <h3 class="text-sm font-black text-emerald-900">Welcome Gift / Pts</h3>
+                <p class="text-[11px] text-emerald-600 mt-1 font-medium leading-relaxed">Gunakan poin Anda sebagai potongan harga (Maks. 5.000 Pts / Rp 5.000.000).</p>
+              </div>
+              <div class="flex items-center justify-between pt-4 border-t border-emerald-200/50">
+                <span class="text-lg font-black text-emerald-700">{{ userData?.point || 0 }} <span class="text-xs font-bold opacity-70">Pts</span></span>
+                <button @click="$router.push('/collections')" class="text-[10px] font-bold tracking-widest text-white uppercase bg-emerald-600 px-4 py-2 rounded-xl hover:bg-emerald-700 hover:shadow-lg transition-all group-hover:scale-105 active:scale-95">Shop Now</button>
+              </div>
+            </div>
+
+            <!-- Voucher 2: Tier Privilege -->
+            <div v-if="userData?.is_membership" class="flex flex-col justify-between p-5 border-2 border-dashed border-amber-200 bg-amber-50/50 rounded-2xl hover:border-amber-300 transition-colors group cursor-pointer">
+              <div class="mb-4">
+                <span class="inline-block px-2.5 py-1 mb-2 text-[9px] font-black tracking-widest text-amber-700 uppercase bg-amber-100 rounded-md">Circle Privilege</span>
+                <h3 class="text-sm font-black text-amber-900">{{ userTier.name }} Discount</h3>
+                <p class="text-[11px] text-amber-600 mt-1 font-medium leading-relaxed">Nikmati potongan harga eksklusif untuk koleksi harga normal.</p>
+              </div>
+              <div class="flex items-center justify-between pt-4 border-t border-amber-200/50">
+                <span class="text-lg font-black text-amber-700">{{ userTier.discount ? (userTier.discount * 100) : 0 }}% <span class="text-xs font-bold opacity-70">OFF</span></span>
+                <button @click="$router.push('/collections')" class="text-[10px] font-bold tracking-widest text-black uppercase bg-amber-400 px-4 py-2 rounded-xl hover:bg-amber-500 hover:shadow-lg transition-all group-hover:scale-105 active:scale-95">Use Code</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 👆 AKHIR KOMPONEN REWARDS 👆 -->
         <div class="p-6 sm:p-10 bg-white border border-gray-100 shadow-xl shadow-gray-200/40 rounded-[2rem] min-h-[600px] flex flex-col">
           <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-6 mb-8 border-b border-gray-100 gap-5">
             <div>
@@ -13561,6 +13611,58 @@ onMounted(() => {
         </form>
       </div>
     </div>
+    <!-- 👇 KOMPONEN BARU 2: ACCOUNT PREFERENCES 👇 -->
+        <div class="p-6 sm:p-8 bg-white border border-gray-100 shadow-xl shadow-gray-200/40 rounded-[2rem]">
+          <div class="flex items-center justify-between mb-6 pb-6 border-b border-gray-100">
+            <div>
+              <h2 class="text-xl font-black text-gray-900 tracking-tight">
+                {{ $t("profile.preferences") || 'Account Preferences' }}
+              </h2>
+              <p class="text-xs font-medium text-gray-500 mt-1">Kelola notifikasi dan preferensi privasi Anda</p>
+            </div>
+          </div>
+
+          <div class="space-y-6">
+            <!-- Newsletter Toggle -->
+            <div class="flex items-center justify-between group">
+              <div class="flex items-start gap-4">
+                <div class="p-2.5 bg-gray-50 rounded-xl text-gray-500 group-hover:bg-black group-hover:text-white transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2v10a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-sm font-bold text-gray-900">Email Newsletter</p>
+                  <p class="text-[11px] text-gray-500 mt-0.5">Dapatkan info koleksi terbaru dan diskon rahasia.</p>
+                </div>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" checked class="sr-only peer" />
+                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-black"></div>
+              </label>
+            </div>
+
+            <!-- WhatsApp Notifications -->
+            <div class="flex items-center justify-between group">
+              <div class="flex items-start gap-4">
+                <div class="p-2.5 bg-gray-50 rounded-xl text-gray-500 group-hover:bg-green-500 group-hover:text-white transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-sm font-bold text-gray-900">WhatsApp Updates</p>
+                  <p class="text-[11px] text-gray-500 mt-0.5">Pembaruan resi pengiriman dan status pesanan.</p>
+                </div>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" checked class="sr-only peer" />
+                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+              </label>
+            </div>
+          </div>
+        </div>
+        <!-- 👆 AKHIR KOMPONEN PREFERENCES 👆 -->
   </div>
 </template>
 
