@@ -661,7 +661,12 @@
     "shipping_and_returns": "Shipping & Returns",
     "no_information": "No information available.",
     "shipping_desc": "Shipping options are available on the payment page through our partnership with Biteship. For product returns, please refer to the contact information on our Customer Care page. Returns can be coordinated following an automatic refund or as part of a manual refund application.",
-    "you_may_also_like": "You May Also Like"
+    "you_may_also_like": "You May Also Like",
+    "waitlist_title": "Currently Sold Out",
+    "waitlist_desc": "Leave your email to receive a priority alert the moment this piece is back in stock.",
+    "waitlist_placeholder": "Enter your email address...",
+    "notify_me": "Notify Me When Available",
+    "waitlist_joined": "On The Priority Waitlist ✓"
   },
   "affiliator_user": {
     "exclusive_program": "Exclusive Program",

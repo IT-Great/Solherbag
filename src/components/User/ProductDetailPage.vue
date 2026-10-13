@@ -4437,7 +4437,7 @@ onUnmounted(() => {
         </div>
 
         <!-- Add to Cart / Buy Actions -->
-        <div class="flex flex-col gap-4 mb-6">
+        <!-- <div class="flex flex-col gap-4 mb-6">
           <div
             v-if="product.stock > 0"
             class="flex items-center justify-between px-4 py-2 bg-white border border-gray-300 rounded-xl"
@@ -4496,6 +4496,101 @@ onUnmounted(() => {
             >
               {{ $t("product_detail.buy_it_now") }}
             </button>
+          </div>
+        </div> -->
+
+        <!-- Add to Cart / Buy Actions ATAU Back-in-Stock Waitlist -->
+        <div class="flex flex-col gap-4 mb-6">
+          <!-- JIKA STOK TERSEDIA (Tampilkan Quantity + Add to Cart + Buy Now) -->
+          <template v-if="product.stock > 0">
+            <div class="flex items-center justify-between px-4 py-2 bg-white border border-gray-300 rounded-xl">
+              <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                {{ $t("product_detail.quantity") }}
+              </span>
+              <div class="flex items-center">
+                <button
+                  @click="decreaseQuantity"
+                  class="flex items-center justify-center w-8 h-8 text-xl font-medium text-gray-600 transition-colors rounded-full hover:text-black hover:bg-gray-100"
+                >
+                  −
+                </button>
+                <input
+                  type="number"
+                  v-model.number="selectedQuantity"
+                  @change="validateQuantity"
+                  class="w-12 p-0 text-base font-bold text-center bg-transparent border-none focus:ring-0"
+                />
+                <button
+                  @click="increaseQuantity"
+                  class="flex items-center justify-center w-8 h-8 text-xl font-medium text-gray-600 transition-colors rounded-full hover:text-black hover:bg-gray-100"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-3 sm:flex-row">
+              <button
+                @click="handleAction('cart')"
+                class="flex-1 py-4 text-xs font-black tracking-[0.2em] uppercase transition-all duration-300 border-2 rounded-xl bg-white text-black border-black hover:bg-black hover:text-white shadow-sm hover:shadow-xl"
+              >
+                {{ $t("product_detail.add_to_cart") }}
+              </button>
+              <button
+                @click="handleAction('buy')"
+                class="flex-1 py-4 text-xs font-black tracking-[0.2em] uppercase transition-all duration-300 border-2 border-transparent rounded-xl bg-black text-white hover:bg-gray-800 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+              >
+                {{ $t("product_detail.buy_it_now") }}
+              </button>
+            </div>
+          </template>
+
+          <!-- 👇 JIKA STOK HABIS (0): TAMPILKAN BACK-IN-STOCK WAITLIST ENGINE 👇 -->
+          <div
+            v-else
+            class="p-6 border border-gray-200 bg-[#FAF9F8] rounded-2xl shadow-sm space-y-4 animate-fade-in"
+          >
+            <div class="flex items-center justify-between">
+              <span class="px-3 py-1 text-[9px] font-black tracking-widest uppercase bg-gray-200 text-gray-700 rounded-full">
+                {{ $t("product_detail.out_of_stock") }}
+              </span>
+              <span class="text-xs font-serif italic text-gray-500">Solhér Priority Concierge</span>
+            </div>
+
+            <div>
+              <h4 class="text-sm font-bold tracking-widest text-gray-900 uppercase">
+                {{ $t("product_detail.waitlist_title") }}
+              </h4>
+              <p class="mt-1 text-xs leading-relaxed text-gray-600">
+                {{ $t("product_detail.waitlist_desc") }}
+              </p>
+            </div>
+
+            <form @submit.prevent="submitWaitlist" class="flex flex-col gap-3 sm:flex-row">
+              <input
+                v-model="waitlistEmail"
+                type="email"
+                :disabled="isJoinedWaitlist || isSubmittingWaitlist"
+                :placeholder="$t('product_detail.waitlist_placeholder')"
+                required
+                class="flex-1 px-4 py-3.5 text-xs bg-white border border-gray-300 rounded-xl outline-none focus:border-black disabled:bg-gray-100 disabled:text-gray-400"
+              />
+              <button
+                type="submit"
+                :disabled="isJoinedWaitlist || isSubmittingWaitlist || !waitlistEmail"
+                class="px-6 py-3.5 text-[10px] font-black tracking-[0.2em] uppercase transition-all rounded-xl shrink-0 flex items-center justify-center gap-2"
+                :class="
+                  isJoinedWaitlist
+                    ? 'bg-emerald-600 text-white cursor-default'
+                    : 'bg-[#8c3b4a] text-white hover:bg-[#6b2b37] shadow-md disabled:opacity-50'
+                "
+              >
+                <span v-if="isSubmittingWaitlist" class="w-4 h-4 border-2 border-white rounded-full border-t-transparent animate-spin"></span>
+                <span v-else>
+                  {{ isJoinedWaitlist ? $t("product_detail.waitlist_joined") : "🔔 " + $t("product_detail.notify_me") }}
+                </span>
+              </button>
+            </form>
           </div>
         </div>
 
@@ -4732,6 +4827,63 @@ const fetchUserProfile = async () => {
     console.error("Gagal menarik profil:", error);
   }
 };
+
+// 👇 STATE & FUNGSI BACK-IN-STOCK WAITLIST 👇
+const waitlistEmail = ref("");
+const isSubmittingWaitlist = ref(false);
+const isJoinedWaitlist = ref(false);
+
+// Otomatis isi email jika user sudah login
+watch(currentUser, (val) => {
+  if (val?.email && !waitlistEmail.value) {
+    waitlistEmail.value = val.email;
+  }
+});
+
+// Reset status tombol waitlist jika pindah ke varian warna/produk lain
+watch(
+  () => product.value?.id,
+  () => {
+    isJoinedWaitlist.value = false;
+  }
+);
+
+const submitWaitlist = async () => {
+  if (!waitlistEmail.value || !product.value) return;
+  isSubmittingWaitlist.value = true;
+  try {
+    const config = isAuthenticated
+      ? { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      : {};
+
+    await axios.post(
+      `${BASE_URL}/products/waitlist`,
+      {
+        product_id: product.value.id,
+        email: waitlistEmail.value,
+      },
+      config
+    );
+
+    isJoinedWaitlist.value = true;
+    Swal.fire({
+      icon: "success",
+      title: "Priority Waitlist Confirmed",
+      text: `Kami akan segera mengirim email ke ${waitlistEmail.value} begitu ${product.value.name} tersedia kembali.`,
+      confirmButtonColor: "#111",
+    });
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Oops",
+      text: error.response?.data?.message || "Gagal mendaftarkan email ke daftar tunggu.",
+      confirmButtonColor: "#111",
+    });
+  } finally {
+    isSubmittingWaitlist.value = false;
+  }
+};
+// 👆 ======================================= 👆
 
 const handleShare = () => {
   let linkToShare = window.location.href;

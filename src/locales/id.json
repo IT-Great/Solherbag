@@ -660,7 +660,12 @@
     "shipping_and_returns": "Pengiriman & Pengembalian",
     "no_information": "Informasi tidak tersedia.",
     "shipping_desc": "Opsi pengiriman tersedia pada halaman pembayaran melalui kemitraan kami dengan Biteship. Untuk pengembalian produk, silakan merujuk pada informasi kontak di halaman Layanan Pelanggan kami. Pengembalian barang dapat dikoordinasikan setelah pengembalian dana otomatis atau sebagai bagian dari pengajuan pengembalian dana manual.",
-    "you_may_also_like": "Anda Mungkin Juga Suka"
+    "you_may_also_like": "Anda Mungkin Juga Suka",
+    "waitlist_title": "Koleksi Sedang Habis Terjual",
+    "waitlist_desc": "Daftarkan email Anda untuk mendapatkan notifikasi prioritas saat koleksi ini kembali tersedia.",
+    "waitlist_placeholder": "Masukkan alamat email Anda...",
+    "notify_me": "Beritahu Saya Saat Tersedia",
+    "waitlist_joined": "Terdaftar di Daftar Tunggu ✓"
   },
   "affiliator_user": {
     "exclusive_program": "Exclusive Program",
