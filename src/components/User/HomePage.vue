@@ -6071,7 +6071,7 @@ onUnmounted(() => {
 
       <div
         class="relative overflow-hidden cursor-pointer group rounded-xl"
-        @click="navigateToSpecificProduct('AC001')"
+        @click="navigateToSpecificProduct('Altheara')"
       >
         <img
           src="../../assets/Altheara.png"
