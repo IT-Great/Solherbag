@@ -4566,7 +4566,7 @@ onUnmounted(() => {
               </p>
             </div>
 
-            <form @submit.prevent="submitWaitlist" class="flex flex-col gap-3 sm:flex-row">
+            <!-- <form @submit.prevent="submitWaitlist" class="flex flex-col gap-3 sm:flex-row">
               <input
                 v-model="waitlistEmail"
                 type="email"
@@ -4590,7 +4590,35 @@ onUnmounted(() => {
                   {{ isJoinedWaitlist ? $t("product_detail.waitlist_joined") : "🔔 " + $t("product_detail.notify_me") }}
                 </span>
               </button>
+            </form> -->
+
+            <!-- 👇 PERBAIKAN: Form dibuat vertikal penuh agar tidak menabrak batas kanan 👇 -->
+            <form @submit.prevent="submitWaitlist" class="flex flex-col gap-3 w-full">
+              <input
+                v-model="waitlistEmail"
+                type="email"
+                :disabled="isJoinedWaitlist || isSubmittingWaitlist"
+                :placeholder="$t('product_detail.waitlist_placeholder')"
+                required
+                class="w-full px-4 py-3.5 text-xs bg-white border border-gray-300 rounded-xl outline-none focus:border-black disabled:bg-gray-100 disabled:text-gray-400 transition-colors"
+              />
+              <button
+                type="submit"
+                :disabled="isJoinedWaitlist || isSubmittingWaitlist || !waitlistEmail"
+                class="w-full py-3.5 text-[10px] font-black tracking-widest uppercase transition-all rounded-xl flex items-center justify-center gap-2"
+                :class="
+                  isJoinedWaitlist
+                    ? 'bg-emerald-600 text-white cursor-default'
+                    : 'bg-[#8c3b4a] text-white hover:bg-[#6b2b37] shadow-md disabled:opacity-50'
+                "
+              >
+                <span v-if="isSubmittingWaitlist" class="w-4 h-4 border-2 border-white rounded-full border-t-transparent animate-spin"></span>
+                <span v-else>
+                  {{ isJoinedWaitlist ? $t("product_detail.waitlist_joined") : "🔔 " + $t("product_detail.notify_me") }}
+                </span>
+              </button>
             </form>
+            <!-- 👆 ===================================================================== 👆 -->
           </div>
         </div>
 
