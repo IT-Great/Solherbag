@@ -6074,12 +6074,12 @@ onUnmounted(() => {
         @click="navigateToSpecificProduct('AC001')"
       >
         <img
-          src="../../assets/DSCF7586.jpg"
+          src="../../assets/Altheara.png"
           class="w-full h-[450px] md:h-[600px] object-cover group-hover:scale-105 transition-transform duration-700"
         />
         <div class="absolute inset-0 flex items-center justify-center transition-all duration-500 opacity-0 bg-black/30 group-hover:opacity-100">
           <span class="px-8 py-3.5 text-xs font-bold tracking-[0.2em] text-black uppercase bg-white shadow-2xl backdrop-blur-sm">
-            AUREVE
+            ALTHEARA
           </span>
         </div>
       </div>
