@@ -6379,10 +6379,10 @@ onUnmounted(() => {
     <div
       v-reveal
       class="relative w-full h-[400px] md:h-[600px] overflow-hidden cursor-pointer group"
-      @click="navigateToSpecificProduct('RED CHARM')"
+      @click="navigateToSpecificProduct('LAYTHEN BLACK')"
     >
       <img
-        src="../../assets/home_lastimage.jpg"
+        src="../../assets/DSCF2048.jpg"
         alt="Premium Materials"
         class="object-cover w-full h-full transition-transform duration-[2000ms] group-hover:scale-110"
       />
