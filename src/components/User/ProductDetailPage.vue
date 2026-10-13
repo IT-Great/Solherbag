@@ -4500,8 +4500,7 @@ onUnmounted(() => {
         </div> -->
 
         <!-- Add to Cart / Buy Actions ATAU Back-in-Stock Waitlist -->
-        <div class="flex flex-col gap-4 mb-6">
-          <!-- JIKA STOK TERSEDIA (Tampilkan Quantity + Add to Cart + Buy Now) -->
+        <!-- <div class="flex flex-col gap-4 mb-6">
           <template v-if="product.stock > 0">
             <div class="flex items-center justify-between px-4 py-2 bg-white border border-gray-300 rounded-xl">
               <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
@@ -4545,7 +4544,6 @@ onUnmounted(() => {
             </div>
           </template>
 
-          <!-- 👇 JIKA STOK HABIS (0): TAMPILKAN BACK-IN-STOCK WAITLIST ENGINE 👇 -->
           <div
             v-else
             class="p-6 border border-gray-200 bg-[#FAF9F8] rounded-2xl shadow-sm space-y-4 animate-fade-in"
@@ -4566,7 +4564,7 @@ onUnmounted(() => {
               </p>
             </div>
 
-            <!-- <form @submit.prevent="submitWaitlist" class="flex flex-col gap-3 sm:flex-row">
+            <form @submit.prevent="submitWaitlist" class="flex flex-col gap-3 sm:flex-row">
               <input
                 v-model="waitlistEmail"
                 type="email"
@@ -4590,9 +4588,8 @@ onUnmounted(() => {
                   {{ isJoinedWaitlist ? $t("product_detail.waitlist_joined") : "🔔 " + $t("product_detail.notify_me") }}
                 </span>
               </button>
-            </form> -->
+            </form>
 
-            <!-- 👇 PERBAIKAN: Form dibuat vertikal penuh agar tidak menabrak batas kanan 👇 -->
             <form @submit.prevent="submitWaitlist" class="flex flex-col gap-3 w-full">
               <input
                 v-model="waitlistEmail"
@@ -4618,7 +4615,80 @@ onUnmounted(() => {
                 </span>
               </button>
             </form>
-            <!-- 👆 ===================================================================== 👆 -->
+          </div>
+        </div> -->
+
+        <!-- Add to Cart / Buy Actions ATAU Back-in-Stock Waitlist ATAU Early Access -->
+        <div class="flex flex-col gap-4 mb-6">
+          
+          <!-- 👇 1. JIKA TERKUNCI EARLY ACCESS (Tampilkan Countdown VIP) 👇 -->
+          <div v-if="isEarlyAccessLocked" class="p-6 border border-[#E8E2D2] bg-gradient-to-br from-[#FDFBF7] to-white rounded-2xl shadow-sm space-y-5 animate-fade-in relative overflow-hidden group">
+            <div class="absolute -right-10 -top-10 opacity-5 rotate-12 transition-transform duration-1000 group-hover:rotate-45">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-40 h-40" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15 8L22 9L17 14L18 21L12 17L6 21L7 14L2 9L9 8L12 2Z"/></svg>
+            </div>
+            
+            <div class="relative z-10 text-center">
+              <span class="inline-block px-3 py-1 mb-3 text-[9px] font-black tracking-[0.2em] text-[#8B7355] uppercase bg-[#E8E2D2]/30 rounded-full border border-[#E8E2D2]">
+                Exclusive Preview
+              </span>
+              <h4 class="text-xl font-serif text-gray-900 tracking-tight">Reserved for {{ requiredTierName }}</h4>
+              <p class="mt-2 text-xs leading-relaxed text-gray-500 max-w-[250px] mx-auto">
+                Koleksi ini saat ini hanya tersedia secara eksklusif untuk member {{ requiredTierName }} The Solhér Circle.
+              </p>
+            </div>
+            
+            <div class="relative z-10 py-4 border-t border-b border-[#E8E2D2]/50 text-center bg-white/50 backdrop-blur-sm rounded-xl">
+              <p class="text-[9px] font-bold tracking-widest text-gray-400 uppercase mb-1">Public Release In</p>
+              <p class="text-2xl font-mono font-bold text-[#8B7355] tracking-widest">{{ earlyAccessCountdown }}</p>
+            </div>
+
+            <div class="relative z-10">
+              <button v-if="!isAuthenticated" @click="$router.push('/login')" class="w-full py-3.5 text-[11px] font-black tracking-widest uppercase transition-all rounded-xl bg-black text-white hover:bg-gray-800 shadow-md">
+                Log In to Unlock
+              </button>
+              <button v-else @click="$router.push('/profile')" class="w-full py-3.5 text-[11px] font-black tracking-widest uppercase transition-all rounded-xl bg-white border-2 border-gray-200 text-gray-700 hover:border-gray-400">
+                View My Membership
+              </button>
+            </div>
+          </div>
+
+          <!-- 👇 2. JIKA STOK TERSEDIA (Normal) 👇 -->
+          <template v-else-if="product.stock > 0">
+            <!-- Isi blok quantity, Add to Cart, dan Buy Now Anda sama seperti sebelumnya -->
+            <div class="flex items-center justify-between px-4 py-2 bg-white border border-gray-300 rounded-xl">
+               <!-- ... Kode Quantity bawaan Anda ... -->
+               <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{{ $t("product_detail.quantity") }}</span>
+               <div class="flex items-center">
+                 <button @click="decreaseQuantity" class="flex items-center justify-center w-8 h-8 text-xl font-medium text-gray-600 transition-colors rounded-full hover:text-black hover:bg-gray-100">−</button>
+                 <input type="number" v-model.number="selectedQuantity" @change="validateQuantity" class="w-12 p-0 text-base font-bold text-center bg-transparent border-none focus:ring-0" />
+                 <button @click="increaseQuantity" class="flex items-center justify-center w-8 h-8 text-xl font-medium text-gray-600 transition-colors rounded-full hover:text-black hover:bg-gray-100">+</button>
+               </div>
+            </div>
+
+            <div class="flex flex-col gap-3 sm:flex-row">
+              <button @click="handleAction('cart')" class="flex-1 py-4 text-xs font-black tracking-[0.2em] uppercase transition-all duration-300 border-2 rounded-xl bg-white text-black border-black hover:bg-black hover:text-white shadow-sm hover:shadow-xl">{{ $t("product_detail.add_to_cart") }}</button>
+              <button @click="handleAction('buy')" class="flex-1 py-4 text-xs font-black tracking-[0.2em] uppercase transition-all duration-300 border-2 border-transparent rounded-xl bg-black text-white hover:bg-gray-800 shadow-lg hover:shadow-xl hover:-translate-y-0.5">{{ $t("product_detail.buy_it_now") }}</button>
+            </div>
+          </template>
+
+          <!-- 👇 3. JIKA STOK HABIS (Tampilkan Waitlist) 👇 -->
+          <div v-else class="p-6 border border-gray-200 bg-[#FAF9F8] rounded-2xl shadow-sm space-y-4 animate-fade-in">
+             <!-- Isi blok form submitWaitlist bawaan Anda -->
+             <div class="flex items-center justify-between">
+                <span class="px-3 py-1 text-[9px] font-black tracking-widest uppercase bg-gray-200 text-gray-700 rounded-full">{{ $t("product_detail.out_of_stock") }}</span>
+                <span class="text-xs font-serif italic text-gray-500">Solhér Priority Concierge</span>
+             </div>
+             <div>
+                <h4 class="text-sm font-bold tracking-widest text-gray-900 uppercase">{{ $t("product_detail.waitlist_title") }}</h4>
+                <p class="mt-1 text-xs leading-relaxed text-gray-600">{{ $t("product_detail.waitlist_desc") }}</p>
+             </div>
+             <form @submit.prevent="submitWaitlist" class="flex flex-col gap-3 w-full">
+                <input v-model="waitlistEmail" type="email" :disabled="isJoinedWaitlist || isSubmittingWaitlist" :placeholder="$t('product_detail.waitlist_placeholder')" required class="w-full px-4 py-3.5 text-xs bg-white border border-gray-300 rounded-xl outline-none focus:border-black disabled:bg-gray-100 disabled:text-gray-400 transition-colors" />
+                <button type="submit" :disabled="isJoinedWaitlist || isSubmittingWaitlist || !waitlistEmail" class="w-full py-3.5 text-[10px] font-black tracking-widest uppercase transition-all rounded-xl flex items-center justify-center gap-2" :class="isJoinedWaitlist ? 'bg-emerald-600 text-white cursor-default' : 'bg-[#8c3b4a] text-white hover:bg-[#6b2b37] shadow-md disabled:opacity-50'">
+                   <span v-if="isSubmittingWaitlist" class="w-4 h-4 border-2 border-white rounded-full border-t-transparent animate-spin"></span>
+                   <span v-else>{{ isJoinedWaitlist ? $t("product_detail.waitlist_joined") : "🔔 " + $t("product_detail.notify_me") }}</span>
+                </button>
+             </form>
           </div>
         </div>
 
@@ -4834,6 +4904,62 @@ const updateCurrencyState = () => {
   currentCurrency.value = localStorage.getItem("currency") || "IDR";
 };
 const currentUser = ref(null);
+
+// 👇 LOGIKA GATED EARLY ACCESS 👇
+const currentTime = ref(Date.now());
+let timerInterval = null;
+
+// Hitung level Tier pengguna yang sedang login
+const userTierLevel = computed(() => {
+  if (!isAuthenticated || !currentUser.value) return 0; // Guest
+  const pts = currentUser.value.point || 0;
+  if (pts >= 10000) return 3; // Héritage
+  if (pts >= 2500) return 2;  // Élan
+  return 1; // Muse
+});
+
+// Hitung syarat minimal Tier untuk produk ini
+const productTierLevel = computed(() => {
+  if (!product.value?.early_access_tier) return 0;
+  const t = product.value.early_access_tier.toLowerCase();
+  if (t === 'heritage') return 3;
+  if (t === 'elan') return 2;
+  if (t === 'muse') return 1;
+  return 0; // none / public
+});
+
+const requiredTierName = computed(() => {
+  if (productTierLevel.value === 3) return "Héritage";
+  if (productTierLevel.value === 2) return "Élan";
+  if (productTierLevel.value === 1) return "Muse";
+  return "Public";
+});
+
+// Evaluasi apakah produk ini sedang Terkunci untuk pengguna ini
+const isEarlyAccessLocked = computed(() => {
+  if (!product.value?.early_access_expires_at || productTierLevel.value === 0) return false;
+  
+  const expiresAt = new Date(product.value.early_access_expires_at).getTime();
+  if (currentTime.value >= expiresAt) return false; // Waktu eksklusif habis, jadi rilis ke publik
+  
+  return userTierLevel.value < productTierLevel.value; // Terkunci jika level user kurang
+});
+
+// Teks Countdown Timer
+const earlyAccessCountdown = computed(() => {
+  if (!product.value?.early_access_expires_at) return "";
+  const expires = new Date(product.value.early_access_expires_at).getTime();
+  const diff = expires - currentTime.value;
+  
+  if (diff <= 0) return "AVAILABLE NOW";
+  
+  const h = Math.floor(diff / (1000 * 60 * 60));
+  const m = Math.floor((diff / 1000 / 60) % 60);
+  const s = Math.floor((diff / 1000) % 60);
+
+  return `${h.toString().padStart(2, '0')}h ${m.toString().padStart(2, '0')}m ${s.toString().padStart(2, '0')}s`;
+});
+// 👆 ===================================== 👆
 
 const isNewArrival = (dateString) => {
   if (!dateString) return false;
@@ -6179,10 +6305,14 @@ onMounted(() => {
   window.addEventListener("storage", (e) => {
     if (e.key === "currency") updateCurrencyState();
   });
+  timerInterval = setInterval(() => {
+    currentTime.value = Date.now();
+  }, 1000);
 });
 
 onUnmounted(() => {
   window.removeEventListener("currency-changed", updateCurrencyState);
+  if (timerInterval) clearInterval(timerInterval);
 });
 </script>
 
