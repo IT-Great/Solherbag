@@ -7003,7 +7003,7 @@ watch(
         class="absolute p-2 text-gray-400 transition right-2 md:right-4 hover:text-white focus:outline-none"
       >
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7-7" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
         </svg>
       </button>
     </div>
