@@ -22,7 +22,9 @@
     "announcement_1": "Hadiah Sambutan Eksklusif: Diskon {amount} untuk pesanan pertama Anda →",
     "announcement_2": "Gratis Ongkir ke Seluruh Indonesia (Min. Belanja {threshold}) →",
     "solher_club": "Klub Solher",
-    "hi": "HAI"
+    "hi": "HAI",
+    "settings": "Pengaturan",
+    "currency": "Mata Uang"
   },
   "notifications": {
     "title": "Notifikasi",

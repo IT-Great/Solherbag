@@ -22,7 +22,9 @@
     "announcement_1": "An Exclusive Welcome Gift: {amount} OFF your first order →",
     "announcement_2": "A Little Extra, On Us — Complimentary Shipping Across Indonesia (Min. {threshold}) →",
     "solher_club": "SolHer Club",
-    "hi": "HI"
+    "hi": "HI",
+    "settings": "Settings",
+    "currency": "Currency"
   },
   "notifications": {
     "title": "Notifications",
