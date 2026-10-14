@@ -1175,8 +1175,8 @@ const handleSubmit = async () => {
   <section class="min-h-screen px-6 py-16 bg-[#FDFBF7] md:py-24 relative overflow-hidden">
     <!-- Ornamen Estetik Background -->
     <div class="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden opacity-30">
-      <div class="absolute -top-[20%] -right-[10%] w-[50%] h-[50%] bg-[#E8E2D2] rounded-full blur-3xl"></div>
-      <div class="absolute -bottom-[20%] -left-[10%] w-[40%] h-[40%] bg-[#E8E2D2] rounded-full blur-3xl"></div>
+      <div class="absolute -top-[20%] -right-[10%] w-[50%] h-[50%] bg-[#e0e0e0] rounded-full blur-3xl"></div>
+      <div class="absolute -bottom-[20%] -left-[10%] w-[40%] h-[40%] bg-[#e6e6e5] rounded-full blur-3xl"></div>
     </div>
 
     <!-- Tombol Riwayat -->
