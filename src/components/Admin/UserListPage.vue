@@ -2723,6 +2723,204 @@ tr {
 </template>
 
 <script setup>
+// import Breadcrumb from "../../components/Admin/Layout/Breadcrumb.vue";
+// import { ref, onMounted, onUnmounted, computed, watch } from "vue";
+// import axios from "axios";
+// import { BASE_URL } from "../../config/api.js";
+
+// const users = ref([]);
+// const isLoading = ref(true);
+
+// // 👇 STATE UNTUK PENCARIAN & RENTANG TANGGAL 👇
+// const searchQuery = ref("");
+// const startDate = ref("");
+// const endDate = ref("");
+// const currentPage = ref(1);
+// const itemsPerPage = ref(10);
+
+// const userRole = ref("");
+// const isSuperAdmin = computed(() => userRole.value === "superadmin");
+
+// const myPermissions = ref({
+//   viewDetails: false,
+//   chat: false,
+// });
+
+// const canViewDetails = computed(() => myPermissions.value.viewDetails);
+// const canChat = computed(() => myPermissions.value.chat);
+
+// const formatDate = (dateString) => {
+//   if (!dateString) return "-";
+//   return new Date(dateString).toLocaleDateString("en-US", {
+//     year: "numeric",
+//     month: "short",
+//     day: "numeric",
+//   });
+// };
+
+// const axiosConfig = {
+//   headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
+// };
+
+// const fetchUserPermissions = async () => {
+//   const adminStr = localStorage.getItem("admin");
+//   if (adminStr) {
+//     const admin = JSON.parse(adminStr);
+//     userRole.value = admin.usertype;
+//   }
+//   if (isSuperAdmin.value) return;
+//   try {
+//     let policies = null;
+//     const cachedPerms = localStorage.getItem("admin_permissions");
+//     if (cachedPerms) {
+//       policies = JSON.parse(cachedPerms);
+//     } else {
+//       const res = await axios.get(`${BASE_URL}/admin/access-policies`, axiosConfig);
+//       policies = res.data.permissions;
+//       localStorage.setItem("admin_permissions", JSON.stringify(policies));
+//     }
+//     const myRolePolicies = policies[userRole.value] || {};
+//     const userTerms = myRolePolicies.users || [];
+//     const messageTerms = myRolePolicies.messages || [];
+
+//     myPermissions.value = {
+//       viewDetails: userTerms.includes("read"),
+//       chat: messageTerms.includes("menu") || messageTerms.includes("read"),
+//     };
+//   } catch (error) {
+//     console.error("Error permissions", error);
+//   }
+// };
+
+// const getUserTier = (user) => {
+//   if (!user.is_membership) return { level: 0, name: 'Guest' };
+//   const pts = user.point || 0;
+  
+//   if (pts >= 10000) {
+//     return { level: 3, name: 'Héritage', class: 'bg-[#111] text-[#D4AF37] border-[#D4AF37]/30', icon: '❈' };
+//   } else if (pts >= 2500) {
+//     return { level: 2, name: 'Élan', class: 'bg-[#FDFBF7] text-[#8B7355] border-[#E8E2D2]', icon: '✦' };
+//   } else {
+//     return { level: 1, name: 'Muse', class: 'bg-gray-100 text-gray-500 border-gray-200', icon: '✧' };
+//   }
+// };
+
+// // 👇 LOGIKA FILTER DAN PENGURUTAN DIPERBARUI 👇
+// const sortedAndFilteredUsers = computed(() => {
+//   const query = searchQuery.value.toLowerCase();
+//   const start = startDate.value;
+//   const end = endDate.value;
+  
+//   let result = users.value;
+
+//   // 1. Terapkan Filter Rentang Tanggal (Start Date & End Date)
+//   if (start || end) {
+//     result = result.filter((user) => {
+//       if (!user.created_at) return false;
+      
+//       // Ambil YYYY-MM-DD dari tanggal join pengguna
+//       const userDate = new Date(user.created_at).toISOString().split('T')[0];
+      
+//       if (start && end) {
+//         return userDate >= start && userDate <= end;
+//       } else if (start) {
+//         return userDate >= start;
+//       } else if (end) {
+//         return userDate <= end;
+//       }
+//       return true;
+//     });
+//   }
+
+//   // 2. Terapkan Filter Berdasarkan First Name, Last Name, atau Email secara Aman
+//   if (query) {
+//     result = result.filter((user) => {
+//       const firstName = user.first_name ? user.first_name.toLowerCase() : "";
+//       const lastName = user.last_name ? user.last_name.toLowerCase() : "";
+//       const email = user.email ? user.email.toLowerCase() : "";
+      
+//       return firstName.includes(query) || lastName.includes(query) || email.includes(query);
+//     });
+//   }
+
+//   // 3. Terapkan Pengurutan (Sorting - Priority Routing)
+//   return result.slice().sort((a, b) => {
+//     const aUnread = a.unread_count > 0 ? 1 : 0;
+//     const bUnread = b.unread_count > 0 ? 1 : 0;
+
+//     if (aUnread !== bUnread) {
+//       return bUnread - aUnread;
+//     }
+
+//     const aTier = getUserTier(a).level;
+//     const bTier = getUserTier(b).level;
+//     if (aTier !== bTier) {
+//       return bTier - aTier; 
+//     }
+
+//     return new Date(b.created_at) - new Date(a.created_at);
+//   });
+// });
+
+// const totalPages = computed(() =>
+//   Math.ceil(sortedAndFilteredUsers.value.length / itemsPerPage.value)
+// );
+
+// const paginatedUsers = computed(() => {
+//   const start = (currentPage.value - 1) * itemsPerPage.value;
+//   const end = start + itemsPerPage.value;
+//   return sortedAndFilteredUsers.value.slice(start, end);
+// });
+
+// const showingStart = computed(() => {
+//   if (sortedAndFilteredUsers.value.length === 0) return 0;
+//   return (currentPage.value - 1) * itemsPerPage.value + 1;
+// });
+
+// const showingEnd = computed(() =>
+//   Math.min(currentPage.value * itemsPerPage.value, sortedAndFilteredUsers.value.length)
+// );
+
+// const visiblePages = computed(() => {
+//   const current = currentPage.value;
+//   const total = totalPages.value;
+//   if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+//   if (current <= 4) return [1, 2, 3, 4, 5, "...", total];
+//   if (current >= total - 3)
+//     return [1, "...", total - 4, total - 3, total - 2, total - 1, total];
+//   return [1, "...", current - 1, current, current + 1, "...", total];
+// });
+
+// // Reset ke halaman 1 jika user memanipulasi pencarian, tanggal, atau limit
+// watch([searchQuery, startDate, endDate, itemsPerPage], () => {
+//   currentPage.value = 1;
+// });
+
+// const fetchUsers = async () => {
+//   isLoading.value = true;
+//   try {
+//     const res = await axios.get(`${BASE_URL}/admin/users`, axiosConfig);
+//     users.value = res.data;
+//   } catch (error) {
+//     console.error("Gagal mengambil data user:", error);
+//   } finally {
+//     setTimeout(() => {
+//       isLoading.value = false;
+//     }, 400);
+//   }
+// };
+
+// onMounted(() => {
+//   fetchUserPermissions().then(() => {
+//     fetchUsers();
+//   });
+//   window.addEventListener("refresh-user-list-chat", fetchUsers);
+// });
+
+// onUnmounted(() => {
+//   window.removeEventListener("refresh-user-list-chat", fetchUsers);
+// });
+
 import Breadcrumb from "../../components/Admin/Layout/Breadcrumb.vue";
 import { ref, onMounted, onUnmounted, computed, watch } from "vue";
 import axios from "axios";
@@ -2832,14 +3030,17 @@ const sortedAndFilteredUsers = computed(() => {
     });
   }
 
-  // 2. Terapkan Filter Berdasarkan First Name, Last Name, atau Email secara Aman
+  // 2. 👇 PERBAIKAN: Terapkan Filter Berdasarkan Full Name (Gabungan) 👇
   if (query) {
     result = result.filter((user) => {
       const firstName = user.first_name ? user.first_name.toLowerCase() : "";
       const lastName = user.last_name ? user.last_name.toLowerCase() : "";
+      // Menggabungkan firstName dan lastName untuk pencarian yang lebih pintar
+      const fullName = `${firstName} ${lastName}`.trim();
       const email = user.email ? user.email.toLowerCase() : "";
       
-      return firstName.includes(query) || lastName.includes(query) || email.includes(query);
+      // Cukup cek di fullName dan email saja
+      return fullName.includes(query) || email.includes(query);
     });
   }
 
