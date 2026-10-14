@@ -6531,8 +6531,8 @@ import { useI18n } from "vue-i18n";
 
 // import banner1 from "../../assets/Banner_aaaaa.png";
 // import banner2 from "../../assets/Banner_bbbbb.png";
-import banner1 from "../../assets/first_banner.png";
-import banner2 from "../../assets/second_banner.png";
+import banner1 from "../../assets/Banner-Oktober-01.jpg";
+import banner2 from "../../assets/Banner-Oktober-02.jpg";
 
 const isAuthenticated = computed(() => !!localStorage.getItem("token"));
 const userData = ref(null);
