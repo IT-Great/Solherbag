@@ -2463,11 +2463,11 @@ tr {
       </button>
     </div>
 
-    <!-- 👇 PERBAIKAN: Menambahkan Filter Tanggal (Date Picker) di area Search 👇 -->
+    <!-- 👇 PERBAIKAN: Menambahkan Filter Rentang Tanggal (Start Date & End Date) 👇 -->
     <div class="flex flex-col items-center justify-between gap-4 mb-6 md:flex-row">
-      <div class="flex flex-col w-full gap-3 md:flex-row md:w-auto">
+      <div class="flex flex-col w-full gap-3 md:flex-row md:w-auto md:items-center">
         <!-- Search Input -->
-        <div class="relative w-full md:w-80">
+        <div class="relative w-full md:w-72 lg:w-80">
           <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -2487,37 +2487,44 @@ tr {
           <input
             v-model="searchQuery"
             type="text"
-            placeholder="Search by name or email..."
+            placeholder="Search first name, last name, or email..."
             class="w-full py-2 pl-10 pr-4 text-sm transition border border-gray-200 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
-        <!-- 👇 FILTER TANGGAL (Date Picker) 👇 -->
-        <div class="relative w-full md:w-48">
-          <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-          </span>
-          <input
-            v-model="filterDate"
-            type="date"
-            class="w-full py-2 pl-10 pr-4 text-sm transition border border-gray-200 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-blue-500 text-gray-600"
-            title="Filter by Joined Date"
-          />
+        <!-- 👇 FILTER RENTANG TANGGAL 👇 -->
+        <div class="flex items-center gap-2 w-full md:w-auto">
+          <div class="relative w-full md:w-36">
+            <input
+              v-model="startDate"
+              type="date"
+              class="w-full py-2 px-3 text-sm transition border border-gray-200 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-blue-500 text-gray-600"
+              title="Start Date"
+            />
+          </div>
+          <span class="text-gray-400 font-medium text-sm">to</span>
+          <div class="relative w-full md:w-36">
+            <input
+              v-model="endDate"
+              type="date"
+              class="w-full py-2 px-3 text-sm transition border border-gray-200 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-blue-500 text-gray-600"
+              title="End Date"
+            />
+          </div>
+          
           <!-- Tombol Reset Tanggal -->
           <button 
-            v-if="filterDate" 
-            @click="filterDate = ''" 
-            class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-red-500"
+            v-if="startDate || endDate" 
+            @click="startDate = ''; endDate = ''" 
+            class="p-2 text-gray-400 hover:text-red-500 transition-colors shrink-0"
             title="Clear Date Filter"
           >
-             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
         </div>
       </div>
 
-      <div class="flex items-center gap-3 self-start md:self-auto">
+      <div class="flex items-center gap-3 self-start md:self-auto shrink-0">
         <span class="text-xs font-bold tracking-wide text-gray-400 uppercase">Show:</span>
         <select
           v-model="itemsPerPage"
@@ -2655,7 +2662,7 @@ tr {
           <tr v-if="paginatedUsers.length === 0">
             <td colspan="5" class="py-20 text-sm italic text-center text-gray-400">
               {{
-                searchQuery || filterDate
+                searchQuery || startDate || endDate
                   ? "No users found matching your search or date filter."
                   : "No registered users found."
               }}
@@ -2723,8 +2730,11 @@ import { BASE_URL } from "../../config/api.js";
 
 const users = ref([]);
 const isLoading = ref(true);
+
+// 👇 STATE UNTUK PENCARIAN & RENTANG TANGGAL 👇
 const searchQuery = ref("");
-const filterDate = ref(""); // 👇 State baru untuk Filter Tanggal
+const startDate = ref("");
+const endDate = ref("");
 const currentPage = ref(1);
 const itemsPerPage = ref(10);
 
@@ -2795,34 +2805,45 @@ const getUserTier = (user) => {
   }
 };
 
-// 👇 PERBAIKAN: Menambahkan Logika Filter Tanggal ke Computed Property 👇
+// 👇 LOGIKA FILTER DAN PENGURUTAN DIPERBARUI 👇
 const sortedAndFilteredUsers = computed(() => {
   const query = searchQuery.value.toLowerCase();
-  const dateFilter = filterDate.value; // ex: "2026-10-15"
+  const start = startDate.value;
+  const end = endDate.value;
   
   let result = users.value;
 
-  // 1. Terapkan Filter Tanggal
-  if (dateFilter) {
+  // 1. Terapkan Filter Rentang Tanggal (Start Date & End Date)
+  if (start || end) {
     result = result.filter((user) => {
       if (!user.created_at) return false;
-      // Konversi ISO string ke format YYYY-MM-DD
+      
+      // Ambil YYYY-MM-DD dari tanggal join pengguna
       const userDate = new Date(user.created_at).toISOString().split('T')[0];
-      return userDate === dateFilter;
+      
+      if (start && end) {
+        return userDate >= start && userDate <= end;
+      } else if (start) {
+        return userDate >= start;
+      } else if (end) {
+        return userDate <= end;
+      }
+      return true;
     });
   }
 
-  // 2. Terapkan Filter Nama/Email
+  // 2. Terapkan Filter Berdasarkan First Name, Last Name, atau Email secara Aman
   if (query) {
-    result = result.filter(
-      (user) =>
-        user.first_name.toLowerCase().includes(query) ||
-        user.last_name.toLowerCase().includes(query) ||
-        user.email.toLowerCase().includes(query)
-    );
+    result = result.filter((user) => {
+      const firstName = user.first_name ? user.first_name.toLowerCase() : "";
+      const lastName = user.last_name ? user.last_name.toLowerCase() : "";
+      const email = user.email ? user.email.toLowerCase() : "";
+      
+      return firstName.includes(query) || lastName.includes(query) || email.includes(query);
+    });
   }
 
-  // 3. Terapkan Pengurutan (Sorting)
+  // 3. Terapkan Pengurutan (Sorting - Priority Routing)
   return result.slice().sort((a, b) => {
     const aUnread = a.unread_count > 0 ? 1 : 0;
     const bUnread = b.unread_count > 0 ? 1 : 0;
@@ -2870,8 +2891,8 @@ const visiblePages = computed(() => {
   return [1, "...", current - 1, current, current + 1, "...", total];
 });
 
-// Reset ke halaman 1 jika user mengubah pencarian, tanggal, atau jumlah item per halaman
-watch([searchQuery, filterDate, itemsPerPage], () => {
+// Reset ke halaman 1 jika user memanipulasi pencarian, tanggal, atau limit
+watch([searchQuery, startDate, endDate, itemsPerPage], () => {
   currentPage.value = 1;
 });
 
