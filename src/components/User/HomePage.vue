@@ -6529,16 +6529,16 @@ import { useProductStore } from "../../composables/useProductStore";
 import Swal from "sweetalert2";
 import { useI18n } from "vue-i18n";
 
-import banner1 from "../../assets/Banner_aaaaa.png";
-import banner2 from "../../assets/Banner_bbbbb.png";
-import banner3 from "../../assets/first_banner.png";
-import banner4 from "../../assets/second_banner.png";
+// import banner1 from "../../assets/Banner_aaaaa.png";
+// import banner2 from "../../assets/Banner_bbbbb.png";
+import banner1 from "../../assets/first_banner.png";
+import banner2 from "../../assets/second_banner.png";
 
 const isAuthenticated = computed(() => !!localStorage.getItem("token"));
 const userData = ref(null);
 
 const ACTIVE_POPUP = ref("default");
-const banners = [banner1, banner2, banner3, banner4];
+const banners = [banner1, banner2];
 const currentBannerIndex = ref(0);
 const currentBanner = computed(() => banners[currentBannerIndex.value]);
 let slideInterval = null;
