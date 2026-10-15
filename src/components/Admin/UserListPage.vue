@@ -2450,14 +2450,27 @@ tr {
     <div class="flex flex-col justify-between gap-4 mb-8 md:flex-row md:items-end">
       <div>
         <h1 class="text-2xl font-bold text-gray-800">Registered Users</h1>
-        <p class="text-sm text-gray-500">Manage all registered members of the platform.</p>
+        <p class="text-sm text-gray-500">
+          Manage all registered members of the platform.
+        </p>
       </div>
       <button
         @click="$router.push('/admin/users/promo_claims')"
         class="flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-bold text-white transition-all bg-black shadow-md rounded-xl hover:bg-gray-800"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-4 h-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"
+          />
         </svg>
         View Promo Claims
       </button>
@@ -2511,15 +2524,31 @@ tr {
               title="End Date"
             />
           </div>
-          
+
           <!-- Tombol Reset Tanggal -->
-          <button 
-            v-if="startDate || endDate" 
-            @click="startDate = ''; endDate = ''" 
+          <button
+            v-if="startDate || endDate"
+            @click="
+              startDate = '';
+              endDate = '';
+            "
             class="p-2 text-gray-400 hover:text-red-500 transition-colors shrink-0"
             title="Clear Date Filter"
           >
-             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
           </button>
         </div>
       </div>
@@ -2557,7 +2586,9 @@ tr {
             class="border-b border-gray-50"
           >
             <td class="py-4 pl-2">
-              <div class="w-10 h-10 bg-gray-200 rounded-full shadow-sm animate-pulse"></div>
+              <div
+                class="w-10 h-10 bg-gray-200 rounded-full shadow-sm animate-pulse"
+              ></div>
             </td>
             <td class="py-4">
               <div class="w-32 h-4 bg-gray-200 rounded animate-pulse"></div>
@@ -2566,7 +2597,9 @@ tr {
               <div class="w-48 h-4 bg-gray-200 rounded animate-pulse"></div>
             </td>
             <td class="py-4 pr-2 text-center">
-              <div class="inline-block w-24 h-8 bg-gray-200 rounded-lg animate-pulse"></div>
+              <div
+                class="inline-block w-24 h-8 bg-gray-200 rounded-lg animate-pulse"
+              ></div>
             </td>
           </tr>
         </tbody>
@@ -2577,12 +2610,22 @@ tr {
             :key="user.id"
             :class="[
               'transition border-b group',
-              user.unread_count > 0 && getUserTier(user).level === 3 ? 'bg-[#111]/5 border-[#111]/20' : '',
-              user.unread_count > 0 && getUserTier(user).level === 2 ? 'bg-[#FDFBF7] border-[#E8E2D2]' : '',
-              user.unread_count > 0 && getUserTier(user).level <= 1 ? 'bg-red-50/30 border-red-100' : 'border-gray-50',
+              user.unread_count > 0 && getUserTier(user).level === 3
+                ? 'bg-[#111]/5 border-[#111]/20'
+                : '',
+              user.unread_count > 0 && getUserTier(user).level === 2
+                ? 'bg-[#FDFBF7] border-[#E8E2D2]'
+                : '',
+              user.unread_count > 0 && getUserTier(user).level <= 1
+                ? 'bg-red-50/30 border-red-100'
+                : 'border-gray-50',
               canViewDetails || isSuperAdmin ? 'cursor-pointer hover:bg-gray-50' : '',
             ]"
-            @click="canViewDetails || isSuperAdmin ? $router.push(`/admin/users/${user.id}`) : null"
+            @click="
+              canViewDetails || isSuperAdmin
+                ? $router.push(`/admin/users/${user.id}`)
+                : null
+            "
           >
             <td class="py-4 pl-2">
               <img
@@ -2640,21 +2683,39 @@ tr {
                   @click.stop="$router.push(`/admin/chat/${user.id}`)"
                   :class="[
                     'p-2 transition-all rounded-lg shadow-sm',
-                    user.unread_count > 0 && getUserTier(user).level === 3 ? 'bg-[#111] text-[#D4AF37] hover:bg-black shadow-[0_0_10px_rgba(212,175,55,0.4)]' : '',
-                    user.unread_count > 0 && getUserTier(user).level === 2 ? 'bg-[#FDFBF7] text-[#8B7355] border border-[#E8E2D2] hover:bg-white shadow-[0_0_10px_rgba(232,226,210,0.8)]' : '',
-                    user.unread_count > 0 && getUserTier(user).level <= 1 ? 'bg-red-100 text-red-600 hover:bg-red-200' : 'bg-gray-100 text-gray-600 hover:bg-green-50 hover:text-green-600'
+                    user.unread_count > 0 && getUserTier(user).level === 3
+                      ? 'bg-[#111] text-[#D4AF37] hover:bg-black shadow-[0_0_10px_rgba(212,175,55,0.4)]'
+                      : '',
+                    user.unread_count > 0 && getUserTier(user).level === 2
+                      ? 'bg-[#FDFBF7] text-[#8B7355] border border-[#E8E2D2] hover:bg-white shadow-[0_0_10px_rgba(232,226,210,0.8)]'
+                      : '',
+                    user.unread_count > 0 && getUserTier(user).level <= 1
+                      ? 'bg-red-100 text-red-600 hover:bg-red-200'
+                      : 'bg-gray-100 text-gray-600 hover:bg-green-50 hover:text-green-600',
                   ]"
                   title="Chat with User"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-5 h-5"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z"
+                    />
                   </svg>
                 </button>
 
                 <span
                   v-if="!canViewDetails && !canChat && !isSuperAdmin"
                   class="text-gray-300 select-none"
-                >-</span>
+                  >-</span
+                >
               </div>
             </td>
           </tr>
@@ -2683,7 +2744,7 @@ tr {
         users
       </p>
 
-      <div class="flex gap-2">
+      <!-- <div class="flex gap-2">
         <button
           @click="currentPage--"
           :disabled="currentPage === 1"
@@ -2717,7 +2778,53 @@ tr {
         >
           Next
         </button>
+      </div> -->
+
+      <!-- 👇 GANTI BAGIAN TOMBOL DI KANAN ATAS MENJADI SEPERTI INI 👇 -->
+      <div class="flex gap-2">
+        <button
+          @click="exportToExcel"
+          class="flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-bold text-gray-700 transition-all bg-white border border-gray-200 shadow-sm rounded-xl hover:bg-gray-50"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-4 h-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+            />
+          </svg>
+          Export CSV
+        </button>
+
+        <button
+          @click="$router.push('/admin/users/promo_claims')"
+          class="flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-bold text-white transition-all bg-black shadow-md rounded-xl hover:bg-gray-800"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-4 h-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"
+            />
+          </svg>
+          View Promo Claims
+        </button>
       </div>
+      <!-- 👆 ======================================================= 👆 -->
     </div>
   </div>
 </template>
@@ -2795,7 +2902,7 @@ tr {
 // const getUserTier = (user) => {
 //   if (!user.is_membership) return { level: 0, name: 'Guest' };
 //   const pts = user.point || 0;
-  
+
 //   if (pts >= 10000) {
 //     return { level: 3, name: 'Héritage', class: 'bg-[#111] text-[#D4AF37] border-[#D4AF37]/30', icon: '❈' };
 //   } else if (pts >= 2500) {
@@ -2810,17 +2917,17 @@ tr {
 //   const query = searchQuery.value.toLowerCase();
 //   const start = startDate.value;
 //   const end = endDate.value;
-  
+
 //   let result = users.value;
 
 //   // 1. Terapkan Filter Rentang Tanggal (Start Date & End Date)
 //   if (start || end) {
 //     result = result.filter((user) => {
 //       if (!user.created_at) return false;
-      
+
 //       // Ambil YYYY-MM-DD dari tanggal join pengguna
 //       const userDate = new Date(user.created_at).toISOString().split('T')[0];
-      
+
 //       if (start && end) {
 //         return userDate >= start && userDate <= end;
 //       } else if (start) {
@@ -2838,7 +2945,7 @@ tr {
 //       const firstName = user.first_name ? user.first_name.toLowerCase() : "";
 //       const lastName = user.last_name ? user.last_name.toLowerCase() : "";
 //       const email = user.email ? user.email.toLowerCase() : "";
-      
+
 //       return firstName.includes(query) || lastName.includes(query) || email.includes(query);
 //     });
 //   }
@@ -2855,7 +2962,7 @@ tr {
 //     const aTier = getUserTier(a).level;
 //     const bTier = getUserTier(b).level;
 //     if (aTier !== bTier) {
-//       return bTier - aTier; 
+//       return bTier - aTier;
 //     }
 
 //     return new Date(b.created_at) - new Date(a.created_at);
@@ -2991,15 +3098,30 @@ const fetchUserPermissions = async () => {
 };
 
 const getUserTier = (user) => {
-  if (!user.is_membership) return { level: 0, name: 'Guest' };
+  if (!user.is_membership) return { level: 0, name: "Guest" };
   const pts = user.point || 0;
-  
+
   if (pts >= 10000) {
-    return { level: 3, name: 'Héritage', class: 'bg-[#111] text-[#D4AF37] border-[#D4AF37]/30', icon: '❈' };
+    return {
+      level: 3,
+      name: "Héritage",
+      class: "bg-[#111] text-[#D4AF37] border-[#D4AF37]/30",
+      icon: "❈",
+    };
   } else if (pts >= 2500) {
-    return { level: 2, name: 'Élan', class: 'bg-[#FDFBF7] text-[#8B7355] border-[#E8E2D2]', icon: '✦' };
+    return {
+      level: 2,
+      name: "Élan",
+      class: "bg-[#FDFBF7] text-[#8B7355] border-[#E8E2D2]",
+      icon: "✦",
+    };
   } else {
-    return { level: 1, name: 'Muse', class: 'bg-gray-100 text-gray-500 border-gray-200', icon: '✧' };
+    return {
+      level: 1,
+      name: "Muse",
+      class: "bg-gray-100 text-gray-500 border-gray-200",
+      icon: "✧",
+    };
   }
 };
 
@@ -3008,17 +3130,17 @@ const sortedAndFilteredUsers = computed(() => {
   const query = searchQuery.value.toLowerCase();
   const start = startDate.value;
   const end = endDate.value;
-  
+
   let result = users.value;
 
   // 1. Terapkan Filter Rentang Tanggal (Start Date & End Date)
   if (start || end) {
     result = result.filter((user) => {
       if (!user.created_at) return false;
-      
+
       // Ambil YYYY-MM-DD dari tanggal join pengguna
-      const userDate = new Date(user.created_at).toISOString().split('T')[0];
-      
+      const userDate = new Date(user.created_at).toISOString().split("T")[0];
+
       if (start && end) {
         return userDate >= start && userDate <= end;
       } else if (start) {
@@ -3038,7 +3160,7 @@ const sortedAndFilteredUsers = computed(() => {
       // Menggabungkan firstName dan lastName untuk pencarian yang lebih pintar
       const fullName = `${firstName} ${lastName}`.trim();
       const email = user.email ? user.email.toLowerCase() : "";
-      
+
       // Cukup cek di fullName dan email saja
       return fullName.includes(query) || email.includes(query);
     });
@@ -3056,7 +3178,7 @@ const sortedAndFilteredUsers = computed(() => {
     const aTier = getUserTier(a).level;
     const bTier = getUserTier(b).level;
     if (aTier !== bTier) {
-      return bTier - aTier; 
+      return bTier - aTier;
     }
 
     return new Date(b.created_at) - new Date(a.created_at);
