@@ -3233,6 +3233,45 @@ const fetchUsers = async () => {
   }
 };
 
+// 👇 FUNGSI EXPORT KE EXCEL / CSV 👇
+const exportToExcel = () => {
+  if (sortedAndFilteredUsers.value.length === 0) return;
+
+  const headers = [
+    "First Name",
+    "Last Name",
+    "Email",
+    "Membership Tier",
+    "Unread Messages",
+    "Joined Date",
+  ];
+
+  const rows = sortedAndFilteredUsers.value.map((user) => {
+    return [
+      `"${user.first_name || ""}"`,
+      `"${user.last_name || ""}"`,
+      `"${user.email || ""}"`,
+      `"${getUserTier(user).name}"`,
+      user.unread_count || 0,
+      `"${formatDate(user.created_at)}"`,
+    ];
+  });
+
+  const csvContent = [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
+  const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" }); // \uFEFF memaksa Excel membaca UTF-8
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.setAttribute("href", url);
+  link.setAttribute(
+    "download",
+    `Solher_Users_${new Date().toISOString().split("T")[0]}.csv`
+  );
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
 onMounted(() => {
   fetchUserPermissions().then(() => {
     fetchUsers();
