@@ -2447,7 +2447,7 @@ tr {
     class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[600px]"
   >
     <Breadcrumb />
-    <div class="flex flex-col justify-between gap-4 mb-8 md:flex-row md:items-end">
+    <!-- <div class="flex flex-col justify-between gap-4 mb-8 md:flex-row md:items-end">
       <div>
         <h1 class="text-2xl font-bold text-gray-800">Registered Users</h1>
         <p class="text-sm text-gray-500">
@@ -2474,7 +2474,53 @@ tr {
         </svg>
         View Promo Claims
       </button>
+    </div> -->
+
+    <!-- 👇 GANTI BAGIAN TOMBOL DI KANAN ATAS MENJADI SEPERTI INI 👇 -->
+    <div class="flex gap-2">
+      <button
+        @click="exportToExcel"
+        class="flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-bold text-gray-700 transition-all bg-white border border-gray-200 shadow-sm rounded-xl hover:bg-gray-50"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-4 h-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+          />
+        </svg>
+        Export CSV
+      </button>
+
+      <button
+        @click="$router.push('/admin/users/promo_claims')"
+        class="flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-bold text-white transition-all bg-black shadow-md rounded-xl hover:bg-gray-800"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-4 h-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"
+          />
+        </svg>
+        View Promo Claims
+      </button>
     </div>
+    <!-- 👆 ======================================================= 👆 -->
 
     <!-- 👇 PERBAIKAN: Menambahkan Filter Rentang Tanggal (Start Date & End Date) 👇 -->
     <div class="flex flex-col items-center justify-between gap-4 mb-6 md:flex-row">
@@ -2779,52 +2825,6 @@ tr {
           Next
         </button>
       </div> -->
-
-      <!-- 👇 GANTI BAGIAN TOMBOL DI KANAN ATAS MENJADI SEPERTI INI 👇 -->
-      <div class="flex gap-2">
-        <button
-          @click="exportToExcel"
-          class="flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-bold text-gray-700 transition-all bg-white border border-gray-200 shadow-sm rounded-xl hover:bg-gray-50"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="w-4 h-4"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-            />
-          </svg>
-          Export CSV
-        </button>
-
-        <button
-          @click="$router.push('/admin/users/promo_claims')"
-          class="flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-bold text-white transition-all bg-black shadow-md rounded-xl hover:bg-gray-800"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="w-4 h-4"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"
-            />
-          </svg>
-          View Promo Claims
-        </button>
-      </div>
-      <!-- 👆 ======================================================= 👆 -->
     </div>
   </div>
 </template>
@@ -3231,45 +3231,6 @@ const fetchUsers = async () => {
       isLoading.value = false;
     }, 400);
   }
-};
-
-// 👇 FUNGSI EXPORT KE EXCEL / CSV 👇
-const exportToExcel = () => {
-  if (sortedAndFilteredUsers.value.length === 0) return;
-
-  const headers = [
-    "First Name",
-    "Last Name",
-    "Email",
-    "Membership Tier",
-    "Unread Messages",
-    "Joined Date",
-  ];
-
-  const rows = sortedAndFilteredUsers.value.map((user) => {
-    return [
-      `"${user.first_name || ""}"`,
-      `"${user.last_name || ""}"`,
-      `"${user.email || ""}"`,
-      `"${getUserTier(user).name}"`,
-      user.unread_count || 0,
-      `"${formatDate(user.created_at)}"`,
-    ];
-  });
-
-  const csvContent = [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
-  const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" }); // \uFEFF memaksa Excel membaca UTF-8
-  const url = URL.createObjectURL(blob);
-
-  const link = document.createElement("a");
-  link.setAttribute("href", url);
-  link.setAttribute(
-    "download",
-    `Solher_Users_${new Date().toISOString().split("T")[0]}.csv`
-  );
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
 };
 
 onMounted(() => {

@@ -225,29 +225,58 @@ onMounted(() => {
 });
 </script> -->
 
-<template>
-  <div class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[600px]">
+<!-- <template>
+  <div
+    class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[600px]"
+  >
     <Breadcrumb />
-    
+
     <div class="flex flex-col justify-between gap-4 mb-8 md:flex-row md:items-end">
       <div>
         <h1 class="flex items-center gap-3 text-2xl font-bold text-gray-800">
-          <button @click="$router.back()" class="p-2 transition-colors bg-gray-100 rounded-full hover:bg-gray-200">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          <button
+            @click="$router.back()"
+            class="p-2 transition-colors bg-gray-100 rounded-full hover:bg-gray-200"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 19l-7-7 7-7"
+              />
             </svg>
           </button>
           Promo Claims
         </h1>
-        <p class="mt-2 text-sm text-gray-500">Track and manage users who claimed promotional vouchers.</p>
+        <p class="mt-2 text-sm text-gray-500">
+          Track and manage users who claimed promotional vouchers.
+        </p>
       </div>
     </div>
 
     <div class="flex flex-col items-center justify-between gap-4 mb-6 md:flex-row">
       <div class="relative w-full md:w-80">
         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
           </svg>
         </span>
         <input
@@ -258,10 +287,14 @@ onMounted(() => {
         />
       </div>
 
-      <!-- Dropdown Items Per Page dihilangkan karena Laravel sudah melakukan Hardcode paginate(50) -->
       <div class="flex items-center gap-3">
-        <span class="text-xs font-bold tracking-wide text-gray-400 uppercase">Server Sync:</span>
-        <span class="px-3 py-1.5 text-xs font-bold text-green-700 bg-green-50 border border-green-200 rounded-lg">50 Items / Page</span>
+        <span class="text-xs font-bold tracking-wide text-gray-400 uppercase"
+          >Server Sync:</span
+        >
+        <span
+          class="px-3 py-1.5 text-xs font-bold text-green-700 bg-green-50 border border-green-200 rounded-lg"
+          >50 Items / Page</span
+        >
       </div>
     </div>
 
@@ -280,30 +313,58 @@ onMounted(() => {
 
         <tbody v-if="isLoading">
           <tr v-for="i in 10" :key="`skel-${i}`" class="border-b border-gray-50">
-            <td class="py-4 pl-2"><div class="w-16 h-4 bg-gray-200 rounded animate-pulse"></div></td>
-            <td class="py-4"><div class="w-48 h-4 bg-gray-200 rounded animate-pulse"></div></td>
-            <td class="py-4"><div class="w-24 h-4 bg-gray-200 rounded animate-pulse"></div></td>
-            <td class="py-4"><div class="w-24 h-4 bg-gray-200 rounded animate-pulse"></div></td>
-            <td class="py-4 text-center"><div class="inline-block w-20 h-6 bg-gray-200 rounded-full animate-pulse"></div></td>
-            <td class="py-4 pr-2 text-right"><div class="inline-block w-24 h-4 bg-gray-200 rounded animate-pulse"></div></td>
+            <td class="py-4 pl-2">
+              <div class="w-16 h-4 bg-gray-200 rounded animate-pulse"></div>
+            </td>
+            <td class="py-4">
+              <div class="w-48 h-4 bg-gray-200 rounded animate-pulse"></div>
+            </td>
+            <td class="py-4">
+              <div class="w-24 h-4 bg-gray-200 rounded animate-pulse"></div>
+            </td>
+            <td class="py-4">
+              <div class="w-24 h-4 bg-gray-200 rounded animate-pulse"></div>
+            </td>
+            <td class="py-4 text-center">
+              <div
+                class="inline-block w-20 h-6 bg-gray-200 rounded-full animate-pulse"
+              ></div>
+            </td>
+            <td class="py-4 pr-2 text-right">
+              <div class="inline-block w-24 h-4 bg-gray-200 rounded animate-pulse"></div>
+            </td>
           </tr>
         </tbody>
 
         <tbody v-else class="text-sm text-gray-600">
-          <tr v-for="claim in filteredClaims" :key="claim.id" class="transition border-b border-gray-50 hover:bg-gray-50">
+          <tr
+            v-for="claim in filteredClaims"
+            :key="claim.id"
+            class="transition border-b border-gray-50 hover:bg-gray-50"
+          >
             <td class="py-4 pl-2 font-mono font-medium text-gray-900">#{{ claim.id }}</td>
             <td class="py-4 font-medium text-gray-800">{{ claim.email }}</td>
             <td class="py-4">
-              <span class="px-2.5 py-1 text-xs font-bold text-gray-700 bg-gray-100 border border-gray-200 rounded-md tracking-wider">
+              <span
+                class="px-2.5 py-1 text-xs font-bold text-gray-700 bg-gray-100 border border-gray-200 rounded-md tracking-wider"
+              >
                 {{ claim.promo_code }}
               </span>
             </td>
-            <td class="py-4 font-medium text-emerald-600">Rp {{ claim.discount_value?.toLocaleString('id-ID') }}</td>
+            <td class="py-4 font-medium text-emerald-600">
+              Rp {{ claim.discount_value?.toLocaleString("id-ID") }}
+            </td>
             <td class="py-4 text-center">
-              <span v-if="claim.is_used" class="px-3 py-1 text-[10px] font-bold tracking-widest text-red-700 uppercase bg-red-100 rounded-full">
+              <span
+                v-if="claim.is_used"
+                class="px-3 py-1 text-[10px] font-bold tracking-widest text-red-700 uppercase bg-red-100 rounded-full"
+              >
                 USED
               </span>
-              <span v-else class="px-3 py-1 text-[10px] font-bold tracking-widest text-green-700 uppercase bg-green-100 rounded-full">
+              <span
+                v-else
+                class="px-3 py-1 text-[10px] font-bold tracking-widest text-green-700 uppercase bg-green-100 rounded-full"
+              >
                 ACTIVE
               </span>
             </td>
@@ -314,15 +375,21 @@ onMounted(() => {
 
           <tr v-if="filteredClaims.length === 0">
             <td colspan="6" class="py-20 text-sm italic text-center text-gray-400">
-              {{ searchQuery ? "No claims found matching your search on this page." : "No promo claims recorded yet." }}
+              {{
+                searchQuery
+                  ? "No claims found matching your search on this page."
+                  : "No promo claims recorded yet."
+              }}
             </td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <!-- SERVER-SIDE PAGINATION -->
-    <div v-if="!isLoading && totalItems > 0" class="flex flex-col items-center justify-between gap-4 pt-6 mt-8 border-t md:flex-row border-gray-50">
+    <div
+      v-if="!isLoading && totalItems > 0"
+      class="flex flex-col items-center justify-between gap-4 pt-6 mt-8 border-t md:flex-row border-gray-50"
+    >
       <p class="text-sm text-gray-400">
         Showing <span class="font-bold text-gray-800">{{ fromItem }}</span> to
         <span class="font-bold text-gray-800">{{ toItem }}</span> of
@@ -330,7 +397,11 @@ onMounted(() => {
       </p>
 
       <div class="flex gap-2">
-        <button @click="fetchClaims(currentPage - 1)" :disabled="currentPage === 1" class="px-4 py-2 text-sm font-medium transition border border-gray-200 rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed">
+        <button
+          @click="fetchClaims(currentPage - 1)"
+          :disabled="currentPage === 1"
+          class="px-4 py-2 text-sm font-medium transition border border-gray-200 rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
+        >
           Previous
         </button>
         <div class="flex gap-1">
@@ -340,15 +411,23 @@ onMounted(() => {
             @click="typeof page === 'number' ? fetchClaims(page) : null"
             :disabled="page === '...'"
             :class="[
-              currentPage === page ? 'bg-black text-white border-black shadow-sm' : 'hover:bg-gray-50 border-gray-200',
-              page === '...' ? 'cursor-default border-transparent hover:bg-transparent' : 'border'
+              currentPage === page
+                ? 'bg-black text-white border-black shadow-sm'
+                : 'hover:bg-gray-50 border-gray-200',
+              page === '...'
+                ? 'cursor-default border-transparent hover:bg-transparent'
+                : 'border',
             ]"
             class="flex items-center justify-center w-10 h-10 text-sm font-bold transition rounded-xl"
           >
             {{ page }}
           </button>
         </div>
-        <button @click="fetchClaims(currentPage + 1)" :disabled="currentPage === lastPage" class="px-4 py-2 text-sm font-medium transition border border-gray-200 rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed">
+        <button
+          @click="fetchClaims(currentPage + 1)"
+          :disabled="currentPage === lastPage"
+          class="px-4 py-2 text-sm font-medium transition border border-gray-200 rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
+        >
           Next
         </button>
       </div>
@@ -384,7 +463,7 @@ const formatDate = (dateString) => {
     month: "short",
     day: "numeric",
     hour: "2-digit",
-    minute: "2-digit"
+    minute: "2-digit",
   });
 };
 
@@ -405,7 +484,8 @@ const visiblePages = computed(() => {
   const total = lastPage.value;
   if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
   if (current <= 4) return [1, 2, 3, 4, 5, "...", total];
-  if (current >= total - 3) return [1, "...", total - 4, total - 3, total - 2, total - 1, total];
+  if (current >= total - 3)
+    return [1, "...", total - 4, total - 3, total - 2, total - 1, total];
   return [1, "...", current - 1, current, current + 1, "...", total];
 });
 
@@ -413,7 +493,10 @@ const fetchClaims = async (page = 1) => {
   isLoading.value = true;
   try {
     // Meminta data berdasarkan halaman spesifik ke Laravel
-    const res = await axios.get(`${BASE_URL}/admin/promo-claims?page=${page}`, axiosConfig);
+    const res = await axios.get(
+      `${BASE_URL}/admin/promo-claims?page=${page}`,
+      axiosConfig
+    );
     const paginationData = res.data;
 
     // Memetakan struktur Pagination Laravel
@@ -429,6 +512,387 @@ const fetchClaims = async (page = 1) => {
     isLoading.value = false;
   }
 };
+
+onMounted(() => {
+  fetchClaims(1);
+});
+</script> -->
+<template>
+  <div
+    class="relative bg-white shadow-sm p-8 border border-gray-100 rounded-2xl min-h-[600px]"
+  >
+    <Breadcrumb />
+
+    <div class="flex flex-col justify-between gap-4 mb-8 md:flex-row md:items-end">
+      <div>
+        <h1 class="flex items-center gap-3 text-2xl font-bold text-gray-800">
+          <button
+            @click="$router.back()"
+            class="p-2 transition-colors bg-gray-100 rounded-full hover:bg-gray-200"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          </button>
+          Promo Claims
+        </h1>
+        <p class="mt-2 text-sm text-gray-500">
+          Track and manage users who claimed promotional vouchers.
+        </p>
+      </div>
+
+      <!-- 👇 TOMBOL EXPORT BARU 👇 -->
+      <button
+        @click="exportToExcel"
+        :disabled="isExporting"
+        class="flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-bold text-gray-700 transition-all bg-white border border-gray-200 shadow-sm rounded-xl hover:bg-gray-50 disabled:opacity-50"
+      >
+        <svg
+          v-if="!isExporting"
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-4 h-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+          />
+        </svg>
+        <span
+          v-else
+          class="w-4 h-4 border-2 border-gray-400 rounded-full border-t-transparent animate-spin"
+        ></span>
+        {{ isExporting ? "Exporting..." : "Export All to CSV" }}
+      </button>
+      <!-- 👆 ======================= 👆 -->
+    </div>
+
+    <div class="flex flex-col items-center justify-between gap-4 mb-6 md:flex-row">
+      <div class="relative w-full md:w-80">
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+        </span>
+        <input
+          v-model="searchQuery"
+          type="text"
+          placeholder="Filter current page (Email/Code)..."
+          class="w-full py-2 pl-10 pr-4 text-sm transition border border-gray-200 outline-none bg-gray-50 rounded-xl focus:ring-2 focus:ring-black"
+        />
+      </div>
+
+      <div class="flex items-center gap-3">
+        <span class="text-xs font-bold tracking-wide text-gray-400 uppercase"
+          >Server Sync:</span
+        >
+        <span
+          class="px-3 py-1.5 text-xs font-bold text-green-700 bg-green-50 border border-green-200 rounded-lg"
+          >50 Items / Page</span
+        >
+      </div>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="text-xs tracking-widest text-gray-400 uppercase border-b">
+            <th class="pb-4 pl-2 font-medium">Claim ID</th>
+            <th class="pb-4 font-medium">Email Address</th>
+            <th class="pb-4 font-medium">Promo Code</th>
+            <th class="pb-4 font-medium">Discount Value</th>
+            <th class="pb-4 font-medium text-center">Status</th>
+            <th class="pb-4 pr-2 font-medium text-right">Claimed Date</th>
+          </tr>
+        </thead>
+
+        <tbody v-if="isLoading">
+          <tr v-for="i in 10" :key="`skel-${i}`" class="border-b border-gray-50">
+            <td class="py-4 pl-2">
+              <div class="w-16 h-4 bg-gray-200 rounded animate-pulse"></div>
+            </td>
+            <td class="py-4">
+              <div class="w-48 h-4 bg-gray-200 rounded animate-pulse"></div>
+            </td>
+            <td class="py-4">
+              <div class="w-24 h-4 bg-gray-200 rounded animate-pulse"></div>
+            </td>
+            <td class="py-4">
+              <div class="w-24 h-4 bg-gray-200 rounded animate-pulse"></div>
+            </td>
+            <td class="py-4 text-center">
+              <div
+                class="inline-block w-20 h-6 bg-gray-200 rounded-full animate-pulse"
+              ></div>
+            </td>
+            <td class="py-4 pr-2 text-right">
+              <div class="inline-block w-24 h-4 bg-gray-200 rounded animate-pulse"></div>
+            </td>
+          </tr>
+        </tbody>
+
+        <tbody v-else class="text-sm text-gray-600">
+          <tr
+            v-for="claim in filteredClaims"
+            :key="claim.id"
+            class="transition border-b border-gray-50 hover:bg-gray-50"
+          >
+            <td class="py-4 pl-2 font-mono font-medium text-gray-900">#{{ claim.id }}</td>
+            <td class="py-4 font-medium text-gray-800">{{ claim.email }}</td>
+            <td class="py-4">
+              <span
+                class="px-2.5 py-1 text-xs font-bold text-gray-700 bg-gray-100 border border-gray-200 rounded-md tracking-wider"
+              >
+                {{ claim.promo_code }}
+              </span>
+            </td>
+            <td class="py-4 font-medium text-emerald-600">
+              Rp {{ claim.discount_value?.toLocaleString("id-ID") }}
+            </td>
+            <td class="py-4 text-center">
+              <span
+                v-if="claim.is_used"
+                class="px-3 py-1 text-[10px] font-bold tracking-widest text-red-700 uppercase bg-red-100 rounded-full"
+              >
+                USED
+              </span>
+              <span
+                v-else
+                class="px-3 py-1 text-[10px] font-bold tracking-widest text-green-700 uppercase bg-green-100 rounded-full"
+              >
+                ACTIVE
+              </span>
+            </td>
+            <td class="py-4 pr-2 text-right text-gray-500 whitespace-nowrap">
+              {{ formatDate(claim.created_at) }}
+            </td>
+          </tr>
+
+          <tr v-if="filteredClaims.length === 0">
+            <td colspan="6" class="py-20 text-sm italic text-center text-gray-400">
+              {{
+                searchQuery
+                  ? "No claims found matching your search on this page."
+                  : "No promo claims recorded yet."
+              }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div
+      v-if="!isLoading && totalItems > 0"
+      class="flex flex-col items-center justify-between gap-4 pt-6 mt-8 border-t md:flex-row border-gray-50"
+    >
+      <p class="text-sm text-gray-400">
+        Showing <span class="font-bold text-gray-800">{{ fromItem }}</span> to
+        <span class="font-bold text-gray-800">{{ toItem }}</span> of
+        <span class="font-bold text-gray-800">{{ totalItems }}</span> entries
+      </p>
+
+      <div class="flex gap-2">
+        <button
+          @click="fetchClaims(currentPage - 1)"
+          :disabled="currentPage === 1"
+          class="px-4 py-2 text-sm font-medium transition border border-gray-200 rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
+        >
+          Previous
+        </button>
+        <div class="flex gap-1">
+          <button
+            v-for="(page, index) in visiblePages"
+            :key="index"
+            @click="typeof page === 'number' ? fetchClaims(page) : null"
+            :disabled="page === '...'"
+            :class="[
+              currentPage === page
+                ? 'bg-black text-white border-black shadow-sm'
+                : 'hover:bg-gray-50 border-gray-200',
+              page === '...'
+                ? 'cursor-default border-transparent hover:bg-transparent'
+                : 'border',
+            ]"
+            class="flex items-center justify-center w-10 h-10 text-sm font-bold transition rounded-xl"
+          >
+            {{ page }}
+          </button>
+        </div>
+        <button
+          @click="fetchClaims(currentPage + 1)"
+          :disabled="currentPage === lastPage"
+          class="px-4 py-2 text-sm font-medium transition border border-gray-200 rounded-xl hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import Breadcrumb from "../../components/Admin/Layout/Breadcrumb.vue";
+import { ref, onMounted, computed } from "vue";
+import axios from "axios";
+import { BASE_URL } from "../../config/api.js";
+import Swal from "sweetalert2"; // Pastikan SweetAlert2 diimpor
+
+const claims = ref([]);
+const isLoading = ref(true);
+const isExporting = ref(false); // State baru untuk loading export
+const searchQuery = ref("");
+
+const currentPage = ref(1);
+const lastPage = ref(1);
+const totalItems = ref(0);
+const fromItem = ref(0);
+const toItem = ref(0);
+
+const axiosConfig = {
+  headers: { Authorization: `Bearer ${localStorage.getItem("admin_token")}` },
+};
+
+const formatDate = (dateString) => {
+  if (!dateString) return "-";
+  return new Date(dateString).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
+
+const filteredClaims = computed(() => {
+  const query = searchQuery.value.toLowerCase();
+  if (!query) return claims.value;
+
+  return claims.value.filter(
+    (claim) =>
+      claim.email.toLowerCase().includes(query) ||
+      claim.promo_code.toLowerCase().includes(query)
+  );
+});
+
+const visiblePages = computed(() => {
+  const current = currentPage.value;
+  const total = lastPage.value;
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+  if (current <= 4) return [1, 2, 3, 4, 5, "...", total];
+  if (current >= total - 3)
+    return [1, "...", total - 4, total - 3, total - 2, total - 1, total];
+  return [1, "...", current - 1, current, current + 1, "...", total];
+});
+
+const fetchClaims = async (page = 1) => {
+  isLoading.value = true;
+  try {
+    const res = await axios.get(
+      `${BASE_URL}/admin/promo-claims?page=${page}`,
+      axiosConfig
+    );
+    const paginationData = res.data;
+
+    claims.value = paginationData.data;
+    currentPage.value = paginationData.current_page;
+    lastPage.value = paginationData.last_page;
+    totalItems.value = paginationData.total;
+    fromItem.value = paginationData.from || 0;
+    toItem.value = paginationData.to || 0;
+  } catch (error) {
+    console.error("Gagal mengambil data promo claims:", error);
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+// 👇 LOGIKA EXPORT SELURUH DATA 👇
+const exportToExcel = async () => {
+  isExporting.value = true;
+  try {
+    // Tarik semua data dari server dengan parameter export=true (atau perulangan halaman)
+    // Di sini kita menambah query `limit=10000` (atau `export=all` sesuai dukungan backend Anda)
+    // agar backend mengirim semua data sekaligus tanpa paginasi
+    const res = await axios.get(`${BASE_URL}/admin/promo-claims?export=all`, axiosConfig);
+
+    // Jika backend Anda belum mendukung '?export=all', Anda mungkin perlu menyesuaikan controller
+    // Namun biasanya data bisa di-bypass paginasinya dengan limit yang besar
+    const allClaims = Array.isArray(res.data) ? res.data : res.data.data;
+
+    if (!allClaims || allClaims.length === 0) {
+      Swal.fire("Kosong", "Tidak ada data untuk diekspor.", "info");
+      return;
+    }
+
+    const headers = [
+      "Claim ID",
+      "Email Address",
+      "Promo Code",
+      "Discount Value",
+      "Status",
+      "Claimed Date",
+    ];
+
+    const rows = allClaims.map((c) => [
+      `"#${c.id}"`,
+      `"${c.email}"`,
+      `"${c.promo_code}"`,
+      c.discount_value || 0,
+      c.is_used ? '"USED"' : '"ACTIVE"',
+      `"${formatDate(c.created_at)}"`,
+    ]);
+
+    const csvContent = [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
+    const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute(
+      "download",
+      `Solher_Promo_Claims_${new Date().toISOString().split("T")[0]}.csv`
+    );
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } catch (error) {
+    console.error("Gagal mengekspor data:", error);
+    Swal.fire(
+      "Error",
+      "Gagal menarik data untuk diekspor. Pastikan backend mendukung parameter export.",
+      "error"
+    );
+  } finally {
+    isExporting.value = false;
+  }
+};
+// 👆 =========================== 👆
 
 onMounted(() => {
   fetchClaims(1);
