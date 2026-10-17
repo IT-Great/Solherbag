@@ -95,42 +95,92 @@ onMounted(async () => {
         "
         class="rounded-full w-20 h-20 object-cover"
       />
-      
+
       <div class="flex-1 flex justify-between items-start">
         <div>
           <h2 class="font-bold text-2xl">{{ user.first_name }} {{ user.last_name }}</h2>
           <p class="text-gray-500 font-medium mt-1">{{ user.email }}</p>
-          
+
           <!-- BADGE LOYALTY POINTS (DIAMANKAN DENGAN NUMBER CASTING) -->
-          <div class="inline-flex items-center gap-1.5 mt-3 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-full">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-amber-500" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          <div
+            class="inline-flex items-center gap-1.5 mt-3 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-full"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-4 h-4 text-amber-500"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+              />
             </svg>
             <span class="text-xs font-bold text-amber-700">
-              {{ Number(user.point || 0).toLocaleString('id-ID') }} Loyalty Points
+              {{ Number(user.point || 0).toLocaleString("id-ID") }} Loyalty Points
             </span>
           </div>
-          
         </div>
-        
-        <div class="text-right bg-gray-50 px-4 py-2 rounded-xl border border-gray-100">
+
+        <!-- <div class="text-right bg-gray-50 px-4 py-2 rounded-xl border border-gray-100">
           <p class="text-[10px] text-gray-400 uppercase tracking-widest font-bold mb-0.5">
             Member Since
           </p>
           <p class="text-xs font-semibold text-gray-800">
             {{ formatDateLong(user.created_at) }}
           </p>
+        </div> -->
+
+        <div class="flex gap-4 text-right">
+          <!-- WIDGET TANGGAL LAHIR (DITAMBAHKAN) -->
+          <div class="bg-blue-50/50 px-4 py-2 rounded-xl border border-blue-100">
+            <p
+              class="text-[10px] text-blue-500 uppercase tracking-widest font-bold mb-0.5"
+            >
+              Date of Birth
+            </p>
+            <p
+              class="text-xs font-semibold text-blue-900 flex items-center justify-end gap-1.5"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-3.5 h-3.5 opacity-70"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732l-3.354 1.935-1.18 4.455a1 1 0 01-1.933 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732l3.354-1.935 1.18-4.455A1 1 0 0112 2z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              {{ user.birthday_date ? formatDateShort(user.birthday_date) : "Not Set" }}
+            </p>
+          </div>
+
+          <!-- WIDGET MEMBER SINCE (ASLI) -->
+          <div class="bg-gray-50 px-4 py-2 rounded-xl border border-gray-100">
+            <p
+              class="text-[10px] text-gray-400 uppercase tracking-widest font-bold mb-0.5"
+            >
+              Member Since
+            </p>
+            <p class="text-xs font-semibold text-gray-800">
+              {{ formatDateLong(user.created_at) }}
+            </p>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- DIAMANKAN DENGAN OPTIONAL CHAINING (?.) -->
-    <h3 class="font-bold text-xl">Registered Addresses ({{ user.addresses?.length || 0 }})</h3>
+    <h3 class="font-bold text-xl">
+      Registered Addresses ({{ user.addresses?.length || 0 }})
+    </h3>
 
     <div class="gap-6 grid grid-cols-1 md:grid-cols-2">
       <!-- FALLBACK ARRAY KOSONG AGAR TIDAK CRASH -->
       <div
-        v-for="addr in (user.addresses || [])"
+        v-for="addr in user.addresses || []"
         :key="addr.id"
         class="relative bg-white shadow-sm p-6 border border-gray-200 rounded-xl"
       >
@@ -153,13 +203,17 @@ onMounted(async () => {
 
   <!-- TAMPILAN SAAT SEDANG LOADING MEMANGGIL API -->
   <div v-else class="flex flex-col items-center justify-center min-h-[400px]">
-    <div class="w-10 h-10 border-4 border-gray-200 border-t-black rounded-full animate-spin"></div>
-    <p class="mt-4 text-sm text-gray-500 font-medium tracking-wide">Memuat data pengguna...</p>
+    <div
+      class="w-10 h-10 border-4 border-gray-200 border-t-black rounded-full animate-spin"
+    ></div>
+    <p class="mt-4 text-sm text-gray-500 font-medium tracking-wide">
+      Memuat data pengguna...
+    </p>
   </div>
 </template>
 
 <script setup>
-import Breadcrumb from "../../components/Admin/Layout/Breadcrumb.vue"; 
+import Breadcrumb from "../../components/Admin/Layout/Breadcrumb.vue";
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
@@ -182,9 +236,22 @@ const formatDateLong = (dateString) => {
   });
 };
 
+const formatDateShort = (dateString) => {
+  if (!dateString) return "-";
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  }).format(date);
+};
+
 onMounted(async () => {
   try {
-    const res = await axios.get(`${BASE_URL}/admin/users/${route.params.id}`, axiosConfig);
+    const res = await axios.get(
+      `${BASE_URL}/admin/users/${route.params.id}`,
+      axiosConfig
+    );
     user.value = res.data;
   } catch (error) {
     console.error("Gagal mengambil detail user:", error);
