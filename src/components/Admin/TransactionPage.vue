@@ -7105,11 +7105,9 @@ onUnmounted(() => {
                   <!-- <span v-if="trx.promo_code">
                     Promo (<span class="font-mono">{{ trx.promo_code }}</span>)
                   </span> -->
-                  <span v-if="trx.promo_code">
-                    Discounts
-                  </span>
+                  <span v-if="trx.promo_code"> Discounts </span>
                   <span v-else>Discounts</span>
-                  
+
                   <span>-{{ formatPrice(trx.promo_discount) }}</span>
                 </div>
                 <div
@@ -8046,7 +8044,7 @@ const fetchTransactions = async () => {
   isLoading.value = true;
   try {
     const res = await axios.get(`${BASE_URL}/admin/transactions`, axiosConfig);
-    
+
     // 👇 Terapkan Fallback Paginasi 👇
     const sourceData = res.data.data !== undefined ? res.data.data : res.data;
 
@@ -8131,39 +8129,111 @@ const exportToPDF = () => {
 //   );
 // };
 
+// const exportToExcel = () => {
+//   const excelData = paginatedTransactions.value.map((item, index) => ({
+//     No: index + 1,
+//     "Order ID": item.order_id,
+//     Date: formatDate(item.created_at),
+//     "Customer Name": `${item.user.first_name} ${item.user.last_name}`,
+//     Email: item.user.email,
+//     "Total Items": item.details.length,
+//     "Payment Method": item.payment_method
+//       ? item.payment_method.replace(/_/g, " ").toUpperCase()
+//       : "-",
+//     "Payment Status": getPaymentStatusText(item.status),
+//     "Shipping Method":
+//       item.shipping_method === "free"
+//         ? "In-Store Pickup"
+//         : `${item.courier_company} - ${item.courier_type}`,
+//     "Tracking Number": item.tracking_number || "-",
+//     "Subtotal (IDR)": parseFloat(item.total_amount),
+//     "Shipping Cost (IDR)": parseFloat(item.shipping_cost),
+//     // [BARU] Kolom Diskon di Laporan Excel
+//     "Promo Code": item.promo_code || "-",
+//     "Promo Discount (IDR)": parseFloat(item.promo_discount || 0),
+//     "Points Discount (IDR)": parseFloat((item.points_used || 0) * 1000),
+//     // [PERBAIKAN] Grand Total
+//     "Grand Total (IDR)": getGrandTotal(item),
+//     "Points Earned": item.status === "completed" ? item.point || 0 : 0,
+//     "Transaction Status": item.status.replace(/_/g, " ").toUpperCase(),
+//     "Shipping Status":
+//       item.shipping_method === "free"
+//         ? "IN-STORE"
+//         : (item.shipping_status || "PENDING").toUpperCase(),
+//   }));
+//   const worksheet = XLSX.utils.json_to_sheet(excelData);
+//   const workbook = XLSX.utils.book_new();
+//   XLSX.utils.book_append_sheet(workbook, worksheet, "Transactions");
+//   XLSX.writeFile(
+//     workbook,
+//     `Transaction_Data_${new Date().toISOString().split("T")[0]}.xlsx`
+//   );
+// };
+
 const exportToExcel = () => {
-  const excelData = paginatedTransactions.value.map((item, index) => ({
-    No: index + 1,
-    "Order ID": item.order_id,
-    Date: formatDate(item.created_at),
-    "Customer Name": `${item.user.first_name} ${item.user.last_name}`,
-    Email: item.user.email,
-    "Total Items": item.details.length,
-    "Payment Method": item.payment_method
-      ? item.payment_method.replace(/_/g, " ").toUpperCase()
-      : "-",
-    "Payment Status": getPaymentStatusText(item.status),
-    "Shipping Method":
-      item.shipping_method === "free"
-        ? "In-Store Pickup"
-        : `${item.courier_company} - ${item.courier_type}`,
-    "Tracking Number": item.tracking_number || "-",
-    "Subtotal (IDR)": parseFloat(item.total_amount),
-    "Shipping Cost (IDR)": parseFloat(item.shipping_cost),
-    // [BARU] Kolom Diskon di Laporan Excel
-    "Promo Code": item.promo_code || "-",
-    "Promo Discount (IDR)": parseFloat(item.promo_discount || 0),
-    "Points Discount (IDR)": parseFloat((item.points_used || 0) * 1000),
-    // [PERBAIKAN] Grand Total
-    "Grand Total (IDR)": getGrandTotal(item),
-    "Points Earned": item.status === "completed" ? item.point || 0 : 0,
-    "Transaction Status": item.status.replace(/_/g, " ").toUpperCase(),
-    "Shipping Status":
-      item.shipping_method === "free"
-        ? "IN-STORE"
-        : (item.shipping_status || "PENDING").toUpperCase(),
-  }));
+  const excelData = paginatedTransactions.value.map((item, index) => {
+    // 👇 FUNGSI BARU: Menggabungkan nama produk yang dibeli menjadi teks terformat
+    const productsList =
+      item.details && item.details.length > 0
+        ? item.details
+            .map((detail) => {
+              // Format: 2x Leather Bag - Black
+              const colorText = detail.color ? ` - ${detail.color}` : "";
+              return `${detail.quantity}x ${
+                detail.product?.name || "Unknown Product"
+              }${colorText}`;
+            })
+            .join(" | ") // Pemisah antar produk
+        : "No Items";
+
+    return {
+      No: index + 1,
+      "Order ID": item.order_id,
+      Date: formatDate(item.created_at),
+      "Customer Name": `${item.user.first_name} ${item.user.last_name}`,
+      Email: item.user.email,
+
+      // 👇 KOLOM BARU YANG ANDA MINTA 👇
+      "Products Ordered": productsList,
+
+      "Total Quantity": item.details.reduce((sum, d) => sum + d.quantity, 0),
+      "Payment Method": item.payment_method
+        ? item.payment_method.replace(/_/g, " ").toUpperCase()
+        : "-",
+      "Payment Status": getPaymentStatusText(item.status),
+      "Shipping Method":
+        item.shipping_method === "free"
+          ? "In-Store Pickup"
+          : `${item.courier_company || "Pending"} - ${item.courier_type || ""}`,
+      "Tracking Number": item.tracking_number || "-",
+      "Subtotal (IDR)": parseFloat(item.total_amount),
+      "Shipping Cost (IDR)": parseFloat(item.shipping_cost),
+      "Promo Code": item.promo_code || "-",
+      "Promo Discount (IDR)": parseFloat(item.promo_discount || 0),
+      "Points Discount (IDR)": parseFloat((item.points_used || 0) * 1000),
+      "Grand Total (IDR)": getGrandTotal(item),
+      "Points Earned": item.status === "completed" ? item.point || 0 : 0,
+      "Transaction Status": item.status.replace(/_/g, " ").toUpperCase(),
+      "Shipping Status":
+        item.shipping_method === "free"
+          ? "IN-STORE"
+          : (item.shipping_status || "PENDING").toUpperCase(),
+    };
+  });
+
   const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+  // 👇 PERCANTIK EXCEL (Opsional): Membuat kolom "Products Ordered" lebih lebar otomatis
+  const columnWidths = [
+    { wch: 5 }, // No
+    { wch: 15 }, // Order ID
+    { wch: 20 }, // Date
+    { wch: 25 }, // Customer Name
+    { wch: 25 }, // Email
+    { wch: 50 }, // Products Ordered (Lebar karena panjang)
+  ];
+  worksheet["!cols"] = columnWidths;
+
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Transactions");
   XLSX.writeFile(
