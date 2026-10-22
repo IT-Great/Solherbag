@@ -464,7 +464,7 @@ onUnmounted(() => {
           :class="index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'"
         >
           <!-- GAMBAR SLIDER (Clean & Borderless) -->
-          <div
+          <!-- <div
             class="relative w-full lg:w-[65%] aspect-[3/4] md:aspect-[4/5] lg:aspect-[16/10] overflow-hidden bg-stone-100"
             @wheel="(e) => handleImageScroll(e, event)"
             @mouseenter="pauseAutoShuffle(event)"
@@ -482,17 +482,50 @@ onUnmounted(() => {
               />
             </transition-group>
 
-            <!-- Custom Cursor Hint (Optional for Desktop) -->
             <div v-if="event.images.length > 1" class="absolute inset-0 flex items-center justify-center transition-opacity duration-500 opacity-0 pointer-events-none group-hover:opacity-100 bg-black/10">
                <span class="px-4 py-2 text-[9px] font-bold tracking-[0.3em] text-white uppercase backdrop-blur-md bg-black/30 rounded-full border border-white/20">Click or Scroll</span>
             </div>
 
-            <!-- Dots Indicator -->
             <div v-if="event.images.length > 1" class="absolute z-20 flex gap-2 bottom-6 left-1/2 -translate-x-1/2">
               <div 
                 v-for="(_, idx) in event.images" :key="'dot-'+idx"
                 class="h-[2px] transition-all duration-500 cursor-pointer"
                 :class="event.activeIndex === idx ? 'w-6 bg-white' : 'w-2 bg-white/40 hover:bg-white/80'"
+                @click.stop="event.activeIndex = idx"
+              ></div>
+            </div>
+          </div>  -->
+
+          <!-- GAMBAR SLIDER (Clean & Uncropped) -->
+          <div
+            class="relative w-full lg:w-[65%] h-[600px] md:h-[700px] lg:h-[800px] overflow-hidden bg-[#Fdfbf7]"
+            @wheel="(e) => handleImageScroll(e, event)"
+            @mouseenter="pauseAutoShuffle(event)"
+            @mouseleave="resumeAutoShuffle(event)"
+          >
+            <transition-group name="cinematic-fade">
+              <img
+                v-for="(img, imgIdx) in event.images"
+                :key="img"
+                v-show="event.activeIndex === imgIdx"
+                :src="getImgUrl(img)"
+                class="absolute inset-0 object-contain w-full h-full transition-transform duration-[15000ms] ease-out hover:scale-[1.02] cursor-crosshair"
+                loading="lazy"
+                @click="nextImageManual(event)"
+              />
+            </transition-group>
+
+            <!-- Custom Cursor Hint -->
+            <div v-if="event.images.length > 1" class="absolute inset-0 flex items-center justify-center transition-opacity duration-500 opacity-0 pointer-events-none group-hover:opacity-100 bg-black/5">
+               <span class="px-4 py-2 text-[9px] font-bold tracking-[0.3em] text-white uppercase backdrop-blur-md bg-black/40 rounded-full border border-white/20">Click or Scroll</span>
+            </div>
+
+            <!-- Dots Indicator (Disesuaikan posisinya agar tidak bertabrakan dengan foto utuh) -->
+            <div v-if="event.images.length > 1" class="absolute z-20 flex gap-2 bottom-2 left-1/2 -translate-x-1/2">
+              <div 
+                v-for="(_, idx) in event.images" :key="'dot-'+idx"
+                class="h-[2px] transition-all duration-500 cursor-pointer"
+                :class="event.activeIndex === idx ? 'w-6 bg-black' : 'w-2 bg-gray-300 hover:bg-gray-500'"
                 @click.stop="event.activeIndex = idx"
               ></div>
             </div>
