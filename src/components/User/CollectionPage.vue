@@ -10455,7 +10455,7 @@ const goToDetail = (product) => {
                 Sale
               </button>
             </div> -->
-            
+
             <!-- Toggle Buttons -->
             <div class="flex gap-2">
               <!-- New In -->
@@ -10488,6 +10488,32 @@ const goToDetail = (product) => {
           </div>
         </div>
       </div>
+
+      <!-- ========================================== -->
+      <!-- FINAL SALE WARNING BANNER                  -->
+      <!-- ========================================== -->
+      <transition name="fade">
+        <div
+          v-if="activeFilter === 'final-sale'"
+          class="flex items-start gap-5 p-6 mb-12 border border-red-100 bg-red-50/50 rounded-2xl"
+        >
+          <div class="p-2.5 bg-white rounded-full shadow-sm shrink-0 border border-red-100">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-red-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="mb-1.5 text-[10px] font-black tracking-[0.2em] text-red-900 uppercase">
+              {{ $t("collection.final_sale_policy_title") }}
+            </h3>
+            <p class="text-xs leading-relaxed text-red-800 md:max-w-4xl">
+              {{ $t("collection.final_sale_desc_1") }}
+              <strong class="font-black text-red-950">{{ $t("collection.final_sale_desc_bold") }}</strong>
+              {{ $t("collection.final_sale_desc_2") }}
+            </p>
+          </div>
+        </div>
+      </transition>
 
       <!-- ========================================== -->
       <!-- PRODUCT GRID                               -->
