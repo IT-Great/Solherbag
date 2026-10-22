@@ -10713,7 +10713,7 @@ const goToDetail = (product) => {
             class="flex items-center justify-center w-10 h-10 transition-colors border border-transparent rounded-full hover:border-gray-300 disabled:opacity-30 disabled:cursor-not-allowed text-black"
           >
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7-7" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
             </svg>
           </button>
         </div>
