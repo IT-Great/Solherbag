@@ -9158,9 +9158,8 @@ const goToDetail = (product) => {
 }
 </style> -->
 
-<template>
+<!-- <template>
   <div class="relative bg-[#F3F4F6] px-6 md:px-12 pt-12 pb-24 min-h-screen">
-    <!-- Loading Overlay -->
     <div
       v-if="isLoading"
       class="z-[100] fixed inset-0 flex flex-col justify-center items-center bg-[#F3F4F6]/80 backdrop-blur-sm transition-all duration-300"
@@ -9176,7 +9175,6 @@ const goToDetail = (product) => {
     </div>
 
     <div class="mx-auto mb-10 max-w-7xl">
-      <!-- Header dengan Counter Produk -->
       <div
         class="flex flex-col items-start justify-between mb-8 md:flex-row md:items-end"
       >
@@ -9188,9 +9186,7 @@ const goToDetail = (product) => {
         </p>
       </div>
 
-      <!-- Filters & Search -->
       <div class="flex flex-col gap-4 mb-12">
-        <!-- Baris Atas: Search & Toggles -->
         <div class="flex flex-col justify-between gap-4 md:flex-row md:items-center">
           <div class="relative w-full md:w-80">
             <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
@@ -9218,7 +9214,6 @@ const goToDetail = (product) => {
           </div>
 
           <div class="flex flex-wrap items-center gap-2">
-            <!-- Filter: New Arrivals -->
             <button
               @click="toggleSpecialFilter('new-arrivals')"
               :class="
@@ -9231,7 +9226,6 @@ const goToDetail = (product) => {
               <span class="text-sm">✨</span> New Arrivals
             </button>
 
-            <!-- Filter: Final Sale -->
             <button
               @click="toggleSpecialFilter('final-sale')"
               :class="
@@ -9244,7 +9238,6 @@ const goToDetail = (product) => {
               <span class="text-sm">🔥</span> Final Sale
             </button>
 
-            <!-- Filter: Normal Sale -->
             <button
               @click="toggleSaleFilter"
               :class="
@@ -9273,9 +9266,7 @@ const goToDetail = (product) => {
           </div>
         </div>
 
-        <!-- Baris Bawah: Dropdown Kategorisasi Ganda -->
         <div class="flex flex-col gap-4 md:flex-row">
-          <!-- Dropdown 1: Koleksi Utama -->
           <div class="relative flex-1">
             <select
               v-model="selectedCategory"
@@ -9307,7 +9298,6 @@ const goToDetail = (product) => {
             </div>
           </div>
 
-          <!-- Dropdown 2: Bag Types (Tipe Tas FIsik) -->
           <div class="relative flex-1">
             <select
               v-model="selectedBagCategory"
@@ -9341,7 +9331,6 @@ const goToDetail = (product) => {
         </div>
       </div>
 
-      <!-- Warning Banner -->
       <transition name="fade">
         <div
           v-if="activeFilter === 'final-sale'"
@@ -9363,19 +9352,6 @@ const goToDetail = (product) => {
               />
             </svg>
           </div>
-          <!-- <div>
-            <h3 class="mb-1 text-sm font-black tracking-widest text-red-800 uppercase">
-              Final Sale Policy
-            </h3>
-            <p class="text-xs leading-relaxed text-red-700 md:max-w-4xl">
-              Koleksi di bawah ini dijual dengan diskon pembersihan gudang (Clearance).
-              <strong class="font-black text-red-900"
-                >Semua pembelian bersifat permanen.</strong
-              >
-              Kami tidak menerima pengembalian (return), penukaran (exchange), maupun
-              pengembalian dana (refund) dengan alasan apa pun.
-            </p>
-          </div> -->
           <div>
             <h3 class="mb-1 text-sm font-black tracking-widest text-red-800 uppercase">
               {{ $t("collection.final_sale_policy_title") }}
@@ -9391,7 +9367,6 @@ const goToDetail = (product) => {
         </div>
       </transition>
 
-      <!-- Product Grid -->
       <div v-if="paginatedProducts.length > 0">
         <div
           class="grid grid-cols-2 mx-auto gap-x-4 gap-y-10 md:gap-x-6 md:gap-y-12 md:grid-cols-3 lg:grid-cols-4 max-w-7xl"
@@ -9402,190 +9377,11 @@ const goToDetail = (product) => {
             class="relative cursor-pointer group flex flex-col"
             @click="goToDetail(product)"
           >
-            <!-- Product Card Image Container -->
-            <!-- <div
-              class="relative bg-gray-50 shadow-sm transition-all duration-500 mb-4 rounded-xl aspect-[4/5] overflow-hidden group/slider border border-gray-100/50 group-hover:-translate-y-1 group-hover:shadow-2xl"
-            >
-              <div 
-                class="absolute inset-0 z-30 flex items-center justify-center transition-all duration-500 opacity-0 bg-black/10 backdrop-blur-[2px] group-hover/slider:opacity-100"
-              >
-                <div class="overflow-hidden">
-                  <span class="inline-block px-8 py-3 text-[10px] font-black tracking-[0.2em] text-black uppercase transition-transform duration-500 translate-y-full bg-white shadow-2xl group-hover/slider:translate-y-0 rounded-sm">
-                    Explore Details
-                  </span>
-                </div>
-              </div>
-
-              <div class="absolute z-20 flex flex-col gap-1 top-3 left-3">
-                <div
-                  v-if="
-                    getDiscountToDisplay(product) && getDiscountStatus(product).active
-                  "
-                  :class="product.is_final_sale ? 'bg-red-800' : 'bg-red-600'"
-                  class="px-2 py-1 rounded-[4px] font-extrabold text-[9px] text-white uppercase tracking-widest shadow-lg"
-                >
-                  {{ product.is_final_sale ? "FINAL SALE" : "SALE" }} -{{
-                    calculateDynamicDiscount(product)
-                  }}%
-                </div>
-
-                <div
-                  v-if="isNewArrival(product.created_at) && !product.is_final_sale"
-                  class="bg-black text-white px-2 py-1 rounded-[4px] font-extrabold text-[9px] uppercase tracking-widest shadow-lg"
-                >
-                  NEW
-                </div>
-              </div>
-
-              <button
-                @click.stop="toggleWishlist(product.id)"
-                class="absolute z-40 p-2.5 transition-transform rounded-full shadow-md top-3 right-3 bg-white/90 backdrop-blur-sm hover:bg-white hover:scale-110"
-              >
-                <svg
-                  v-if="isFavorited(product.id)"
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="w-4 h-4 text-red-500"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                  stroke="none"
-                >
-                  <path
-                    d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z"
-                  />
-                </svg>
-                <svg
-                  v-else
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="w-4 h-4 text-gray-400 hover:text-red-500"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                  />
-                </svg>
-              </button>
-
-              <div
-                v-if="product.stock <= 5 && product.stock > 0"
-                class="bottom-3 left-3 absolute bg-amber-500/90 backdrop-blur-sm px-2.5 py-1.5 rounded-md font-bold text-[9px] text-white uppercase tracking-widest z-40 shadow-sm animate-pulse"
-              >
-                Hurry, Only {{ product.stock }} left!
-              </div>
-
-              <div
-                v-else-if="product.stock <= 0"
-                class="absolute inset-0 bg-white/70 backdrop-blur-[2px] flex justify-center items-center z-40"
-              >
-                <span
-                  class="px-5 py-2 text-xs font-black tracking-[0.2em] text-white uppercase transform bg-black rounded-sm shadow-xl -rotate-12 border border-gray-800"
-                >
-                  Sold Out
-                </span>
-              </div>
-
-              <div
-                class="flex w-full h-full transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]"
-                :style="{
-                  transform: `translateX(-${(activeSlides[product.id] || 0) * 100}%)`,
-                }"
-              >
-                <template v-for="(media, index) in getMediaArray(product)" :key="index">
-                  <div
-                    class="relative flex-shrink-0 w-full h-full overflow-hidden bg-gray-100"
-                  >
-                    <img
-                      v-if="media.type === 'image'"
-                      :src="media.url || defaultBagIcon"
-                      :key="'img-' + media.url"
-                      class="absolute inset-0 object-cover w-full h-full transition-transform duration-1000 group-hover:scale-105"
-                      :loading="index === 0 ? 'eager' : 'lazy'" 
-                      alt="Product Media"
-                    />
-                    <video
-                      v-else-if="media.type === 'video'"
-                      :src="media.url"
-                      :key="'vid-' + media.url"
-                      class="absolute inset-0 object-cover w-full h-full bg-black"
-                      autoplay
-                      loop
-                      muted
-                      playsinline
-                    ></video>
-                  </div>
-                </template>
-              </div>
-
-              <button
-                v-if="getMediaArray(product).length > 1"
-                @click.stop="prevSlide(product.id, getMediaArray(product).length - 1)"
-                class="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-1.5 rounded-full opacity-0 group-hover/slider:opacity-100 transition z-40 shadow-md text-black"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="w-4 h-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M15 19l-7-7 7-7"
-                  />
-                </svg>
-              </button>
-
-              <button
-                v-if="getMediaArray(product).length > 1"
-                @click.stop="nextSlide(product.id, getMediaArray(product).length - 1)"
-                class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-1.5 rounded-full opacity-0 group-hover/slider:opacity-100 transition z-40 shadow-md text-black"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="w-4 h-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </button>
-
-              <div
-                class="absolute left-0 right-0 z-40 flex justify-center gap-1 bottom-3"
-                v-if="getMediaArray(product).length > 1"
-              >
-                <div
-                  v-for="(m, idx) in getMediaArray(product)"
-                  :key="idx"
-                  :class="
-                    (activeSlides[product.id] || 0) === idx
-                      ? 'w-4 bg-black'
-                      : 'w-1.5 bg-gray-400/80'
-                  "
-                  class="h-1.5 transition-all duration-300 rounded-full shadow-sm"
-                ></div>
-              </div>
-            </div> -->
-
-            <!-- Product Card Image Container -->
             <div
               class="relative bg-gray-50 shadow-sm transition-all duration-500 mb-4 rounded-xl aspect-[4/5] overflow-hidden group/slider border border-gray-100/50 group-hover:-translate-y-1 group-hover:shadow-2xl"
               @mouseenter="handleProductHover(product, true)"
               @mouseleave="handleProductHover(product, false)"
             >
-              <!-- Luxury Hover Overlay (Tombol 'Explore Details') -->
               <div 
                 class="absolute inset-0 z-30 flex items-center justify-center transition-all duration-500 opacity-0 bg-black/10 backdrop-blur-[2px] group-hover/slider:opacity-100 pointer-events-none"
               >
@@ -9596,7 +9392,6 @@ const goToDetail = (product) => {
                 </div>
               </div>
 
-              <!-- Badges Kiri Atas -->
               <div class="absolute z-20 flex flex-col gap-1 top-3 left-3">
                 <div
                   v-if="
@@ -9618,7 +9413,6 @@ const goToDetail = (product) => {
                 </div>
               </div>
 
-              <!-- Tombol Wishlist (Kanan Atas) -->
               <button
                 @click.stop="toggleWishlist(product.id)"
                 class="absolute z-40 p-2.5 transition-transform rounded-full shadow-md top-3 right-3 bg-white/90 backdrop-blur-sm hover:bg-white hover:scale-110"
@@ -9652,7 +9446,6 @@ const goToDetail = (product) => {
                 </svg>
               </button>
 
-              <!-- Stock Warnings -->
               <div
                 v-if="product.stock <= 5 && product.stock > 0"
                 class="bottom-3 left-3 absolute bg-amber-500/90 backdrop-blur-sm px-2.5 py-1.5 rounded-md font-bold text-[9px] text-white uppercase tracking-widest z-40 shadow-sm animate-pulse"
@@ -9660,22 +9453,10 @@ const goToDetail = (product) => {
                 Hurry, Only {{ product.stock }} left!
               </div>
 
-              <!-- <div
-                v-else-if="product.stock <= 0"
-                class="absolute inset-0 bg-white/70 backdrop-blur-[2px] flex justify-center items-center z-40"
-              >
-                <span
-                  class="px-5 py-2 text-xs font-black tracking-[0.2em] text-white uppercase transform bg-black rounded-sm shadow-xl -rotate-12 border border-gray-800"
-                >
-                  Sold Out
-                </span>
-              </div> -->
-
               <div
                 v-else-if="product.stock <= 0"
                 class="absolute inset-0 bg-white/70 backdrop-blur-[2px] flex justify-center items-center z-40"
               >
-                <!-- Dihilangkan efek miring (-rotate-12) dan diganti warna background merah (bg-red-600) -->
                 <span
                   class="px-5 py-2 text-xs font-black tracking-[0.2em] text-white uppercase bg-red-600 rounded shadow-md border border-red-700"
                 >
@@ -9683,9 +9464,7 @@ const goToDetail = (product) => {
                 </span>
               </div>
 
-              <!-- 👇 PERBAIKAN: Hover Swap Image Rendering 👇 -->
               <div class="relative w-full h-full">
-                <!-- GAMBAR UTAMA (Default) -->
                 <img
                   :src="product.image || defaultBagIcon"
                   class="absolute inset-0 object-cover w-full h-full transition-opacity duration-700 ease-in-out"
@@ -9694,8 +9473,6 @@ const goToDetail = (product) => {
                   :alt="product.name"
                 />
 
-                <!-- GAMBAR HOVER (Random Variant) -->
-                <!-- Akan dirender/ditumpuk di atas gambar utama dengan animasi Fade -->
                 <img
                   v-if="hoveredImageRandom[product.id]"
                   :src="hoveredImageRandom[product.id]"
@@ -9705,10 +9482,8 @@ const goToDetail = (product) => {
                   :alt="product.name + ' Lifestyle'"
                 />
               </div>
-              <!-- 👆 ========================================= 👆 -->
             </div>
 
-            <!-- Product Details -->
             <div class="flex flex-col flex-1 px-1 text-left">
               <div class="flex gap-2 items-center mb-1">
                 <span
@@ -9731,13 +9506,6 @@ const goToDetail = (product) => {
                 {{ product.name }}
               </h3>
 
-              <!-- <div v-if="product.stock > 0" class="flex items-center gap-1.5 mt-1.5 mb-1 text-[10px] text-orange-600 font-bold tracking-wide">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 animate-pulse" viewBox="0 0 20 20" fill="currentColor">
-                  <path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd" />
-                </svg>
-                {{ getViewerCount(product.id) }} orang sedang melihat tas ini
-              </div> -->
-
               <div
                 v-if="product.rating || product.reviews_avg_rating"
                 class="flex items-center gap-1 mt-0.5"
@@ -9759,7 +9527,6 @@ const goToDetail = (product) => {
                 >
               </div>
 
-              <!-- Harga (Didorong ke bawah flex dengan mt-auto agar rata) -->
               <div class="flex flex-wrap items-center gap-2 mt-auto pt-2">
                 <template
                   v-if="
@@ -9789,7 +9556,6 @@ const goToDetail = (product) => {
                 </template>
               </div>
 
-              <!-- Bundle Promo -->
               <div v-if="getBundlePromo(product)" class="pt-2 mt-1">
                 <span
                   class="inline-block px-2 py-1 text-[9px] font-black text-blue-700 bg-blue-50 border border-blue-200 rounded-[4px] uppercase tracking-widest shadow-sm"
@@ -9807,7 +9573,6 @@ const goToDetail = (product) => {
           </div>
         </div>
 
-        <!-- Pagination -->
         <div class="flex items-center justify-center gap-4 mt-20">
           <button
             @click="currentPage--"
@@ -9855,7 +9620,6 @@ const goToDetail = (product) => {
         </div>
       </div>
 
-      <!-- Empty State -->
       <div
         v-else-if="!isLoading"
         class="flex flex-col items-center justify-center py-32 border border-gray-200 border-dashed rounded-2xl bg-white/50"
@@ -10577,4 +10341,783 @@ const goToDetail = (product) => {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+</style> -->
+
+<template>
+  <div class="relative bg-[#Fdfbf7] px-6 md:px-12 pt-28 pb-32 min-h-screen selection:bg-black selection:text-white">
+    <!-- Loading Overlay -->
+    <transition name="fade">
+      <div
+        v-if="isLoading"
+        class="z-[100] fixed inset-0 flex flex-col justify-center items-center bg-[#Fdfbf7]/90 backdrop-blur-md"
+      >
+        <div class="flex gap-2 mb-4">
+          <div class="w-2.5 h-2.5 bg-black rounded-full animate-bounce-1"></div>
+          <div class="w-2.5 h-2.5 bg-black rounded-full animate-bounce-2"></div>
+          <div class="w-2.5 h-2.5 bg-black rounded-full animate-bounce-3"></div>
+        </div>
+        <p class="font-serif text-[11px] uppercase tracking-[0.3em] font-bold text-gray-500 animate-pulse">
+          Curating Collection...
+        </p>
+      </div>
+    </transition>
+
+    <div class="mx-auto max-w-[1600px]">
+      
+      <!-- ========================================== -->
+      <!-- EDITORIAL HEADER                           -->
+      <!-- ========================================== -->
+      <div class="flex flex-col items-center justify-center mb-16 text-center animate-fade-in-up">
+        <span class="text-[10px] font-bold tracking-[0.3em] text-gray-400 uppercase mb-4 flex items-center gap-4">
+          <span class="w-8 h-[1px] bg-gray-300"></span>
+          {{ $t("collection.products") }}
+          <span class="w-8 h-[1px] bg-gray-300"></span>
+        </span>
+        <h1 class="font-serif text-5xl italic font-light tracking-tight text-gray-900 md:text-7xl">
+          The Archives
+        </h1>
+        <p v-if="!isLoading" class="mt-6 text-[11px] font-bold tracking-widest text-gray-500 uppercase">
+          {{ filteredProducts.length }} Masterpieces Discovered
+        </p>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- ADVANCED FILTER BAR                        -->
+      <!-- ========================================== -->
+      <div class="sticky top-16 z-40 bg-[#Fdfbf7]/90 backdrop-blur-xl border-y border-gray-200/50 py-4 mb-16">
+        <div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+          
+          <!-- SEARCH BAR (Minimalist) -->
+          <div class="relative w-full md:w-80 group">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400 transition-colors group-focus-within:text-black">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </span>
+            <input
+              v-model="searchQuery"
+              type="text"
+              :placeholder="$t('collection.search_placeholder')"
+              class="w-full py-2.5 pl-10 pr-4 text-[11px] font-bold tracking-widest uppercase transition-colors bg-transparent border border-gray-300 rounded-full outline-none focus:border-black placeholder:text-gray-400 placeholder:normal-case placeholder:tracking-normal placeholder:font-normal"
+            />
+          </div>
+
+          <!-- DROPDOWNS & QUICK FILTERS -->
+          <div class="flex flex-wrap items-center gap-3 lg:gap-5">
+            <!-- Dropdown: Koleksi -->
+            <div class="relative shrink-0">
+              <select
+                v-model="selectedCategory"
+                @change="handleCategoryChange"
+                class="py-2.5 pl-4 pr-10 text-[10px] font-bold tracking-[0.2em] text-black uppercase bg-transparent border border-gray-300 rounded-full outline-none appearance-none cursor-pointer focus:border-black transition-colors"
+              >
+                <option value="">All Volumes</option>
+                <option v-for="cat in categories" :key="cat.id" :value="cat.category_name">
+                  {{ cat.category_name }}
+                </option>
+              </select>
+              <svg xmlns="http://www.w3.org/2000/svg" class="absolute w-3 h-3 text-black -translate-y-1/2 pointer-events-none right-4 top-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+            </div>
+
+            <!-- Dropdown: Silhouette -->
+            <div class="relative shrink-0">
+              <select
+                v-model="selectedBagCategory"
+                @change="handleCategoryChange"
+                class="py-2.5 pl-4 pr-10 text-[10px] font-bold tracking-[0.2em] text-black uppercase bg-transparent border border-gray-300 rounded-full outline-none appearance-none cursor-pointer focus:border-black transition-colors"
+              >
+                <option value="">All Silhouettes</option>
+                <option v-for="bag in bagCategories" :key="bag.id" :value="bag.name">
+                  {{ bag.name }}
+                </option>
+              </select>
+              <svg xmlns="http://www.w3.org/2000/svg" class="absolute w-3 h-3 text-black -translate-y-1/2 pointer-events-none right-4 top-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+            </div>
+
+            <!-- Vertical Separator -->
+            <div class="hidden w-px h-6 bg-gray-300 lg:block"></div>
+
+            <!-- Toggle Buttons -->
+            <div class="flex gap-2">
+              <button
+                @click="toggleSpecialFilter('new-arrivals')"
+                :class="activeFilter === 'new-arrivals' ? 'bg-black text-white border-black' : 'bg-transparent text-gray-500 border-gray-300 hover:border-gray-500'"
+                class="px-4 py-2 text-[9px] font-bold tracking-[0.2em] uppercase transition-all duration-300 border rounded-full whitespace-nowrap"
+              >
+                New In
+              </button>
+
+              <button
+                @click="toggleSaleFilter"
+                :class="showOnlySale ? 'bg-[#8c3b4a] text-white border-[#8c3b4a]' : 'bg-transparent text-red-700 border-red-200 hover:border-red-400'"
+                class="px-4 py-2 text-[9px] font-bold tracking-[0.2em] uppercase transition-all duration-300 border rounded-full whitespace-nowrap flex items-center gap-1.5"
+              >
+                Sale
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- PRODUCT GRID                               -->
+      <!-- ========================================== -->
+      <div v-if="paginatedProducts.length > 0">
+        <div class="grid grid-cols-2 gap-x-4 gap-y-16 md:gap-x-6 md:gap-y-20 md:grid-cols-3 lg:grid-cols-4">
+          <div
+            v-for="product in paginatedProducts"
+            :key="product.id"
+            class="relative flex flex-col cursor-pointer group"
+            @click="goToDetail(product)"
+          >
+            <!-- Product Image Area -->
+            <div
+              class="relative mb-5 overflow-hidden transition-all duration-700 bg-stone-100 aspect-[4/5] group/slider"
+              @mouseenter="handleProductHover(product, true)"
+              @mouseleave="handleProductHover(product, false)"
+            >
+              <!-- Luxury Hover Overlay ('Explore Details') -->
+              <div 
+                class="absolute inset-0 z-30 flex items-center justify-center transition-all duration-700 opacity-0 bg-black/5 pointer-events-none group-hover/slider:opacity-100"
+              >
+                <div class="overflow-hidden">
+                  <span class="inline-block px-8 py-3 text-[9px] font-black tracking-[0.3em] text-white uppercase transition-transform duration-700 translate-y-full bg-black/80 backdrop-blur-md group-hover/slider:translate-y-0 rounded-full border border-white/20">
+                    Explore Details
+                  </span>
+                </div>
+              </div>
+
+              <!-- Tags Kiri Atas -->
+              <div class="absolute z-20 flex flex-col gap-2 top-4 left-4">
+                <div
+                  v-if="getDiscountToDisplay(product) && getDiscountStatus(product).active"
+                  :class="product.is_final_sale ? 'bg-red-800' : 'bg-black'"
+                  class="px-3 py-1.5 font-bold text-[8px] text-white uppercase tracking-[0.2em]"
+                >
+                  {{ product.is_final_sale ? "FINAL SALE" : "SALE" }} -{{ calculateDynamicDiscount(product) }}%
+                </div>
+                <div
+                  v-if="isNewArrival(product.created_at) && !product.is_final_sale"
+                  class="bg-white text-black px-3 py-1.5 font-bold text-[8px] uppercase tracking-[0.2em] border border-black/10"
+                >
+                  NEW
+                </div>
+              </div>
+
+              <!-- Tombol Wishlist -->
+              <button
+                @click.stop="toggleWishlist(product.id)"
+                class="absolute z-40 p-2.5 transition-transform rounded-full top-3 right-3 hover:scale-110"
+              >
+                <svg
+                  v-if="isFavorited(product.id)"
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-5 h-5 text-red-600 drop-shadow-md"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="0.5"
+                >
+                  <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+                </svg>
+                <svg
+                  v-else
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-5 h-5 text-gray-500 transition-colors hover:text-red-500 drop-shadow-sm"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                </svg>
+              </button>
+
+              <!-- Stock Warnings -->
+              <div
+                v-if="product.stock <= 5 && product.stock > 0"
+                class="bottom-4 left-4 absolute bg-amber-100/90 backdrop-blur-md px-3 py-1.5 font-bold text-[8px] text-amber-900 uppercase tracking-[0.2em] z-40 shadow-sm animate-pulse border border-amber-200"
+              >
+                Only {{ product.stock }} left
+              </div>
+              <div
+                v-else-if="product.stock <= 0"
+                class="absolute inset-0 bg-white/60 backdrop-blur-[1px] flex justify-center items-center z-40"
+              >
+                <span class="px-6 py-2.5 text-[9px] font-black tracking-[0.4em] text-gray-900 uppercase bg-white border border-gray-200">
+                  Sold Out
+                </span>
+              </div>
+
+              <!-- Hover Swap Image Rendering -->
+              <div class="relative w-full h-full bg-stone-100">
+                <img
+                  :src="product.image || defaultBagIcon"
+                  class="absolute inset-0 object-cover w-full h-full transition-opacity duration-1000 ease-out"
+                  :class="hoveredImageRandom[product.id] ? 'opacity-0' : 'opacity-100'"
+                  loading="lazy"
+                  :alt="product.name"
+                />
+                <img
+                  v-if="hoveredImageRandom[product.id]"
+                  :src="hoveredImageRandom[product.id]"
+                  class="absolute inset-0 object-cover w-full h-full transition-opacity duration-1000 ease-out"
+                  :class="hoveredImageRandom[product.id] ? 'opacity-100' : 'opacity-0'"
+                  loading="eager"
+                  :alt="product.name + ' Lifestyle'"
+                />
+              </div>
+            </div>
+
+            <!-- Product Typography Details -->
+            <div class="flex flex-col flex-1 text-center">
+              <div class="flex items-center justify-center gap-2 mb-2">
+                <span class="text-[9px] font-bold tracking-[0.3em] text-gray-400 uppercase">
+                  {{ product.bag_category?.name || product.category?.name || "Archive" }}
+                </span>
+              </div>
+              
+              <h3 class="text-[13px] font-bold tracking-widest text-gray-900 uppercase transition-colors group-hover:text-[#8c3b4a] mb-3 leading-snug">
+                {{ product.name }}
+              </h3>
+
+              <!-- Stars Rating -->
+              <div v-if="product.rating || product.reviews_avg_rating" class="flex items-center justify-center gap-1.5 mb-3">
+                <div class="flex text-black">
+                  <svg v-for="i in 5" :key="i" class="w-[10px] h-[10px] fill-current" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                </div>
+                <span class="text-[10px] text-gray-500 font-medium">({{ product.reviews_count || product.rating_count || "10+" }})</span>
+              </div>
+
+              <!-- Harga -->
+              <div class="flex flex-wrap items-center justify-center gap-3 mt-auto">
+                <template v-if="getDiscountToDisplay(product) && !getDiscountStatus(product).expired">
+                  <template v-if="getDiscountStatus(product).active">
+                    <p class="text-sm font-bold text-[#8c3b4a]">
+                      {{ formatCurrencyDisplay(getDiscountToDisplay(product)) }}
+                    </p>
+                    <p class="text-[11px] text-gray-400 line-through">
+                      {{ formatCurrencyDisplay(getPriceToDisplay(product)) }}
+                    </p>
+                  </template>
+                  <template v-else-if="getDiscountStatus(product).upcoming">
+                    <p class="text-sm font-medium text-black">
+                      {{ formatCurrencyDisplay(getPriceToDisplay(product)) }}
+                    </p>
+                  </template>
+                </template>
+                <template v-else>
+                  <p class="text-sm font-medium text-black">
+                    {{ formatCurrencyDisplay(getPriceToDisplay(product)) }}
+                  </p>
+                </template>
+              </div>
+
+              <!-- Bundle Promo -->
+              <div v-if="getBundlePromo(product)" class="mt-4">
+                <span class="inline-block px-3 py-1.5 text-[9px] font-bold text-black border border-black uppercase tracking-[0.2em]">
+                  Buy {{ getBundlePromo(product).qty }} For {{ formatCurrencyDisplay({ value: getBundlePromo(product).price, curr: getBundlePromo(product).curr }) }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- SMART PAGINATION (Maks 7 Kotak)              -->
+        <!-- ========================================== -->
+        <div class="flex items-center justify-center gap-2 mt-32 font-serif">
+          <button
+            @click="currentPage--"
+            :disabled="currentPage === 1"
+            class="flex items-center justify-center w-10 h-10 transition-colors border border-transparent rounded-full hover:border-gray-300 disabled:opacity-30 disabled:cursor-not-allowed text-black"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+
+          <template v-for="(page, idx) in visiblePages" :key="'page-' + idx">
+            <span v-if="page === '...'" class="px-2 text-gray-400">...</span>
+            <button
+              v-else
+              @click="currentPage = page"
+              :class="currentPage === page ? 'bg-black text-white font-bold' : 'text-gray-600 hover:bg-gray-200'"
+              class="flex items-center justify-center w-10 h-10 text-xs transition-colors rounded-full"
+            >
+              {{ page }}
+            </button>
+          </template>
+
+          <button
+            @click="currentPage++"
+            :disabled="currentPage === totalPages || totalPages === 0"
+            class="flex items-center justify-center w-10 h-10 transition-colors border border-transparent rounded-full hover:border-gray-300 disabled:opacity-30 disabled:cursor-not-allowed text-black"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7-7" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- EMPTY STATE                                -->
+      <!-- ========================================== -->
+      <div
+        v-else-if="!isLoading"
+        class="flex flex-col items-center justify-center py-40 text-center animate-fade-in-up"
+      >
+        <span class="text-6xl italic font-light text-gray-200 font-serif mb-6">Nothing here</span>
+        <p class="font-light tracking-widest text-gray-500 uppercase text-[10px] mb-8">
+          {{ $t("collection.no_items") }}
+        </p>
+        <button
+          @click="resetAllFilters"
+          class="text-[10px] font-bold tracking-[0.2em] text-black uppercase hover:text-gray-500 transition-colors border-b border-black hover:border-gray-500 pb-1"
+        >
+          {{ $t("collection.reset_filters") }}
+        </button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, computed, watch, onUnmounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import Swal from "sweetalert2";
+import { useProductStore } from "../../composables/useProductStore.js";
+import axios from "axios";
+import { BASE_URL } from "../../config/api.js";
+import { useI18n } from "vue-i18n";
+import defaultBagIcon from "../../assets/products/bag_icon.jpg";
+
+const route = useRoute();
+const router = useRouter();
+
+const { state, fetchCollectionsData } = useProductStore();
+const categories = computed(() => state.categories);
+
+const bagCategories = ref([]);
+const isLoading = ref(false);
+
+const searchQuery = ref("");
+const selectedCategory = ref("");
+const selectedBagCategory = ref("");
+const showOnlySale = ref(false);
+const activeFilter = ref("");
+
+let searchDebounceTimer = null; 
+
+const currentPage = ref(1);
+const itemsPerPage = 12;
+
+const userWishlists = ref([]);
+const isAuthenticated = !!localStorage.getItem("token");
+
+const isFavorited = (id) => userWishlists.value.includes(id);
+
+const hoveredImageRandom = ref({});
+
+const handleProductHover = (product, isHovered) => {
+  if (isHovered) {
+    if (!product.variant_images || product.variant_images.length === 0) {
+      hoveredImageRandom.value[product.id] = null;
+      return;
+    }
+    const randomIndex = Math.floor(Math.random() * product.variant_images.length);
+    hoveredImageRandom.value[product.id] = product.variant_images[randomIndex];
+  } else {
+    hoveredImageRandom.value[product.id] = null;
+  }
+};
+
+const { t } = useI18n();
+
+const currentCurrency = ref(localStorage.getItem("currency") || "IDR");
+
+const preloadImages = (products) => {
+  if (!products || products.length === 0) return;
+  products.forEach((p) => {
+    let url = p.image || defaultBagIcon;
+    const img = new Image();
+    img.src = url;
+  });
+};
+
+const convertToWIB = (dateString) => {
+  if (!dateString) return null;
+  const date = new Date(dateString);
+  date.setHours(date.getHours());
+  return date;
+};
+
+const updateCurrencyState = () => {
+  currentCurrency.value = localStorage.getItem("currency") || "IDR";
+};
+
+const isNewArrival = (dateString) => {
+  if (!dateString) return false;
+  const createdDate = new Date(dateString);
+  const now = new Date();
+  const diffTime = Math.abs(now - createdDate);
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  return diffDays <= 14;
+};
+
+const fetchBagCategories = async () => {
+  try {
+    const res = await axios.get(`${BASE_URL}/bag-categories`);
+    bagCategories.value = res.data.data || res.data;
+  } catch (err) {
+    console.error("Gagal mengambil Bag Categories:", err);
+  }
+};
+
+const pushToRouter = (updates) => {
+  const query = {
+    search: searchQuery.value || undefined,
+    category: selectedCategory.value || undefined,
+    bag_category: selectedBagCategory.value || undefined,
+    filter: activeFilter.value || undefined,
+    sale: showOnlySale.value ? "true" : undefined,
+    ...updates,
+  };
+
+  Object.keys(query).forEach((key) => query[key] === undefined && delete query[key]);
+  router.push({ path: "/collections", query });
+};
+
+const toggleSaleFilter = () => {
+  pushToRouter({
+    sale: !showOnlySale.value ? "true" : undefined,
+    filter: undefined,
+    category: undefined,
+    bag_category: undefined,
+  });
+};
+
+const toggleSpecialFilter = (filterName) => {
+  const newFilter = activeFilter.value === filterName ? undefined : filterName;
+  pushToRouter({
+    filter: newFilter,
+    sale: undefined,
+  });
+};
+
+const handleCategoryChange = () => {
+  pushToRouter({ filter: undefined, sale: undefined });
+};
+
+const resetAllFilters = () => {
+  searchQuery.value = "";
+  router.push({ path: "/collections" });
+};
+
+const syncStateWithQuery = (query) => {
+  if (query.search !== undefined && query.search !== searchQuery.value) {
+    searchQuery.value = query.search;
+  } else if (query.search === undefined) {
+    searchQuery.value = "";
+  }
+
+  selectedCategory.value = query.category || "";
+  selectedBagCategory.value = query.bag_category || "";
+  activeFilter.value = query.filter || "";
+  showOnlySale.value = query.sale === "true";
+  currentPage.value = 1;
+};
+
+watch(searchQuery, (newVal) => {
+  clearTimeout(searchDebounceTimer);
+  searchDebounceTimer = setTimeout(() => {
+    currentPage.value = 1;
+    pushToRouter({ search: newVal || undefined });
+  }, 300);
+});
+
+onMounted(() => {
+  window.scrollTo(0, 0);
+  syncStateWithQuery(route.query);
+  fetchBagCategories();
+  initCollections();
+  fetchWishlists();
+
+  window.addEventListener("currency-changed", updateCurrencyState);
+  window.addEventListener("storage", (e) => {
+    if (e.key === "currency") updateCurrencyState();
+  });
+  if (!window.isLocalStorageOverride) {
+    const originalSetItem = localStorage.setItem;
+    localStorage.setItem = function (key, value) {
+      originalSetItem.apply(this, arguments);
+      if (key === "currency") {
+        window.dispatchEvent(new Event("currency-changed"));
+      }
+    };
+    window.isLocalStorageOverride = true;
+  }
+});
+
+watch(
+  () => route.query,
+  (newQuery) => {
+    syncStateWithQuery(newQuery);
+  }
+);
+
+onUnmounted(() => {
+  window.removeEventListener("currency-changed", updateCurrencyState);
+});
+
+const getPriceToDisplay = (product) => {
+  const curr = currentCurrency.value;
+  if (curr === "IDR") return { value: product.price, curr: "IDR" };
+
+  const prices =
+    typeof product.prices === "string"
+      ? JSON.parse(product.prices)
+      : product.prices || {};
+  if (prices[curr]) {
+    return { value: parseFloat(prices[curr]), curr: curr };
+  }
+  return { value: product.price, curr: "IDR" };
+};
+
+const getDiscountToDisplay = (product) => {
+  const curr = currentCurrency.value;
+  if (curr === "IDR") {
+    return product.discount_price ? { value: product.discount_price, curr: "IDR" } : null;
+  }
+
+  const discountPrices =
+    typeof product.discount_prices === "string"
+      ? JSON.parse(product.discount_prices)
+      : product.discount_prices || {};
+  if (discountPrices[curr]) {
+    return { value: parseFloat(discountPrices[curr]), curr: curr };
+  }
+  return product.discount_price ? { value: product.discount_price, curr: "IDR" } : null;
+};
+
+const formatCurrencyDisplay = (priceObj) => {
+  if (!priceObj) return "";
+  const { value, curr } = priceObj;
+  const symbols = { USD: "$", SGD: "S$", EUR: "€", AUD: "A$", MYR: "RM", IDR: "Rp " };
+  const formatter = new Intl.NumberFormat(curr === "IDR" ? "id-ID" : "en-US", {
+    minimumFractionDigits: curr === "IDR" ? 0 : 2,
+    maximumFractionDigits: curr === "IDR" ? 0 : 2,
+  });
+  return `${symbols[curr] || curr + " "}${formatter.format(value)}`;
+};
+
+const calculateDynamicDiscount = (product) => {
+  const priceObj = getPriceToDisplay(product);
+  const discObj = getDiscountToDisplay(product);
+  if (!priceObj || !discObj) return 0;
+  return Math.round(((priceObj.value - discObj.value) / priceObj.value) * 100);
+};
+
+const getBundlePromo = (product) => {
+  if (!product || !product.category) return null;
+  const curr = currentCurrency.value || "IDR";
+  const conf = product.category.promo_config;
+  
+  if (!conf) return null;
+
+  const now = new Date();
+  const start = conf.start_date ? convertToWIB(conf.start_date) : null;
+  const end = conf.end_date ? convertToWIB(conf.end_date) : null;
+
+  if ((start && now < start) || (end && now > end)) return null;
+  if (conf.promo_type === 'percent') return null;
+
+  const priceObj = conf.price || {};
+  const finalPrice = priceObj[curr] !== undefined ? priceObj[curr] : (priceObj["IDR"] || 0);
+
+  return { qty: conf.qty || 2, price: finalPrice, curr: curr };
+};
+
+const fetchWishlists = async () => {
+  if (!isAuthenticated) return;
+  try {
+    const res = await axios.get(`${BASE_URL}/wishlists`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    userWishlists.value = res.data.map((w) => w.product_id);
+  } catch (error) {}
+};
+
+const toggleWishlist = async (productId) => {
+  if (!isAuthenticated) {
+    Swal.fire({
+      icon: "info",
+      title: "Login Required",
+      text: "Please login to add favorites.",
+      confirmButtonColor: "#000"
+    });
+    return;
+  }
+
+  if (isFavorited(productId)) {
+    userWishlists.value = userWishlists.value.filter((id) => id !== productId);
+  } else {
+    userWishlists.value.push(productId);
+  }
+
+  try {
+    await axios.post(
+      `${BASE_URL}/wishlists/toggle`,
+      { product_id: productId },
+      { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+    );
+  } catch (error) {
+    fetchWishlists();
+  }
+};
+
+const initCollections = async () => {
+  if (!state.isCollectionsLoaded) {
+    isLoading.value = true;
+    await fetchCollectionsData();
+    setTimeout(() => {
+      isLoading.value = false;
+    }, 500);
+  } else {
+    fetchCollectionsData();
+  }
+};
+
+const getDiscountStatus = (p) => {
+  const discObj = getDiscountToDisplay(p);
+  if (!p || !discObj || !discObj.value)
+    return { active: false, upcoming: false, expired: false };
+
+  const now = new Date();
+  let active = true, upcoming = false, expired = false;
+
+  if (p.discount_start_date) {
+    const startDate = convertToWIB(p.discount_start_date);
+    if (now < startDate) { active = false; upcoming = true; }
+  }
+  if (p.discount_end_date) {
+    const endDate = convertToWIB(p.discount_end_date);
+    if (now > endDate) { active = false; expired = true; }
+  }
+  return { active, upcoming, expired };
+};
+
+const filteredProducts = computed(() => {
+  let sourceProducts = state.collectionsProducts || [];
+
+  if (searchQuery.value && searchQuery.value.trim() !== "") {
+    const keyword = searchQuery.value.toLowerCase().trim();
+    sourceProducts = sourceProducts.filter((p) => {
+      const matchName = p.name ? p.name.toLowerCase().includes(keyword) : false;
+      const matchDesc = p.description ? p.description.toLowerCase().includes(keyword) : false;
+      const matchCat = p.category?.name ? p.category.name.toLowerCase().includes(keyword) : false;
+      let matchColor = false;
+      if (p.colors && Array.isArray(p.colors)) {
+         matchColor = p.colors.some(c => c.name && c.name.toLowerCase().includes(keyword));
+      } else if (typeof p.colors === 'string') {
+         matchColor = p.colors.toLowerCase().includes(keyword);
+      }
+      return matchName || matchDesc || matchCat || matchColor;
+    });
+  }
+
+  if (selectedCategory.value !== "") {
+    sourceProducts = sourceProducts.filter((p) => (p.category?.name || p.category_name) === selectedCategory.value);
+  }
+
+  if (selectedBagCategory.value !== "") {
+    sourceProducts = sourceProducts.filter((p) => p.bag_category?.name === selectedBagCategory.value);
+  }
+
+  if (showOnlySale.value) {
+    sourceProducts = sourceProducts.filter((p) => getDiscountStatus(p).active);
+  }
+
+  if (activeFilter.value === "new-arrivals") {
+    sourceProducts = [...sourceProducts]
+      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+      .slice(0, 10);
+  } else if (activeFilter.value === "final-sale") {
+    sourceProducts = [...sourceProducts]
+      .filter((p) => p.is_final_sale)
+      .sort((a, b) => calculateDynamicDiscount(b) - calculateDynamicDiscount(a));
+  }
+
+  return sourceProducts;
+});
+
+const totalPages = computed(() => Math.ceil(filteredProducts.value.length / itemsPerPage));
+
+const paginatedProducts = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage;
+  return filteredProducts.value.slice(start, start + itemsPerPage);
+});
+
+// 👇 FUNGSI SMART PAGINATION (Maks 7 Item) 👇
+const visiblePages = computed(() => {
+  const current = currentPage.value;
+  const total = totalPages.value;
+
+  if (total <= 7) {
+    return Array.from({ length: total }, (_, i) => i + 1);
+  }
+
+  if (current <= 4) {
+    return [1, 2, 3, 4, 5, "...", total];
+  }
+
+  if (current >= total - 3) {
+    return [1, "...", total - 4, total - 3, total - 2, total - 1, total];
+  }
+
+  return [1, "...", current - 1, current, current + 1, "...", total];
+});
+// 👆 ========================================= 👆
+
+watch([currentPage, filteredProducts], () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  const nextStart = currentPage.value * itemsPerPage;
+  const nextProducts = filteredProducts.value.slice(nextStart, nextStart + itemsPerPage);
+  
+  setTimeout(() => { preloadImages(nextProducts); }, 500);
+}, { immediate: true });
+
+const goToDetail = (product) => {
+  router.push({
+    path: `/products/${product.slug || product.id}`,
+    state: { productData: JSON.stringify(product) },
+  });
+};
+</script>
+
+<style scoped>
+.animate-bounce-1 { animation: bounceDots 1.4s infinite ease-in-out both; animation-delay: -0.32s; }
+.animate-bounce-2 { animation: bounceDots 1.4s infinite ease-in-out both; animation-delay: -0.16s; }
+.animate-bounce-3 { animation: bounceDots 1.4s infinite ease-in-out both; }
+@keyframes bounceDots {
+  0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+.fade-enter-active, .fade-leave-active { transition: opacity 0.4s ease; }
+.fade-enter-from, .fade-leave-to { opacity: 0; }
+
+.animate-fade-in-up {
+  animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
 </style>
