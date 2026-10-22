@@ -10438,7 +10438,7 @@ const goToDetail = (product) => {
             <div class="hidden w-px h-6 bg-gray-300 lg:block"></div>
 
             <!-- Toggle Buttons -->
-            <div class="flex gap-2">
+            <!-- <div class="flex gap-2">
               <button
                 @click="toggleSpecialFilter('new-arrivals')"
                 :class="activeFilter === 'new-arrivals' ? 'bg-black text-white border-black' : 'bg-transparent text-gray-500 border-gray-300 hover:border-gray-500'"
@@ -10447,6 +10447,36 @@ const goToDetail = (product) => {
                 New In
               </button>
 
+              <button
+                @click="toggleSaleFilter"
+                :class="showOnlySale ? 'bg-[#8c3b4a] text-white border-[#8c3b4a]' : 'bg-transparent text-red-700 border-red-200 hover:border-red-400'"
+                class="px-4 py-2 text-[9px] font-bold tracking-[0.2em] uppercase transition-all duration-300 border rounded-full whitespace-nowrap flex items-center gap-1.5"
+              >
+                Sale
+              </button>
+            </div> -->
+            
+            <!-- Toggle Buttons -->
+            <div class="flex gap-2">
+              <!-- New In -->
+              <button
+                @click="toggleSpecialFilter('new-arrivals')"
+                :class="activeFilter === 'new-arrivals' ? 'bg-black text-white border-black' : 'bg-transparent text-gray-500 border-gray-300 hover:border-gray-500'"
+                class="px-4 py-2 text-[9px] font-bold tracking-[0.2em] uppercase transition-all duration-300 border rounded-full whitespace-nowrap"
+              >
+                New In
+              </button>
+
+              <!-- Final Sale (DIKEMBALIKAN) -->
+              <button
+                @click="toggleSpecialFilter('final-sale')"
+                :class="activeFilter === 'final-sale' ? 'bg-red-900 text-white border-red-900 shadow-md' : 'bg-transparent text-gray-500 border-gray-300 hover:text-red-900 hover:border-red-900'"
+                class="px-4 py-2 text-[9px] font-bold tracking-[0.2em] uppercase transition-all duration-300 border rounded-full whitespace-nowrap flex items-center gap-1.5"
+              >
+                <span v-if="activeFilter === 'final-sale'" class="text-white">🔥</span> Final Sale
+              </button>
+
+              <!-- Sale -->
               <button
                 @click="toggleSaleFilter"
                 :class="showOnlySale ? 'bg-[#8c3b4a] text-white border-[#8c3b4a]' : 'bg-transparent text-red-700 border-red-200 hover:border-red-400'"
