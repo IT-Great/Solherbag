@@ -3819,7 +3819,7 @@ const routes = [
   { path: "/events", name: "EventPage", component: EventPage },
   { path: "/track-order", name: "TrackOrder", component: TrackOrder },
   { path: "/product-care", name: "ProductCare", component: ProductCare },
-  { path: "/store-locator", name: "ProductCare", component: StoreLocator },
+  { path: "/store-locator", name: "StoreLocator", component: StoreLocator },
   { path: "/affiliate-demo", name: "AffiliateDemo", component: AffiliateDashboard, meta: { requiresAuth: true } },
 
   // ADMIN ROUTES
