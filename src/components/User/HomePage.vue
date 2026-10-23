@@ -6205,7 +6205,7 @@ onUnmounted(() => {
               @click="$router.push(`/products/${p.slug || p.id}`)"
               class="group flex-shrink-0 w-[260px] md:w-[320px] cursor-pointer snap-start"
             >
-              <div class="relative mb-4 overflow-hidden bg-gray-100 rounded-2xl aspect-[4/5]">
+              <!-- <div class="relative mb-4 overflow-hidden bg-gray-100 rounded-2xl aspect-[4/5]">
                 <img
                   :src="p.image"
                   class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
@@ -6217,6 +6217,30 @@ onUnmounted(() => {
                 >
                   Only {{ p.stock }} left
                 </div>
+              </div> -->
+              <div class="relative mb-4 overflow-hidden bg-gray-100 rounded-2xl aspect-[4/5]">
+                <img
+                  :src="p.image"
+                  class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
+                  loading="lazy"
+                />
+                
+                <!-- 👇 PERBAIKAN: Pisahkan Logika Sold Out & Low Stock 👇 -->
+                <div
+                  v-if="p.stock <= 0"
+                  class="absolute inset-0 flex items-center justify-center z-10 bg-white/60 backdrop-blur-[1px]"
+                >
+                  <span class="px-5 py-2 text-[10px] font-black tracking-[0.3em] text-gray-900 uppercase bg-white border border-gray-200">
+                    Sold Out
+                  </span>
+                </div>
+                <div
+                  v-else-if="p.stock < 5"
+                  class="absolute bottom-3 left-3 z-10 bg-white/90 backdrop-blur text-red-600 px-3 py-1.5 text-[9px] font-black uppercase tracking-widest rounded shadow-sm"
+                >
+                  Only {{ p.stock }} left
+                </div>
+                <!-- 👆 =============================================== 👆 -->
               </div>
               <h4 class="text-[11px] font-bold text-gray-900 uppercase tracking-widest truncate group-hover:text-[#8c3b4a] transition-colors">
                 {{ p.name }}
