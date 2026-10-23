@@ -865,7 +865,7 @@ const handleSubscribe = async () => {
             <router-link to="/contact" class="text-xs font-medium text-gray-600 transition-colors hover:text-black">{{ $t("footer.contact_us") }}</router-link>
             
             <!-- 👇 MENU BARU 👇 -->
-            <router-link to="/store-locator" class="text-xs font-medium text-gray-600 transition-colors hover:text-black">Store Locator</router-link>
+            <!-- <router-link to="/store-locator" class="text-xs font-medium text-gray-600 transition-colors hover:text-black">Store Locator</router-link> -->
 
             <router-link to="/affiliate" class="relative flex items-center w-fit group">
               <span class="text-xs font-medium text-gray-600 transition-colors group-hover:text-black">Solher Ambassador</span>
