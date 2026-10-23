@@ -20552,7 +20552,8 @@ onUnmounted(() => {
   <div v-else class="relative z-10 max-w-6xl min-h-screen px-6 py-12 mx-auto md:py-24 animate-fade-in">
     <div v-if="checkoutItems.length === 0" class="py-20 text-center">
       <h2 class="mb-4 font-serif text-3xl">{{ $t("payment.bag_empty") }}</h2>
-      <button @click="$router.push('/collections')" class="px-8 py-3 text-xs font-bold tracking-widest text-white uppercase bg-black rounded-full">
+      <button @click="$router.push('/collections')"
+        class="px-8 py-3 text-xs font-bold tracking-widest text-white uppercase bg-black rounded-full">
         {{ $t("payment.return_shop") }}
       </button>
     </div>
@@ -20569,7 +20570,8 @@ onUnmounted(() => {
           <!-- 1. ADDRESS / GUEST FORM SECTION -->
           <section>
             <div class="flex items-center gap-4 mb-4">
-              <span class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white">1</span>
+              <span
+                class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white">1</span>
               <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">
                 {{ isAuthenticated ? $t("payment.shipping_address") : "Contact & Shipping" }}
               </h2>
@@ -20579,42 +20581,58 @@ onUnmounted(() => {
             <div v-if="!isAuthenticated" class="p-6 bg-gray-50/50 border border-gray-200 rounded-3xl space-y-5">
               <div class="flex justify-between items-center mb-2">
                 <h3 class="text-xs font-bold text-gray-900 uppercase tracking-widest">Guest Checkout</h3>
-                <router-link to="/login" class="text-xs font-bold text-blue-600 underline">Login to account</router-link>
+                <router-link to="/login" class="text-xs font-bold text-blue-600 underline">Login to
+                  account</router-link>
               </div>
-              
+
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input type="text" v-model="guestForm.first_name" placeholder="First Name *" class="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:border-black" required/>
-                <input type="text" v-model="guestForm.last_name" placeholder="Last Name" class="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:border-black" />
+                <input type="text" v-model="guestForm.first_name" placeholder="First Name *"
+                  class="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:border-black"
+                  required />
+                <input type="text" v-model="guestForm.last_name" placeholder="Last Name"
+                  class="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:border-black" />
               </div>
-              
+
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input type="email" v-model="guestForm.email" placeholder="Email Address *" class="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:border-black" required/>
-                <input type="tel" v-model="guestForm.phone" placeholder="Phone Number *" class="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:border-black" required/>
+                <input type="email" v-model="guestForm.email" placeholder="Email Address *"
+                  class="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:border-black"
+                  required />
+                <input type="tel" v-model="guestForm.phone" placeholder="Phone Number *"
+                  class="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:border-black"
+                  required />
               </div>
 
               <div class="pt-4 border-t border-gray-200">
-                <textarea v-model="guestForm.address_location" rows="3" placeholder="Full Address (Street, Building, etc) *" class="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:border-black resize-none" required></textarea>
+                <textarea v-model="guestForm.address_location" rows="3"
+                  placeholder="Full Address (Street, Building, etc) *"
+                  class="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:border-black resize-none"
+                  required></textarea>
               </div>
 
               <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <input type="text" v-model="guestForm.city" placeholder="City *" class="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:border-black" required/>
-                <input type="text" v-model="guestForm.province" placeholder="State/Province *" class="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:border-black" required/>
-                <input type="text" v-model="guestForm.postal_code" placeholder="Zip Code *" class="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:border-black" required/>
-                <input type="text" v-model="guestForm.region" placeholder="Country" readonly class="w-full px-4 py-3 text-sm bg-gray-100 text-gray-500 border border-gray-200 rounded-xl outline-none" />
+                <input type="text" v-model="guestForm.city" placeholder="City *"
+                  class="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:border-black"
+                  required />
+                <input type="text" v-model="guestForm.province" placeholder="State/Province *"
+                  class="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:border-black"
+                  required />
+                <input type="text" v-model="guestForm.postal_code" placeholder="Zip Code *"
+                  class="w-full px-4 py-3 text-sm bg-white border border-gray-200 rounded-xl outline-none focus:border-black"
+                  required />
+                <input type="text" v-model="guestForm.region" placeholder="Country" readonly
+                  class="w-full px-4 py-3 text-sm bg-gray-100 text-gray-500 border border-gray-200 rounded-xl outline-none" />
               </div>
 
-              <button 
-                @click="calculateGuestShipping" 
-                :disabled="!isGuestFormValid || isLoadingRates"
-                class="w-full py-3 mt-4 text-xs font-bold tracking-widest text-white uppercase transition-colors bg-black rounded-xl hover:bg-gray-800 disabled:bg-gray-300 flex justify-center items-center"
-              >
+              <button @click="calculateGuestShipping" :disabled="!isGuestFormValid || isLoadingRates"
+                class="w-full py-3 mt-4 text-xs font-bold tracking-widest text-white uppercase transition-colors bg-black rounded-xl hover:bg-gray-800 disabled:bg-gray-300 flex justify-center items-center">
                 <span v-if="!isLoadingRates">Continue to Shipping</span>
                 <div v-else class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
               </button>
             </div>
 
             <!-- REGISTERED USER ADDRESS LIST -->
-            <div v-else-if="addresses.length === 0" class="py-10 text-center border border-gray-300 border-dashed bg-gray-50 rounded-2xl">
+            <div v-else-if="addresses.length === 0"
+              class="py-10 text-center border border-gray-300 border-dashed bg-gray-50 rounded-2xl">
               <p class="mb-2 text-sm italic text-gray-500">{{ $t("payment.no_address_found") }}</p>
               <button @click="isModalOpen = true" class="text-xs font-bold text-blue-600 underline">
                 {{ $t("payment.add_new_address") }}
@@ -20622,16 +20640,17 @@ onUnmounted(() => {
             </div>
 
             <div v-else class="space-y-4">
-              <label
-                v-for="addr in addresses" :key="addr.id"
+              <label v-for="addr in addresses" :key="addr.id"
                 :class="[selectedAddressId === addr.id ? 'border-black ring-1 ring-black bg-white shadow-md' : 'border-gray-100 bg-gray-50/50']"
-                class="relative flex items-start p-6 transition-all border cursor-pointer rounded-2xl hover:bg-white"
-              >
-                <input type="radio" name="address" :value="addr.id" v-model="selectedAddressId" class="w-4 h-4 mt-1 text-black border-gray-300 focus:ring-black" />
+                class="relative flex items-start p-6 transition-all border cursor-pointer rounded-2xl hover:bg-white">
+                <input type="radio" name="address" :value="addr.id" v-model="selectedAddressId"
+                  class="w-4 h-4 mt-1 text-black border-gray-300 focus:ring-black" />
                 <div class="flex-grow ml-4">
                   <div class="flex justify-between">
                     <p class="text-sm font-bold text-gray-900 uppercase">{{ addr.receiver?.full_name || "N/A" }}</p>
-                    <span v-if="addr.is_default" class="text-[9px] bg-gray-200 px-2 py-0.5 rounded font-bold uppercase">{{ $t("payment.default") }}</span>
+                    <span v-if="addr.is_default"
+                      class="text-[9px] bg-gray-200 px-2 py-0.5 rounded font-bold uppercase">{{ $t("payment.default")
+                      }}</span>
                   </div>
                   <p class="mt-2 text-sm leading-relaxed text-gray-600">
                     {{ addr.details?.location || "" }}, {{ addr.details?.type || "" }} <br />
@@ -20640,7 +20659,8 @@ onUnmounted(() => {
                   </p>
                 </div>
               </label>
-              <button @click="isModalOpen = true" class="mt-4 text-xs font-bold text-gray-500 underline hover:text-black">
+              <button @click="isModalOpen = true"
+                class="mt-4 text-xs font-bold text-gray-500 underline hover:text-black">
                 {{ $t("payment.add_another_address") }}
               </button>
             </div>
@@ -20648,32 +20668,42 @@ onUnmounted(() => {
 
           <!-- 2. SHIPPING SECTION -->
           <section v-if="!isAuthenticated && !isGuestAddressLocked" class="opacity-50 pointer-events-none">
-             <div class="flex items-center gap-4 mb-4">
-              <span class="flex justify-center items-center bg-gray-300 rounded-full w-6 h-6 font-bold text-[10px] text-white">2</span>
-              <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">{{ $t("payment.shipping_method") }}</h2>
+            <div class="flex items-center gap-4 mb-4">
+              <span
+                class="flex justify-center items-center bg-gray-300 rounded-full w-6 h-6 font-bold text-[10px] text-white">2</span>
+              <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">{{ $t("payment.shipping_method") }}
+              </h2>
             </div>
           </section>
-          
+
           <section v-else-if="isAuthenticated && !selectedAddressId" class="opacity-50 pointer-events-none">
-             <div class="flex items-center gap-4 mb-4">
-              <span class="flex justify-center items-center bg-gray-300 rounded-full w-6 h-6 font-bold text-[10px] text-white">2</span>
-              <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">{{ $t("payment.shipping_method") }}</h2>
+            <div class="flex items-center gap-4 mb-4">
+              <span
+                class="flex justify-center items-center bg-gray-300 rounded-full w-6 h-6 font-bold text-[10px] text-white">2</span>
+              <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">{{ $t("payment.shipping_method") }}
+              </h2>
             </div>
           </section>
 
           <section v-else>
             <div class="flex items-center gap-4 mb-4">
-              <span class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white">2</span>
-              <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">{{ $t("payment.shipping_method") }}</h2>
+              <span
+                class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white">2</span>
+              <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">{{ $t("payment.shipping_method") }}
+              </h2>
             </div>
 
             <div class="space-y-4">
               <!-- Free Shipping Option (Indo Only) -->
-              <label v-if="destinationInfo?.country?.toLowerCase() === 'indonesia'" :class="[shippingMethod === 'free' ? 'border-black ring-1 ring-black bg-white shadow-md' : 'border-gray-100 bg-gray-50/50']" class="relative flex items-center p-6 transition-all border cursor-pointer rounded-2xl">
-                <input type="radio" value="free" v-model="shippingMethod" class="w-4 h-4 text-black border-gray-300 focus:ring-black" />
+              <label v-if="destinationInfo?.country?.toLowerCase() === 'indonesia'"
+                :class="[shippingMethod === 'free' ? 'border-black ring-1 ring-black bg-white shadow-md' : 'border-gray-100 bg-gray-50/50']"
+                class="relative flex items-center p-6 transition-all border cursor-pointer rounded-2xl">
+                <input type="radio" value="free" v-model="shippingMethod"
+                  class="w-4 h-4 text-black border-gray-300 focus:ring-black" />
                 <div class="flex items-center justify-between flex-grow ml-4">
                   <div>
-                    <p class="text-sm font-bold tracking-wide text-gray-900 uppercase">{{ $t("payment.free_shipping") }}</p>
+                    <p class="text-sm font-bold tracking-wide text-gray-900 uppercase">{{ $t("payment.free_shipping") }}
+                    </p>
                     <p class="mt-1 text-xs font-bold text-green-600">{{ $t("payment.in_store") }}</p>
                   </div>
                   <p class="font-black text-black">{{ $t("payment.price") }}</p>
@@ -20681,26 +20711,34 @@ onUnmounted(() => {
               </label>
 
               <!-- Biteship Option -->
-              <label :class="[shippingMethod === 'biteship' ? 'border-black ring-1 ring-black bg-white shadow-md' : 'border-gray-100 bg-gray-50/50']" class="relative flex items-center p-6 transition-all border cursor-pointer rounded-2xl">
-                <input type="radio" value="biteship" v-model="shippingMethod" class="w-4 h-4 text-black border-gray-300 focus:ring-black" />
+              <label
+                :class="[shippingMethod === 'biteship' ? 'border-black ring-1 ring-black bg-white shadow-md' : 'border-gray-100 bg-gray-50/50']"
+                class="relative flex items-center p-6 transition-all border cursor-pointer rounded-2xl">
+                <input type="radio" value="biteship" v-model="shippingMethod"
+                  class="w-4 h-4 text-black border-gray-300 focus:ring-black" />
                 <div class="flex items-center justify-between flex-grow ml-4">
                   <div>
                     <p class="text-sm font-bold tracking-wide text-gray-900 uppercase">{{ $t("payment.standard") }}</p>
-                    <p class="mt-1 text-xs text-gray-500">{{ destinationInfo?.country?.toLowerCase() === "indonesia" ? $t("payment.powered_by_biteship") : "International Express Delivery" }}</p>
+                    <p class="mt-1 text-xs text-gray-500">{{ destinationInfo?.country?.toLowerCase() === "indonesia" ?
+                      $t("payment.powered_by_biteship") : "International Express Delivery" }}</p>
                   </div>
                 </div>
               </label>
 
               <!-- Extended Courier Configuration -->
-              <div v-if="shippingMethod === 'biteship'" class="p-6 mt-4 space-y-8 bg-white border border-gray-200 rounded-3xl animate-fade-in">
+              <div v-if="shippingMethod === 'biteship'"
+                class="p-6 mt-4 space-y-8 bg-white border border-gray-200 rounded-3xl animate-fade-in">
                 <!-- Delivery Info Card -->
                 <div class="grid grid-cols-1 gap-6 p-4 md:grid-cols-2 bg-gray-50 rounded-2xl">
                   <div class="relative">
-                    <button v-if="!isAuthenticated" @click="isGuestAddressLocked = false" class="absolute top-0 right-0 text-[10px] font-bold text-blue-600 underline uppercase">Edit</button>
-                    <h3 class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-3">{{ $t("payment.destination") }}</h3>
+                    <button v-if="!isAuthenticated" @click="isGuestAddressLocked = false"
+                      class="absolute top-0 right-0 text-[10px] font-bold text-blue-600 underline uppercase">Edit</button>
+                    <h3 class="font-bold text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-3">{{
+                      $t("payment.destination") }}</h3>
                     <p class="text-xs font-bold text-gray-900 uppercase">{{ destinationInfo?.name }}</p>
                     <p class="mt-1 text-xs text-gray-500">{{ destinationInfo?.phone }}</p>
-                    <p class="mt-1 text-xs text-gray-500 line-clamp-2">{{ destinationInfo?.address }} - {{ destinationInfo?.postal_code }}</p>
+                    <p class="mt-1 text-xs text-gray-500 line-clamp-2">{{ destinationInfo?.address }} - {{
+                      destinationInfo?.postal_code }}</p>
                     <p class="mt-1 text-xs font-bold text-blue-600 uppercase">{{ destinationInfo?.country }}</p>
                   </div>
                 </div>
@@ -20709,60 +20747,74 @@ onUnmounted(() => {
                 <div v-if="destinationInfo?.country?.toLowerCase() === 'indonesia'">
                   <h3 class="mb-4 text-sm font-bold tracking-widest uppercase">{{ $t("payment.pickup_schedule") }}</h3>
                   <div class="flex flex-col gap-4 mb-4 md:flex-row">
-                    <label :class="deliveryType === 'now' ? 'border-black bg-gray-50' : 'border-gray-200'" class="flex-1 p-4 transition border cursor-pointer rounded-xl">
+                    <label :class="deliveryType === 'now' ? 'border-black bg-gray-50' : 'border-gray-200'"
+                      class="flex-1 p-4 transition border cursor-pointer rounded-xl">
                       <input type="radio" value="now" v-model="deliveryType" class="hidden" />
                       <p class="text-xs font-bold uppercase">{{ $t("payment.standard_pickup") }}</p>
                       <p class="text-[10px] text-gray-500 mt-1">{{ $t("payment.scheduled_pickup") }}</p>
                     </label>
-                    <label :class="deliveryType === 'scheduled' ? 'border-black bg-gray-50' : 'border-gray-200'" class="flex-1 p-4 transition border cursor-pointer rounded-xl">
+                    <label :class="deliveryType === 'scheduled' ? 'border-black bg-gray-50' : 'border-gray-200'"
+                      class="flex-1 p-4 transition border cursor-pointer rounded-xl">
                       <input type="radio" value="scheduled" v-model="deliveryType" class="hidden" />
                       <p class="text-xs font-bold uppercase">{{ $t("payment.scheduled_pickup") }}</p>
                       <p class="text-[10px] text-gray-500 mt-1">{{ $t("payment.choose_specific_date_time") }}</p>
                     </label>
                   </div>
 
-                  <div v-if="deliveryType === 'scheduled'" class="flex gap-4 p-4 border border-blue-100 bg-blue-50/30 rounded-xl animate-fade-in">
+                  <div v-if="deliveryType === 'scheduled'"
+                    class="flex gap-4 p-4 border border-blue-100 bg-blue-50/30 rounded-xl animate-fade-in">
                     <div class="flex-1">
-                      <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">{{ $t("payment.pickup_date") }}</label>
-                      <input type="date" v-model="deliveryDate" :min="todayDate" class="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg outline-none focus:ring-black focus:border-black" required />
+                      <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">{{
+                        $t("payment.pickup_date") }}</label>
+                      <input type="date" v-model="deliveryDate" :min="todayDate"
+                        class="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg outline-none focus:ring-black focus:border-black"
+                        required />
                     </div>
                     <div class="flex-1">
-                      <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">{{ $t("payment.pickup_time") }}</label>
-                      <input type="time" v-model="deliveryTime" class="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg outline-none focus:ring-black focus:border-black" required />
+                      <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">{{
+                        $t("payment.pickup_time") }}</label>
+                      <input type="time" v-model="deliveryTime"
+                        class="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg outline-none focus:ring-black focus:border-black"
+                        required />
                     </div>
                   </div>
                 </div>
 
                 <!-- Courier List -->
                 <div>
-                  <h3 class="pt-6 mb-4 text-sm font-bold tracking-widest uppercase border-t">{{ $t("payment.select_courier") }}</h3>
-                  
+                  <h3 class="pt-6 mb-4 text-sm font-bold tracking-widest uppercase border-t">{{
+                    $t("payment.select_courier") }}</h3>
+
                   <div v-if="isLoadingRates" class="py-4 text-sm text-center text-gray-500 animate-pulse">
                     {{ $t("payment.calculating_couriers") }}
                   </div>
-                  <div v-else-if="processedShippingRates.length === 0" class="py-4 text-xs italic text-center text-red-500">
+                  <div v-else-if="processedShippingRates.length === 0"
+                    class="py-4 text-xs italic text-center text-red-500">
                     {{ $t("payment.no_courier_available") }}
                   </div>
-                  
+
                   <div v-else class="space-y-3">
-                    <label
-                      v-for="(rate, idx) in processedShippingRates" :key="idx"
-                      :class="[
-                        rate.is_disabled ? 'opacity-40 bg-gray-100 border-gray-200 pointer-events-none select-none' : 
+                    <label v-for="(rate, idx) in processedShippingRates" :key="idx" :class="[
+                      rate.is_disabled ? 'opacity-40 bg-gray-100 border-gray-200 pointer-events-none select-none' :
                         (selectedRate?.company === rate.company && selectedRate?.type === rate.type) ? 'border-black bg-gray-50 shadow-sm' : 'border-gray-200 hover:bg-gray-50 cursor-pointer transition-all'
-                      ]"
-                      class="relative flex flex-col p-4 border rounded-xl"
-                    >
+                    ]" class="relative flex flex-col p-4 border rounded-xl">
                       <div class="flex items-center w-full">
-                        <input type="radio" :value="rate" v-model="selectedRate" :disabled="rate.is_disabled" class="w-4 h-4 text-black border-gray-300 focus:ring-black disabled:opacity-50" />
+                        <input type="radio" :value="rate" v-model="selectedRate" :disabled="rate.is_disabled"
+                          class="w-4 h-4 text-black border-gray-300 focus:ring-black disabled:opacity-50" />
                         <div class="flex items-center flex-grow gap-4 ml-4">
-                          <div class="flex items-center justify-center w-12 h-12 overflow-hidden bg-white border border-gray-100 rounded-lg shrink-0">
-                            <img v-show="!imageErrors[rate.company]" v-if="getCourierLogo(rate.company)" :src="getCourierLogo(rate.company)" :alt="rate.company" class="object-contain w-full h-full p-1" @error="handleImageError(rate.company)" />
-                            <span v-show="imageErrors[rate.company] || !getCourierLogo(rate.company)" class="text-xs font-black text-gray-300">{{ rate.company.toUpperCase() }}</span>
+                          <div
+                            class="flex items-center justify-center w-12 h-12 overflow-hidden bg-white border border-gray-100 rounded-lg shrink-0">
+                            <img v-show="!imageErrors[rate.company]" v-if="getCourierLogo(rate.company)"
+                              :src="getCourierLogo(rate.company)" :alt="rate.company"
+                              class="object-contain w-full h-full p-1" @error="handleImageError(rate.company)" />
+                            <span v-show="imageErrors[rate.company] || !getCourierLogo(rate.company)"
+                              class="text-xs font-black text-gray-300">{{ rate.company.toUpperCase() }}</span>
                           </div>
                           <div>
-                            <p class="text-sm font-bold tracking-wide text-gray-800 uppercase">{{ rate.company }} - {{ rate.type.replace("_", " ") }}</p>
-                            <p class="text-gray-500 text-[10px] mt-0.5">{{ rate.courier_name }} ({{ rate.duration }})</p>
+                            <p class="text-sm font-bold tracking-wide text-gray-800 uppercase">{{ rate.company }} - {{
+                              rate.type.replace("_", " ") }}</p>
+                            <p class="text-gray-500 text-[10px] mt-0.5">{{ rate.courier_name }} ({{ rate.duration }})
+                            </p>
                           </div>
                         </div>
                         <p class="text-sm font-black text-black">
@@ -20777,20 +20829,27 @@ onUnmounted(() => {
           </section>
 
           <!-- 👇 3. CIRCLE PRIVILEGE SECTION (KHUSUS TIER ELAN & HERITAGE) 👇 -->
-          <section v-if="isAuthenticated && userTierInfo.discount > 0 && !hasAnyFinalSaleItem" class="mt-12 animate-fade-in">
+          <section v-if="isAuthenticated && userTierInfo.discount > 0 && !hasAnyFinalSaleItem"
+            class="mt-12 animate-fade-in">
             <div class="flex items-center gap-4 mb-4">
-              <span class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white">3</span>
+              <span
+                class="flex justify-center items-center bg-black rounded-full w-6 h-6 font-bold text-[10px] text-white">3</span>
               <h2 class="text-sm font-bold tracking-widest text-gray-900 uppercase">Circle Privileges</h2>
             </div>
-            
-            <label :class="[useTierPrivilege ? 'border-amber-600 bg-amber-50 shadow-md' : 'border-gray-200 bg-white hover:bg-gray-50']" class="relative flex items-start p-6 transition-all border cursor-pointer rounded-2xl">
-              <input type="checkbox" v-model="useTierPrivilege" class="w-5 h-5 mt-1 text-amber-600 border-gray-300 rounded focus:ring-amber-500" />
+
+            <label
+              :class="[useTierPrivilege ? 'border-amber-600 bg-amber-50 shadow-md' : 'border-gray-200 bg-white hover:bg-gray-50']"
+              class="relative flex items-start p-6 transition-all border cursor-pointer rounded-2xl">
+              <input type="checkbox" v-model="useTierPrivilege"
+                class="w-5 h-5 mt-1 text-amber-600 border-gray-300 rounded focus:ring-amber-500" />
               <div class="flex-grow ml-4">
                 <div class="flex justify-between items-center">
                   <p class="text-sm font-bold text-gray-900 uppercase tracking-widest">
                     {{ userTierInfo.name }} Privilege
                   </p>
-                  <span class="bg-amber-100 text-amber-800 text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-widest">{{ userTierInfo.discount * 100 }}% OFF</span>
+                  <span
+                    class="bg-amber-100 text-amber-800 text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-widest">{{
+                      userTierInfo.discount * 100 }}% OFF</span>
                 </div>
                 <p class="mt-2 text-xs leading-relaxed text-gray-600">
                   {{ $t("payment.privilege") }} {{ userTierInfo.discount * 100 }} {{ $t("payment.privilege2") }}
@@ -20810,31 +20869,45 @@ onUnmounted(() => {
 
             <div class="space-y-4 mb-8 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
               <div v-for="item in checkoutItems" :key="item.id" class="flex gap-4">
-                <img :src="item.product?.image_url || item.product?.image" class="object-cover w-16 h-16 bg-gray-100 rounded-xl shrink-0" />
+                <img :src="item.product?.image_url || item.product?.image"
+                  class="object-cover w-16 h-16 bg-gray-100 rounded-xl shrink-0" />
                 <div class="flex-grow">
                   <div class="flex items-center gap-2">
-                    <p class="w-40 text-[11px] font-bold text-gray-900 uppercase truncate" :title="item.product?.name">{{ item.product?.name }}</p>
-                    <span v-if="item.product?.is_final_sale" class="text-[8px] font-black tracking-widest text-red-600 bg-red-50 px-1 py-0.5 rounded uppercase border border-red-100">Final Sale</span>
+                    <p class="w-40 text-[11px] font-bold text-gray-900 uppercase truncate" :title="item.product?.name">
+                      {{ item.product?.name }}</p>
+                    <span v-if="item.product?.is_final_sale"
+                      class="text-[8px] font-black tracking-widest text-red-600 bg-red-50 px-1 py-0.5 rounded uppercase border border-red-100">Final
+                      Sale</span>
                   </div>
                   <div class="flex items-center gap-2 mt-0.5">
                     <p class="text-[10px] text-gray-400">Qty: {{ item.quantity }}</p>
                     <template v-if="item.color">
                       <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
                       <div class="flex items-center gap-1.5">
-                        <div class="w-3 h-3 border border-gray-300 rounded-full shadow-sm shrink-0" :style="{ backgroundColor: parseColorHex(item.color) }"></div>
-                        <span class="text-[10px] font-bold text-gray-500 uppercase">{{ parseColorName(item.color) }}</span>
+                        <div class="w-3 h-3 border border-gray-300 rounded-full shadow-sm shrink-0"
+                          :style="{ backgroundColor: parseColorHex(item.color) }"></div>
+                        <span class="text-[10px] font-bold text-gray-500 uppercase">{{ parseColorName(item.color)
+                          }}</span>
                       </div>
                     </template>
                   </div>
                   <p class="mt-1 text-xs font-medium text-gray-900">
-                    {{ formatCurrencyDisplay({ value: getActivePriceObj(item.product).value * item.quantity, curr: getActivePriceObj(item.product).curr }) }}
+                    {{ formatCurrencyDisplay({
+                      value: getActivePriceObj(item.product).value * item.quantity, curr:
+                        getActivePriceObj(item.product).curr }) }}
                   </p>
-                  
-                  <div v-if="isMixedCart && !item.product?.is_final_sale && isAuthenticated && userTierInfo.discount > 0" class="mt-2">
-                    <label class="flex items-start gap-2 p-2 bg-amber-50/50 border border-amber-100 rounded-lg cursor-pointer hover:bg-amber-50 transition-colors">
-                      <input type="checkbox" v-model="mixedCartPrivilegeSelection" :value="item.id" class="w-3.5 h-3.5 mt-0.5 text-amber-600 border-gray-300 rounded focus:ring-amber-500" />
+
+                  <div
+                    v-if="isMixedCart && !item.product?.is_final_sale && isAuthenticated && userTierInfo.discount > 0"
+                    class="mt-2">
+                    <label
+                      class="flex items-start gap-2 p-2 bg-amber-50/50 border border-amber-100 rounded-lg cursor-pointer hover:bg-amber-50 transition-colors">
+                      <input type="checkbox" v-model="mixedCartPrivilegeSelection" :value="item.id"
+                        class="w-3.5 h-3.5 mt-0.5 text-amber-600 border-gray-300 rounded focus:ring-amber-500" />
                       <div class="flex-grow">
-                        <p class="text-[9px] font-bold text-amber-800 uppercase tracking-widest">{{ userTierInfo.name }} Privilege (-{{ userTierInfo.discount * 100 }}%)</p>
+                        <p class="text-[9px] font-bold text-amber-800 uppercase tracking-widest">{{ userTierInfo.name }}
+                          Privilege (-{{
+                          userTierInfo.discount * 100 }}%)</p>
                         <p class="text-[8px] text-gray-500 mt-0.5">Berlaku untuk item normal.</p>
                       </div>
                     </label>
@@ -20850,7 +20923,8 @@ onUnmounted(() => {
               </div>
               <div class="flex justify-between text-gray-500">
                 <span>{{ $t("payment.subtotal") }}</span>
-                <span :class="appliedPromoType === 'voucher' ? 'text-amber-600 font-bold' : ''">{{ formatCurrencyDisplay(cartSubtotalObj) }}</span>
+                <span :class="appliedPromoType === 'voucher' ? 'text-amber-600 font-bold' : ''">{{
+                  formatCurrencyDisplay(cartSubtotalObj) }}</span>
               </div>
 
               <!-- POTONGAN POIN -->
@@ -20874,38 +20948,55 @@ onUnmounted(() => {
               </div> -->
 
               <!-- 👇 REDEEM POINTS / WELCOME GIFT TRACKER 👇 -->
-              <div v-if="isAuthenticated && availablePoints > 0" class="pt-4 mt-4 border-t border-gray-200 border-dashed">
-                
+              <div v-if="isAuthenticated && availablePoints > 0"
+                class="pt-4 mt-4 border-t border-gray-200 border-dashed">
+
                 <!-- Jika Subtotal belum mencapai 1.5 Juta -->
-                <div v-if="checkoutTotalIDR < 1500000" class="p-4 border bg-[#faf5f5] border-[#f0e6e6] rounded-xl animate-fade-in">
+                <div v-if="checkoutTotalIDR < 1500000"
+                  class="p-4 border bg-[#faf5f5] border-[#f0e6e6] rounded-xl animate-fade-in">
                   <div class="flex items-center gap-2 mb-2">
                     <span class="text-lg">🎁</span>
-                    <p class="text-[10px] font-bold text-[#8c3b4a] uppercase tracking-widest">Rp 250.000 Welcome Gift</p>
+                    <p class="text-[10px] font-bold text-[#8c3b4a] uppercase tracking-widest">Rp 250.000 Welcome Gift
+                    </p>
                   </div>
                   <p class="text-[11px] text-gray-600 mb-3 leading-relaxed">
-                    Add <strong class="text-black">{{ formatCurrencyDisplay(convertIDRtoActiveCurrency(1500000 - checkoutTotalIDR)) }}</strong> more to unlock your gift (minimum Rp1.500.000).
+                    Add <strong class="text-black">{{ formatCurrencyDisplay(convertIDRtoActiveCurrency(1500000 -
+                      checkoutTotalIDR))
+                      }}</strong> more to unlock your gift (minimum Rp1.500.000).
                   </p>
                   <!-- Progress Bar -->
                   <div class="w-full h-1.5 mb-2 overflow-hidden bg-gray-200 rounded-full">
-                    <div class="h-full transition-all duration-500 bg-[#8c3b4a]" :style="{ width: Math.min(100, (checkoutTotalIDR / 1500000) * 100) + '%' }"></div>
+                    <div class="h-full transition-all duration-500 bg-[#8c3b4a]"
+                      :style="{ width: Math.min(100, (checkoutTotalIDR / 1500000) * 100) + '%' }"></div>
                   </div>
-                  <p class="text-[9px] text-gray-400 font-medium">You're {{ formatCurrencyDisplay(convertIDRtoActiveCurrency(1500000 - checkoutTotalIDR)) }} away from using this credit.</p>
+                  <p class="text-[9px] text-gray-400 font-medium">You're {{
+                    formatCurrencyDisplay(convertIDRtoActiveCurrency(1500000
+                    - checkoutTotalIDR)) }} away from using this credit.</p>
                 </div>
 
                 <!-- Jika Sudah Mencapai / Lewat 1.5 Juta (Terbuka) -->
                 <div v-else class="p-4 border bg-green-50/50 border-green-100 rounded-xl animate-fade-in">
                   <div class="flex justify-between items-center mb-3">
-                    <span class="text-[10px] font-bold text-green-800 uppercase tracking-widest flex items-center gap-1.5">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-green-600" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10 2a.75.75 0 01.673.418l2.25 4.562 5.034.731a.75.75 0 01.415 1.28l-3.642 3.55 .86 5.016a.75.75 0 01-1.088.791L10 15.981l-4.502 2.368a.75.75 0 01-1.088-.79l.86-5.016-3.643-3.55a.75.75 0 01.416-1.28l5.033-.73 2.25-4.563A.75.75 0 0110 2z" clip-rule="evenodd" />
+                    <span
+                      class="text-[10px] font-bold text-green-800 uppercase tracking-widest flex items-center gap-1.5">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-green-600" viewBox="0 0 20 20"
+                        fill="currentColor">
+                        <path fill-rule="evenodd"
+                          d="M10 2a.75.75 0 01.673.418l2.25 4.562 5.034.731a.75.75 0 01.415 1.28l-3.642 3.55 .86 5.016a.75.75 0 01-1.088.791L10 15.981l-4.502 2.368a.75.75 0 01-1.088-.79l.86-5.016-3.643-3.55a.75.75 0 01.416-1.28l5.033-.73 2.25-4.563A.75.75 0 0110 2z"
+                          clip-rule="evenodd" />
                       </svg>
                       Redeem Points
                     </span>
                     <span class="text-xs font-bold text-green-700">Bal: {{ availablePoints }} Pts</span>
                   </div>
                   <div class="flex gap-2">
-                    <input type="number" v-model.number="pointsToUse" :max="maxPointsAllowed" min="0" :disabled="['SOLHOST34', 'MERDEKA17'].includes(appliedPromoCode)" class="flex-1 bg-white border border-green-300 rounded-lg px-3 py-2 text-sm focus:ring-green-600 outline-none disabled:bg-gray-100 disabled:text-gray-400" placeholder="0" />
-                    <button type="button" @click="useAllPoints" :disabled="['SOLHOST34', 'MERDEKA17'].includes(appliedPromoCode)" class="bg-green-600 text-white text-[10px] font-bold uppercase px-4 rounded-lg hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                    <input type="number" v-model.number="pointsToUse" :max="maxPointsAllowed" min="0"
+                      :disabled="['SOLHOST34', 'MERDEKA17'].includes(appliedPromoCode)"
+                      class="flex-1 bg-white border border-green-300 rounded-lg px-3 py-2 text-sm focus:ring-green-600 outline-none disabled:bg-gray-100 disabled:text-gray-400"
+                      placeholder="0" />
+                    <button type="button" @click="useAllPoints"
+                      :disabled="['SOLHOST34', 'MERDEKA17'].includes(appliedPromoCode)"
+                      class="bg-green-600 text-white text-[10px] font-bold uppercase px-4 rounded-lg hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed">
                       Use All
                     </button>
                   </div>
@@ -20916,49 +21007,89 @@ onUnmounted(() => {
               <!-- KODE PROMO -->
               <div class="pt-4 mt-2 border-t border-gray-200 border-dashed">
                 <div class="flex items-center justify-between mb-2">
-                  <label class="text-[10px] font-bold text-gray-900 uppercase tracking-widest">{{ $t("payment.promo_code") }}</label>
+                  <label class="text-[10px] font-bold text-gray-900 uppercase tracking-widest">{{
+                    $t("payment.promo_code")
+                    }}</label>
                   <div v-if="userData?.is_membership" class="flex items-center gap-2">
-                    <span class="text-[9px] font-bold text-yellow-600 uppercase flex items-center gap-0.5">VIP PERK</span>
+                    <span class="text-[9px] font-bold text-yellow-600 uppercase flex items-center gap-0.5">VIP
+                      PERK</span>
                     <label class="relative inline-flex items-center cursor-pointer">
-                      <input type="checkbox" v-model="useMemberVoucher" @change="handleMemberToggle" class="sr-only peer" :disabled="isVerifyingPromo || (checkoutTotalIDR < MEMBER_MIN_SPEND && !useMemberVoucher) || ['SOLHOST34', 'MERDEKA17'].includes(appliedPromoCode)" />
-                      <div class="w-8 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-black disabled:opacity-50"></div>
+                      <input type="checkbox" v-model="useMemberVoucher" @change="handleMemberToggle"
+                        class="sr-only peer"
+                        :disabled="isVerifyingPromo || (checkoutTotalIDR < MEMBER_MIN_SPEND && !useMemberVoucher) || ['SOLHOST34', 'MERDEKA17'].includes(appliedPromoCode)" />
+                      <div
+                        class="w-8 h-4 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-black disabled:opacity-50">
+                      </div>
                     </label>
                   </div>
                 </div>
 
                 <form @submit.prevent="applyPromo" class="flex gap-2">
-                  <input type="text" v-model="promoInput" :disabled="appliedPromoCode !== null || isVerifyingPromo || useMemberVoucher" :placeholder="$t('payment.enter_promo_code')" class="flex-1 bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-sm uppercase focus:ring-black outline-none disabled:bg-gray-100 disabled:text-gray-400 transition-colors" />
-                  <button v-if="!appliedPromoCode" type="submit" :disabled="!promoInput || isVerifyingPromo || useMemberVoucher" class="bg-black text-white text-[10px] font-bold uppercase px-4 rounded-lg hover:bg-gray-800 disabled:bg-gray-300 w-20 flex justify-center items-center">
+                  <input type="text" v-model="promoInput"
+                    :disabled="appliedPromoCode !== null || isVerifyingPromo || useMemberVoucher"
+                    :placeholder="$t('payment.enter_promo_code')"
+                    class="flex-1 bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-sm uppercase focus:ring-black outline-none disabled:bg-gray-100 disabled:text-gray-400 transition-colors" />
+                  <button v-if="!appliedPromoCode" type="submit"
+                    :disabled="!promoInput || isVerifyingPromo || useMemberVoucher"
+                    class="bg-black text-white text-[10px] font-bold uppercase px-4 rounded-lg hover:bg-gray-800 disabled:bg-gray-300 w-20 flex justify-center items-center">
                     <span v-if="!isVerifyingPromo">{{ $t("payment.apply") }}</span>
                     <div v-else class="w-3 h-3 border-2 rounded-full border-white/40 border-t-white animate-spin"></div>
                   </button>
-                  <button v-else type="button" @click="removePromo" class="bg-red-50 text-red-600 border border-red-200 text-[10px] font-bold uppercase px-4 rounded-lg hover:bg-red-100 transition w-20">
+                  <button v-else type="button" @click="removePromo"
+                    class="bg-red-50 text-red-600 border border-red-200 text-[10px] font-bold uppercase px-4 rounded-lg hover:bg-red-100 transition w-20">
                     {{ $t("payment.remove") }}
                   </button>
                 </form>
-                <p v-if="promoMessage" :class="promoSuccess ? 'text-green-600' : 'text-red-500'" class="text-[10px] mt-2 font-medium">{{ promoMessage }}</p>
-                <div v-if="appliedPromoCode" class="flex justify-between text-[10px] md:text-xs font-medium text-emerald-600 mt-2">
-                  <span class="pr-2 truncate">Promo (<span class="font-mono uppercase">{{ appliedPromoCode }}</span>)</span>
+                <p v-if="promoMessage" :class="promoSuccess ? 'text-green-600' : 'text-red-500'"
+                  class="text-[10px] mt-2 font-medium">{{ promoMessage }}</p>
+                <div v-if="appliedPromoCode"
+                  class="flex justify-between text-[10px] md:text-xs font-medium text-emerald-600 mt-2">
+                  <span class="pr-2 truncate">Promo (<span class="font-mono uppercase">{{ appliedPromoCode
+                      }}</span>)</span>
                   <span>- {{ formatCurrencyDisplay(actualPromoDiscountObj) }}</span>
                 </div>
               </div>
 
               <!-- RINGKASAN DISKON TIER -->
-              <div v-if="useTierPrivilege || (isMixedCart && mixedCartPrivilegeSelection.length > 0)" class="flex justify-between text-[10px] md:text-xs font-medium text-amber-600 mt-2 border-t border-gray-50 pt-2">
+              <div v-if="useTierPrivilege || (isMixedCart && mixedCartPrivilegeSelection.length > 0)"
+                class="flex justify-between text-[10px] md:text-xs font-medium text-amber-600 mt-2 border-t border-gray-50 pt-2">
                 <span class="pr-2 truncate">Tier Privilege ({{ userTierInfo.name }})</span>
                 <span>- {{ formatCurrencyDisplay(tierDiscountAmountObj) }}</span>
               </div>
 
-              <div class="flex items-start justify-between text-gray-500 pt-2">
+              <!-- <div class="flex items-start justify-between text-gray-500 pt-2">
                 <span>{{ $t("payment.shipping") }}</span>
                 <span v-if="shippingMethod === 'free'" class="font-bold text-green-600">{{ $t("payment.free") }}</span>
                 <div v-else-if="shippingMethod === 'biteship' && selectedRate" class="text-right">
                   <span class="block font-medium text-gray-900">{{ formatCurrencyDisplay({ value: shippingCostObj.value, curr: shippingCostObj.curr }) }}</span>
                 </div>
                 <span v-else class="italic text-[10px]">{{ $t("payment.select_method") }}</span>
+              </div> -->
+
+              <div v-if="shippingMethod === 'biteship' && selectedRate"
+                class="flex items-start justify-between text-gray-500 pt-2 pb-2">
+                <span>{{ $t("payment.shipping") }}</span>
+
+                <!-- 👇 TAMPILAN JIKA MENDAPATKAN GRATIS ONGKIR 👇 -->
+                <div v-if="checkoutTotalIDR >= 1000000" class="flex items-center gap-2 text-right">
+                  <span class="text-[10px] text-gray-400 line-through">
+                    {{ formatCurrencyDisplay(convertIDRtoActiveCurrency(selectedRate.price)) }}
+                  </span>
+                  <span class="text-xs font-bold text-green-600 uppercase tracking-widest">
+                    Free
+                  </span>
+                </div>
+
+                <!-- 👇 TAMPILAN NORMAL 👇 -->
+                <div v-else class="text-right">
+                  <span class="block font-medium text-gray-900">
+                    {{ formatCurrencyDisplay({ value: shippingCostObj.value, curr: shippingCostObj.curr }) }}
+                  </span>
+                </div>
               </div>
 
-              <div v-if="bundleDiscountAmount > 0" class="flex justify-between px-3 py-2 my-2 text-sm font-bold border text-emerald-600 bg-emerald-50 rounded-xl border-emerald-100">
+              <div v-if="bundleDiscountAmount > 0"
+                class="flex justify-between px-3 py-2 my-2 text-sm font-bold border text-emerald-600 bg-emerald-50 rounded-xl border-emerald-100">
                 <span class="uppercase tracking-widest text-[10px] mt-0.5">Bundle Saved</span>
                 <span>- {{ formatCurrencyDisplay({ value: bundleDiscountAmount, curr: currentCurrency }) }}</span>
               </div>
@@ -20968,7 +21099,8 @@ onUnmounted(() => {
                 <span class="text-xl text-gycora">{{ formatCurrencyDisplay(grandTotalObj) }}</span>
               </div>
 
-              <button @click="handlePayment" :disabled="isButtonDisabled" class="mt-8 w-full bg-black hover:bg-gray-800 disabled:bg-gray-300 py-5 rounded-2xl font-bold text-white text-xs uppercase tracking-[0.3em] flex justify-center items-center transition-all shadow-xl">
+              <button @click="handlePayment" :disabled="isButtonDisabled"
+                class="mt-8 w-full bg-black hover:bg-gray-800 disabled:bg-gray-300 py-5 rounded-2xl font-bold text-white text-xs uppercase tracking-[0.3em] flex justify-center items-center transition-all shadow-xl">
                 <span v-if="!isProcessing">{{ $t("payment.pay_now") }}</span>
                 <div v-else class="w-3 h-3 border-2 rounded-full border-white/30 border-t-white animate-spin"></div>
               </button>
@@ -21002,7 +21134,7 @@ const router = useRouter();
 const getAxiosConfig = () => ({ headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } });
 
 const {
-  cartItems, checkoutCount, bundleDiscountAmount, 
+  cartItems, checkoutCount, bundleDiscountAmount,
   selectedItemIds, clearSelectedCart,
 } = useCart();
 
@@ -21078,7 +21210,7 @@ const getPriceToDisplay = (product) => {
     const pricesObj = typeof product.prices === "string" ? JSON.parse(product.prices) : product.prices || {};
     const dbPrice = pricesObj[curr] || pricesObj[curr.toLowerCase()] || pricesObj[currentCurrency.value.toUpperCase()];
     if (dbPrice) return { value: parseFloat(dbPrice), curr: curr };
-  } catch (e) {}
+  } catch (e) { }
   return { value: Number(product.price), curr: "IDR" };
 };
 
@@ -21153,7 +21285,7 @@ const actualPromoDiscountObj = computed(() => convertIDRtoActiveCurrency(actualP
 const maxPointsAllowed = computed(() => {
   const maxUsableAmount = Math.max(0, checkoutTotalIDR.value - actualPromoDiscountIDR.value);
   const pointsLimit = Math.min(availablePoints.value, Math.floor(maxUsableAmount / 1000));
-  return Math.min(pointsLimit, 5000); 
+  return Math.min(pointsLimit, 5000);
 });
 
 
@@ -21178,9 +21310,9 @@ const maxPointsAllowed = computed(() => {
 // });
 
 const tierDiscountAmountIDR = computed(() => {
-  if (isAllFinalSale.value) return 0; 
+  if (isAllFinalSale.value) return 0;
   let discountableAmount = 0;
-  
+
   if (isMixedCart.value) {
     if (mixedCartPrivilegeSelection.value.length === 0) return 0;
     checkoutItems.value.forEach(item => {
@@ -21191,9 +21323,9 @@ const tierDiscountAmountIDR = computed(() => {
   } else {
     if (!useTierPrivilege.value) return 0;
     // 👇 PERBAIKAN: Jangan kurangi dengan bundle! Hitung 10% langsung dari total harga barang normal
-    discountableAmount = checkoutTotalIDR.value; 
+    discountableAmount = checkoutTotalIDR.value;
   }
-  
+
   return discountableAmount * userTierInfo.value.discount;
 });
 
@@ -21210,16 +21342,45 @@ const appliedPointDiscountObj = computed(() => convertIDRtoActiveCurrency(applie
 // ============================================
 // 6. COMPUTED PROPERTIES LEVEL 4 (SHIPPING & GRAND TOTAL)
 // ============================================
-const shippingCostIDR = computed(() => shippingMethod.value === "biteship" && selectedRate.value ? parseFloat(selectedRate.value.price) : 0);
+// const shippingCostIDR = computed(() => shippingMethod.value === "biteship" && selectedRate.value ? parseFloat(selectedRate.value.price) : 0);
+
+// 👇 PERBAIKAN: Logika Gratis Ongkir (Free Shipping) untuk belanja >= Rp 1.000.000 👇
+const shippingCostIDR = computed(() => {
+  if (shippingMethod.value === "free") return 0;
+
+  if (shippingMethod.value === "biteship" && selectedRate.value) {
+    // Jika total belanja (sebelum diskon promo) >= 1.000.000, ongkir jadi 0
+    if (checkoutTotalIDR.value >= 1000000) {
+      return 0;
+    }
+    // Jika kurang dari 1.000.000, bayar harga kurir normal
+    return parseFloat(selectedRate.value.price);
+  }
+
+  return 0;
+});
+
+// const shippingCostObj = computed(() => convertIDRtoActiveCurrency(shippingCostIDR.value));
 const shippingCostObj = computed(() => convertIDRtoActiveCurrency(shippingCostIDR.value));
+// 👆 ========================================================================= 👆
+
+// const grandTotalObj = computed(() => {
+//   const calculatedTotal = cartSubtotalObj.value.value 
+//                         - bundleDiscountAmount.value 
+//                         + shippingCostObj.value.value 
+//                         - actualPromoDiscountObj.value.value 
+//                         - appliedPointDiscountObj.value.value
+//                         - tierDiscountAmountObj.value.value;
+//   return { value: Math.max(0, calculatedTotal), curr: currentCurrency.value };
+// });
 
 const grandTotalObj = computed(() => {
-  const calculatedTotal = cartSubtotalObj.value.value 
-                        - bundleDiscountAmount.value 
-                        + shippingCostObj.value.value 
-                        - actualPromoDiscountObj.value.value 
-                        - appliedPointDiscountObj.value.value
-                        - tierDiscountAmountObj.value.value;
+  const calculatedTotal = cartSubtotalObj.value.value
+    - bundleDiscountAmount.value
+    + shippingCostObj.value.value
+    - actualPromoDiscountObj.value.value
+    - appliedPointDiscountObj.value.value
+    - tierDiscountAmountObj.value.value;
   return { value: Math.max(0, calculatedTotal), curr: currentCurrency.value };
 });
 
@@ -21323,19 +21484,19 @@ const calculateGuestShipping = async () => {
 };
 
 const fetchShippingRatesForAuth = async (addressId) => {
-    const ids = selectedItemIds?.value || selectedItemIds;
-    if (!ids || ids.length === 0) return;
-    selectedRate.value = null;
-    isLoadingRates.value = true;
-    rawShippingRates.value = [];
-    try {
-      const res = await axios.post(`${BASE_URL}/shipping/rates`, { address_id: addressId, cart_ids: ids }, getAxiosConfig());
-      rawShippingRates.value = res.data?.data || res.data?.rates || res.data?.pricing || [];
-    } catch (error) {
-      if (error.response?.status === 401) return router.push("/login");
-    } finally {
-      isLoadingRates.value = false;
-    }
+  const ids = selectedItemIds?.value || selectedItemIds;
+  if (!ids || ids.length === 0) return;
+  selectedRate.value = null;
+  isLoadingRates.value = true;
+  rawShippingRates.value = [];
+  try {
+    const res = await axios.post(`${BASE_URL}/shipping/rates`, { address_id: addressId, cart_ids: ids }, getAxiosConfig());
+    rawShippingRates.value = res.data?.data || res.data?.rates || res.data?.pricing || [];
+  } catch (error) {
+    if (error.response?.status === 401) return router.push("/login");
+  } finally {
+    isLoadingRates.value = false;
+  }
 };
 
 const fetchAddresses = async () => {
@@ -21343,7 +21504,7 @@ const fetchAddresses = async () => {
     const res = await axios.get(`${BASE_URL}/addresses`, getAxiosConfig());
     const addrData = res.data?.data !== undefined ? res.data.data : res.data;
     addresses.value = Array.isArray(addrData) ? addrData : [];
-  } catch (e) {}
+  } catch (e) { }
 };
 
 const onAddressSaved = async (newId) => {
@@ -21420,17 +21581,17 @@ const handlePayment = async () => {
       promo_type: appliedPromoType.value,
       currency: currentCurrency.value,
       referral_code: localStorage.getItem("affiliate_ref"),
-      
+
       tier_discount_percentage: (useTierPrivilege.value || mixedCartPrivilegeSelection.value.length > 0) ? userTierInfo.value.discount : 0,
-      tier_discount_item_ids: isMixedCart.value ? mixedCartPrivilegeSelection.value : null, 
+      tier_discount_item_ids: isMixedCart.value ? mixedCartPrivilegeSelection.value : null,
 
       shipping_method: shippingMethod.value,
       courier_company: shippingMethod.value === "biteship" ? selectedRate.value?.company : null,
-      courier_type: shippingMethod.value === "biteship" ? selectedRate.value?.type : null, 
+      courier_type: shippingMethod.value === "biteship" ? selectedRate.value?.type : null,
       shipping_cost: shippingMethod.value === "biteship" ? selectedRate.value?.price : null,
-      delivery_type: shippingMethod.value === "biteship" ? deliveryType.value : null, 
+      delivery_type: shippingMethod.value === "biteship" ? deliveryType.value : null,
       delivery_date: shippingMethod.value === "biteship" ? deliveryDate.value : null,
-      delivery_time: shippingMethod.value === "biteship" ? deliveryTime.value : null, 
+      delivery_time: shippingMethod.value === "biteship" ? deliveryTime.value : null,
 
       is_guest: !isAuthenticated.value,
     };
@@ -21448,9 +21609,9 @@ const handlePayment = async () => {
 
     const res = await axios.post(`${BASE_URL}/checkout`, payload, config);
 
-    if (res.data.checkout_url) { 
-      clearSelectedCart(); 
-      window.location.href = res.data.checkout_url; 
+    if (res.data.checkout_url) {
+      clearSelectedCart();
+      window.location.href = res.data.checkout_url;
     }
   } catch (error) {
     if (error.response?.status === 429) Swal.fire({ icon: 'warning', title: 'Antrean Padat! 🚦', text: error.response.data.message, confirmButtonColor: '#000', confirmButtonText: 'Coba Lagi' });
@@ -21473,7 +21634,7 @@ onMounted(async () => {
 
   try {
     const promises = [
-      axios.get(`${BASE_URL}/exchange-rates`), 
+      axios.get(`${BASE_URL}/exchange-rates`),
       axios.get(`${BASE_URL}/products`)
     ];
 
@@ -21519,6 +21680,3 @@ onMounted(async () => {
 
 onUnmounted(() => { window.removeEventListener("currency-changed", updateCurrencyState); });
 </script>
-
-
-
