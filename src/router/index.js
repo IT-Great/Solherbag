@@ -3765,6 +3765,9 @@ import PromoManager from "../components/Admin/PromoManager.vue";
 import ConsultationPage from "../components/User/ConsultationPage.vue";
 
 import AdminConsultationPage from "../components/Admin/AdminConsultationPage.vue";
+import TrackOrder from "../components/User/TrackOrder.vue";
+import ProductCare from "../components/User/ProductCare.vue";
+import StoreLocator from "../components/User/StoreLocator.vue";
 
 const routes = [
   { path: "/", name: "Home", component: HomePage },
@@ -3814,6 +3817,9 @@ const routes = [
     }
   },
   { path: "/events", name: "EventPage", component: EventPage },
+  { path: "/track-order", name: "TrackOrder", component: TrackOrder },
+  { path: "/product-care", name: "ProductCare", component: ProductCare },
+  { path: "/store-locator", name: "ProductCare", component: StoreLocator },
   { path: "/affiliate-demo", name: "AffiliateDemo", component: AffiliateDashboard, meta: { requiresAuth: true } },
 
   // ADMIN ROUTES
