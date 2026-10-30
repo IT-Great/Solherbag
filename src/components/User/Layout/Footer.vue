@@ -899,3 +899,49 @@ const handleSubscribe = async () => {
     </div>
   </footer>
 </template>
+
+<script setup>
+import { ref } from "vue";
+import { useI18n } from "vue-i18n";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { BASE_URL } from "../../../config/api"; // Sesuaikan path ini jika perlu
+
+const footerEmail = ref("");
+const { t } = useI18n();
+const isLoading = ref(false);
+
+const handleSubscribe = async () => {
+  isLoading.value = true;
+  try {
+    const res = await axios.post(`${BASE_URL}/subscribe`, {
+      email: footerEmail.value,
+    });
+
+    Swal.fire({
+      icon: "success",
+      title: "Subscribed!",
+      text:
+        res.data.message ||
+        "Thank you for subscribing to our newsletter. Check your inbox!",
+      confirmButtonColor: "#000",
+    });
+
+    footerEmail.value = ""; // Kosongkan input setelah sukses
+  } catch (error) {
+    const errorMsg =
+      error.response?.data?.errors?.email?.[0] ||
+      error.response?.data?.message ||
+      "Failed to subscribe. Please try again.";
+
+    Swal.fire({
+      icon: "error",
+      title: "Invalid Email",
+      text: errorMsg,
+      confirmButtonColor: "#000",
+    });
+  } finally {
+    isLoading.value = false;
+  }
+};
+</script>

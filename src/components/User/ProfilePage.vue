@@ -10458,7 +10458,7 @@ onMounted(() => {
 }
 </style> -->
 
-<!-- <template>
+<template>
   <div class="max-w-6xl px-4 py-12 mx-auto sm:px-6 lg:py-16 animate-fade-in">
     <div
       class="flex flex-col items-start justify-between gap-4 mb-8 md:flex-row md:items-end"
@@ -11539,7 +11539,7 @@ onMounted(() => {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #d1d5db;
 }
-</style> -->
+</style>
 
 <!-- <template>
   <div class="px-4 py-12 mx-auto max-w-7xl sm:px-6 lg:py-16 animate-fade-in">
@@ -13551,9 +13551,9 @@ onMounted(() => {
   background: #d1d5db;
 }
 </style> -->
-<template>
+
+<!-- <template>
   <div class="px-4 py-12 mx-auto max-w-7xl sm:px-6 lg:py-16 animate-fade-in">
-    <!-- Header Section -->
     <div
       class="flex flex-col items-start justify-between gap-6 mb-10 md:flex-row md:items-end"
     >
@@ -13566,7 +13566,6 @@ onMounted(() => {
         </p>
       </div>
 
-      <!-- Waktu Bergabung -->
       <div
         v-if="userData?.created_at"
         class="flex items-center gap-3 px-5 py-2.5 bg-white border border-gray-100 rounded-full shadow-sm"
@@ -13581,7 +13580,6 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- WIDGET KELENGKAPAN PROFIL -->
     <div
       v-if="userData && profileCompleteness < 100"
       class="p-6 mb-10 overflow-hidden relative bg-gradient-to-r from-gray-900 to-black rounded-[2rem] shadow-xl border border-gray-800"
@@ -13635,9 +13633,7 @@ onMounted(() => {
     </div>
 
     <div v-if="userData" class="grid grid-cols-1 gap-8 lg:grid-cols-12">
-      <!-- KIRI: INFORMASI PENGGUNA, KARTU LOYALTI & NAVIGASI -->
       <div class="space-y-8 lg:col-span-4">
-        <!-- KARTU PROFIL UTAMA -->
         <div
           class="bg-white border border-gray-100 shadow-xl shadow-gray-200/40 rounded-[2rem] relative overflow-hidden"
         >
@@ -13711,7 +13707,6 @@ onMounted(() => {
               </div>
             </div>
 
-            <!-- Info List -->
             <div class="space-y-3">
               <div
                 class="flex items-center gap-4 p-4 transition-colors border border-gray-100 bg-gray-50 rounded-2xl hover:border-gray-200"
@@ -13819,7 +13814,6 @@ onMounted(() => {
               </div>
             </div>
 
-            <!-- Action Buttons -->
             <div class="flex gap-3 mt-6">
               <button
                 @click="openInfoModal"
@@ -13871,7 +13865,6 @@ onMounted(() => {
           </div>
         </div>
 
-        <!-- KARTU THE SOLHÉR CIRCLE -->
         <div
           class="relative overflow-hidden shadow-xl shadow-black/10 rounded-[2rem] p-8 transition-all hover:-translate-y-1"
           :class="[userTier.bgColor, userTier.textColor]"
@@ -13989,7 +13982,6 @@ onMounted(() => {
           </div>
         </div>
 
-        <!-- 👇 BENTO QUICK ACTIONS DITAMBAHKAN "MY REFUNDS" 👇 -->
         <div class="grid grid-cols-2 gap-4">
           <router-link
             to="/orderpage"
@@ -14081,7 +14073,6 @@ onMounted(() => {
             </p>
           </router-link>
 
-          <!-- 👇 TOMBOL MY REFUNDS 👇 -->
           <button
             @click="openRefundsModal"
             class="text-left flex flex-col items-start p-5 transition-all bg-white border border-gray-100 shadow-sm group hover:border-orange-200 hover:shadow-lg rounded-[2rem] hover:-translate-y-1"
@@ -14109,11 +14100,9 @@ onMounted(() => {
             </h3>
             <p class="text-[10px] font-medium text-gray-500 mt-1">Track return status</p>
           </button>
-          <!-- 👆 ================== 👆 -->
         </div>
       </div>
 
-      <!-- KANAN: DAFTAR ALAMAT PENGIRIMAN -->
       <div class="lg:col-span-8">
         <div
           class="p-6 sm:p-10 bg-white border border-gray-100 shadow-xl shadow-gray-200/40 rounded-[2rem] min-h-[600px] flex flex-col"
@@ -14168,7 +14157,6 @@ onMounted(() => {
             v-else
             class="grid content-start flex-grow grid-cols-1 gap-5 md:grid-cols-2"
           >
-            <!-- Add New Card (Dashed) -->
             <button
               @click="openModal()"
               class="flex flex-col items-center justify-center p-8 border-2 border-dashed border-gray-200 rounded-[2rem] hover:border-black hover:bg-gray-50 transition-all group min-h-[220px] active:scale-95"
@@ -14305,8 +14293,6 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- SEMUA MODAL -->
-    <!-- MODAL EDIT INFO -->
     <div
       v-if="showInfoModal"
       class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm"
@@ -14395,7 +14381,6 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- MODAL EDIT PASSWORD -->
     <div
       v-if="showPasswordModal"
       class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm"
@@ -14459,7 +14444,6 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- Modal Alamat Leaflet -->
     <div
       v-if="showModal"
       class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm sm:p-6"
@@ -14747,7 +14731,6 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- 👇 MODAL MY REFUNDS 👇 -->
     <div
       v-if="showRefundsModal"
       class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm sm:p-6"
@@ -14784,48 +14767,6 @@ onMounted(() => {
             </svg>
           </button>
         </div>
-
-        <!-- <div class="p-6 overflow-y-auto custom-scrollbar md:p-8 grow bg-gray-50">
-          <div v-if="isLoadingRefunds" class="flex items-center justify-center h-40">
-            <div class="w-10 h-10 border-4 border-gray-200 rounded-full border-t-orange-500 animate-spin"></div>
-          </div>
-          
-          <div v-else-if="refunds.length === 0" class="flex flex-col items-center justify-center h-40 text-gray-400">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 mb-3 opacity-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-            </svg>
-            <p class="text-sm">You have not made any refund requests.</p>
-          </div>
-
-          <div v-else class="space-y-4">
-            <div v-for="refund in refunds" :key="refund.id" class="flex flex-col justify-between gap-4 p-5 bg-white border border-gray-100 shadow-sm rounded-2xl sm:flex-row">
-              <div class="flex-1">
-                <div class="flex items-center gap-3 mb-2">
-                  <span class="text-xs font-black tracking-widest text-gray-900 uppercase">Order #{{ refund.transaction_id }}</span>
-                  <span 
-                    :class="{
-                      'bg-orange-100 text-orange-700': refund.status === 'pending',
-                      'bg-green-100 text-green-700': refund.status === 'approved',
-                      'bg-red-100 text-red-700': refund.status === 'rejected'
-                    }" 
-                    class="px-2.5 py-0.5 text-[9px] font-black tracking-widest uppercase rounded">
-                    {{ refund.status }}
-                  </span>
-                </div>
-                <p class="mb-1 text-sm font-medium text-gray-600">Reason: <span class="font-normal">{{ refund.reason }}</span></p>
-                <p class="font-mono text-xs text-gray-400">{{ formatDate(refund.created_at) }}</p>
-                
-                <div v-if="refund.admin_notes" class="p-3 mt-3 text-xs italic text-gray-700 border-l-4 border-gray-300 rounded bg-gray-50">
-                  "{{ refund.admin_notes }}"
-                </div>
-              </div>
-
-              <div v-if="refund.proof_image" class="w-full h-24 overflow-hidden bg-gray-100 border border-gray-200 sm:w-24 shrink-0 rounded-xl">
-                <img :src="refund.proof_image" alt="Refund Proof" class="object-cover w-full h-full" @click="window.open(refund.proof_image)" style="cursor: zoom-in;" />
-              </div>
-            </div>
-          </div>
-        </div> -->
 
         <div class="p-6 overflow-y-auto custom-scrollbar md:p-8 grow bg-gray-50">
           <div v-if="isLoadingRefunds" class="flex justify-center items-center h-40">
@@ -14866,7 +14807,6 @@ onMounted(() => {
                   <span class="text-xs font-black tracking-widest text-gray-900 uppercase"
                     >Order #{{ refund.transaction_id }}</span
                   >
-                  <!-- 👇 PERBAIKAN: SESUAIKAN DENGAN ENUM STATUS DATABASE 👇 -->
                   <span
                     :class="{
                       'bg-orange-100 text-orange-700':
@@ -14909,7 +14849,6 @@ onMounted(() => {
                 </div>
               </div>
 
-              <!-- Bukti Foto -->
               <div
                 v-if="refund.proof_image"
                 class="w-full sm:w-24 h-24 shrink-0 rounded-xl overflow-hidden border border-gray-200 bg-gray-100 group relative"
@@ -14944,7 +14883,6 @@ onMounted(() => {
         </div>
       </div>
     </div>
-    <!-- 👆 ================== 👆 -->
   </div>
 </template>
 
@@ -15545,4 +15483,4 @@ onMounted(() => {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #d1d5db;
 }
-</style>
+</style> -->
