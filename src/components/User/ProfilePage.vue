@@ -13982,6 +13982,127 @@ onMounted(() => {
           </div>
         </div>
 
+        <!-- <div class="grid grid-cols-2 gap-4">
+          <router-link
+            to="/orderpage"
+            class="flex flex-col items-start p-5 transition-all bg-white border border-gray-100 shadow-sm group hover:border-black hover:shadow-lg rounded-[2rem] hover:-translate-y-1"
+          >
+            <div
+              class="p-3 mb-4 text-gray-700 transition-all duration-300 bg-gray-100 rounded-2xl group-hover:bg-black group-hover:text-white group-hover:scale-110"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-6 h-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                />
+              </svg>
+            </div>
+            <h3 class="text-xs font-black tracking-widest text-gray-900 uppercase">
+              {{ $t("profile.my_orders") }}
+            </h3>
+            <p class="text-[10px] font-medium text-gray-500 mt-1">
+              {{ $t("profile.track_package") }}
+            </p>
+          </router-link>
+
+          <router-link
+            to="/favorites"
+            class="flex flex-col items-start p-5 transition-all bg-white border border-gray-100 shadow-sm group hover:border-red-200 hover:shadow-lg rounded-[2rem] hover:-translate-y-1"
+          >
+            <div
+              class="p-3 mb-4 text-red-500 transition-all duration-300 bg-red-50 rounded-2xl group-hover:bg-red-500 group-hover:text-white group-hover:scale-110"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-6 h-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                />
+              </svg>
+            </div>
+            <h3 class="text-xs font-black tracking-widest text-gray-900 uppercase">
+              {{ $t("profile.my_wishlist") }}
+            </h3>
+            <p class="text-[10px] font-medium text-gray-500 mt-1">
+              {{ $t("profile.saved") }}
+            </p>
+          </router-link>
+
+          <router-link
+            to="/contact"
+            class="flex flex-col items-start p-5 transition-all bg-white border border-gray-100 shadow-sm group hover:border-blue-200 hover:shadow-lg rounded-[2rem] hover:-translate-y-1"
+          >
+            <div
+              class="p-3 mb-4 text-blue-600 transition-all duration-300 bg-blue-50 rounded-2xl group-hover:bg-blue-600 group-hover:text-white group-hover:scale-110"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-6 h-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                />
+              </svg>
+            </div>
+            <h3 class="text-xs font-black tracking-widest text-gray-900 uppercase">
+              {{ $t("profile.support") }}
+            </h3>
+            <p class="text-[10px] font-medium text-gray-500 mt-1">
+              {{ $t("profile.chat_and_ticket") }}
+            </p>
+          </router-link>
+
+          <button
+            @click="openRefundsModal"
+            class="text-left flex flex-col items-start p-5 transition-all bg-white border border-gray-100 shadow-sm group hover:border-orange-200 hover:shadow-lg rounded-[2rem] hover:-translate-y-1"
+          >
+            <div
+              class="p-3 mb-4 text-orange-600 transition-all duration-300 bg-orange-50 rounded-2xl group-hover:bg-orange-500 group-hover:text-white group-hover:scale-110"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-6 h-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                />
+              </svg>
+            </div>
+            <h3 class="text-xs font-black tracking-widest text-gray-900 uppercase">
+              My Refunds
+            </h3>
+            <p class="text-[10px] font-medium text-gray-500 mt-1">Track return status</p>
+          </button>
+        </div> -->
+
+        <!-- GRID MENU SECTION -->
         <div class="grid grid-cols-2 gap-4">
           <router-link
             to="/orderpage"
@@ -14100,6 +14221,48 @@ onMounted(() => {
             </h3>
             <p class="text-[10px] font-medium text-gray-500 mt-1">Track return status</p>
           </button>
+
+          <!-- 👇 DIKEMBALIKAN: Menu Private Consultation (Héritage Only) 👇 -->
+          <router-link
+            v-if="userTier.name === 'Héritage'"
+            to="/consultation"
+            class="flex flex-col items-start p-5 transition-all bg-[#111111] border border-gray-800 shadow-sm group hover:border-white hover:shadow-xl rounded-[2rem] hover:-translate-y-1"
+          >
+            <div
+              class="p-3 mb-4 text-[#D4AF37] transition-all duration-300 bg-[#333333] rounded-2xl group-hover:bg-[#D4AF37] group-hover:text-white group-hover:scale-110"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+              </svg>
+            </div>
+            <h3 class="text-xs font-black tracking-widest text-white uppercase">
+              Private Styling
+            </h3>
+            <p class="text-[10px] font-medium text-gray-400 mt-1">
+              Héritage Exclusive
+            </p>
+          </router-link>
+
+          <!-- 👇 DIKEMBALIKAN: Menu Affiliate Dashboard 👇 -->
+          <router-link
+            v-if="userData?.is_affiliate"
+            to="/affiliate-dashboard"
+            class="flex flex-col items-start p-5 transition-all bg-emerald-50 border border-emerald-100 shadow-sm group hover:border-emerald-300 hover:shadow-lg rounded-[2rem] hover:-translate-y-1"
+          >
+            <div
+              class="p-3 mb-4 text-emerald-600 transition-all duration-300 bg-emerald-100 rounded-2xl group-hover:bg-emerald-600 group-hover:text-white group-hover:scale-110"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+            <h3 class="text-xs font-black tracking-widest text-emerald-900 uppercase">
+              Affiliate Dash
+            </h3>
+            <p class="text-[10px] font-medium text-emerald-600 mt-1">
+              Manage Earnings
+            </p>
+          </router-link>
         </div>
       </div>
 
