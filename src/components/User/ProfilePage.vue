@@ -14246,7 +14246,7 @@ onMounted(() => {
           <!-- 👇 DIKEMBALIKAN: Menu Affiliate Dashboard 👇 -->
           <router-link
             v-if="userData?.is_affiliate"
-            to="/affiliate-dashboard"
+            to="/affiliate-demo"
             class="flex flex-col items-start p-5 transition-all bg-emerald-50 border border-emerald-100 shadow-sm group hover:border-emerald-300 hover:shadow-lg rounded-[2rem] hover:-translate-y-1"
           >
             <div
