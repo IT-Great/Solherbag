@@ -10458,7 +10458,7 @@ onMounted(() => {
 }
 </style> -->
 
-<template>
+<!-- <template>
   <div class="max-w-6xl px-4 py-12 mx-auto sm:px-6 lg:py-16 animate-fade-in">
     <div
       class="flex flex-col items-start justify-between gap-4 mb-8 md:flex-row md:items-end"
@@ -11539,9 +11539,9 @@ onMounted(() => {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #d1d5db;
 }
-</style>
+</style> -->
 
-<!-- <template>
+<template>
   <div class="px-4 py-12 mx-auto max-w-7xl sm:px-6 lg:py-16 animate-fade-in">
     <div
       class="flex flex-col items-start justify-between gap-6 mb-10 md:flex-row md:items-end"
@@ -13550,7 +13550,7 @@ onMounted(() => {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #d1d5db;
 }
-</style> -->
+</style>
 
 <!-- <template>
   <div class="px-4 py-12 mx-auto max-w-7xl sm:px-6 lg:py-16 animate-fade-in">
