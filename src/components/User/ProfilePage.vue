@@ -15071,11 +15071,19 @@ L.Icon.Default.mergeOptions({
   shadowUrl: new URL("leaflet/dist/images/marker-shadow.png", import.meta.url).href,
 });
 
+// const cachedUserStr = localStorage.getItem("user");
+// const cachedAddressesStr = localStorage.getItem("cached_addresses");
+
+// const userData = ref(cachedUserStr ? JSON.parse(cachedUserStr) : null);
+// const addresses = ref(cachedAddressesStr ? JSON.parse(cachedAddressesStr) : []);
+// const isLoadingAddresses = ref(addresses.value.length === 0);
+
 const cachedUserStr = localStorage.getItem("user");
 const cachedAddressesStr = localStorage.getItem("cached_addresses");
 
-const userData = ref(cachedUserStr ? JSON.parse(cachedUserStr) : null);
-const addresses = ref(cachedAddressesStr ? JSON.parse(cachedAddressesStr) : []);
+// Menambahkan pengecekan !== "undefined" untuk mencegah fatal crash
+const userData = ref(cachedUserStr && cachedUserStr !== "undefined" ? JSON.parse(cachedUserStr) : null);
+const addresses = ref(cachedAddressesStr && cachedAddressesStr !== "undefined" ? JSON.parse(cachedAddressesStr) : []);
 const isLoadingAddresses = ref(addresses.value.length === 0);
 
 const showModal = ref(false);
