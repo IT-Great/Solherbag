@@ -6557,13 +6557,13 @@ import { useI18n } from "vue-i18n";
 // import banner2 from "../../assets/Banner_bbbbb.png";
 import banner1 from "../../assets/Banner-Oktober-01.jpg";
 import banner2 from "../../assets/Banner-Oktober-02.jpg";
-import banner3 from "../../assets/11.11_banner.jpg";
+// import banner3 from "../../assets/11.11_banner.jpg";
 
 const isAuthenticated = computed(() => !!localStorage.getItem("token"));
 const userData = ref(null);
 
 const ACTIVE_POPUP = ref("default");
-const banners = [banner3, banner1, banner2];
+const banners = [banner1, banner2];
 const currentBannerIndex = ref(0);
 const currentBanner = computed(() => banners[currentBannerIndex.value]);
 let slideInterval = null;
