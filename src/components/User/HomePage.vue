@@ -6016,7 +6016,7 @@ onUnmounted(() => {
 <template>
   <section class="relative w-full overflow-x-hidden bg-white">
     <!-- 👇 UPGRADE: Banner Utama dengan Indikator Dots 👇 -->
-    <div
+    <!-- <div
       v-reveal
       class="relative w-full max-w-[1600px] mx-auto aspect-[2/1] overflow-hidden cursor-pointer bg-gray-100 mt-[20px] group"
     >
@@ -6030,7 +6030,6 @@ onUnmounted(() => {
         />
       </Transition>
 
-      <!-- Banner Navigation Dots -->
       <div class="absolute z-10 flex gap-2 -translate-x-1/2 bottom-6 left-1/2">
         <button
           v-for="(banner, idx) in banners"
@@ -6040,6 +6039,23 @@ onUnmounted(() => {
           class="h-2 transition-all duration-300 rounded-full"
         ></button>
       </div>
+    </div> -->
+
+    <!-- 👇 UPGRADE: Hero Video Banner (Autoplay & Loop) 👇 -->
+    <div
+      v-reveal
+      @click="$router.push('/collections')"
+      class="relative w-full max-w-[1600px] mx-auto aspect-[2/1] overflow-hidden cursor-pointer bg-black mt-[20px] group"
+    >
+      <video
+        :src="heroVideo"
+        autoplay
+        loop
+        muted
+        playsinline
+        preload="auto"
+        class="absolute inset-0 object-cover w-full h-full transition-transform duration-1000 group-hover:scale-105"
+      ></video>
     </div>
 
     <!-- Title & Description -->
@@ -6559,6 +6575,8 @@ import banner1 from "../../assets/Banner-Oktober-01.jpg";
 import banner2 from "../../assets/Banner-Oktober-02.jpg";
 // import banner3 from "../../assets/11.11_banner.jpg";
 
+import heroVideo from "../../assets/biggest_sale_of_the_year.mp4";
+
 const isAuthenticated = computed(() => !!localStorage.getItem("token"));
 const userData = ref(null);
 
@@ -6815,15 +6833,33 @@ const claimPromo = async () => {
   }
 };
 
+// onMounted(() => {
+//   initData();
+//   const userStr = localStorage.getItem("user");
+//   if (userStr) {
+//     try { userData.value = JSON.parse(userStr); } catch (e) {}
+//   }
+//   slideInterval = setInterval(() => {
+//     currentBannerIndex.value = (currentBannerIndex.value + 1) % banners.length;
+//   }, 5000);
+//   nextTick(() => {
+//     setTimeout(() => { showPromoPopup.value = true; }, 100);
+//   });
+//   window.addEventListener("currency-changed", updateCurrencyState);
+//   window.addEventListener("storage", (e) => { if (e.key === "currency") updateCurrencyState(); });
+// });
+
+// onUnmounted(() => {
+//   if (slideInterval) clearInterval(slideInterval);
+//   window.removeEventListener("currency-changed", updateCurrencyState);
+// });
+
 onMounted(() => {
   initData();
   const userStr = localStorage.getItem("user");
-  if (userStr) {
+  if (userStr && userStr !== "undefined") {
     try { userData.value = JSON.parse(userStr); } catch (e) {}
   }
-  slideInterval = setInterval(() => {
-    currentBannerIndex.value = (currentBannerIndex.value + 1) % banners.length;
-  }, 5000);
   nextTick(() => {
     setTimeout(() => { showPromoPopup.value = true; }, 100);
   });
@@ -6832,7 +6868,6 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  if (slideInterval) clearInterval(slideInterval);
   window.removeEventListener("currency-changed", updateCurrencyState);
 });
 </script>
