@@ -10544,6 +10544,23 @@ const goToDetail = (product) => {
               </div>
 
               <!-- Tags Kiri Atas -->
+              <!-- <div class="absolute z-20 flex flex-col gap-2 top-4 left-4">
+                <div
+                  v-if="getDiscountToDisplay(product) && getDiscountStatus(product).active"
+                  :class="product.is_final_sale ? 'bg-red-800' : 'bg-black'"
+                  class="px-3 py-1.5 font-bold text-[8px] text-white uppercase tracking-[0.2em]"
+                >
+                  {{ product.is_final_sale ? "FINAL SALE" : "SALE" }} -{{ calculateDynamicDiscount(product) }}%
+                </div>
+                <div
+                  v-if="isNewArrival(product.created_at) && !product.is_final_sale"
+                  class="bg-white text-black px-3 py-1.5 font-bold text-[8px] uppercase tracking-[0.2em] border border-black/10"
+                >
+                  NEW
+                </div>
+              </div>  -->
+
+              <!-- Tags Kiri Atas -->
               <div class="absolute z-20 flex flex-col gap-2 top-4 left-4">
                 <div
                   v-if="getDiscountToDisplay(product) && getDiscountStatus(product).active"
@@ -10551,6 +10568,12 @@ const goToDetail = (product) => {
                   class="px-3 py-1.5 font-bold text-[8px] text-white uppercase tracking-[0.2em]"
                 >
                   {{ product.is_final_sale ? "FINAL SALE" : "SALE" }} -{{ calculateDynamicDiscount(product) }}%
+                </div>
+                <div
+                  v-else-if="getDiscountToDisplay(product) && getDiscountStatus(product).upcoming"
+                  class="bg-[#8c3b4a] text-white px-3 py-1.5 font-bold text-[8px] uppercase tracking-[0.2em]"
+                >
+                  SOON -{{ calculateDynamicDiscount(product) }}%
                 </div>
                 <div
                   v-if="isNewArrival(product.created_at) && !product.is_final_sale"
@@ -10669,6 +10692,37 @@ const goToDetail = (product) => {
                     {{ formatCurrencyDisplay(getPriceToDisplay(product)) }}
                   </p>
                 </template>
+              </div>
+
+              <!-- Upcoming Sale Countdown -->
+              <div
+                v-if="
+                  getDiscountToDisplay(product) &&
+                  getDiscountStatus(product).upcoming &&
+                  getDiscountCountdown(product)
+                "
+                class="mt-3 px-2.5 py-2 bg-[#faf5f5] border border-[#f0e6e6] rounded-lg"
+              >
+                <p class="text-[8px] font-bold tracking-[0.2em] text-[#8c3b4a] uppercase mb-1">
+                  Sale Starts In
+                </p>
+                <div class="flex items-center justify-center gap-1 font-mono text-[10px] sm:text-[11px] font-black text-gray-900">
+                  <template v-if="getDiscountCountdown(product).days > 0">
+                    <span>{{ getDiscountCountdown(product).days }}d</span>
+                    <span class="text-gray-400">:</span>
+                  </template>
+                  <span>{{ getDiscountCountdown(product).hours }}h</span>
+                  <span class="text-gray-400">:</span>
+                  <span>{{ getDiscountCountdown(product).minutes }}m</span>
+                  <span class="text-gray-400">:</span>
+                  <span class="text-[#8c3b4a]">{{ getDiscountCountdown(product).seconds }}s</span>
+                </div>
+                <p class="text-[9px] text-gray-500 mt-1">
+                  Soon:
+                  <span class="font-bold text-[#8c3b4a]">
+                    {{ formatCurrencyDisplay(getDiscountToDisplay(product)) }}
+                  </span>
+                </p>
               </div>
 
               <!-- Bundle Promo -->
@@ -10795,6 +10849,9 @@ const { t } = useI18n();
 
 const currentCurrency = ref(localStorage.getItem("currency") || "IDR");
 
+const nowTick = ref(Date.now());
+let countdownInterval = null;
+
 const preloadImages = (products) => {
   if (!products || products.length === 0) return;
   products.forEach((p) => {
@@ -10902,6 +10959,11 @@ onMounted(() => {
   initCollections();
   fetchWishlists();
 
+  // Jalankan tick setiap 1 detik untuk menggerakkan seluruh countdown
+  countdownInterval = setInterval(() => {
+    nowTick.value = Date.now();
+  }, 1000);
+
   window.addEventListener("currency-changed", updateCurrencyState);
   window.addEventListener("storage", (e) => {
     if (e.key === "currency") updateCurrencyState();
@@ -10916,6 +10978,11 @@ onMounted(() => {
     };
     window.isLocalStorageOverride = true;
   }
+});
+
+onUnmounted(() => {
+  if (countdownInterval) clearInterval(countdownInterval);
+  window.removeEventListener("currency-changed", updateCurrencyState);
 });
 
 watch(
@@ -11047,12 +11114,32 @@ const initCollections = async () => {
   }
 };
 
+// const getDiscountStatus = (p) => {
+//   const discObj = getDiscountToDisplay(p);
+//   if (!p || !discObj || !discObj.value)
+//     return { active: false, upcoming: false, expired: false };
+
+//   const now = new Date();
+//   let active = true, upcoming = false, expired = false;
+
+//   if (p.discount_start_date) {
+//     const startDate = convertToWIB(p.discount_start_date);
+//     if (now < startDate) { active = false; upcoming = true; }
+//   }
+//   if (p.discount_end_date) {
+//     const endDate = convertToWIB(p.discount_end_date);
+//     if (now > endDate) { active = false; expired = true; }
+//   }
+//   return { active, upcoming, expired };
+// };
+
 const getDiscountStatus = (p) => {
   const discObj = getDiscountToDisplay(p);
   if (!p || !discObj || !discObj.value)
     return { active: false, upcoming: false, expired: false };
 
-  const now = new Date();
+  // Gunakan nowTick.value agar status otomatis beralih dari upcoming ke active saat waktu habis
+  const now = new Date(nowTick.value);
   let active = true, upcoming = false, expired = false;
 
   if (p.discount_start_date) {
@@ -11064,6 +11151,29 @@ const getDiscountStatus = (p) => {
     if (now > endDate) { active = false; expired = true; }
   }
   return { active, upcoming, expired };
+};
+
+const getDiscountCountdown = (product) => {
+  if (!product?.discount_start_date) return null;
+  const startDate = convertToWIB(product.discount_start_date);
+  if (!startDate) return null;
+
+  const diff = startDate.getTime() - nowTick.value;
+  if (diff <= 0) return null;
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+
+  const pad = (num) => String(num).padStart(2, "0");
+
+  return {
+    days,
+    hours: pad(hours),
+    minutes: pad(minutes),
+    seconds: pad(seconds),
+  };
 };
 
 const filteredProducts = computed(() => {
