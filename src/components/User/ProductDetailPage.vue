@@ -6125,12 +6125,11 @@ onUnmounted(() => {
     <!-- ========================================================= -->
     <!-- TAMPILAN KHUSUS GUEST (BELUM LOGIN) — PRIVATE ACCESS      -->
     <!-- ========================================================= -->
-    <div
+    <!-- <div
       v-if="!isAuthenticated"
       class="min-h-screen w-full bg-[#F5F0EB] px-4 sm:px-6 py-12 md:py-16 animate-fade-in"
     >
       <div class="mx-auto max-w-[760px]">
-        <!-- Top Editorial Header -->
         <div class="mb-8 text-center">
           <p
             class="text-[10px] sm:text-[11px] font-medium tracking-[0.22em] text-[#6D635C] uppercase mb-2.5"
@@ -6147,11 +6146,9 @@ onUnmounted(() => {
           </p>
         </div>
 
-        <!-- Main Private Archive Card -->
         <div
           class="bg-white rounded-2xl p-4 sm:p-6 md:p-7 shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-[#EDE6DF]"
         >
-          <!-- Product Media Slider -->
           <div
             class="relative w-full aspect-[4/3] overflow-hidden rounded-xl bg-[#EFECE6] mb-6 group select-none"
           >
@@ -6183,7 +6180,6 @@ onUnmounted(() => {
               </template>
             </div>
 
-            <!-- Navigasi Slider Minimalis (hanya muncul saat hover jika media > 1) -->
             <button
               v-if="allMedia.length > 1"
               @click="prevSlide"
@@ -6228,8 +6224,308 @@ onUnmounted(() => {
             </button>
           </div>
 
-          <!-- Product Info & Archive Pricing -->
           <div class="text-center">
+            <p
+              class="text-[10px] font-medium tracking-[0.2em] text-[#8A8078] uppercase mb-1.5"
+            >
+              The Private Archive
+            </p>
+            <h2
+              class="text-lg sm:text-xl font-bold tracking-[0.06em] text-[#231F1E] uppercase mb-3"
+            >
+              {{ product.name }}
+            </h2>
+
+            <div class="flex flex-col items-center justify-center">
+              <template
+                v-if="
+                  getDiscountToDisplay(product) && !getDiscountStatus(product).expired
+                "
+              >
+                <p
+                  class="text-sm sm:text-base font-normal text-[#8C827A] line-through mb-0.5"
+                >
+                  {{ formatCurrencyDisplay(getPriceToDisplay(product)) }}
+                </p>
+                <p
+                  class="text-xl sm:text-2xl font-bold text-[#7A3844] tracking-tight mb-2"
+                >
+                  {{ formatCurrencyDisplay(getDiscountToDisplay(product)) }}
+                </p>
+              </template>
+              <template v-else>
+                <p
+                  class="text-xl sm:text-2xl font-bold text-[#7A3844] tracking-tight mb-2"
+                >
+                  {{ formatCurrencyDisplay(getPriceToDisplay(product)) }}
+                </p>
+              </template>
+            </div>
+
+            <p class="text-xs text-[#7E756E]">
+              Exclusive archive price for registered members
+            </p>
+          </div>
+
+          <div class="w-full h-px bg-[#F2ECE6] my-6"></div>
+
+          <div v-if="privateAccessCountdown" class="mb-6">
+            <p
+              class="text-[10px] font-bold tracking-[0.18em] text-[#7A3844] uppercase text-center mb-3.5"
+            >
+              {{ privateAccessCountdown.label }}
+            </p>
+            <div class="grid grid-cols-3 gap-2.5 sm:gap-3.5">
+              <div class="bg-[#F5F0EB] rounded-lg py-3.5 sm:py-4 px-2 text-center">
+                <p
+                  class="text-xl sm:text-2xl font-bold text-[#231F1E] leading-none mb-1.5 tabular-nums"
+                >
+                  {{ privateAccessCountdown.hours }}
+                </p>
+                <p
+                  class="text-[9px] font-semibold tracking-[0.15em] text-[#8A8078] uppercase"
+                >
+                  Hours
+                </p>
+              </div>
+              <div class="bg-[#F5F0EB] rounded-lg py-3.5 sm:py-4 px-2 text-center">
+                <p
+                  class="text-xl sm:text-2xl font-bold text-[#231F1E] leading-none mb-1.5 tabular-nums"
+                >
+                  {{ privateAccessCountdown.minutes }}
+                </p>
+                <p
+                  class="text-[9px] font-semibold tracking-[0.15em] text-[#8A8078] uppercase"
+                >
+                  Minutes
+                </p>
+              </div>
+              <div class="bg-[#F5F0EB] rounded-lg py-3.5 sm:py-4 px-2 text-center">
+                <p
+                  class="text-xl sm:text-2xl font-bold text-[#231F1E] leading-none mb-1.5 tabular-nums"
+                >
+                  {{ privateAccessCountdown.seconds }}
+                </p>
+                <p
+                  class="text-[9px] font-semibold tracking-[0.15em] text-[#8A8078] uppercase"
+                >
+                  Seconds
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            @click="router.push('/register')"
+            class="w-full py-4 px-6 bg-[#723440] hover:bg-[#5B2731] active:scale-[0.99] text-white text-xs sm:text-[13px] font-semibold tracking-[0.16em] uppercase rounded-lg transition-all shadow-sm"
+          >
+            Unlock Private Access
+          </button>
+
+          <p class="mt-4 text-center text-[11px] text-[#8A8078]">
+            A limited selection. Once gone, never restocked.
+          </p>
+        </div>
+
+        <p class="mt-6 text-center text-xs text-[#7A7069]">
+          Already a registered member?
+          <router-link
+            to="/login"
+            class="font-semibold text-[#723440] underline hover:text-[#5B2731] transition-colors"
+          >
+            Sign in here
+          </router-link>
+        </p>
+      </div>
+    </div> -->
+
+    <!-- ========================================================= -->
+    <!-- TAMPILAN KHUSUS GUEST (BELUM LOGIN) — PRIVATE ACCESS      -->
+    <!-- ========================================================= -->
+    <div
+      v-if="!isAuthenticated"
+      class="min-h-screen w-full bg-[#F5F0EB] px-4 sm:px-6 py-12 md:py-16 animate-fade-in"
+    >
+      <div class="mx-auto max-w-[760px]">
+        <!-- Top Editorial Header -->
+        <div class="mb-8 text-center">
+          <p
+            class="text-[10px] sm:text-[11px] font-medium tracking-[0.22em] text-[#6D635C] uppercase mb-2.5"
+          >
+            Solher Private Access
+          </p>
+          <h1
+            class="text-2xl sm:text-3xl font-semibold italic tracking-tight text-[#1F1B1A] mb-2"
+          >
+            Reserved for You.
+          </h1>
+          <p class="text-xs sm:text-sm text-[#7A7069] font-normal">
+            An exclusive invitation to discover selected pieces before everyone else.
+          </p>
+        </div>
+
+        <!-- Main Private Archive Card -->
+        <div
+          class="bg-white rounded-2xl p-4 sm:p-6 md:p-7 shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-[#EDE6DF]"
+        >
+          <!-- Product Media Slider -->
+          <div
+            class="relative w-full aspect-[4/3] overflow-hidden rounded-xl bg-[#EFECE6] mb-3 group select-none"
+          >
+            <!-- Subtle Stock / Share Floating Action -->
+            <div class="absolute z-20 flex items-center gap-2 top-3 left-3">
+              <span
+                v-if="product.stock <= 0"
+                class="px-3 py-1 text-[9px] font-bold tracking-[0.2em] uppercase bg-white/90 text-[#231F1E] rounded-full border border-[#EDE6DF] backdrop-blur-sm"
+              >
+                Sold Out
+              </span>
+              <span
+                v-else-if="product.stock <= 5"
+                class="px-3 py-1 text-[9px] font-bold tracking-[0.18em] uppercase bg-[#723440]/90 text-white rounded-full backdrop-blur-sm"
+              >
+                Only {{ product.stock }} Left
+              </span>
+            </div>
+
+            <button
+              type="button"
+              @click="handleShare"
+              title="Share"
+              class="absolute z-20 flex items-center justify-center w-9 h-9 text-[#231F1E] transition-all rounded-full top-3 right-3 bg-white/85 backdrop-blur-sm hover:bg-white shadow-sm"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="1.8"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+                />
+              </svg>
+            </button>
+
+            <div
+              class="flex w-full h-full transition-transform duration-700 ease-out"
+              :style="{ transform: `translateX(-${activeSlide * 100}%)` }"
+            >
+              <template
+                v-for="(media, index) in allMedia"
+                :key="'guest-media-' + index"
+              >
+                <div class="relative flex-shrink-0 w-full h-full">
+                  <img
+                    v-if="media.type === 'image'"
+                    :src="media.url"
+                    :alt="product.name"
+                    class="object-cover w-full h-full"
+                  />
+                  <video
+                    v-else-if="media.type === 'video'"
+                    :src="media.url"
+                    class="object-cover w-full h-full bg-black"
+                    autoplay
+                    loop
+                    muted
+                    playsinline
+                    controls
+                  ></video>
+                </div>
+              </template>
+            </div>
+
+            <!-- Navigasi Slider Minimalis -->
+            <button
+              v-if="allMedia.length > 1"
+              @click="prevSlide"
+              type="button"
+              class="absolute z-10 flex items-center justify-center w-9 h-9 text-black transition-all -translate-y-1/2 rounded-full shadow opacity-0 left-3 top-1/2 bg-white/85 backdrop-blur-sm hover:bg-white group-hover:opacity-100"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+            <button
+              v-if="allMedia.length > 1"
+              @click="nextSlide"
+              type="button"
+              class="absolute z-10 flex items-center justify-center w-9 h-9 text-black transition-all -translate-y-1/2 rounded-full shadow opacity-0 right-3 top-1/2 bg-white/85 backdrop-blur-sm hover:bg-white group-hover:opacity-100"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Thumbnail Strip Minimalis (Jika foto/video > 1) -->
+          <div
+            v-if="allMedia.length > 1"
+            class="flex items-center justify-center gap-2 mb-6 overflow-x-auto pb-1 custom-scrollbar"
+          >
+            <button
+              v-for="(media, idx) in allMedia"
+              :key="'guest-thumb-' + idx"
+              type="button"
+              @click="activeSlide = idx"
+              :class="
+                activeSlide === idx
+                  ? 'ring-2 ring-[#723440] opacity-100'
+                  : 'border border-[#EDE6DF] opacity-55 hover:opacity-100'
+              "
+              class="relative w-12 h-12 sm:w-14 sm:h-14 overflow-hidden rounded-lg shrink-0 bg-[#EFECE6] transition-all"
+            >
+              <img
+                v-if="media.type === 'image'"
+                :src="media.url"
+                class="object-cover w-full h-full"
+                alt="Thumbnail"
+              />
+              <div
+                v-else
+                class="relative flex items-center justify-center w-full h-full bg-[#231F1E] text-white"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-4 h-4"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </div>
+            </button>
+          </div>
+
+          <!-- Product Info & Archive Pricing -->
+          <div :class="allMedia.length > 1 ? '' : 'mt-6'" class="text-center">
             <p
               class="text-[10px] font-medium tracking-[0.2em] text-[#8A8078] uppercase mb-1.5"
             >
@@ -6271,6 +6567,52 @@ onUnmounted(() => {
             <p class="text-xs text-[#7E756E]">
               Exclusive archive price for registered members
             </p>
+
+            <!-- Varian Warna (Centered, Selaras Desain Private Access) -->
+            <div v-if="siblingColors.length > 0" class="mt-5">
+              <p
+                class="text-[10px] font-medium tracking-[0.18em] text-[#8A8078] uppercase mb-2.5"
+              >
+                {{ $t("product_detail.colors") }}:
+                <span class="font-bold text-[#231F1E]">
+                  {{
+                    selectedInternalColor
+                      ? parseColorName(selectedInternalColor)
+                      : extractColorNameForDisplay(product)
+                  }}
+                </span>
+              </p>
+              <div class="flex flex-wrap items-center justify-center gap-2">
+                <button
+                  v-for="sibling in siblingColors"
+                  :key="
+                    'guest-color-' +
+                    (sibling.is_internal_variant
+                      ? sibling.original_color_string
+                      : sibling.id)
+                  "
+                  type="button"
+                  @click="goToColorVariant(sibling)"
+                  class="flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all duration-300"
+                  :class="
+                    (sibling.is_internal_variant &&
+                      selectedInternalColor === sibling.original_color_string) ||
+                    (!sibling.is_internal_variant && product.id === sibling.id)
+                      ? 'border-[#723440] bg-[#FAF7F4] ring-1 ring-[#723440]/20 text-[#231F1E]'
+                      : 'border-[#EDE6DF] bg-white hover:border-[#C9BEB4] text-[#7A7069]'
+                  "
+                  :title="sibling.displayColorName"
+                >
+                  <span
+                    class="w-3.5 h-3.5 rounded-full border border-black/15 shadow-inner shrink-0"
+                    :style="{ backgroundColor: sibling.hexColor }"
+                  ></span>
+                  <span class="text-[10px] font-semibold tracking-wider uppercase">
+                    {{ sibling.displayColorName }}
+                  </span>
+                </button>
+              </div>
+            </div>
           </div>
 
           <!-- Divider -->
@@ -6335,6 +6677,144 @@ onUnmounted(() => {
           <p class="mt-4 text-center text-[11px] text-[#8A8078]">
             A limited selection. Once gone, never restocked.
           </p>
+
+          <!-- ========================================================= -->
+          <!-- DETAIL, SPESIFIKASI & DESKRIPSI PRODUK (TEMA PRIVATE)     -->
+          <!-- ========================================================= -->
+          <div class="w-full h-px bg-[#F2ECE6] my-7"></div>
+
+          <!-- Bundle Promo (Jika Ada, Disesuaikan Palet Private Access) -->
+          <div
+            v-if="getBundlePromo(product)"
+            class="p-4 mb-6 text-center rounded-xl bg-[#FAF7F4] border border-[#EDE6DF]"
+          >
+            <p
+              class="text-[9px] font-bold tracking-[0.2em] text-[#7A3844] uppercase mb-1"
+            >
+              Special Bundle Offer
+            </p>
+            <p class="text-xs sm:text-sm text-[#4A433E]">
+              Buy <strong class="text-[#231F1E]">{{ getBundlePromo(product).qty }} items</strong>
+              from this collection for
+              <strong class="text-[#7A3844]">
+                {{
+                  formatCurrencyDisplay({
+                    value: getBundlePromo(product).price,
+                    curr: getBundlePromo(product).curr,
+                  })
+                }}
+              </strong>
+            </p>
+          </div>
+
+          <!-- Spesifikasi Cepat (Material, Berat, Dimensi, Strap) -->
+          <div
+            v-if="
+              product.material ||
+              product.weight ||
+              product.length ||
+              product.width ||
+              product.height ||
+              product.strap_length
+            "
+            class="grid grid-cols-2 gap-4 p-4 sm:p-5 mb-6 rounded-xl bg-[#FAF7F4] border border-[#EDE6DF]"
+          >
+            <div v-if="product.material">
+              <p
+                class="text-[9px] font-semibold tracking-[0.18em] text-[#8A8078] uppercase mb-1"
+              >
+                {{ $t("product_detail.material") }}
+              </p>
+              <p class="text-xs sm:text-sm font-medium text-[#231F1E]">
+                {{ product.material }}
+              </p>
+            </div>
+            <div v-if="product.weight">
+              <p
+                class="text-[9px] font-semibold tracking-[0.18em] text-[#8A8078] uppercase mb-1"
+              >
+                {{ $t("product_detail.weight") }}
+              </p>
+              <p class="text-xs sm:text-sm font-medium text-[#231F1E]">
+                {{ product.weight }} gram
+              </p>
+            </div>
+            <div v-if="product.length || product.width || product.height">
+              <p
+                class="text-[9px] font-semibold tracking-[0.18em] text-[#8A8078] uppercase mb-1"
+              >
+                {{ $t("product_detail.dimensions") }}
+              </p>
+              <p class="font-mono text-xs sm:text-sm font-medium text-[#231F1E]">
+                {{ product.length || "-" }} x {{ product.width || "-" }} x
+                {{ product.height || "-" }} cm
+              </p>
+            </div>
+            <div v-if="product.strap_length">
+              <p
+                class="text-[9px] font-semibold tracking-[0.18em] text-[#8A8078] uppercase mb-1"
+              >
+                {{ $t("product_detail.strap_length") }}
+              </p>
+              <p class="text-xs sm:text-sm font-medium text-[#231F1E]">
+                <template v-if="Array.isArray(product.strap_length)">
+                  {{ product.strap_length.join(", ") }}
+                </template>
+                <template v-else>{{ product.strap_length }}</template>
+              </p>
+            </div>
+          </div>
+
+          <!-- Accordion: Description, Design, Shipping & Returns -->
+          <div class="divide-y divide-[#F2ECE6] border-t border-[#F2ECE6]">
+            <div
+              v-for="section in ['description', 'design', 'shipping_and_returns']"
+              :key="'guest-sec-' + section"
+              class="py-4"
+            >
+              <button
+                type="button"
+                @click="activeSection = activeSection === section ? null : section"
+                class="flex items-center justify-between w-full text-[11px] font-bold tracking-[0.18em] text-left uppercase outline-none group"
+              >
+                <span
+                  class="text-[#231F1E] transition-colors group-hover:text-[#7A3844]"
+                >
+                  {{ $t(`product_detail.${section}`) }}
+                </span>
+                <span
+                  class="text-base font-light text-[#8A8078] transition-transform duration-300"
+                  :class="{ 'rotate-45 text-[#7A3844]': activeSection === section }"
+                >
+                  +
+                </span>
+              </button>
+              <transition name="fade">
+                <div
+                  v-show="activeSection === section"
+                  class="mt-3 text-xs sm:text-sm leading-relaxed text-[#5C534D] whitespace-pre-wrap"
+                >
+                  <template v-if="section === 'description'">
+                    {{
+                      $i18n.locale === "en" && product.description_en
+                        ? product.description_en
+                        : product.description || $t("product_detail.no_information")
+                    }}
+                  </template>
+                  <template v-else-if="section === 'design'">
+                    {{
+                      $i18n.locale === "en" && product.design_en
+                        ? product.design_en
+                        : product.design || $t("product_detail.no_information")
+                    }}
+                  </template>
+                  <template v-else-if="section === 'shipping_and_returns'">
+                    {{ $t("product_detail.shipping_desc") }}
+                  </template>
+                </div>
+              </transition>
+            </div>
+          </div>
         </div>
 
         <!-- Link Login Halus di Bawah Kartu -->
