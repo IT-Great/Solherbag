@@ -10695,7 +10695,7 @@ const goToDetail = (product) => {
               </div>
 
               <!-- Upcoming Sale Countdown -->
-              <div
+              <!-- <div
                 v-if="
                   getDiscountToDisplay(product) &&
                   getDiscountStatus(product).upcoming &&
@@ -10723,6 +10723,47 @@ const goToDetail = (product) => {
                     {{ formatCurrencyDisplay(getDiscountToDisplay(product)) }}
                   </span>
                 </p>
+              </div> -->
+
+              <!-- Upcoming Sale Countdown -->
+              <div
+                v-if="
+                  getDiscountToDisplay(product) &&
+                  getDiscountStatus(product).upcoming &&
+                  getDiscountCountdown(product)
+                "
+                class="mt-3 px-2.5 py-2.5 bg-[#faf5f5] border border-[#f0e6e6] rounded-lg"
+              >
+                <p class="text-[8px] font-bold tracking-[0.2em] text-[#8c3b4a] uppercase mb-1">
+                  Sale Starts In
+                </p>
+                <div class="flex items-center justify-center gap-1 font-mono text-[10px] sm:text-[11px] font-black text-gray-900">
+                  <template v-if="getDiscountCountdown(product).days > 0">
+                    <span>{{ getDiscountCountdown(product).days }}d</span>
+                    <span class="text-gray-400">:</span>
+                  </template>
+                  <span>{{ getDiscountCountdown(product).hours }}h</span>
+                  <span class="text-gray-400">:</span>
+                  <span>{{ getDiscountCountdown(product).minutes }}m</span>
+                  <span class="text-gray-400">:</span>
+                  <span class="text-[#8c3b4a]">{{ getDiscountCountdown(product).seconds }}s</span>
+                </div>
+                <p class="text-[9px] text-gray-500 mt-1">
+                  VIP Price:
+                  <span class="font-bold text-[#8c3b4a]">
+                    {{ formatCurrencyDisplay(getDiscountToDisplay(product)) }}
+                  </span>
+                </p>
+
+                <!-- Tombol Sign Up khusus user yang belum login/daftar -->
+                <button
+                  v-if="!isAuthenticated"
+                  type="button"
+                  @click.stop="router.push('/register')"
+                  class="mt-2.5 w-full py-1.5 px-3 bg-[#8c3b4a] hover:bg-[#6b2b37] text-white text-[8px] sm:text-[9px] font-bold tracking-[0.2em] uppercase rounded-md transition-colors shadow-sm"
+                >
+                  Sign Up Now
+                </button>
               </div>
 
               <!-- Bundle Promo -->
@@ -11087,7 +11128,7 @@ const toggleWishlist = async (productId) => {
 
   if (isFavorited(productId)) {
     userWishlists.value = userWishlists.value.filter((id) => id !== productId);
-  } else {
+  } else {  
     userWishlists.value.push(productId);
   }
 
