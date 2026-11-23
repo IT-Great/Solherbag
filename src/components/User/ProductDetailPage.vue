@@ -3953,7 +3953,7 @@ onUnmounted(() => {
 }
 </style> -->
 
-<template>
+<!-- <template>
   <div
     v-if="isLoading"
     class="z-[100] fixed inset-0 flex flex-col justify-center items-center bg-white/90 backdrop-blur-sm"
@@ -3972,7 +3972,6 @@ onUnmounted(() => {
   </div>
 
   <div v-else-if="product" class="px-6 py-10 mx-auto md:py-16 max-w-7xl animate-fade-in">
-    <!-- Breadcrumb (CRO: Memudahkan Navigasi) -->
     <nav
       class="flex items-center gap-2 mb-8 text-[10px] font-bold tracking-widest text-gray-400 uppercase"
     >
@@ -3993,13 +3992,10 @@ onUnmounted(() => {
     </nav>
 
     <div class="flex flex-col items-start gap-12 lg:flex-row lg:gap-20">
-      <!-- ================= KIRI: MEDIA GALLERY ================= -->
       <div class="flex flex-col w-full gap-4 select-none lg:w-3/5 lg:sticky lg:top-24">
-        <!-- Main Image Slider -->
         <div
           class="relative bg-gray-50 aspect-[4/5] overflow-hidden group rounded-2xl shadow-sm border border-gray-100/50"
         >
-          <!-- Badges -->
           <div class="absolute z-20 flex flex-col gap-2 top-4 left-4">
             <div
               v-if="getDiscountToDisplay(product) && getDiscountStatus(product).active"
@@ -4045,7 +4041,6 @@ onUnmounted(() => {
             </template>
           </div>
 
-          <!-- Navigasi Slider Kiri/Kanan -->
           <button
             v-if="allMedia.length > 1"
             @click="prevSlide"
@@ -4081,7 +4076,6 @@ onUnmounted(() => {
           </button>
         </div>
 
-        <!-- Thumbnail Gallery -->
         <div
           v-if="allMedia.length > 1"
           class="flex gap-3 pb-2 overflow-x-auto custom-scrollbar"
@@ -4135,11 +4129,8 @@ onUnmounted(() => {
         </div>
       </div>
 
-      <!-- ================= KANAN: PRODUCT DETAILS ================= -->
       <div class="flex flex-col w-full lg:w-2/5">
-        <!-- Header Info -->
         <div class="space-y-4">
-          <!-- Social Proof (Rating) -->
           <div
             v-if="product.rating || product.reviews_avg_rating || product.reviews_count"
             class="flex items-center gap-2"
@@ -4169,7 +4160,6 @@ onUnmounted(() => {
             >
               {{ product.name }}
             </h1>
-            <!-- Action Icons (Share & Wishlist) -->
             <div class="flex items-center gap-2 shrink-0">
               <button
                 @click="handleShare"
@@ -4225,7 +4215,6 @@ onUnmounted(() => {
             </div>
           </div>
 
-          <!-- Price Section -->
           <div class="flex flex-col gap-1 py-2">
             <template
               v-if="getDiscountToDisplay(product) && !getDiscountStatus(product).expired"
@@ -4254,7 +4243,6 @@ onUnmounted(() => {
 
         <div class="w-full h-px my-6 bg-gray-200"></div>
 
-        <!-- Urgency / Scarcity Banner -->
         <div
           v-if="product.stock > 0 && product.stock <= 5"
           class="flex items-center gap-3 p-4 mb-6 border shadow-sm bg-amber-50 border-amber-200 rounded-xl"
@@ -4274,45 +4262,6 @@ onUnmounted(() => {
           </div>
         </div>
 
-        <!-- 👇 VARIAN WARNA PREMIUM (DENGAN IMPLEMENTASI BARU) 👇 -->
-        <!-- <div v-if="siblingColors.length > 0" class="mb-8">
-          <div class="flex items-center justify-between mb-3">
-            <span class="text-[10px] font-bold tracking-widest uppercase text-gray-500">{{
-              $t("product_detail.colors")
-            }}</span>
-            <span class="text-xs font-bold text-gray-900">{{
-              extractColorNameForDisplay(product)
-            }}</span>
-          </div>
-          <div class="flex flex-wrap gap-2.5">
-            <div
-              v-for="sibling in siblingColors"
-              :key="sibling.id"
-              @click="goToColorVariant(sibling)"
-              class="flex items-center gap-2.5 px-3 py-1.5 transition-all duration-300 border cursor-pointer rounded-full"
-              :class="
-                product.id === sibling.id
-                  ? 'border-black ring-1 ring-black bg-gray-50 shadow-sm scale-[1.02]'
-                  : 'border-gray-200 hover:border-gray-400 hover:bg-gray-50'
-              "
-              :title="extractColorNameForDisplay(sibling)"
-            >
-              <div
-                class="w-4 h-4 border border-gray-300 rounded-full shadow-inner shrink-0"
-                :style="{ backgroundColor: extractColorHex(sibling) }"
-              ></div>
-              <span
-                class="text-[10px] font-bold tracking-wider uppercase"
-                :class="product.id === sibling.id ? 'text-black' : 'text-gray-600'"
-              >
-                {{ extractColorNameForDisplay(sibling) }}
-              </span>
-            </div>
-          </div>
-        </div> -->
-        <!-- 👆 AKHIR VARIAN WARNA 👆 -->
-
-        <!-- 👇 VARIAN WARNA PREMIUM (DENGAN IMPLEMENTASI BARU) 👇 -->
         <div v-if="siblingColors.length > 0" class="mb-8">
           <div class="flex items-center justify-between mb-3">
             <span class="text-[10px] font-bold tracking-widest uppercase text-gray-500">{{
@@ -4335,12 +4284,10 @@ onUnmounted(() => {
               "
               :title="sibling.displayColorName"
             >
-              <!-- Lingkaran Warna Berdasarkan Kode Hex/Nama -->
               <div
                 class="w-4 h-4 border border-gray-300 rounded-full shadow-inner shrink-0"
                 :style="{ backgroundColor: sibling.hexColor }"
               ></div>
-              <!-- Teks Nama Warna -->
               <span
                 class="text-[10px] font-bold tracking-wider uppercase"
                 :class="(sibling.is_internal_variant && selectedInternalColor === sibling.original_color_string) || (!sibling.is_internal_variant && product.id === sibling.id) ? 'text-black' : 'text-gray-600'"
@@ -4350,9 +4297,7 @@ onUnmounted(() => {
             </div>
           </div>
         </div>
-        <!-- 👆 AKHIR VARIAN WARNA 👆 -->
 
-        <!-- Spesifikasi Cepat (Grid) -->
         <div
           v-if="product.material || product.weight || product.length || product.color"
           class="grid grid-cols-2 gap-4 p-5 mb-8 border border-gray-100 bg-gray-50 rounded-2xl"
@@ -4391,7 +4336,6 @@ onUnmounted(() => {
           </div>
         </div>
 
-        <!-- Bundle Promo Box -->
         <div
           v-if="getBundlePromo(product)"
           class="p-5 mb-8 border-2 border-blue-100 bg-gradient-to-r from-blue-50 to-blue-50/20 rounded-2xl"
@@ -4435,193 +4379,8 @@ onUnmounted(() => {
             Mix & match allowed. Auto-applied at checkout.
           </p>
         </div>
-
-        <!-- Add to Cart / Buy Actions -->
-        <!-- <div class="flex flex-col gap-4 mb-6">
-          <div
-            v-if="product.stock > 0"
-            class="flex items-center justify-between px-4 py-2 bg-white border border-gray-300 rounded-xl"
-          >
-            <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{{
-              $t("product_detail.quantity")
-            }}</span>
-            <div class="flex items-center">
-              <button
-                @click="decreaseQuantity"
-                class="flex items-center justify-center w-8 h-8 text-xl font-medium text-gray-600 transition-colors rounded-full hover:text-black hover:bg-gray-100"
-              >
-                −
-              </button>
-              <input
-                type="number"
-                v-model.number="selectedQuantity"
-                @change="validateQuantity"
-                class="w-12 p-0 text-base font-bold text-center bg-transparent border-none focus:ring-0"
-              />
-              <button
-                @click="increaseQuantity"
-                class="flex items-center justify-center w-8 h-8 text-xl font-medium text-gray-600 transition-colors rounded-full hover:text-black hover:bg-gray-100"
-              >
-                +
-              </button>
-            </div>
-          </div>
-
-          <div class="flex flex-col gap-3 sm:flex-row">
-            <button
-              @click="handleAction('cart')"
-              :disabled="product.stock === 0"
-              class="flex-1 py-4 text-xs font-black tracking-[0.2em] uppercase transition-all duration-300 border-2 rounded-xl"
-              :class="
-                product.stock === 0
-                  ? 'bg-gray-100 text-gray-400 border-gray-100 cursor-not-allowed'
-                  : 'bg-white text-black border-black hover:bg-black hover:text-white shadow-sm hover:shadow-xl'
-              "
-            >
-              {{
-                product.stock === 0
-                  ? $t("product_detail.out_of_stock")
-                  : $t("product_detail.add_to_cart")
-              }}
-            </button>
-            <button
-              @click="handleAction('buy')"
-              :disabled="product.stock === 0"
-              class="flex-1 py-4 text-xs font-black tracking-[0.2em] uppercase transition-all duration-300 border-2 border-transparent rounded-xl"
-              :class="
-                product.stock === 0
-                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                  : 'bg-black text-white hover:bg-gray-800 shadow-lg hover:shadow-xl hover:-translate-y-0.5'
-              "
-            >
-              {{ $t("product_detail.buy_it_now") }}
-            </button>
-          </div>
-        </div> -->
-
-        <!-- Add to Cart / Buy Actions ATAU Back-in-Stock Waitlist -->
-        <!-- <div class="flex flex-col gap-4 mb-6">
-          <template v-if="product.stock > 0">
-            <div class="flex items-center justify-between px-4 py-2 bg-white border border-gray-300 rounded-xl">
-              <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
-                {{ $t("product_detail.quantity") }}
-              </span>
-              <div class="flex items-center">
-                <button
-                  @click="decreaseQuantity"
-                  class="flex items-center justify-center w-8 h-8 text-xl font-medium text-gray-600 transition-colors rounded-full hover:text-black hover:bg-gray-100"
-                >
-                  −
-                </button>
-                <input
-                  type="number"
-                  v-model.number="selectedQuantity"
-                  @change="validateQuantity"
-                  class="w-12 p-0 text-base font-bold text-center bg-transparent border-none focus:ring-0"
-                />
-                <button
-                  @click="increaseQuantity"
-                  class="flex items-center justify-center w-8 h-8 text-xl font-medium text-gray-600 transition-colors rounded-full hover:text-black hover:bg-gray-100"
-                >
-                  +
-                </button>
-              </div>
-            </div>
-
-            <div class="flex flex-col gap-3 sm:flex-row">
-              <button
-                @click="handleAction('cart')"
-                class="flex-1 py-4 text-xs font-black tracking-[0.2em] uppercase transition-all duration-300 border-2 rounded-xl bg-white text-black border-black hover:bg-black hover:text-white shadow-sm hover:shadow-xl"
-              >
-                {{ $t("product_detail.add_to_cart") }}
-              </button>
-              <button
-                @click="handleAction('buy')"
-                class="flex-1 py-4 text-xs font-black tracking-[0.2em] uppercase transition-all duration-300 border-2 border-transparent rounded-xl bg-black text-white hover:bg-gray-800 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
-              >
-                {{ $t("product_detail.buy_it_now") }}
-              </button>
-            </div>
-          </template>
-
-          <div
-            v-else
-            class="p-6 border border-gray-200 bg-[#FAF9F8] rounded-2xl shadow-sm space-y-4 animate-fade-in"
-          >
-            <div class="flex items-center justify-between">
-              <span class="px-3 py-1 text-[9px] font-black tracking-widest uppercase bg-gray-200 text-gray-700 rounded-full">
-                {{ $t("product_detail.out_of_stock") }}
-              </span>
-              <span class="text-xs font-serif italic text-gray-500">Solhér Priority Concierge</span>
-            </div>
-
-            <div>
-              <h4 class="text-sm font-bold tracking-widest text-gray-900 uppercase">
-                {{ $t("product_detail.waitlist_title") }}
-              </h4>
-              <p class="mt-1 text-xs leading-relaxed text-gray-600">
-                {{ $t("product_detail.waitlist_desc") }}
-              </p>
-            </div>
-
-            <form @submit.prevent="submitWaitlist" class="flex flex-col gap-3 sm:flex-row">
-              <input
-                v-model="waitlistEmail"
-                type="email"
-                :disabled="isJoinedWaitlist || isSubmittingWaitlist"
-                :placeholder="$t('product_detail.waitlist_placeholder')"
-                required
-                class="flex-1 px-4 py-3.5 text-xs bg-white border border-gray-300 rounded-xl outline-none focus:border-black disabled:bg-gray-100 disabled:text-gray-400"
-              />
-              <button
-                type="submit"
-                :disabled="isJoinedWaitlist || isSubmittingWaitlist || !waitlistEmail"
-                class="px-6 py-3.5 text-[10px] font-black tracking-[0.2em] uppercase transition-all rounded-xl shrink-0 flex items-center justify-center gap-2"
-                :class="
-                  isJoinedWaitlist
-                    ? 'bg-emerald-600 text-white cursor-default'
-                    : 'bg-[#8c3b4a] text-white hover:bg-[#6b2b37] shadow-md disabled:opacity-50'
-                "
-              >
-                <span v-if="isSubmittingWaitlist" class="w-4 h-4 border-2 border-white rounded-full border-t-transparent animate-spin"></span>
-                <span v-else>
-                  {{ isJoinedWaitlist ? $t("product_detail.waitlist_joined") : "🔔 " + $t("product_detail.notify_me") }}
-                </span>
-              </button>
-            </form>
-
-            <form @submit.prevent="submitWaitlist" class="flex flex-col gap-3 w-full">
-              <input
-                v-model="waitlistEmail"
-                type="email"
-                :disabled="isJoinedWaitlist || isSubmittingWaitlist"
-                :placeholder="$t('product_detail.waitlist_placeholder')"
-                required
-                class="w-full px-4 py-3.5 text-xs bg-white border border-gray-300 rounded-xl outline-none focus:border-black disabled:bg-gray-100 disabled:text-gray-400 transition-colors"
-              />
-              <button
-                type="submit"
-                :disabled="isJoinedWaitlist || isSubmittingWaitlist || !waitlistEmail"
-                class="w-full py-3.5 text-[10px] font-black tracking-widest uppercase transition-all rounded-xl flex items-center justify-center gap-2"
-                :class="
-                  isJoinedWaitlist
-                    ? 'bg-emerald-600 text-white cursor-default'
-                    : 'bg-[#8c3b4a] text-white hover:bg-[#6b2b37] shadow-md disabled:opacity-50'
-                "
-              >
-                <span v-if="isSubmittingWaitlist" class="w-4 h-4 border-2 border-white rounded-full border-t-transparent animate-spin"></span>
-                <span v-else>
-                  {{ isJoinedWaitlist ? $t("product_detail.waitlist_joined") : "🔔 " + $t("product_detail.notify_me") }}
-                </span>
-              </button>
-            </form>
-          </div>
-        </div> -->
-
-        <!-- Add to Cart / Buy Actions ATAU Back-in-Stock Waitlist ATAU Early Access -->
         <div class="flex flex-col gap-4 mb-6">
           
-          <!-- 👇 1. JIKA TERKUNCI EARLY ACCESS (Tampilkan Countdown VIP) 👇 -->
           <div v-if="isEarlyAccessLocked" class="p-6 border border-[#E8E2D2] bg-gradient-to-br from-[#FDFBF7] to-white rounded-2xl shadow-sm space-y-5 animate-fade-in relative overflow-hidden group">
             <div class="absolute -right-10 -top-10 opacity-5 rotate-12 transition-transform duration-1000 group-hover:rotate-45">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-40 h-40" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15 8L22 9L17 14L18 21L12 17L6 21L7 14L2 9L9 8L12 2Z"/></svg>
@@ -4652,11 +4411,8 @@ onUnmounted(() => {
             </div>
           </div>
 
-          <!-- 👇 2. JIKA STOK TERSEDIA (Normal) 👇 -->
           <template v-else-if="product.stock > 0">
-            <!-- Isi blok quantity, Add to Cart, dan Buy Now Anda sama seperti sebelumnya -->
             <div class="flex items-center justify-between px-4 py-2 bg-white border border-gray-300 rounded-xl">
-               <!-- ... Kode Quantity bawaan Anda ... -->
                <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{{ $t("product_detail.quantity") }}</span>
                <div class="flex items-center">
                  <button @click="decreaseQuantity" class="flex items-center justify-center w-8 h-8 text-xl font-medium text-gray-600 transition-colors rounded-full hover:text-black hover:bg-gray-100">−</button>
@@ -4671,9 +4427,7 @@ onUnmounted(() => {
             </div>
           </template>
 
-          <!-- 👇 3. JIKA STOK HABIS (Tampilkan Waitlist) 👇 -->
           <div v-else class="p-6 border border-gray-200 bg-[#FAF9F8] rounded-2xl shadow-sm space-y-4 animate-fade-in">
-             <!-- Isi blok form submitWaitlist bawaan Anda -->
              <div class="flex items-center justify-between">
                 <span class="px-3 py-1 text-[9px] font-black tracking-widest uppercase bg-gray-200 text-gray-700 rounded-full">{{ $t("product_detail.out_of_stock") }}</span>
                 <span class="text-xs font-serif italic text-gray-500">Solhér Priority Concierge</span>
@@ -4692,7 +4446,6 @@ onUnmounted(() => {
           </div>
         </div>
 
-        <!-- Trust Badges (CRO) -->
         <div
           class="flex items-center justify-between px-4 py-5 mb-8 border-t border-b border-gray-100 bg-gray-50/30 rounded-xl"
         >
@@ -4755,7 +4508,6 @@ onUnmounted(() => {
           </div>
         </div>
 
-        <!-- Accordions -->
         <div class="border-t border-gray-200 divide-y divide-gray-200">
           <div
             v-for="section in ['description', 'design', 'shipping_and_returns']"
@@ -4804,7 +4556,6 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <!-- Recommended Products Section -->
     <div
       v-if="recommendedProducts.length > 0"
       class="pt-16 mt-24 border-t border-gray-200"
@@ -4837,7 +4588,6 @@ onUnmounted(() => {
             >
               SALE
             </div>
-            <!-- Quick Add Overlay (CRO) -->
             <div
               class="absolute inset-x-0 bottom-0 flex justify-center p-4 transition-transform duration-300 translate-y-full bg-gradient-to-t from-black/60 to-transparent group-hover:translate-y-0"
             >
@@ -6277,6 +6027,2095 @@ const handleAction = async (type) => {
         selectedItemIds.value = [];
         Swal.close();
         router.push(`/payment`); 
+      });
+    }
+  } catch (error) {
+    Swal.close();
+    Swal.fire("Error", error.response?.data?.message || "Action failed", "error");
+  }
+};
+
+const handleZoom = (e) => {
+  const img = e.currentTarget.querySelector(".main-product-image");
+  if (!img) return;
+  const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+  img.style.transformOrigin = `${((e.clientX - left) / width) * 100}% ${
+    ((e.clientY - top) / height) * 100
+  }%`;
+};
+const resetZoom = (e) => {
+  const img = e.currentTarget.querySelector(".main-product-image");
+  if (img) img.style.transformOrigin = "center center";
+};
+
+onMounted(() => {
+  fetchProductDetail();
+  fetchUserProfile();
+  window.addEventListener("currency-changed", updateCurrencyState);
+  window.addEventListener("storage", (e) => {
+    if (e.key === "currency") updateCurrencyState();
+  });
+  timerInterval = setInterval(() => {
+    currentTime.value = Date.now();
+  }, 1000);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("currency-changed", updateCurrencyState);
+  if (timerInterval) clearInterval(timerInterval);
+});
+</script>
+
+<style scoped>
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+.custom-scrollbar::-webkit-scrollbar {
+  height: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+</style> -->
+
+<template>
+  <div
+    v-if="isLoading"
+    class="z-[100] fixed inset-0 flex flex-col justify-center items-center bg-white/90 backdrop-blur-sm"
+  >
+    <div class="relative w-16 h-16">
+      <div class="absolute inset-0 border-4 border-gray-100 rounded-full"></div>
+      <div
+        class="absolute inset-0 border-4 border-black rounded-full border-t-transparent animate-spin"
+      ></div>
+    </div>
+    <p
+      class="mt-6 font-serif text-sm italic tracking-widest text-gray-500 uppercase animate-pulse"
+    >
+      {{ $t("product_detail.loading_solher") }}
+    </p>
+  </div>
+
+  <template v-else-if="product">
+    <!-- ========================================================= -->
+    <!-- TAMPILAN KHUSUS GUEST (BELUM LOGIN) — PRIVATE ACCESS      -->
+    <!-- ========================================================= -->
+    <div
+      v-if="!isAuthenticated"
+      class="min-h-screen w-full bg-[#F5F0EB] px-4 sm:px-6 py-12 md:py-16 animate-fade-in"
+    >
+      <div class="mx-auto max-w-[760px]">
+        <!-- Top Editorial Header -->
+        <div class="mb-8 text-center">
+          <p
+            class="text-[10px] sm:text-[11px] font-medium tracking-[0.22em] text-[#6D635C] uppercase mb-2.5"
+          >
+            Solher Private Access
+          </p>
+          <h1
+            class="text-2xl sm:text-3xl font-semibold italic tracking-tight text-[#1F1B1A] mb-2"
+          >
+            Reserved for You.
+          </h1>
+          <p class="text-xs sm:text-sm text-[#7A7069] font-normal">
+            An exclusive invitation to discover selected pieces before everyone else.
+          </p>
+        </div>
+
+        <!-- Main Private Archive Card -->
+        <div
+          class="bg-white rounded-2xl p-4 sm:p-6 md:p-7 shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-[#EDE6DF]"
+        >
+          <!-- Product Media Slider -->
+          <div
+            class="relative w-full aspect-[4/3] overflow-hidden rounded-xl bg-[#EFECE6] mb-6 group select-none"
+          >
+            <div
+              class="flex w-full h-full transition-transform duration-700 ease-out"
+              :style="{ transform: `translateX(-${activeSlide * 100}%)` }"
+            >
+              <template
+                v-for="(media, index) in allMedia"
+                :key="'guest-media-' + index"
+              >
+                <div class="relative flex-shrink-0 w-full h-full">
+                  <img
+                    v-if="media.type === 'image'"
+                    :src="media.url"
+                    :alt="product.name"
+                    class="object-cover w-full h-full"
+                  />
+                  <video
+                    v-else-if="media.type === 'video'"
+                    :src="media.url"
+                    class="object-cover w-full h-full bg-black"
+                    autoplay
+                    loop
+                    muted
+                    playsinline
+                  ></video>
+                </div>
+              </template>
+            </div>
+
+            <!-- Navigasi Slider Minimalis (hanya muncul saat hover jika media > 1) -->
+            <button
+              v-if="allMedia.length > 1"
+              @click="prevSlide"
+              type="button"
+              class="absolute z-10 flex items-center justify-center w-9 h-9 text-black transition-all -translate-y-1/2 rounded-full shadow opacity-0 left-3 top-1/2 bg-white/85 backdrop-blur-sm hover:bg-white group-hover:opacity-100"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+            <button
+              v-if="allMedia.length > 1"
+              @click="nextSlide"
+              type="button"
+              class="absolute z-10 flex items-center justify-center w-9 h-9 text-black transition-all -translate-y-1/2 rounded-full shadow opacity-0 right-3 top-1/2 bg-white/85 backdrop-blur-sm hover:bg-white group-hover:opacity-100"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Product Info & Archive Pricing -->
+          <div class="text-center">
+            <p
+              class="text-[10px] font-medium tracking-[0.2em] text-[#8A8078] uppercase mb-1.5"
+            >
+              The Private Archive
+            </p>
+            <h2
+              class="text-lg sm:text-xl font-bold tracking-[0.06em] text-[#231F1E] uppercase mb-3"
+            >
+              {{ product.name }}
+            </h2>
+
+            <!-- Harga Asli & Harga Member/Diskon -->
+            <div class="flex flex-col items-center justify-center">
+              <template
+                v-if="
+                  getDiscountToDisplay(product) && !getDiscountStatus(product).expired
+                "
+              >
+                <p
+                  class="text-sm sm:text-base font-normal text-[#8C827A] line-through mb-0.5"
+                >
+                  {{ formatCurrencyDisplay(getPriceToDisplay(product)) }}
+                </p>
+                <p
+                  class="text-xl sm:text-2xl font-bold text-[#7A3844] tracking-tight mb-2"
+                >
+                  {{ formatCurrencyDisplay(getDiscountToDisplay(product)) }}
+                </p>
+              </template>
+              <template v-else>
+                <p
+                  class="text-xl sm:text-2xl font-bold text-[#7A3844] tracking-tight mb-2"
+                >
+                  {{ formatCurrencyDisplay(getPriceToDisplay(product)) }}
+                </p>
+              </template>
+            </div>
+
+            <p class="text-xs text-[#7E756E]">
+              Exclusive archive price for registered members
+            </p>
+          </div>
+
+          <!-- Divider -->
+          <div class="w-full h-px bg-[#F2ECE6] my-6"></div>
+
+          <!-- Live Countdown Section -->
+          <div v-if="privateAccessCountdown" class="mb-6">
+            <p
+              class="text-[10px] font-bold tracking-[0.18em] text-[#7A3844] uppercase text-center mb-3.5"
+            >
+              {{ privateAccessCountdown.label }}
+            </p>
+            <div class="grid grid-cols-3 gap-2.5 sm:gap-3.5">
+              <div class="bg-[#F5F0EB] rounded-lg py-3.5 sm:py-4 px-2 text-center">
+                <p
+                  class="text-xl sm:text-2xl font-bold text-[#231F1E] leading-none mb-1.5 tabular-nums"
+                >
+                  {{ privateAccessCountdown.hours }}
+                </p>
+                <p
+                  class="text-[9px] font-semibold tracking-[0.15em] text-[#8A8078] uppercase"
+                >
+                  Hours
+                </p>
+              </div>
+              <div class="bg-[#F5F0EB] rounded-lg py-3.5 sm:py-4 px-2 text-center">
+                <p
+                  class="text-xl sm:text-2xl font-bold text-[#231F1E] leading-none mb-1.5 tabular-nums"
+                >
+                  {{ privateAccessCountdown.minutes }}
+                </p>
+                <p
+                  class="text-[9px] font-semibold tracking-[0.15em] text-[#8A8078] uppercase"
+                >
+                  Minutes
+                </p>
+              </div>
+              <div class="bg-[#F5F0EB] rounded-lg py-3.5 sm:py-4 px-2 text-center">
+                <p
+                  class="text-xl sm:text-2xl font-bold text-[#231F1E] leading-none mb-1.5 tabular-nums"
+                >
+                  {{ privateAccessCountdown.seconds }}
+                </p>
+                <p
+                  class="text-[9px] font-semibold tracking-[0.15em] text-[#8A8078] uppercase"
+                >
+                  Seconds
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Primary CTA Button -->
+          <button
+            type="button"
+            @click="router.push('/register')"
+            class="w-full py-4 px-6 bg-[#723440] hover:bg-[#5B2731] active:scale-[0.99] text-white text-xs sm:text-[13px] font-semibold tracking-[0.16em] uppercase rounded-lg transition-all shadow-sm"
+          >
+            Unlock Private Access
+          </button>
+
+          <p class="mt-4 text-center text-[11px] text-[#8A8078]">
+            A limited selection. Once gone, never restocked.
+          </p>
+        </div>
+
+        <!-- Link Login Halus di Bawah Kartu -->
+        <p class="mt-6 text-center text-xs text-[#7A7069]">
+          Already a registered member?
+          <router-link
+            to="/login"
+            class="font-semibold text-[#723440] underline hover:text-[#5B2731] transition-colors"
+          >
+            Sign in here
+          </router-link>
+        </p>
+      </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- TAMPILAN NORMAL MEMBER (SUDAH LOGIN)                      -->
+    <!-- ========================================================= -->
+    <div v-else class="px-6 py-10 mx-auto md:py-16 max-w-7xl animate-fade-in">
+      <!-- Breadcrumb (CRO: Memudahkan Navigasi) -->
+      <nav
+        class="flex items-center gap-2 mb-8 text-[10px] font-bold tracking-widest text-gray-400 uppercase"
+      >
+        <router-link to="/" class="transition-colors hover:text-black">Home</router-link>
+        <span>/</span>
+        <router-link to="/collections" class="transition-colors hover:text-black"
+          >Collections</router-link
+        >
+        <span v-if="product.category">/</span>
+        <router-link
+          v-if="product.category"
+          :to="`/collections?category=${product.category.name}`"
+          class="transition-colors hover:text-black"
+          >{{ product.category.name }}</router-link
+        >
+        <span>/</span>
+        <span class="text-gray-900 truncate">{{ product.name }}</span>
+      </nav>
+
+      <div class="flex flex-col items-start gap-12 lg:flex-row lg:gap-20">
+        <!-- ================= KIRI: MEDIA GALLERY ================= -->
+        <div class="flex flex-col w-full gap-4 select-none lg:w-3/5 lg:sticky lg:top-24">
+          <!-- Main Image Slider -->
+          <div
+            class="relative bg-gray-50 aspect-[4/5] overflow-hidden group rounded-2xl shadow-sm border border-gray-100/50"
+          >
+            <!-- Badges -->
+            <div class="absolute z-20 flex flex-col gap-2 top-4 left-4">
+              <div
+                v-if="getDiscountToDisplay(product) && getDiscountStatus(product).active"
+                class="bg-red-600 text-white px-3 py-1.5 font-black text-[10px] uppercase tracking-widest shadow-lg"
+              >
+                SALE -{{ calculateDynamicDiscount(product) }}%
+              </div>
+              <div
+                v-if="isNewArrival(product.created_at)"
+                class="bg-black text-white px-3 py-1.5 font-black text-[10px] uppercase tracking-widest shadow-lg"
+              >
+                NEW ARRIVAL
+              </div>
+            </div>
+
+            <div
+              class="flex w-full h-full transition-transform duration-700 ease-out"
+              :style="{ transform: `translateX(-${activeSlide * 100}%)` }"
+            >
+              <template v-for="(media, index) in allMedia" :key="index">
+                <div
+                  class="relative flex-shrink-0 w-full h-full cursor-crosshair"
+                  @mousemove="handleZoom"
+                  @mouseleave="resetZoom"
+                >
+                  <img
+                    v-if="media.type === 'image'"
+                    :src="media.url"
+                    class="object-cover w-full h-full main-product-image transition-transform duration-500 hover:scale-[1.8]"
+                    alt="Product Image"
+                  />
+                  <video
+                    v-else-if="media.type === 'video'"
+                    :src="media.url"
+                    class="object-cover w-full h-full bg-black main-product-image"
+                    autoplay
+                    loop
+                    muted
+                    playsinline
+                    controls
+                  ></video>
+                </div>
+              </template>
+            </div>
+
+            <!-- Navigasi Slider Kiri/Kanan -->
+            <button
+              v-if="allMedia.length > 1"
+              @click="prevSlide"
+              class="absolute z-10 flex items-center justify-center w-12 h-12 text-black transition-all -translate-y-1/2 rounded-full shadow-lg opacity-0 left-4 top-1/2 bg-white/90 backdrop-blur-sm hover:bg-white hover:scale-110 group-hover:opacity-100"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+
+            <button
+              v-if="allMedia.length > 1"
+              @click="nextSlide"
+              class="absolute z-10 flex items-center justify-center w-12 h-12 text-black transition-all -translate-y-1/2 rounded-full shadow-lg opacity-0 right-4 top-1/2 bg-white/90 backdrop-blur-sm hover:bg-white hover:scale-110 group-hover:opacity-100"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Thumbnail Gallery -->
+          <div
+            v-if="allMedia.length > 1"
+            class="flex gap-3 pb-2 overflow-x-auto custom-scrollbar"
+          >
+            <div
+              v-for="(media, idx) in allMedia"
+              :key="idx"
+              @click="activeSlide = idx"
+              :class="
+                activeSlide === idx
+                  ? 'ring-2 ring-black border-transparent opacity-100'
+                  : 'border-gray-200 opacity-50 hover:opacity-100'
+              "
+              class="relative w-20 h-24 overflow-hidden transition-all duration-300 border-2 cursor-pointer md:w-24 md:h-32 shrink-0 bg-gray-50 rounded-xl"
+            >
+              <img
+                v-if="media.type === 'image'"
+                :src="media.url"
+                class="object-cover w-full h-full"
+              />
+              <div
+                v-else
+                class="relative flex items-center justify-center w-full h-full text-white bg-gray-900"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="absolute z-10 w-8 h-8"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <video
+                  :src="media.url"
+                  class="object-cover w-full h-full opacity-40"
+                ></video>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= KANAN: PRODUCT DETAILS ================= -->
+        <div class="flex flex-col w-full lg:w-2/5">
+          <!-- Header Info -->
+          <div class="space-y-4">
+            <!-- Social Proof (Rating) -->
+            <div
+              v-if="product.rating || product.reviews_avg_rating || product.reviews_count"
+              class="flex items-center gap-2"
+            >
+              <div class="flex text-yellow-400">
+                <svg
+                  v-for="i in 5"
+                  :key="i"
+                  class="w-4 h-4 fill-current"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  />
+                </svg>
+              </div>
+              <span
+                class="text-xs font-medium text-gray-500 underline cursor-pointer hover:text-black"
+              >
+                ({{ product.reviews_count || product.rating_count || "10+" }} Ulasan)
+              </span>
+            </div>
+
+            <div class="flex items-start justify-between gap-4">
+              <h1
+                class="font-serif text-3xl leading-tight tracking-tighter text-gray-900 uppercase md:text-4xl"
+              >
+                {{ product.name }}
+              </h1>
+              <!-- Action Icons (Share & Wishlist) -->
+              <div class="flex items-center gap-2 shrink-0">
+                <button
+                  @click="handleShare"
+                  class="p-3 text-gray-600 transition-colors rounded-full bg-gray-50 hover:bg-gray-200"
+                  title="Bagikan"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+                    />
+                  </svg>
+                </button>
+                <button
+                  @click="toggleWishlist(product.id)"
+                  class="p-3 text-gray-600 transition-colors rounded-full bg-gray-50 hover:bg-red-50 hover:text-red-500"
+                >
+                  <svg
+                    v-if="isFavorited"
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-5 h-5 text-red-500 scale-110"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z"
+                    />
+                  </svg>
+                  <svg
+                    v-else
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Price Section -->
+            <div class="flex flex-col gap-1 py-2">
+              <template
+                v-if="
+                  getDiscountToDisplay(product) && !getDiscountStatus(product).expired
+                "
+              >
+                <template v-if="getDiscountStatus(product).active">
+                  <div class="flex items-center gap-3">
+                    <p class="text-3xl font-extrabold tracking-tight text-red-600">
+                      {{ formatCurrencyDisplay(getDiscountToDisplay(product)) }}
+                    </p>
+                    <p class="text-lg font-medium text-gray-400 line-through">
+                      {{ formatCurrencyDisplay(getPriceToDisplay(product)) }}
+                    </p>
+                  </div>
+                  <p class="mt-1 text-xs font-bold tracking-widest text-red-500 uppercase">
+                    {{ $t("product_detail.save") }} {{ calculateDynamicDiscount(product) }}%
+                  </p>
+                </template>
+                <template v-else-if="getDiscountStatus(product).upcoming">
+                  <p class="text-3xl font-bold tracking-tight text-gray-900">
+                    {{ formatCurrencyDisplay(getPriceToDisplay(product)) }}
+                  </p>
+                </template>
+              </template>
+              <template v-else>
+                <p class="text-3xl font-bold tracking-tight text-gray-900">
+                  {{ formatCurrencyDisplay(getPriceToDisplay(product)) }}
+                </p>
+              </template>
+            </div>
+          </div>
+
+          <div class="w-full h-px my-6 bg-gray-200"></div>
+
+          <!-- Urgency / Scarcity Banner -->
+          <div
+            v-if="product.stock > 0 && product.stock <= 5"
+            class="flex items-center gap-3 p-4 mb-6 border shadow-sm bg-amber-50 border-amber-200 rounded-xl"
+          >
+            <div
+              class="flex items-center justify-center w-8 h-8 rounded-full bg-amber-100 text-amber-600 animate-pulse"
+            >
+              🔥
+            </div>
+            <div>
+              <p class="text-[11px] font-black tracking-widest uppercase text-amber-800">
+                Selling Fast!
+              </p>
+              <p class="text-sm font-medium text-amber-700">
+                Hurry, only <strong>{{ product.stock }}</strong> items left in stock.
+              </p>
+            </div>
+          </div>
+
+          <!-- VARIAN WARNA PREMIUM -->
+          <div v-if="siblingColors.length > 0" class="mb-8">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-[10px] font-bold tracking-widest uppercase text-gray-500">{{
+                $t("product_detail.colors")
+              }}</span>
+              <span class="text-xs font-bold text-gray-900">{{
+                selectedInternalColor
+                  ? parseColorName(selectedInternalColor)
+                  : extractColorNameForDisplay(product)
+              }}</span>
+            </div>
+            <div class="flex flex-wrap gap-2.5">
+              <div
+                v-for="sibling in siblingColors"
+                :key="
+                  sibling.is_internal_variant
+                    ? sibling.original_color_string
+                    : sibling.id
+                "
+                @click="goToColorVariant(sibling)"
+                class="flex items-center gap-2.5 px-3 py-1.5 transition-all duration-300 border cursor-pointer rounded-full"
+                :class="
+                  (sibling.is_internal_variant &&
+                    selectedInternalColor === sibling.original_color_string) ||
+                  (!sibling.is_internal_variant && product.id === sibling.id)
+                    ? 'border-black ring-1 ring-black bg-gray-50 shadow-sm scale-[1.02]'
+                    : 'border-gray-200 hover:border-gray-400 hover:bg-gray-50'
+                "
+                :title="sibling.displayColorName"
+              >
+                <div
+                  class="w-4 h-4 border border-gray-300 rounded-full shadow-inner shrink-0"
+                  :style="{ backgroundColor: sibling.hexColor }"
+                ></div>
+                <span
+                  class="text-[10px] font-bold tracking-wider uppercase"
+                  :class="
+                    (sibling.is_internal_variant &&
+                      selectedInternalColor === sibling.original_color_string) ||
+                    (!sibling.is_internal_variant && product.id === sibling.id)
+                      ? 'text-black'
+                      : 'text-gray-600'
+                  "
+                >
+                  {{ sibling.displayColorName }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Spesifikasi Cepat (Grid) -->
+          <div
+            v-if="product.material || product.weight || product.length || product.color"
+            class="grid grid-cols-2 gap-4 p-5 mb-8 border border-gray-100 bg-gray-50 rounded-2xl"
+          >
+            <div v-if="product.material">
+              <p class="text-[9px] font-bold tracking-widest text-gray-400 uppercase mb-1">
+                {{ $t("product_detail.material") }}
+              </p>
+              <p class="text-sm font-medium text-gray-900">{{ product.material }}</p>
+            </div>
+            <div v-if="product.weight">
+              <p class="text-[9px] font-bold tracking-widest text-gray-400 uppercase mb-1">
+                {{ $t("product_detail.weight") }}
+              </p>
+              <p class="text-sm font-medium text-gray-900">{{ product.weight }} gram</p>
+            </div>
+            <div v-if="product.length || product.width || product.height">
+              <p class="text-[9px] font-bold tracking-widest text-gray-400 uppercase mb-1">
+                {{ $t("product_detail.dimensions") }}
+              </p>
+              <p class="font-mono text-sm font-medium text-gray-900">
+                {{ product.length || "-" }} x {{ product.width || "-" }} x
+                {{ product.height || "-" }} cm
+              </p>
+            </div>
+            <div v-if="product.strap_length">
+              <p class="text-[9px] font-bold tracking-widest text-gray-400 uppercase mb-1">
+                {{ $t("product_detail.strap_length") }}
+              </p>
+              <p class="text-sm font-medium text-gray-900">
+                <template v-if="Array.isArray(product.strap_length)">
+                  {{ product.strap_length.join(", ") }}
+                </template>
+                <template v-else>{{ product.strap_length }}</template>
+              </p>
+            </div>
+          </div>
+
+          <!-- Bundle Promo Box -->
+          <div
+            v-if="getBundlePromo(product)"
+            class="p-5 mb-8 border-2 border-blue-100 bg-gradient-to-r from-blue-50 to-blue-50/20 rounded-2xl"
+          >
+            <div class="flex items-center gap-3 mb-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-6 h-6 text-blue-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"
+                />
+              </svg>
+              <h3 class="text-sm font-black tracking-widest text-blue-900 uppercase">
+                Special Bundle Offer
+              </h3>
+            </div>
+            <p class="text-sm font-medium leading-relaxed text-blue-800">
+              Buy <strong>{{ getBundlePromo(product).qty }} items</strong> from this
+              collection for only
+              <span
+                class="font-black text-xl ml-1 text-red-600 bg-white px-2 py-0.5 rounded shadow-sm"
+              >
+                {{
+                  formatCurrencyDisplay({
+                    value: getBundlePromo(product).price,
+                    curr: getBundlePromo(product).curr,
+                  })
+                }}
+              </span>
+            </p>
+            <p
+              class="mt-3 text-[10px] font-bold tracking-widest text-blue-600 uppercase opacity-80"
+            >
+              Mix & match allowed. Auto-applied at checkout.
+            </p>
+          </div>
+
+          <!-- Add to Cart / Buy Actions ATAU Back-in-Stock Waitlist ATAU Early Access -->
+          <div class="flex flex-col gap-4 mb-6">
+            <!-- 1. JIKA TERKUNCI EARLY ACCESS (Tampilkan Countdown VIP) -->
+            <div
+              v-if="isEarlyAccessLocked"
+              class="p-6 border border-[#E8E2D2] bg-gradient-to-br from-[#FDFBF7] to-white rounded-2xl shadow-sm space-y-5 animate-fade-in relative overflow-hidden group"
+            >
+              <div
+                class="absolute -right-10 -top-10 opacity-5 rotate-12 transition-transform duration-1000 group-hover:rotate-45"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-40 h-40"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M12 2L15 8L22 9L17 14L18 21L12 17L6 21L7 14L2 9L9 8L12 2Z"
+                  />
+                </svg>
+              </div>
+
+              <div class="relative z-10 text-center">
+                <span
+                  class="inline-block px-3 py-1 mb-3 text-[9px] font-black tracking-[0.2em] text-[#8B7355] uppercase bg-[#E8E2D2]/30 rounded-full border border-[#E8E2D2]"
+                >
+                  Exclusive Preview
+                </span>
+                <h4 class="text-xl font-serif text-gray-900 tracking-tight">
+                  Reserved for {{ requiredTierName }}
+                </h4>
+                <p
+                  class="mt-2 text-xs leading-relaxed text-gray-500 max-w-[250px] mx-auto"
+                >
+                  Koleksi ini saat ini hanya tersedia secara eksklusif untuk member
+                  {{ requiredTierName }} The Solhér Circle.
+                </p>
+              </div>
+
+              <div
+                class="relative z-10 py-4 border-t border-b border-[#E8E2D2]/50 text-center bg-white/50 backdrop-blur-sm rounded-xl"
+              >
+                <p
+                  class="text-[9px] font-bold tracking-widest text-gray-400 uppercase mb-1"
+                >
+                  Public Release In
+                </p>
+                <p
+                  class="text-2xl font-mono font-bold text-[#8B7355] tracking-widest"
+                >
+                  {{ earlyAccessCountdown }}
+                </p>
+              </div>
+
+              <div class="relative z-10">
+                <button
+                  v-if="!isAuthenticated"
+                  @click="$router.push('/login')"
+                  class="w-full py-3.5 text-[11px] font-black tracking-widest uppercase transition-all rounded-xl bg-black text-white hover:bg-gray-800 shadow-md"
+                >
+                  Log In to Unlock
+                </button>
+                <button
+                  v-else
+                  @click="$router.push('/profile')"
+                  class="w-full py-3.5 text-[11px] font-black tracking-widest uppercase transition-all rounded-xl bg-white border-2 border-gray-200 text-gray-700 hover:border-gray-400"
+                >
+                  View My Membership
+                </button>
+              </div>
+            </div>
+
+            <!-- 2. JIKA STOK TERSEDIA (Normal) -->
+            <template v-else-if="product.stock > 0">
+              <div
+                class="flex items-center justify-between px-4 py-2 bg-white border border-gray-300 rounded-xl"
+              >
+                <span
+                  class="text-[10px] font-bold text-gray-500 uppercase tracking-widest"
+                  >{{ $t("product_detail.quantity") }}</span
+                >
+                <div class="flex items-center">
+                  <button
+                    @click="decreaseQuantity"
+                    class="flex items-center justify-center w-8 h-8 text-xl font-medium text-gray-600 transition-colors rounded-full hover:text-black hover:bg-gray-100"
+                  >
+                    −
+                  </button>
+                  <input
+                    type="number"
+                    v-model.number="selectedQuantity"
+                    @change="validateQuantity"
+                    class="w-12 p-0 text-base font-bold text-center bg-transparent border-none focus:ring-0"
+                  />
+                  <button
+                    @click="increaseQuantity"
+                    class="flex items-center justify-center w-8 h-8 text-xl font-medium text-gray-600 transition-colors rounded-full hover:text-black hover:bg-gray-100"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+
+              <div class="flex flex-col gap-3 sm:flex-row">
+                <button
+                  @click="handleAction('cart')"
+                  class="flex-1 py-4 text-xs font-black tracking-[0.2em] uppercase transition-all duration-300 border-2 rounded-xl bg-white text-black border-black hover:bg-black hover:text-white shadow-sm hover:shadow-xl"
+                >
+                  {{ $t("product_detail.add_to_cart") }}
+                </button>
+                <button
+                  @click="handleAction('buy')"
+                  class="flex-1 py-4 text-xs font-black tracking-[0.2em] uppercase transition-all duration-300 border-2 border-transparent rounded-xl bg-black text-white hover:bg-gray-800 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+                >
+                  {{ $t("product_detail.buy_it_now") }}
+                </button>
+              </div>
+            </template>
+
+            <!-- 3. JIKA STOK HABIS (Tampilkan Waitlist) -->
+            <div
+              v-else
+              class="p-6 border border-gray-200 bg-[#FAF9F8] rounded-2xl shadow-sm space-y-4 animate-fade-in"
+            >
+              <div class="flex items-center justify-between">
+                <span
+                  class="px-3 py-1 text-[9px] font-black tracking-widest uppercase bg-gray-200 text-gray-700 rounded-full"
+                  >{{ $t("product_detail.out_of_stock") }}</span
+                >
+                <span class="text-xs font-serif italic text-gray-500"
+                  >Solhér Priority Concierge</span
+                >
+              </div>
+              <div>
+                <h4 class="text-sm font-bold tracking-widest text-gray-900 uppercase">
+                  {{ $t("product_detail.waitlist_title") }}
+                </h4>
+                <p class="mt-1 text-xs leading-relaxed text-gray-600">
+                  {{ $t("product_detail.waitlist_desc") }}
+                </p>
+              </div>
+              <form @submit.prevent="submitWaitlist" class="flex flex-col gap-3 w-full">
+                <input
+                  v-model="waitlistEmail"
+                  type="email"
+                  :disabled="isJoinedWaitlist || isSubmittingWaitlist"
+                  :placeholder="$t('product_detail.waitlist_placeholder')"
+                  required
+                  class="w-full px-4 py-3.5 text-xs bg-white border border-gray-300 rounded-xl outline-none focus:border-black disabled:bg-gray-100 disabled:text-gray-400 transition-colors"
+                />
+                <button
+                  type="submit"
+                  :disabled="isJoinedWaitlist || isSubmittingWaitlist || !waitlistEmail"
+                  class="w-full py-3.5 text-[10px] font-black tracking-widest uppercase transition-all rounded-xl flex items-center justify-center gap-2"
+                  :class="
+                    isJoinedWaitlist
+                      ? 'bg-emerald-600 text-white cursor-default'
+                      : 'bg-[#8c3b4a] text-white hover:bg-[#6b2b37] shadow-md disabled:opacity-50'
+                  "
+                >
+                  <span
+                    v-if="isSubmittingWaitlist"
+                    class="w-4 h-4 border-2 border-white rounded-full border-t-transparent animate-spin"
+                  ></span>
+                  <span v-else>{{
+                    isJoinedWaitlist
+                      ? $t("product_detail.waitlist_joined")
+                      : "🔔 " + $t("product_detail.notify_me")
+                  }}</span>
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Trust Badges (CRO) -->
+          <div
+            class="flex items-center justify-between px-4 py-5 mb-8 border-t border-b border-gray-100 bg-gray-50/30 rounded-xl"
+          >
+            <div class="flex flex-col items-center gap-2 text-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-6 h-6 text-gray-700"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+                />
+              </svg>
+              <span class="text-[9px] font-bold uppercase tracking-widest text-gray-500"
+                >Easy Returns</span
+              >
+            </div>
+            <div class="flex flex-col items-center gap-2 text-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-6 h-6 text-gray-700"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                />
+              </svg>
+              <span class="text-[9px] font-bold uppercase tracking-widest text-gray-500"
+                >Secure Payment</span
+              >
+            </div>
+            <div class="flex flex-col items-center gap-2 text-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-6 h-6 text-gray-700"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
+                />
+              </svg>
+              <span class="text-[9px] font-bold uppercase tracking-widest text-gray-500"
+                >Premium Packaging</span
+              >
+            </div>
+          </div>
+
+          <!-- Accordions -->
+          <div class="border-t border-gray-200 divide-y divide-gray-200">
+            <div
+              v-for="section in ['description', 'design', 'shipping_and_returns']"
+              :key="section"
+              class="py-5"
+            >
+              <button
+                @click="activeSection = activeSection === section ? null : section"
+                class="flex items-center justify-between w-full text-xs font-bold tracking-widest text-left uppercase outline-none group"
+              >
+                <span class="text-gray-900 transition group-hover:text-gray-500">{{
+                  $t(`product_detail.${section}`)
+                }}</span>
+                <span
+                  class="text-lg font-light text-gray-400 transition-transform duration-300"
+                  :class="{ 'rotate-45': activeSection === section }"
+                  >+</span
+                >
+              </button>
+              <transition name="fade">
+                <div
+                  v-show="activeSection === section"
+                  class="mt-4 text-sm leading-relaxed text-gray-600 whitespace-pre-wrap"
+                >
+                  <template v-if="section === 'description'">
+                    {{
+                      $i18n.locale === "en" && product.description_en
+                        ? product.description_en
+                        : product.description || $t("product_detail.no_information")
+                    }}
+                  </template>
+                  <template v-else-if="section === 'design'">
+                    {{
+                      $i18n.locale === "en" && product.design_en
+                        ? product.design_en
+                        : product.design || $t("product_detail.no_information")
+                    }}
+                  </template>
+                  <template v-else-if="section === 'shipping_and_returns'">
+                    {{ $t("product_detail.shipping_desc") }}
+                  </template>
+                </div>
+              </transition>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recommended Products Section -->
+      <div
+        v-if="recommendedProducts.length > 0"
+        class="pt-16 mt-24 border-t border-gray-200"
+      >
+        <h2
+          class="mb-12 font-serif text-2xl tracking-widest text-center text-black uppercase md:text-3xl"
+        >
+          {{ $t("product_detail.you_may_also_like") }}
+        </h2>
+        <div
+          class="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4 md:gap-x-6 md:gap-y-12"
+        >
+          <div
+            v-for="rec in recommendedProducts"
+            :key="rec.id"
+            @click="goToRecommendedProduct(rec)"
+            class="flex flex-col cursor-pointer group"
+          >
+            <div
+              class="relative w-full aspect-[4/5] bg-gray-100 overflow-hidden mb-4 rounded-xl border border-gray-100"
+            >
+              <img
+                :src="rec.image || defaultBagIcon"
+                :alt="rec.name"
+                class="object-cover w-full h-full transition-transform duration-1000 group-hover:scale-110"
+              />
+              <div
+                v-if="getDiscountToDisplay(rec) && getDiscountStatus(rec).active"
+                class="absolute top-2 left-2 bg-red-600 text-white px-2 py-1 font-bold text-[8px] uppercase tracking-widest rounded-sm z-10 shadow-sm"
+              >
+                SALE
+              </div>
+              <!-- Quick Add Overlay (CRO) -->
+              <div
+                class="absolute inset-x-0 bottom-0 flex justify-center p-4 transition-transform duration-300 translate-y-full bg-gradient-to-t from-black/60 to-transparent group-hover:translate-y-0"
+              >
+                <span
+                  class="text-[10px] font-bold text-white tracking-widest uppercase border-b border-white pb-0.5"
+                  >View Detail</span
+                >
+              </div>
+            </div>
+            <h3
+              class="mb-1 text-xs font-bold tracking-widest text-gray-900 uppercase truncate transition-colors group-hover:text-red-700"
+            >
+              {{ rec.name }}
+            </h3>
+            <div class="flex items-center gap-2 mt-1">
+              <template
+                v-if="getDiscountToDisplay(rec) && getDiscountStatus(rec).active"
+              >
+                <p class="text-sm font-bold text-red-600">
+                  {{ formatCurrencyDisplay(getDiscountToDisplay(rec)) }}
+                </p>
+                <p class="text-xs text-gray-400 line-through">
+                  {{ formatCurrencyDisplay(getPriceToDisplay(rec)) }}
+                </p>
+              </template>
+              <template v-else>
+                <p class="text-sm font-medium text-gray-900">
+                  {{ formatCurrencyDisplay(getPriceToDisplay(rec)) }}
+                </p>
+              </template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+</template>
+
+<script setup>
+import { ref, onMounted, onUnmounted, computed, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { BASE_URL } from "../../config/api.js";
+import defaultBagIcon from "../../assets/products/bag_icon.jpg";
+import { useCart } from "../../composables/useCart";
+import { formatPrice } from "../../utils/currency";
+import { useI18n } from "vue-i18n";
+
+const { t, locale } = useI18n();
+const { handleOptimisticAdd, selectedItemIds, fetchCarts, cartItems } = useCart();
+
+const route = useRoute();
+const router = useRouter();
+const product = ref(null);
+const activeSection = ref("description");
+const isLoading = ref(true);
+const userWishlists = ref([]);
+const isAuthenticated = !!localStorage.getItem("token");
+const activeSlide = ref(0);
+const selectedQuantity = ref(1);
+const recommendedProducts = ref([]);
+const siblingColors = ref([]);
+const selectedInternalColor = ref(null);
+
+const currentCurrency = ref(localStorage.getItem("currency") || "IDR");
+const updateCurrencyState = () => {
+  currentCurrency.value = localStorage.getItem("currency") || "IDR";
+};
+const currentUser = ref(null);
+
+// =========================================================================
+// LOGIKA GATED EARLY ACCESS & LIVE TIMER
+// =========================================================================
+const currentTime = ref(Date.now());
+let timerInterval = null;
+
+const userTierLevel = computed(() => {
+  if (!isAuthenticated || !currentUser.value) return 0; // Guest
+  const pts = currentUser.value.point || 0;
+  if (pts >= 10000) return 3; // Héritage
+  if (pts >= 2500) return 2; // Élan
+  return 1; // Muse
+});
+
+const productTierLevel = computed(() => {
+  if (!product.value?.early_access_tier) return 0;
+  const tier = product.value.early_access_tier.toLowerCase();
+  if (tier === "heritage") return 3;
+  if (tier === "elan") return 2;
+  if (tier === "muse") return 1;
+  return 0;
+});
+
+const requiredTierName = computed(() => {
+  if (productTierLevel.value === 3) return "Héritage";
+  if (productTierLevel.value === 2) return "Élan";
+  if (productTierLevel.value === 1) return "Muse";
+  return "Public";
+});
+
+const isEarlyAccessLocked = computed(() => {
+  if (!product.value?.early_access_expires_at || productTierLevel.value === 0) {
+    return false;
+  }
+
+  const expiresAt = new Date(product.value.early_access_expires_at).getTime();
+  if (currentTime.value >= expiresAt) return false;
+
+  return userTierLevel.value < productTierLevel.value;
+});
+
+const earlyAccessCountdown = computed(() => {
+  if (!product.value?.early_access_expires_at) return "";
+  const expires = new Date(product.value.early_access_expires_at).getTime();
+  const diff = expires - currentTime.value;
+
+  if (diff <= 0) return "AVAILABLE NOW";
+
+  const h = Math.floor(diff / (1000 * 60 * 60));
+  const m = Math.floor((diff / 1000 / 60) % 60);
+  const s = Math.floor((diff / 1000) % 60);
+
+  return `${h.toString().padStart(2, "0")}h ${m.toString().padStart(2, "0")}m ${s
+    .toString()
+    .padStart(2, "0")}s`;
+});
+
+const isNewArrival = (dateString) => {
+  if (!dateString) return false;
+  const createdDate = new Date(dateString);
+  const now = new Date();
+  const diffTime = Math.abs(now - createdDate);
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  return diffDays <= 14;
+};
+
+const fetchUserProfile = async () => {
+  if (!isAuthenticated) return;
+  try {
+    const res = await axios.get(`${BASE_URL}/user`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    currentUser.value = res.data.data || res.data;
+  } catch (error) {
+    console.error("Gagal menarik profil:", error);
+  }
+};
+
+// =========================================================================
+// STATE & FUNGSI BACK-IN-STOCK WAITLIST
+// =========================================================================
+const waitlistEmail = ref("");
+const isSubmittingWaitlist = ref(false);
+const isJoinedWaitlist = ref(false);
+
+watch(currentUser, (val) => {
+  if (val?.email && !waitlistEmail.value) {
+    waitlistEmail.value = val.email;
+  }
+});
+
+watch(
+  () => product.value?.id,
+  () => {
+    isJoinedWaitlist.value = false;
+  }
+);
+
+const submitWaitlist = async () => {
+  if (!waitlistEmail.value || !product.value) return;
+  isSubmittingWaitlist.value = true;
+  try {
+    const config = isAuthenticated
+      ? { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      : {};
+
+    await axios.post(
+      `${BASE_URL}/products/waitlist`,
+      {
+        product_id: product.value.id,
+        email: waitlistEmail.value,
+      },
+      config
+    );
+
+    isJoinedWaitlist.value = true;
+    Swal.fire({
+      icon: "success",
+      title: "Priority Waitlist Confirmed",
+      text: `Kami akan segera mengirim email ke ${waitlistEmail.value} begitu ${product.value.name} tersedia kembali.`,
+      confirmButtonColor: "#111",
+    });
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Oops",
+      text: error.response?.data?.message || "Gagal mendaftarkan email ke daftar tunggu.",
+      confirmButtonColor: "#111",
+    });
+  } finally {
+    isSubmittingWaitlist.value = false;
+  }
+};
+
+const handleShare = () => {
+  let linkToShare = window.location.href;
+  if (
+    currentUser.value &&
+    currentUser.value.is_affiliate &&
+    currentUser.value.referral_code
+  ) {
+    const url = new URL(linkToShare);
+    url.searchParams.set("ref", currentUser.value.referral_code);
+    linkToShare = url.toString();
+  }
+  navigator.clipboard
+    .writeText(linkToShare)
+    .then(() => {
+      Swal.fire({
+        icon: "success",
+        title: "Tautan Tersalin!",
+        text: currentUser.value?.is_affiliate
+          ? "Tautan afiliasi siap disebar."
+          : "Bagikan produk ini ke teman Anda.",
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+      });
+    })
+    .catch(() => {
+      Swal.fire({
+        icon: "error",
+        title: "Gagal menyalin",
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    });
+};
+
+// =========================================================================
+// HARGA, DISKON & COUNTDOWN PRIVATE ACCESS
+// =========================================================================
+const convertToWIB = (dateString) => {
+  if (!dateString) return null;
+  const date = new Date(dateString);
+  date.setHours(date.getHours() - 7);
+  return date;
+};
+
+const getDiscountStatus = (p) => {
+  const discObj = getDiscountToDisplay(p);
+  if (!p || !discObj || !discObj.value) {
+    return { active: false, upcoming: false, expired: false };
+  }
+
+  const now = new Date(currentTime.value);
+  let active = true,
+    upcoming = false,
+    expired = false;
+
+  if (p.discount_start_date) {
+    const startDate = convertToWIB(p.discount_start_date);
+    if (now < startDate) {
+      active = false;
+      upcoming = true;
+    }
+  }
+  if (p.discount_end_date) {
+    const endDate = convertToWIB(p.discount_end_date);
+    if (now > endDate) {
+      active = false;
+      expired = true;
+    }
+  }
+  return { active, upcoming, expired };
+};
+
+const privateAccessCountdown = computed(() => {
+  if (!product.value) return null;
+
+  const status = getDiscountStatus(product.value);
+  let targetDate = null;
+  let label = "PRIVATE ACCESS OPENS IN";
+
+  if (status.upcoming && product.value.discount_start_date) {
+    targetDate = convertToWIB(product.value.discount_start_date);
+    label = "PRIVATE ACCESS OPENS IN";
+  } else if (status.active && product.value.discount_end_date) {
+    targetDate = convertToWIB(product.value.discount_end_date);
+    label = "PRIVATE ACCESS ENDS IN";
+  } else if (product.value.early_access_expires_at) {
+    targetDate = new Date(product.value.early_access_expires_at);
+    label = "PRIVATE ACCESS OPENS IN";
+  }
+
+  if (!targetDate) return null;
+
+  const diff = targetDate.getTime() - currentTime.value;
+  if (diff <= 0) return null;
+
+  const totalHours = Math.floor(diff / (1000 * 60 * 60));
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+
+  return {
+    label,
+    hours: String(totalHours).padStart(2, "0"),
+    minutes: String(minutes).padStart(2, "0"),
+    seconds: String(seconds).padStart(2, "0"),
+  };
+});
+
+const getPriceToDisplay = (prod) => {
+  if (!prod) return { value: 0, curr: "IDR" };
+  const curr = currentCurrency.value;
+  if (curr === "IDR") return { value: prod.price, curr: "IDR" };
+
+  const prices =
+    typeof prod.prices === "string" ? JSON.parse(prod.prices) : prod.prices || {};
+  if (prices[curr]) {
+    return { value: parseFloat(prices[curr]), curr: curr };
+  }
+  return { value: prod.price, curr: "IDR" };
+};
+
+const getDiscountToDisplay = (prod) => {
+  if (!prod) return null;
+  const curr = currentCurrency.value;
+  if (curr === "IDR") {
+    return prod.discount_price ? { value: prod.discount_price, curr: "IDR" } : null;
+  }
+
+  const discountPrices =
+    typeof prod.discount_prices === "string"
+      ? JSON.parse(prod.discount_prices)
+      : prod.discount_prices || {};
+  if (discountPrices[curr]) {
+    return { value: parseFloat(discountPrices[curr]), curr: curr };
+  }
+  return prod.discount_price ? { value: prod.discount_price, curr: "IDR" } : null;
+};
+
+const formatCurrencyDisplay = (priceObj) => {
+  if (!priceObj) return "";
+  const { value, curr } = priceObj;
+  const symbols = { USD: "$", SGD: "S$", EUR: "€", AUD: "A$", MYR: "RM", IDR: "Rp " };
+  const formatter = new Intl.NumberFormat(curr === "IDR" ? "id-ID" : "en-US", {
+    minimumFractionDigits: curr === "IDR" ? 0 : 2,
+    maximumFractionDigits: curr === "IDR" ? 0 : 2,
+  });
+  return `${symbols[curr] || curr + " "}${formatter.format(value)}`;
+};
+
+const calculateDynamicDiscount = (prod) => {
+  const priceObj = getPriceToDisplay(prod);
+  const discObj = getDiscountToDisplay(prod);
+  if (!priceObj || !discObj) return 0;
+  return Math.round(((priceObj.value - discObj.value) / priceObj.value) * 100);
+};
+
+const getBundlePromo = (prod) => {
+  if (!prod || !prod.category) return null;
+  const curr = currentCurrency.value || "IDR";
+  let promoData = null;
+
+  if (prod.category.bundle_promo && prod.category.bundle_promo.is_active) {
+    promoData = prod.category.bundle_promo;
+  } else if (prod.category.bundle_qty && prod.category.bundle_price) {
+    const now = new Date();
+    const start = prod.category.bundle_start_date
+      ? convertToWIB(prod.category.bundle_start_date)
+      : null;
+    const end = prod.category.bundle_end_date
+      ? convertToWIB(prod.category.bundle_end_date)
+      : null;
+    if ((!start || now >= start) && (!end || now <= end)) {
+      promoData = {
+        qty: prod.category.bundle_qty,
+        price: prod.category.bundle_price,
+      };
+    }
+  }
+
+  if (!promoData) return null;
+
+  let finalPrice = 0;
+  let finalCurr = "IDR";
+  if (typeof promoData.price === "object") {
+    if (promoData.price[curr]) {
+      finalPrice = promoData.price[curr];
+      finalCurr = curr;
+    } else {
+      finalPrice = promoData.price["IDR"];
+    }
+  } else {
+    finalPrice = promoData.price;
+  }
+
+  return { qty: promoData.qty, price: finalPrice, curr: finalCurr };
+};
+
+const currentActivePrice = computed(() => {
+  if (!product.value) return 0;
+  if (product.value.discount_price && getDiscountStatus(product.value).active) {
+    const discObj = getDiscountToDisplay(product.value);
+    return discObj ? discObj.value : 0;
+  }
+  const priceObj = getPriceToDisplay(product.value);
+  return priceObj ? priceObj.value : 0;
+});
+
+const updateRecentlyViewedAndTrack = (prod) => {
+  let list = JSON.parse(localStorage.getItem("recently_viewed") || "[]");
+  list = list.filter((item) => item.id !== prod.id);
+  list.unshift(prod);
+  list = list.slice(0, 6);
+  localStorage.setItem("recently_viewed", JSON.stringify(list));
+
+  const activePrice =
+    prod.discount_price && getDiscountStatus(prod).active
+      ? parseFloat(prod.discount_price)
+      : parseFloat(prod.price);
+  trackGtmEvent("view_item", {
+    ecommerce: {
+      currency: "IDR",
+      value: activePrice,
+      items: [
+        {
+          item_id: prod.id,
+          item_name: prod.name,
+          price: activePrice,
+          item_category: prod.category?.name || "Accessories",
+          quantity: 1,
+        },
+      ],
+    },
+  });
+};
+
+const trackGtmEvent = (eventName, data) => {
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({ event: eventName, ...data });
+};
+
+const decreaseQuantity = () => {
+  if (selectedQuantity.value > 1) selectedQuantity.value--;
+};
+const increaseQuantity = () => {
+  if (selectedQuantity.value < product.value.stock) selectedQuantity.value++;
+};
+const validateQuantity = () => {
+  if (selectedQuantity.value < 1 || isNaN(selectedQuantity.value)) {
+    selectedQuantity.value = 1;
+  } else if (selectedQuantity.value > product.value.stock) {
+    selectedQuantity.value = product.value.stock;
+  }
+};
+
+const allMedia = computed(() => {
+  if (!product.value) return [];
+  let media = [{ type: "image", url: product.value.image || defaultBagIcon }];
+  if (product.value.variant_images && Array.isArray(product.value.variant_images)) {
+    product.value.variant_images.forEach((img) => {
+      media.push({ type: "image", url: img });
+    });
+  }
+  if (product.value.variant_video) {
+    media.push({ type: "video", url: product.value.variant_video });
+  }
+  return media;
+});
+
+const nextSlide = () => {
+  activeSlide.value =
+    activeSlide.value === allMedia.value.length - 1 ? 0 : activeSlide.value + 1;
+};
+const prevSlide = () => {
+  activeSlide.value =
+    activeSlide.value === 0 ? allMedia.value.length - 1 : activeSlide.value - 1;
+};
+
+const fetchWishlists = async () => {
+  if (!isAuthenticated) return;
+  try {
+    const res = await axios.get(`${BASE_URL}/wishlists`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    userWishlists.value = res.data.map((w) => w.product_id);
+  } catch (error) {}
+};
+
+const isFavorited = computed(() => {
+  if (!product.value) return false;
+  return userWishlists.value.includes(product.value.id);
+});
+
+const toggleWishlist = async (productId) => {
+  if (!isAuthenticated) {
+    Swal.fire({
+      icon: "info",
+      title: "Login Required",
+      confirmButtonColor: "#000",
+    }).then(() => router.push("/login"));
+    return;
+  }
+  if (isFavorited.value) {
+    userWishlists.value = userWishlists.value.filter((id) => id !== productId);
+  } else {
+    userWishlists.value.push(productId);
+  }
+  try {
+    await axios.post(
+      `${BASE_URL}/wishlists/toggle`,
+      { product_id: productId },
+      { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+    );
+    window.dispatchEvent(new Event("wishlist-updated"));
+  } catch (error) {
+    fetchWishlists();
+  }
+};
+
+// =========================================================================
+// LOGIKA PARSING WARNA DARI DATABASE & FALLBACK
+// =========================================================================
+const colorMapHex = {
+  Black: "#000000",
+  White: "#FFFFFF",
+  Brown: "#8B4513",
+  Beige: "#F5F5DC",
+  Red: "#8B0000",
+  Navy: "#000080",
+  Green: "#008000",
+  Grey: "#808080",
+  Pink: "#FFC0CB",
+  Yellow: "#FFD700",
+  Blue: "#4169E1",
+  Mocca: "#967969",
+  Cream: "#FDF4E3",
+  Sage: "#9DC183",
+  Gold: "#D4AF37",
+  Silver: "#C0C0C0",
+  Maroon: "#800000",
+  Olive: "#808000",
+  Taupe: "#483C32",
+  Khaki: "#F0E68C",
+  Mustard: "#FFDB58",
+  Emerald: "#50C878",
+  Coral: "#FF7F50",
+  Mint: "#98FF98",
+  Teal: "#008080",
+  Cyan: "#00FFFF",
+  Indigo: "#4B0082",
+  Violet: "#EE82EE",
+  Purple: "#800080",
+  Magenta: "#FF00FF",
+  Lilac: "#C8A2C8",
+  Lavender: "#E6E6FA",
+  Rose: "#FF007F",
+  Peach: "#FFE5B4",
+  Apricot: "#FBCEB1",
+  Ivory: "#FFFFF0",
+  Tan: "#D2B48C",
+  Charcoal: "#36454F",
+  Ash: "#555555",
+  Platinum: "#E5E4E2",
+  Bronze: "#CD7F32",
+  Copper: "#B87333",
+  Rust: "#B7410E",
+  Ochre: "#CC7722",
+  Sienna: "#882D17",
+  Terracotta: "#E2725B",
+  Amber: "#FFBF00",
+  Caramel: "#FFD59A",
+  Honey: "#FFC30B",
+  Chestnut: "#954535",
+  Walnut: "#5C4033",
+  Mahogany: "#C04000",
+  Chocolate: "#7B3F00",
+  Cocoa: "#D2691E",
+  Coffee: "#6F4E37",
+  Mocha: "#493D26",
+  Espresso: "#4B3621",
+  Cappuccino: "#654321",
+  Latte: "#C5A059",
+  Macchiato: "#8B5A2B",
+  Almond: "#EED9C4",
+  Hazelnut: "#C4A484",
+  Pecan: "#8A3324",
+  Pistachio: "#93C572",
+  Seafoam: "#9FE2BF",
+  Turquoise: "#40E0D0",
+  Aqua: "#00FFFF",
+  Azure: "#00FFFF",
+  Sky: "#87CEEB",
+  Cerulean: "#007BA7",
+  Cobalt: "#0047AB",
+  Sapphire: "#0F52BA",
+  Ultramarine: "#120A8F",
+  Lapis: "#26619C",
+  Denim: "#1560BD",
+  Steel: "#4682B4",
+  Slate: "#708090",
+  Gunmetal: "#2a3439",
+  Onyx: "#353839",
+  Jet: "#343434",
+  Ebony: "#555D50",
+  Raven: "#050301",
+  Pitch: "#000000",
+  Obsidian: "#0B0B0B",
+  Carbon: "#333333",
+  Graphite: "#383838",
+  Pewter: "#8E8E8E",
+  Zinc: "#8C92AC",
+  Lead: "#778899",
+  Iron: "#A19D94",
+  Titanium: "#878681",
+  Chromium: "#C0C0C0",
+  Nickel: "#727472",
+  Tungsten: "#A0A0A0",
+  Fuchsia: "#FF00FF",
+  Crimson: "#DC143C",
+  Carmine: "#960018",
+  Ruby: "#E0115F",
+  Scarlet: "#FF2400",
+  Vermilion: "#E34234",
+  Brick: "#CB4154",
+  Tomato: "#FF6347",
+  Papaya: "#FFEFD5",
+  Melon: "#FDBCB4",
+  Mango: "#F4A460",
+  Citrus: "#FFA500",
+  Lemon: "#FFF700",
+  Lime: "#BFFF00",
+  Kiwi: "#8EE53F",
+  Apple: "#8DB600",
+  Pear: "#D1E231",
+  Grape: "#6F2DA8",
+  Plum: "#8E4585",
+  Blackberry: "#4D0135",
+  Mulberry: "#C54B8C",
+  Raisin: "#652DC1",
+  Eggplant: "#614051",
+  Aubergine: "#472C4C",
+  Amethyst: "#9966CC",
+  Orchid: "#DA70D6",
+  Heather: "#D473D4",
+  Thistle: "#D8BFD8",
+  Mauve: "#E0B0FF",
+  Wisteria: "#C9A0DC",
+  Periwinkle: "#CCCCFF",
+  Cornflower: "#6495ED",
+  Baby: "#89CFF0",
+  Powder: "#B0E0E6",
+  Midnight: "#191970",
+  Ocean: "#0077BE",
+};
+
+const getHexFromMap = (colorName) => {
+  if (!colorName) return null;
+  const formattedName =
+    colorName.charAt(0).toUpperCase() + colorName.slice(1).toLowerCase();
+  return colorMapHex[formattedName] || null;
+};
+
+const parseColorName = (rawColorString) => {
+  if (!rawColorString) return null;
+  return rawColorString.split("|")[0].trim();
+};
+
+const parseColorHexCode = (rawColorString) => {
+  if (!rawColorString) return "#e5e7eb";
+  const parts = rawColorString.split("|");
+  if (parts.length > 1) {
+    return parts[1].trim();
+  }
+  return getHexFromMap(parseColorName(rawColorString)) || "#e5e7eb";
+};
+
+const extractColorNameForDisplay = (prodObj) => {
+  if (!prodObj) return null;
+
+  if (prodObj.name) {
+    const words = prodObj.name.trim().split(" ");
+    if (words.length > 1) {
+      const lastWord = words[words.length - 1];
+      if (getHexFromMap(lastWord)) {
+        return lastWord.charAt(0).toUpperCase() + lastWord.slice(1).toLowerCase();
+      }
+    }
+  }
+
+  if (prodObj.color && Array.isArray(prodObj.color) && prodObj.color.length > 0) {
+    return parseColorName(prodObj.color[0]);
+  }
+
+  return null;
+};
+
+const extractColorHex = (prodObj, fallbackName = null) => {
+  if (prodObj.name) {
+    const words = prodObj.name.trim().split(" ");
+    if (words.length > 1) {
+      const lastWord = words[words.length - 1];
+      const hex = getHexFromMap(lastWord);
+      if (hex) return hex;
+    }
+  }
+
+  if (prodObj.color && Array.isArray(prodObj.color) && prodObj.color.length > 0) {
+    return parseColorHexCode(prodObj.color[0]);
+  }
+
+  const colorName = extractColorNameForDisplay(prodObj) || fallbackName;
+  return colorName ? getHexFromMap(colorName) || "#e5e7eb" : "#e5e7eb";
+};
+
+const fetchSiblingColors = async (currentProduct) => {
+  if (!currentProduct || !currentProduct.name) return;
+
+  try {
+    let variantsFromDb = [];
+    if (
+      currentProduct.color &&
+      Array.isArray(currentProduct.color) &&
+      currentProduct.color.length > 0
+    ) {
+      variantsFromDb = currentProduct.color.map((colorString) => ({
+        id: currentProduct.id,
+        slug: currentProduct.slug,
+        name: currentProduct.name,
+        displayColorName: parseColorName(colorString),
+        hexColor: parseColorHexCode(colorString),
+        is_internal_variant: true,
+        original_color_string: colorString,
+      }));
+    }
+
+    const res = await axios.get(`${BASE_URL}/products`);
+    const allProducts = res.data.data || res.data;
+
+    let rootName = currentProduct.name;
+    const words = rootName.trim().split(" ");
+
+    if (words.length > 1) {
+      const potentialColorWord = words[words.length - 1];
+      if (getHexFromMap(potentialColorWord)) {
+        rootName = words.slice(0, words.length - 1).join(" ");
+      }
+    }
+
+    const siblings = allProducts.filter(
+      (p) =>
+        p.name.toLowerCase().includes(rootName.toLowerCase()) &&
+        p.category_id === currentProduct.category_id &&
+        p.id !== currentProduct.id
+    );
+
+    let finalVariants = [];
+
+    if (siblings.length > 0) {
+      finalVariants = siblings.map((p) => {
+        const fallbackName = p.name.split(" ").pop();
+        return {
+          ...p,
+          displayColorName: extractColorNameForDisplay(p) || fallbackName,
+          hexColor: extractColorHex(p, fallbackName),
+          is_internal_variant: false,
+        };
+      });
+
+      const selfFallbackName = currentProduct.name.split(" ").pop();
+      finalVariants.unshift({
+        ...currentProduct,
+        displayColorName:
+          extractColorNameForDisplay(currentProduct) || selfFallbackName,
+        hexColor: extractColorHex(currentProduct, selfFallbackName),
+        is_internal_variant: false,
+      });
+    } else if (variantsFromDb.length > 1) {
+      finalVariants = variantsFromDb;
+    } else {
+      finalVariants = [];
+    }
+
+    const uniqueVariants = [];
+    const seenColors = new Set();
+    for (const v of finalVariants) {
+      if (!seenColors.has(v.displayColorName)) {
+        seenColors.add(v.displayColorName);
+        uniqueVariants.push(v);
+      }
+    }
+
+    siblingColors.value = uniqueVariants;
+  } catch (error) {
+    console.error("Gagal menarik varian warna:", error);
+  }
+};
+
+const goToColorVariant = async (sibling) => {
+  if (sibling.is_internal_variant) {
+    selectedInternalColor.value = sibling.original_color_string;
+    return;
+  }
+
+  const identifier = sibling.slug || sibling.id;
+  if (product.value.id === sibling.id || product.value.slug === sibling.slug) return;
+
+  try {
+    const res = await axios.get(`${BASE_URL}/products/${identifier}`);
+    product.value = res.data;
+    selectedInternalColor.value = null;
+    fetchRecommendations(product.value.category_id, product.value.id);
+    fetchWishlists();
+    activeSlide.value = 0;
+    selectedQuantity.value = 1;
+    window.history.pushState({}, "", `/products/${identifier}`);
+    fetchSiblingColors(product.value);
+  } catch (error) {
+    console.error(error);
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+const fetchRecommendations = async (categoryId, currentProductId) => {
+  try {
+    const res = await axios.get(`${BASE_URL}/products`);
+    const allProducts = res.data.data || res.data;
+    recommendedProducts.value = allProducts
+      .filter((p) => p.category_id === categoryId && p.id !== currentProductId)
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 4);
+  } catch (error) {}
+};
+
+const goToRecommendedProduct = (rec) => {
+  isLoading.value = true;
+  router.push(`/products/${rec.slug || rec.id}`);
+};
+
+const fetchProductDetail = async () => {
+  isLoading.value = true;
+  if (history.state && history.state.productData) {
+    product.value = JSON.parse(history.state.productData);
+    isLoading.value = false;
+    fetchRecommendations(product.value.category_id, product.value.id);
+    fetchSiblingColors(product.value);
+    activeSlide.value = 0;
+    selectedQuantity.value = 1;
+    updateRecentlyViewedAndTrack(product.value);
+  } else {
+    try {
+      const res = await axios.get(`${BASE_URL}/products/${route.params.id}`);
+      product.value = res.data;
+      fetchWishlists();
+      fetchRecommendations(product.value.category_id, product.value.id);
+      fetchSiblingColors(product.value);
+      activeSlide.value = 0;
+      selectedQuantity.value = 1;
+      updateRecentlyViewedAndTrack(product.value);
+    } catch (error) {
+      if (!product.value) router.push("/collections");
+    } finally {
+      isLoading.value = false;
+    }
+  }
+};
+
+watch(
+  () => route.params.id,
+  (newId, oldId) => {
+    if (newId && newId !== oldId) {
+      fetchProductDetail();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }
+);
+
+const handleAction = async (type) => {
+  if (type === "cart") {
+    Swal.fire({
+      title: "Added to Bag",
+      icon: "success",
+      toast: true,
+      position: "top-center",
+      showConfirmButton: false,
+      timer: 2000,
+    });
+    window.dispatchEvent(
+      new CustomEvent("optimistic-add-to-cart", {
+        detail: {
+          product: {
+            ...product.value,
+            discount_price: getDiscountStatus(product.value).active
+              ? product.value.discount_price
+              : null,
+          },
+          cartId: null,
+          quantity: selectedQuantity.value,
+          color:
+            selectedInternalColor.value || extractColorNameForDisplay(product.value),
+        },
+      })
+    );
+
+    const productImages = document.querySelectorAll(".main-product-image");
+    const productImage = productImages[activeSlide.value];
+    const cartIcon = document.querySelector(".cart-icon-header");
+    if (productImage && cartIcon) {
+      const imgRect = productImage.getBoundingClientRect();
+      const cartRect = cartIcon.getBoundingClientRect();
+      const flyer = productImage.cloneNode(true);
+      flyer.classList.add("fly-item");
+      Object.assign(flyer.style, {
+        position: "fixed",
+        top: `${imgRect.top}px`,
+        left: `${imgRect.left}px`,
+        width: `${imgRect.width}px`,
+        height: `${imgRect.height}px`,
+        zIndex: "9999",
+        transition: "all 0.7s cubic-bezier(0.25, 1, 0.5, 1)",
+        pointerEvents: "none",
+        borderRadius: "10%",
+      });
+      document.body.appendChild(flyer);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          Object.assign(flyer.style, {
+            top: `${cartRect.top + 10}px`,
+            left: `${cartRect.left + 10}px`,
+            width: "15px",
+            height: "15px",
+            opacity: "0.2",
+            transform: "scale(0.5) rotate(360deg)",
+          });
+        });
+      });
+      flyer.addEventListener("transitionend", () => flyer.remove(), { once: true });
+    }
+    trackGtmEvent("add_to_cart", {
+      ecommerce: {
+        currency: "IDR",
+        value: currentActivePrice.value * selectedQuantity.value,
+        items: [
+          {
+            item_id: product.value.id,
+            item_name: product.value.name,
+            price: currentActivePrice.value,
+            item_category: product.value.category?.name || "Accessories",
+            item_variant:
+              selectedInternalColor.value || extractColorNameForDisplay(product.value),
+            quantity: selectedQuantity.value,
+          },
+        ],
+      },
+    });
+    return;
+  }
+
+  try {
+    if (type === "buy") {
+      Swal.fire({
+        title: "Preparing Order...",
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading(),
+      });
+
+      const payloadData = {
+        product: {
+          ...product.value,
+          discount_price: getDiscountStatus(product.value).active
+            ? product.value.discount_price
+            : null,
+        },
+        cartId: null,
+        quantity: selectedQuantity.value,
+        color:
+          selectedInternalColor.value || extractColorNameForDisplay(product.value),
+      };
+
+      handleOptimisticAdd(payloadData, () => {
+        selectedItemIds.value = [];
+        Swal.close();
+        router.push(`/payment`);
       });
     }
   } catch (error) {
