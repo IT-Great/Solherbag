@@ -10694,6 +10694,24 @@ const goToDetail = (product) => {
                 </template>
               </div>
 
+              <!-- Tombol Sign Up saat Diskon Sedang Aktif (Khusus Guest) -->
+              <div
+                v-if="
+                  !isAuthenticated &&
+                  getDiscountToDisplay(product) &&
+                  getDiscountStatus(product).active
+                "
+                class="mt-3"
+              >
+                <button
+                  type="button"
+                  @click.stop="router.push('/register')"
+                  class="w-full py-2 px-3 bg-[#8c3b4a] hover:bg-[#6b2b37] text-white text-[8px] sm:text-[9px] font-bold tracking-[0.2em] uppercase rounded-md transition-colors shadow-sm"
+                >
+                  Sign Up Now
+                </button>
+              </div>
+
               <!-- Upcoming Sale Countdown -->
               <!-- <div
                 v-if="
@@ -11033,9 +11051,9 @@ watch(
   }
 );
 
-onUnmounted(() => {
-  window.removeEventListener("currency-changed", updateCurrencyState);
-});
+// onUnmounted(() => {
+//   window.removeEventListener("currency-changed", updateCurrencyState);
+// });
 
 const getPriceToDisplay = (product) => {
   const curr = currentCurrency.value;
