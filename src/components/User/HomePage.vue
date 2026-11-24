@@ -6123,7 +6123,7 @@ onUnmounted(() => {
         <div class="flex items-end justify-between mb-10">
           <div>
             <h3 class="font-serif text-3xl italic font-light text-red-800 md:text-4xl">
-              Trending Now
+              Trending Noww
             </h3>
             <p class="mt-2 text-xs font-bold tracking-widest text-gray-500 uppercase">
               Our most loved pieces this week
